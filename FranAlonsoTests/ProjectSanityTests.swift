@@ -1,5 +1,5 @@
 //
-//  FranAlonsoTests.swift
+//  ProjectSanityTests.swift
 //  FranAlonsoTests
 //
 //  Created by Jesús Franco on 11.06.2026.
@@ -8,11 +8,31 @@
 import Testing
 @testable import FranAlonso
 
+#if swift(<6.0)
+#error("FranAlonsoTests must compile in Swift 6 language mode")
+#endif
+
+private enum DefaultIsolationFixture {
+    static let value = 42
+}
+
 @Suite("Project sanity")
 @MainActor
 struct ProjectSanityTests {
     @Test("Composition root can be created")
     func compositionRootCanBeCreated() {
         _ = AppRoot()
+    }
+}
+
+@Suite("Concurrency configuration")
+struct ConcurrencyConfigurationTests {
+    @Test("Default isolation remains nonisolated")
+    func defaultIsolationRemainsNonisolated() async {
+        let value = await Task { @concurrent in
+            DefaultIsolationFixture.value
+        }.value
+
+        #expect(value == 42)
     }
 }
