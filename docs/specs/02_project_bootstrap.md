@@ -25,7 +25,7 @@ Fase 01 aprobada, Bundle ID decidido, cuenta Firebase identificada y assets base
 
 | ID | Tarea | Test primero | Validación |
 |---|---|---|---|
-| 02.1 | Crear proyecto SwiftUI y registrar plataforma/toolchain. | `ProjectSanityTests` falla hasta poder cargar el composition root. | Arranca en los destinos acordados mediante Xcode MCP. |
+| 02.1 | Crear proyecto SwiftUI y registrar plataforma/toolchain. | `ProjectSanityTests` falla hasta poder cargar el composition root. | Build y tests mediante Xcode MCP; arranque de humo en simuladores representativos mediante la interfaz de Xcode mientras el MCP oficial no exponga una acción Run. |
 | 02.2 | Activar warnings Swift/Clang como errores. | Introducir temporalmente un warning controlado y confirmar RED de build. | Build limpio tras retirarlo. |
 | 02.3 | Configurar Swift y strict concurrency por target. | Fixture de aislamiento que falle con configuración incorrecta. | Settings documentados y cero diagnósticos. |
 | 02.4 | Configurar Swift Testing y retirar XCTest/UI tests. | Test mínimo con `@Test` y `#expect`. | No quedan imports ni targets XCTest/XCUITest. |
