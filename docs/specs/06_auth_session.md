@@ -23,11 +23,11 @@ Implementar autenticación Firebase, observación de sesión, logout y desbloque
 | 06.4 | Implementar `BiometricAuthenticator`. | Disponible, autorizado, denegado, cancelado y no disponible. | Sin almacenamiento de contraseña. |
 | 06.5 | Implementar `LoginViewModel` y `SessionViewModel`. | Estado inicial, loading, error, éxito, logout y cancelación. | `@Observable @MainActor`. |
 | 06.6 | Implementar pantallas y previews. | Lógica cubierta en ViewModels. | Textos en xcstrings y estados completos. |
-| 06.7 | Integrar sesión con router y composition root. | Rutas autenticada/no autenticada. | Ningún acceso protegido sin sesión válida. |
+| 06.7 | Integrar sesión con la raíz y el composition root. | Estado autenticado/no autenticado. | Login o shell autenticado, sin acceso protegido sin sesión válida. |
 
 ## Resultado de fase
 
-Autenticación y biometría testeables, con Firebase aislado y navegación gobernada por una sesión observable.
+Autenticación y biometría testeables, con Firebase aislado y selección de la raíz gobernada por una sesión observable.
 
 ## Cierre obligatorio de cada subfase
 

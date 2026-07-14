@@ -143,6 +143,7 @@ Evitar `Interactor`, `ModelLogic`, `LocalModel`, `SyncService`, `Manager`, `Help
 - IVA y descuentos se modelan como valores o políticas explícitas y quedan congelados en cada `SaleLine`.
 - Stock insuficiente muestra aviso y confirmación, pero no bloquea; el comportamiento y el stock negativo se prueban.
 - Ticket y factura tienen series remotas, independientes y atómicas. No se asigna un número local definitivo.
+- Jornada es la pantalla principal autenticada y solo muestra operaciones que requieren una acción. Una operación desaparece inmediatamente cuando todos sus servicios han terminado, el pago está registrado y se ha emitido ticket o factura; desde ese momento se consulta en Histórico.
 - Los PDF se generan con frameworks Apple y el correo queda preparado para envío manual.
 - La demo de citas no sustituye al sistema actual durante el MVP.
 

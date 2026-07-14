@@ -1,11 +1,12 @@
 # Project Progress
 
-Last updated: 2026-07-13
+Last updated: 2026-07-14
 
 ## Current Snapshot
 
 - Current gate: phase 01 — review and accept ADR 0001 through 0009.
 - Overall status: governance and specifications installed; product implementation has not started.
+- Product design status: Ciruela premium is the selected brand palette; navigation uses a simple adaptive tab shell with Jornada as the initial operational screen and Histórico as a separate section.
 - Validation status: Xcode MCP builds the app successfully with Firebase 12.16.0 and the Icon Composer document after setting the logical app-icon name to `franalonso` in Debug and Release.
 - Repository status: Git is initialized on `main` with the private GitHub `origin` configured over SSH; diff/history-based validation is available.
 
@@ -47,6 +48,7 @@ Last updated: 2026-07-13
 
 ## Latest Evidence
 
+- Documentation-only design pass: `docs/design/brand-palettes.md` records the selected palette and retained alternatives; `docs/design/navigation.md` records the adaptive shell and the immediate Jornada-to-Histórico closure rule. No executable target changed, so build/test evidence is `N/A`. Validation: `git diff --check` clean; 37 Markdown files checked with 0 broken local links; 60 palette contrast pairs checked with 0 failures. Two independent `$review-ios-standards` audits completed; all findings were incorporated, including terminal `voided` operations remaining visible and differentiated in Histórico.
 - Icon Composer RED: Xcode MCP failed because `ASSETCATALOG_COMPILER_APPICON_NAME` passed `franalonso.icon` as the logical `--app-icon` name.
 - Icon Composer GREEN: the `.icon` document remained an asset-catalog input, Debug and Release now use the extensionless logical name `franalonso`, and Xcode MCP completed a clean app build with no errors.
 - TDD evidence for this configuration repair: the failing build was the RED check and the successful rebuild was the GREEN check; no artificial Swift test was added for an asset-compiler setting.

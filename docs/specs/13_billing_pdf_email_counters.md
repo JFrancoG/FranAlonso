@@ -11,8 +11,9 @@ No se usa un flujo separado `getNext` / `confirmNumber`: una caída entre ambos 
 - Una transacción Firestore recibe un `documentRequestID` estable, incrementa la serie correspondiente y crea el registro remoto de `BillingDocument` en la misma operación.
 - Repetir el mismo request devuelve el documento ya creado; no consume otro número.
 - Ticket y factura usan series y documentos independientes.
-- El número definitivo nunca se inventa localmente. Sin red, la solicitud queda `pendingNumber`; la venta permanece completada y el documento se reanuda después.
+- El número definitivo nunca se inventa localmente. Sin red, la solicitud queda `pendingNumber`; la venta permanece pagada pero continúa en Jornada hasta poder emitir el documento.
 - Tras confirmar el registro remoto, el sync lo materializa en SwiftData y continúa renderizado/subida.
+- No se reserva ni emite ticket o factura antes de registrar el pago.
 - La estrategia y sus consecuencias se documentan en ADR 0008. Los requisitos fiscales y de conservación deben validarse con la asesoría responsable antes de producción.
 
 ## Estado de presentación
@@ -25,7 +26,7 @@ No se usa un flujo separado `getNext` / `confirmNumber`: una caída entre ambos 
 
 | ID | Tarea | Test primero | Validación |
 |---|---|---|---|
-| 13.1 | Modelar solicitud, documento y estados locales/remotos. | Ticket, factura, ninguno, pending y failed. | Domain sin Firebase/PDFKit. |
+| 13.1 | Modelar solicitud, documento y estados locales/remotos. | Ticket, factura, pago ausente, pending y failed. | Sin emisión previa al pago; toda operación cerrada tiene documento; Domain sin Firebase/PDFKit. |
 | 13.2 | Implementar `ReserveBillingDocumentUseCase` y contrato remoto. | Request repetido, series independientes y conflicto. | API idempotente. |
 | 13.3 | Implementar transacción Firestore atómica. | Fake transaccional, interrupción y concurrencia. | Número y documento nacen juntos. |
 | 13.4 | Implementar `BillingDocumentStore` y `BillingViewModel`. | Máquina de estados, reintento y cancelación. | Sin estado duplicado. |
@@ -36,7 +37,7 @@ No se usa un flujo separado `getNext` / `confirmNumber`: una caída entre ambos 
 | 13.9 | Guardar PDF mediante Storage repository. | Upload repetido, offline, permiso y recuperación. | Ruta estable por document ID. |
 | 13.10 | Materializar estado final en SwiftData. | Reinicio en cada frontera del flujo. | UI refleja siempre estado local. |
 | 13.11 | Crear `EmailDraft` y adaptador de composición Apple. | Destinatario, asunto, cuerpo y adjunto. | Envío siempre manual. |
-| 13.12 | Integrar flujo tras venta. | Ninguno/ticket/factura y reentrada. | No duplica documento o número. |
+| 13.12 | Implementar `CloseSaleUseCase` e integrar el cierre de Jornada. | Ticket/factura, pago pendiente, documento pendiente, cierre repetido y reentrada. | Solo retira de Jornada tras pago y documento final; no duplica cierre, documento o número. |
 | 13.13 | Implementar ajuste administrativo de series. | Autorización, límites y auditoría. | Operación explícita y trazable. |
 
 ## Resultado de fase

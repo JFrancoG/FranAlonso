@@ -9,6 +9,8 @@
 - [Progress.md](../Progress.md): estado actual, evidencia, trabajo pendiente y bloqueos.
 - [PULL_REQUEST_CHECKLIST.md](../PULL_REQUEST_CHECKLIST.md): checklist de entrega.
 - [Índice de ADRs](../ADRs/README.md): decisiones propuestas, aceptadas y sustituidas.
+- [Identidad cromática](../design/brand-palettes.md): paleta activa, alternativas y reglas de accesibilidad.
+- [Navegación y Jornada](../design/navigation.md): shell simple, secciones y cierre operativo.
 
 ## Orden de fases
 
@@ -18,11 +20,11 @@
 4. [Modelo de dominio](04_domain_model.md)
 5. [SwiftData, Firestore y sincronización](05_data_swiftdata_firestore_sync.md)
 6. [Autenticación y sesión](06_auth_session.md)
-7. [Design system y navegación](07_design_system_navigation.md)
+7. [Design system y navegación simple](07_design_system_navigation.md)
 8. [Clientes y consentimiento](08_clients_consent.md)
 9. [Productos y stock](09_products_stock.md)
 10. [Catálogo de servicios](10_services_catalog.md)
-11. [Motor de ventas](11_sales_engine.md)
+11. [Jornada y motor de ventas](11_sales_engine.md)
 12. [Integración venta-stock](12_stock_sale_integration.md)
 13. [Facturación, PDF, correo y numeración](13_billing_pdf_email_counters.md)
 14. [Informes de ingresos](14_monthly_income_reports.md)

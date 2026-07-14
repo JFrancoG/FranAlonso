@@ -25,11 +25,17 @@ Cada registro sincronizable mantiene ID estable, revisión remota, estado local,
 | Clients | No auto-merge de campos de negocio; conservar local+remoto para resolución explícita. | Tombstone gana; restaurar exige operación explícita sobre revisión posterior. | Consentimiento/activación siguen ADR 0009. |
 | Products | Conflicto explícito para metadatos. El stock no se resuelve editando el total. | Tombstone gana; restauración explícita. | Stock deriva de `StockMovement`. |
 | Services | Conflicto explícito; no mezclar automáticamente precio, impuesto o vínculo. | Tombstone gana; ventas históricas conservan snapshots. | Repetir la misma operation ID es no-op. |
-| Sales/SaleLines | Draft concurrente pasa a conflicto; una venta completada es inmutable. | Una venta completada no se borra: se anula mediante operación compensatoria. | Mismo completion ID con mismo payload es no-op; payload distinto es conflicto. |
+| Sales/SaleLines | Draft concurrente pasa a conflicto. Tras el pago, líneas, importes, impuestos, descuentos y método de pago son inmutables; los metadatos de ciclo de vida aún pueden añadir documento y cierre. | Una venta pagada no se borra: se anula mediante operación compensatoria. | Mismo payment ID con igual payload es no-op; payload distinto es conflicto. Añadir el mismo billing document y repetir el cierre también son no-op. |
 | StockMovements | Append-only. Mismo ID y payload es no-op; payload distinto es conflicto. | No se borran; corregir mediante movimiento compensatorio. | ID estable derivado de origen cuando proceda. |
 | BillingDocuments | Inmutable tras asignación remota. | No se borra ni renumera; corrección mediante flujo administrativo documentado. | ADR 0008 gobierna request ID y series. |
 
 No se purgan tombstones automáticamente durante el MVP. Un ADR posterior definirá compactación solo cuando exista evidencia de que todos los participantes relevantes han observado el borrado.
+
+### Ciclo de vida de una venta
+
+Las transiciones válidas son `draft → inProgress → awaitingPayment → awaitingDocument → closed`. Todas las líneas deben estar terminadas antes de registrar el pago y no se puede reservar o emitir un documento antes del pago. `CloseSaleUseCase` solo añade la referencia documental y los metadatos de cierre; nunca modifica el payload comercial congelado al pagar.
+
+Una operación `closed` puede pasar a `voided` únicamente mediante una operación compensatoria con ID estable. Esa operación crea los movimientos de stock inversos necesarios y un ajuste financiero trazable. Repetir el mismo reversal ID es no-op. Los informes calculan importes netos y atribuyen la compensación a su fecha efectiva, sin reescribir la venta histórica original.
 
 ### Flujo de resolución explícita
 

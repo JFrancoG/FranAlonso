@@ -6,7 +6,8 @@ Mostrar ingresos del mes actual y anterior, además de rankings acordados, sin i
 
 ## Diseño
 
-- Los informes se calculan desde ventas completadas materializadas en SwiftData.
+- Los informes se calculan desde ventas pagadas materializadas en SwiftData, aunque la emisión documental esté pendiente; el ingreso no depende de que la operación ya haya salido de Jornada.
+- Las anulaciones se incorporan como ajustes compensatorios en su fecha efectiva. Los informes muestran importes netos sin reescribir la venta original.
 - Calendar, zona horaria y fecha actual se inyectan para evitar límites mensuales ambiguos y tests dependientes del reloj real.
 - Importes usan `Money`/`Decimal`; las agrupaciones se basan en snapshots de `SaleLine`.
 - `ReportsViewModel` es suficiente inicialmente; no se crea Store salvo nuevas responsabilidades independientes.
@@ -16,7 +17,7 @@ Mostrar ingresos del mes actual y anterior, además de rankings acordados, sin i
 | ID | Tarea | Test primero | Validación |
 |---|---|---|---|
 | 14.1 | Crear `MonthlyIncomeSummary`. | Mes vacío, importes y moneda. | Value type Sendable. |
-| 14.2 | Implementar `GetMonthlyIncomeSummaryUseCase`. | Inicio/fin de mes, zona horaria, año y mes anterior. | Clock y Calendar inyectados. |
+| 14.2 | Implementar `GetMonthlyIncomeSummaryUseCase`. | Inicio/fin de mes, zona horaria, año, mes anterior y anulaciones compensatorias. | Clock y Calendar inyectados; total neto por fecha efectiva. |
 | 14.3 | Implementar ranking de servicios profesionales. | Empates, desactivados y snapshots históricos. | Orden determinista. |
 | 14.4 | Implementar ranking de servicios producto. | Vínculos eliminados y cantidades. | No consulta catálogo actual para historia. |
 | 14.5 | Implementar `ReportsViewModel`. | Loading, vacío, contenido, error y cancelación. | `@Observable @MainActor`. |

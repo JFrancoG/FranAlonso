@@ -1,18 +1,21 @@
-# Fase 11 — Motor de ventas
+# Fase 11 — Jornada y motor de ventas
 
 ## Objetivo
 
-Crear ventas con líneas snapshot, cliente opcional, descuentos, efectivo/tarjeta e IVA, preservando consistencia monetaria e idempotencia.
+Construir la Jornada operativa y crear ventas con líneas snapshot, cliente opcional, descuentos, efectivo/tarjeta e IVA, preservando consistencia monetaria e idempotencia.
 
 ## Estado de presentación
 
-La nueva venta reúne edición de líneas, selección de cliente/servicios, descuentos, cálculo, pago y tareas asíncronas. Esa complejidad justifica:
+Jornada es la pantalla principal autenticada y presenta las operaciones que aún requieren acción: servicios próximos, en curso o terminados pendientes de pago o documento. El Histórico es una sección distinta y presenta operaciones terminales cerradas o anuladas; las anuladas se diferencian visualmente y conservan toda su trazabilidad.
 
-- `NewSaleViewModel` `@Observable @MainActor` como fachada, navegación y presentación.
+- `WorkdayViewModel` `@Observable @MainActor` como fachada del tablero, selección y navegación.
+- `SaleDraftViewModel` `@Observable @MainActor` como fachada del detalle operativo.
 - `SaleDraftStore` `@Observable @MainActor` como propietario del borrador y sus transiciones.
 - El ViewModel instancia y conserva el Store con los casos de uso recibidos.
 - El ViewModel expone propiedades calculadas o el Store observable; no copia líneas, totales o errores.
 - Las reglas monetarias permanecen en `SaleCalculator` y casos de uso de Domain.
+
+Solo se puede registrar el pago cuando todos los servicios han terminado y solo se puede solicitar el documento después del pago. Una operación pagada continúa en Jornada mientras no tenga ticket o factura emitido. Cuando el documento tiene número definitivo y PDF final, desaparece inmediatamente del tablero y pasa a Histórico. La subida o el correo pendientes no reabren Jornada.
 
 ## Subfases
 
@@ -21,16 +24,16 @@ La nueva venta reúne edición de líneas, selección de cliente/servicios, desc
 | 11.1 | Implementar repositorio y casos de uso de borrador. | Crear, recuperar, editar y descartar. | SwiftData es SoT local. |
 | 11.2 | Completar `SaleCalculator`. | IVA, descuentos, redondeo, cero y límites. | `Decimal` y snapshots consistentes. |
 | 11.3 | Implementar `SaleDraftStore`. | Añadir/quitar/cambiar cantidad, cliente y descuento. | Estado cohesivo y cancelación. |
-| 11.4 | Implementar `NewSaleViewModel`. | Coordinación, navegación, confirmación y composición del Store. | Sin estado duplicado. |
-| 11.5 | Implementar pantalla de nueva venta. | Lógica ya cubierta en Store/ViewModel. | Previews vacío, contenido y error. |
+| 11.4 | Implementar `WorkdayViewModel` y `SaleDraftViewModel`. | Próximo, en curso, pendiente de cierre, selección, navegación y composición del Store. | Fachadas separadas y sin estado duplicado. |
+| 11.5 | Implementar Jornada y detalle operativo. | Lógica ya cubierta en Store/ViewModels. | Previews vacío, múltiples clientes, en curso y pendiente de cierre. |
 | 11.6 | Integrar selector de servicios. | Snapshot congelado al añadir línea. | Cambios futuros del catálogo no alteran la línea. |
 | 11.7 | Integrar descuentos. | Global, por línea, límites e incompatibilidades. | Política explícita y testeada. |
-| 11.8 | Implementar pago y `CompleteSaleUseCase`. | Sin método, repetición, cancelación y fallo local. | Completion ID estable e idempotente. |
-| 11.9 | Implementar `SalesHistoryViewModel`, `SaleDetailViewModel`, histórico y detalle. | Filtros, orden, navegación, error, cancelación y venta incompleta/completa. | Cada pantalla tiene fachada y observa SwiftData mediante contratos. |
+| 11.8 | Implementar `RegisterSalePaymentUseCase`. | Sin método, repetición, cancelación, fallo local y documento pendiente. | Payment ID estable; el pago no oculta la operación sin documento. |
+| 11.9 | Implementar `SalesHistoryViewModel`, `SaleDetailViewModel`, Histórico y detalle. | Filtros, orden, navegación, error, cancelación, cierre y anulación compensatoria. | Operaciones `closed` y `voided`; anuladas diferenciadas y trazables; sección independiente de Jornada. |
 
 ## Resultado de fase
 
-Venta local-first con snapshots monetarios inmutables, Store justificado y finalización idempotente.
+Jornada local-first sin trabajo cerrado ocupando espacio, Histórico separado, snapshots monetarios inmutables, Store justificado y finalización idempotente.
 
 ## Cierre obligatorio de cada subfase
 
