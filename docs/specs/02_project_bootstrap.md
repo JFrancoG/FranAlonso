@@ -13,8 +13,12 @@ Fase 01 aprobada, Bundle ID decidido, cuenta Firebase identificada y assets base
 - Registrar Xcode, SDK, Swift y deployment target efectivos. Si el proyecto comienza en una beta, documentar la decisión y la estrategia de salida mediante ADR.
 - Configurar strict concurrency según el toolchain real y documentar `SWIFT_DEFAULT_ACTOR_ISOLATION` por target. La arquitectura no depende de asumir un valor global.
 - Crear solo targets necesarios. No crear target de UI tests; los tests unitarios/integración usan Swift Testing.
-- Añadir por Swift Package Manager únicamente los productos Firebase Auth, Firestore y Storage que se utilicen.
-- Mantener `GoogleService-Info.plist` y cualquier secreto según la política del repositorio; no publicar credenciales por defecto.
+- Añadir por Swift Package Manager únicamente los productos aprobados que se utilicen: `FirebaseCore`, `FirebaseAuth`, `FirebaseFirestore`, `FirebaseStorage`, `FirebaseAnalyticsCore` y `FirebaseCrashlytics`.
+- Usar `FirebaseCore` solo para el bootstrap; mantener Auth, Firestore y Storage detrás de adaptadores sustituibles por Vapor, y Analytics/Crashlytics detrás de contratos de telemetría sustituibles de forma independiente.
+- Mantener `GoogleService-Info.plist` exclusivamente en local, ignorado por Git y nunca staged. Validar con `git check-ignore` y versionar el `Package.resolved` compartido.
+- Definir una allowlist de eventos y parámetros antes de emitir Analytics. No enviar PII, contenido de clientes, documentos, notas, importes u otros payloads de negocio.
+- No añadir `FirebaseAnalyticsIdentitySupport`, IDFA ni capacidades publicitarias; la aplicación no tiene una finalidad publicitaria.
+- Configurar Crashlytics sin datos sensibles, con subida de dSYM y una prueba controlada de crash/no-fatal antes de considerarlo operativo.
 - Crear carpetas cuando exista un primer tipo real; no generar una jerarquía vacía completa.
 
 ## Subfases
@@ -26,7 +30,7 @@ Fase 01 aprobada, Bundle ID decidido, cuenta Firebase identificada y assets base
 | 02.3 | Configurar Swift y strict concurrency por target. | Fixture de aislamiento que falle con configuración incorrecta. | Settings documentados y cero diagnósticos. |
 | 02.4 | Configurar Swift Testing y retirar XCTest/UI tests. | Test mínimo con `@Test` y `#expect`. | No quedan imports ni targets XCTest/XCUITest. |
 | 02.5 | Crear `Localizable.xcstrings` y recursos base. | Test o revisión de recursos para claves críticas. | Sin cadenas visibles hardcodeadas. |
-| 02.6 | Añadir módulos Firebase aprobados mediante SPM. | Test de composición con adaptadores falsos, sin Firebase real. | Productos resueltos y SDK encapsulado. |
+| 02.6 | Añadir y configurar los módulos Firebase aprobados mediante SPM. | Composición con fakes; allowlists, consentimiento y fallos de telemetría sin Firebase real. | Productos exactos y `Package.resolved` versionados, plist local ignorado, SDK encapsulado, dSYM configurado y build limpio mediante Xcode MCP. |
 | 02.7 | Crear `ModelContainer` de producción y factory en memoria. | CRUD in-memory con Swift Testing. | Contenedor aislado y guardado explícito. |
 | 02.8 | Crear `AppDependencies` y `AppEnvironment` mínimos. | Test de composición con repositorios fake. | Ningún singleton o service locator. |
 | 02.9 | Incorporar assets de consentimiento, ticket y factura. | Validación de nombres/recursos requeridos. | Assets cargan en previews. |
@@ -34,7 +38,7 @@ Fase 01 aprobada, Bundle ID decidido, cuenta Firebase identificada y assets base
 
 ## Resultado de fase
 
-Proyecto reproducible, sin warnings, con Swift Testing, contenedor SwiftData in-memory, Firebase limitado a adaptadores y reglas operativas instaladas.
+Proyecto reproducible, sin warnings, con Swift Testing, contenedor SwiftData in-memory, backend Firebase limitado a adaptadores, telemetría privada y sustituible, y reglas operativas instaladas.
 
 ## Cierre obligatorio de cada subfase
 

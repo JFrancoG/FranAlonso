@@ -7,6 +7,7 @@
 - [ ] Se respetan `Domain`, `Data`, `Presentation` y `App`.
 - [ ] ViewModel sigue siendo la fachada; cada Store está justificado y no duplica estado.
 - [ ] Firebase y SwiftData permanecen en Data.
+- [ ] Backend Firebase y telemetría dependen de contratos de sustitución independientes.
 - [ ] Nombres y sufijos expresan responsabilidad.
 
 ## Datos, concurrencia y producto
@@ -18,6 +19,7 @@
 - [ ] `Sendable` y cancelación están revisados.
 - [ ] No existe `@unchecked Sendable` sin ADR y tests.
 - [ ] Invariantes de producto y snapshots históricos se preservan.
+- [ ] Analytics y Crashlytics no reciben PII ni payloads de negocio; consentimiento y activación se respetan.
 
 ## Código y testing
 
@@ -26,6 +28,7 @@
 - [ ] Codable; sin `JSONSerialization`.
 - [ ] Textos visibles en `.xcstrings`.
 - [ ] Sin dependencias externas fuera de Firebase aprobado.
+- [ ] `GoogleService-Info.plist` permanece ignorado y `Package.resolved` compartido está versionado.
 - [ ] TDD con Swift Testing y evidencia RED/GREEN, o `N/A` justificado porque la subfase no cambia comportamiento ejecutable.
 - [ ] Tests nuevos y anteriores afectados verdes, o `N/A` justificado cuando no hay targets afectados.
 - [ ] Sin XCTest, XCUITest ni tests UI nativos.

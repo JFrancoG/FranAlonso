@@ -13,7 +13,7 @@ Read `docs/DEVELOPMENT_GUIDE.md`, `docs/specs/01_constitution.md`, the active ph
 - `docs/DEVELOPMENT_GUIDE.md`: mandatory subphase workflow and Definition of Done.
 - `docs/PULL_REQUEST_CHECKLIST.md`: delivery checklist.
 
-The template `FranAlonsoUITests` target is pending removal in phase 02. Do not add XCTest or XCUITest coverage.
+The template `FranAlonsoUITests` target has been removed. Do not add XCTest or XCUITest coverage.
 
 ## Architecture and Naming
 
@@ -29,8 +29,8 @@ Never use `xcodebuild` for builds, tests, previews, or diagnostics. Use Apple's 
 
 ## Data, Concurrency, and Testing
 
-SwiftData is the local source of truth; Firestore is the temporary remote source. Keep Firebase inside Data and make it replaceable by Vapor. Sync must be offline-first, bidirectional, idempotent, conflict-aware, and recoverable. Use `@ModelActor` outside MainActor; never pass live SwiftData models across actors. Apply `Sendable`, cancellation, and structured concurrency. `@unchecked Sendable` requires an accepted ADR and tests.
+SwiftData is the local source of truth; Firestore is the temporary remote source. Keep Firebase SDK imports inside Data/Infrastructure. Auth, Firestore, and Storage must remain replaceable by Vapor; Analytics and Crashlytics stay behind independently replaceable telemetry contracts and must never receive PII or business payloads. Sync must be offline-first, bidirectional, idempotent, conflict-aware, and recoverable. Use `@ModelActor` outside MainActor; never pass live SwiftData models across actors. Apply `Sendable`, cancellation, and structured concurrency. `@unchecked Sendable` requires an accepted ADR and tests.
 
-Use TDD with Swift Testing only. Use deterministic Firebase/Storage doubles and in-memory `ModelContainer` instances. Serialize with Codable, never `JSONSerialization`; place visible text in `.xcstrings`.
+Use TDD with Swift Testing only. Use deterministic Firebase and telemetry doubles plus in-memory `ModelContainer` instances. Serialize with Codable, never `JSONSerialization`; place visible text in `.xcstrings`.
 
 After each subphase, run validation through Xcode MCP when executable work changed, then launch a read-only subagent with `$review-ios-standards`. Fix valid findings and request a second full-diff audit before marking the subphase complete.

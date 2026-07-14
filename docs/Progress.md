@@ -6,7 +6,7 @@ Last updated: 2026-07-13
 
 - Current gate: phase 01 — review and accept ADR 0001 through 0009.
 - Overall status: governance and specifications installed; product implementation has not started.
-- Validation status: documentation and repository hygiene inspected on disk. No Xcode MCP build or test run was required for this documentation-only repository bootstrap.
+- Validation status: Xcode MCP builds the app successfully with Firebase 12.16.0 and the Icon Composer document after setting the logical app-icon name to `franalonso` in Debug and Release.
 - Repository status: Git is initialized on `main` with the private GitHub `origin` configured over SSH; diff/history-based validation is available.
 
 ## Phase Overview
@@ -15,7 +15,7 @@ Last updated: 2026-07-13
 |---|---|---|
 | 00 — Governance | Complete | `AGENTS.md`, guide, checklist, progress tracker, specs, and ADR drafts installed. |
 | 01 — Constitution | Ready | Review and accept ADR 0001–0009; update ADR index states. |
-| 02 — Bootstrap | Partial | Xcode project, SwiftUI template, and Swift Testing target exist. Complete the pending bootstrap items below. |
+| 02 — Bootstrap | Partial | Xcode project, SwiftUI template, Swift Testing target, and Firebase 12.16.0 package graph exist. Complete configuration, privacy gates, tests, and the remaining bootstrap items below. |
 | 03 — Architecture | Not started | Begin only after phase 01 and bootstrap prerequisites. |
 | 04 — Domain | Not started | Money, entities, policies, contracts, and UseCases pending. |
 | 05 — Data and sync | Not started | SwiftData, Firebase adapters, repositories, and SyncEngines pending. |
@@ -37,10 +37,22 @@ Last updated: 2026-07-13
 - Deployment targets currently differ between build configurations/targets (`26.0` and `26.5`) and must be reconciled deliberately.
 - App target uses Swift 6.0 and `SWIFT_DEFAULT_ACTOR_ISOLATION = nonisolated`; target-specific concurrency settings still need review and documentation.
 - Warning-as-error settings were not found in `project.pbxproj`.
-- `FranAlonsoUITests` still imports XCTest/XCUITest and remains in the project; phase 02 removes the template target.
+- The template `FranAlonsoUITests` target and its XCTest/XCUITest sources have been removed.
 - `FranAlonsoTests` uses Swift Testing but currently contains only the empty template test.
-- No String Catalog, Firebase package products, SwiftData container, or dependency composition root was found.
+- Firebase 12.16.0 resolves the direct products `FirebaseCore`, Auth, Firestore, Storage, Analytics Core, and Crashlytics; app bootstrap, adapters, telemetry allowlists/consent gates, Crashlytics dSYM upload, and tests remain pending.
+- Shared `Package.resolved` exists and is eligible for version control; `GoogleService-Info.plist` remains local, ignored, and untracked.
+- No String Catalog, SwiftData container, or dependency composition root was found.
 - The app still displays the default `Hello, world!` screen.
+- Xcode still reports one project-level `Update to recommended settings` warning; it is a bootstrap follow-up independent of the icon configuration.
+
+## Latest Evidence
+
+- Icon Composer RED: Xcode MCP failed because `ASSETCATALOG_COMPILER_APPICON_NAME` passed `franalonso.icon` as the logical `--app-icon` name.
+- Icon Composer GREEN: the `.icon` document remained an asset-catalog input, Debug and Release now use the extensionless logical name `franalonso`, and Xcode MCP completed a clean app build with no errors.
+- TDD evidence for this configuration repair: the failing build was the RED check and the successful rebuild was the GREEN check; no artificial Swift test was added for an asset-compiler setting.
+- The only existing Swift Testing case, `FranAlonsoTests/example()`, passed through Xcode MCP after the configuration repair.
+- Project management is connected through the [FranAlonso Linear project](https://linear.app/plusprojects/project/franalonso-ced946bf6e7e) and an Obsidian project dashboard; this repository remains the source of truth.
+- Review evidence: two isolated read-only reviewer attempts did not return a result, so the documented fallback review corrected stale UITest-removal and ATT wording; a second full-diff read-only pass found no remaining issue in this repair scope. The project-level recommended-settings warning remains an explicit bootstrap gap.
 
 ## Immediate Next Actions
 
@@ -50,4 +62,4 @@ Last updated: 2026-07-13
 
 ## Blockers
 
-- No implementation blocker has been established yet; Xcode MCP availability must be checked when phase 02 begins.
+- No executable build blocker remains. The phase 01 ADR review is still the governance gate before implementation proceeds.

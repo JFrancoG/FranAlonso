@@ -104,7 +104,7 @@ Evitar `Interactor`, `ModelLogic`, `LocalModel`, `SyncService`, `Manager`, `Help
 - Ninguna política usa únicamente el reloj local como autoridad de conflictos.
 - Repetir o reordenar una operación no duplica datos, no cambia el resultado final y no resucita eliminaciones.
 - SwiftData fuera de MainActor se encapsula en un `@ModelActor`; entre actores viajan IDs, DTO o snapshots `Sendable`, nunca modelos SwiftData vivos.
-- Firebase queda dentro de `Data / Infrastructure` y debe poder sustituirse por Vapor sin cambiar Domain o Presentation.
+- Los imports del SDK Firebase quedan dentro de `Data / Infrastructure`. Auth, Firestore y Storage deben poder sustituirse por Vapor sin cambiar Domain o Presentation; Analytics y Crashlytics se sustituyen de forma independiente detrás de contratos propios.
 
 ## Concurrencia y código
 
@@ -115,16 +115,25 @@ Evitar `Interactor`, `ModelLogic`, `LocalModel`, `SyncService`, `Manager`, `Help
 - Se aplica `Sendable`, cancelación y concurrencia estructurada. `@unchecked Sendable` requiere bloqueo probado, ADR y tests.
 - Serialización exclusiva mediante `Codable`, `JSONEncoder` y `JSONDecoder`.
 - Todo texto visible reside en `Localizable.xcstrings`.
-- Solo se permiten frameworks Apple, salvo Firebase Auth, Firestore y Storage como excepción temporal aprobada.
+- Solo se permiten frameworks Apple, salvo `FirebaseCore`, `FirebaseAuth`, `FirebaseFirestore`, `FirebaseStorage`, `FirebaseAnalyticsCore` y `FirebaseCrashlytics` como excepción aprobada y acotada.
+
+## Observabilidad y privacidad
+
+- Analytics registra únicamente eventos y parámetros de una allowlist versionada; no recibe nombres, correos, teléfonos, contenido de clientes, documentos, notas, importes ni otros payloads de negocio.
+- Crashlytics recibe fallos, errores no fatales y claves diagnósticas no sensibles; sus logs y custom keys tampoco contienen PII o payloads de negocio.
+- La aplicación no incorpora publicidad, IDFA ni `FirebaseAnalyticsIdentitySupport`.
+- Analytics y Crashlytics no son fuentes de verdad y sus fallos nunca bloquean autenticación, persistencia, sincronización ni flujos de usuario.
+- `GoogleService-Info.plist` permanece local, ignorado por Git y fuera de commits, parches, logs y documentación.
 
 ## Testing
 
 - TDD real con Swift Testing para tests unitarios y de integración.
 - No se crean XCTest, XCUITest ni tests UI nativos.
-- Firestore y Storage se sustituyen por dobles deterministas.
+- Auth, Firestore, Storage, Analytics y Crashlytics se sustituyen por dobles deterministas.
 - SwiftData usa un `ModelContainer` en memoria por test o suite segura.
 - Reloj, UUID, aleatoriedad y errores se inyectan cuando afectan al resultado.
 - ViewModels cubren coordinación; Stores cubren transiciones, errores, cancelación y reintentos; sincronización cubre idempotencia, conflictos y recuperación.
+- La telemetría prueba allowlists, exclusión de datos sensibles, consentimiento, activación, desactivación y tolerancia a fallos sin usar Firebase real.
 
 ## Reglas de producto
 

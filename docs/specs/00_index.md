@@ -52,7 +52,7 @@ Invocar `$ios-development-standards` para implementar. Tras validar, crear un su
 - La UI observa estado local y la sincronización es bidireccional, offline-first e idempotente.
 - Cada pantalla conserva un `ViewModel` `@Observable @MainActor`. Un `Store` se extrae solo por complejidad o responsabilidad cohesiva demostrable.
 - Se aplica TDD con Swift Testing. No se crean XCTest, XCUITest ni tests UI nativos.
-- Solo se permiten frameworks Apple, excepto Firebase Auth, Firestore y Storage mientras se prepara la migración a Vapor.
+- Solo se permiten frameworks Apple, excepto los productos aprobados `FirebaseCore`, `FirebaseAuth`, `FirebaseFirestore`, `FirebaseStorage`, `FirebaseAnalyticsCore` y `FirebaseCrashlytics`; backend y telemetría conservan fronteras de sustitución independientes.
 - Toda decisión no trivial se documenta en `docs/ADRs/` antes de implementar.
 
 ## Reglas de producto invariantes
