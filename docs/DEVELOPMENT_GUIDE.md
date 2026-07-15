@@ -30,6 +30,7 @@ For documentation-only, manual-QA, or distribution subphases, do not create arti
 - Run new tests and all previously affected tests; use a justified `N/A` only when no executable target changed.
 - Review strict concurrency, actor isolation, `Sendable`, cancellation, availability, and deprecated APIs.
 - Review String Catalog coverage, loading/empty/error states, and deterministic previews for UI work.
+- Follow [LOCALIZATION_GUIDE.md](LOCALIZATION_GUIDE.md) for semantic keys, generated symbols, translator context, and source-language rules.
 - Run `git diff --check` when Git is available and inspect the complete diff. Until this directory is initialized as a Git repository, record that limitation in `docs/Progress.md` and the review evidence.
 - Update ADRs and documentation whenever contracts or decisions change.
 

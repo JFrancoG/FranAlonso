@@ -1,0 +1,18 @@
+{
+  "sourceLanguage" : "es",
+  "strings" : {
+    "bootstrap.welcome.title" : {
+      "comment" : "Título temporal de bienvenida mostrado en la pantalla inicial durante el bootstrap.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bienvenido a Fran Alonso"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}

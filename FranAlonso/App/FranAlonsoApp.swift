@@ -8,10 +8,13 @@
 import SwiftUI
 
 @main
+@MainActor
 struct FranAlonsoApp: App {
+    @UIApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
+
     var body: some Scene {
         WindowGroup {
-            AppRoot()
+            ContentView()
         }
     }
 }

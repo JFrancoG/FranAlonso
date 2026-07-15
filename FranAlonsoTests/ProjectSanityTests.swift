@@ -5,6 +5,7 @@
 //  Created by Jesús Franco on 11.06.2026.
 //
 
+import Foundation
 import Testing
 @testable import FranAlonso
 
@@ -19,9 +20,9 @@ private enum DefaultIsolationFixture {
 @Suite("Project sanity")
 @MainActor
 struct ProjectSanityTests {
-    @Test("Composition root can be created")
-    func compositionRootCanBeCreated() {
-        _ = AppRoot()
+    @Test("Application composition root can be created")
+    func applicationCompositionRootCanBeCreated() {
+        _ = FranAlonsoApp()
     }
 }
 
@@ -34,5 +35,15 @@ struct ConcurrencyConfigurationTests {
         }.value
 
         #expect(value == 42)
+    }
+}
+
+@Suite("Localization configuration")
+struct LocalizationConfigurationTests {
+    @Test("Critical localization symbol is generated")
+    func criticalLocalizationSymbolIsGenerated() {
+        let resource: LocalizedStringResource = .bootstrapWelcomeTitle
+
+        #expect(resource.key == "bootstrap.welcome.title")
     }
 }

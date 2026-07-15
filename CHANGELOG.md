@@ -10,6 +10,7 @@ All notable changes to this project are documented in this file.
 
 ### Maintenance
 
+- 2026-07-15 | 📦 build(bootstrap): add localization and Firebase
 - 2026-07-15 | 📦 build(bootstrap): align Swift test settings
 - 2026-07-15 | 📦 build(bootstrap): complete baseline gates
 - 2026-07-14 | 📦 build(bootstrap): configure Firebase setup
