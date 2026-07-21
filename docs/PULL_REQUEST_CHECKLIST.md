@@ -6,7 +6,7 @@
 - [ ] El diff no contiene cambios ajenos.
 - [ ] Se respetan `Domain`, `Data`, `Presentation` y `App`.
 - [ ] ViewModel sigue siendo la fachada; cada Store está justificado y no duplica estado.
-- [ ] Firebase y SwiftData permanecen en Data.
+- [ ] Los imports Firebase permanecen en Data/Infrastructure; modelos y persistencia SwiftData permanecen en Data, con la composición del `ModelContainer` limitada a App.
 - [ ] Backend Firebase y telemetría dependen de contratos de sustitución independientes.
 - [ ] Nombres y sufijos expresan responsabilidad.
 

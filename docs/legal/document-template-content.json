@@ -1,0 +1,72 @@
+{
+  "documentVersion": "2026-07-22-draft",
+  "reviewStatusKey": "document.review.status",
+  "business": {
+    "legalName": "Francisco Alonso Domínguez",
+    "tradeName": "Fran Alonso Peluqueros",
+    "taxIdentifierLabelKey": "business.tax_identifier.label",
+    "taxIdentifier": "48.815.877-X",
+    "address": "c/ Bailén, 33-35. Local Bajo. 41001. Sevilla (España)",
+    "phones": "+34 954 22 70 06 / +34 687 894 292",
+    "email": "info@franalonsopeluqueros.com",
+    "website": "www.franalonsopeluqueros.com"
+  },
+  "consent": {
+    "titleKey": "consent.title",
+    "introductionKey": "consent.introduction",
+    "summary": [
+      {
+        "labelKey": "consent.summary.controller.label",
+        "textKey": "consent.summary.controller.text"
+      },
+      {
+        "labelKey": "consent.summary.purposes.label",
+        "textKey": "consent.summary.purposes.text"
+      },
+      {
+        "labelKey": "consent.summary.lawful_basis.label",
+        "textKey": "consent.summary.lawful_basis.text"
+      },
+      {
+        "labelKey": "consent.summary.recipients.label",
+        "textKey": "consent.summary.recipients.text"
+      },
+      {
+        "labelKey": "consent.summary.rights.label",
+        "textKey": "consent.summary.rights.text"
+      }
+    ],
+    "details": [
+      {
+        "headingKey": "consent.details.provenance.heading",
+        "textKey": "consent.details.provenance.text"
+      },
+      {
+        "headingKey": "consent.details.requirement.heading",
+        "textKey": "consent.details.requirement.text"
+      },
+      {
+        "headingKey": "consent.details.retention.heading",
+        "textKey": "consent.details.retention.text"
+      },
+      {
+        "headingKey": "consent.details.recipients.heading",
+        "textKey": "consent.details.recipients.text"
+      },
+      {
+        "headingKey": "consent.details.rights.heading",
+        "textKey": "consent.details.rights.text"
+      },
+      {
+        "headingKey": "consent.details.automated_decisions.heading",
+        "textKey": "consent.details.automated_decisions.text"
+      }
+    ],
+    "optionalConsents": [
+      "consent.optional.photo",
+      "consent.optional.marketing_electronic",
+      "consent.optional.marketing_phone_postal"
+    ],
+    "signatureNoticeKey": "consent.signature.notice"
+  }
+}

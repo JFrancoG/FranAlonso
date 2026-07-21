@@ -11,10 +11,12 @@ import SwiftUI
 @MainActor
 struct FranAlonsoApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
+    private let dependencies = AppDependencies.live()
 
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environment(\.appDependencies, dependencies)
         }
     }
 }

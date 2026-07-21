@@ -31,6 +31,7 @@ DerivedData/
 # Local tooling
 .vscode/
 .idea/
+.venv-document-templates/
 
 # Local configuration and credentials
 .env

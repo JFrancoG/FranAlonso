@@ -4,6 +4,7 @@
 
 - `FranAlonso/Resources/Localizable.xcstrings` is the default catalog.
 - Spanish (`es`) is the source language. Add translations to the same catalog unless a feature needs a justified separate table.
+- `docs/legal/DocumentTemplates.xcstrings` is the dedicated source catalog for generated consent, ticket and invoice PDFs. It stays outside the app bundle because the build-time generator consumes it directly; `document-template-content.json` contains only document structure, version and non-localizable business identity/data. The provisional vector wordmark is derived from the single `tradeName` value rather than duplicating brand words in code.
 - Keep `STRING_CATALOG_GENERATE_SYMBOLS = YES` for the app target in Debug and Release.
 - Consume generated `LocalizedStringResource` symbols so keys are discoverable by autocomplete and invalid references fail at compile time.
 
@@ -48,3 +49,4 @@ Do not add a parallel `L10n` wrapper or repeat raw catalog keys in production co
 - Build through Xcode MCP to regenerate symbols and catch catalog errors.
 - Review the catalog for missing source values, comments, stale entries, and accidental hardcoded visible strings.
 - Preview representative locales and longer text when a subphase changes user-facing layout.
+- Validate that every key referenced by the document-template structure or generator has a translated Spanish value and translator comment before regenerating PDFs.

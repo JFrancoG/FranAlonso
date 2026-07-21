@@ -32,8 +32,8 @@ Fase 01 aprobada, Bundle ID decidido, cuenta Firebase identificada y assets base
 | 02.5 | Crear `Localizable.xcstrings` y recursos base. | Test o revisión de recursos para claves críticas. | Sin cadenas visibles hardcodeadas. |
 | 02.6 | Añadir y configurar los módulos Firebase aprobados mediante SPM. | Composición con fakes; allowlists, consentimiento y fallos de telemetría sin Firebase real. | Productos exactos y `Package.resolved` versionados, plist local ignorado, SDK encapsulado, dSYM configurado y build limpio mediante Xcode MCP. |
 | 02.7 | Crear `ModelContainer` de producción y factory en memoria. | CRUD in-memory con Swift Testing. | Contenedor aislado y guardado explícito. |
-| 02.8 | Crear `AppDependencies` y `AppEnvironment` mínimos. | Test de composición con repositorios fake. | Ningún singleton o service locator. |
-| 02.9 | Incorporar assets de consentimiento, ticket y factura. | Validación de nombres/recursos requeridos. | Assets cargan en previews. |
+| 02.8 | Crear `AppDependencies` y `AppEnvironment` mínimos. | Test de composición con dobles deterministas de capacidades reales ya existentes; el primer repository fake pertenece a 03.1/03.2. | Ningún singleton, service locator ni abstracción ceremonial. |
+| 02.9 | Incorporar plantillas PDF A4 de consentimiento, ticket y factura con nombres semánticos estables. | Validación de nombres, carga, número de páginas y tamaño A4. | PDF reales cargan en previews; el consentimiento queda marcado como borrador hasta la revisión jurídica. |
 | 02.10 | Verificar `AGENTS.md`, ADRs, progreso y checklist de PR. | Revisión de enlaces y marcadores. | Gobernanza operativa en el repositorio. |
 
 ## Resultado de fase

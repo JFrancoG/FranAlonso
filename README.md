@@ -1,6 +1,6 @@
 # FranAlonso
 
-Aplicación iOS reconstruida con SwiftUI mediante Spec Driven Development y TDD. El proyecto se encuentra en la fase de constitución y bootstrap; la implementación de producto todavía no ha comenzado.
+Aplicación iOS reconstruida con SwiftUI mediante Spec Driven Development y TDD. La constitución y el bootstrap están completos; la implementación de producto todavía no ha comenzado.
 
 ## Fuentes de verdad
 
@@ -19,4 +19,4 @@ Los builds, tests, previews y diagnósticos se realizan exclusivamente mediante 
 
 ## Estado
 
-La fase 01 está preparada para revisar y aceptar los ADR 0001–0009. Después continuará la fase 02 de bootstrap del proyecto.
+Las fases 01 y 02 están completas, incluidos los ADR 0001–0009 y la gobernanza del bootstrap. La siguiente subfase es 03.1, primera vertical mínima de arquitectura.

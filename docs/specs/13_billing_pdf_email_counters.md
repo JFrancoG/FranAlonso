@@ -14,6 +14,7 @@ No se usa un flujo separado `getNext` / `confirmNumber`: una caída entre ambos 
 - El número definitivo nunca se inventa localmente. Sin red, la solicitud queda `pendingNumber`; la venta permanece pagada pero continúa en Jornada hasta poder emitir el documento.
 - Tras confirmar el registro remoto, el sync lo materializa en SwiftData y continúa renderizado/subida.
 - No se reserva ni emite ticket o factura antes de registrar el pago.
+- La firma y el sello del negocio son un recurso privado: no se versionan ni se incluyen en el bundle. Se importan o descargan después de autenticar al usuario, se validan y se almacenan con protección local; su ausencia permite generar el documento sin firma.
 - La estrategia y sus consecuencias se documentan en ADR 0008. Los requisitos fiscales y de conservación deben validarse con la asesoría responsable antes de producción.
 
 ## Estado de presentación
@@ -31,7 +32,7 @@ No se usa un flujo separado `getNext` / `confirmNumber`: una caída entre ambos 
 | 13.3 | Implementar transacción Firestore atómica. | Fake transaccional, interrupción y concurrencia. | Número y documento nacen juntos. |
 | 13.4 | Implementar `BillingDocumentStore` y `BillingViewModel`. | Máquina de estados, reintento y cancelación. | Sin estado duplicado. |
 | 13.5 | Implementar selección y formulario fiscal. | Campos requeridos, validaciones y cancelación. | Textos localizados. |
-| 13.6 | Implementar carga validada de plantillas y firma. | Asset ausente, corrupto y válido. | Error recuperable. |
+| 13.6 | Implementar carga validada de plantillas y firma privada opcional. | Asset ausente, corrupto y válido; firma no autenticada o no disponible. | Error recuperable; la firma nunca está en el bundle. |
 | 13.7 | Implementar `BillingPDFRenderer`. | Salida determinista, campos y páginas requeridas. | Render pesado fuera de MainActor. |
 | 13.8 | Renderizar ticket y factura. | Snapshots de datos y PDF no vacío. | Revisión visual manual con plantillas reales. |
 | 13.9 | Guardar PDF mediante Storage repository. | Upload repetido, offline, permiso y recuperación. | Ruta estable por document ID. |

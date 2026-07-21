@@ -1,0 +1,4 @@
+# Validated with CPython 3.12.13 and zlib 1.2.12.
+charset-normalizer==3.4.9
+pillow==12.2.0
+reportlab==4.4.9

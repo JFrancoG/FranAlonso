@@ -10,7 +10,7 @@ El wordmark de Fran Alonso permanece monocromo:
 - Blanco sobre fondos oscuros.
 - El color de marca se reserva para acciones, navegación, selección y estados; no recolorea el logotipo.
 
-Los logos originales se incorporarán al catálogo de assets cuando la subfase correspondiente añada recursos reales. Este documento conserva la decisión cromática y sus alternativas, pero no sustituye los assets de producción.
+Las plantillas documentales de 02.9 emplean una aproximación vectorial monocroma provisional. Si Fran Alonso facilita el wordmark original, se reemplazará sin cambiar los nombres semánticos de los recursos. Este documento conserva la decisión cromática y sus alternativas, pero no sustituye los assets definitivos de producción.
 
 ## Dirección seleccionada: Ciruela premium
 
