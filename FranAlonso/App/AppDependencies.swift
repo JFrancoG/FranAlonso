@@ -2,18 +2,6 @@ struct AppDependencies: Sendable {
     let observeClients: ObserveClientsUseCase
     let telemetryReporter: TelemetryReporter
 
-    init(
-        clientRepository: any ClientRepository,
-        analyticsDataSource: any AnalyticsDataSource,
-        crashDataSource: any CrashDataSource
-    ) {
-        observeClients = ObserveClientsUseCase(repository: clientRepository)
-        telemetryReporter = TelemetryReporter(
-            analyticsDataSource: analyticsDataSource,
-            crashDataSource: crashDataSource
-        )
-    }
-
     static func live() -> AppDependencies {
         AppDependencies(
             clientRepository: InMemoryClientRepository(),
@@ -27,6 +15,22 @@ struct AppDependencies: Sendable {
             clientRepository: InMemoryClientRepository(clients: clients),
             analyticsDataSource: PreviewAnalyticsDataSource(),
             crashDataSource: PreviewCrashDataSource()
+        )
+    }
+}
+
+extension AppDependencies {
+    init(
+        clientRepository: any ClientRepository,
+        analyticsDataSource: any AnalyticsDataSource,
+        crashDataSource: any CrashDataSource
+    ) {
+        self.init(
+            observeClients: ObserveClientsUseCase(repository: clientRepository),
+            telemetryReporter: TelemetryReporter(
+                analyticsDataSource: analyticsDataSource,
+                crashDataSource: crashDataSource
+            )
         )
     }
 }

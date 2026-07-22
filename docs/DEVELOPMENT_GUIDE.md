@@ -29,6 +29,7 @@ For documentation-only, manual-QA, or distribution subphases, do not create arti
 - Build every affected target without warnings through Xcode MCP when code or project configuration changed.
 - Run new tests and all previously affected tests; use a justified `N/A` only when no executable target changed.
 - Review strict concurrency, actor isolation, `Sendable`, cancellation, availability, and deprecated APIs.
+- Review every struct changed by the subphase: rely on its synthesized memberwise initializer when sufficient; remove assignment-only initializers; use a named static factory only when its name adds domain, preset, or composition meaning; and keep meaningful validating, dependency-injection, composition, and `Decodable` initializers in same-file extensions. Neither an initializer nor a factory may expose a synthesized path that bypasses validation, and post-construction validation is not a substitute for an invariant.
 - Review String Catalog coverage, loading/empty/error states, and deterministic previews for UI work.
 - Follow [LOCALIZATION_GUIDE.md](LOCALIZATION_GUIDE.md) for semantic keys, generated symbols, translator context, and source-language rules.
 - Run `git diff --check` when Git is available and inspect the complete diff. Until this directory is initialized as a Git repository, record that limitation in `docs/Progress.md` and the review evidence.
@@ -64,6 +65,7 @@ If subagents are unavailable, execute the same skill as a separate pass and stat
 - [ ] Affected targets build without warnings through Xcode MCP, or `N/A` is justified.
 - [ ] Domain/Data/Presentation/App boundaries are respected.
 - [ ] Base value and Domain models use `Identifiable`, `Codable`, and `Equatable` whenever semantically possible, with any exception justified.
+- [ ] Structs keep explicit initializers out of the primary declaration; redundant assignment-only initializers are absent; named factories add real semantic meaning; and validating initializers or factories cannot be bypassed through synthesized memberwise construction or replaced by post-construction validation.
 - [ ] ViewModels remain screen facades; Stores are justified and do not duplicate state.
 - [ ] Concurrency, cancellation, `Sendable`, availability, and localization are reviewed.
 - [ ] SwiftData/Firestore invariants and idempotency are covered when applicable.

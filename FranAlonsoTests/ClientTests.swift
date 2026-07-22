@@ -6,7 +6,7 @@ import Testing
 struct ClientTests {
     @Test("Preserves stable identity through a Codable round trip")
     func preservesStableIdentityThroughCodableRoundTrip() throws {
-        let client = Client(
+        let client = Client.draft(
             id: ClientID(
                 rawValue: UUID(
                     uuidString: "AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE"

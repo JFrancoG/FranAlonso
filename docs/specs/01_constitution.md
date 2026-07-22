@@ -113,6 +113,7 @@ Evitar `Interactor`, `ModelLogic`, `LocalModel`, `SyncService`, `Manager`, `Help
 - La configuración de default actor isolation se inspecciona y documenta por target; no se presupone.
 - `nonisolated` se usa solo cuando sea semánticamente seguro, nunca para silenciar al compilador.
 - Se aplica `Sendable`, cancelación y concurrencia estructurada. `@unchecked Sendable` requiere bloqueo probado, ADR y tests.
+- Las declaraciones primarias de `struct` no contienen inicializadores explícitos. Se usa el memberwise sintetizado cuando basta y se eliminan inicializadores que solo copian parámetros. Una factory estática con nombre se usa solo cuando comunica mejor un estado de dominio, preset o composición; en los demás casos, los inicializadores con validación, inyección, composición o requeridos por `Decodable` viven en extensiones del mismo archivo. Las invariantes se garantizan al construir: el almacenamiento impide que el memberwise sintetizado las eluda y no se sustituyen por una comprobación posterior `isValid` o `validate()`.
 - Serialización exclusiva mediante `Codable`, `JSONEncoder` y `JSONDecoder`.
 - Todo texto visible reside en `Localizable.xcstrings`.
 - Solo se permiten frameworks Apple, salvo `FirebaseCore`, `FirebaseAuth`, `FirebaseFirestore`, `FirebaseStorage`, `FirebaseAnalyticsCore` y `FirebaseCrashlytics` como excepción aprobada y acotada.

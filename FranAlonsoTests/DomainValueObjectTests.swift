@@ -177,7 +177,7 @@ struct EntityIdentifierTests {
                 UUID(uuidString: "AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE")
             )
         )
-        let client = Client(id: id, displayName: "Ana Alonso")
+        let client = Client.draft(id: id, displayName: "Ana Alonso")
 
         #expect(client.id == id)
     }

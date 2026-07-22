@@ -7,7 +7,7 @@ struct ObserveClientsUseCaseTests {
     @Test("Delegates client observation to the repository")
     func delegatesClientObservationToTheRepository() async throws {
         let expectedClients = [
-            Client(
+            Client.draft(
                 id: ClientID(
                     rawValue: UUID(
                         uuidString: "AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE"

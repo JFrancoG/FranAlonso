@@ -5,18 +5,24 @@ enum TaxRateError: Error, Equatable {
 }
 
 struct TaxRate: Codable, Equatable, Hashable {
-    let percentage: Decimal
+    private let storedPercentage: Decimal
 
+    var percentage: Decimal {
+        storedPercentage
+    }
+
+    private enum CodingKeys: String, CodingKey {
+        case percentage
+    }
+}
+
+extension TaxRate {
     init(percentage: Decimal) throws {
         guard !percentage.isNaN, (Decimal.zero ... 100).contains(percentage) else {
             throw TaxRateError.outOfRange
         }
 
-        self.percentage = percentage
-    }
-
-    private enum CodingKeys: String, CodingKey {
-        case percentage
+        self.init(storedPercentage: percentage)
     }
 
     init(from decoder: any Decoder) throws {
@@ -24,5 +30,10 @@ struct TaxRate: Codable, Equatable, Hashable {
         try self.init(
             percentage: container.decode(Decimal.self, forKey: .percentage)
         )
+    }
+
+    func encode(to encoder: any Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(percentage, forKey: .percentage)
     }
 }

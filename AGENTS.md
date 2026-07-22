@@ -21,6 +21,8 @@ Organize by feature, then `Domain`, `Data`, and `Presentation`; compose concrete
 
 Whenever semantically possible, base value and Domain models conform to `Identifiable`, `Codable`, and `Equatable`, with stable immutable identity. Internal model structs rely on inferred `Sendable` when all stored properties are sendable; declare it explicitly only when required by a public API boundary.
 
+Keep a struct's primary declaration free of explicit initializers. Use the compiler-generated memberwise initializer when it already expresses the contract, and remove initializers that only assign every argument to its matching stored property. Choose the construction API by meaning: use a named static factory when its name communicates a domain state, preset, or composition more clearly than `init`; otherwise keep meaningful validating, dependency-injection, composition, and `Decodable` initializers in same-file extensions. Do not replace construction-time invariants with a post-construction `isValid` property or `validate()` method. A validating initializer or factory must remain the only accessible construction path for that contract: when synthesis could bypass it, use private backing storage plus read-only computed API. Reviewers must check these tradeoffs in production and test structs rather than flagging every custom initializer mechanically.
+
 Use explicit suffixes: `UseCase`, `Repository`, `DTO`, `Model`, `DataSource`, `Mapper`, `PersistenceActor`, `SyncEngine`, `SyncPolicy`, `ViewModel`, `Store`, and `Screen`. Avoid ambiguous `Interactor`, `ModelLogic`, `Manager`, `Helper`, `Utils`, and `Common` types.
 
 ## Platform and Tools

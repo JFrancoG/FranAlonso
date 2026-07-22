@@ -18,7 +18,7 @@ struct ClientListViewModelTests {
     @Test("Shows content from the observed client snapshot")
     func showsContentFromTheObservedClientSnapshot() async {
         let expectedClients = [
-            Client(
+            Client.draft(
                 id: ClientID(
                     rawValue: UUID(
                         uuidString: "AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE"

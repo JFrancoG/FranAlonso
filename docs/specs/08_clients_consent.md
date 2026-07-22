@@ -15,6 +15,10 @@ ADR 0009 aceptado antes de implementar la máquina de estados o activar clientes
 - Al incorporar firma, renderizado, subida, reintento y estados de activación, el ViewModel crea y conserva un `ClientConsentStore` `@Observable @MainActor` como responsabilidad cohesiva.
 - El Store orquesta `RenderConsentUseCase`, `UploadConsentUseCase` y `ActivateClientUseCase`; no importa Firebase Storage ni PDFKit.
 - El cliente usa estados `draft`, `consentPendingUpload` y `active`. Un borrador puede persistirse localmente sin red, pero no se activa hasta que el consentimiento obligatorio se haya subido y referenciado.
+- La desactivación de 08.1 crea el tombstone del registro sincronizable definido
+  por ADR 0006 y lo excluye de consultas operativas; no añade un cuarto
+  `ClientStatus` ni elimina la referencia de consentimiento del payload
+  conservado para sincronización e histórico.
 - La foto es opcional y su fallo no invalida al cliente ni al consentimiento.
 - La atomicidad y recuperación del flujo se documentan en ADR 0009.
 

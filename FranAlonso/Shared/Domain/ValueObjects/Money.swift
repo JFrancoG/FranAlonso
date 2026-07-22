@@ -18,19 +18,11 @@ enum MoneyError: Error, Equatable {
 }
 
 struct Money: Codable, Equatable, Hashable {
-    let amount: Decimal
+    private let storedAmount: Decimal
     let currency: Currency
 
-    init(amount: Decimal, currency: Currency) throws {
-        guard !amount.isNaN else {
-            throw MoneyError.invalidAmount
-        }
-
-        self.amount = amount.rounded(
-            scale: currency.minorUnitScale,
-            mode: .plain
-        )
-        self.currency = currency
+    var amount: Decimal {
+        storedAmount
     }
 
     func adding(_ other: Money) throws -> Money {
@@ -51,6 +43,22 @@ struct Money: Codable, Equatable, Hashable {
         case amount
         case currency
     }
+}
+
+extension Money {
+    init(amount: Decimal, currency: Currency) throws {
+        guard !amount.isNaN else {
+            throw MoneyError.invalidAmount
+        }
+
+        self.init(
+            storedAmount: amount.rounded(
+                scale: currency.minorUnitScale,
+                mode: .plain
+            ),
+            currency: currency
+        )
+    }
 
     init(from decoder: any Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -58,6 +66,12 @@ struct Money: Codable, Equatable, Hashable {
             amount: container.decode(Decimal.self, forKey: .amount),
             currency: container.decode(Currency.self, forKey: .currency)
         )
+    }
+
+    func encode(to encoder: any Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(amount, forKey: .amount)
+        try container.encode(currency, forKey: .currency)
     }
 }
 

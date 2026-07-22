@@ -8,11 +8,25 @@ Definir entidades, value objects, políticas, contratos y casos de uso puros, si
 
 - IDs estables y tipados cuando eviten mezclar entidades.
 - Valores que crucen aislamiento como structs inmutables `Sendable`.
+- Los structs usan el inicializador memberwise sintetizado cuando basta y no
+  conservan inicializadores que solo copian parámetros. Una factory estática
+  se reserva para nombres que expresan estado de dominio, preset o composición;
+  los inicializadores con validación o requeridos por `Decodable` se declaran
+  en extensiones. Ninguna ruta sintetizada o validación posterior puede
+  permitir saltarse invariantes de construcción.
 - `Money` basado en `Decimal` y moneda explícita; no `Double` para importes.
 - `Money` normaliza al construir según las unidades menores de la moneda con
   redondeo decimal `.plain` y rechaza operaciones entre monedas distintas.
 - `TaxRate` y `Discount` representan porcentajes decimales en el intervalo
   cerrado `0...100`; rechazan valores fuera del rango y no numéricos.
+- `Client.draft(id:displayName:)` expresa la creación inicial; `consentPendingUpload` representa el consentimiento
+  aún no persistido remotamente y `active` contiene una referencia de
+  consentimiento no vacía, conforme a ADR 0009.
+- `Product` representa solo inventario físico y no contiene precio de compra,
+  precio de venta ni descuento.
+- `Service` contiene precio, impuesto y descuento comercial. El tipo `product`
+  exige `linkedProductID`, mientras que `professional` lo prohíbe; la misma
+  invariante se revalida al decodificar.
 - Las cantidades validan sus rangos en la construcción cuando se introduzcan.
 - `SaleLine` conserva snapshots de descripción, precio, descuento, impuesto y vínculo de producto para que cambios posteriores del catálogo no alteren ventas históricas.
 - `SaleLineStatus` representa `upcoming`, `inProgress` y `completed`; `SaleStatus` expresa `draft`, `inProgress`, `awaitingPayment`, `awaitingDocument`, `closed` y `voided`.

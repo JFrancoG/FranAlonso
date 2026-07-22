@@ -24,7 +24,7 @@ struct ContentView: View {
             \.appDependencies,
             AppDependencies.preview(
                 clients: [
-                    Client(
+                    Client.draft(
                         id: ClientID(
                             rawValue: UUID(
                                 uuidString: "AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE"

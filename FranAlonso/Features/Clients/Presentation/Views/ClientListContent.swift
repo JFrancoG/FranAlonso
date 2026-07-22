@@ -51,7 +51,7 @@ struct ClientListContent: View {
 #Preview("Content") {
     ClientListContent(
         state: .content([
-            Client(
+            Client.draft(
                 id: ClientID(
                     rawValue: UUID(
                         uuidString: "AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE"
@@ -59,7 +59,7 @@ struct ClientListContent: View {
                 ),
                 displayName: "Ana Alonso"
             ),
-            Client(
+            Client.draft(
                 id: ClientID(
                     rawValue: UUID(
                         uuidString: "11111111-2222-3333-4444-555555555555"

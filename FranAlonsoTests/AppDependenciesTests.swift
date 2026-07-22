@@ -57,7 +57,7 @@ struct AppDependenciesTests {
     @Test("SwiftUI environment resolves clients through the injected repository")
     func swiftUIEnvironmentResolvesClientsThroughTheInjectedRepository() async throws {
         let expectedClients = [
-            Client(
+            Client.draft(
                 id: ClientID(
                     rawValue: UUID(
                         uuidString: "AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE"
@@ -85,7 +85,7 @@ struct AppDependenciesTests {
     @Test("Preview dependencies expose their seeded clients")
     func previewDependenciesExposeTheirSeededClients() async throws {
         let expectedClients = [
-            Client(
+            Client.draft(
                 id: ClientID(
                     rawValue: UUID(
                         uuidString: "AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE"

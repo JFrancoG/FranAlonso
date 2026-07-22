@@ -4,8 +4,13 @@ All notable changes to this project are documented in this file.
 
 ## [Unreleased]
 
+### Changed
+
+- 2026-07-23 | ♻️ refactor(domain): name draft client construction
+
 ### Added
 
+- 2026-07-22 | ✨ feat(domain): model client and catalog entities
 - 2026-07-22 | ✨ feat(domain): add foundational value types
 - 2026-07-22 | ✨ feat(clients): add observable client list
 - 2026-07-22 | ✨ feat(architecture): add client DI vertical
