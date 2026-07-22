@@ -52,11 +52,19 @@ struct ClientListContent: View {
     ClientListContent(
         state: .content([
             Client(
-                id: UUID(uuidString: "AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE")!,
+                id: ClientID(
+                    rawValue: UUID(
+                        uuidString: "AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE"
+                    )!
+                ),
                 displayName: "Ana Alonso"
             ),
             Client(
-                id: UUID(uuidString: "11111111-2222-3333-4444-555555555555")!,
+                id: ClientID(
+                    rawValue: UUID(
+                        uuidString: "11111111-2222-3333-4444-555555555555"
+                    )!
+                ),
                 displayName: "María de los Ángeles Fernández"
             )
         ])

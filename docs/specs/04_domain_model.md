@@ -9,7 +9,11 @@ Definir entidades, value objects, políticas, contratos y casos de uso puros, si
 - IDs estables y tipados cuando eviten mezclar entidades.
 - Valores que crucen aislamiento como structs inmutables `Sendable`.
 - `Money` basado en `Decimal` y moneda explícita; no `Double` para importes.
-- `TaxRate`, descuentos y cantidades validan rangos en su construcción.
+- `Money` normaliza al construir según las unidades menores de la moneda con
+  redondeo decimal `.plain` y rechaza operaciones entre monedas distintas.
+- `TaxRate` y `Discount` representan porcentajes decimales en el intervalo
+  cerrado `0...100`; rechazan valores fuera del rango y no numéricos.
+- Las cantidades validan sus rangos en la construcción cuando se introduzcan.
 - `SaleLine` conserva snapshots de descripción, precio, descuento, impuesto y vínculo de producto para que cambios posteriores del catálogo no alteren ventas históricas.
 - `SaleLineStatus` representa `upcoming`, `inProgress` y `completed`; `SaleStatus` expresa `draft`, `inProgress`, `awaitingPayment`, `awaitingDocument`, `closed` y `voided`.
 - El pago congela el payload comercial; documento, cierre y anulación compensatoria son metadatos/transiciones posteriores que no reescriben líneas o importes.

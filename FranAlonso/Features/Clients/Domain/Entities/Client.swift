@@ -1,6 +1,6 @@
 import Foundation
 
 struct Client: Identifiable, Codable, Equatable {
-    let id: UUID
+    let id: ClientID
     let displayName: String
 }

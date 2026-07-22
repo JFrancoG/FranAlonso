@@ -19,7 +19,11 @@ struct ClientListViewModelTests {
     func showsContentFromTheObservedClientSnapshot() async {
         let expectedClients = [
             Client(
-                id: UUID(uuidString: "AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE")!,
+                id: ClientID(
+                    rawValue: UUID(
+                        uuidString: "AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE"
+                    )!
+                ),
                 displayName: "Ana Alonso"
             )
         ]
