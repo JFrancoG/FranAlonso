@@ -11,6 +11,7 @@ All notable changes to this project are documented in this file.
 
 ### Documentation
 
+- 2026-07-22 | 📝 docs(architecture): define Store extraction
 - 2026-07-14 | 📝 docs(design): define brand and workday navigation
 
 ### Maintenance
