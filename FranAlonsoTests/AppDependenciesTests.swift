@@ -1,3 +1,4 @@
+import Foundation
 import SwiftUI
 import Testing
 @testable import FranAlonso
@@ -9,6 +10,7 @@ struct AppDependenciesTests {
         let analytics = CompositionAnalyticsDataSourceSpy()
         let crash = CompositionCrashDataSourceSpy()
         let dependencies = AppDependencies(
+            clientRepository: CompositionClientRepositoryFake(clients: []),
             analyticsDataSource: analytics,
             crashDataSource: crash
         )
@@ -27,6 +29,7 @@ struct AppDependenciesTests {
     @Test("SwiftUI environment stores the injected dependency container")
     func swiftUIEnvironmentStoresTheInjectedDependencyContainer() {
         let dependencies = AppDependencies(
+            clientRepository: CompositionClientRepositoryFake(clients: []),
             analyticsDataSource: CompositionAnalyticsDataSourceSpy(),
             crashDataSource: CompositionCrashDataSourceSpy()
         )
@@ -38,6 +41,69 @@ struct AppDependenciesTests {
             environment.appDependencies.telemetryReporter
                 === dependencies.telemetryReporter
         )
+    }
+
+    @Test("SwiftUI environment resolves clients through the injected repository")
+    func swiftUIEnvironmentResolvesClientsThroughTheInjectedRepository() async throws {
+        let expectedClients = [
+            Client(
+                id: UUID(uuidString: "AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE")!,
+                displayName: "Ana Alonso"
+            )
+        ]
+        let repository = CompositionClientRepositoryFake(clients: expectedClients)
+        let dependencies = AppDependencies(
+            clientRepository: repository,
+            analyticsDataSource: CompositionAnalyticsDataSourceSpy(),
+            crashDataSource: CompositionCrashDataSourceSpy()
+        )
+        var environment = EnvironmentValues()
+
+        environment.appDependencies = dependencies
+        let stream = await environment.appDependencies.observeClients()
+        var iterator = stream.makeAsyncIterator()
+
+        #expect(try await iterator.next() == expectedClients)
+        #expect(await repository.observationCallCount() == 1)
+    }
+
+    @Test("Preview dependencies expose their seeded clients")
+    func previewDependenciesExposeTheirSeededClients() async throws {
+        let expectedClients = [
+            Client(
+                id: UUID(uuidString: "AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE")!,
+                displayName: "Ana Alonso"
+            )
+        ]
+        let dependencies = AppDependencies.preview(clients: expectedClients)
+
+        let stream = await dependencies.observeClients()
+        var iterator = stream.makeAsyncIterator()
+
+        #expect(try await iterator.next() == expectedClients)
+        #expect(try await iterator.next() == nil)
+    }
+}
+
+private actor CompositionClientRepositoryFake: ClientRepository {
+    private let clients: [Client]
+    private var callCount = 0
+
+    init(clients: [Client]) {
+        self.clients = clients
+    }
+
+    func observeClients() async -> AsyncThrowingStream<[Client], any Error> {
+        callCount += 1
+
+        return AsyncThrowingStream { continuation in
+            continuation.yield(clients)
+            continuation.finish()
+        }
+    }
+
+    func observationCallCount() -> Int {
+        callCount
     }
 }
 

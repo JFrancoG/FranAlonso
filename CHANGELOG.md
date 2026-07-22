@@ -4,6 +4,10 @@ All notable changes to this project are documented in this file.
 
 ## [Unreleased]
 
+### Added
+
+- 2026-07-22 | ✨ feat(architecture): add client DI vertical
+
 ### Documentation
 
 - 2026-07-14 | 📝 docs(design): define brand and workday navigation
