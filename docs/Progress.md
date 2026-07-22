@@ -8,7 +8,7 @@ Last updated: 2026-07-22
 - Overall status: phases 01–03 are complete; phase 04 has not started and 04.1 is the next implementation gate.
 - Product design status: Ciruela premium is the selected brand palette; navigation uses a simple adaptive tab shell with Jornada as the initial operational screen and Histórico as a separate section.
 - Validation status: Xcode MCP builds the app successfully with 0 warnings; the Swift Testing plan passes 30/30, including Domain model serialization/identity, composition, ViewModel state/cancellation coverage and three parameterized A4 PDF resource checks. The four client-state previews, the AX5 accessibility variant, the composition preview and all three document previews render successfully. Crashlytics generates the app and debug-dylib dSYMs, validates its upload phase, and sees matching executable/dSYM UUIDs.
-- Repository status: Git is initialized with the private GitHub `origin` configured over SSH; phase 03 work is isolated on `codex/plu-7-phase-03-architecture`, and diff/history-based validation is available.
+- Repository status: Git is initialized with the private GitHub `origin` configured over SSH; phase 03 is integrated into `main` through `d0fca87`, its feature branch is closed, and diff/history-based validation remains available.
 
 ## Phase Overview
 
