@@ -63,6 +63,7 @@ If subagents are unavailable, execute the same skill as a separate pass and stat
 - [ ] New and previously affected tests pass, or `N/A` is justified.
 - [ ] Affected targets build without warnings through Xcode MCP, or `N/A` is justified.
 - [ ] Domain/Data/Presentation/App boundaries are respected.
+- [ ] Base value and Domain models use `Identifiable`, `Codable`, and `Equatable` whenever semantically possible, with any exception justified.
 - [ ] ViewModels remain screen facades; Stores are justified and do not duplicate state.
 - [ ] Concurrency, cancellation, `Sendable`, availability, and localization are reviewed.
 - [ ] SwiftData/Firestore invariants and idempotency are covered when applicable.

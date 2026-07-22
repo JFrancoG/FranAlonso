@@ -6,6 +6,7 @@ All notable changes to this project are documented in this file.
 
 ### Added
 
+- 2026-07-22 | ✨ feat(clients): add observable client list
 - 2026-07-22 | ✨ feat(architecture): add client DI vertical
 
 ### Documentation

@@ -43,6 +43,17 @@ struct AppDependenciesTests {
         )
     }
 
+    @Test("SwiftUI environment uses one stable preview default")
+    func swiftUIEnvironmentUsesOneStablePreviewDefault() {
+        let firstEnvironment = EnvironmentValues()
+        let secondEnvironment = EnvironmentValues()
+
+        #expect(
+            firstEnvironment.appDependencies.telemetryReporter
+                === secondEnvironment.appDependencies.telemetryReporter
+        )
+    }
+
     @Test("SwiftUI environment resolves clients through the injected repository")
     func swiftUIEnvironmentResolvesClientsThroughTheInjectedRepository() async throws {
         let expectedClients = [

@@ -1,6 +1,6 @@
 import Foundation
 
-struct Client: Equatable, Sendable {
+struct Client: Identifiable, Codable, Equatable {
     let id: UUID
     let displayName: String
 }

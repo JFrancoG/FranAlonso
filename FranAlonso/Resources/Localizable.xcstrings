@@ -12,6 +12,78 @@
           }
         }
       }
+    },
+    "clients.list.empty.message" : {
+      "comment" : "Descripción mostrada en la pantalla de clientes cuando la lista está vacía.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Los clientes aparecerán aquí cuando estén disponibles."
+          }
+        }
+      }
+    },
+    "clients.list.empty.title" : {
+      "comment" : "Título mostrado en la pantalla de clientes cuando la lista está vacía.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No hay clientes"
+          }
+        }
+      }
+    },
+    "clients.list.error.message" : {
+      "comment" : "Descripción mostrada cuando no se puede cargar la lista de clientes.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inténtalo de nuevo más tarde."
+          }
+        }
+      }
+    },
+    "clients.list.error.title" : {
+      "comment" : "Título mostrado cuando no se puede cargar la lista de clientes.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se pudieron cargar los clientes"
+          }
+        }
+      }
+    },
+    "clients.list.loading" : {
+      "comment" : "Etiqueta accesible del indicador de carga en la pantalla de clientes.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cargando clientes…"
+          }
+        }
+      }
+    },
+    "clients.list.title" : {
+      "comment" : "Título de navegación de la pantalla de clientes.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Clientes"
+          }
+        }
+      }
     }
   },
   "version" : "1.0"

@@ -19,6 +19,8 @@ The template `FranAlonsoUITests` target has been removed. Do not add XCTest or X
 
 Organize by feature, then `Domain`, `Data`, and `Presentation`; compose concrete dependencies in `App`. Domain must not import SwiftUI, SwiftData, Firebase, or UIKit. Every screen keeps an `@Observable @MainActor` ViewModel. Extract an `@Observable @MainActor` Store only for a cohesive responsibility or demonstrated complexity; the ViewModel owns it and must not duplicate its state.
 
+Whenever semantically possible, base value and Domain models conform to `Identifiable`, `Codable`, and `Equatable`, with stable immutable identity. Internal model structs rely on inferred `Sendable` when all stored properties are sendable; declare it explicitly only when required by a public API boundary.
+
 Use explicit suffixes: `UseCase`, `Repository`, `DTO`, `Model`, `DataSource`, `Mapper`, `PersistenceActor`, `SyncEngine`, `SyncPolicy`, `ViewModel`, `Store`, and `Screen`. Avoid ambiguous `Interactor`, `ModelLogic`, `Manager`, `Helper`, `Utils`, and `Common` types.
 
 ## Platform and Tools

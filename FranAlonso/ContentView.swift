@@ -7,18 +7,28 @@
 
 import SwiftUI
 
+@MainActor
 struct ContentView: View {
+    @Environment(\.appDependencies) private var dependencies
+
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text(LocalizedStringResource.bootstrapWelcomeTitle)
+        NavigationStack {
+            ClientListScreen(observeClients: dependencies.observeClients)
         }
-        .padding()
     }
 }
 
 #Preview {
     ContentView()
+        .environment(
+            \.appDependencies,
+            AppDependencies.preview(
+                clients: [
+                    Client(
+                        id: UUID(uuidString: "AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE")!,
+                        displayName: "Ana Alonso"
+                    )
+                ]
+            )
+        )
 }
