@@ -1,9 +1,15 @@
 import Foundation
 
+/// Errors produced while validating a tax rate.
 enum TaxRateError: Error, Equatable {
+    /// The percentage is not a number or lies outside the closed range `0...100`.
     case outOfRange
 }
 
+/// A tax rate expressed in percentage points within the closed range `0...100`.
+///
+/// For example, `21` represents 21 percent. Construction and decoding enforce
+/// the range.
 struct TaxRate: Codable, Equatable, Hashable {
     private let storedPercentage: Decimal
 
@@ -17,6 +23,11 @@ struct TaxRate: Codable, Equatable, Hashable {
 }
 
 extension TaxRate {
+    /// Creates a tax rate from percentage points.
+    ///
+    /// - Parameter percentage: A decimal value in the closed range `0...100`.
+    /// - Throws: `TaxRateError.outOfRange` when `percentage` is not a number or
+    ///   lies outside the accepted range.
     init(percentage: Decimal) throws {
         guard !percentage.isNaN, (Decimal.zero ... 100).contains(percentage) else {
             throw TaxRateError.outOfRange

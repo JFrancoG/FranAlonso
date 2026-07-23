@@ -1,9 +1,15 @@
 import Foundation
 
+/// Errors produced while validating a discount.
 enum DiscountError: Error, Equatable {
+    /// The percentage is not a number or lies outside the closed range `0...100`.
     case outOfRange
 }
 
+/// A discount expressed in percentage points within the closed range `0...100`.
+///
+/// For example, `15` represents a 15 percent discount. Construction and decoding
+/// enforce the range.
 struct Discount: Codable, Equatable, Hashable {
     private let storedPercentage: Decimal
 
@@ -17,6 +23,11 @@ struct Discount: Codable, Equatable, Hashable {
 }
 
 extension Discount {
+    /// Creates a discount from percentage points.
+    ///
+    /// - Parameter percentage: A decimal value in the closed range `0...100`.
+    /// - Throws: `DiscountError.outOfRange` when `percentage` is not a number or
+    ///   lies outside the accepted range.
     init(percentage: Decimal) throws {
         guard !percentage.isNaN, (Decimal.zero ... 100).contains(percentage) else {
             throw DiscountError.outOfRange

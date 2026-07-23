@@ -20,9 +20,11 @@ When a subphase changes executable behavior, code, or project configuration:
 4. Refactor with the affected suite green.
 5. Use deterministic doubles: no real Firestore or Storage; use an in-memory `ModelContainer` for SwiftData.
 
+Write or update DocC after GREEN and refactoring, when the contract is stable enough to describe accurately. Documentation must not be used to specify behavior that the implementation and tests do not provide.
+
 Record RED and GREEN evidence in the PR or subphase log. Do not create XCTest, XCUITest, or native UI tests.
 
-For documentation-only, manual-QA, or distribution subphases, do not create artificial tests. Record `N/A` with a reason and provide proportional evidence such as link validation, a manual checklist, configuration inspection, a distributed-build smoke check, or artifact verification. Any code fix discovered during those tasks returns to TDD.
+For documentation-only work, including changes limited to DocC comments, and for manual-QA or distribution subphases, do not create artificial tests. Record `N/A` with a reason and provide proportional evidence such as link validation, documentation diagnostics, representative Quick Help inspection, a manual checklist, configuration inspection, a distributed-build smoke check, or artifact verification. Any executable code fix discovered during those tasks returns to TDD.
 
 ## 3. Implementer Validation
 
@@ -30,6 +32,7 @@ For documentation-only, manual-QA, or distribution subphases, do not create arti
 - Run new tests and all previously affected tests; use a justified `N/A` only when no executable target changed.
 - Review strict concurrency, actor isolation, `Sendable`, cancellation, availability, and deprecated APIs.
 - Review every struct changed by the subphase: rely on its synthesized memberwise initializer when sufficient; remove assignment-only initializers; use a named static factory only when its name adds domain, preset, or composition meaning; and keep meaningful validating, dependency-injection, composition, and `Decodable` initializers in same-file extensions. Neither an initializer nor a factory may expose a synthesized path that bypasses validation, and post-construction validation is not a substitute for an invariant.
+- Review DocC for each new or modified semantic production API regardless of access level. Require concise English documentation for Domain types and contracts, Repository and UseCase requirements, policies, semantic factories, validating initializers, state transitions, and non-obvious throwing, asynchronous, or mutating operations. Include parameters, return values, errors, invariants, units, effects, idempotency, or cancellation only when meaningful; reject comments that restate the declaration, contradict tests, or cover obvious properties, view boilerplate, mechanical `Codable`, trivial private helpers, or tests without adding context.
 - Review String Catalog coverage, loading/empty/error states, and deterministic previews for UI work.
 - Follow [LOCALIZATION_GUIDE.md](LOCALIZATION_GUIDE.md) for semantic keys, generated symbols, translator context, and source-language rules.
 - Run `git diff --check` when Git is available and inspect the complete diff. Until this directory is initialized as a Git repository, record that limitation in `docs/Progress.md` and the review evidence.
@@ -71,6 +74,7 @@ If subagents are unavailable, execute the same skill as a separate pass and stat
 - [ ] SwiftData/Firestore invariants and idempotency are covered when applicable.
 - [ ] No XCTest, XCUITest, `JSONSerialization`, deprecated API, or unapproved dependency was added.
 - [ ] ADRs and documentation are current.
+- [ ] New or modified semantic production APIs have accurate, non-redundant DocC coverage; documented contracts agree with implementation and tests.
 - [ ] The final scope contains no accidental changes.
 - [ ] First independent audit completed.
 - [ ] Valid findings were resolved and the second audit has no open valid findings.

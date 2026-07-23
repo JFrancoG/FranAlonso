@@ -1,16 +1,34 @@
 import Foundation
 
+/// A violation of a sale's construction, lifecycle, persistence, or replay rules.
 enum SaleError: Error, Equatable {
+    /// The sale has no service lines and therefore cannot start.
     case emptySale
+
+    /// The proposed draft contains a progressed line or duplicate line identifiers.
     case invalidDraftState
+
+    /// The requested line does not belong to the sale.
     case lineNotFound
+
+    /// The requested operation is not valid for the sale's current lifecycle state.
     case invalidSaleTransition
+
+    /// A payment attempt does not exactly match payment metadata already recorded.
     case conflictingPayment
+
+    /// A closure attempt does not exactly match document metadata already recorded.
     case conflictingDocument
+
+    /// A void attempt does not exactly match reversal metadata already recorded.
     case conflictingReversal
+
+    /// Decoded data violates the sale's line-identity or lifecycle invariants.
     case invalidPersistedState
 }
 
+/// A sale aggregate that preserves historical service snapshots and controls their
+/// execution, payment, closure, and compensating-void lifecycle.
 struct Sale: Identifiable, Codable, Equatable {
     let id: SaleID
     let clientID: ClientID?
@@ -26,6 +44,11 @@ struct Sale: Identifiable, Codable, Equatable {
         storedStatus
     }
 
+    /// Starts service work for a draft sale.
+    ///
+    /// A draft may contain no lines, but it cannot start until at least one line exists.
+    /// - Throws: `SaleError.invalidSaleTransition` if the sale is not a draft, or
+    ///   `SaleError.emptySale` if it contains no lines.
     mutating func start() throws {
         guard status == .draft else {
             throw SaleError.invalidSaleTransition
@@ -37,6 +60,12 @@ struct Sale: Identifiable, Codable, Equatable {
         storedStatus = .inProgress
     }
 
+    /// Moves an upcoming line into progress while the sale is in progress.
+    ///
+    /// - Parameter id: The stable identifier of the line to start.
+    /// - Throws: `SaleError.invalidSaleTransition` if the sale is not in progress,
+    ///   `SaleError.lineNotFound` if the identifier does not belong to the sale,
+    ///   or `SaleLineError.invalidTransition` if the line is not upcoming.
     mutating func startLine(id: SaleLineID) throws {
         guard status == .inProgress else {
             throw SaleError.invalidSaleTransition
@@ -48,6 +77,15 @@ struct Sale: Identifiable, Codable, Equatable {
         try storedLines[index].start()
     }
 
+    /// Completes an in-progress line.
+    ///
+    /// The sale moves to `SaleStatus.awaitingPayment` when this operation leaves
+    /// every line completed.
+    ///
+    /// - Parameter id: The stable identifier of the line to complete.
+    /// - Throws: `SaleError.invalidSaleTransition` if the sale is not in progress,
+    ///   `SaleError.lineNotFound` if the identifier does not belong to the sale,
+    ///   or `SaleLineError.invalidTransition` if the line is not in progress.
     mutating func completeLine(id: SaleLineID) throws {
         guard status == .inProgress else {
             throw SaleError.invalidSaleTransition
@@ -63,6 +101,18 @@ struct Sale: Identifiable, Codable, Equatable {
         }
     }
 
+    /// Records payment metadata and moves a sale awaiting payment to awaiting document.
+    ///
+    /// Replaying the exact payment metadata is a no-op, including after the sale
+    /// has closed or been voided. Any differing payment metadata is a conflict.
+    ///
+    /// - Parameters:
+    ///   - paymentID: The stable identifier that makes payment registration idempotent.
+    ///   - method: The payment method to preserve with the sale.
+    ///   - paidAt: The payment timestamp to preserve with the sale.
+    /// - Throws: `SaleError.invalidSaleTransition` if service work is not complete,
+    ///   or `SaleError.conflictingPayment` if a recorded payment differs from
+    ///   these values.
     mutating func registerPayment(
         id paymentID: PaymentID,
         method: PaymentMethod,
@@ -88,6 +138,16 @@ struct Sale: Identifiable, Codable, Equatable {
         }
     }
 
+    /// Attaches billing document metadata to a paid sale and marks it closed.
+    ///
+    /// Replaying the exact document and closure timestamp is a no-op, including
+    /// after a later void. Differing closure metadata is a conflict.
+    ///
+    /// - Parameters:
+    ///   - documentID: The stable identifier of the billing document.
+    ///   - closedAt: The timestamp to preserve for the sale's closure.
+    /// - Throws: `SaleError.invalidSaleTransition` if payment has not been recorded,
+    ///   or `SaleError.conflictingDocument` if recorded closure metadata differs.
     mutating func close(
         documentID: BillingDocumentID,
         closedAt: Date
@@ -112,6 +172,15 @@ struct Sale: Identifiable, Codable, Equatable {
         }
     }
 
+    /// Applies a compensating void without rewriting the sale's original history.
+    ///
+    /// Replaying the exact reversal metadata after the void is a no-op.
+    /// - Parameters:
+    ///   - reversalID: The stable identifier that makes the operation idempotent.
+    ///   - voidedAt: The effective timestamp of the compensating void.
+    /// - Throws: `SaleError.invalidSaleTransition` if the sale is neither closed
+    ///   nor already voided, or `SaleError.conflictingReversal` if recorded
+    ///   reversal metadata differs.
     mutating func void(
         reversalID: SaleReversalID,
         voidedAt: Date
@@ -147,6 +216,19 @@ struct Sale: Identifiable, Codable, Equatable {
 }
 
 extension Sale {
+    /// Creates a sale in the draft state from historical service-line snapshots.
+    ///
+    /// Every supplied line must be upcoming and line identifiers must be unique.
+    /// An empty line collection is valid for a draft, although that sale cannot start.
+    ///
+    /// - Parameters:
+    ///   - id: The sale's stable identifier.
+    ///   - clientID: The optional identifier of the client associated with the sale.
+    ///   - createdAt: The timestamp at which the draft was created.
+    ///   - lines: The service-line snapshots to include in the draft.
+    /// - Returns: A sale whose status is `SaleStatus.draft`.
+    /// - Throws: `SaleError.invalidDraftState` if a line is not upcoming or line
+    ///   identifiers are not unique.
     static func draft(
         id: SaleID,
         clientID: ClientID?,

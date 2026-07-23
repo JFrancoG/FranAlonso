@@ -40,6 +40,7 @@
 ## Documentación y revisión
 
 - [ ] ADR creado/actualizado antes de decisiones no triviales.
+- [ ] La API semántica nueva o modificada tiene DocC preciso y no redundante, independientemente de su visibilidad; invariantes, parámetros, retorno y errores se documentan solo cuando aportan contrato.
 - [ ] Validación mediante Xcode MCP para cambios de código/configuración, o `N/A` justificado para documentación, QA manual o distribución.
 - [ ] Primera auditoría `$review-ios-standards` registrada.
 - [ ] Hallazgos válidos corregidos o descartados con evidencia.

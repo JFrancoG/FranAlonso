@@ -1,5 +1,6 @@
 import Foundation
 
+/// A supported currency whose ISO code and minor-unit scale govern monetary normalization.
 enum Currency: String, Codable, CaseIterable {
     case eur = "EUR"
     case usd = "USD"
@@ -12,19 +13,34 @@ enum Currency: String, Codable, CaseIterable {
     }
 }
 
+/// Errors produced while creating or combining monetary values.
 enum MoneyError: Error, Equatable {
+    /// The amount is not a number.
     case invalidAmount
+
+    /// The operands use different currencies.
     case incompatibleCurrencies(expected: Currency, actual: Currency)
 }
 
+/// A decimal monetary value normalized to the minor units of its currency.
+///
+/// Construction and decoding use `NSDecimalNumber.RoundingMode.plain` and reject
+/// amounts that are not numbers.
 struct Money: Codable, Equatable, Hashable {
     private let storedAmount: Decimal
     let currency: Currency
 
+    /// The amount after currency-specific minor-unit normalization.
     var amount: Decimal {
         storedAmount
     }
 
+    /// Adds another monetary value expressed in the same currency.
+    ///
+    /// - Parameter other: The monetary value to add.
+    /// - Returns: The sum normalized to the shared currency's minor units.
+    /// - Throws: `MoneyError.incompatibleCurrencies` when the currencies differ,
+    ///   or `MoneyError.invalidAmount` when the resulting amount is not a number.
     func adding(_ other: Money) throws -> Money {
         guard currency == other.currency else {
             throw MoneyError.incompatibleCurrencies(
@@ -46,6 +62,13 @@ struct Money: Codable, Equatable, Hashable {
 }
 
 extension Money {
+    /// Creates a monetary value normalized to the minor units of `currency`.
+    ///
+    /// Rounding uses `NSDecimalNumber.RoundingMode.plain`.
+    /// - Parameters:
+    ///   - amount: The decimal amount to normalize.
+    ///   - currency: The currency that determines the minor-unit scale.
+    /// - Throws: `MoneyError.invalidAmount` when `amount` is not a number.
     init(amount: Decimal, currency: Currency) throws {
         guard !amount.isNaN else {
             throw MoneyError.invalidAmount

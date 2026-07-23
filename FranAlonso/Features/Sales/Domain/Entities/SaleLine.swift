@@ -1,8 +1,16 @@
+/// A violation of a sale line's quantity or lifecycle rules.
 enum SaleLineError: Error, Equatable {
+    /// The quantity is not strictly positive.
     case invalidQuantity
+
+    /// The requested operation does not follow the upcoming, in-progress, completed order.
     case invalidTransition
 }
 
+/// A sale-owned snapshot of a service's commercial terms and execution state.
+///
+/// Later catalog changes do not alter the captured identity, name, quantity,
+/// price, tax, discount, or product link.
 struct SaleLine: Identifiable, Codable, Equatable {
     let id: SaleLineID
     let serviceID: ServiceID
@@ -22,6 +30,9 @@ struct SaleLine: Identifiable, Codable, Equatable {
         storedStatus
     }
 
+    /// Moves the line from upcoming to in progress.
+    ///
+    /// - Throws: `SaleLineError.invalidTransition` if the line is not upcoming.
     mutating func start() throws {
         guard status == .upcoming else {
             throw SaleLineError.invalidTransition
@@ -30,6 +41,9 @@ struct SaleLine: Identifiable, Codable, Equatable {
         storedStatus = .inProgress
     }
 
+    /// Moves the line from in progress to completed.
+    ///
+    /// - Throws: `SaleLineError.invalidTransition` if the line is not in progress.
     mutating func complete() throws {
         guard status == .inProgress else {
             throw SaleLineError.invalidTransition
@@ -52,6 +66,19 @@ struct SaleLine: Identifiable, Codable, Equatable {
 }
 
 extension SaleLine {
+    /// Captures service data in a new upcoming sale line.
+    ///
+    /// - Parameters:
+    ///   - id: The line's stable identifier.
+    ///   - serviceID: The identifier of the source service.
+    ///   - serviceName: The service name captured for historical display.
+    ///   - quantity: The strictly positive number of service units.
+    ///   - unitPrice: The per-unit price captured in its explicit currency.
+    ///   - taxRate: The tax percentage captured for the line.
+    ///   - discount: The optional percentage discount captured for the line.
+    ///   - linkedProductID: The optional product link captured from the source service.
+    /// - Returns: A sale line whose status is `SaleLineStatus.upcoming`.
+    /// - Throws: `SaleLineError.invalidQuantity` if `quantity` is zero or negative.
     static func upcoming(
         id: SaleLineID,
         serviceID: ServiceID,
