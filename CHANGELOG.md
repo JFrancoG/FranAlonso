@@ -10,6 +10,7 @@ All notable changes to this project are documented in this file.
 
 ### Added
 
+- 2026-07-23 | ✨ feat(domain): model sale lifecycle
 - 2026-07-22 | ✨ feat(domain): model client and catalog entities
 - 2026-07-22 | ✨ feat(domain): add foundational value types
 - 2026-07-22 | ✨ feat(clients): add observable client list

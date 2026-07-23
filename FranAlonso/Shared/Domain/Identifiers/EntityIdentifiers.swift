@@ -20,6 +20,14 @@ struct SaleLineID: RawRepresentable, Codable, Hashable {
     let rawValue: UUID
 }
 
+struct PaymentID: RawRepresentable, Codable, Hashable {
+    let rawValue: UUID
+}
+
+struct SaleReversalID: RawRepresentable, Codable, Hashable {
+    let rawValue: UUID
+}
+
 struct BillingDocumentID: RawRepresentable, Codable, Hashable {
     let rawValue: UUID
 }
