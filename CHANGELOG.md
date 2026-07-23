@@ -10,6 +10,7 @@ All notable changes to this project are documented in this file.
 
 ### Added
 
+- 2026-07-23 | ✨ feat(domain): model appointment lifecycle
 - 2026-07-23 | ✨ feat(domain): model billing document sequences
 - 2026-07-23 | ✨ feat(domain): add stock warning policy
 - 2026-07-23 | ✨ feat(domain): add deterministic sale calculator

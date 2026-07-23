@@ -61,6 +61,14 @@ Definir entidades, value objects, políticas, contratos y casos de uso puros, si
   `BillingDocumentSeries`. Ticket y factura tienen series independientes aunque
   compartan el mismo valor numérico. Domain no expone incremento, reserva ni
   conocimiento de Firestore; la transacción remota idempotente permanece en 13.
+- `Appointment.scheduled` exige que el final sea posterior al inicio, un
+  `ClientID` y al menos un `ServiceID`; las referencias de servicio conservan su
+  orden y no admiten duplicados mientras no exista un modelo explícito de cantidad.
+  La cancelación es una transición terminal que conserva referencias y horario.
+- `Appointment` pertenece a la demo local y no decide todavía solapes, actividad
+  actual de cliente/servicios, agrupación diaria, zona horaria o persistencia.
+  Esas reglas requieren contexto externo y permanecen en 15.1–15.3 y 15.6; no
+  se introduce sincronización remota, recurrencia, notificación, recurso o pago.
 - Estados finitos mediante enums con associated values, no combinaciones de booleanos.
 - Errores de dominio tipados; Presentation es quien los convierte en texto localizado.
 
