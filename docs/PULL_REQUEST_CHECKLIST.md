@@ -4,6 +4,9 @@
 
 - [ ] La PR cubre una subfase revisable y enlaza su ID.
 - [ ] El diff no contiene cambios ajenos.
+- [ ] La solución cita fuentes primarias actuales y no depende del conocimiento recordado del modelo.
+- [ ] Un revisor de solo lectura validó la propuesta y sus fuentes antes de escribir código ejecutable, o se documentó que no había aislamiento multiagente.
+- [ ] Todo cambio de código ya funcional coincide con una propuesta exacta aprobada por el propietario; no hay refactors oportunistas.
 - [ ] Se respetan `Domain`, `Data`, `Presentation` y `App`.
 - [ ] ViewModel sigue siendo la fachada; cada Store está justificado y no duplica estado.
 - [ ] Los imports Firebase permanecen en Data/Infrastructure; modelos y persistencia SwiftData permanecen en Data, con la composición del `ModelContainer` limitada a App.
@@ -16,8 +19,9 @@
 - [ ] Cambios de sync son idempotentes y cubren conflicto, tombstone y recuperación.
 - [ ] SwiftData fuera de MainActor usa `@ModelActor`.
 - [ ] UI está en MainActor e I/O no lo bloquea.
-- [ ] `Sendable` y cancelación están revisados.
-- [ ] No existe `@unchecked Sendable` sin ADR y tests.
+- [ ] La inferencia de `Sendable` y la cancelación están revisadas; los actores no repiten conformidad y toda declaración explícita de un tipo valor responde a una frontera pública o genérica demostrada.
+- [ ] Todo flujo concurrente propio usa Swift Concurrency y `async`/`await`; no hay GCD, Dispatch, `OperationQueue` ni callbacks como modelo de concurrencia.
+- [ ] No existe `@preconcurrency`, `@unchecked Sendable`, `nonisolated(unsafe)` ni salida equivalente sin una excepción respaldada por fuentes y aprobada explícitamente antes de implementarla.
 - [ ] Invariantes de producto y snapshots históricos se preservan.
 - [ ] Analytics y Crashlytics no reciben PII ni payloads de negocio; consentimiento y activación se respetan.
 - [ ] Si cambia el asistente, su salida es tipada y solo consulta, navega o rellena borradores; guardar sigue siendo visual y ningún UseCase mutador es accesible desde voz/modelo.
@@ -26,6 +30,8 @@
 ## Código y testing
 
 - [ ] API moderna compatible con deployment target real.
+- [ ] Sin APIs deprecated ni usos propios de `@objc`, selectors, `NotificationCenter` por selector, `DateFormatter`, `NSRegularExpression` u otras elecciones Objective-C/legacy no aprobadas.
+- [ ] Presentation usa `@Observable`; no introduce `ObservableObject`, `@Published`, `@StateObject` ni `@ObservedObject`.
 - [ ] Las APIs del asistente son estables para iOS/Xcode 26; disponibilidad, permisos y fallback manual están cubiertos sin fallback cloud o background mode.
 - [ ] Warnings como errores y cero warnings.
 - [ ] Codable; sin `JSONSerialization`.
@@ -43,6 +49,7 @@
 - [ ] La API semántica nueva o modificada tiene DocC preciso y no redundante, independientemente de su visibilidad; invariantes, parámetros, retorno y errores se documentan solo cuando aportan contrato.
 - [ ] Validación mediante Xcode MCP para cambios de código/configuración, o `N/A` justificado para documentación, QA manual o distribución.
 - [ ] Primera auditoría `$review-ios-standards` registrada.
+- [ ] El revisor contrastó de forma independiente las fuentes, las alternativas y la aprobación previa del alcance.
 - [ ] Hallazgos válidos corregidos o descartados con evidencia.
 - [ ] Segunda auditoría sin hallazgos válidos abiertos.
 - [ ] `docs/Progress.md` actualizado con estado, evidencia, siguiente acción y bloqueos.

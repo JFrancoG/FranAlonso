@@ -6,9 +6,12 @@ This guide is the mandatory execution protocol for every subphase in `docs/specs
 
 1. Read `AGENTS.md`, this guide, the constitution, the active phase spec, and applicable accepted ADRs.
 2. Inspect the real project structure, targets, deployment targets, SDK, Swift version, concurrency settings, dependencies, tests, and working-tree state.
-3. Preserve unrelated work and keep the subphase diff narrowly scoped.
-4. Use Xcode MCP first for project inspection, builds, tests, previews, and diagnostics. If unavailable, report the limitation and ask the user to enable it; never substitute `xcodebuild` or XcodeBuildMCP silently.
-5. Use Cupertino MCP when Apple API availability, Observation, SwiftData, SwiftUI, or concurrency guidance is uncertain.
+3. Before proposing or implementing a technical solution, verify it against the inspected project and current primary sources. Use repository specs and accepted ADRs first, then official Apple, Swift, Firebase, or other applicable vendor documentation; cite the evidence instead of relying on model memory or search snippets.
+4. Before writing executable code, send the source-backed proposal to a fresh `$review-ios-standards` subagent in read-only mode to verify applicability, alternatives, and risks. If subagents are unavailable, perform the same review as a separate pass and record the lack of multi-agent isolation. This pre-implementation review does not replace the two post-implementation audits.
+5. Before changing known-working code outside an already exact approved request, present the concrete change, rationale, behavioral impact, risks, affected scope, and alternatives, then wait for explicit owner confirmation. A request naming that exact change is confirmation; it does not authorize adjacent cleanup.
+6. Preserve unrelated work and keep the subphase diff narrowly scoped.
+7. Use Xcode MCP first for project inspection, builds, tests, previews, and diagnostics. If unavailable, report the limitation and ask the user to enable it; never substitute `xcodebuild` or XcodeBuildMCP silently.
+8. Use Cupertino MCP when Apple API availability, Observation, SwiftData, SwiftUI, or concurrency guidance is uncertain.
 
 ## 2. TDD
 
@@ -17,7 +20,7 @@ When a subphase changes executable behavior, code, or project configuration:
 1. Write the Swift Testing behavior test first.
 2. Confirm RED for the expected reason.
 3. Implement the minimum change for GREEN.
-4. Refactor with the affected suite green.
+4. Refactor with the affected suite green only inside the approved scope; propose and await confirmation before any additional cleanup of working code.
 5. Use deterministic doubles: no real Firestore or Storage; use an in-memory `ModelContainer` for SwiftData.
 
 Write or update DocC after GREEN and refactoring, when the contract is stable enough to describe accurately. Documentation must not be used to specify behavior that the implementation and tests do not provide.
@@ -30,7 +33,11 @@ For documentation-only work, including changes limited to DocC comments, and for
 
 - Build every affected target without warnings through Xcode MCP when code or project configuration changed.
 - Run new tests and all previously affected tests; use a justified `N/A` only when no executable target changed.
-- Review strict concurrency, actor isolation, `Sendable`, cancellation, availability, and deprecated APIs.
+- Verify that the proposal cites applicable current primary sources and that any change to known-working code has exact prior owner approval.
+- Review strict concurrency, actor isolation, cancellation, availability, and modern API selection. Internal structs and enums rely on inferred `Sendable` when the compiler can prove it; actors never repeat it; explicit conformances require a demonstrated public or generic boundary.
+- Reject explicit `@preconcurrency`, `@unchecked Sendable`, `nonisolated(unsafe)`, direct GCD/Dispatch concurrency, callback-first concurrency, and equivalent compiler escape hatches unless the owner approved a source-backed exception before implementation.
+- Require project-owned observable presentation reference types to use `@Observable`; reject `ObservableObject`, `@Published`, `@StateObject`, and `@ObservedObject`. Use `@State` for view ownership and `@Bindable` only for binding projections.
+- Reject APIs deprecated by the active SDK and direct project-owned Objective-C/legacy choices such as explicit `@objc`, selectors, selector-based `NotificationCenter`, `DateFormatter`, and `NSRegularExpression` unless a documented lack of a modern compatible alternative was approved in advance.
 - Review every struct changed by the subphase: rely on its synthesized memberwise initializer when sufficient; remove assignment-only initializers; use a named static factory only when its name adds domain, preset, or composition meaning; and keep meaningful validating, dependency-injection, composition, and `Decodable` initializers in same-file extensions. Neither an initializer nor a factory may expose a synthesized path that bypasses validation, and post-construction validation is not a substitute for an invariant.
 - Review DocC for each new or modified semantic production API regardless of access level. Require concise English documentation for Domain types and contracts, Repository and UseCase requirements, policies, semantic factories, validating initializers, state transitions, and non-obvious throwing, asynchronous, or mutating operations. Include parameters, return values, errors, invariants, units, effects, idempotency, or cancellation only when meaningful; reject comments that restate the declaration, contradict tests, or cover obvious properties, view boilerplate, mechanical `Codable`, trivial private helpers, or tests without adding context.
 - Review String Catalog coverage, loading/empty/error states, and deterministic previews for UI work.
@@ -43,9 +50,9 @@ For documentation-only work, including changes limited to DocC comments, and for
 After implementer validation:
 
 1. Spawn a fresh subagent and require `$review-ios-standards` in read-only mode.
-2. Give it only the repository path, exact scope, and build/test evidence.
+2. Give it only the repository path, exact scope, cited primary-source evidence, prior-approval evidence for working-code changes or exceptions, and build/test evidence.
 3. Do not let the reviewer edit files, change Git state, commit, push, or resolve its own findings.
-4. Fix valid findings in the implementer context; reject findings only with evidence.
+4. Require the reviewer to verify independently that the cited sources apply, viable alternatives were considered, and the implemented scope matches the owner's approval. Fix valid findings in the implementer context; reject findings only with evidence.
 5. Re-run affected validation.
 6. Request a second independent audit of the complete diff.
 
@@ -53,7 +60,8 @@ Reference prompt:
 
 ```text
 Act only as an independent read-only reviewer. Use $review-ios-standards
-to audit subphase <ID> in <REPOSITORY>. Available evidence: <EVIDENCE>.
+to audit subphase <ID> in <REPOSITORY>. Available primary-source,
+approval, build and test evidence: <EVIDENCE>.
 Do not modify files or Git. Report severity, file, line, violated rule,
 evidence, and remediation direction.
 ```
@@ -63,6 +71,9 @@ If subagents are unavailable, execute the same skill as a separate pass and stat
 ## 5. Definition of Done
 
 - [ ] Agreed scope is complete and no hidden work remains.
+- [ ] The solution is backed by cited current primary sources rather than model memory, and the reviewer independently verified their applicability.
+- [ ] A fresh read-only reviewer audited the source-backed proposal before executable code was written, or unavailable multi-agent isolation is documented.
+- [ ] Every modification to known-working code is inside an exact owner-approved proposal; no opportunistic cleanup was added.
 - [ ] RED/GREEN evidence exists, or `N/A` is justified for a non-executable subphase.
 - [ ] New and previously affected tests pass, or `N/A` is justified.
 - [ ] Affected targets build without warnings through Xcode MCP, or `N/A` is justified.
@@ -70,9 +81,11 @@ If subagents are unavailable, execute the same skill as a separate pass and stat
 - [ ] Base value and Domain models use `Identifiable`, `Codable`, and `Equatable` whenever semantically possible, with any exception justified.
 - [ ] Structs keep explicit initializers out of the primary declaration; redundant assignment-only initializers are absent; named factories add real semantic meaning; and validating initializers or factories cannot be bypassed through synthesized memberwise construction or replaced by post-construction validation.
 - [ ] ViewModels remain screen facades; Stores are justified and do not duplicate state.
-- [ ] Concurrency, cancellation, `Sendable`, availability, and localization are reviewed.
+- [ ] Concurrency, cancellation, inferred `Sendable`, availability, and localization are reviewed; actors do not repeat conformance and any explicit value-type conformance is justified by a public or generic boundary.
+- [ ] Project-owned concurrent work uses Swift Concurrency with `async`/`await`; no unapproved GCD/callback-first path or strict-concurrency escape hatch was added.
+- [ ] Project-owned observable presentation types use `@Observable`; no `ObservableObject`, `@Published`, `@StateObject`, or `@ObservedObject` was added.
 - [ ] SwiftData/Firestore invariants and idempotency are covered when applicable.
-- [ ] No XCTest, XCUITest, `JSONSerialization`, deprecated API, or unapproved dependency was added.
+- [ ] No XCTest, XCUITest, `JSONSerialization`, deprecated API, unapproved Objective-C/legacy choice, or unapproved dependency was added.
 - [ ] ADRs and documentation are current.
 - [ ] New or modified semantic production APIs have accurate, non-redundant DocC coverage; documented contracts agree with implementation and tests.
 - [ ] The final scope contains no accidental changes.

@@ -19,6 +19,7 @@ All notable changes to this project are documented in this file.
 
 ### Documentation
 
+- 2026-07-23 | 📝 docs(governance): enforce modern Swift review gates
 - 2026-07-23 | 📝 docs(domain): add semantic DocC coverage
 - 2026-07-23 | 📝 docs(roadmap): plan local MVP assistant and post-MVP Luna
 - 2026-07-22 | 📝 docs(delivery): record phase three integration

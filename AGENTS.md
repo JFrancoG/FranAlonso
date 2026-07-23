@@ -4,6 +4,12 @@
 
 Read `docs/DEVELOPMENT_GUIDE.md`, `docs/specs/01_constitution.md`, the active phase spec, and applicable accepted ADRs before changing code. `docs/specs/00_index.md` defines phase order. Update `docs/Progress.md` after every subphase with evidence, remaining work, and blockers.
 
+## Evidence and Change Approval
+
+Never propose or implement a technical solution from model memory alone. Inspect the real code and configuration first, then corroborate the proposal with current primary sources: repository specs and accepted ADRs first, followed by official Apple, Swift, Firebase, or other applicable vendor documentation. Cite the evidence used; search snippets, remembered guidance, and unsourced secondary posts are not approval. Before executable code is written, a fresh read-only peer must verify that the cited sources apply and that viable alternatives were considered; this proposal review does not replace the two post-implementation diff audits.
+
+Do not refactor, replace, or otherwise alter known-working code outside the exact change already approved by the owner. First present the concrete change, rationale, behavioral impact, risks, and affected scope, then wait for explicit confirmation. A request that already names and approves that exact change counts as confirmation; a broader task does not authorize opportunistic cleanup.
+
 ## Project Structure
 
 - `FranAlonso/`: application source and resources.
@@ -17,9 +23,9 @@ The template `FranAlonsoUITests` target has been removed. Do not add XCTest or X
 
 ## Architecture and Naming
 
-Organize by feature, then `Domain`, `Data`, and `Presentation`; compose concrete dependencies in `App`. Domain must not import SwiftUI, SwiftData, Firebase, or UIKit. Every screen keeps an `@Observable @MainActor` ViewModel. Extract an `@Observable @MainActor` Store only for a cohesive responsibility or demonstrated complexity; the ViewModel owns it and must not duplicate its state.
+Organize by feature, then `Domain`, `Data`, and `Presentation`; compose concrete dependencies in `App`. Domain must not import SwiftUI, SwiftData, Firebase, or UIKit. Every screen keeps an `@Observable @MainActor` ViewModel. Extract an `@Observable @MainActor` Store only for a cohesive responsibility or demonstrated complexity; the ViewModel owns it and must not duplicate its state. Project-owned observable presentation reference types use the `@Observable` macro; do not introduce `ObservableObject`, `@Published`, `@StateObject`, or `@ObservedObject`. A view uses `@State` to own an observable model and `@Bindable` only when it needs a binding projection.
 
-Whenever semantically possible, base value and Domain models conform to `Identifiable`, `Codable`, and `Equatable`, with stable immutable identity. Internal model structs rely on inferred `Sendable` when all stored properties are sendable; declare it explicitly only when required by a public API boundary.
+Whenever semantically possible, base value and Domain models conform to `Identifiable`, `Codable`, and `Equatable`, with stable immutable identity. Internal structs and enums rely on compiler-inferred `Sendable` only when every stored property or associated value permits it. Actors conform implicitly and never repeat `Sendable`. Add an explicit or conditional conformance only when the compiler requires it at a public or generic boundary, document that reason, and never use conformance to hide non-sendable state.
 
 Keep a struct's primary declaration free of explicit initializers. Use the compiler-generated memberwise initializer when it already expresses the contract, and remove initializers that only assign every argument to its matching stored property. Choose the construction API by meaning: use a named static factory when its name communicates a domain state, preset, or composition more clearly than `init`; otherwise keep meaningful validating, dependency-injection, composition, and `Decodable` initializers in same-file extensions. Do not replace construction-time invariants with a post-construction `isValid` property or `validate()` method. A validating initializer or factory must remain the only accessible construction path for that contract: when synthesis could bypass it, use private backing storage plus read-only computed API. Reviewers must check these tradeoffs in production and test structs rather than flagging every custom initializer mechanically.
 
@@ -31,13 +37,17 @@ Probabilistic assistants return closed Domain proposals and may only read, navig
 
 ## Platform and Tools
 
-Inspect the real deployment target, SDK, Swift version, and concurrency settings before selecting APIs. Use the modern compatible API; do not raise targets or adopt beta-only APIs implicitly. Treat warnings as errors.
+Inspect the real deployment target, SDK, Swift version, and concurrency settings before selecting APIs. Use the modern compatible API; do not raise targets or adopt beta-only APIs implicitly. Treat warnings as errors. Do not use APIs deprecated or unavailable in the active SDK. In project-owned code, also do not introduce direct Objective-C runtime or legacy Foundation/Dispatch choices when a compatible Swift-native API exists, including explicit `@objc`, `Selector`/`#selector`, selector-based `NotificationCenter`, direct GCD/`DispatchQueue`, `DateFormatter`, and `NSRegularExpression`. These are project-prohibited legacy or interoperability choices, not necessarily SDK-deprecated symbols. Any unavoidable use requires a source-backed proposal and explicit owner approval before implementation.
 
 Never use `xcodebuild` for builds, tests, previews, or diagnostics. Use Apple's official Xcode MCP and the `xcode-mcp` skill. If unavailable, ask the user to enable it. Use Cupertino MCP when Apple API availability or guidance is uncertain.
 
 ## Data, Concurrency, and Testing
 
-SwiftData is the local source of truth; Firestore is the temporary remote source. Keep Firebase SDK imports inside Data/Infrastructure. Auth, Firestore, and Storage must remain replaceable by Vapor; Analytics and Crashlytics stay behind independently replaceable telemetry contracts and must never receive PII or business payloads. Sync must be offline-first, bidirectional, idempotent, conflict-aware, and recoverable. Use `@ModelActor` outside MainActor; never pass live SwiftData models across actors. Apply `Sendable`, cancellation, and structured concurrency. `@unchecked Sendable` requires an accepted ADR and tests.
+SwiftData is the local source of truth; Firestore is the temporary remote source. Keep Firebase SDK imports inside Data/Infrastructure. Auth, Firestore, and Storage must remain replaceable by Vapor; Analytics and Crashlytics stay behind independently replaceable telemetry contracts and must never receive PII or business payloads. Sync must be offline-first, bidirectional, idempotent, conflict-aware, and recoverable. Use `@ModelActor` outside MainActor; never pass live SwiftData models across actors.
+
+All project-owned asynchronous and concurrent code uses Swift Concurrency end to end: `async`/`await`, structured child tasks, actors or global actors, `AsyncSequence`, sendability, cooperative cancellation, and checked continuations only at isolated adapter boundaries. Do not introduce direct GCD, dispatch groups or semaphores, `OperationQueue`, or callback-first concurrency.
+
+Never add explicit `@preconcurrency`, `@unchecked Sendable`, `nonisolated(unsafe)`, or an equivalent unsafe opt-out merely to make strict-concurrency code compile. Safe `nonisolated` remains valid when it accurately describes isolation. If current primary documentation and all statically safe designs still leave no viable solution, stop and propose the exact exception, rejected alternatives, ownership or synchronization invariant, scope, ADR, and focused tests; wait for explicit owner approval before writing it.
 
 The MVP assistant uses stable iOS 26 Apple APIs on-device with no cloud fallback or background listening. Audio, transcripts, prompts, responses, and conversational state are ephemeral and never enter persistence, logs, or telemetry. A remote provider requires its own accepted ADR before executable work.
 

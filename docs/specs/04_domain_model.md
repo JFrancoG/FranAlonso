@@ -7,7 +7,9 @@ Definir entidades, value objects, políticas, contratos y casos de uso puros, si
 ## Decisiones de modelado
 
 - IDs estables y tipados cuando eviten mezclar entidades.
-- Valores que crucen aislamiento como structs inmutables `Sendable`.
+- Valores que crucen aislamiento como `struct` o `enum` inmutables cuya
+  conformidad `Sendable` infiera el compilador; no repetirla cuando todos sus
+  valores almacenados o asociados ya permiten demostrarla.
 - Los structs usan el inicializador memberwise sintetizado cuando basta y no
   conservan inicializadores que solo copian parámetros. Una factory estática
   se reserva para nombres que expresan estado de dominio, preset o composición;

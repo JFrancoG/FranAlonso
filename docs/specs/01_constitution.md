@@ -12,6 +12,12 @@ Fijar las reglas no negociables de producto, arquitectura, persistencia, concurr
 - Usar Xcode MCP primero para inspeccionar, compilar, ejecutar tests y leer diagnósticos. No usar `xcodebuild` o XcodeBuildMCP como sustitución silenciosa.
 - Consultar Cupertino MCP cuando disponibilidad, aislamiento o patrón recomendado de una API Apple pueda haber cambiado.
 
+## Evidencia y aprobación del cambio
+
+- Ningún código o solución técnica se propone o implementa solo desde el conocimiento recordado del modelo. Se inspecciona primero el proyecto real y se contrasta la propuesta con fuentes primarias actuales: especificaciones y ADR aceptados del repositorio, seguidos por documentación oficial de Apple, Swift, Firebase o el proveedor aplicable. La propuesta cita esa evidencia; un resultado de búsqueda o una fuente secundaria sin contrastar no basta.
+- Antes de escribir código ejecutable, un revisor independiente y de solo lectura comprueba que las fuentes citadas son aplicables y que se evaluaron alternativas viables; documentación y web aportan evidencia, mientras que esa revisión constituye la aprobación por pares. Esta puerta previa no sustituye las dos auditorías posteriores del diff.
+- No se refactoriza, sustituye ni altera código conocido como funcional fuera del cambio exacto ya aprobado por el propietario. Antes se presenta el cambio concreto, motivo, impacto de comportamiento, riesgos y alcance, y se espera confirmación explícita. Una petición que ya nombra y aprueba ese cambio exacto cuenta como confirmación; no autoriza limpiezas adyacentes.
+
 ## Arquitectura
 
 Se aplica Clean Architecture por funcionalidad:
@@ -35,6 +41,7 @@ DefaultRepository → LocalDataSource / RemoteDataSource / SyncEngine
 - `Presentation` contiene pantallas, vistas, ViewModels y Stores opcionales. No importa Firebase o SwiftData.
 - `App` es el composition root. Construye implementaciones y distribuye dependencias mediante `@Environment` e inicializadores.
 - Cada pantalla mantiene un `ViewModel` `@Observable @MainActor` como fachada.
+- Los tipos de referencia observables propios de Presentation usan el macro `@Observable`. No se introducen `ObservableObject`, `@Published`, `@StateObject` ni `@ObservedObject`; la vista conserva el modelo con `@State` y usa `@Bindable` solo cuando necesita proyectar bindings.
 - Un Store se extrae únicamente cuando una responsabilidad cohesiva hace crecer el ViewModel, existe reutilización real o aporta una prueba aislada útil. No se duplica estado entre Store y ViewModel.
 - No se crean protocolos, carpetas o Stores vacíos “por si acaso”.
 - Una capacidad probabilística devuelve lectura o borradores tipados a Presentation; nunca obtiene acceso directo a persistencia, red de negocio, bindings o ejecución de UseCases mutadores.
@@ -113,12 +120,23 @@ Evitar `Interactor`, `ModelLogic`, `LocalModel`, `SyncService`, `Manager`, `Help
 - Dominio, red, persistencia, sincronización y render pesado permanecen fuera de MainActor salvo razón demostrada.
 - La configuración de default actor isolation se inspecciona y documenta por target; no se presupone.
 - `nonisolated` se usa solo cuando sea semánticamente seguro, nunca para silenciar al compilador.
-- Se aplica `Sendable`, cancelación y concurrencia estructurada. `@unchecked Sendable` requiere bloqueo probado, ADR y tests.
+- Los `struct` y `enum` internos confían en la inferencia de `Sendable` solo cuando todas sus propiedades almacenadas o valores asociados lo permiten. Los actores conforman implícitamente y nunca repiten la declaración. Una conformidad explícita o condicional solo se añade cuando el compilador la exige en una frontera pública o genérica, con el motivo documentado y sin ocultar estado no enviable.
+- Todo código asíncrono o concurrente propio usa Swift Concurrency de extremo a extremo: `async`/`await`, tareas hijas estructuradas, actores o actores globales, `AsyncSequence`, cancelación cooperativa y continuaciones comprobadas únicamente en adaptadores aislados. No se introducen GCD directo, grupos o semáforos de Dispatch, `OperationQueue` ni concurrencia basada primero en callbacks.
+- Queda prohibido añadir explícitamente `@preconcurrency`, `@unchecked Sendable`, `nonisolated(unsafe)` o cualquier salida insegura equivalente para conseguir que compile la concurrencia estricta. Si las fuentes primarias actuales y todas las alternativas estáticamente seguras siguen sin ofrecer solución, se detiene la implementación y se propone la excepción exacta, alternativas descartadas, invariante de propiedad o sincronización, alcance, ADR y tests focalizados; se espera aprobación explícita antes de escribirla.
+- No se usan APIs deprecated o no disponibles en el SDK activo. Por política del proyecto tampoco se introducen en código propio mecanismos directos del runtime Objective-C ni alternativas legacy de Foundation/Dispatch cuando exista reemplazo Swift compatible, incluidos `@objc` explícito, `Selector`/`#selector`, observación de `NotificationCenter` por selector, GCD/`DispatchQueue`, `DateFormatter` y `NSRegularExpression`. Esta lista expresa una prohibición del proyecto, no que todos esos símbolos estén deprecated. Cualquier uso inevitable requiere justificación con fuentes primarias y aprobación explícita previa.
 - Las declaraciones primarias de `struct` no contienen inicializadores explícitos. Se usa el memberwise sintetizado cuando basta y se eliminan inicializadores que solo copian parámetros. Una factory estática con nombre se usa solo cuando comunica mejor un estado de dominio, preset o composición; en los demás casos, los inicializadores con validación, inyección, composición o requeridos por `Decodable` viven en extensiones del mismo archivo. Las invariantes se garantizan al construir: el almacenamiento impide que el memberwise sintetizado las eluda y no se sustituyen por una comprobación posterior `isValid` o `validate()`.
 - Las APIs semánticas de producción nuevas o modificadas se documentan en inglés con DocC, con independencia de que sean `internal` o públicas. Se documentan tipos y contratos de Domain, Repository, UseCase y políticas; factories semánticas, inicializadores validantes, transiciones de estado y operaciones no obvias con errores, asincronía o mutación. Los comentarios explican invariantes, unidades, efectos, idempotencia, cancelación, parámetros, retorno y errores solo cuando aportan información que la declaración no expresa. No se documentan por sistema propiedades evidentes, boilerplate de vistas o `Codable`, helpers privados triviales ni tests.
 - Serialización exclusiva mediante `Codable`, `JSONEncoder` y `JSONDecoder`.
 - Todo texto visible reside en `Localizable.xcstrings`.
 - Solo se permiten frameworks Apple, salvo `FirebaseCore`, `FirebaseAuth`, `FirebaseFirestore`, `FirebaseStorage`, `FirebaseAnalyticsCore` y `FirebaseCrashlytics` como excepción aprobada y acotada.
+
+### Fuentes primarias de las reglas modernas
+
+- [`Sendable` y conformidad implícita de valores](https://github.com/swiftlang/swift-evolution/blob/main/proposals/0302-concurrent-value-and-concurrent-closures.md) y [actores](https://github.com/swiftlang/swift-evolution/blob/main/proposals/0306-actors.md).
+- [Migración incremental y `@preconcurrency`](https://github.com/swiftlang/swift-evolution/blob/main/proposals/0337-support-incremental-migration-to-concurrency-checking.md) y [`nonisolated(unsafe)`](https://github.com/swiftlang/swift-evolution/blob/main/proposals/0412-strict-concurrency-for-global-variables.md).
+- [Swift Concurrency](https://docs.swift.org/swift-book/documentation/the-swift-programming-language/concurrency/) y [concurrencia estructurada](https://github.com/swiftlang/swift-evolution/blob/main/proposals/0304-structured-concurrency.md).
+- [Migración de `ObservableObject` al macro `@Observable`](https://developer.apple.com/documentation/swiftui/migrating-from-the-observable-object-protocol-to-the-observable-macro).
+- Alternativas Swift modernas: [mensajes tipados de `NotificationCenter`](https://developer.apple.com/documentation/foundation/notification-center-messages), [`Date.FormatStyle`](https://developer.apple.com/documentation/foundation/date/formatstyle) y [`Regex`](https://developer.apple.com/documentation/swift/regex).
 
 ## Observabilidad y privacidad
 

@@ -24,7 +24,7 @@ Integrar el MVP, probar recuperación e idempotencia entre features y endurecer 
 | 17.4 | Unificar traducción de errores por capas. | Infraestructura → Domain → estado localizado. | Sin tipos Firebase en Presentation. |
 | 17.5 | Completar estados carga/vacío/error/reintento. | ViewModels/Stores afectados. | Previews y revisión manual. |
 | 17.6 | Implementar observación y resolución explícita de conflictos. | Elegir local/remoto, revisión remota cambiante, reintento y cancelación. | `SyncConflictsViewModel` y Screen resuelven sin sobrescritura ciega. |
-| 17.7 | Auditar strict concurrency y rendimiento. | Tests paralelos y cancelación. | Sin warnings, carreras o `@unchecked` injustificado. |
+| 17.7 | Auditar strict concurrency y rendimiento. | Tests paralelos y cancelación. | Sin warnings, carreras ni escapes de concurrencia estricta no aprobados. |
 | 17.8 | Verificar reglas Firestore y Storage. | Usuario no autenticado, dueño incorrecto y payload inválido. | Acceso mínimo necesario. |
 | 17.9 | Crear seed de desarrollo idempotente. | Dos ejecuciones producen el mismo dataset. | Sin datos reales o sensibles. |
 | 17.10 | Ejecutar recorrido manual integral. | No es test UI automatizado. | Voz→borrador revisable y cliente → venta → stock → documento → informe por los flujos normales. |
