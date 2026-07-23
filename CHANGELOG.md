@@ -6,6 +6,7 @@ All notable changes to this project are documented in this file.
 
 ### Changed
 
+- 2026-07-23 | ♻️ refactor(swift): simplify protocol conformances
 - 2026-07-23 | ♻️ refactor(domain): name draft client construction
 
 ### Added

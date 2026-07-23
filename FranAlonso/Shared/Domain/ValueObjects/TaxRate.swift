@@ -10,7 +10,7 @@ enum TaxRateError: Error, Equatable {
 ///
 /// For example, `21` represents 21 percent. Construction and decoding enforce
 /// the range.
-struct TaxRate: Codable, Equatable, Hashable {
+struct TaxRate: Codable, Hashable {
     private let storedPercentage: Decimal
 
     var percentage: Decimal {

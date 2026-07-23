@@ -26,7 +26,7 @@ enum MoneyError: Error, Equatable {
 ///
 /// Construction and decoding use `NSDecimalNumber.RoundingMode.plain` and reject
 /// amounts that are not numbers.
-struct Money: Codable, Equatable, Hashable {
+struct Money: Codable, Hashable {
     private let storedAmount: Decimal
     let currency: Currency
 

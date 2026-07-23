@@ -34,6 +34,7 @@
 ## Código y testing
 
 - [ ] API moderna compatible con deployment target real.
+- [ ] Declaraciones y call sites usan construcciones nativas de Swift; no hay patrones ceremoniales trasladados, abstracciones sin responsabilidad demostrada ni protocolos heredados repetidos en una lista de conformidad.
 - [ ] Sin APIs deprecated ni usos propios de `@objc`, selectors, `NotificationCenter` por selector, `DateFormatter`, `NSRegularExpression` u otras elecciones Objective-C/legacy no aprobadas.
 - [ ] Presentation usa `@Observable`; no introduce `ObservableObject`, `@Published`, `@StateObject` ni `@ObservedObject`.
 - [ ] Las APIs del asistente son estables para iOS/Xcode 26; disponibilidad, permisos y fallback manual están cubiertos sin fallback cloud o background mode.

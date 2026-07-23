@@ -7,7 +7,7 @@ enum BillingDocumentNumberError: Error, Equatable {
 }
 
 /// An independently allocated fiscal sequence for one billing document family.
-enum BillingDocumentSeries: String, Codable, Equatable, Hashable {
+enum BillingDocumentSeries: String, Codable, Hashable {
     /// The sequence reserved for tickets.
     case ticket
 
@@ -35,7 +35,7 @@ enum BillingDocumentKind: String, Codable, Equatable {
 ///
 /// This value records an allocation made by the remote authority; it does not
 /// expose local increment or reservation behavior.
-struct BillingDocumentNumber: Codable, Equatable, Hashable {
+struct BillingDocumentNumber: Codable, Hashable {
     let series: BillingDocumentSeries
     private let storedValue: Int
 

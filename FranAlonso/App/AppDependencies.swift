@@ -1,4 +1,4 @@
-struct AppDependencies: Sendable {
+struct AppDependencies {
     let observeClients: ObserveClientsUseCase
     let telemetryReporter: TelemetryReporter
 

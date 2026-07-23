@@ -9,7 +9,7 @@ enum ClientConsentReferenceError: Error, Equatable {
 /// An opaque, non-empty reference to a client's persisted signed consent.
 ///
 /// Construction and decoding trim surrounding whitespace and reject empty values.
-struct ClientConsentReference: Codable, Equatable, Hashable {
+struct ClientConsentReference: Codable, Hashable {
     private let storedValue: String
 
     /// The normalized reference, with surrounding whitespace removed.

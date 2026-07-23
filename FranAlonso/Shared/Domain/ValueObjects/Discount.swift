@@ -10,7 +10,7 @@ enum DiscountError: Error, Equatable {
 ///
 /// For example, `15` represents a 15 percent discount. Construction and decoding
 /// enforce the range.
-struct Discount: Codable, Equatable, Hashable {
+struct Discount: Codable, Hashable {
     private let storedPercentage: Decimal
 
     var percentage: Decimal {

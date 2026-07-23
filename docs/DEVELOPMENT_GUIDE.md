@@ -35,6 +35,7 @@ For documentation-only work, including changes limited to DocC comments, and for
 - Run new tests and all previously affected tests; use a justified `N/A` only when no executable target changed.
 - Verify that the proposal cites applicable current primary sources and that any change to known-working code has exact prior owner approval.
 - Review strict concurrency, actor isolation, cancellation, availability, and modern API selection. Internal structs and enums rely on inferred `Sendable` when the compiler can prove it; actors never repeat it; explicit conformances require a demonstrated public or generic boundary.
+- Review declarations together with their call sites for native Swift construction. Reject mechanically translated ceremonial patterns and abstractions without a demonstrated responsibility, invariant, boundary, or reuse; prefer a direct Swift form when it expresses the same contract. Keep only the most specific protocol in each conformance list and reject inherited redundancies such as `Equatable` alongside `Hashable`, unless a conditional or generic boundary requires both and documents why.
 - Reject explicit `@preconcurrency`, `@unchecked Sendable`, `nonisolated(unsafe)`, direct GCD/Dispatch concurrency, callback-first concurrency, and equivalent compiler escape hatches unless the owner approved a source-backed exception before implementation.
 - Require project-owned observable presentation reference types to use `@Observable`; reject `ObservableObject`, `@Published`, `@StateObject`, and `@ObservedObject`. Use `@State` for view ownership and `@Bindable` only for binding projections.
 - Require Views to render state and call semantic ViewModel actions only. Reject validation, filtering, calculation, persistence, networking, and business decisions in `body`, modifiers, or action closures.
@@ -84,6 +85,7 @@ If subagents are unavailable, execute each applicable skill as a separate pass a
 - [ ] Affected targets build without warnings through Xcode MCP, or `N/A` is justified.
 - [ ] Domain/Data/Presentation/App boundaries are respected.
 - [ ] Base value and Domain models use `Identifiable`, `Codable`, and `Equatable` whenever semantically possible, with any exception justified.
+- [ ] Declarations and call sites use native Swift constructions; abstractions have a demonstrated responsibility, invariant, boundary, or reuse, and conformance lists do not repeat inherited protocols.
 - [ ] Structs keep explicit initializers out of the primary declaration; redundant assignment-only initializers are absent; named factories add real semantic meaning; and validating initializers or factories cannot be bypassed through synthesized memberwise construction or replaced by post-construction validation.
 - [ ] ViewModels remain screen facades; Stores are justified and do not duplicate state.
 - [ ] Views contain no business, persistence, networking, validation, filtering, or calculation; actions only call the ViewModel.
