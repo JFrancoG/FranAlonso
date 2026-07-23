@@ -8,7 +8,7 @@ Read `docs/DEVELOPMENT_GUIDE.md`, `docs/specs/01_constitution.md`, the active ph
 
 - `FranAlonso/`: application source and resources.
 - `FranAlonsoTests/`: Swift Testing unit and integration tests.
-- `docs/specs/`: executable specifications `00` through `17`.
+- `docs/specs/`: executable specifications `00` through `19`; phases 01–18 are the MVP and phase 19 is post-MVP.
 - `docs/ADRs/`: proposed and accepted architecture decisions.
 - `docs/DEVELOPMENT_GUIDE.md`: mandatory subphase workflow and Definition of Done.
 - `docs/PULL_REQUEST_CHECKLIST.md`: delivery checklist.
@@ -25,6 +25,8 @@ Keep a struct's primary declaration free of explicit initializers. Use the compi
 
 Use explicit suffixes: `UseCase`, `Repository`, `DTO`, `Model`, `DataSource`, `Mapper`, `PersistenceActor`, `SyncEngine`, `SyncPolicy`, `ViewModel`, `Store`, and `Screen`. Avoid ambiguous `Interactor`, `ModelLogic`, `Manager`, `Helper`, `Utils`, and `Common` types.
 
+Probabilistic assistants return closed Domain proposals and may only read, navigate, or fill reversible drafts. They never receive direct persistence/binding access or invoke mutating UseCases; Fran reviews and saves through the normal visual flow.
+
 ## Platform and Tools
 
 Inspect the real deployment target, SDK, Swift version, and concurrency settings before selecting APIs. Use the modern compatible API; do not raise targets or adopt beta-only APIs implicitly. Treat warnings as errors.
@@ -34,6 +36,8 @@ Never use `xcodebuild` for builds, tests, previews, or diagnostics. Use Apple's 
 ## Data, Concurrency, and Testing
 
 SwiftData is the local source of truth; Firestore is the temporary remote source. Keep Firebase SDK imports inside Data/Infrastructure. Auth, Firestore, and Storage must remain replaceable by Vapor; Analytics and Crashlytics stay behind independently replaceable telemetry contracts and must never receive PII or business payloads. Sync must be offline-first, bidirectional, idempotent, conflict-aware, and recoverable. Use `@ModelActor` outside MainActor; never pass live SwiftData models across actors. Apply `Sendable`, cancellation, and structured concurrency. `@unchecked Sendable` requires an accepted ADR and tests.
+
+The MVP assistant uses stable iOS 26 Apple APIs on-device with no cloud fallback or background listening. Audio, transcripts, prompts, responses, and conversational state are ephemeral and never enter persistence, logs, or telemetry. A remote provider requires its own accepted ADR before executable work.
 
 Use TDD with Swift Testing only. Use deterministic Firebase and telemetry doubles plus in-memory `ModelContainer` instances. Serialize with Codable, never `JSONSerialization`; place visible text in `.xcstrings`.
 

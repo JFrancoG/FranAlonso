@@ -20,10 +20,13 @@
 - [ ] No existe `@unchecked Sendable` sin ADR y tests.
 - [ ] Invariantes de producto y snapshots históricos se preservan.
 - [ ] Analytics y Crashlytics no reciben PII ni payloads de negocio; consentimiento y activación se respetan.
+- [ ] Si cambia el asistente, su salida es tipada y solo consulta, navega o rellena borradores; guardar sigue siendo visual y ningún UseCase mutador es accesible desde voz/modelo.
+- [ ] Audio, transcripciones, prompts, respuestas y estado conversacional no se persisten, registran ni telemetrizan; cancelar/interrumpir los descarta.
 
 ## Código y testing
 
 - [ ] API moderna compatible con deployment target real.
+- [ ] Las APIs del asistente son estables para iOS/Xcode 26; disponibilidad, permisos y fallback manual están cubiertos sin fallback cloud o background mode.
 - [ ] Warnings como errores y cero warnings.
 - [ ] Codable; sin `JSONSerialization`.
 - [ ] Textos visibles en `.xcstrings`.

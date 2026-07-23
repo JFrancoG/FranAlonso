@@ -1,6 +1,6 @@
 # FranAlonso
 
-Aplicación iOS reconstruida con SwiftUI mediante Spec Driven Development y TDD. La constitución y el bootstrap están completos; la implementación de producto todavía no ha comenzado.
+Aplicación iOS reconstruida con SwiftUI mediante Spec Driven Development y TDD. La constitución, el bootstrap y la primera vertical de arquitectura están completos; el modelo de dominio está en curso.
 
 ## Fuentes de verdad
 
@@ -19,4 +19,4 @@ Los builds, tests, previews y diagnósticos se realizan exclusivamente mediante 
 
 ## Estado
 
-Las fases 01 y 02 están completas, incluidos los ADR 0001–0009 y la gobernanza del bootstrap. La siguiente subfase es 03.1, primera vertical mínima de arquitectura.
+Las fases 01–03 y las subfases 04.1–04.3 están completas. La puerta actual es 04.4, el cálculo determinista de ventas. El MVP incorpora en la fase 16 un asistente de voz local con Foundation Models; la fase 19 prepara GPT-5.6 Luna como proveedor textual opcional después de entregar el MVP. GPT Realtime queda como alternativa no planificada.

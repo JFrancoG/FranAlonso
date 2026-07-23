@@ -37,6 +37,7 @@ DefaultRepository → LocalDataSource / RemoteDataSource / SyncEngine
 - Cada pantalla mantiene un `ViewModel` `@Observable @MainActor` como fachada.
 - Un Store se extrae únicamente cuando una responsabilidad cohesiva hace crecer el ViewModel, existe reutilización real o aporta una prueba aislada útil. No se duplica estado entre Store y ViewModel.
 - No se crean protocolos, carpetas o Stores vacíos “por si acaso”.
+- Una capacidad probabilística devuelve lectura o borradores tipados a Presentation; nunca obtiene acceso directo a persistencia, red de negocio, bindings o ejecución de UseCases mutadores.
 
 ### Estructura objetivo
 
@@ -125,6 +126,8 @@ Evitar `Interactor`, `ModelLogic`, `LocalModel`, `SyncService`, `Manager`, `Help
 - La aplicación no incorpora publicidad, IDFA ni `FirebaseAnalyticsIdentitySupport`.
 - Analytics y Crashlytics no son fuentes de verdad y sus fallos nunca bloquean autenticación, persistencia, sincronización ni flujos de usuario.
 - `GoogleService-Info.plist` permanece local, ignorado por Git y fuera de commits, parches, logs y documentación.
+- Audio, transcripciones, prompts, respuestas y estado conversacional del asistente son efímeros: no entran en SwiftData, Firestore, archivos, portapapeles, Analytics, Crashlytics o logs.
+- El asistente del MVP procesa voz e interpretación en el dispositivo, no tiene fallback cloud y se detiene al salir de primer plano. Cualquier proveedor remoto exige un ADR y consentimiento/base jurídica aplicables antes de datos reales.
 
 ## Testing
 
@@ -135,6 +138,7 @@ Evitar `Interactor`, `ModelLogic`, `LocalModel`, `SyncService`, `Manager`, `Help
 - Reloj, UUID, aleatoriedad y errores se inyectan cuando afectan al resultado.
 - ViewModels cubren coordinación; Stores cubren transiciones, errores, cancelación y reintentos; sincronización cubre idempotencia, conflictos y recuperación.
 - La telemetría prueba allowlists, exclusión de datos sensibles, consentimiento, activación, desactivación y tolerancia a fallos sin usar Firebase real.
+- El asistente se prueba con contratos y dobles deterministas; micrófono y modelos reales se reservan para validación manual en dispositivo y nunca hacen no determinista la suite.
 
 ## Reglas de producto
 
@@ -147,6 +151,7 @@ Evitar `Interactor`, `ModelLogic`, `LocalModel`, `SyncService`, `Manager`, `Help
 - Jornada es la pantalla principal autenticada y solo muestra operaciones que requieren una acción. Una operación desaparece inmediatamente cuando todos sus servicios han terminado, el pago está registrado y se ha emitido ticket o factura; desde ese momento se consulta en Histórico.
 - Los PDF se generan con frameworks Apple y el correo queda preparado para envío manual.
 - La demo de citas no sustituye al sistema actual durante el MVP.
+- La voz puede consultar, navegar y rellenar borradores, pero Fran revisa y guarda con el control visual normal; no existen efectos ni confirmaciones exclusivamente por voz.
 
 ## Subfases
 

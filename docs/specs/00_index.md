@@ -29,8 +29,13 @@
 13. [Facturación, PDF, correo y numeración](13_billing_pdf_email_counters.md)
 14. [Informes de ingresos](14_monthly_income_reports.md)
 15. [Demo de citas](15_appointments_demo.md)
-16. [Integración y endurecimiento](16_sync_integration_hardening.md)
-17. [QA y entrega](17_qa_release.md)
+16. [Asistente de voz local](16_on_device_voice_assistant.md)
+17. [Integración y endurecimiento](17_sync_integration_hardening.md)
+18. [QA y entrega](18_qa_release.md)
+
+Las fases 01–18 constituyen el MVP. Tras entregarlo:
+
+19. [Proveedor remoto GPT-5.6 Luna](19_remote_assistant_luna.md) — evolución pos-MVP, no bloquea la entrega.
 
 Los documentos de fase son la única fuente de verdad del plan. No se mantiene un plan consolidado duplicado.
 
@@ -55,6 +60,8 @@ Invocar `$ios-development-standards` para implementar. Tras validar, crear un su
 - Cada pantalla conserva un `ViewModel` `@Observable @MainActor`. Un `Store` se extrae solo por complejidad o responsabilidad cohesiva demostrable.
 - Se aplica TDD con Swift Testing. No se crean XCTest, XCUITest ni tests UI nativos.
 - Solo se permiten frameworks Apple, excepto los productos aprobados `FirebaseCore`, `FirebaseAuth`, `FirebaseFirestore`, `FirebaseStorage`, `FirebaseAnalyticsCore` y `FirebaseCrashlytics`; backend y telemetría conservan fronteras de sustitución independientes.
+- El asistente del MVP usa APIs Apple estables y procesamiento local detrás de contratos propios. No eleva el target, adopta beta ni activa un fallback cloud silencioso.
+- GPT-5.6 Luna queda preparado como proveedor textual pos-MVP; GPT Realtime no forma parte del plan y requeriría una decisión nueva.
 - Toda decisión no trivial se documenta en `docs/ADRs/` antes de implementar.
 
 ## Reglas de producto invariantes
@@ -66,3 +73,4 @@ Invocar `$ios-development-standards` para implementar. Tras validar, crear un su
 - Ticket y factura usan secuencias remotas independientes y atómicas.
 - Los documentos se generan como PDF y se adjuntan a un correo de envío manual.
 - La agenda se limita a una demo local durante el MVP.
+- La voz solo consulta, navega y rellena borradores. Nunca guarda ni confirma por voz; no retiene audio, transcripciones, prompts o respuestas y el flujo manual permanece completo.

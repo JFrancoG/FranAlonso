@@ -54,6 +54,14 @@ Cuando se cumplen las tres condiciones, la operación desaparece inmediatamente 
 
 El ciclo se modela con estados finitos, no con booleanos independientes: `draft → inProgress → awaitingPayment → awaitingDocument → closed`. Cada línea pasa por próximo, en curso y terminado. Al pagar se congelan líneas, importes, impuestos, descuentos y método de pago; el cierre posterior solo añade la referencia del documento y los metadatos de cierre. Registrar el pago y cerrar la operación son transiciones distintas e idempotentes.
 
+### Asistente de voz local
+
+Jornada aloja un control persistente y accesible para iniciar/detener la sesión de voz del MVP. El estado (`Preparando`, `Escuchando`, `Interpretando`, `Revisar borrador` o `No disponible`), su duración y `Detener` permanecen visibles mientras el micrófono está activo; el color nunca es la única señal.
+
+La sesión solo existe con la escena activa en primer plano. Se detiene al bloquear, pasar a background, cerrar sesión, perder permisos o pulsar `Detener`, descarta el estado conversacional y nunca se reanuda sola. `AppShellViewModel` no absorbe esta responsabilidad: un `VoiceAssistantViewModel` coordina el control y posee el `VoiceSessionStore` cohesivo, mientras las rutas siguen siendo tipadas y locales.
+
+El asistente puede leer contexto mínimo, seleccionar una ruta y entregar un borrador tipado al ViewModel del formulario que lo posee. Fran ve los campos exactos, puede editarlos o rechazarlos y guarda con el botón normal; la voz no confirma, persiste, paga, factura, envía, ajusta stock, consiente, anula o elimina. Si Foundation Models, el idioma o los permisos no están disponibles, los mismos formularios manuales siguen operativos.
+
 ## Histórico
 
 Histórico es una sección principal independiente:
@@ -102,6 +110,8 @@ Los archivos se crearán con el primer tipo real, no como carpetas vacías:
 - No puede solicitarse ni emitirse un documento antes de registrar el pago.
 - Una operación terminada, pagada y documentada desaparece inmediatamente y aparece en Histórico.
 - Una anulación posterior permanece consultable en Histórico, diferenciada y con sus compensaciones trazables.
+- La sesión de voz siempre muestra su estado, se detiene al salir de primer plano y nunca ejecuta el guardado de un borrador.
+- Con el asistente no disponible o los permisos denegados, toda la navegación y edición manual conserva el mismo alcance.
 - iPhone, iPad, multitarea, Dynamic Type y VoiceOver se revisan mediante previews y validación manual.
 
 Referencias: [Apple HIG — Tab bars](https://developer.apple.com/design/human-interface-guidelines/tab-bars), [Apple HIG — Sidebars](https://developer.apple.com/design/human-interface-guidelines/sidebars) y [`SidebarAdaptableTabViewStyle`](https://developer.apple.com/documentation/swiftui/sidebaradaptabletabviewstyle).
