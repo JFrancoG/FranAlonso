@@ -15,7 +15,7 @@ Fijar las reglas no negociables de producto, arquitectura, persistencia, concurr
 ## Evidencia y aprobación del cambio
 
 - Ningún código o solución técnica se propone o implementa solo desde el conocimiento recordado del modelo. Se inspecciona primero el proyecto real y se contrasta la propuesta con fuentes primarias actuales: especificaciones y ADR aceptados del repositorio, seguidos por documentación oficial de Apple, Swift, Firebase o el proveedor aplicable. La propuesta cita esa evidencia; un resultado de búsqueda o una fuente secundaria sin contrastar no basta.
-- Antes de escribir código ejecutable, un revisor independiente y de solo lectura comprueba que las fuentes citadas son aplicables y que se evaluaron alternativas viables; documentación y web aportan evidencia, mientras que esa revisión constituye la aprobación por pares. Esta puerta previa no sustituye las dos auditorías posteriores del diff.
+- Antes de escribir código ejecutable, un revisor independiente y de solo lectura comprueba que las fuentes citadas son aplicables y que se evaluaron alternativas viables; documentación y web aportan evidencia, mientras que esa revisión constituye la aprobación por pares. Esta puerta previa no sustituye las auditorías especializadas posteriores aplicables.
 - No se refactoriza, sustituye ni altera código conocido como funcional fuera del cambio exacto ya aprobado por el propietario. Antes se presenta el cambio concreto, motivo, impacto de comportamiento, riesgos y alcance, y se espera confirmación explícita. Una petición que ya nombra y aprueba ese cambio exacto cuenta como confirmación; no autoriza limpiezas adyacentes.
 
 ## Arquitectura
@@ -38,12 +38,19 @@ DefaultRepository → LocalDataSource / RemoteDataSource / SyncEngine
 
 - `Domain` contiene entidades, value objects, contratos de repositorio, casos de uso y políticas puras. No importa SwiftUI, SwiftData, Firebase, UIKit ni detalles de red.
 - `Data` contiene DTO, modelos SwiftData, data sources, mappers, implementaciones de repositorio, actores de persistencia y sincronización.
-- `Presentation` contiene pantallas, vistas, ViewModels y Stores opcionales. No importa Firebase o SwiftData.
+- `Presentation` contiene pantallas, vistas, ViewModels y Stores opcionales. No importa Firebase. Puede importar SwiftData únicamente para obtener `@Environment(\.modelContext)` en una View y recibir ese contexto como parámetro efímero en la función `@MainActor` pertinente del ViewModel; no expone otros tipos de persistencia.
 - `App` es el composition root. Construye implementaciones y distribuye dependencias mediante `@Environment` e inicializadores.
 - Cada pantalla mantiene un `ViewModel` `@Observable @MainActor` como fachada.
 - Los tipos de referencia observables propios de Presentation usan el macro `@Observable`. No se introducen `ObservableObject`, `@Published`, `@StateObject` ni `@ObservedObject`; la vista conserva el modelo con `@State` y usa `@Bindable` solo cuando necesita proyectar bindings.
 - Un Store se extrae únicamente cuando una responsabilidad cohesiva hace crecer el ViewModel, existe reutilización real o aporta una prueba aislada útil. No se duplica estado entre Store y ViewModel.
 - No se crean protocolos, carpetas o Stores vacíos “por si acaso”.
+- Una View solo representa estado y llama acciones semánticas del ViewModel. No valida, filtra, calcula, persiste, consulta red ni decide negocio. Las invariantes puras permanecen en Domain/UseCases.
+- Para insertar, actualizar o borrar mediante el contexto principal de SwiftData, la View captura `@Environment(\.modelContext)` y lo pasa a la función del ViewModel. La View no llama operaciones del contexto ni lo almacena; el ViewModel no lo conserva ni lo cruza a otro actor.
+- Presentation expresa esa mutación como una closure inyectada `@MainActor` con una entrada de Domain y `ModelContext`. `App` la compone capturando un adaptador de Data; Data ejecuta mapping, operaciones del contexto y política local-first. Domain nunca recibe el contexto, Data no depende de Presentation y el ViewModel no conoce la implementación concreta.
+- Cada archivo Swift contiene un único tipo que conforme a `View`. Cada subview extraída vive en su propio archivo.
+- Los inicializadores y modificadores SwiftUI usan trailing closures y multiple trailing closures cuando la API no es ambigua. `@ViewBuilder` se reserva para fronteras reales con varios hijos o ramas heterogéneas; no se declara en `body`, helpers de una sola expresión ni para ocultar una View excesiva.
+- Toda dimensión numérica explícita de contenido no textual significativo que deba acompañar Dynamic Type usa `@ScaledMetric(relativeTo:)`, salvo adaptación automática o tamaño deliberadamente independiente y justificado.
+- Cada tipo `View` incluye al menos un `#Preview` en su archivo. Cada preview aplica el trait compartido respaldado por `PreviewModifier`, que instala un `ModelContainer` de test en memoria con datos deterministas, idempotentes y suficientes para navegar y validar la aplicación.
 - Una capacidad probabilística devuelve lectura o borradores tipados a Presentation; nunca obtiene acceso directo a persistencia, red de negocio, bindings o ejecución de UseCases mutadores.
 
 ### Estructura objetivo
@@ -136,6 +143,8 @@ Evitar `Interactor`, `ModelLogic`, `LocalModel`, `SyncService`, `Manager`, `Help
 - [Migración incremental y `@preconcurrency`](https://github.com/swiftlang/swift-evolution/blob/main/proposals/0337-support-incremental-migration-to-concurrency-checking.md) y [`nonisolated(unsafe)`](https://github.com/swiftlang/swift-evolution/blob/main/proposals/0412-strict-concurrency-for-global-variables.md).
 - [Swift Concurrency](https://docs.swift.org/swift-book/documentation/the-swift-programming-language/concurrency/) y [concurrencia estructurada](https://github.com/swiftlang/swift-evolution/blob/main/proposals/0304-structured-concurrency.md).
 - [Migración de `ObservableObject` al macro `@Observable`](https://developer.apple.com/documentation/swiftui/migrating-from-the-observable-object-protocol-to-the-observable-macro).
+- [`PreviewModifier`](https://developer.apple.com/documentation/swiftui/previewmodifier), [variantes de preview en Xcode](https://developer.apple.com/documentation/xcode/previewing-your-apps-interface-in-xcode#Test-different-view-configurations) y [`ScaledMetric`](https://developer.apple.com/documentation/swiftui/scaledmetric).
+- [`EnvironmentValues.modelContext`](https://developer.apple.com/documentation/swiftui/environmentvalues/modelcontext), [multiple trailing closures](https://github.com/swiftlang/swift-evolution/blob/main/proposals/0279-multiple-trailing-closures.md) y [result builders](https://github.com/swiftlang/swift-evolution/blob/main/proposals/0289-result-builders.md).
 - Alternativas Swift modernas: [mensajes tipados de `NotificationCenter`](https://developer.apple.com/documentation/foundation/notification-center-messages), [`Date.FormatStyle`](https://developer.apple.com/documentation/foundation/date/formatstyle) y [`Regex`](https://developer.apple.com/documentation/swift/regex).
 
 ## Observabilidad y privacidad
@@ -156,6 +165,7 @@ Evitar `Interactor`, `ModelLogic`, `LocalModel`, `SyncService`, `Manager`, `Help
 - SwiftData usa un `ModelContainer` en memoria por test o suite segura.
 - Reloj, UUID, aleatoriedad y errores se inyectan cuando afectan al resultado.
 - ViewModels cubren coordinación; Stores cubren transiciones, errores, cancelación y reintentos; sincronización cubre idempotencia, conflictos y recuperación.
+- Cada pantalla afectada se renderiza e inspecciona mediante Xcode MCP en las variantes Dynamic Type soportadas `Large`, `XXX Large` y `AX 5`; la semántica accesible se revisa por separado y VoiceOver manual se registra cuando aplique.
 - La telemetría prueba allowlists, exclusión de datos sensibles, consentimiento, activación, desactivación y tolerancia a fallos sin usar Firebase real.
 - El asistente se prueba con contratos y dobles deterministas; micrófono y modelos reales se reservan para validación manual en dispositivo y nunca hacen no determinista la suite.
 
@@ -188,4 +198,4 @@ Evitar `Interactor`, `ModelLogic`, `LocalModel`, `SyncService`, `Manager`, `Help
 
 ## Cierre obligatorio de cada subfase
 
-Ejecutar íntegramente [DEVELOPMENT_GUIDE.md](../DEVELOPMENT_GUIDE.md), incluida la auditoría con un subagente `$review-ios-standards` y la segunda revisión tras corregir hallazgos.
+Ejecutar íntegramente las puertas especializadas de [DEVELOPMENT_GUIDE.md](../DEVELOPMENT_GUIDE.md).

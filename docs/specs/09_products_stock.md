@@ -30,4 +30,4 @@ Inventario físico sin información comercial, ajustes trazables y sincronizaci�
 
 ## Cierre obligatorio de cada subfase
 
-Ejecutar [DEVELOPMENT_GUIDE.md](../DEVELOPMENT_GUIDE.md), incluido subagente `$review-ios-standards` y segunda auditoría.
+Ejecutar las puertas especializadas de [DEVELOPMENT_GUIDE.md](../DEVELOPMENT_GUIDE.md).

@@ -2,7 +2,7 @@
 
 ## Estado
 
-Aceptado
+Sustituido por [ADR 0011](0011-swiftui-boundaries-specialized-reviews.md)
 
 ## Contexto
 

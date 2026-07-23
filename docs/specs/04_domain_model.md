@@ -94,10 +94,12 @@ Definir entidades, value objects, políticas, contratos y casos de uso puros, si
 | 04.7 | Crear `Appointment` y reglas mínimas. | Inicio/fin, cancelación y referencias. | Alcance demo explícito. |
 | 04.8 | Definir contratos Repository y UseCases necesarios por feature. | Dobles de test por capacidad. | Protocolos pequeños, propiedad de Domain. |
 
+Los `SaveFeatureUseCase` de Domain permanecen libres de `ModelContext`. Tras ADR 0011, una acción de UI que deba escribir específicamente en el contexto principal usa la closure `@MainActor` compuesta en App sobre un adaptador Data; no añade SwiftData al UseCase, no ignora el contexto entregado y no ejecuta también el Save UseCase de forma que duplique la persistencia. Los Save UseCases context-free siguen disponibles para callers que no dependen del entorno SwiftUI.
+
 ## Resultado de fase
 
 Dominio puro, expresivo, `Sendable` y cubierto con Swift Testing, sin tipos de infraestructura.
 
 ## Cierre obligatorio de cada subfase
 
-Ejecutar [DEVELOPMENT_GUIDE.md](../DEVELOPMENT_GUIDE.md), incluido el subagente `$review-ios-standards` y la segunda auditoría.
+Ejecutar las puertas especializadas de [DEVELOPMENT_GUIDE.md](../DEVELOPMENT_GUIDE.md).

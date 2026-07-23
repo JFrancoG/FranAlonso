@@ -86,4 +86,4 @@ El MVP dispone de un asistente local, reversible y verificable. La modalidad fin
 
 ## Cierre obligatorio de cada subfase
 
-Ejecutar [DEVELOPMENT_GUIDE.md](../DEVELOPMENT_GUIDE.md), incluida la auditoría con un subagente `$review-ios-standards` y la segunda revisión tras corregir hallazgos. La 16.10 añade el informe de prueba de campo como evidencia obligatoria.
+Ejecutar las puertas especializadas de [DEVELOPMENT_GUIDE.md](../DEVELOPMENT_GUIDE.md). La 16.10 añade el informe de prueba de campo como evidencia obligatoria.

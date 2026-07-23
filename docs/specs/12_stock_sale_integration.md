@@ -33,4 +33,4 @@ Pago, anulación y stock convergen de forma local y remota, con avisos no bloque
 
 ## Cierre obligatorio de cada subfase
 
-Ejecutar [DEVELOPMENT_GUIDE.md](../DEVELOPMENT_GUIDE.md), incluido subagente `$review-ios-standards` y segunda auditoría.
+Ejecutar las puertas especializadas de [DEVELOPMENT_GUIDE.md](../DEVELOPMENT_GUIDE.md).

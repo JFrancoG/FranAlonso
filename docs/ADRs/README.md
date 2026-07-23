@@ -10,7 +10,7 @@ Los ADR se escriben antes de implementar una decisión no trivial y no se reescr
 
 | ADR | Decisión | Estado |
 |---|---|---|
-| [0001](0001-clean-architecture-observable.md) | Clean Architecture, ViewModel y Store opcional | Aceptado |
+| [0001](0001-clean-architecture-observable.md) | Clean Architecture, ViewModel y Store opcional | Sustituido por 0011 |
 | [0002](0002-swiftdata-local-sot-firestore-remote-sot.md) | SwiftData local y Firestore remoto | Aceptado |
 | [0003](0003-swift-testing-only.md) | Swift Testing sin tests UI nativos | Aceptado |
 | [0004](0004-no-jsonserialization.md) | Codable como única serialización JSON | Aceptado |
@@ -20,5 +20,6 @@ Los ADR se escriben antes de implementar una decisión no trivial y no se reescr
 | [0008](0008-atomic-billing-numbering.md) | Numeración atómica e idempotente | Aceptado |
 | [0009](0009-client-consent-activation.md) | Consentimiento y activación offline-first | Aceptado |
 | [0010](0010-on-device-assistant-provider-strategy.md) | Asistente local en el MVP y proveedor remoto pos-MVP | Aceptado |
+| [0011](0011-swiftui-boundaries-specialized-reviews.md) | Límites SwiftUI y revisiones especializadas | Aceptado |
 
-Los ADR 0001–0009 fueron revisados y aceptados por el propietario del producto el 14 de julio de 2026. El propietario aceptó el ADR 0010 el 23 de julio de 2026 al incorporar Foundation Models al MVP, preparar GPT-5.6 Luna para después y mantener GPT Realtime únicamente como opción. Cualquier cambio posterior en estas decisiones requiere un nuevo ADR que las sustituya.
+Los ADR 0001–0009 fueron revisados y aceptados por el propietario del producto el 14 de julio de 2026. El propietario aceptó el ADR 0010 el 23 de julio de 2026 al incorporar Foundation Models al MVP, preparar GPT-5.6 Luna para después y mantener GPT Realtime únicamente como opción. El mismo día aceptó el ADR 0011 al especializar los revisores y aprobar la frontera efímera de `ModelContext`; esta decisión sustituye el ADR 0001. Cualquier cambio posterior en estas decisiones requiere un nuevo ADR que las sustituya.

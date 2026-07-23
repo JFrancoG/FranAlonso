@@ -37,4 +37,4 @@ Jornada local-first sin trabajo cerrado ocupando espacio, Histórico separado, s
 
 ## Cierre obligatorio de cada subfase
 
-Ejecutar [DEVELOPMENT_GUIDE.md](../DEVELOPMENT_GUIDE.md), con subagente `$review-ios-standards` y segunda auditoría.
+Ejecutar las puertas especializadas de [DEVELOPMENT_GUIDE.md](../DEVELOPMENT_GUIDE.md).

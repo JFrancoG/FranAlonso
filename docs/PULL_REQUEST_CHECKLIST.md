@@ -9,7 +9,11 @@
 - [ ] Todo cambio de código ya funcional coincide con una propuesta exacta aprobada por el propietario; no hay refactors oportunistas.
 - [ ] Se respetan `Domain`, `Data`, `Presentation` y `App`.
 - [ ] ViewModel sigue siendo la fachada; cada Store está justificado y no duplica estado.
-- [ ] Los imports Firebase permanecen en Data/Infrastructure; modelos y persistencia SwiftData permanecen en Data, con la composición del `ModelContainer` limitada a App.
+- [ ] La View solo representa estado y llama acciones semánticas del ViewModel; no contiene negocio, persistencia, red, validación, filtrado o cálculo.
+- [ ] Si una acción inserta, actualiza o borra con SwiftData, la View pasa `@Environment(\.modelContext)` a la función `@MainActor` del ViewModel sin operar sobre el contexto, almacenarlo o cruzarlo entre actores.
+- [ ] La mutación se inyecta como closure `@MainActor` sobre un valor de Domain y `ModelContext`: App la compone, Data ejecuta CRUD/mapping/local-first, Domain no recibe el contexto y Data no importa Presentation.
+- [ ] Si conviven adaptador contextual y Repository context-free, comparten una única primitiva interna de escritura Data y no duplican mapping, cola, idempotencia o la misma mutación.
+- [ ] Los imports Firebase permanecen en Data/Infrastructure; modelos, mappers y políticas SwiftData permanecen en Data, con la composición del `ModelContainer` limitada a App y `ModelContext` como única excepción efímera en Presentation.
 - [ ] Backend Firebase y telemetría dependen de contratos de sustitución independientes.
 - [ ] Nombres y sufijos expresan responsabilidad.
 
@@ -36,6 +40,11 @@
 - [ ] Warnings como errores y cero warnings.
 - [ ] Codable; sin `JSONSerialization`.
 - [ ] Textos visibles en `.xcstrings`.
+- [ ] Cada archivo Swift contiene como máximo un tipo que conforme a `View`; las subviews extraídas tienen archivo propio.
+- [ ] Los inicializadores/modificadores SwiftUI usan trailing closures y multiple trailing closures cuando no existe ambigüedad.
+- [ ] `@ViewBuilder` aparece solo en fronteras reales de composición; no es redundante en `body`, una helper de una expresión o una View sobredimensionada.
+- [ ] Las dimensiones numéricas explícitas de contenido no textual significativo que acompañan Dynamic Type usan `@ScaledMetric(relativeTo:)`; excepciones automáticas o fijas están justificadas.
+- [ ] Cada `View` tiene un `#Preview` en su archivo y cada preview usa el trait `PreviewModifier` compartido con `ModelContainer` de test en memoria y datos deterministas, idempotentes y navegables.
 - [ ] Sin dependencias externas fuera de Firebase aprobado.
 - [ ] `GoogleService-Info.plist` permanece ignorado y `Package.resolved` compartido está versionado.
 - [ ] TDD con Swift Testing y evidencia RED/GREEN, o `N/A` justificado porque la subfase no cambia comportamiento ejecutable.
@@ -48,9 +57,10 @@
 - [ ] ADR creado/actualizado antes de decisiones no triviales.
 - [ ] La API semántica nueva o modificada tiene DocC preciso y no redundante, independientemente de su visibilidad; invariantes, parámetros, retorno y errores se documentan solo cuando aportan contrato.
 - [ ] Validación mediante Xcode MCP para cambios de código/configuración, o `N/A` justificado para documentación, QA manual o distribución.
-- [ ] Primera auditoría `$review-ios-standards` registrada.
-- [ ] El revisor contrastó de forma independiente las fuentes, las alternativas y la aprobación previa del alcance.
-- [ ] Hallazgos válidos corregidos o descartados con evidencia.
-- [ ] Segunda auditoría sin hallazgos válidos abiertos.
+- [ ] Auditoría `$review-ios-standards` registrada para arquitectura, datos, concurrencia, testing y gobernanza.
+- [ ] Auditoría `$review-swiftui-accessibility` registrada para UI, previews y accesibilidad, o `N/A` justificado sin alcance SwiftUI.
+- [ ] Las pantallas afectadas se renderizaron e inspeccionaron con Xcode MCP en las variantes soportadas `Large`, `XXX Large` y `AX 5`, o se registró `N/A` porque no cambió ninguna pantalla.
+- [ ] Cada revisor contrastó de forma independiente las fuentes y la evidencia de su ámbito.
+- [ ] Hallazgos válidos corregidos o descartados con evidencia y revisados de nuevo solo por el especialista afectado.
 - [ ] `docs/Progress.md` actualizado con estado, evidencia, siguiente acción y bloqueos.
 - [ ] Definition of Done de la subfase completamente marcada.

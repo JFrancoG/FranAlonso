@@ -112,6 +112,6 @@ Los archivos se crearán con el primer tipo real, no como carpetas vacías:
 - Una anulación posterior permanece consultable en Histórico, diferenciada y con sus compensaciones trazables.
 - La sesión de voz siempre muestra su estado, se detiene al salir de primer plano y nunca ejecuta el guardado de un borrador.
 - Con el asistente no disponible o los permisos denegados, toda la navegación y edición manual conserva el mismo alcance.
-- iPhone, iPad, multitarea, Dynamic Type y VoiceOver se revisan mediante previews y validación manual.
+- iPhone, iPad y multitarea se revisan mediante previews y validación manual. Xcode MCP inspecciona Dynamic Type en las variantes soportadas `Large`, `XXX Large` y `AX 5`; la semántica accesible y VoiceOver mantienen validación específica porque una snapshot no los demuestra.
 
 Referencias: [Apple HIG — Tab bars](https://developer.apple.com/design/human-interface-guidelines/tab-bars), [Apple HIG — Sidebars](https://developer.apple.com/design/human-interface-guidelines/sidebars) y [`SidebarAdaptableTabViewStyle`](https://developer.apple.com/documentation/swiftui/sidebaradaptabletabviewstyle).

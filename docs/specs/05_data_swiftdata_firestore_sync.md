@@ -29,17 +29,20 @@ Sync:        FeatureSyncEngine + FeatureSyncPolicy
 - Los borrados usan tombstones con política de retención; una descarga atrasada no puede resucitarlos.
 - Los reintentos recuperables usan backoff con jitter y sobreviven al reinicio.
 - Los modelos SwiftData vivos y `ModelContext` no cruzan actores.
+- Para una mutación ligada al contexto principal, Data ofrece un adaptador `@MainActor` que recibe un valor de Domain y el `ModelContext`; App inyecta su método como closure en Presentation. El adaptador conserva mapping, operaciones del contexto, guardado local-first y cola de sync sin hacer que Domain conozca SwiftData o Data importe Presentation.
+- Cuando ese adaptador y `DefaultFeatureRepository` ofrezcan la misma escritura desde callers distintos, ambos usan una única primitiva interna de Data; mapping, aceptación local, operación pendiente e idempotencia no se implementan dos veces.
+- Al introducir el primer esquema SwiftData real, se crea el `PreviewModifier` compartido con un `ModelContainer` en memoria y sembrado determinista, idempotente y navegable; no se anticipa con un modelo ceremonial.
 
 ## Subfases
 
 | ID | Tarea | Test primero | Validación |
 |---|---|---|---|
 | 05.1 | Implementar DTO `Codable` y mapper de la primera colección. | Fixture válido, inválido y round trip. | Errores de decodificación preservan contexto. |
-| 05.2 | Implementar `FeatureModel` y `LocalDataSource`. | CRUD con `ModelContainer` en memoria. | Guardado explícito y restricciones únicas. |
+| 05.2 | Implementar `FeatureModel`, `LocalDataSource`, la primitiva interna de escritura y el `PreviewModifier` compartido para el primer esquema real. | CRUD con `ModelContainer` en memoria. | Guardado explícito, restricciones únicas y fixtures de preview navegables. |
 | 05.3 | Implementar `FeaturePersistenceActor` con `@ModelActor`. | Acceso concurrente y verificación desde otro contexto. | Cruce solo mediante IDs/snapshots Sendable. |
 | 05.4 | Implementar contrato y fake de `RemoteDataSource`. | Respuestas, permisos, offline y payload inválido. | Tests sin Firebase real. |
 | 05.5 | Implementar adaptador Firestore en `Data`. | Contract tests compartidos con el fake cuando proceda. | Ningún tipo Firebase sale de Data. |
-| 05.6 | Implementar `DefaultFeatureRepository` local-first. | Escritura local aunque falle remoto; observación local. | Presentation no consulta Firestore. |
+| 05.6 | Implementar `DefaultFeatureRepository` local-first y el adaptador contextual `@MainActor` sobre la misma primitiva Data. | Escritura local aunque falle remoto; paridad entre ambas rutas y una sola operación pendiente. | Presentation no consulta Firestore ni duplica persistencia. |
 | 05.7 | Implementar primer `FeatureSyncEngine` y la política ya aceptada de su colección. | Push/pull repetido y orden alterado. | Mismo estado final, sin duplicados. |
 | 05.8 | Añadir tombstones, cursor y cola persistente. | Borrado concurrente, reinicio y fallo intermedio. | No resurrección y reanudación segura. |
 | 05.9 | Añadir backoff, clasificación de errores y cancelación. | Reloj inyectado, errores recuperables/definitivos. | Sin espera real ni tareas huérfanas. |
@@ -54,4 +57,4 @@ UI local-first, Firebase encapsulado, persistencia aislada y sincronización rep
 
 ## Cierre obligatorio de cada subfase
 
-Ejecutar [DEVELOPMENT_GUIDE.md](../DEVELOPMENT_GUIDE.md), incluido el subagente `$review-ios-standards` y una segunda auditoría del diff completo.
+Ejecutar las puertas especializadas de [DEVELOPMENT_GUIDE.md](../DEVELOPMENT_GUIDE.md).

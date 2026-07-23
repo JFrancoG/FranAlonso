@@ -42,4 +42,4 @@ Proyecto reproducible, sin warnings, con Swift Testing, contenedor SwiftData in-
 
 ## Cierre obligatorio de cada subfase
 
-Ejecutar [DEVELOPMENT_GUIDE.md](../DEVELOPMENT_GUIDE.md). Cada fila termina con subagente `$review-ios-standards`, corrección de hallazgos y segunda auditoría.
+Ejecutar las puertas especializadas de [DEVELOPMENT_GUIDE.md](../DEVELOPMENT_GUIDE.md) al cerrar cada fila.

@@ -32,4 +32,4 @@ Build candidata trazable, sin warnings, con suite verde, validación manual y pl
 
 ## Cierre obligatorio de cada subfase
 
-Ejecutar [DEVELOPMENT_GUIDE.md](../DEVELOPMENT_GUIDE.md). La build no se entrega hasta que el subagente `$review-ios-standards` complete la segunda auditoría sin hallazgos válidos abiertos.
+Ejecutar las puertas especializadas de [DEVELOPMENT_GUIDE.md](../DEVELOPMENT_GUIDE.md). La build no se entrega mientras cualquiera de las auditorías aplicables conserve hallazgos válidos abiertos.

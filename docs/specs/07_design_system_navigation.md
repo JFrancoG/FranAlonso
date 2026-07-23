@@ -19,6 +19,11 @@ Construir una interfaz iPad-first adaptable, componentes semánticos, rutas tipa
 - Dynamic Type, VoiceOver, contraste, tamaños de ventana, orientación e iPad multitarea forman parte de la revisión manual.
 - Carga, vacío, contenido y error se representan explícitamente.
 - No se crean tests UI nativos; las reglas se prueban fuera de la View y los estados visuales mediante previews deterministas.
+- Cada archivo contiene un único tipo que conforme a `View`; las subviews extraídas viven en archivos propios.
+- Las Views solo renderizan estado y llaman al ViewModel. Usan trailing closures en APIs SwiftUI y reservan `@ViewBuilder` para composición real con varios hijos o ramas heterogéneas.
+- Toda dimensión numérica explícita de contenido no textual significativo que deba seguir Dynamic Type usa `@ScaledMetric(relativeTo:)`, salvo adaptación automática o tamaño fijo justificado.
+- Cada `View` tiene un `#Preview` en su archivo con el trait `PreviewModifier` compartido, `ModelContainer` de test en memoria y datos deterministas, idempotentes y suficientes para usar la app.
+- Xcode MCP renderiza e inspecciona cada pantalla afectada en las variantes soportadas `Large`, `XXX Large` y `AX 5`; VoiceOver y la semántica no demostrable por snapshots conservan una validación separada.
 
 ## Subfases
 
@@ -38,4 +43,4 @@ Sistema visual y navegación moderna, accesible, localizada y desacoplada de inf
 
 ## Cierre obligatorio de cada subfase
 
-Ejecutar [DEVELOPMENT_GUIDE.md](../DEVELOPMENT_GUIDE.md), incluido subagente `$review-ios-standards` y segunda auditoría.
+Ejecutar las puertas especializadas de [DEVELOPMENT_GUIDE.md](../DEVELOPMENT_GUIDE.md).

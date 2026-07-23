@@ -49,7 +49,7 @@ Para iniciar una subfase, proporcionar o cargar:
 - Los ADR aceptados aplicables.
 - Los contratos, `docs/Progress.md` y el diff del que dependa.
 
-Invocar `$ios-development-standards` para implementar. Tras validar, crear un subagente nuevo con `$review-ios-standards` en modo de solo lectura. Corregir los hallazgos válidos y repetir la auditoría antes de cerrar la subfase. Actualizar `docs/Progress.md` con la evidencia y el siguiente paso.
+Invocar `$ios-development-standards` para implementar. Tras validar, crear un subagente nuevo con `$review-ios-standards` para arquitectura, datos y concurrencia. Si existe alcance SwiftUI, crear en paralelo otro con `$review-swiftui-accessibility`; si no, registrar esa puerta como `N/A`. Corregir los hallazgos válidos y repetir solo la auditoría especializada cuyo ámbito cambie. Actualizar `docs/Progress.md` con la evidencia y el siguiente paso.
 
 ## Decisiones transversales
 
@@ -58,6 +58,9 @@ Invocar `$ios-development-standards` para implementar. Tras validar, crear un su
 - SwiftData es la fuente de verdad local; Firestore es la remota mientras siga vigente la excepción Firebase.
 - La UI observa estado local y la sincronización es bidireccional, offline-first e idempotente.
 - Cada pantalla conserva un `ViewModel` `@Observable @MainActor`. Un `Store` se extrae solo por complejidad o responsabilidad cohesiva demostrable.
+- Las Views son declarativas, contienen un único tipo `View` por archivo, delegan acciones al ViewModel, usan las formas trailing closure de SwiftUI, limitan `@ViewBuilder` a composición real y escalan dimensiones custom no textuales con `@ScaledMetric` cuando deben seguir Dynamic Type.
+- Las mutaciones del contexto principal siguen `View → ViewModel → closure @MainActor → adaptador Data`: la View solo pasa `ModelContext`, App compone la closure, Domain no conoce SwiftData y Data conserva CRUD/mapping/local-first sin importar Presentation.
+- Cada `View` tiene un `#Preview` con el trait compartido `PreviewModifier`, `ModelContainer` de test y datos navegables; las pantallas afectadas se inspeccionan mediante Xcode MCP en `Large`, `XXX Large` y `AX 5` cuando estén soportados.
 - Se aplica TDD con Swift Testing. No se crean XCTest, XCUITest ni tests UI nativos.
 - Solo se permiten frameworks Apple, excepto los productos aprobados `FirebaseCore`, `FirebaseAuth`, `FirebaseFirestore`, `FirebaseStorage`, `FirebaseAnalyticsCore` y `FirebaseCrashlytics`; backend y telemetría conservan fronteras de sustitución independientes.
 - El asistente del MVP usa APIs Apple estables y procesamiento local detrás de contratos propios. No eleva el target, adopta beta ni activa un fallback cloud silencioso.

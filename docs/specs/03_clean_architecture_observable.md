@@ -14,9 +14,13 @@ Presentation → Domain ← Data
 View → ViewModel → Store opcional → UseCase → Repository protocol
                                                 ↑
                                   DefaultRepository → DataSources
+
+Mutación de contexto principal aprobada:
+View ── ModelContext efímero ─→ ViewModel ── closure inyectada ─→ adaptador Data
+                                      ↑ compuesta por App
 ```
 
-La View no recibe repositorios o casos de uso arbitrarios como service locator. Obtiene un conjunto de dependencias tipado desde `@Environment` en el límite de composición y crea/conserva el ViewModel mediante el mecanismo de estado apropiado.
+La View no recibe repositorios o casos de uso arbitrarios como service locator. Obtiene un conjunto de dependencias tipado desde `@Environment` en el límite de composición y crea/conserva el ViewModel mediante el mecanismo de estado apropiado. La única excepción de infraestructura en Presentation es el `ModelContext` principal: una View puede capturarlo del entorno y pasarlo como parámetro efímero a la función `@MainActor` del ViewModel que coordina una mutación.
 
 ## Responsabilidades de presentación
 
@@ -26,7 +30,15 @@ La View no recibe repositorios o casos de uso arbitrarios como service locator. 
 - Expone estado visual, navegación, selección y acciones semánticas.
 - Recibe dependencias por inicializador.
 - Conserva y coordina Stores cuando se hayan justificado.
-- No importa Firebase o SwiftData ni implementa reglas de negocio.
+- No importa Firebase ni tipos SwiftData salvo `ModelContext` en la frontera de operación aprobada; no almacena el contexto, no lo cruza entre actores y no implementa invariantes puras de Domain.
+- Para esa frontera conserva una closure `@MainActor` inyectada que recibe un valor de Domain y el contexto. App la compone con un adaptador de Data; el ViewModel no conoce ese tipo concreto y Data no importa Presentation.
+
+### View
+
+- Representa estado y llama acciones semánticas del ViewModel; no contiene validación, filtrado, cálculo, persistencia, red o decisiones de negocio.
+- Si una acción inserta, actualiza o borra con el contexto principal, obtiene `@Environment(\.modelContext)` y lo pasa al ViewModel sin invocar operaciones del contexto.
+- Es el único tipo que conforma a `View` en su archivo, usa las formas trailing closure de SwiftUI y no declara `@ViewBuilder` redundante.
+- Incluye un `#Preview` con el trait `PreviewModifier` compartido y datos de test navegables.
 
 ### Store opcional
 
@@ -57,11 +69,11 @@ No son razones suficientes una posible reutilización futura, envolver un único
 
 | Tipo | Responsabilidad |
 |---|---|
-| `App` | Compone repositories y UseCases concretos. |
-| `Screen` | Recibe los UseCases necesarios en su inicializador y crea el ViewModel mediante `@State`. |
-| `ViewModel` | Crea y conserva el Store con esos UseCases; mantiene navegación, selección y coordinación de pantalla. |
-| `Store` | Es dueño del estado, tareas y acciones de su capacidad. |
-| `View` | Lee el estado del ViewModel o del Store conservado y emite intenciones semánticas. |
+| `App` | Compone repositories, UseCases y, cuando aplica, la closure de mutación sobre el adaptador Data. |
+| `Screen` | Recibe los UseCases y closures de operación necesarios y crea el ViewModel mediante `@State`. |
+| `ViewModel` | Crea y conserva el Store, mantiene navegación/selección y es el único punto de Presentation que invoca la closure con el contexto recibido. |
+| `Store` | Es dueño del estado, tareas y transiciones de su capacidad; no recibe `ModelContext`. |
+| `View` | Lee estado y emite una única llamada semántica al ViewModel; solo pasa el `ModelContext` del entorno cuando la operación SwiftData lo requiere. |
 
 El ViewModel puede exponer una propiedad calculada que lea estado observable del Store, pero nunca mantiene una copia mutable del mismo estado ni reenvía manualmente notificaciones.
 
@@ -70,13 +82,18 @@ El ViewModel puede exponer una propiedad calculada que lea estado observable del
 Si una futura pantalla de detalle incorpora una edición con borrador, guardado, reintento y cancelación independientes, el flujo de construcción sería:
 
 ```text
-AppDependencies.saveClient
+AppDependencies.saveClientInMainContext
     -> ClientDetailScreen(client:saveClient:)
     -> ClientDetailViewModel(client:saveClient:)
-    -> ClientEditingStore(client:saveClient:)
+    -> ClientEditingStore(client:)
 ```
 
 ```swift
+import SwiftData
+
+typealias ClientMainContextMutation =
+    @MainActor (Client, ModelContext) async throws -> Void
+
 @Observable @MainActor
 final class ClientEditingStore {
     struct Draft: Equatable {
@@ -97,11 +114,9 @@ final class ClientEditingStore {
 
     private(set) var draft: Draft
     private(set) var phase: Phase = .editing
-    private let saveClient: SaveClientUseCase
 
-    init(client: Client, saveClient: SaveClientUseCase) {
+    init(client: Client) {
         draft = Draft(id: client.id, displayName: client.displayName)
-        self.saveClient = saveClient
     }
 
     func updateDisplayName(_ displayName: String) {
@@ -110,24 +125,22 @@ final class ClientEditingStore {
         phase = .editing
     }
 
-    func save() async {
-        guard phase != .saving else { return }
+    func beginSaving() -> Client? {
+        guard phase != .saving else { return nil }
         phase = .saving
-
-        do {
-            try Task.checkCancellation()
-            try await saveClient(draft.client)
-            try Task.checkCancellation()
-            phase = .saved
-        } catch is CancellationError {
-            phase = .editing
-        } catch {
-            phase = .failed
-        }
+        return draft.client
     }
 
-    func retry() async {
-        await save()
+    func markSaved() {
+        phase = .saved
+    }
+
+    func cancelSaving() {
+        phase = .editing
+    }
+
+    func markFailed() {
+        phase = .failed
     }
 }
 
@@ -140,25 +153,38 @@ final class ClientDetailViewModel {
     let editingStore: ClientEditingStore
     private(set) var destination: Destination?
     var editingPhase: ClientEditingStore.Phase { editingStore.phase }
+    private let saveClient: ClientMainContextMutation
 
-    init(client: Client, saveClient: SaveClientUseCase) {
-        editingStore = ClientEditingStore(
-            client: client,
-            saveClient: saveClient
-        )
+    init(client: Client, saveClient: @escaping ClientMainContextMutation) {
+        editingStore = ClientEditingStore(client: client)
+        self.saveClient = saveClient
     }
 
-    func save() async {
-        await editingStore.save()
+    func save(modelContext: ModelContext) async {
+        guard let client = editingStore.beginSaving() else { return }
 
-        if editingStore.phase == .saved {
+        do {
+            try Task.checkCancellation()
+            try await saveClient(client, modelContext)
+            try Task.checkCancellation()
+            editingStore.markSaved()
             destination = .client(editingStore.draft.id)
+        } catch is CancellationError {
+            editingStore.cancelSaving()
+        } catch {
+            editingStore.markFailed()
         }
+    }
+
+    func retry(modelContext: ModelContext) async {
+        await save(modelContext: modelContext)
     }
 }
 ```
 
-`ClientEditingStore` es la única fuente de verdad del borrador y de las fases de edición, guardado, éxito y error. Su método `save()` mantiene concurrencia estructurada: quien lo invoca conserva la tarea y la cancelación vuelve a un estado editable; `retry()` reutiliza la misma transición sin duplicar reglas. `ClientDetailViewModel` conserva una responsabilidad diferente al coordinar el éxito hacia navegación. La View lee `viewModel.editingStore.draft` y `viewModel.editingPhase`, sin copiar estado mutable.
+`ClientEditingStore` es la única fuente de verdad del borrador y de las fases de edición, guardado, éxito y error, pero nunca recibe el contexto. `ClientDetailViewModel` conserva la closure, recibe el `ModelContext` de la View en cada intento, mantiene concurrencia estructurada y coordina el éxito hacia navegación. `App` crea esa closure capturando un adaptador `@MainActor` de Data; ese adaptador transforma `Client` a su modelo, guarda localmente y registra la operación de sync. Si guardar requiere una invariante pura, el ViewModel llama primero al UseCase que produce el `Client` o comando validado. La View solo ejecuta `viewModel.save(modelContext:)` o `retry(modelContext:)` y lee el estado, sin copiarlo.
+
+Los `SaveFeatureUseCase` context-free definidos en 04.8 continúan siendo contratos válidos para flujos que no dependen del contexto de una View. No se les añade `ModelContext` ni se ignora el parámetro recibido para llamarlos desde esta frontera: una mutación UI ligada al contexto principal usa la closure contextual específica. La fase que implemente el primer flujo mutador debe justificar cuál de ambas capacidades necesita cada caller y evitar persistir dos veces.
 
 ### Decisión para la vertical actual
 
@@ -196,10 +222,10 @@ Features/Clients/
 |---|---|---|---|
 | 03.1 | Crear entidad, contrato `Repository` y `UseCase` de una vertical mínima. | Caso de uso con repository fake. | Domain no importa UI/Data. |
 | 03.2 | Crear implementación fake y composición en `AppDependencies`. | Resolución de dependencias controladas. | `@Environment` distribuye el contenedor tipado. |
-| 03.3 | Crear ViewModel `@Observable @MainActor`. | Estado inicial, acción, error y cancelación. | ViewModel solo conoce Domain. |
-| 03.4 | Crear Screen y View declarativas. | Sin test UI nativo; validar lógica en ViewModel. | Previews de carga, vacío, contenido y error. |
+| 03.3 | Crear ViewModel `@Observable @MainActor`. | Estado inicial, acción, error y cancelación. | ViewModel conoce Domain y, solo cuando aplica, `ModelContext` más una closure inyectada; nunca un tipo concreto de Data. |
+| 03.4 | Crear Screen y View declarativas. | Sin test UI nativo; validar lógica en ViewModel. | Un `View` por archivo; previews con trait compartido para carga, vacío, contenido, error y Dynamic Type. |
 | 03.5 | Documentar criterio y ejemplo de extracción de Store. | Test de tracking/estado con Store fake o real solo si se introduce. | Sin estado duplicado ni Store ceremonial. |
-| 03.6 | Añadir comprobación de límites y nomenclatura al review. | Fixture que el revisor detecte. | `$review-ios-standards` informa desviaciones. |
+| 03.6 | Añadir comprobaciones especializadas al review. | Fixtures que cada revisor detecte en su ámbito. | `$review-ios-standards` cubre arquitectura y `$review-swiftui-accessibility` cubre Views. |
 
 ## Resultado de fase
 
@@ -207,4 +233,4 @@ Vertical funcional sin `Interactor` ni `ModelLogic`, con límites claros, DI por
 
 ## Cierre obligatorio de cada subfase
 
-Ejecutar [DEVELOPMENT_GUIDE.md](../DEVELOPMENT_GUIDE.md). Cada fila termina con subagente `$review-ios-standards`, corrección y segunda auditoría.
+Ejecutar las puertas especializadas de [DEVELOPMENT_GUIDE.md](../DEVELOPMENT_GUIDE.md).
