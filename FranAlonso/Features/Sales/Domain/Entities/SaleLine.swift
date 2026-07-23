@@ -73,7 +73,7 @@ extension SaleLine {
     ///   - serviceID: The identifier of the source service.
     ///   - serviceName: The service name captured for historical display.
     ///   - quantity: The strictly positive number of service units.
-    ///   - unitPrice: The per-unit price captured in its explicit currency.
+    ///   - unitPrice: The tax-inclusive per-unit price captured in its explicit currency.
     ///   - taxRate: The tax percentage captured for the line.
     ///   - discount: The optional percentage discount captured for the line.
     ///   - linkedProductID: The optional product link captured from the source service.

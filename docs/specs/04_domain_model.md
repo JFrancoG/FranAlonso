@@ -33,6 +33,14 @@ Definir entidades, value objects, políticas, contratos y casos de uso puros, si
 - `PaymentID` y `SaleReversalID` mantienen idempotentes el pago y la anulación
   compensatoria; repetir el mismo identificador con otro payload es conflicto.
 - El pago congela el payload comercial; documento, cierre y anulación compensatoria son metadatos/transiciones posteriores que no reescriben líneas o importes.
+- `Service.price` y `SaleLine.unitPrice` representan el precio final con impuesto
+  incluido. `SaleCalculator` aplica primero el descuento snapshot de cada línea,
+  extrae después base e impuesto y redondea subtotal, descuento, base e impuesto
+  por línea mediante `Money` antes de sumar los agregados.
+- El cálculo vacío exige una moneda explícita y devuelve importes cero; mezclar
+  monedas produce un error de dominio. El descuento global se define en 11.7 y
+  no forma parte de 04.4. Los desgloses calculados son proyecciones efímeras no
+  `Codable`: se reconstruyen siempre desde los snapshots persistidos.
 - Estados finitos mediante enums con associated values, no combinaciones de booleanos.
 - Errores de dominio tipados; Presentation es quien los convierte en texto localizado.
 

@@ -22,7 +22,7 @@ enum ServiceError: Error, Equatable {
     case linkedProductNotAllowed
 }
 
-/// A catalog offering that owns its commercial price, tax rate, and optional discount.
+/// A catalog offering that owns its tax-inclusive price, tax rate, and optional discount.
 ///
 /// Product offerings require a physical inventory link; professional offerings
 /// prohibit one. Both direct construction and decoding enforce this relationship.
