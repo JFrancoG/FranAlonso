@@ -108,6 +108,7 @@ private actor ClientListRepositoryFake: ClientRepository {
 
     private let behavior: Behavior
     private var callCount = 0
+    private var persistedClients: [Client] = []
     private var observationWaiters: [CheckedContinuation<Void, Never>] = []
     private var suspendedContinuation:
         AsyncThrowingStream<[Client], any Error>.Continuation?
@@ -140,6 +141,14 @@ private actor ClientListRepositoryFake: ClientRepository {
                 AsyncThrowingStream<[Client], any Error>.makeStream()
             suspendedContinuation = continuation
             return stream
+        }
+    }
+
+    func saveClient(_ client: Client) async throws {
+        if let index = persistedClients.firstIndex(where: { $0.id == client.id }) {
+            persistedClients[index] = client
+        } else {
+            persistedClients.append(client)
         }
     }
 

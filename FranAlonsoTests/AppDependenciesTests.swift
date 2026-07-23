@@ -105,7 +105,7 @@ struct AppDependenciesTests {
 }
 
 private actor CompositionClientRepositoryFake: ClientRepository {
-    private let clients: [Client]
+    private var clients: [Client]
     private var callCount = 0
 
     init(clients: [Client]) {
@@ -118,6 +118,14 @@ private actor CompositionClientRepositoryFake: ClientRepository {
         return AsyncThrowingStream { continuation in
             continuation.yield(clients)
             continuation.finish()
+        }
+    }
+
+    func saveClient(_ client: Client) async throws {
+        if let index = clients.firstIndex(where: { $0.id == client.id }) {
+            clients[index] = client
+        } else {
+            clients.append(client)
         }
     }
 

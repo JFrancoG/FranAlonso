@@ -69,6 +69,15 @@ Definir entidades, value objects, políticas, contratos y casos de uso puros, si
   actual de cliente/servicios, agrupación diaria, zona horaria o persistencia.
   Esas reglas requieren contexto externo y permanecen en 15.1–15.3 y 15.6; no
   se introduce sincronización remota, recurrencia, notificación, recurso o pago.
+- `ClientRepository`, `ProductRepository`, `ServiceRepository` y
+  `SaleRepository` exponen únicamente las capacidades compartidas que la fase 05
+  necesita para sus cuatro colecciones sincronizadas: observar snapshots
+  materializados localmente y guardar un snapshot por la frontera local-first.
+  Completar un guardado confirma aceptación local, no convergencia remota.
+- Cada capacidad se presenta mediante un UseCase feature-owned. No existe un
+  repositorio CRUD genérico ni se anticipan búsquedas, tombstones, filtros,
+  conflictos o sync. Los contratos de Billing y Appointment permanecen en 13.2
+  y 15.2 porque tienen autoridades y alcance de persistencia diferentes.
 - Estados finitos mediante enums con associated values, no combinaciones de booleanos.
 - Errores de dominio tipados; Presentation es quien los convierte en texto localizado.
 
