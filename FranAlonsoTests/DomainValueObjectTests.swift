@@ -159,6 +159,7 @@ struct EntityIdentifierTests {
         let saleID = SaleID(rawValue: rawValue)
         let saleLineID = SaleLineID(rawValue: rawValue)
         let billingDocumentID = BillingDocumentID(rawValue: rawValue)
+        let billingDocumentRequestID = BillingDocumentRequestID(rawValue: rawValue)
         let appointmentID = AppointmentID(rawValue: rawValue)
 
         #expect(try roundTrip(clientID) == clientID)
@@ -167,6 +168,7 @@ struct EntityIdentifierTests {
         #expect(try roundTrip(saleID) == saleID)
         #expect(try roundTrip(saleLineID) == saleLineID)
         #expect(try roundTrip(billingDocumentID) == billingDocumentID)
+        #expect(try roundTrip(billingDocumentRequestID) == billingDocumentRequestID)
         #expect(try roundTrip(appointmentID) == appointmentID)
     }
 

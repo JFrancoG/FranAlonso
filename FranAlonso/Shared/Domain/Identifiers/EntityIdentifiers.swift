@@ -40,6 +40,11 @@ struct BillingDocumentID: RawRepresentable, Codable, Hashable {
     let rawValue: UUID
 }
 
+/// A stable request identifier used to make billing-number allocation idempotent.
+struct BillingDocumentRequestID: RawRepresentable, Codable, Hashable {
+    let rawValue: UUID
+}
+
 /// A type-safe, stable identifier for an appointment.
 struct AppointmentID: RawRepresentable, Codable, Hashable {
     let rawValue: UUID

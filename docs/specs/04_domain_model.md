@@ -43,6 +43,24 @@ Definir entidades, value objects, políticas, contratos y casos de uso puros, si
   monedas produce un error de dominio. El descuento global se define en 11.7 y
   no forma parte de 04.4. Los desgloses calculados son proyecciones efímeras no
   `Codable`: se reconstruyen siempre desde los snapshots persistidos.
+- `StockWarningPolicy` devuelve un `StockImpact` efímero por cada `SaleLine`
+  enlazada a producto y omite las líneas profesionales. Cada impacto conserva
+  la cantidad disponible antes de esa línea, el consumo y la cantidad
+  proyectada; las líneas del mismo producto se acumulan en su orden de entrada.
+- Una proyección exactamente a cero sigue siendo suficiente. Una proyección
+  negativa activa `requiresWarning` pero se devuelve normalmente y no bloquea
+  la venta. La ausencia de stock conocido para un producto enlazado, una
+  identidad de línea duplicada o un desbordamiento producen errores tipados.
+  Los impactos no son `Codable`: se recalculan contra el inventario vigente.
+  Los movimientos idempotentes y sus compensaciones permanecen en 09 y 12.
+- `BillingDocument` representa una instantánea inmutable de ticket o factura
+  vinculada a una venta. `pendingNumber` conserva un
+  `BillingDocumentRequestID` estable sin inventar numeración definitiva;
+  `numbered` conserva ese mismo identificador junto al resultado de la autoridad.
+- `BillingDocumentNumber` exige un entero positivo y queda ligado a una
+  `BillingDocumentSeries`. Ticket y factura tienen series independientes aunque
+  compartan el mismo valor numérico. Domain no expone incremento, reserva ni
+  conocimiento de Firestore; la transacción remota idempotente permanece en 13.
 - Estados finitos mediante enums con associated values, no combinaciones de booleanos.
 - Errores de dominio tipados; Presentation es quien los convierte en texto localizado.
 
