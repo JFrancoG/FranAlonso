@@ -1,0 +1,7 @@
+// Non-sensitive settings for the Production application variant.
+APP_ENVIRONMENT = production
+APP_DISPLAY_NAME = Fran Alonso
+PRODUCT_BUNDLE_IDENTIFIER = com.plusprojects.FranAlonso
+ASSETCATALOG_COMPILER_APPICON_NAME = franalonso
+FIREBASE_PROJECT_ID = agendapeluqueria-3155f
+FIREBASE_CONFIG_PATH = $(PROJECT_DIR)/Configuration/Firebase/Production/GoogleService-Info.plist

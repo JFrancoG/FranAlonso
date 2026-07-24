@@ -1,0 +1,7 @@
+// Non-sensitive settings for the Develop application variant.
+APP_ENVIRONMENT = develop
+APP_DISPLAY_NAME = Fran DEV
+PRODUCT_BUNDLE_IDENTIFIER = com.plusprojects.FranAlonso.develop
+ASSETCATALOG_COMPILER_APPICON_NAME = franalonso-develop
+FIREBASE_PROJECT_ID = agendapeluqueria-3155f
+FIREBASE_CONFIG_PATH = $(PROJECT_DIR)/Configuration/Firebase/Develop/GoogleService-Info.plist
