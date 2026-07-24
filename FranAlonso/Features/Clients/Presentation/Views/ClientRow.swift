@@ -9,3 +9,8 @@ struct ClientRow: View {
             .frame(maxWidth: .infinity, alignment: .leading)
     }
 }
+
+#Preview(traits: .modifier(AppPreviewModifier())) {
+    ClientRow(client: AppPreviewFixtures.standard.primaryClient)
+        .padding()
+}

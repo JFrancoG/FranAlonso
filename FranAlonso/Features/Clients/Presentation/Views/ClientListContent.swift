@@ -40,37 +40,20 @@ struct ClientListContent: View {
     }
 }
 
-#Preview("Loading") {
+#Preview("Loading", traits: .modifier(AppPreviewModifier())) {
     ClientListContent(state: .loading)
 }
 
-#Preview("Empty") {
+#Preview("Empty", traits: .modifier(AppPreviewModifier())) {
     ClientListContent(state: .empty)
 }
 
-#Preview("Content") {
+#Preview("Content", traits: .modifier(AppPreviewModifier())) {
     ClientListContent(
-        state: .content([
-            Client.draft(
-                id: ClientID(
-                    rawValue: UUID(
-                        uuidString: "AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE"
-                    )!
-                ),
-                displayName: "Ana Alonso"
-            ),
-            Client.draft(
-                id: ClientID(
-                    rawValue: UUID(
-                        uuidString: "11111111-2222-3333-4444-555555555555"
-                    )!
-                ),
-                displayName: "María de los Ángeles Fernández"
-            )
-        ])
+        state: .content(AppPreviewFixtures.standard.clients)
     )
 }
 
-#Preview("Error") {
+#Preview("Error", traits: .modifier(AppPreviewModifier())) {
     ClientListContent(state: .failed)
 }

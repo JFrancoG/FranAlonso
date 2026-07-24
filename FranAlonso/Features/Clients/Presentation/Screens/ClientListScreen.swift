@@ -20,3 +20,13 @@ extension ClientListScreen {
         )
     }
 }
+
+#Preview(traits: .modifier(AppPreviewModifier())) {
+    NavigationStack {
+        ClientListScreen(
+            observeClients: AppDependencies.preview(
+                clients: AppPreviewFixtures.standard.clients
+            ).observeClients
+        )
+    }
+}

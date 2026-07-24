@@ -2,8 +2,8 @@ import Foundation
 import Testing
 @testable import FranAlonso
 
-@Suite("Client DTO and mapper")
-struct ClientMapperTests {
+@Suite("Client DTO conversions")
+struct ClientDTOConversionTests {
     @Test("Decodes a complete active client fixture")
     func decodesACompleteActiveClientFixture() throws {
         let dto = try decodeClientDTO(
@@ -154,8 +154,8 @@ struct ClientMapperTests {
         ]
 
         for client in clients {
-            let dto = ClientMapper.dto(from: client)
-            let mappedClient = try ClientMapper.domain(from: dto)
+            let dto = ClientDTO(client)
+            let mappedClient = try dto.toDomain()
 
             #expect(mappedClient == client)
         }
@@ -165,8 +165,8 @@ struct ClientMapperTests {
     func rejectsAnInvalidClientIdentifier() {
         let dto = completeClientDTO(id: "not-a-uuid")
 
-        #expect(throws: ClientMapperError.invalidIdentifier("not-a-uuid")) {
-            try ClientMapper.domain(from: dto)
+        #expect(throws: ClientMappingError.invalidIdentifier("not-a-uuid")) {
+            try dto.toDomain()
         }
     }
 
@@ -175,11 +175,11 @@ struct ClientMapperTests {
         let missingConsentDTO = completeClientDTO(consentReference: nil)
         let emptyConsentDTO = completeClientDTO(consentReference: " \n ")
 
-        #expect(throws: ClientMapperError.missingConsentReference) {
-            try ClientMapper.domain(from: missingConsentDTO)
+        #expect(throws: ClientMappingError.missingConsentReference) {
+            try missingConsentDTO.toDomain()
         }
         #expect(throws: ClientConsentReferenceError.empty) {
-            try ClientMapper.domain(from: emptyConsentDTO)
+            try emptyConsentDTO.toDomain()
         }
     }
 
@@ -188,8 +188,8 @@ struct ClientMapperTests {
         for status in [ClientStatusDTO.draft, .consentPendingUpload] {
             let dto = completeClientDTO(status: status)
 
-            #expect(throws: ClientMapperError.unexpectedConsentReference(status)) {
-                try ClientMapper.domain(from: dto)
+            #expect(throws: ClientMappingError.unexpectedConsentReference(status)) {
+                try dto.toDomain()
             }
         }
     }

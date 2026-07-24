@@ -8,7 +8,7 @@ struct ModelContainerFactoryTests {
     @Test("In-memory container persists explicit CRUD saves")
     func inMemoryContainerPersistsExplicitCRUDSaves() throws {
         let schema = Schema([PersistenceFixtureModel.self])
-        let container = try ModelContainerFactory.makeInMemory(for: schema)
+        let container = try ModelContainer.inMemory(for: schema)
         let configuration = try #require(container.configurations.first)
 
         #expect(container.configurations.count == 1)

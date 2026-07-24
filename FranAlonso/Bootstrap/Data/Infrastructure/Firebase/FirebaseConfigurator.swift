@@ -1,12 +1,11 @@
 import FirebaseCore
 
+/// Configures the default Firebase app once when local options are available.
 @MainActor
-enum FirebaseConfigurator {
-    static func configure() {
-        guard FirebaseApp.app() == nil, FirebaseOptions.defaultOptions() != nil else {
-            return
-        }
-
-        FirebaseApp.configure()
+func configureFirebase() {
+    guard FirebaseApp.app() == nil, FirebaseOptions.defaultOptions() != nil else {
+        return
     }
+
+    FirebaseApp.configure()
 }

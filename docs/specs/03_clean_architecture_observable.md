@@ -204,7 +204,9 @@ Features/Clients/
 │   ├── DTOs/ClientDTO.swift
 │   ├── Models/ClientModel.swift
 │   ├── DataSources/
-│   ├── Mappers/ClientMapper.swift
+│   ├── Mappers/
+│   │   ├── ClientDTO+Domain.swift
+│   │   └── ClientModel+Domain.swift
 │   ├── Repositories/DefaultClientRepository.swift
 │   └── Sync/
 │       ├── ClientSyncEngine.swift

@@ -21,15 +21,15 @@ private struct DocumentTemplatePDFPreview: UIViewRepresentable {
     }
 }
 
-#Preview("Consentimiento") {
+#Preview("Consentimiento", traits: .modifier(AppPreviewModifier())) {
     DocumentTemplatePDFPreview(resource: .clientConsent)
 }
 
-#Preview("Ticket A4") {
+#Preview("Ticket A4", traits: .modifier(AppPreviewModifier())) {
     DocumentTemplatePDFPreview(resource: .billingTicketA4)
 }
 
-#Preview("Factura A4") {
+#Preview("Factura A4", traits: .modifier(AppPreviewModifier())) {
     DocumentTemplatePDFPreview(resource: .billingInvoiceA4)
 }
 #endif

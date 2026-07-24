@@ -37,13 +37,14 @@ DefaultRepository → LocalDataSource / RemoteDataSource / SyncEngine
 ```
 
 - `Domain` contiene entidades, value objects, contratos de repositorio, casos de uso y políticas puras. No importa SwiftUI, SwiftData, Firebase, UIKit ni detalles de red.
-- `Data` contiene DTO, modelos SwiftData, data sources, mappers, implementaciones de repositorio, actores de persistencia y sincronización.
+- `Data` contiene DTO, modelos SwiftData, sus conversiones, data sources, mappers justificados, implementaciones de repositorio, actores de persistencia y sincronización.
 - `Presentation` contiene pantallas, vistas, ViewModels y Stores opcionales. No importa Firebase. Puede importar SwiftData únicamente para obtener `@Environment(\.modelContext)` en una View y recibir ese contexto como parámetro efímero en la función `@MainActor` pertinente del ViewModel; no expone otros tipos de persistencia.
 - `App` es el composition root. Construye implementaciones y distribuye dependencias mediante `@Environment` e inicializadores.
 - Cada pantalla mantiene un `ViewModel` `@Observable @MainActor` como fachada.
 - Los tipos de referencia observables propios de Presentation usan el macro `@Observable`. No se introducen `ObservableObject`, `@Published`, `@StateObject` ni `@ObservedObject`; la vista conserva el modelo con `@State` y usa `@Bindable` solo cuando necesita proyectar bindings.
 - Un Store se extrae únicamente cuando una responsabilidad cohesiva hace crecer el ViewModel, existe reutilización real o aporta una prueba aislada útil. No se duplica estado entre Store y ViewModel.
 - No se crean protocolos, carpetas o Stores vacíos “por si acaso”.
+- Una conversión concreta y determinista sin dependencias, configuración, versionado, política ni estrategias intercambiables vive en una extensión del DTO o modelo propiedad de Data. La reconstrucción usa `toDomain()` y el sentido inverso un inicializador de conversión sin etiqueta cuando preserva el valor. Domain no declara APIs que conozcan DTO o modelos persistentes. Solo se introduce un `Mapper` cuando posee una de esas responsabilidades reales y sus call sites la demuestran.
 - Una View solo representa estado y llama acciones semánticas del ViewModel. No valida, filtra, calcula, persiste, consulta red ni decide negocio. Las invariantes puras permanecen en Domain/UseCases.
 - Para insertar, actualizar o borrar mediante el contexto principal de SwiftData, la View captura `@Environment(\.modelContext)` y lo pasa a la función del ViewModel. La View no llama operaciones del contexto ni lo almacena; el ViewModel no lo conserva ni lo cruza a otro actor.
 - Presentation expresa esa mutación como una closure inyectada `@MainActor` con una entrada de Domain y `ModelContext`. `App` la compone capturando un adaptador de Data; Data ejecuta mapping, operaciones del contexto y política local-first. Domain nunca recibe el contexto, Data no depende de Presentation y el ViewModel no conoce la implementación concreta.
@@ -72,7 +73,7 @@ FranAlonso/
 │       │   ├── DTOs/
 │       │   ├── Models/
 │       │   ├── DataSources/
-│       │   ├── Mappers/
+│       │   ├── Mappers/      # Extensiones de conversión o Mapper justificado
 │       │   ├── Repositories/
 │       │   └── Sync/
 │       └── Presentation/
@@ -100,7 +101,8 @@ FranAlonso/
 | DTO Firestore | `ClientDTO.swift` |
 | Modelo SwiftData | `ClientModel.swift` |
 | Fuente local/remota | `ClientLocalDataSource.swift` / `ClientRemoteDataSource.swift` |
-| Mapper | `ClientMapper.swift` |
+| Conversión concreta | `ClientDTO+Domain.swift` / `ClientModel+Domain.swift` |
+| Mapper con dependencias o política | `VersionedClientMapper.swift` |
 | Actor SwiftData | `ClientPersistenceActor.swift` |
 | Sincronización | `ClientSyncEngine.swift` / `ClientSyncPolicy.swift` |
 | Fachada de pantalla | `ClientListViewModel.swift` |
@@ -129,6 +131,7 @@ Evitar `Interactor`, `ModelLogic`, `LocalModel`, `SyncService`, `Manager`, `Help
 - `nonisolated` se usa solo cuando sea semánticamente seguro, nunca para silenciar al compilador.
 - Los `struct` y `enum` internos confían en la inferencia de `Sendable` solo cuando todas sus propiedades almacenadas o valores asociados lo permiten. Los actores conforman implícitamente y nunca repiten la declaración. Una conformidad explícita o condicional solo se añade cuando el compilador la exige en una frontera pública o genérica, con el motivo documentado y sin ocultar estado no enviable.
 - El código propio se diseña desde las construcciones nativas de Swift, su biblioteca estándar y sus API Design Guidelines; no traslada mecánicamente patrones ceremoniales de otros lenguajes. Toda abstracción demuestra en su declaración y call sites una responsabilidad, invariante, frontera o reutilización real, y se prefiere la forma Swift directa cuando expresa el mismo contrato. Las listas de conformidad declaran solo el protocolo más específico y no repiten uno heredado, como `Equatable` junto a `Hashable`, salvo exigencia documentada de una frontera condicional o genérica.
+- No se usa un `enum` propio sin casos meramente como namespace de miembros estáticos; se reconoce ese patrón cuando el tipo solo aparece como calificador en llamadas `Tipo.miembro`. La alternativa se elige por semántica: comportamiento en el tipo propietario o su extensión, un servicio o valor real usado en la composición, o una declaración libre con el acceso más restringido que permita su uso cuando no existe propietario. Un enum sin casos sigue siendo válido si su conjunto imposible de valores es el contrato modelado. No se sustituye mecánicamente por otro tipo sin estado.
 - Todo código asíncrono o concurrente propio usa Swift Concurrency de extremo a extremo: `async`/`await`, tareas hijas estructuradas, actores o actores globales, `AsyncSequence`, cancelación cooperativa y continuaciones comprobadas únicamente en adaptadores aislados. No se introducen GCD directo, grupos o semáforos de Dispatch, `OperationQueue` ni concurrencia basada primero en callbacks.
 - Queda prohibido añadir explícitamente `@preconcurrency`, `@unchecked Sendable`, `nonisolated(unsafe)` o cualquier salida insegura equivalente para conseguir que compile la concurrencia estricta. Si las fuentes primarias actuales y todas las alternativas estáticamente seguras siguen sin ofrecer solución, se detiene la implementación y se propone la excepción exacta, alternativas descartadas, invariante de propiedad o sincronización, alcance, ADR y tests focalizados; se espera aprobación explícita antes de escribirla.
 - No se usan APIs deprecated o no disponibles en el SDK activo. Por política del proyecto tampoco se introducen en código propio mecanismos directos del runtime Objective-C ni alternativas legacy de Foundation/Dispatch cuando exista reemplazo Swift compatible, incluidos `@objc` explícito, `Selector`/`#selector`, observación de `NotificationCenter` por selector, GCD/`DispatchQueue`, `DateFormatter` y `NSRegularExpression`. Esta lista expresa una prohibición del proyecto, no que todos esos símbolos estén deprecated. Cualquier uso inevitable requiere justificación con fuentes primarias y aprobación explícita previa.
@@ -142,6 +145,7 @@ Evitar `Interactor`, `ModelLogic`, `LocalModel`, `SyncService`, `Manager`, `Help
 
 - [`Sendable` y conformidad implícita de valores](https://github.com/swiftlang/swift-evolution/blob/main/proposals/0302-concurrent-value-and-concurrent-closures.md) y [actores](https://github.com/swiftlang/swift-evolution/blob/main/proposals/0306-actors.md).
 - [`Hashable` hereda de `Equatable`](https://developer.apple.com/documentation/swift/hashable) y las [API Design Guidelines de Swift](https://www.swift.org/documentation/api-design-guidelines/) priorizan claridad en el punto de uso y ausencia de información redundante.
+- [Enumeraciones](https://docs.swift.org/swift-book/documentation/the-swift-programming-language/enumerations/) modelan conjuntos de valores relacionados; [extensiones](https://docs.swift.org/swift-book/documentation/the-swift-programming-language/extensions/) y [funciones](https://docs.swift.org/swift-book/documentation/the-swift-programming-language/functions/) permiten situar el comportamiento en su propietario semántico o en el ámbito de archivo cuando no existe uno.
 - [Migración incremental y `@preconcurrency`](https://github.com/swiftlang/swift-evolution/blob/main/proposals/0337-support-incremental-migration-to-concurrency-checking.md) y [`nonisolated(unsafe)`](https://github.com/swiftlang/swift-evolution/blob/main/proposals/0412-strict-concurrency-for-global-variables.md).
 - [Swift Concurrency](https://docs.swift.org/swift-book/documentation/the-swift-programming-language/concurrency/) y [concurrencia estructurada](https://github.com/swiftlang/swift-evolution/blob/main/proposals/0304-structured-concurrency.md).
 - [Migración de `ObservableObject` al macro `@Observable`](https://developer.apple.com/documentation/swiftui/migrating-from-the-observable-object-protocol-to-the-observable-macro).

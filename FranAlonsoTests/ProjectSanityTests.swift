@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftData
 import Testing
 @testable import FranAlonso
 
@@ -13,16 +14,23 @@ import Testing
 #error("FranAlonsoTests must compile in Swift 6 language mode")
 #endif
 
-private enum DefaultIsolationFixture {
-    static let value = 42
+private func defaultIsolationFixture() -> Int {
+    42
 }
 
 @Suite("Project sanity")
 @MainActor
 struct ProjectSanityTests {
     @Test("Application composition root can be created")
-    func applicationCompositionRootCanBeCreated() {
-        _ = FranAlonsoApp()
+    func applicationCompositionRootCanBeCreated() throws {
+        let modelContainer = try ModelContainer.inMemory(
+            for: Schema.franAlonso
+        )
+
+        _ = FranAlonsoApp(
+            composing: modelContainer,
+            dependencies: .preview()
+        )
     }
 }
 
@@ -31,7 +39,7 @@ struct ConcurrencyConfigurationTests {
     @Test("Default isolation remains nonisolated")
     func defaultIsolationRemainsNonisolated() async {
         let value = await Task { @concurrent in
-            DefaultIsolationFixture.value
+            defaultIsolationFixture()
         }.value
 
         #expect(value == 42)

@@ -6,12 +6,15 @@ All notable changes to this project are documented in this file.
 
 ### Changed
 
+- 2026-07-24 | ♻️ refactor(data): move stateless Clients mapping onto Data-owned types
+- 2026-07-24 | ♻️ refactor(swift): replace case-less enum namespaces with semantic APIs
 - 2026-07-23 | ♻️ refactor(swift): simplify protocol conformances
 - 2026-07-23 | ♻️ refactor(domain): name draft client construction
 
 ### Added
 
-- 2026-07-24 | ✨ feat(data): add the Clients DTO and mapper boundary
+- 2026-07-24 | ✨ feat(data): add local Clients persistence and shared previews
+- 2026-07-24 | ✨ feat(data): add the Clients DTO conversion boundary
 - 2026-07-23 | ✨ feat(domain): define feature repository contracts
 - 2026-07-23 | ✨ feat(domain): model appointment lifecycle
 - 2026-07-23 | ✨ feat(domain): model billing document sequences

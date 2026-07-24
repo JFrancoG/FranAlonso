@@ -18,21 +18,6 @@ struct ContentView: View {
     }
 }
 
-#Preview {
+#Preview(traits: .modifier(AppPreviewModifier())) {
     ContentView()
-        .environment(
-            \.appDependencies,
-            AppDependencies.preview(
-                clients: [
-                    Client.draft(
-                        id: ClientID(
-                            rawValue: UUID(
-                                uuidString: "AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE"
-                            )!
-                        ),
-                        displayName: "Ana Alonso"
-                    )
-                ]
-            )
-        )
 }

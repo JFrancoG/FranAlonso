@@ -16,6 +16,7 @@
 - [ ] Los imports Firebase permanecen en Data/Infrastructure; modelos, mappers y políticas SwiftData permanecen en Data, con la composición del `ModelContainer` limitada a App y `ModelContext` como única excepción efímera en Presentation.
 - [ ] Backend Firebase y telemetría dependen de contratos de sustitución independientes.
 - [ ] Nombres y sufijos expresan responsabilidad.
+- [ ] Las conversiones concretas, deterministas y sin dependencias viven en extensiones de los tipos Data (`toDomain()` e inicializador inverso); todo `Mapper` conserva una responsabilidad real documentada y Domain no conoce DTO ni modelos persistentes.
 
 ## Datos, concurrencia y producto
 
@@ -35,6 +36,7 @@
 
 - [ ] API moderna compatible con deployment target real.
 - [ ] Declaraciones y call sites usan construcciones nativas de Swift; no hay patrones ceremoniales trasladados, abstracciones sin responsabilidad demostrada ni protocolos heredados repetidos en una lista de conformidad.
+- [ ] Ningún `enum` propio sin casos se usa solo como namespace estático; los enums sin valores posibles modelan un contrato real y cualquier sustitución se eligió por semántica, sin cambiarlo mecánicamente por otro tipo vacío.
 - [ ] Sin APIs deprecated ni usos propios de `@objc`, selectors, `NotificationCenter` por selector, `DateFormatter`, `NSRegularExpression` u otras elecciones Objective-C/legacy no aprobadas.
 - [ ] Presentation usa `@Observable`; no introduce `ObservableObject`, `@Published`, `@StateObject` ni `@ObservedObject`.
 - [ ] Las APIs del asistente son estables para iOS/Xcode 26; disponibilidad, permisos y fallback manual están cubiertos sin fallback cloud o background mode.
