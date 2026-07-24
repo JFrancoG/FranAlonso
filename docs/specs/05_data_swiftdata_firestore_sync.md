@@ -49,6 +49,14 @@ Sync:        FeatureSyncEngine + FeatureSyncPolicy
 | 05.10 | Replicar la vertical en Clients, Products, Services y Sales. | Tests de política específicos por colección. | No abstraer hasta existir duplicación real. |
 | 05.11 | Probar migraciones de esquema publicadas. | Datos representativos en contenedor aislado. | Sin pérdida de datos locales o metadatos. |
 
+## Evidencia 05.1
+
+- Clients es la primera colección porque ya dispone de entidad, estados de ciclo de vida y contrato de Repository en Domain.
+- `ClientDTO`, `BillingAddressDTO` y `ClientStatusDTO` forman una frontera `Codable` neutral: no importan Firebase, SwiftData ni metadatos de sincronización.
+- `ClientMapper` conserva la identidad UUID canónica, la dirección opcional y las invariantes de consentimiento de cada estado. Los fallos semánticos siguen siendo errores tipados de Domain y los fallos estructurales conservan el `DecodingError` y su `codingPath` nativos.
+- La revisión independiente de la propuesta no encontró hallazgos y el propietario aprobó el alcance exacto antes del código. RED falló por los símbolos DTO/mapper ausentes; GREEN pasa 9/9 pruebas nuevas y 6/6 pruebas Domain afectadas. El plan completo pasa 142/142 desde 129 declaraciones, el build Xcode MCP termina en 8.748 segundos sin avisos y los tres archivos nuevos tienen 0 diagnósticos.
+- Los chequeos estáticos no encuentran imports de infraestructura/UI, `JSONSerialization`, escapes inseguros de concurrencia, APIs de observación/GCD heredadas ni problemas de espacios. La auditoría final de arquitectura/data/concurrencia revisó el diff completo sin hallazgos; la auditoría SwiftUI/accesibilidad no aplica. La subfase 05.1 queda completa y la siguiente puerta es la propuesta 05.2.
+
 La numeración remota de tickets y facturas se implementa en la fase 13 bajo ADR propio; no forma parte de un SyncEngine genérico.
 
 ## Resultado de fase

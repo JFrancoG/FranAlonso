@@ -11,6 +11,7 @@ All notable changes to this project are documented in this file.
 
 ### Added
 
+- 2026-07-24 | ✨ feat(data): add the Clients DTO and mapper boundary
 - 2026-07-23 | ✨ feat(domain): define feature repository contracts
 - 2026-07-23 | ✨ feat(domain): model appointment lifecycle
 - 2026-07-23 | ✨ feat(domain): model billing document sequences
