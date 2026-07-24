@@ -13,6 +13,7 @@ All notable changes to this project are documented in this file.
 
 ### Added
 
+- 2026-07-24 | ✨ feat(data): isolate Clients persistence with a model actor
 - 2026-07-24 | ✨ feat(data): add local Clients persistence and shared previews
 - 2026-07-24 | ✨ feat(data): add the Clients DTO conversion boundary
 - 2026-07-23 | ✨ feat(domain): define feature repository contracts
@@ -28,6 +29,7 @@ All notable changes to this project are documented in this file.
 
 ### Documentation
 
+- 2026-07-24 | 📝 docs(progress): record phase 05.3 closure
 - 2026-07-24 | 📝 docs(progress): record phase 05.2 delivery
 - 2026-07-23 | 📝 docs(governance): split review gates
 - 2026-07-23 | 📝 docs(delivery): record phase four integration
