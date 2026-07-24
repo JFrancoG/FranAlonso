@@ -13,6 +13,7 @@ All notable changes to this project are documented in this file.
 
 ### Added
 
+- 2026-07-24 | ✨ feat(data): define Clients remote contract
 - 2026-07-24 | ✨ feat(data): isolate Clients persistence with a model actor
 - 2026-07-24 | ✨ feat(data): add local Clients persistence and shared previews
 - 2026-07-24 | ✨ feat(data): add the Clients DTO conversion boundary
