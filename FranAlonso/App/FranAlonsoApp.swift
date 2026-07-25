@@ -9,7 +9,6 @@ import SwiftData
 import SwiftUI
 
 @main
-@MainActor
 struct FranAlonsoApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
     private let modelContainer: ModelContainer

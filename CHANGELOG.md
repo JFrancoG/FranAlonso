@@ -6,6 +6,7 @@ All notable changes to this project are documented in this file.
 
 ### Changed
 
+- 2026-07-25 | ♻️ refactor(app): clarify isolation boundaries
 - 2026-07-24 | ♻️ refactor(data): move stateless Clients mapping onto Data-owned types
 - 2026-07-24 | ♻️ refactor(swift): replace case-less enum namespaces with semantic APIs
 - 2026-07-23 | ♻️ refactor(swift): simplify protocol conformances
