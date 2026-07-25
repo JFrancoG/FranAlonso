@@ -1,10 +1,27 @@
+import SwiftData
+
 struct AppDependencies {
     let observeClients: ObserveClientsUseCase
     let telemetryReporter: TelemetryReporter
 
-    static func live() -> AppDependencies {
-        AppDependencies(
-            clientRepository: InMemoryClientRepository(),
+    /// Creates production dependencies over the supplied local source of truth.
+    ///
+    /// The Clients Repository remains local-only; Firestore composition begins with the
+    /// first SyncEngine in subphase 05.7.
+    ///
+    /// - Parameter modelContainer: The application container shared with SwiftUI.
+    /// - Returns: Dependencies backed by durable Clients persistence and live telemetry.
+    static func live(modelContainer: ModelContainer) -> AppDependencies {
+        let observationSignal = ClientObservationSignal()
+        let clientRepository = DefaultClientRepository(
+            persistenceActor: ClientPersistenceActor(
+                modelContainer: modelContainer
+            ),
+            observationSignal: observationSignal
+        )
+
+        return AppDependencies(
+            clientRepository: clientRepository,
             analyticsDataSource: FirebaseAnalyticsDataSource(),
             crashDataSource: FirebaseCrashDataSource()
         )

@@ -25,12 +25,12 @@ struct FranAlonsoApp: App {
 
 extension FranAlonsoApp {
     init() {
-        dependencies = .live()
-
         do {
-            modelContainer = try ModelContainer.production(
+            let container = try ModelContainer.production(
                 for: Schema.franAlonso
             )
+            modelContainer = container
+            dependencies = .live(modelContainer: container)
         } catch {
             fatalError("Unable to create the production model container: \(error)")
         }

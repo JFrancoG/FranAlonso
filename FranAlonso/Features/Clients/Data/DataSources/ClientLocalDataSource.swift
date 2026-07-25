@@ -18,22 +18,72 @@ extension ClientLocalDataSource {
         return try context.fetch(descriptor).map { try $0.toDomain() }
     }
 
-    /// Inserts or replaces a client by stable identity and saves the caller's context explicitly.
+    /// Materializes a client without creating a pending local mutation.
     ///
-    /// This is the shared local write primitive for later repository, contextual-adapter,
-    /// and persistence-actor composition.
+    /// This route supports preview seeding and later reconciled remote materialization. User
+    /// mutations use `persistPendingUpsert(_:operationID:in:)` instead.
     /// - Parameters:
     ///   - client: The Domain value to persist.
     ///   - context: The caller-owned context used for this operation only.
     /// - Throws: A SwiftData fetch or save error.
     func upsert(_ client: Client, in context: ModelContext) throws {
-        if let model = try model(for: client.id, in: context) {
-            model.update(from: client)
-        } else {
-            context.insert(ClientModel(client))
+        try materialize(client, in: context)
+        try saveChanges(in: context)
+    }
+
+    /// Commits a client and one idempotent pending upsert in the same save boundary.
+    ///
+    /// An identical snapshot keeps its existing retry pair. A semantically changed snapshot
+    /// replaces the operation identifier and payload while retaining one row for the client.
+    /// The complete observable snapshot is validated before saving; any failure rolls back
+    /// the attempted client and pending-operation changes.
+    ///
+    /// - Parameters:
+    ///   - client: The validated Domain snapshot to persist.
+    ///   - operationID: The identifier assigned only when the pending payload changes.
+    ///   - context: The caller-owned context used for this operation only.
+    /// - Throws: `ClientLocalDataSourceError.contextHasUncommittedChanges` when the
+    ///   caller's context is already dirty, or a mapping, encoding, fetch or save error.
+    func persistPendingUpsert(
+        _ client: Client,
+        operationID: UUID,
+        in context: ModelContext
+    ) throws {
+        guard !context.hasChanges else {
+            throw ClientLocalDataSourceError.contextHasUncommittedChanges
         }
 
-        try saveChanges(in: context)
+        do {
+            let payload = ClientDTO(client)
+
+            if let pendingUpsert = try pendingUpsert(
+                for: client.id,
+                in: context
+            ) {
+                if try pendingUpsert.decodePayload() != payload {
+                    try pendingUpsert.replaceRetryPair(
+                        operationID: operationID,
+                        payload: payload
+                    )
+                }
+            } else {
+                context.insert(
+                    try ClientPendingUpsertModel(
+                        clientID: client.id.rawValue,
+                        operationID: operationID,
+                        payload: payload
+                    )
+                )
+            }
+
+            try materialize(client, in: context)
+            // Prevent a mapping failure from surfacing after this write is already durable.
+            _ = try fetchAll(in: context)
+            try saveChanges(in: context)
+        } catch {
+            context.rollback()
+            throw error
+        }
     }
 
     /// Deletes a client by stable identity and treats an already-absent client as success.
@@ -65,6 +115,31 @@ extension ClientLocalDataSource {
         return try context.fetch(descriptor).first
     }
 
+    private func pendingUpsert(
+        for id: ClientID,
+        in context: ModelContext
+    ) throws -> ClientPendingUpsertModel? {
+        let rawIdentifier = id.rawValue
+        var descriptor = FetchDescriptor<ClientPendingUpsertModel>(
+            predicate: #Predicate { operation in
+                operation.clientID == rawIdentifier
+            }
+        )
+        descriptor.fetchLimit = 1
+        return try context.fetch(descriptor).first
+    }
+
+    private func materialize(
+        _ client: Client,
+        in context: ModelContext
+    ) throws {
+        if let model = try model(for: client.id, in: context) {
+            model.update(from: client)
+        } else {
+            context.insert(ClientModel(client))
+        }
+    }
+
     private func saveChanges(in context: ModelContext) throws {
         guard context.hasChanges else {
             return
@@ -72,4 +147,10 @@ extension ClientLocalDataSource {
 
         try context.save()
     }
+}
+
+/// Failures that protect the boundary of a caller-owned Clients context.
+enum ClientLocalDataSourceError: Error, Equatable {
+    /// The caller must resolve its existing changes before starting an atomic upsert.
+    case contextHasUncommittedChanges
 }

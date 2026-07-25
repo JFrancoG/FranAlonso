@@ -1,3 +1,4 @@
+import Foundation
 import SwiftData
 
 /// Serializes Clients persistence on a SwiftData-owned model context.
@@ -22,6 +23,23 @@ actor ClientPersistenceActor {
     /// - Throws: A SwiftData fetch or save error.
     func upsert(_ client: Client) throws {
         try dataSource.upsert(client, in: modelContext)
+    }
+
+    /// Commits a client and one pending remote upsert on this actor's context.
+    ///
+    /// - Parameters:
+    ///   - client: The detached Domain value to persist.
+    ///   - operationID: The identifier assigned if the pending payload changes.
+    /// - Throws: A mapping, encoding, SwiftData fetch or SwiftData save error.
+    func persistPendingUpsert(
+        _ client: Client,
+        operationID: UUID
+    ) throws {
+        try dataSource.persistPendingUpsert(
+            client,
+            operationID: operationID,
+            in: modelContext
+        )
     }
 
     /// Deletes a client by stable identity and treats an absent client as success.
