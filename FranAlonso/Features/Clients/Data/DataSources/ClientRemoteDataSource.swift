@@ -12,13 +12,16 @@ enum ClientRemoteDataSourceError: Error, Equatable {
 
 /// Performs server-backed Clients transport operations without exposing provider SDK types.
 protocol ClientRemoteDataSource: Sendable {
-    /// Requests complete versioned Clients records from the server.
+    /// Requests the bootstrap or incremental Clients batch after a durable cursor.
     ///
-    /// - Returns: Provider-neutral records obtained without a cache fallback.
+    /// - Parameter cursor: Nil for the legacy-inclusive bootstrap, otherwise the last commit.
+    /// - Returns: Provider-neutral records and their next durable cursor.
     /// - Throws: A stable transport error or a decoding error with its coding path.
-    func fetchAll() async throws -> [ClientRemoteRecord]
+    func fetchChanges(
+        after cursor: ClientSyncCursor?
+    ) async throws -> ClientRemoteChangeBatch
 
-    /// Applies one immutable Clients operation under its causal precondition.
+    /// Applies one immutable Clients upsert or deletion under its causal precondition.
     ///
     /// Offline queuing is not successful completion. The result is acknowledged only after
     /// the provider transaction commits or proves the exact operation already authoritative.
@@ -26,7 +29,7 @@ protocol ClientRemoteDataSource: Sendable {
     /// - Parameter operation: The durable operation and remote base to evaluate.
     /// - Returns: The applied, idempotent or conflict outcome observed transactionally.
     /// - Throws: A stable transport, decoding or sync-metadata error.
-    func upsert(
-        _ operation: ClientPendingUpsert
-    ) async throws -> ClientRemoteUpsertResult
+    func apply(
+        _ operation: ClientPendingOperation
+    ) async throws -> ClientRemoteMutationResult
 }

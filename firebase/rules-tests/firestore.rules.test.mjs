@@ -92,10 +92,14 @@ for (const root of deniedNewRoots) {
   for (const context of ["unauthenticated", "authenticated"]) {
     test(`denies ${context} access to the new ${root} namespace`, async () => {
       const existingReferencePath = `${root}/collections/clients/existing-client`;
+      const syncMetadataPath = `${root}/collections/syncMetadata/clients`;
 
       await testEnvironment.withSecurityRulesDisabled(async (adminContext) => {
         await setDoc(doc(adminContext.firestore(), existingReferencePath), {
           revision: 1,
+        });
+        await setDoc(doc(adminContext.firestore(), syncMetadataPath), {
+          changeSequence: 1,
         });
       });
 
@@ -103,6 +107,7 @@ for (const root of deniedNewRoots) {
         ? testEnvironment.authenticatedContext("rules-test-owner").firestore()
         : testEnvironment.unauthenticatedContext().firestore();
       const existingReference = doc(firestore, existingReferencePath);
+      const syncMetadataReference = doc(firestore, syncMetadataPath);
       const newReference = doc(
         firestore,
         root,
@@ -118,6 +123,17 @@ for (const root of deniedNewRoots) {
       await assertFails(setDoc(newReference, { revision: 1 }));
       await assertFails(updateDoc(existingReference, { revision: 2 }));
       await assertFails(deleteDoc(existingReference));
+      await assertFails(getDoc(syncMetadataReference));
+      await assertFails(
+        getDocs(collection(firestore, root, "collections", "syncMetadata")),
+      );
+      await assertFails(
+        setDoc(syncMetadataReference, { changeSequence: 2 }),
+      );
+      await assertFails(
+        updateDoc(syncMetadataReference, { changeSequence: 2 }),
+      );
+      await assertFails(deleteDoc(syncMetadataReference));
     });
   }
 }

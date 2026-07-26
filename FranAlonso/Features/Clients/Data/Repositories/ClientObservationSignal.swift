@@ -1,11 +1,16 @@
 import Foundation
 
+/// Invalidates observers after a known Clients local commit.
+protocol ClientChangeSignaling: Sendable {
+    func publishChange() async
+}
+
 /// Signals committed local Clients changes to active repository observations.
 ///
 /// Signals carry no snapshot. Every observer reloads SwiftData after receiving one, so
 /// delayed or reordered actor messages cannot move observable state behind the local source
 /// of truth. A newest-only buffer coalesces redundant invalidations for slow observers.
-actor ClientObservationSignal {
+actor ClientObservationSignal: ClientChangeSignaling {
     private typealias Continuation = AsyncStream<Void>.Continuation
 
     private var continuations: [UUID: Continuation] = [:]

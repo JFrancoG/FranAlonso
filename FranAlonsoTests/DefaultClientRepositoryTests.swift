@@ -43,8 +43,10 @@ struct DefaultClientRepositoryTests {
         let schema = Schema([
             ClientModel.self,
             ClientPendingUpsertModel.self,
+            ClientPendingDeleteModel.self,
             ClientRemoteStateModel.self,
-            ClientSyncConflictModel.self
+            ClientSyncConflictModel.self,
+            ClientSyncCursorModel.self
         ])
         let directoryURL = FileManager.default.temporaryDirectory.appending(
             path: "FranAlonso-ReadOnly-\(UUID())",
@@ -491,8 +493,10 @@ private func makeRepositoryContainer() throws -> ModelContainer {
         for: Schema([
             ClientModel.self,
             ClientPendingUpsertModel.self,
+            ClientPendingDeleteModel.self,
             ClientRemoteStateModel.self,
-            ClientSyncConflictModel.self
+            ClientSyncConflictModel.self,
+            ClientSyncCursorModel.self
         ])
     )
 }

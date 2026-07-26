@@ -11,7 +11,13 @@ struct ClientRemoteDataSourceTests {
         ]
         let dataSource = ClientRemoteDataSourceFake(records: expectedRecords)
 
-        #expect(try await dataSource.fetchAll() == expectedRecords)
+        #expect(
+            try await dataSource.fetchChanges(after: nil)
+                == ClientRemoteChangeBatch(
+                    records: expectedRecords,
+                    nextCursor: ClientSyncCursor(changeSequence: 0)
+                )
+        )
     }
 
     @Test("Upsert records the immutable operation after acknowledgement")
@@ -19,7 +25,7 @@ struct ClientRemoteDataSourceTests {
         let operation = remotePendingUpsert()
         let dataSource = ClientRemoteDataSourceFake()
 
-        let result = try await dataSource.upsert(operation)
+        let result = try await dataSource.apply(.upsert(operation))
 
         #expect(await dataSource.receivedUpserts() == [operation])
         #expect(
@@ -29,7 +35,8 @@ struct ClientRemoteDataSourceTests {
                     version: .versioned(
                         revision: 1,
                         lastOperationID: operation.operationID
-                    )
+                    ),
+                    changeSequence: 1
                 )
             )
         )
@@ -42,7 +49,7 @@ struct ClientRemoteDataSourceTests {
         )
 
         await #expect(throws: ClientRemoteDataSourceError.permissionDenied) {
-            try await dataSource.fetchAll()
+            try await dataSource.fetchChanges(after: nil)
         }
     }
 
@@ -53,7 +60,7 @@ struct ClientRemoteDataSourceTests {
         )
 
         await #expect(throws: ClientRemoteDataSourceError.unavailable) {
-            try await dataSource.fetchAll()
+            try await dataSource.fetchChanges(after: nil)
         }
     }
 
@@ -78,7 +85,7 @@ struct ClientRemoteDataSourceTests {
         let dataSource = ClientRemoteDataSourceFake(fetchError: decodingError)
 
         do {
-            _ = try await dataSource.fetchAll()
+            _ = try await dataSource.fetchChanges(after: nil)
             Issue.record("Expected the configured decoding error")
         } catch DecodingError.typeMismatch(_, let context) {
             #expect(
@@ -106,24 +113,33 @@ private actor ClientRemoteDataSourceFake: ClientRemoteDataSource {
         self.fetchError = fetchError
     }
 
-    func fetchAll() async throws -> [ClientRemoteRecord] {
+    func fetchChanges(
+        after cursor: ClientSyncCursor?
+    ) async throws -> ClientRemoteChangeBatch {
         if let fetchError {
             throw fetchError
         }
-        return records
+        return ClientRemoteChangeBatch(
+            records: records,
+            nextCursor: cursor ?? ClientSyncCursor(changeSequence: 0)
+        )
     }
 
-    func upsert(
-        _ operation: ClientPendingUpsert
-    ) async throws -> ClientRemoteUpsertResult {
-        upserts.append(operation)
+    func apply(
+        _ operation: ClientPendingOperation
+    ) async throws -> ClientRemoteMutationResult {
+        guard case .upsert(let upsert) = operation else {
+            throw ClientRemoteDataSourceError.unexpected
+        }
+        upserts.append(upsert)
         return .applied(
             ClientRemoteRecord(
-                client: operation.client,
+                client: upsert.client,
                 version: .versioned(
                     revision: 1,
-                    lastOperationID: operation.operationID
-                )
+                    lastOperationID: upsert.operationID
+                ),
+                changeSequence: 1
             )
         )
     }

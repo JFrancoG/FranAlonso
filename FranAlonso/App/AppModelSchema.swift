@@ -6,8 +6,10 @@ extension Schema {
         Schema([
             ClientModel.self,
             ClientPendingUpsertModel.self,
+            ClientPendingDeleteModel.self,
             ClientRemoteStateModel.self,
-            ClientSyncConflictModel.self
+            ClientSyncConflictModel.self,
+            ClientSyncCursorModel.self
         ])
     }
 }

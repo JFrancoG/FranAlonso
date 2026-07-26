@@ -182,6 +182,88 @@ struct ClientSyncPolicyTests {
                 == .invalid(.remoteRevisionOverflow)
         )
     }
+
+    @Test("A pending delete wins over a concurrent remote edit")
+    func pendingDeleteWinsOverConcurrentRemoteEdit() {
+        let delete = syncDeleteOperation(
+            id: "51000000-0000-0000-0000-000000000012",
+            base: .versioned(3)
+        )
+        let remote = ClientRemoteRecord(
+            client: syncClient(name: "Concurrent remote edit"),
+            version: .versioned(
+                revision: 4,
+                lastOperationID: syncUUID(
+                    "51000000-0000-0000-0000-000000000013"
+                )
+            ),
+            changeSequence: 6
+        )
+
+        #expect(
+            policy.decision(for: .delete(delete), against: remote)
+                == .apply(
+                    ClientRemoteRecord(
+                        content: .tombstone(clientID: delete.clientID),
+                        version: .versioned(
+                            revision: 5,
+                            lastOperationID: delete.operationID
+                        ),
+                        changeSequence: nil
+                    )
+                )
+        )
+    }
+
+    @Test("Any remote tombstone requires explicit restoration before an upsert")
+    func remoteTombstoneBlocksOrdinaryUpsert() {
+        let operation = syncOperation(
+            id: "51000000-0000-0000-0000-000000000014",
+            client: syncClient(name: "Accidental restore"),
+            base: .versioned(2)
+        )
+        let tombstone = ClientRemoteRecord(
+            content: .tombstone(clientID: operation.clientID),
+            version: .versioned(
+                revision: 3,
+                lastOperationID: syncUUID(
+                    "51000000-0000-0000-0000-000000000015"
+                )
+            ),
+            changeSequence: 7
+        )
+
+        #expect(
+            policy.decision(for: operation, against: tombstone)
+                == .conflict(
+                    .tombstoneRequiresExplicitRestore,
+                    tombstone
+                )
+        )
+    }
+
+    @Test("A remote tombstone makes a repeated deletion converged")
+    func remoteTombstoneMakesRepeatedDeleteConverged() {
+        let delete = syncDeleteOperation(
+            id: "51000000-0000-0000-0000-000000000016",
+            base: .absent
+        )
+        let tombstone = ClientRemoteRecord(
+            content: .tombstone(clientID: delete.clientID),
+            version: .versioned(
+                revision: 8,
+                lastOperationID: syncUUID(
+                    "51000000-0000-0000-0000-000000000017"
+                )
+            ),
+            changeSequence: 9
+        )
+
+        #expect(
+            policy.decision(for: .delete(delete), against: tombstone)
+                == .alreadyApplied(tombstone)
+        )
+    }
 }
 
 private func syncOperation(
@@ -196,6 +278,20 @@ private func syncOperation(
         predecessorOperationID: predecessorOperationID,
         base: base,
         client: client
+    )
+}
+
+private func syncDeleteOperation(
+    id: String,
+    base: ClientRemoteBase
+) -> ClientPendingDelete {
+    ClientPendingDelete(
+        clientID: UUID(
+            uuidString: "50000000-0000-0000-0000-000000000001"
+        )!,
+        operationID: syncUUID(id),
+        predecessorOperationID: nil,
+        base: base
     )
 }
 

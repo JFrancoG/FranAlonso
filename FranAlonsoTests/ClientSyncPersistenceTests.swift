@@ -202,8 +202,10 @@ private func syncPersistenceContainer() throws -> ModelContainer {
         for: Schema([
             ClientModel.self,
             ClientPendingUpsertModel.self,
+            ClientPendingDeleteModel.self,
             ClientRemoteStateModel.self,
-            ClientSyncConflictModel.self
+            ClientSyncConflictModel.self,
+            ClientSyncCursorModel.self
         ])
     )
 }

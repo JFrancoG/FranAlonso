@@ -28,7 +28,7 @@ struct AppRuntimeTests {
         #expect(factory.environments == [.develop])
         #expect(runtime.clientSyncEngine != nil)
         #expect(await remote.fetchCount == 0)
-        #expect(await remote.upsertCount == 0)
+        #expect(await remote.mutationCount == 0)
     }
 }
 
@@ -49,27 +49,36 @@ private final class AppRuntimeRemoteFactory {
 
 private actor AppRuntimeRemoteFake: ClientRemoteDataSource {
     private var fetchCalls = 0
-    private var upsertCalls = 0
+    private var mutationCalls = 0
 
     var fetchCount: Int { fetchCalls }
-    var upsertCount: Int { upsertCalls }
+    var mutationCount: Int { mutationCalls }
 
-    func fetchAll() async throws -> [ClientRemoteRecord] {
+    func fetchChanges(
+        after cursor: ClientSyncCursor?
+    ) async throws -> ClientRemoteChangeBatch {
         fetchCalls += 1
-        return []
+        return ClientRemoteChangeBatch(
+            records: [],
+            nextCursor: cursor ?? ClientSyncCursor(changeSequence: 0)
+        )
     }
 
-    func upsert(
-        _ operation: ClientPendingUpsert
-    ) async throws -> ClientRemoteUpsertResult {
-        upsertCalls += 1
+    func apply(
+        _ operation: ClientPendingOperation
+    ) async throws -> ClientRemoteMutationResult {
+        mutationCalls += 1
+        guard case .upsert(let upsert) = operation else {
+            throw ClientRemoteDataSourceError.unexpected
+        }
         return .applied(
             ClientRemoteRecord(
-                client: operation.client,
+                client: upsert.client,
                 version: .versioned(
                     revision: 1,
-                    lastOperationID: operation.operationID
-                )
+                    lastOperationID: upsert.operationID
+                ),
+                changeSequence: 1
             )
         )
     }

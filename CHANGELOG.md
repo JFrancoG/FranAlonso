@@ -14,6 +14,7 @@ All notable changes to this project are documented in this file.
 
 ### Added
 
+- 2026-07-26 | ✨ feat(data): add durable tombstones and incremental cursor
 - 2026-07-26 | ✨ feat(data): add causal sync and scoped rules
 - 2026-07-25 | ✨ feat(data): add local-first Clients repository
 - 2026-07-24 | ✨ feat(data): add Firestore client adapter

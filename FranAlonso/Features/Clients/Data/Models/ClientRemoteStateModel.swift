@@ -22,7 +22,7 @@ extension ClientRemoteStateModel {
     /// - Throws: An encoding error when the record cannot be serialized.
     convenience init(record: ClientRemoteRecord) throws {
         self.init(
-            clientID: try record.client.stableUUID(),
+            clientID: try record.stableClientID(),
             recordVersion: 1,
             recordData: try JSONEncoder().encode(record)
         )
@@ -33,7 +33,7 @@ extension ClientRemoteStateModel {
     /// - Parameter record: The newer complete provider-neutral record.
     /// - Throws: An encoding error or an identity mismatch.
     func update(record: ClientRemoteRecord) throws {
-        guard try record.client.stableUUID() == clientID else {
+        guard try record.stableClientID() == clientID else {
             throw ClientSyncPersistenceError.entityIdentityMismatch
         }
         let encodedRecord = try JSONEncoder().encode(record)

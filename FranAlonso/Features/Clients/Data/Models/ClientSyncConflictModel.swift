@@ -123,7 +123,9 @@ extension ClientSyncConflictModel {
 enum ClientSyncPersistenceError: Error, Equatable {
     case ambiguousPendingLineage(ClientID)
     case cyclicPendingLineage(ClientID)
+    case duplicateOperationIdentity(UUID)
     case entityIdentityMismatch
+    case invalidCursor
     case invalidConflictReason(String)
     case unsupportedConflictVersion(Int)
     case unsupportedRecordVersion(Int)

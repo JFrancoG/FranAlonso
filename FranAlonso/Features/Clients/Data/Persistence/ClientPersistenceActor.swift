@@ -42,6 +42,23 @@ actor ClientPersistenceActor {
         )
     }
 
+    /// Removes the active client and commits one durable deletion operation.
+    func persistPendingDelete(
+        _ id: ClientID,
+        operationID: UUID
+    ) throws {
+        try dataSource.persistPendingDelete(
+            id,
+            operationID: operationID,
+            in: modelContext
+        )
+    }
+
+    /// Returns the combined causal upsert and delete chain.
+    func pendingOperations() throws -> [ClientPendingOperation] {
+        try dataSource.pendingOperations(in: modelContext)
+    }
+
     /// Returns immutable pending operations in deterministic causal order.
     func pendingUpserts() throws -> [ClientPendingUpsert] {
         try dataSource.pendingUpserts(in: modelContext)
@@ -50,6 +67,28 @@ actor ClientPersistenceActor {
     /// Returns causal operations that are not held for explicit conflict resolution.
     func deliverablePendingUpserts() throws -> [ClientPendingUpsert] {
         try dataSource.deliverablePendingUpserts(in: modelContext)
+    }
+
+    /// Returns operations eligible for delivery under conflict and delete-wins policy.
+    func deliverablePendingOperations() throws -> [ClientPendingOperation] {
+        try dataSource.deliverablePendingOperations(in: modelContext)
+    }
+
+    /// Returns the durable incremental feed position, or nil before bootstrap.
+    func cursor() throws -> ClientSyncCursor? {
+        try dataSource.cursor(in: modelContext)
+    }
+
+    /// Applies a remote batch and advances its cursor in one isolated save boundary.
+    func reconcileRemoteBatch(
+        _ batch: ClientRemoteChangeBatch,
+        policy: ClientSyncPolicy
+    ) throws {
+        try dataSource.reconcileRemoteBatch(
+            batch,
+            policy: policy,
+            in: modelContext
+        )
     }
 
     /// Persists one remote acknowledgement without overwriting newer local work.
