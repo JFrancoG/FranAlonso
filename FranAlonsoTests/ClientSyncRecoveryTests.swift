@@ -414,6 +414,48 @@ struct ClientSyncRecoveryTests {
             ) == 0
         )
     }
+
+    @Test("The published 05.8 store reopens with empty 05.9 retry state")
+    func phaseFiveEightStoreReopensWithPhaseFiveNineSchema() throws {
+        let directoryURL = FileManager.default.temporaryDirectory.appending(
+            path: "FranAlonso-05.9-Migration-\(UUID())",
+            directoryHint: .isDirectory
+        )
+        try FileManager.default.createDirectory(
+            at: directoryURL,
+            withIntermediateDirectories: true
+        )
+        defer { try? FileManager.default.removeItem(at: directoryURL) }
+        let storeURL = directoryURL.appending(
+            path: "Clients.store",
+            directoryHint: .notDirectory
+        )
+        try writePhaseFiveEightStore(at: storeURL)
+        let configuration = ModelConfiguration(
+            "PhaseFiveNine",
+            schema: .franAlonso,
+            url: storeURL,
+            allowsSave: true,
+            cloudKitDatabase: .none
+        )
+
+        let reopened = try ModelContainer(
+            for: Schema.franAlonso,
+            configurations: [configuration]
+        )
+        let context = ModelContext(reopened)
+
+        #expect(try context.fetchCount(FetchDescriptor<ClientModel>()) == 1)
+        #expect(
+            try context.fetch(FetchDescriptor<ClientSyncCursorModel>())
+                .only?.changeSequence == 9
+        )
+        #expect(
+            try context.fetchCount(
+                FetchDescriptor<ClientSyncRetryModel>()
+            ) == 0
+        )
+    }
 }
 
 private func recoveryContainer() throws -> ModelContainer {
@@ -514,6 +556,37 @@ private func writePhaseFiveSevenStore(at storeURL: URL) throws {
             baseData: try JSONEncoder().encode(ClientRemoteBase.absent),
             localClientData: try JSONEncoder().encode(dto),
             remoteRecordData: recordFixture
+        )
+    )
+    try context.save()
+}
+
+private func writePhaseFiveEightStore(at storeURL: URL) throws {
+    let oldSchema = Schema([
+        ClientModel.self,
+        ClientPendingUpsertModel.self,
+        ClientPendingDeleteModel.self,
+        ClientRemoteStateModel.self,
+        ClientSyncConflictModel.self,
+        ClientSyncCursorModel.self
+    ])
+    let configuration = ModelConfiguration(
+        "PhaseFiveEight",
+        schema: oldSchema,
+        url: storeURL,
+        allowsSave: true,
+        cloudKitDatabase: .none
+    )
+    let container = try ModelContainer(
+        for: oldSchema,
+        configurations: [configuration]
+    )
+    let context = ModelContext(container)
+    context.insert(ClientModel(recoveryClient(name: "Published 05.8 client")))
+    context.insert(
+        ClientSyncCursorModel(
+            feedID: "clients",
+            changeSequence: 9
         )
     )
     try context.save()

@@ -568,8 +568,14 @@ private func mapFirestoreError(_ error: any Error) -> any Error {
         return ClientRemoteDataSourceError.unexpected
     }
     switch providerError.code {
+    case FirestoreErrorCode.deadlineExceeded.rawValue:
+        return ClientRemoteDataSourceError.deadlineExceeded
     case FirestoreErrorCode.permissionDenied.rawValue:
         return ClientRemoteDataSourceError.permissionDenied
+    case FirestoreErrorCode.resourceExhausted.rawValue:
+        return ClientRemoteDataSourceError.resourceExhausted
+    case FirestoreErrorCode.aborted.rawValue:
+        return ClientRemoteDataSourceError.aborted
     case FirestoreErrorCode.unavailable.rawValue:
         return ClientRemoteDataSourceError.unavailable
     case FirestoreErrorCode.cancelled.rawValue:

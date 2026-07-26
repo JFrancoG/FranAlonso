@@ -218,6 +218,48 @@ extension ClientLocalDataSource {
         }
     }
 
+    /// Returns the validated durable schedule for one retry scope, when present.
+    func retryState(
+        for scope: ClientSyncRetryScope,
+        in context: ModelContext
+    ) throws -> ClientSyncRetryState? {
+        try retryModel(for: scope, in: context)?.decodeState(for: scope)
+    }
+
+    /// Inserts or replaces one durable retry schedule and commits it explicitly.
+    func saveRetryState(
+        _ state: ClientSyncRetryState,
+        in context: ModelContext
+    ) throws {
+        try requireClean(context)
+        do {
+            if let model = try retryModel(for: state.scope, in: context) {
+                try model.update(with: state)
+            } else {
+                context.insert(ClientSyncRetryModel(state))
+            }
+            try saveChanges(in: context)
+        } catch {
+            context.rollback()
+            throw error
+        }
+    }
+
+    /// Removes a transient backoff without discarding its pending sync operation.
+    func clearRetryState(
+        for scope: ClientSyncRetryScope,
+        in context: ModelContext
+    ) throws {
+        try requireClean(context)
+        do {
+            try deleteRetryState(for: scope, in: context)
+            try saveChanges(in: context)
+        } catch {
+            context.rollback()
+            throw error
+        }
+    }
+
     /// Reconciles a complete remote batch and advances its cursor in one local commit.
     ///
     /// Any decoding, policy, identity or save failure rolls back every materialization,
@@ -225,6 +267,7 @@ extension ClientLocalDataSource {
     func reconcileRemoteBatch(
         _ batch: ClientRemoteChangeBatch,
         policy: ClientSyncPolicy,
+        clearingRetryFor retryScope: ClientSyncRetryScope? = nil,
         in context: ModelContext
     ) throws {
         try requireClean(context)
@@ -287,6 +330,10 @@ extension ClientLocalDataSource {
                         record: acknowledgedRecord,
                         in: context
                     )
+                    try deleteRetryState(
+                        for: .operation(operation.operationID),
+                        in: context
+                    )
                 case .conflict(let reason, let remoteRecord):
                     guard case .upsert(let upsert) = operation else {
                         throw ClientSyncPersistenceError.entityIdentityMismatch
@@ -297,12 +344,19 @@ extension ClientLocalDataSource {
                         remoteRecord: remoteRecord,
                         in: context
                     )
+                    try deleteRetryState(
+                        for: .operation(operation.operationID),
+                        in: context
+                    )
                 case .invalid(let error):
                     throw error
                 }
             }
 
             try advanceCursor(batch.nextCursor, in: context)
+            if let retryScope {
+                try deleteRetryState(for: retryScope, in: context)
+            }
             _ = try fetchAll(in: context)
             try saveChanges(in: context)
         } catch {
@@ -315,6 +369,7 @@ extension ClientLocalDataSource {
     func acknowledge(
         operationID: UUID,
         record: ClientRemoteRecord,
+        clearingRetryFor retryScope: ClientSyncRetryScope? = nil,
         in context: ModelContext
     ) throws {
         try requireClean(context)
@@ -328,6 +383,9 @@ extension ClientLocalDataSource {
                 record: record,
                 in: context
             )
+            if let retryScope {
+                try deleteRetryState(for: retryScope, in: context)
+            }
             _ = try fetchAll(in: context)
             try saveChanges(in: context)
         } catch {
@@ -357,6 +415,7 @@ extension ClientLocalDataSource {
         operation: ClientPendingUpsert,
         reason: ClientSyncConflictReason,
         remoteRecord: ClientRemoteRecord?,
+        clearingRetryFor retryScope: ClientSyncRetryScope? = nil,
         in context: ModelContext
     ) throws {
         try requireClean(context)
@@ -367,6 +426,9 @@ extension ClientLocalDataSource {
                 remoteRecord: remoteRecord,
                 in: context
             )
+            if let retryScope {
+                try deleteRetryState(for: retryScope, in: context)
+            }
             try saveChanges(in: context)
         } catch {
             context.rollback()
@@ -551,6 +613,29 @@ extension ClientLocalDataSource {
         )
         descriptor.fetchLimit = 1
         return try context.fetch(descriptor).first
+    }
+
+    private func retryModel(
+        for scope: ClientSyncRetryScope,
+        in context: ModelContext
+    ) throws -> ClientSyncRetryModel? {
+        let scopeID = scope.storageID
+        var descriptor = FetchDescriptor<ClientSyncRetryModel>(
+            predicate: #Predicate { model in
+                model.scopeID == scopeID
+            }
+        )
+        descriptor.fetchLimit = 1
+        return try context.fetch(descriptor).first
+    }
+
+    private func deleteRetryState(
+        for scope: ClientSyncRetryScope,
+        in context: ModelContext
+    ) throws {
+        if let model = try retryModel(for: scope, in: context) {
+            context.delete(model)
+        }
     }
 
     private func requireClean(_ context: ModelContext) throws {

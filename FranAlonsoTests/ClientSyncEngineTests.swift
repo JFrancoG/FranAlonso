@@ -249,7 +249,8 @@ struct ClientSyncEngineTests {
         let engine = ClientSyncEngine(
             persistenceActor: persistenceActor,
             remoteDataSource: remote,
-            observationSignal: observationSignal
+            observationSignal: observationSignal,
+            timing: syncEngineImmediateTiming
         )
 
         await #expect(throws: ClientRemoteDataSourceError.unavailable) {
@@ -305,7 +306,8 @@ struct ClientSyncEngineTests {
                 modelContainer: container
             ),
             remoteDataSource: ClientSyncDeleteThenFailRemote(),
-            observationSignal: signal
+            observationSignal: signal,
+            timing: syncEngineImmediateTiming
         )
 
         await #expect(throws: ClientRemoteDataSourceError.unavailable) {
@@ -596,10 +598,17 @@ private func syncEngineContainer() throws -> ModelContainer {
             ClientPendingDeleteModel.self,
             ClientRemoteStateModel.self,
             ClientSyncConflictModel.self,
-            ClientSyncCursorModel.self
+            ClientSyncCursorModel.self,
+            ClientSyncRetryModel.self
         ])
     )
 }
+
+private let syncEngineImmediateTiming = ClientSyncTiming(
+    now: { Date.now },
+    sleep: { _ in },
+    jitterFactor: { 1 }
+)
 
 private func syncEngineClientID(_ value: String) throws -> ClientID {
     ClientID(rawValue: try syncEngineUUID(value))

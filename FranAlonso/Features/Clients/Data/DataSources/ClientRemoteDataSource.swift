@@ -6,6 +6,15 @@ enum ClientRemoteDataSourceError: Error, Equatable {
     /// A server-only operation could not reach the remote service.
     case unavailable
 
+    /// The provider did not complete the operation before its deadline.
+    case deadlineExceeded
+
+    /// Contention aborted an idempotent operation after provider retries were exhausted.
+    case aborted
+
+    /// Provider quota or capacity rejected the operation without a safe retry distinction.
+    case resourceExhausted
+
     /// The provider failed without a more specific stable transport meaning.
     case unexpected
 }

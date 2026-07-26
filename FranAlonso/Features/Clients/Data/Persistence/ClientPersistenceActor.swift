@@ -79,14 +79,33 @@ actor ClientPersistenceActor {
         try dataSource.cursor(in: modelContext)
     }
 
+    /// Returns the durable backoff schedule for one pull or pending operation.
+    func retryState(
+        for scope: ClientSyncRetryScope
+    ) throws -> ClientSyncRetryState? {
+        try dataSource.retryState(for: scope, in: modelContext)
+    }
+
+    /// Commits the next durable deadline after a recoverable remote failure.
+    func saveRetryState(_ state: ClientSyncRetryState) throws {
+        try dataSource.saveRetryState(state, in: modelContext)
+    }
+
+    /// Clears obsolete transient backoff while retaining pending synchronization work.
+    func clearRetryState(for scope: ClientSyncRetryScope) throws {
+        try dataSource.clearRetryState(for: scope, in: modelContext)
+    }
+
     /// Applies a remote batch and advances its cursor in one isolated save boundary.
     func reconcileRemoteBatch(
         _ batch: ClientRemoteChangeBatch,
-        policy: ClientSyncPolicy
+        policy: ClientSyncPolicy,
+        clearingRetryFor retryScope: ClientSyncRetryScope? = nil
     ) throws {
         try dataSource.reconcileRemoteBatch(
             batch,
             policy: policy,
+            clearingRetryFor: retryScope,
             in: modelContext
         )
     }
@@ -94,11 +113,13 @@ actor ClientPersistenceActor {
     /// Persists one remote acknowledgement without overwriting newer local work.
     func acknowledge(
         operationID: UUID,
-        record: ClientRemoteRecord
+        record: ClientRemoteRecord,
+        clearingRetryFor retryScope: ClientSyncRetryScope? = nil
     ) throws {
         try dataSource.acknowledge(
             operationID: operationID,
             record: record,
+            clearingRetryFor: retryScope,
             in: modelContext
         )
     }
@@ -112,12 +133,14 @@ actor ClientPersistenceActor {
     func recordConflict(
         operation: ClientPendingUpsert,
         reason: ClientSyncConflictReason,
-        remoteRecord: ClientRemoteRecord?
+        remoteRecord: ClientRemoteRecord?,
+        clearingRetryFor retryScope: ClientSyncRetryScope? = nil
     ) throws {
         try dataSource.recordConflict(
             operation: operation,
             reason: reason,
             remoteRecord: remoteRecord,
+            clearingRetryFor: retryScope,
             in: modelContext
         )
     }

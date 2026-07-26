@@ -9,7 +9,8 @@ extension Schema {
             ClientPendingDeleteModel.self,
             ClientRemoteStateModel.self,
             ClientSyncConflictModel.self,
-            ClientSyncCursorModel.self
+            ClientSyncCursorModel.self,
+            ClientSyncRetryModel.self
         ])
     }
 }

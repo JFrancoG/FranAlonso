@@ -287,6 +287,15 @@ struct FirestoreClientRemoteDataSourceTests {
         let permissionDenied = makeFirestoreDataSource(fetch: { _ in
             throw firestoreError(code: 7)
         })
+        let deadlineExceeded = makeFirestoreDataSource(fetch: { _ in
+            throw firestoreError(code: 4)
+        })
+        let resourceExhausted = makeFirestoreDataSource(fetch: { _ in
+            throw firestoreError(code: 8)
+        })
+        let aborted = makeFirestoreDataSource(fetch: { _ in
+            throw firestoreError(code: 10)
+        })
         let unavailable = makeFirestoreDataSource(fetch: { _ in
             throw firestoreError(code: 14)
         })
@@ -296,6 +305,15 @@ struct FirestoreClientRemoteDataSourceTests {
 
         await #expect(throws: ClientRemoteDataSourceError.permissionDenied) {
             try await permissionDenied.fetchChanges(after: nil)
+        }
+        await #expect(throws: ClientRemoteDataSourceError.deadlineExceeded) {
+            try await deadlineExceeded.fetchChanges(after: nil)
+        }
+        await #expect(throws: ClientRemoteDataSourceError.resourceExhausted) {
+            try await resourceExhausted.fetchChanges(after: nil)
+        }
+        await #expect(throws: ClientRemoteDataSourceError.aborted) {
+            try await aborted.fetchChanges(after: nil)
         }
         await #expect(throws: ClientRemoteDataSourceError.unavailable) {
             try await unavailable.fetchChanges(after: nil)
