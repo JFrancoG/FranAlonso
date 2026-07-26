@@ -6,17 +6,32 @@ struct AppDependencies {
 
     /// Creates production dependencies over the supplied local source of truth.
     ///
-    /// The Clients Repository remains local-only; Firestore composition begins with the
-    /// first SyncEngine in subphase 05.7.
+    /// The Clients Repository remains local-first and shares its persistence and observation
+    /// roles with the application runtime.
     ///
     /// - Parameter modelContainer: The application container shared with SwiftUI.
     /// - Returns: Dependencies backed by durable Clients persistence and live telemetry.
     static func live(modelContainer: ModelContainer) -> AppDependencies {
         let observationSignal = ClientObservationSignal()
-        let clientRepository = DefaultClientRepository(
+        return .live(
             persistenceActor: ClientPersistenceActor(
                 modelContainer: modelContainer
             ),
+            observationSignal: observationSignal
+        )
+    }
+
+    /// Creates production dependencies over runtime-owned Clients roles.
+    ///
+    /// - Parameters:
+    ///   - persistenceActor: The single actor that owns durable Clients state.
+    ///   - observationSignal: The invalidation shared by local writes and sync reconciliation.
+    static func live(
+        persistenceActor: ClientPersistenceActor,
+        observationSignal: ClientObservationSignal
+    ) -> AppDependencies {
+        let clientRepository = DefaultClientRepository(
+            persistenceActor: persistenceActor,
             observationSignal: observationSignal
         )
 

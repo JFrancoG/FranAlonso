@@ -32,6 +32,10 @@ DerivedData/
 .vscode/
 .idea/
 .venv-document-templates/
+**/node_modules/
+firebase-debug.log*
+firestore-debug.log*
+ui-debug.log*
 
 # Local configuration and credentials
 .env

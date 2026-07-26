@@ -42,6 +42,47 @@ actor ClientPersistenceActor {
         )
     }
 
+    /// Returns immutable pending operations in deterministic causal order.
+    func pendingUpserts() throws -> [ClientPendingUpsert] {
+        try dataSource.pendingUpserts(in: modelContext)
+    }
+
+    /// Returns causal operations that are not held for explicit conflict resolution.
+    func deliverablePendingUpserts() throws -> [ClientPendingUpsert] {
+        try dataSource.deliverablePendingUpserts(in: modelContext)
+    }
+
+    /// Persists one remote acknowledgement without overwriting newer local work.
+    func acknowledge(
+        operationID: UUID,
+        record: ClientRemoteRecord
+    ) throws {
+        try dataSource.acknowledge(
+            operationID: operationID,
+            record: record,
+            in: modelContext
+        )
+    }
+
+    /// Records an authoritative remote observation while preserving pending work.
+    func recordRemoteObservation(_ record: ClientRemoteRecord) throws {
+        try dataSource.recordRemoteObservation(record, in: modelContext)
+    }
+
+    /// Persists both sides of a Clients conflict for later explicit resolution.
+    func recordConflict(
+        operation: ClientPendingUpsert,
+        reason: ClientSyncConflictReason,
+        remoteRecord: ClientRemoteRecord?
+    ) throws {
+        try dataSource.recordConflict(
+            operation: operation,
+            reason: reason,
+            remoteRecord: remoteRecord,
+            in: modelContext
+        )
+    }
+
     /// Deletes a client by stable identity and treats an absent client as success.
     ///
     /// - Parameter id: The Domain identifier to remove.

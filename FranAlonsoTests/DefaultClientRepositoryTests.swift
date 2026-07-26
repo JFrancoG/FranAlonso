@@ -42,7 +42,9 @@ struct DefaultClientRepositoryTests {
     func rejectedSaveRollsBackAttemptedMutation() throws {
         let schema = Schema([
             ClientModel.self,
-            ClientPendingUpsertModel.self
+            ClientPendingUpsertModel.self,
+            ClientRemoteStateModel.self,
+            ClientSyncConflictModel.self
         ])
         let directoryURL = FileManager.default.temporaryDirectory.appending(
             path: "FranAlonso-ReadOnly-\(UUID())",
@@ -212,8 +214,8 @@ struct DefaultClientRepositoryTests {
         #expect(try operation.decodePayload() == ClientDTO(client))
     }
 
-    @Test("A changed pending upsert replaces its immutable pair without adding a row")
-    func changedPendingUpsertReplacesPairWithoutAddingARow() throws {
+    @Test("A changed pending upsert appends an immutable causal successor")
+    func changedPendingUpsertAppendsImmutableCausalSuccessor() throws {
         let container = try makeRepositoryContainer()
         let dataSource = ClientLocalDataSource()
         let identifier = "30000000-0000-0000-0000-000000000003"
@@ -247,9 +249,17 @@ struct DefaultClientRepositoryTests {
         let operations = try verificationContext.fetch(
             FetchDescriptor<ClientPendingUpsertModel>()
         )
-        let operation = try #require(operations.only)
-        #expect(operation.operationID == updatedOperationID)
-        #expect(try operation.decodePayload() == ClientDTO(updatedClient))
+        #expect(operations.count == 2)
+        let originalOperation = try #require(
+            operations.first { $0.operationID == originalOperationID }
+        )
+        let updatedOperation = try #require(
+            operations.first { $0.operationID == updatedOperationID }
+        )
+        #expect(originalOperation.predecessorOperationID == nil)
+        #expect(try originalOperation.decodePayload() == ClientDTO(initialClient))
+        #expect(updatedOperation.predecessorOperationID == originalOperationID)
+        #expect(try updatedOperation.decodePayload() == ClientDTO(updatedClient))
         #expect(
             try dataSource.fetchAll(in: verificationContext) == [updatedClient]
         )
@@ -480,7 +490,9 @@ private func makeRepositoryContainer() throws -> ModelContainer {
     try ModelContainer.inMemory(
         for: Schema([
             ClientModel.self,
-            ClientPendingUpsertModel.self
+            ClientPendingUpsertModel.self,
+            ClientRemoteStateModel.self,
+            ClientSyncConflictModel.self
         ])
     )
 }

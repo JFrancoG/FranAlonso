@@ -5,7 +5,9 @@ extension Schema {
     static var franAlonso: Schema {
         Schema([
             ClientModel.self,
-            ClientPendingUpsertModel.self
+            ClientPendingUpsertModel.self,
+            ClientRemoteStateModel.self,
+            ClientSyncConflictModel.self
         ])
     }
 }

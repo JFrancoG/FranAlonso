@@ -4,26 +4,39 @@ import Testing
 
 @Suite("Client remote data source")
 struct ClientRemoteDataSourceTests {
-    @Test("Fetch returns the configured server response")
-    func fetchReturnsTheConfiguredServerResponse() async throws {
-        let expectedClients = [remoteClientDTO()]
-        let dataSource = ClientRemoteDataSourceFake(clients: expectedClients)
+    @Test("Fetch returns the configured server records")
+    func fetchReturnsConfiguredServerRecords() async throws {
+        let expectedRecords = [
+            ClientRemoteRecord(client: remoteClientDTO(), version: .legacy)
+        ]
+        let dataSource = ClientRemoteDataSourceFake(records: expectedRecords)
 
-        #expect(try await dataSource.fetchAll() == expectedClients)
+        #expect(try await dataSource.fetchAll() == expectedRecords)
     }
 
-    @Test("Upsert records the payload after configured remote acknowledgement")
-    func upsertRecordsThePayloadAfterConfiguredRemoteAcknowledgement() async throws {
-        let client = remoteClientDTO()
+    @Test("Upsert records the immutable operation after acknowledgement")
+    func upsertRecordsImmutableOperationAfterAcknowledgement() async throws {
+        let operation = remotePendingUpsert()
         let dataSource = ClientRemoteDataSourceFake()
 
-        try await dataSource.upsert(client)
+        let result = try await dataSource.upsert(operation)
 
-        #expect(await dataSource.receivedUpserts() == [client])
+        #expect(await dataSource.receivedUpserts() == [operation])
+        #expect(
+            result == .applied(
+                ClientRemoteRecord(
+                    client: operation.client,
+                    version: .versioned(
+                        revision: 1,
+                        lastOperationID: operation.operationID
+                    )
+                )
+            )
+        )
     }
 
     @Test("Fetch propagates a permission denial without provider types")
-    func fetchPropagatesAPermissionDenialWithoutProviderTypes() async {
+    func fetchPropagatesPermissionDenialWithoutProviderTypes() async {
         let dataSource = ClientRemoteDataSourceFake(
             fetchError: ClientRemoteDataSourceError.permissionDenied
         )
@@ -45,7 +58,7 @@ struct ClientRemoteDataSourceTests {
     }
 
     @Test("Fetch preserves an invalid payload coding path")
-    func fetchPreservesAnInvalidPayloadCodingPath() async {
+    func fetchPreservesInvalidPayloadCodingPath() async {
         let decodingError: DecodingError
 
         do {
@@ -81,32 +94,55 @@ struct ClientRemoteDataSourceTests {
 }
 
 private actor ClientRemoteDataSourceFake: ClientRemoteDataSource {
-    private let clients: [ClientDTO]
+    private let records: [ClientRemoteRecord]
     private let fetchError: (any Error)?
-    private var upserts: [ClientDTO] = []
+    private var upserts: [ClientPendingUpsert] = []
 
     init(
-        clients: [ClientDTO] = [],
+        records: [ClientRemoteRecord] = [],
         fetchError: (any Error)? = nil
     ) {
-        self.clients = clients
+        self.records = records
         self.fetchError = fetchError
     }
 
-    func fetchAll() async throws -> [ClientDTO] {
+    func fetchAll() async throws -> [ClientRemoteRecord] {
         if let fetchError {
             throw fetchError
         }
-        return clients
+        return records
     }
 
-    func upsert(_ client: ClientDTO) async throws {
-        upserts.append(client)
+    func upsert(
+        _ operation: ClientPendingUpsert
+    ) async throws -> ClientRemoteUpsertResult {
+        upserts.append(operation)
+        return .applied(
+            ClientRemoteRecord(
+                client: operation.client,
+                version: .versioned(
+                    revision: 1,
+                    lastOperationID: operation.operationID
+                )
+            )
+        )
     }
 
-    func receivedUpserts() -> [ClientDTO] {
+    func receivedUpserts() -> [ClientPendingUpsert] {
         upserts
     }
+}
+
+private func remotePendingUpsert() -> ClientPendingUpsert {
+    ClientPendingUpsert(
+        clientID: UUID(uuidString: remoteClientDTO().id)!,
+        operationID: UUID(
+            uuidString: "AB000000-0000-0000-0000-000000000001"
+        )!,
+        predecessorOperationID: nil,
+        base: .absent,
+        client: remoteClientDTO()
+    )
 }
 
 private func remoteClientDTO() -> ClientDTO {
@@ -127,18 +163,6 @@ private func remoteClientDTO() -> ClientDTO {
 
 private func invalidRemoteClientPayload() -> Data {
     Data(
-        #"""
-        {
-          "id": "AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE",
-          "displayName": "Ana Alonso",
-          "billingAddress": {
-            "streetLine": "Calle Bailén, 33",
-            "postalCode": 41001,
-            "city": "Sevilla",
-            "province": "Sevilla"
-          },
-          "status": "draft"
-        }
-        """#.utf8
+        #"{"id":"AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE","displayName":"Ana Alonso","billingAddress":{"streetLine":"Calle Bailén, 33","postalCode":41001,"city":"Sevilla","province":"Sevilla"},"status":"draft"}"#.utf8
     )
 }

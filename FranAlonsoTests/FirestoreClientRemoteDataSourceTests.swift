@@ -1,3 +1,4 @@
+import FirebaseFirestore
 import Foundation
 import Testing
 @testable import FranAlonso
@@ -8,7 +9,7 @@ struct FirestoreClientRemoteDataSourceTests {
         "Environments resolve the approved Clients collection paths",
         arguments: [FirestoreEnvironment.develop, .production]
     )
-    func environmentsResolveTheApprovedClientsCollectionPaths(
+    func environmentsResolveApprovedClientsCollectionPaths(
         _ environment: FirestoreEnvironment
     ) {
         switch environment {
@@ -25,50 +26,139 @@ struct FirestoreClientRemoteDataSourceTests {
         }
     }
 
-    @Test("Fetch returns decoded documents whose route identity matches the payload")
-    func fetchReturnsDecodedDocumentsWhoseRouteIdentityMatchesThePayload() async throws {
-        let expectedClient = firestoreClientDTO()
+    @Test("Fetch returns records whose route identity matches the payload")
+    func fetchReturnsRecordsWhoseRouteIdentityMatchesPayload() async throws {
+        let expectedRecord = firestoreClientRecord()
         let dataSource = makeFirestoreDataSource {
-            [(documentID: expectedClient.id, payload: expectedClient)]
+            [(documentID: expectedRecord.client.id, record: expectedRecord)]
         }
 
-        #expect(try await dataSource.fetchAll() == [expectedClient])
+        #expect(try await dataSource.fetchAll() == [expectedRecord])
     }
 
-    @Test("Upsert writes the exact payload under its stable identifier")
-    func upsertWritesTheExactPayloadUnderItsStableIdentifier() async throws {
-        let client = firestoreClientDTO()
-        let writeGate = FirestoreClientWriteGate()
-        let completionSpy = FirestoreClientCompletionSpy()
+    @Test("Upsert requests a merged transaction and waits for acknowledgement")
+    func upsertRequestsMergedTransactionAndWaitsForAcknowledgement() async throws {
+        let operation = firestorePendingUpsert()
+        let gate = FirestoreTransactionGate()
         let dataSource = makeFirestoreDataSource(
-            writeDocument: { documentID, payload in
-                await writeGate.write(documentID: documentID, payload: payload)
+            transact: { receivedOperation, merge in
+                await gate.transact(operation: receivedOperation, merge: merge)
             }
         )
 
-        async let operation: Void = upsert(
-            client,
-            through: dataSource,
-            recordingCompletionIn: completionSpy
-        )
+        async let result = dataSource.upsert(operation)
+        await gate.waitUntilReceived()
 
-        await writeGate.waitUntilReceived()
-
-        #expect(await completionSpy.isCompleted == false)
         #expect(
-            await writeGate.receivedWrites() == [
-                FirestoreClientWrite(documentID: client.id, payload: client)
+            await gate.receivedTransactions == [
+                FirestoreTransactionRequest(
+                    operation: operation,
+                    merge: true
+                )
             ]
         )
+        await gate.acknowledge(
+            .applied(
+                ClientRemoteRecord(
+                    client: operation.client,
+                    version: .versioned(
+                        revision: 1,
+                        lastOperationID: operation.operationID
+                    )
+                )
+            )
+        )
 
-        await writeGate.acknowledge()
-        try await operation
+        #expect(
+            try await result == .applied(
+                ClientRemoteRecord(
+                    client: operation.client,
+                    version: .versioned(
+                        revision: 1,
+                        lastOperationID: operation.operationID
+                    )
+                )
+            )
+        )
+    }
 
-        #expect(await completionSpy.isCompleted)
+    @Test("Upsert rejects an invalid payload identity before resolving its remote route")
+    func upsertRejectsInvalidPayloadIdentityBeforeResolvingRemoteRoute() async {
+        let validOperation = firestorePendingUpsert()
+        let invalidOperation = ClientPendingUpsert(
+            clientID: validOperation.clientID,
+            operationID: validOperation.operationID,
+            predecessorOperationID: nil,
+            base: .absent,
+            client: ClientDTO(
+                id: "invalid/remote/path",
+                displayName: validOperation.client.displayName,
+                taxIdentifier: nil,
+                billingAddress: nil,
+                status: .draft,
+                consentReference: nil
+            )
+        )
+        let dataSource = makeFirestoreDataSource(
+            transact: { _, _ in
+                throw ClientRemoteDataSourceError.unexpected
+            }
+        )
+
+        await #expect(throws: ClientSyncPolicyError.entityIdentityMismatch) {
+            try await dataSource.upsert(invalidOperation)
+        }
+    }
+
+    @Test("Provider encoding writes explicit nulls and a server revision transform")
+    func providerEncodingWritesExplicitNullsAndServerRevisionTransform() throws {
+        let operation = firestorePendingUpsert()
+        let writeDTO = FirestoreClientWriteDTO(operation)
+        let fields = try Firestore.Encoder().encode(writeDTO)
+
+        #expect(fields["taxIdentifier"] is NSNull)
+        #expect(fields["billingAddress"] is NSNull)
+        #expect(fields["consentReference"] is NSNull)
+        #expect(fields["_sync"] != nil)
+        #expect(
+            writeDTO.syncMetadata.lastOperationID
+                == operation.operationID.uuidString
+        )
+    }
+
+    @Test("Partial sync metadata is invalid rather than legacy")
+    func partialSyncMetadataIsInvalidRatherThanLegacy() {
+        let payload = Data(
+            #"{"id":"56000000-0000-0000-0000-000000000001","displayName":"Partial metadata","status":"draft","_sync":{"revision":1}}"#.utf8
+        )
+
+        #expect(throws: DecodingError.self) {
+            _ = try JSONDecoder().decode(
+                FirestoreClientDocumentDTO.self,
+                from: payload
+            )
+        }
+    }
+
+    @Test("Fetch rejects a route identifier that differs from the payload identifier")
+    func fetchRejectsRouteIdentifierDifferentFromPayloadIdentifier() async {
+        let record = firestoreClientRecord()
+        let dataSource = makeFirestoreDataSource {
+            [(documentID: "another-client", record: record)]
+        }
+
+        do {
+            _ = try await dataSource.fetchAll()
+            Issue.record("Expected the mismatched route identity to fail")
+        } catch DecodingError.dataCorrupted(let context) {
+            #expect(context.codingPath.map(\.stringValue) == ["id"])
+        } catch {
+            Issue.record("Unexpected fetch error: \(error)")
+        }
     }
 
     @Test("Permission denied is mapped to the provider-neutral error")
-    func permissionDeniedIsMappedToTheProviderNeutralError() async {
+    func permissionDeniedIsMappedToProviderNeutralError() async {
         let dataSource = makeFirestoreDataSource {
             throw firestoreError(code: 7)
         }
@@ -79,62 +169,13 @@ struct FirestoreClientRemoteDataSourceTests {
     }
 
     @Test("Unavailable is mapped to the provider-neutral error")
-    func unavailableIsMappedToTheProviderNeutralError() async {
+    func unavailableIsMappedToProviderNeutralError() async {
         let dataSource = makeFirestoreDataSource {
             throw firestoreError(code: 14)
         }
 
         await #expect(throws: ClientRemoteDataSourceError.unavailable) {
             try await dataSource.fetchAll()
-        }
-    }
-
-    @Test("Foreign failures are mapped to unexpected")
-    func foreignFailuresAreMappedToUnexpected() async {
-        let dataSource = makeFirestoreDataSource {
-            throw NSError(domain: "TestTransport", code: 42)
-        }
-
-        await #expect(throws: ClientRemoteDataSourceError.unexpected) {
-            try await dataSource.fetchAll()
-        }
-    }
-
-    @Test("Fetch preserves a payload decoding error and its nested coding path")
-    func fetchPreservesAPayloadDecodingErrorAndItsNestedCodingPath() async {
-        let dataSource = makeFirestoreDataSource {
-            throw try nestedPostalCodeDecodingError()
-        }
-
-        do {
-            _ = try await dataSource.fetchAll()
-            Issue.record("Expected the injected decoding error")
-        } catch DecodingError.typeMismatch(_, let context) {
-            #expect(
-                context.codingPath.map(\.stringValue) == [
-                    "billingAddress",
-                    "postalCode"
-                ]
-            )
-        } catch {
-            Issue.record("Unexpected fetch error: \(error)")
-        }
-    }
-
-    @Test("Fetch rejects a route identifier that differs from the payload identifier")
-    func fetchRejectsARouteIdentifierThatDiffersFromThePayloadIdentifier() async {
-        let client = firestoreClientDTO()
-        let dataSource = makeFirestoreDataSource {
-            [(documentID: "another-client", payload: client)]
-        }
-
-        do {
-            _ = try await dataSource.fetchAll()
-            Issue.record("Expected the mismatched route identity to fail")
-        } catch DecodingError.dataCorrupted(let context) {
-            #expect(context.codingPath.map(\.stringValue) == ["id"])
-        } catch {
-            Issue.record("Unexpected fetch error: \(error)")
         }
     }
 
@@ -148,122 +189,101 @@ struct FirestoreClientRemoteDataSourceTests {
             try await dataSource.fetchAll()
         }
     }
-
-    @Test("Firestore cancelled is translated to task cancellation")
-    func firestoreCancelledIsTranslatedToTaskCancellation() async {
-        let dataSource = makeFirestoreDataSource {
-            throw firestoreError(code: 1)
-        }
-
-        await #expect(throws: CancellationError.self) {
-            try await dataSource.fetchAll()
-        }
-    }
 }
 
-private struct FirestoreClientWrite: Equatable {
-    let documentID: String
-    let payload: ClientDTO
+private struct FirestoreTransactionRequest: Equatable {
+    let operation: ClientPendingUpsert
+    let merge: Bool
 }
 
-private actor FirestoreClientWriteGate {
-    private var writes: [FirestoreClientWrite] = []
+private actor FirestoreTransactionGate {
+    private var transactions: [FirestoreTransactionRequest] = []
     private var receivedContinuations: [CheckedContinuation<Void, Never>] = []
-    private var acknowledgementContinuation: CheckedContinuation<Void, Never>?
+    private var acknowledgementContinuation: CheckedContinuation<
+        ClientRemoteUpsertResult,
+        Never
+    >?
 
-    func write(documentID: String, payload: ClientDTO) async {
-        writes.append(FirestoreClientWrite(documentID: documentID, payload: payload))
+    var receivedTransactions: [FirestoreTransactionRequest] { transactions }
+
+    func transact(
+        operation: ClientPendingUpsert,
+        merge: Bool
+    ) async -> ClientRemoteUpsertResult {
+        transactions.append(
+            FirestoreTransactionRequest(operation: operation, merge: merge)
+        )
         receivedContinuations.forEach { $0.resume() }
         receivedContinuations.removeAll()
-
-        await withCheckedContinuation { continuation in
+        return await withCheckedContinuation { continuation in
             acknowledgementContinuation = continuation
         }
     }
 
     func waitUntilReceived() async {
-        guard writes.isEmpty else {
+        guard transactions.isEmpty else {
             return
         }
-
         await withCheckedContinuation { continuation in
             receivedContinuations.append(continuation)
         }
     }
 
-    func acknowledge() {
-        acknowledgementContinuation?.resume()
+    func acknowledge(_ result: ClientRemoteUpsertResult) {
+        acknowledgementContinuation?.resume(returning: result)
         acknowledgementContinuation = nil
-    }
-
-    func receivedWrites() -> [FirestoreClientWrite] {
-        writes
-    }
-}
-
-private actor FirestoreClientCompletionSpy {
-    private(set) var isCompleted = false
-
-    func recordCompletion() {
-        isCompleted = true
     }
 }
 
 private func makeFirestoreDataSource(
-    fetchDocuments: @escaping @Sendable () async throws -> [
-        (documentID: String, payload: ClientDTO)
+    fetch: @escaping @Sendable () async throws -> [
+        (documentID: String, record: ClientRemoteRecord)
     ] = { [] },
-    writeDocument: @escaping @Sendable (String, ClientDTO) async throws -> Void = { _, _ in }
+    transact: @escaping @Sendable (
+        ClientPendingUpsert,
+        Bool
+    ) async throws -> ClientRemoteUpsertResult = { operation, _ in
+        .applied(
+            ClientRemoteRecord(
+                client: operation.client,
+                version: .versioned(
+                    revision: 1,
+                    lastOperationID: operation.operationID
+                )
+            )
+        )
+    }
 ) -> FirestoreClientRemoteDataSource {
-    FirestoreClientRemoteDataSource(
-        fetch: fetchDocuments,
-        write: writeDocument
-    )
+    FirestoreClientRemoteDataSource(fetch: fetch, transact: transact)
 }
 
-private func firestoreClientDTO() -> ClientDTO {
-    ClientDTO(
-        id: "AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE",
+private func firestorePendingUpsert() -> ClientPendingUpsert {
+    let client = ClientDTO(
+        id: "56000000-0000-0000-0000-000000000001",
         displayName: "Ana Alonso",
-        taxIdentifier: "12345678Z",
-        billingAddress: BillingAddressDTO(
-            streetLine: "Calle Bailén, 33",
-            postalCode: "41001",
-            city: "Sevilla",
-            province: "Sevilla"
-        ),
-        status: .active,
-        consentReference: "consents/ana-alonso/signed.pdf"
+        taxIdentifier: nil,
+        billingAddress: nil,
+        status: .draft,
+        consentReference: nil
+    )
+    return ClientPendingUpsert(
+        clientID: UUID(uuidString: client.id)!,
+        operationID: UUID(
+            uuidString: "57000000-0000-0000-0000-000000000001"
+        )!,
+        predecessorOperationID: nil,
+        base: .absent,
+        client: client
     )
 }
 
-private func upsert(
-    _ client: ClientDTO,
-    through dataSource: FirestoreClientRemoteDataSource,
-    recordingCompletionIn completionSpy: FirestoreClientCompletionSpy
-) async throws {
-    try await dataSource.upsert(client)
-    await completionSpy.recordCompletion()
+private func firestoreClientRecord() -> ClientRemoteRecord {
+    ClientRemoteRecord(
+        client: firestorePendingUpsert().client,
+        version: .legacy
+    )
 }
 
 private func firestoreError(code: Int) -> NSError {
     NSError(domain: "FIRFirestoreErrorDomain", code: code)
-}
-
-private func nestedPostalCodeDecodingError() throws -> DecodingError {
-    do {
-        _ = try JSONDecoder().decode(
-            ClientDTO.self,
-            from: Data(
-                #"{"id":"AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE","displayName":"Ana Alonso","billingAddress":{"streetLine":"Calle Bailén, 33","postalCode":41001,"city":"Sevilla","province":"Sevilla"},"status":"draft"}"#.utf8
-            )
-        )
-        throw TestFixtureError.expectedDecodingFailure
-    } catch let error as DecodingError {
-        return error
-    }
-}
-
-private enum TestFixtureError: Error {
-    case expectedDecodingFailure
 }

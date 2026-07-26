@@ -12,23 +12,21 @@ enum ClientRemoteDataSourceError: Error, Equatable {
 
 /// Performs server-backed Clients transport operations without exposing provider SDK types.
 protocol ClientRemoteDataSource: Sendable {
-    /// Requests a Clients snapshot from the server without falling back to cached data.
+    /// Requests complete versioned Clients records from the server.
     ///
-    /// The returned values may include locally pending writes introduced by provider latency
-    /// compensation. They are not revision or conflict authority until the synchronization
-    /// policy adds the metadata required for those decisions.
-    ///
-    /// - Returns: Transport values obtained by the server-backed read.
-    /// - Throws: `ClientRemoteDataSourceError` for stable transport failures or a
-    ///   `DecodingError` that preserves the invalid payload's coding path.
-    func fetchAll() async throws -> [ClientDTO]
+    /// - Returns: Provider-neutral records obtained without a cache fallback.
+    /// - Throws: A stable transport error or a decoding error with its coding path.
+    func fetchAll() async throws -> [ClientRemoteRecord]
 
-    /// Upserts a client by stable identity and waits for remote acknowledgement.
+    /// Applies one immutable Clients operation under its causal precondition.
     ///
-    /// Offline queuing is not successful completion of this operation.
+    /// Offline queuing is not successful completion. The result is acknowledged only after
+    /// the provider transaction commits or proves the exact operation already authoritative.
     ///
-    /// - Parameter client: The transport value to create or replace remotely.
-    /// - Throws: `ClientRemoteDataSourceError` when the remote service rejects or cannot
-    ///   acknowledge the operation.
-    func upsert(_ client: ClientDTO) async throws
+    /// - Parameter operation: The durable operation and remote base to evaluate.
+    /// - Returns: The applied, idempotent or conflict outcome observed transactionally.
+    /// - Throws: A stable transport, decoding or sync-metadata error.
+    func upsert(
+        _ operation: ClientPendingUpsert
+    ) async throws -> ClientRemoteUpsertResult
 }
