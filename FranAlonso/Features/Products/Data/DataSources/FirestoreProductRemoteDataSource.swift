@@ -1,35 +1,35 @@
 import FirebaseFirestore
 
-/// Adapts Firestore Clients documents to the provider-neutral incremental contract.
-actor FirestoreClientRemoteDataSource: ClientRemoteDataSource {
-    private let fetchDocuments: (ClientSyncCursor?) async throws -> [
-        (documentID: String, record: ClientRemoteRecord)
+/// Adapts Firestore Products documents to the provider-neutral incremental contract.
+actor FirestoreProductRemoteDataSource: ProductRemoteDataSource {
+    private let fetchDocuments: (ProductSyncCursor?) async throws -> [
+        (documentID: String, record: ProductRemoteRecord)
     ]
     private let transactMutation: (
-        ClientPendingOperation
-    ) async throws -> ClientRemoteMutationResult
+        ProductPendingOperation
+    ) async throws -> ProductRemoteMutationResult
 
     init(
-        fetch: @escaping (ClientSyncCursor?) async throws -> [
-            (documentID: String, record: ClientRemoteRecord)
+        fetch: @escaping (ProductSyncCursor?) async throws -> [
+            (documentID: String, record: ProductRemoteRecord)
         ],
         transact: @escaping (
-            ClientPendingOperation
-        ) async throws -> ClientRemoteMutationResult
+            ProductPendingOperation
+        ) async throws -> ProductRemoteMutationResult
     ) {
         fetchDocuments = fetch
         transactMutation = transact
     }
 
-    /// Creates the adapter for the Clients collection in an explicitly selected environment.
+    /// Creates the adapter for the Products collection in an explicitly selected environment.
     init(firestore: Firestore, environment: FirestoreEnvironment) {
         let collection = firestore.collection(
-            environment.collectionPath(for: .clients)
+            environment.collectionPath(for: .products)
         )
         let counterDocument = firestore.document(
-            environment.syncMetadataDocumentPath(for: .clients)
+            environment.syncMetadataDocumentPath(for: .products)
         )
-        let policy = ClientSyncPolicy()
+        let policy = ProductSyncPolicy()
 
         fetchDocuments = { cursor in
             let query: Query
@@ -46,7 +46,7 @@ actor FirestoreClientRemoteDataSource: ClientRemoteDataSource {
             let snapshot = try await query.getDocuments(source: .server)
             return try snapshot.documents.map { document in
                 let payload = try document.data(
-                    as: FirestoreClientDocumentDTO.self
+                    as: FirestoreProductDocumentDTO.self
                 )
                 return (
                     documentID: document.documentID,
@@ -76,32 +76,32 @@ actor FirestoreClientRemoteDataSource: ClientRemoteDataSource {
     }
 
     func fetchChanges(
-        after cursor: ClientSyncCursor?
-    ) async throws -> ClientRemoteChangeBatch {
+        after cursor: ProductSyncCursor?
+    ) async throws -> ProductRemoteChangeBatch {
         do {
             let documents = try await fetchDocuments(cursor)
             let records = try documents.map { document in
                 guard document.documentID == document.record.id else {
-                    throw clientDocumentDecodingError(
-                        codingPath: [ClientDocumentCodingKey.id],
-                        description: "The client identifier does not match its document path."
+                    throw productDocumentDecodingError(
+                        codingPath: [ProductDocumentCodingKey.id],
+                        description: "The product identifier does not match its document path."
                     )
                 }
                 if let sequence = document.record.changeSequence {
                     guard sequence > 0 else {
-                        throw ClientSyncPolicyError.invalidChangeSequence
+                        throw ProductSyncPolicyError.invalidChangeSequence
                     }
                 } else if cursor != nil {
-                    throw ClientSyncPolicyError.invalidChangeSequence
+                    throw ProductSyncPolicyError.invalidChangeSequence
                 }
                 return document.record
             }
             let nextSequence = records.compactMap(\.changeSequence).max()
                 ?? cursor?.changeSequence
                 ?? 0
-            return ClientRemoteChangeBatch(
+            return ProductRemoteChangeBatch(
                 records: records,
-                nextCursor: ClientSyncCursor(
+                nextCursor: ProductSyncCursor(
                     changeSequence: nextSequence
                 )
             )
@@ -111,12 +111,12 @@ actor FirestoreClientRemoteDataSource: ClientRemoteDataSource {
     }
 
     func apply(
-        _ operation: ClientPendingOperation
-    ) async throws -> ClientRemoteMutationResult {
+        _ operation: ProductPendingOperation
+    ) async throws -> ProductRemoteMutationResult {
         do {
             if case .upsert(let upsert) = operation {
-                guard UUID(uuidString: upsert.client.id) == upsert.clientID else {
-                    throw ClientSyncPolicyError.entityIdentityMismatch
+                guard UUID(uuidString: upsert.product.id) == upsert.productID else {
+                    throw ProductSyncPolicyError.entityIdentityMismatch
                 }
             }
             return try await transactMutation(operation)
@@ -126,37 +126,37 @@ actor FirestoreClientRemoteDataSource: ClientRemoteDataSource {
     }
 }
 
-extension FirestoreClientRemoteDataSource {
+extension FirestoreProductRemoteDataSource {
     /// Returns the next counter value, treating an absent counter as zero.
     ///
     /// - Throws: A typed policy error for negative or exhausted counter state.
     static func nextChangeSequence(after current: Int64?) throws -> Int64 {
         let current = current ?? 0
         guard current >= 0 else {
-            throw ClientSyncPolicyError.invalidChangeSequence
+            throw ProductSyncPolicyError.invalidChangeSequence
         }
         guard current < Int64.max else {
-            throw ClientSyncPolicyError.changeSequenceOverflow
+            throw ProductSyncPolicyError.changeSequenceOverflow
         }
         return current + 1
     }
 
     private static func runTransaction(
-        _ operation: ClientPendingOperation,
+        _ operation: ProductPendingOperation,
         collection: CollectionReference,
         counterDocument: DocumentReference,
         firestore: Firestore,
-        policy: ClientSyncPolicy
-    ) async throws -> ClientRemoteMutationResult {
-        let document = collection.document(operation.clientID.uuidString)
+        policy: ProductSyncPolicy
+    ) async throws -> ProductRemoteMutationResult {
+        let document = collection.document(operation.productID.uuidString)
         return try await withCheckedThrowingContinuation { continuation in
             firestore.runTransaction { transaction, errorPointer -> Any? in
                 do {
                     let snapshot = try transaction.getDocument(document)
-                    let remoteRecord: ClientRemoteRecord?
+                    let remoteRecord: ProductRemoteRecord?
                     if snapshot.exists {
                         remoteRecord = try snapshot.data(
-                            as: FirestoreClientDocumentDTO.self
+                            as: FirestoreProductDocumentDTO.self
                         ).toRemoteRecord(documentID: snapshot.documentID)
                     } else {
                         remoteRecord = nil
@@ -166,7 +166,7 @@ extension FirestoreClientRemoteDataSource {
                         for: operation,
                         against: remoteRecord
                     )
-                    let counterState: FirestoreClientCounterState
+                    let counterState: FirestoreProductCounterState
                     if case .apply = decision {
                         let counterSnapshot = try transaction.getDocument(
                             counterDocument
@@ -175,7 +175,7 @@ extension FirestoreClientRemoteDataSource {
                             do {
                                 counterState = .value(
                                     try counterSnapshot.data(
-                                        as: FirestoreClientCounterDTO.self
+                                        as: FirestoreProductCounterDTO.self
                                     ).changeSequence
                                 )
                             } catch is DecodingError {
@@ -188,7 +188,7 @@ extension FirestoreClientRemoteDataSource {
                         counterState = .unread
                     }
 
-                    let outcome: FirestoreClientTransactionOutcome
+                    let outcome: FirestoreProductTransactionOutcome
                     switch try transactionPlan(
                         for: operation,
                         against: remoteRecord,
@@ -197,7 +197,7 @@ extension FirestoreClientRemoteDataSource {
                     ) {
                     case .atomic(let write):
                         try transaction.setData(
-                            from: FirestoreClientWriteDTO(write.record),
+                            from: FirestoreProductWriteDTO(write.record),
                             forDocument: document,
                             merge: false
                         )
@@ -221,10 +221,10 @@ extension FirestoreClientRemoteDataSource {
                 do {
                     if let error { throw error }
                     guard let outcomeData = encodedOutcome as? Data else {
-                        throw ClientRemoteDataSourceError.unexpected
+                        throw ProductRemoteDataSourceError.unexpected
                     }
                     switch try JSONDecoder().decode(
-                        FirestoreClientTransactionOutcome.self,
+                        FirestoreProductTransactionOutcome.self,
                         from: outcomeData
                     ) {
                     case .result(let result):
@@ -241,15 +241,15 @@ extension FirestoreClientRemoteDataSource {
 
     /// Plans the provider transaction before either Firestore write is emitted.
     ///
-    /// A mutation requiring a write returns one inseparable client-and-counter pair. Invalid
+    /// A mutation requiring a write returns one inseparable product-and-counter pair. Invalid
     /// counter state throws before a write plan exists; idempotent and conflict outcomes do
     /// not read or advance the counter.
     static func transactionPlan(
-        for operation: ClientPendingOperation,
-        against remoteRecord: ClientRemoteRecord?,
-        counter: FirestoreClientCounterState,
-        policy: ClientSyncPolicy
-    ) throws -> FirestoreClientTransactionPlan {
+        for operation: ProductPendingOperation,
+        against remoteRecord: ProductRemoteRecord?,
+        counter: FirestoreProductCounterState,
+        policy: ProductSyncPolicy
+    ) throws -> FirestoreProductTransactionPlan {
         switch policy.decision(for: operation, against: remoteRecord) {
         case .apply(let recordWithoutSequence):
             let currentSequence: Int64?
@@ -259,7 +259,7 @@ extension FirestoreClientRemoteDataSource {
             case .value(let value):
                 currentSequence = value
             case .malformed, .unread:
-                throw ClientSyncPolicyError.invalidChangeSequence
+                throw ProductSyncPolicyError.invalidChangeSequence
             }
             let nextSequence = try nextChangeSequence(
                 after: currentSequence
@@ -268,9 +268,9 @@ extension FirestoreClientRemoteDataSource {
                 nextSequence
             )
             return .atomic(
-                FirestoreClientAtomicWrite(
+                FirestoreProductAtomicWrite(
                     record: record,
-                    counter: FirestoreClientCounterDTO(
+                    counter: FirestoreProductCounterDTO(
                         changeSequence: nextSequence
                     )
                 )
@@ -285,61 +285,49 @@ extension FirestoreClientRemoteDataSource {
     }
 }
 
-struct FirestoreClientWriteDTO: Encodable {
+struct FirestoreProductWriteDTO: Encodable {
     let id: String
     let isDeleted: Bool
-    let displayName: String?
-    let taxIdentifier: String?
-    let billingAddress: BillingAddressDTO?
-    let status: ClientStatusDTO?
-    let consentReference: String?
-    let syncMetadata: FirestoreClientSyncWriteDTO
+    let name: String?
+    let status: ProductStatusDTO?
+    let syncMetadata: FirestoreProductSyncWriteDTO
 
     private enum CodingKeys: String, CodingKey {
         case id
         case isDeleted = "_deleted"
-        case displayName
-        case taxIdentifier
-        case billingAddress
+        case name
         case status
-        case consentReference
         case syncMetadata = "_sync"
     }
 }
 
-extension FirestoreClientWriteDTO {
+extension FirestoreProductWriteDTO {
     /// Encodes a full live document or a PII-free tombstone from an authoritative record.
-    init(_ record: ClientRemoteRecord) throws {
+    init(_ record: ProductRemoteRecord) throws {
         guard let sequence = record.changeSequence, sequence > 0,
               case .versioned(let revision, let operationID) = record.version else {
-            throw ClientSyncPolicyError.invalidChangeSequence
+            throw ProductSyncPolicyError.invalidChangeSequence
         }
         switch record.content {
-        case .live(let client):
+        case .live(let product):
             self.init(
-                id: client.id,
+                id: product.id,
                 isDeleted: false,
-                displayName: client.displayName,
-                taxIdentifier: client.taxIdentifier,
-                billingAddress: client.billingAddress,
-                status: client.status,
-                consentReference: client.consentReference,
-                syncMetadata: FirestoreClientSyncWriteDTO(
+                name: product.name,
+                status: product.status,
+                syncMetadata: FirestoreProductSyncWriteDTO(
                     revision: revision,
                     lastOperationID: operationID.uuidString,
                     changeSequence: sequence
                 )
             )
-        case .tombstone(let clientID):
+        case .tombstone(let productID):
             self.init(
-                id: clientID.uuidString,
+                id: productID.uuidString,
                 isDeleted: true,
-                displayName: nil,
-                taxIdentifier: nil,
-                billingAddress: nil,
+                name: nil,
                 status: nil,
-                consentReference: nil,
-                syncMetadata: FirestoreClientSyncWriteDTO(
+                syncMetadata: FirestoreProductSyncWriteDTO(
                     revision: revision,
                     lastOperationID: operationID.uuidString,
                     changeSequence: sequence
@@ -349,39 +337,33 @@ extension FirestoreClientWriteDTO {
     }
 }
 
-struct FirestoreClientSyncWriteDTO: Encodable {
+struct FirestoreProductSyncWriteDTO: Encodable {
     let revision: Int64
     let lastOperationID: String
     let changeSequence: Int64
 }
 
-struct FirestoreClientDocumentDTO: Decodable {
+struct FirestoreProductDocumentDTO: Decodable {
     let id: String
     let isDeleted: Bool?
-    let displayName: String?
-    let taxIdentifier: String?
-    let billingAddress: BillingAddressDTO?
-    let status: ClientStatusDTO?
-    let consentReference: String?
-    let syncMetadata: FirestoreClientSyncMetadataDTO?
+    let name: String?
+    let status: ProductStatusDTO?
+    let syncMetadata: FirestoreProductSyncMetadataDTO?
 
     private enum CodingKeys: String, CodingKey {
         case id
         case isDeleted = "_deleted"
-        case displayName
-        case taxIdentifier
-        case billingAddress
+        case name
         case status
-        case consentReference
         case syncMetadata = "_sync"
     }
 
     /// Reconstructs a provider-neutral live record or tombstone after validating metadata.
-    func toRemoteRecord(documentID: String) throws -> ClientRemoteRecord {
-        guard documentID == id, let clientID = UUID(uuidString: id) else {
-            throw clientDocumentDecodingError(
-                codingPath: [ClientDocumentCodingKey.id],
-                description: "The client identifier does not match its document path."
+    func toRemoteRecord(documentID: String) throws -> ProductRemoteRecord {
+        guard documentID == id, let productID = UUID(uuidString: id) else {
+            throw productDocumentDecodingError(
+                codingPath: [ProductDocumentCodingKey.id],
+                description: "The product identifier does not match its document path."
             )
         }
         let version = try remoteVersion()
@@ -389,33 +371,30 @@ struct FirestoreClientDocumentDTO: Decodable {
 
         if isDeleted == true {
             guard syncMetadata != nil else {
-                throw clientDocumentDecodingError(
-                    codingPath: [ClientDocumentCodingKey.syncMetadata],
+                throw productDocumentDecodingError(
+                    codingPath: [ProductDocumentCodingKey.syncMetadata],
                     description: "A tombstone requires authoritative sync metadata."
                 )
             }
-            return ClientRemoteRecord(
-                content: .tombstone(clientID: clientID),
+            return ProductRemoteRecord(
+                content: .tombstone(productID: productID),
                 version: version,
                 changeSequence: changeSequence
             )
         }
 
-        guard let displayName else {
-            throw missingClientField(.displayName)
+        guard let name else {
+            throw missingProductField(.name)
         }
         guard let status else {
-            throw missingClientField(.status)
+            throw missingProductField(.status)
         }
-        return ClientRemoteRecord(
+        return ProductRemoteRecord(
             content: .live(
-                ClientDTO(
+                ProductDTO(
                     id: id,
-                    displayName: displayName,
-                    taxIdentifier: taxIdentifier,
-                    billingAddress: billingAddress,
-                    status: status,
-                    consentReference: consentReference
+                    name: name,
+                    status: status
                 )
             ),
             version: version,
@@ -423,26 +402,26 @@ struct FirestoreClientDocumentDTO: Decodable {
         )
     }
 
-    private func remoteVersion() throws -> ClientRemoteVersion {
+    private func remoteVersion() throws -> ProductRemoteVersion {
         guard let syncMetadata else { return .legacy }
         guard syncMetadata.revision > 0 else {
-            throw clientDocumentDecodingError(
+            throw productDocumentDecodingError(
                 codingPath: [
-                    ClientDocumentCodingKey.syncMetadata,
-                    ClientDocumentCodingKey.revision
+                    ProductDocumentCodingKey.syncMetadata,
+                    ProductDocumentCodingKey.revision
                 ],
-                description: "A synchronized client revision must be positive."
+                description: "A synchronized product revision must be positive."
             )
         }
         guard let operationID = UUID(
             uuidString: syncMetadata.lastOperationID
         ) else {
-            throw clientDocumentDecodingError(
+            throw productDocumentDecodingError(
                 codingPath: [
-                    ClientDocumentCodingKey.syncMetadata,
-                    ClientDocumentCodingKey.lastOperationID
+                    ProductDocumentCodingKey.syncMetadata,
+                    ProductDocumentCodingKey.lastOperationID
                 ],
-                description: "The synchronized client operation identifier is invalid."
+                description: "The synchronized product operation identifier is invalid."
             )
         }
         return .versioned(
@@ -454,10 +433,10 @@ struct FirestoreClientDocumentDTO: Decodable {
     private func validatedChangeSequence() throws -> Int64? {
         guard let sequence = syncMetadata?.changeSequence else { return nil }
         guard sequence > 0 else {
-            throw clientDocumentDecodingError(
+            throw productDocumentDecodingError(
                 codingPath: [
-                    ClientDocumentCodingKey.syncMetadata,
-                    ClientDocumentCodingKey.changeSequence
+                    ProductDocumentCodingKey.syncMetadata,
+                    ProductDocumentCodingKey.changeSequence
                 ],
                 description: "A synchronized change sequence must be positive."
             )
@@ -465,57 +444,57 @@ struct FirestoreClientDocumentDTO: Decodable {
         return sequence
     }
 
-    private func missingClientField(
-        _ key: ClientDocumentCodingKey
+    private func missingProductField(
+        _ key: ProductDocumentCodingKey
     ) -> DecodingError {
-        clientDocumentDecodingError(
+        productDocumentDecodingError(
             codingPath: [key],
-            description: "A live client requires \(key.stringValue)."
+            description: "A live product requires \(key.stringValue)."
         )
     }
 }
 
-struct FirestoreClientSyncMetadataDTO: Decodable {
+struct FirestoreProductSyncMetadataDTO: Decodable {
     let revision: Int64
     let lastOperationID: String
     let changeSequence: Int64?
 }
 
-struct FirestoreClientCounterDTO: Codable, Equatable {
+struct FirestoreProductCounterDTO: Codable, Equatable {
     let changeSequence: Int64
 }
 
-enum FirestoreClientCounterState: Equatable {
+enum FirestoreProductCounterState: Equatable {
     case unread
     case absent
     case value(Int64)
     case malformed
 }
 
-struct FirestoreClientAtomicWrite: Equatable {
-    let record: ClientRemoteRecord
-    let counter: FirestoreClientCounterDTO
+struct FirestoreProductAtomicWrite: Equatable {
+    let record: ProductRemoteRecord
+    let counter: FirestoreProductCounterDTO
 }
 
-enum FirestoreClientTransactionPlan: Equatable {
-    case atomic(FirestoreClientAtomicWrite)
-    case result(ClientRemoteMutationResult)
-    case invalid(ClientSyncPolicyError)
+enum FirestoreProductTransactionPlan: Equatable {
+    case atomic(FirestoreProductAtomicWrite)
+    case result(ProductRemoteMutationResult)
+    case invalid(ProductSyncPolicyError)
 
-    var atomicWrite: FirestoreClientAtomicWrite? {
+    var atomicWrite: FirestoreProductAtomicWrite? {
         guard case .atomic(let write) = self else { return nil }
         return write
     }
 }
 
-private enum FirestoreClientTransactionOutcome: Codable {
-    case result(ClientRemoteMutationResult)
-    case invalid(ClientSyncPolicyError)
+private enum FirestoreProductTransactionOutcome: Codable {
+    case result(ProductRemoteMutationResult)
+    case invalid(ProductSyncPolicyError)
 }
 
-private enum ClientDocumentCodingKey: String, CodingKey {
+private enum ProductDocumentCodingKey: String, CodingKey {
     case id
-    case displayName
+    case name
     case status
     case syncMetadata = "_sync"
     case revision
@@ -523,9 +502,9 @@ private enum ClientDocumentCodingKey: String, CodingKey {
     case changeSequence
 }
 
-private extension ClientRemoteRecord {
-    func withChangeSequence(_ changeSequence: Int64) -> ClientRemoteRecord {
-        ClientRemoteRecord(
+private extension ProductRemoteRecord {
+    func withChangeSequence(_ changeSequence: Int64) -> ProductRemoteRecord {
+        ProductRemoteRecord(
             content: content,
             version: version,
             changeSequence: changeSequence
@@ -533,7 +512,7 @@ private extension ClientRemoteRecord {
     }
 }
 
-private func clientDocumentDecodingError(
+private func productDocumentDecodingError(
     codingPath: [any CodingKey],
     description: String
 ) -> DecodingError {
@@ -546,29 +525,29 @@ private func clientDocumentDecodingError(
 }
 
 private func mapFirestoreError(_ error: any Error) -> any Error {
-    if error is DecodingError || error is ClientSyncPolicyError {
+    if error is DecodingError || error is ProductSyncPolicyError {
         return error
     }
     if error is CancellationError { return CancellationError() }
 
     let providerError = error as NSError
     guard providerError.domain == FirestoreErrorDomain else {
-        return ClientRemoteDataSourceError.unexpected
+        return ProductRemoteDataSourceError.unexpected
     }
     switch providerError.code {
     case FirestoreErrorCode.deadlineExceeded.rawValue:
-        return ClientRemoteDataSourceError.deadlineExceeded
+        return ProductRemoteDataSourceError.deadlineExceeded
     case FirestoreErrorCode.permissionDenied.rawValue:
-        return ClientRemoteDataSourceError.permissionDenied
+        return ProductRemoteDataSourceError.permissionDenied
     case FirestoreErrorCode.resourceExhausted.rawValue:
-        return ClientRemoteDataSourceError.resourceExhausted
+        return ProductRemoteDataSourceError.resourceExhausted
     case FirestoreErrorCode.aborted.rawValue:
-        return ClientRemoteDataSourceError.aborted
+        return ProductRemoteDataSourceError.aborted
     case FirestoreErrorCode.unavailable.rawValue:
-        return ClientRemoteDataSourceError.unavailable
+        return ProductRemoteDataSourceError.unavailable
     case FirestoreErrorCode.cancelled.rawValue:
         return CancellationError()
     default:
-        return ClientRemoteDataSourceError.unexpected
+        return ProductRemoteDataSourceError.unexpected
     }
 }

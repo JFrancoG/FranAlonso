@@ -10,7 +10,14 @@ extension Schema {
             ClientRemoteStateModel.self,
             ClientSyncConflictModel.self,
             ClientSyncCursorModel.self,
-            ClientSyncRetryModel.self
+            ClientSyncRetryModel.self,
+            ProductModel.self,
+            ProductPendingUpsertModel.self,
+            ProductPendingDeleteModel.self,
+            ProductRemoteStateModel.self,
+            ProductSyncConflictModel.self,
+            ProductSyncCursorModel.self,
+            ProductSyncRetryModel.self
         ])
     }
 }

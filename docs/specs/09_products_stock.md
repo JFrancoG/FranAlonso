@@ -17,7 +17,7 @@ Gestionar productos como inventario sin precios ni descuentos y registrar ajuste
 | ID | Tarea | Test primero | Validación |
 |---|---|---|---|
 | 09.1 | Implementar contratos y casos de uso de producto. | CRUD, búsqueda, desactivación y duplicados. | Product sin campos comerciales. |
-| 09.2 | Implementar persistencia y sync de Product. | Repetición, conflicto, tombstone y offline. | UI solo observa SwiftData. |
+| 09.2 | Integrar y completar la persistencia y sync de Product sobre la vertical base de 05.10. | CRUD de 09.1, repetición, conflicto, tombstone y offline. | UI solo observa SwiftData; sin reimplementar la infraestructura base. |
 | 09.3 | Implementar `ProductListViewModel` y `ProductFormViewModel`. | Carga, vacío, búsqueda, edición, error y cancelación. | Cada pantalla tiene su fachada; sin Store ceremonial. |
 | 09.4 | Implementar lista y formulario. | Validaciones en Domain/ViewModels. | Previews con 0 y 250 productos. |
 | 09.5 | Implementar `AdjustStockUseCase`. | Entrada, salida, cero, negativo e ID repetido. | Movimiento idempotente. |
