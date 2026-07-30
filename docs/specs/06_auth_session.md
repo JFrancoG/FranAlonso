@@ -2,11 +2,15 @@
 
 ## Objetivo
 
-Implementar autenticación Firebase, observación de sesión, logout y desbloqueo biométrico local sin filtrar el SDK a Domain o Presentation.
+Implementar acceso Firebase con email y contraseña, observación de sesión, logout y desbloqueo biométrico local sin filtrar el SDK a Domain o Presentation.
 
 ## Diseño
 
+- El único acceso del MVP es email y contraseña, conforme al [ADR 0019](../ADRs/0019-mvp-email-password-authentication.md). Las cuentas se provisionan externamente; alta, recuperación, teléfono y proveedores federados quedan fuera de alcance.
 - Domain define `AuthenticationRepository`, `SignInUseCase`, `SignOutUseCase` y `ObserveSessionUseCase`.
+- `AuthenticationSession` expone solo el identificador opaco y estable del principal. La ausencia de sesión representa signed-out; una sesión observada es la identidad conocida localmente por el proveedor, no prueba un token recién validado ni autorización Firestore.
+- Email y contraseña son parámetros efímeros: nunca se serializan, persisten, registran o envían a telemetría. Credenciales inválidas y cuenta deshabilitada usan el mismo mensaje visible para evitar enumeración.
+- `SignInUseCase` comprueba cancelación antes de validar y delegar. Tras delegar, el resultado del Repository es autoritativo; la carrera de una operación Firebase ya iniciada pertenece al contrato de 06.3.
 - Data implementa `FirebaseAuthenticationDataSource` y `DefaultAuthenticationRepository`.
 - `BiometricAuthenticator` encapsula LocalAuthentication como capacidad Apple sustituible en tests.
 - Face ID/Touch ID desbloquea una sesión Firebase ya válida; no almacena ni reconstruye contraseñas.
@@ -17,7 +21,7 @@ Implementar autenticación Firebase, observación de sesión, logout y desbloque
 
 | ID | Tarea | Test primero | Validación |
 |---|---|---|---|
-| 06.1 | Definir contratos, errores y casos de uso de autenticación. | Credenciales válidas, inválidas y cancelación. | Domain sin Firebase/LocalAuthentication. |
+| 06.1 | Definir contratos, errores y casos de uso de autenticación. | Email/password válido, entradas vacías, error neutral y cancelación previa. | Domain sin Firebase/LocalAuthentication. |
 | 06.2 | Implementar fake y `DefaultAuthenticationRepository`. | Contract tests del repositorio. | Errores de infraestructura traducidos. |
 | 06.3 | Implementar adaptador Firebase Auth en Data. | Data source stub para respuestas del SDK. | SDK encapsulado y sesión observable. |
 | 06.4 | Implementar `BiometricAuthenticator`. | Disponible, autorizado, denegado, cancelado y no disponible. | Sin almacenamiento de contraseña. |
