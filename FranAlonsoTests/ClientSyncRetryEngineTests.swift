@@ -122,7 +122,7 @@ struct ClientSyncRetryEngineTests {
         let container = try retryEngineContainer()
         let actor = ClientPersistenceActor(modelContainer: container)
         try await actor.saveRetryState(
-            try ClientSyncRetryState(
+            try SyncRetryState(
                 scope: .pull,
                 backoffStep: 2,
                 notBefore: Date(timeIntervalSinceReferenceDate: 3_999),
@@ -175,7 +175,7 @@ struct ClientSyncRetryEngineTests {
         let container = try retryEngineContainer()
         let sleeping = RetrySleepObservation()
         let start = Date(timeIntervalSinceReferenceDate: 5_000)
-        let timing = ClientSyncTiming(
+        let timing = SyncTiming(
             now: { start },
             sleep: { duration in
                 await sleeping.didStart(duration)
@@ -236,7 +236,7 @@ struct ClientSyncRetryEngineTests {
         let container = try retryEngineContainer()
         let gate = RetryRemoteGate()
         let start = Date(timeIntervalSinceReferenceDate: 5_500)
-        let timing = ClientSyncTiming(
+        let timing = SyncTiming(
             now: { start },
             sleep: { _ in },
             jitterFactor: {
@@ -312,8 +312,8 @@ private actor RetryManualTiming {
         currentDate = now
     }
 
-    nonisolated var dependency: ClientSyncTiming {
-        ClientSyncTiming(
+    nonisolated var dependency: SyncTiming {
+        SyncTiming(
             now: { await self.current() },
             sleep: { duration in try await self.sleep(for: duration) },
             jitterFactor: { 1 }
@@ -564,7 +564,7 @@ private actor RetrySleepObservation {
 private func retryEngine(
     container: ModelContainer,
     remote: any ClientRemoteDataSource,
-    timing: ClientSyncTiming
+    timing: SyncTiming
 ) -> ClientSyncEngine {
     ClientSyncEngine(
         persistenceActor: ClientPersistenceActor(modelContainer: container),

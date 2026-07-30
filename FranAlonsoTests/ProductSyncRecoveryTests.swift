@@ -475,7 +475,7 @@ private func recoveryTombstoneRecord(
 private struct PhaseFiveNineClientFixture {
     let client: Client
     let remoteRecord: ClientRemoteRecord
-    let retryState: ClientSyncRetryState
+    let retryState: SyncRetryState
 }
 
 private func writePhaseFiveNineClientStore(
@@ -524,7 +524,7 @@ private func writePhaseFiveNineClientStore(
         ),
         changeSequence: 9
     )
-    let retryState = try ClientSyncRetryState(
+    let retryState = try SyncRetryState(
         scope: .pull,
         backoffStep: 2,
         notBefore: Date(timeIntervalSinceReferenceDate: 900),

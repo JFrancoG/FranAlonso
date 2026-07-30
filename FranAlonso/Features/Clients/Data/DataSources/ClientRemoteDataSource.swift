@@ -19,6 +19,22 @@ enum ClientRemoteDataSourceError: Error, Equatable {
     case unexpected
 }
 
+extension ClientRemoteDataSourceError {
+    /// Maps this transport failure to the shared retry decision without erasing its feature meaning.
+    var syncClassification: SyncErrorClassification {
+        switch self {
+        case .unavailable:
+            .recoverable(.unavailable)
+        case .deadlineExceeded:
+            .recoverable(.deadlineExceeded)
+        case .aborted:
+            .recoverable(.aborted)
+        case .permissionDenied, .resourceExhausted, .unexpected:
+            .definitive
+        }
+    }
+}
+
 /// Performs server-backed Clients transport operations without exposing provider SDK types.
 protocol ClientRemoteDataSource: Sendable {
     /// Requests the bootstrap or incremental Clients batch after a durable cursor.

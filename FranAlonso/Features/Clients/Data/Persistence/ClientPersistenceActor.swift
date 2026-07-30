@@ -81,18 +81,18 @@ actor ClientPersistenceActor {
 
     /// Returns the durable backoff schedule for one pull or pending operation.
     func retryState(
-        for scope: ClientSyncRetryScope
-    ) throws -> ClientSyncRetryState? {
+        for scope: SyncRetryScope
+    ) throws -> SyncRetryState? {
         try dataSource.retryState(for: scope, in: modelContext)
     }
 
     /// Commits the next durable deadline after a recoverable remote failure.
-    func saveRetryState(_ state: ClientSyncRetryState) throws {
+    func saveRetryState(_ state: SyncRetryState) throws {
         try dataSource.saveRetryState(state, in: modelContext)
     }
 
     /// Clears obsolete transient backoff while retaining pending synchronization work.
-    func clearRetryState(for scope: ClientSyncRetryScope) throws {
+    func clearRetryState(for scope: SyncRetryScope) throws {
         try dataSource.clearRetryState(for: scope, in: modelContext)
     }
 
@@ -100,7 +100,7 @@ actor ClientPersistenceActor {
     func reconcileRemoteBatch(
         _ batch: ClientRemoteChangeBatch,
         policy: ClientSyncPolicy,
-        clearingRetryFor retryScope: ClientSyncRetryScope? = nil
+        clearingRetryFor retryScope: SyncRetryScope? = nil
     ) throws {
         try dataSource.reconcileRemoteBatch(
             batch,
@@ -114,7 +114,7 @@ actor ClientPersistenceActor {
     func acknowledge(
         operationID: UUID,
         record: ClientRemoteRecord,
-        clearingRetryFor retryScope: ClientSyncRetryScope? = nil
+        clearingRetryFor retryScope: SyncRetryScope? = nil
     ) throws {
         try dataSource.acknowledge(
             operationID: operationID,
@@ -134,7 +134,7 @@ actor ClientPersistenceActor {
         operation: ClientPendingUpsert,
         reason: ClientSyncConflictReason,
         remoteRecord: ClientRemoteRecord?,
-        clearingRetryFor retryScope: ClientSyncRetryScope? = nil
+        clearingRetryFor retryScope: SyncRetryScope? = nil
     ) throws {
         try dataSource.recordConflict(
             operation: operation,

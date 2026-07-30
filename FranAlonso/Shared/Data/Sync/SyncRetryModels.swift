@@ -1,7 +1,7 @@
 import Foundation
 
-/// One independently scheduled unit of Clients synchronization work.
-enum ClientSyncRetryScope: Codable, Hashable {
+/// One independently scheduled unit of synchronization work within a feature-owned retry table.
+enum SyncRetryScope: Codable, Hashable {
     /// The incremental remote read and its local batch reconciliation.
     case pull
 
@@ -19,50 +19,48 @@ enum ClientSyncRetryScope: Codable, Hashable {
 }
 
 /// A transient remote condition for which a later idempotent attempt is permitted.
-enum ClientSyncRetryCategory: String, Codable, Equatable {
+enum SyncRetryCategory: String, Codable, Equatable {
     case unavailable
     case deadlineExceeded
     case aborted
 }
 
 /// Whether a synchronization failure may consume the retry budget of its scope.
-enum ClientSyncErrorClassification: Equatable {
-    case recoverable(ClientSyncRetryCategory)
+enum SyncErrorClassification: Equatable {
+    case recoverable(SyncRetryCategory)
     case definitive
 }
 
-/// The durable schedule retained after a recoverable Clients synchronization failure.
-struct ClientSyncRetryState: Equatable {
-    private let storedScope: ClientSyncRetryScope
+/// The durable schedule retained after a recoverable synchronization failure.
+struct SyncRetryState: Equatable {
+    private let storedScope: SyncRetryScope
     private let storedBackoffStep: Int
     private let storedNotBefore: Date
-    private let storedLastRecoverableCategory: ClientSyncRetryCategory
+    private let storedLastRecoverableCategory: SyncRetryCategory
 
-    var scope: ClientSyncRetryScope { storedScope }
+    var scope: SyncRetryScope { storedScope }
     var backoffStep: Int { storedBackoffStep }
     var notBefore: Date { storedNotBefore }
-    var lastRecoverableCategory: ClientSyncRetryCategory {
+    var lastRecoverableCategory: SyncRetryCategory {
         storedLastRecoverableCategory
     }
 }
 
-extension ClientSyncRetryState {
+extension SyncRetryState {
     /// Creates a trusted retry schedule from durable or newly calculated state.
     ///
-    /// - Throws: `ClientSyncRetryPolicyError` when the step or deadline is invalid.
+    /// - Throws: `SyncRetryPolicyError` when the step or deadline is invalid.
     init(
-        scope: ClientSyncRetryScope,
+        scope: SyncRetryScope,
         backoffStep: Int,
         notBefore: Date,
-        lastRecoverableCategory: ClientSyncRetryCategory
+        lastRecoverableCategory: SyncRetryCategory
     ) throws {
         guard (1...6).contains(backoffStep) else {
-            throw ClientSyncRetryPolicyError.invalidBackoffStep(
-                backoffStep
-            )
+            throw SyncRetryPolicyError.invalidBackoffStep(backoffStep)
         }
         guard notBefore.timeIntervalSinceReferenceDate.isFinite else {
-            throw ClientSyncRetryPolicyError.invalidDeadline
+            throw SyncRetryPolicyError.invalidDeadline
         }
 
         storedScope = scope
@@ -72,17 +70,17 @@ extension ClientSyncRetryState {
     }
 }
 
-/// Injectable wall time, cancellable waiting and jitter for Clients retry scheduling.
-struct ClientSyncTiming {
+/// Injectable wall time, cancellable waiting and jitter for synchronization retry scheduling.
+struct SyncTiming {
     let now: @Sendable () async -> Date
     let sleep: @Sendable (Duration) async throws -> Void
     let jitterFactor: @Sendable () async -> Double
 }
 
-extension ClientSyncTiming {
+extension SyncTiming {
     /// Uses durable wall time and Swift's nonblocking continuous-clock sleep in production.
-    static var live: ClientSyncTiming {
-        ClientSyncTiming(
+    static var live: SyncTiming {
+        SyncTiming(
             now: { Date.now },
             sleep: { duration in
                 try await Task.sleep(
@@ -96,7 +94,7 @@ extension ClientSyncTiming {
 }
 
 /// Invalid scheduling state that must not produce another remote attempt.
-enum ClientSyncRetryPolicyError: Error, Equatable {
+enum SyncRetryPolicyError: Error, Equatable {
     case invalidBackoffStep(Int)
     case invalidDeadline
     case invalidJitterFactor

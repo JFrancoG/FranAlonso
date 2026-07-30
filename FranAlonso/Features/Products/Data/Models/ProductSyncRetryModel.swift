@@ -24,7 +24,7 @@ final class ProductSyncRetryModel {
 
 extension ProductSyncRetryModel {
     /// Creates a durable row from previously validated retry state.
-    convenience init(_ state: ProductSyncRetryState) {
+    convenience init(_ state: SyncRetryState) {
         self.init(
             scopeID: state.scope.storageID,
             backoffStep: state.backoffStep,
@@ -35,9 +35,9 @@ extension ProductSyncRetryModel {
     }
 
     /// Replaces this scope's schedule without changing its durable identity.
-    func update(with state: ProductSyncRetryState) throws {
+    func update(with state: SyncRetryState) throws {
         guard scopeID == state.scope.storageID else {
-            throw ProductSyncRetryPolicyError.scopeMismatch
+            throw SyncRetryPolicyError.scopeMismatch
         }
         backoffStep = state.backoffStep
         notBefore = state.notBefore
@@ -47,19 +47,19 @@ extension ProductSyncRetryModel {
 
     /// Reconstructs and validates the schedule requested for this exact scope.
     func decodeState(
-        for scope: ProductSyncRetryScope
-    ) throws -> ProductSyncRetryState {
+        for scope: SyncRetryScope
+    ) throws -> SyncRetryState {
         guard scopeID == scope.storageID else {
-            throw ProductSyncRetryPolicyError.scopeMismatch
+            throw SyncRetryPolicyError.scopeMismatch
         }
-        guard let category = ProductSyncRetryCategory(
+        guard let category = SyncRetryCategory(
             rawValue: lastRecoverableCategoryRawValue
         ) else {
-            throw ProductSyncRetryPolicyError.invalidStoredCategory(
+            throw SyncRetryPolicyError.invalidStoredCategory(
                 lastRecoverableCategoryRawValue
             )
         }
-        return try ProductSyncRetryState(
+        return try SyncRetryState(
             scope: scope,
             backoffStep: backoffStep,
             notBefore: notBefore,

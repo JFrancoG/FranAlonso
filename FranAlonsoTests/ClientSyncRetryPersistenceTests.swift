@@ -8,13 +8,13 @@ struct ClientSyncRetryPersistenceTests {
     @Test("One durable retry row is replaced per scope and survives actor restart")
     func retryStateIsReplacedPerScopeAndSurvivesRestart() async throws {
         let container = try retryPersistenceContainer()
-        let first = try ClientSyncRetryState(
+        let first = try SyncRetryState(
             scope: .pull,
             backoffStep: 1,
             notBefore: Date(timeIntervalSinceReferenceDate: 1_001),
             lastRecoverableCategory: .unavailable
         )
-        let second = try ClientSyncRetryState(
+        let second = try SyncRetryState(
             scope: .pull,
             backoffStep: 2,
             notBefore: Date(timeIntervalSinceReferenceDate: 1_004),
@@ -80,7 +80,7 @@ struct ClientSyncRetryPersistenceTests {
         let actor = ClientPersistenceActor(modelContainer: container)
 
         await #expect(
-            throws: ClientSyncRetryPolicyError.invalidBackoffStep(0)
+            throws: SyncRetryPolicyError.invalidBackoffStep(0)
         ) {
             _ = try await actor.retryState(for: .pull)
         }
@@ -291,10 +291,10 @@ private func retryPersistenceContainer() throws -> ModelContainer {
 }
 
 private func retryPersistenceState(
-    scope: ClientSyncRetryScope,
+    scope: SyncRetryScope,
     step: Int
-) throws -> ClientSyncRetryState {
-    try ClientSyncRetryState(
+) throws -> SyncRetryState {
+    try SyncRetryState(
         scope: scope,
         backoffStep: step,
         notBefore: Date(timeIntervalSinceReferenceDate: 1_000 + Double(step)),

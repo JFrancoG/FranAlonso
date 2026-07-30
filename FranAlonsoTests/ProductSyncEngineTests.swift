@@ -604,7 +604,7 @@ private func syncEngineContainer() throws -> ModelContainer {
     )
 }
 
-private let syncEngineImmediateTiming = ProductSyncTiming(
+private let syncEngineImmediateTiming = SyncTiming(
     now: { Date.now },
     sleep: { _ in },
     jitterFactor: { 1 }

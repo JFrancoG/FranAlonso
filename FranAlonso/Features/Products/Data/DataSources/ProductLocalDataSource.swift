@@ -220,15 +220,15 @@ extension ProductLocalDataSource {
 
     /// Returns the validated durable schedule for one retry scope, when present.
     func retryState(
-        for scope: ProductSyncRetryScope,
+        for scope: SyncRetryScope,
         in context: ModelContext
-    ) throws -> ProductSyncRetryState? {
+    ) throws -> SyncRetryState? {
         try retryModel(for: scope, in: context)?.decodeState(for: scope)
     }
 
     /// Inserts or replaces one durable retry schedule and commits it explicitly.
     func saveRetryState(
-        _ state: ProductSyncRetryState,
+        _ state: SyncRetryState,
         in context: ModelContext
     ) throws {
         try requireClean(context)
@@ -247,7 +247,7 @@ extension ProductLocalDataSource {
 
     /// Removes a transient backoff without discarding its pending sync operation.
     func clearRetryState(
-        for scope: ProductSyncRetryScope,
+        for scope: SyncRetryScope,
         in context: ModelContext
     ) throws {
         try requireClean(context)
@@ -267,7 +267,7 @@ extension ProductLocalDataSource {
     func reconcileRemoteBatch(
         _ batch: ProductRemoteChangeBatch,
         policy: ProductSyncPolicy,
-        clearingRetryFor retryScope: ProductSyncRetryScope? = nil,
+        clearingRetryFor retryScope: SyncRetryScope? = nil,
         in context: ModelContext
     ) throws {
         try requireClean(context)
@@ -369,7 +369,7 @@ extension ProductLocalDataSource {
     func acknowledge(
         operationID: UUID,
         record: ProductRemoteRecord,
-        clearingRetryFor retryScope: ProductSyncRetryScope? = nil,
+        clearingRetryFor retryScope: SyncRetryScope? = nil,
         in context: ModelContext
     ) throws {
         try requireClean(context)
@@ -415,7 +415,7 @@ extension ProductLocalDataSource {
         operation: ProductPendingUpsert,
         reason: ProductSyncConflictReason,
         remoteRecord: ProductRemoteRecord?,
-        clearingRetryFor retryScope: ProductSyncRetryScope? = nil,
+        clearingRetryFor retryScope: SyncRetryScope? = nil,
         in context: ModelContext
     ) throws {
         try requireClean(context)
@@ -616,7 +616,7 @@ extension ProductLocalDataSource {
     }
 
     private func retryModel(
-        for scope: ProductSyncRetryScope,
+        for scope: SyncRetryScope,
         in context: ModelContext
     ) throws -> ProductSyncRetryModel? {
         let scopeID = scope.storageID
@@ -630,7 +630,7 @@ extension ProductLocalDataSource {
     }
 
     private func deleteRetryState(
-        for scope: ProductSyncRetryScope,
+        for scope: SyncRetryScope,
         in context: ModelContext
     ) throws {
         if let model = try retryModel(for: scope, in: context) {

@@ -6,8 +6,8 @@ actor ProductSyncEngine {
     private let remoteDataSource: any ProductRemoteDataSource
     private let observationSignal: any ProductChangeSignaling
     private let syncPolicy: ProductSyncPolicy
-    private let retryPolicy: ProductSyncRetryPolicy
-    private let timing: ProductSyncTiming
+    private let retryPolicy: SyncBackoffPolicy
+    private let timing: SyncTiming
     private var isSynchronizing = false
 
     /// Creates the Products engine from isolated local and replaceable remote roles.
@@ -16,8 +16,8 @@ actor ProductSyncEngine {
         remoteDataSource: any ProductRemoteDataSource,
         observationSignal: any ProductChangeSignaling,
         policy: ProductSyncPolicy = ProductSyncPolicy(),
-        retryPolicy: ProductSyncRetryPolicy = ProductSyncRetryPolicy(),
-        timing: ProductSyncTiming = .live
+        retryPolicy: SyncBackoffPolicy = SyncBackoffPolicy(),
+        timing: SyncTiming = .live
     ) {
         self.persistenceActor = persistenceActor
         self.remoteDataSource = remoteDataSource
@@ -66,7 +66,7 @@ actor ProductSyncEngine {
                 continue
             }
             try Task.checkCancellation()
-            let retryScope = ProductSyncRetryScope.operation(
+            let retryScope = SyncRetryScope.operation(
                 operation.operationID
             )
             let result = try await performWithRetry(scope: retryScope) {
@@ -88,7 +88,7 @@ actor ProductSyncEngine {
     private func reconcilePushed(
         _ operation: ProductPendingOperation,
         result: ProductRemoteMutationResult,
-        clearingRetryFor retryScope: ProductSyncRetryScope
+        clearingRetryFor retryScope: SyncRetryScope
     ) async throws {
         switch result {
         case .applied(let record), .alreadyApplied(let record):
@@ -111,7 +111,7 @@ actor ProductSyncEngine {
     }
 
     private func performWithRetry<Success: Sendable>(
-        scope: ProductSyncRetryScope,
+        scope: SyncRetryScope,
         operation: @Sendable () async throws -> Success
     ) async throws -> Success {
         var state = try await persistenceActor.retryState(for: scope)
@@ -132,7 +132,10 @@ actor ProductSyncEngine {
                     throw CancellationError()
                 }
 
-                switch retryPolicy.classification(for: error) {
+                let remoteError = error as? ProductRemoteDataSourceError
+                let classification = remoteError?.syncClassification
+                    ?? .definitive
+                switch classification {
                 case .definitive:
                     try await persistenceActor.clearRetryState(for: scope)
                     throw error
@@ -165,7 +168,7 @@ actor ProductSyncEngine {
         let currentDate = await timing.now()
         let remaining = deadline.timeIntervalSince(currentDate)
         guard remaining.isFinite else {
-            throw ProductSyncRetryPolicyError.invalidDeadline
+            throw SyncRetryPolicyError.invalidDeadline
         }
         let boundedRemaining = min(max(remaining, 0), 60)
         guard boundedRemaining > 0 else { return }

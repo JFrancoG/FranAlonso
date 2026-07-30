@@ -6,8 +6,8 @@ actor ClientSyncEngine {
     private let remoteDataSource: any ClientRemoteDataSource
     private let observationSignal: any ClientChangeSignaling
     private let syncPolicy: ClientSyncPolicy
-    private let retryPolicy: ClientSyncRetryPolicy
-    private let timing: ClientSyncTiming
+    private let retryPolicy: SyncBackoffPolicy
+    private let timing: SyncTiming
     private var isSynchronizing = false
 
     /// Creates the Clients engine from isolated local and replaceable remote roles.
@@ -16,8 +16,8 @@ actor ClientSyncEngine {
         remoteDataSource: any ClientRemoteDataSource,
         observationSignal: any ClientChangeSignaling,
         policy: ClientSyncPolicy = ClientSyncPolicy(),
-        retryPolicy: ClientSyncRetryPolicy = ClientSyncRetryPolicy(),
-        timing: ClientSyncTiming = .live
+        retryPolicy: SyncBackoffPolicy = SyncBackoffPolicy(),
+        timing: SyncTiming = .live
     ) {
         self.persistenceActor = persistenceActor
         self.remoteDataSource = remoteDataSource
@@ -66,7 +66,7 @@ actor ClientSyncEngine {
                 continue
             }
             try Task.checkCancellation()
-            let retryScope = ClientSyncRetryScope.operation(
+            let retryScope = SyncRetryScope.operation(
                 operation.operationID
             )
             let result = try await performWithRetry(scope: retryScope) {
@@ -88,7 +88,7 @@ actor ClientSyncEngine {
     private func reconcilePushed(
         _ operation: ClientPendingOperation,
         result: ClientRemoteMutationResult,
-        clearingRetryFor retryScope: ClientSyncRetryScope
+        clearingRetryFor retryScope: SyncRetryScope
     ) async throws {
         switch result {
         case .applied(let record), .alreadyApplied(let record):
@@ -111,7 +111,7 @@ actor ClientSyncEngine {
     }
 
     private func performWithRetry<Success: Sendable>(
-        scope: ClientSyncRetryScope,
+        scope: SyncRetryScope,
         operation: @Sendable () async throws -> Success
     ) async throws -> Success {
         var state = try await persistenceActor.retryState(for: scope)
@@ -132,7 +132,10 @@ actor ClientSyncEngine {
                     throw CancellationError()
                 }
 
-                switch retryPolicy.classification(for: error) {
+                let remoteError = error as? ClientRemoteDataSourceError
+                let classification = remoteError?.syncClassification
+                    ?? .definitive
+                switch classification {
                 case .definitive:
                     try await persistenceActor.clearRetryState(for: scope)
                     throw error
@@ -165,7 +168,7 @@ actor ClientSyncEngine {
         let currentDate = await timing.now()
         let remaining = deadline.timeIntervalSince(currentDate)
         guard remaining.isFinite else {
-            throw ClientSyncRetryPolicyError.invalidDeadline
+            throw SyncRetryPolicyError.invalidDeadline
         }
         let boundedRemaining = min(max(remaining, 0), 60)
         guard boundedRemaining > 0 else { return }
