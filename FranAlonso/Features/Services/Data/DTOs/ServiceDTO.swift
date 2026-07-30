@@ -15,18 +15,18 @@ struct ServiceDTO: Codable, Equatable {
 
 /// The monetary portion of a Service transport snapshot.
 struct ServiceMoneyDTO: Codable, Equatable {
-    let amount: ServiceDecimalDTO
+    let amount: CanonicalDecimalDTO
     let currency: ServiceCurrencyDTO
 }
 
 /// The tax-rate portion of a Service transport snapshot.
 struct ServiceTaxRateDTO: Codable, Equatable {
-    let percentage: ServiceDecimalDTO
+    let percentage: CanonicalDecimalDTO
 }
 
 /// The optional discount portion of a Service transport snapshot.
 struct ServiceDiscountDTO: Codable, Equatable {
-    let percentage: ServiceDecimalDTO
+    let percentage: CanonicalDecimalDTO
 }
 
 /// Stable transport values for the kind of catalog offering.

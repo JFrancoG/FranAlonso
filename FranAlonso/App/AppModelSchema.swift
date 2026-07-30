@@ -24,7 +24,14 @@ extension Schema {
             ServiceRemoteStateModel.self,
             ServiceSyncConflictModel.self,
             ServiceSyncCursorModel.self,
-            ServiceSyncRetryModel.self
+            ServiceSyncRetryModel.self,
+            SaleModel.self,
+            SalePendingUpsertModel.self,
+            SalePendingDiscardModel.self,
+            SaleRemoteStateModel.self,
+            SaleSyncConflictModel.self,
+            SaleSyncCursorModel.self,
+            SaleSyncRetryModel.self
         ])
     }
 }

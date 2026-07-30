@@ -21,7 +21,7 @@ Solo se puede registrar el pago cuando todos los servicios han terminado y solo 
 
 | ID | Tarea | Test primero | Validación |
 |---|---|---|---|
-| 11.1 | Implementar repositorio y casos de uso de borrador. | Crear, recuperar, editar y descartar. | SwiftData es SoT local. |
+| 11.1 | Integrar y completar el repositorio y los casos de uso de borrador sobre la vertical Data/sync base de 05.10c. | Crear, recuperar, editar y descartar sin duplicar infraestructura. | SwiftData es SoT local. |
 | 11.2 | Completar `SaleCalculator`. | IVA, descuentos, redondeo, cero y límites. | `Decimal` y snapshots consistentes. |
 | 11.3 | Implementar `SaleDraftStore`. | Añadir/quitar/cambiar cantidad, cliente y descuento. | Estado cohesivo y cancelación. |
 | 11.4 | Implementar `WorkdayViewModel` y `SaleDraftViewModel`. | Próximo, en curso, pendiente de cierre, selección, navegación y composición del Store. | Fachadas separadas y sin estado duplicado. |

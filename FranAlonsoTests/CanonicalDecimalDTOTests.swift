@@ -2,8 +2,8 @@ import Foundation
 import Testing
 @testable import FranAlonso
 
-@Suite("Service decimal transport")
-struct ServiceDecimalDTOTests {
+@Suite("Canonical decimal transport")
+struct CanonicalDecimalDTOTests {
     @Test(
         "Canonical decimal strings round trip byte for byte",
         arguments: [
@@ -19,7 +19,7 @@ struct ServiceDecimalDTOTests {
         let encoded = Data("\"\(canonicalValue)\"".utf8)
 
         let value = try JSONDecoder().decode(
-            ServiceDecimalDTO.self,
+            CanonicalDecimalDTO.self,
             from: encoded
         )
 
@@ -57,7 +57,7 @@ struct ServiceDecimalDTOTests {
 
         #expect(throws: DecodingError.self) {
             _ = try JSONDecoder().decode(
-                ServiceDecimalDTO.self,
+                CanonicalDecimalDTO.self,
                 from: encoded
             )
         }
@@ -67,13 +67,13 @@ struct ServiceDecimalDTOTests {
     func wireRepresentationMustBeAString() {
         #expect(throws: DecodingError.self) {
             _ = try JSONDecoder().decode(
-                ServiceDecimalDTO.self,
+                CanonicalDecimalDTO.self,
                 from: Data("10.5".utf8)
             )
         }
         #expect(throws: DecodingError.self) {
             _ = try JSONDecoder().decode(
-                ServiceDecimalDTO.self,
+                CanonicalDecimalDTO.self,
                 from: Data("null".utf8)
             )
         }
@@ -81,8 +81,8 @@ struct ServiceDecimalDTOTests {
 
     @Test("Construction rejects a non-number Decimal")
     func constructionRejectsANonNumberDecimal() {
-        #expect(throws: ServiceDecimalDTOError.invalidValue) {
-            _ = try ServiceDecimalDTO(.nan)
+        #expect(throws: CanonicalDecimalDTOError.invalidValue) {
+            _ = try CanonicalDecimalDTO(.nan)
         }
     }
 }

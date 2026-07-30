@@ -13,6 +13,7 @@ struct AppDependenciesTests {
             clientRepository: CompositionClientRepositoryFake(clients: []),
             productRepository: CompositionProductRepositoryFake(products: []),
             serviceRepository: CompositionServiceRepositoryFake(services: []),
+            saleRepository: InMemorySaleRepository(),
             analyticsDataSource: analytics,
             crashDataSource: crash
         )
@@ -34,6 +35,7 @@ struct AppDependenciesTests {
             clientRepository: CompositionClientRepositoryFake(clients: []),
             productRepository: CompositionProductRepositoryFake(products: []),
             serviceRepository: CompositionServiceRepositoryFake(services: []),
+            saleRepository: InMemorySaleRepository(),
             analyticsDataSource: CompositionAnalyticsDataSourceSpy(),
             crashDataSource: CompositionCrashDataSourceSpy()
         )
@@ -75,6 +77,7 @@ struct AppDependenciesTests {
             clientRepository: repository,
             productRepository: CompositionProductRepositoryFake(products: []),
             serviceRepository: CompositionServiceRepositoryFake(services: []),
+            saleRepository: InMemorySaleRepository(),
             analyticsDataSource: CompositionAnalyticsDataSourceSpy(),
             crashDataSource: CompositionCrashDataSourceSpy()
         )
@@ -119,6 +122,7 @@ struct AppDependenciesTests {
             clientRepository: CompositionClientRepositoryFake(clients: []),
             productRepository: repository,
             serviceRepository: CompositionServiceRepositoryFake(services: []),
+            saleRepository: InMemorySaleRepository(),
             analyticsDataSource: CompositionAnalyticsDataSourceSpy(),
             crashDataSource: CompositionCrashDataSourceSpy()
         )
@@ -152,6 +156,7 @@ struct AppDependenciesTests {
             clientRepository: CompositionClientRepositoryFake(clients: []),
             productRepository: CompositionProductRepositoryFake(products: []),
             serviceRepository: repository,
+            saleRepository: InMemorySaleRepository(),
             analyticsDataSource: CompositionAnalyticsDataSourceSpy(),
             crashDataSource: CompositionCrashDataSourceSpy()
         )
@@ -173,6 +178,31 @@ struct AppDependenciesTests {
 
         #expect(try await iterator.next() == expectedServices)
         #expect(try await iterator.next() == nil)
+    }
+
+    @Test("Application and preview dependencies expose their seeded Sales")
+    func dependenciesExposeSeededSales() async throws {
+        let expectedSales = [try compositionSale()]
+        let repository = CompositionSaleRepositoryFake(sales: expectedSales)
+        let dependencies = AppDependencies(
+            clientRepository: CompositionClientRepositoryFake(clients: []),
+            productRepository: CompositionProductRepositoryFake(products: []),
+            serviceRepository: CompositionServiceRepositoryFake(services: []),
+            saleRepository: repository,
+            analyticsDataSource: CompositionAnalyticsDataSourceSpy(),
+            crashDataSource: CompositionCrashDataSourceSpy()
+        )
+
+        let stream = await dependencies.observeSales()
+        var iterator = stream.makeAsyncIterator()
+        #expect(try await iterator.next() == expectedSales)
+        try await dependencies.saveSale(expectedSales[0])
+        #expect(await repository.saveCallCount() == 1)
+
+        let preview = AppDependencies.preview(sales: expectedSales)
+        let previewStream = await preview.observeSales()
+        var previewIterator = previewStream.makeAsyncIterator()
+        #expect(try await previewIterator.next() == expectedSales)
     }
 }
 
@@ -266,6 +296,33 @@ private actor CompositionServiceRepositoryFake: ServiceRepository {
     }
 }
 
+private actor CompositionSaleRepositoryFake: SaleRepository {
+    private var sales: [Sale]
+    private var saves = 0
+
+    init(sales: [Sale]) {
+        self.sales = sales
+    }
+
+    func observeSales() async -> AsyncThrowingStream<[Sale], any Error> {
+        AsyncThrowingStream { continuation in
+            continuation.yield(sales)
+            continuation.finish()
+        }
+    }
+
+    func saveSale(_ sale: Sale) async throws {
+        saves += 1
+        if let index = sales.firstIndex(where: { $0.id == sale.id }) {
+            sales[index] = sale
+        } else {
+            sales.append(sale)
+        }
+    }
+
+    func saveCallCount() -> Int { saves }
+}
+
 private func compositionProduct() -> Product {
     Product.testSnapshot(
         id: ProductID(
@@ -284,6 +341,31 @@ private func compositionService() throws -> Service {
         )!,
         name: "Corte y peinado",
         discountPercentage: nil
+    )
+}
+
+private func compositionSale() throws -> Sale {
+    let line = try SaleLine.upcoming(
+        id: SaleLineID(
+            rawValue: UUID(uuidString: "DDDDDDDD-EEEE-FFFF-AAAA-BBBBBBBBBBBB")!
+        ),
+        serviceID: ServiceID(
+            rawValue: UUID(uuidString: "EEEEEEEE-FFFF-AAAA-BBBB-CCCCCCCCCCCC")!
+        ),
+        serviceName: "Snapshot",
+        quantity: 1,
+        unitPrice: Money(amount: 10, currency: .eur),
+        taxRate: TaxRate(percentage: 21),
+        discount: nil,
+        linkedProductID: nil
+    )
+    return try Sale.draft(
+        id: SaleID(
+            rawValue: UUID(uuidString: "FFFFFFFF-AAAA-BBBB-CCCC-DDDDDDDDDDDD")!
+        ),
+        clientID: nil,
+        createdAt: Date(timeIntervalSinceReferenceDate: 1),
+        lines: [line]
     )
 }
 

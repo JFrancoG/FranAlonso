@@ -4,11 +4,13 @@ struct AppDependencies {
     let observeClients: ObserveClientsUseCase
     let observeProducts: ObserveProductsUseCase
     let observeServices: ObserveServicesUseCase
+    let observeSales: ObserveSalesUseCase
+    let saveSale: SaveSaleUseCase
     let telemetryReporter: TelemetryReporter
 
     /// Creates production dependencies over the supplied local source of truth.
     ///
-    /// The Clients, Products and Services repositories remain local-first and share their
+    /// The Clients, Products, Services and Sales repositories remain local-first and share their
     /// persistence and observation roles with the application runtime.
     ///
     /// - Parameter modelContainer: The application container shared with SwiftUI.
@@ -17,6 +19,7 @@ struct AppDependencies {
         let observationSignal = ClientObservationSignal()
         let productObservationSignal = ProductObservationSignal()
         let serviceObservationSignal = ServiceObservationSignal()
+        let saleObservationSignal = SaleObservationSignal()
         return .live(
             persistenceActor: ClientPersistenceActor(
                 modelContainer: modelContainer
@@ -29,7 +32,11 @@ struct AppDependencies {
             servicePersistenceActor: ServicePersistenceActor(
                 modelContainer: modelContainer
             ),
-            serviceObservationSignal: serviceObservationSignal
+            serviceObservationSignal: serviceObservationSignal,
+            salePersistenceActor: SalePersistenceActor(
+                modelContainer: modelContainer
+            ),
+            saleObservationSignal: saleObservationSignal
         )
     }
 
@@ -42,13 +49,17 @@ struct AppDependencies {
     ///   - productObservationSignal: The Products invalidation shared by local writes and sync.
     ///   - servicePersistenceActor: The single actor that owns durable Services state.
     ///   - serviceObservationSignal: The Services invalidation shared by local writes and sync.
+    ///   - salePersistenceActor: The single actor that owns durable Sales state.
+    ///   - saleObservationSignal: The Sales invalidation shared by local writes and sync.
     static func live(
         persistenceActor: ClientPersistenceActor,
         observationSignal: ClientObservationSignal,
         productPersistenceActor: ProductPersistenceActor,
         productObservationSignal: ProductObservationSignal,
         servicePersistenceActor: ServicePersistenceActor,
-        serviceObservationSignal: ServiceObservationSignal
+        serviceObservationSignal: ServiceObservationSignal,
+        salePersistenceActor: SalePersistenceActor,
+        saleObservationSignal: SaleObservationSignal
     ) -> AppDependencies {
         let clientRepository = DefaultClientRepository(
             persistenceActor: persistenceActor,
@@ -62,11 +73,16 @@ struct AppDependencies {
             persistenceActor: servicePersistenceActor,
             observationSignal: serviceObservationSignal
         )
+        let saleRepository = DefaultSaleRepository(
+            persistenceActor: salePersistenceActor,
+            observationSignal: saleObservationSignal
+        )
 
         return AppDependencies(
             clientRepository: clientRepository,
             productRepository: productRepository,
             serviceRepository: serviceRepository,
+            saleRepository: saleRepository,
             analyticsDataSource: FirebaseAnalyticsDataSource(),
             crashDataSource: FirebaseCrashDataSource()
         )
@@ -75,12 +91,14 @@ struct AppDependencies {
     static func preview(
         clients: [Client] = [],
         products: [Product] = [],
-        services: [Service] = []
+        services: [Service] = [],
+        sales: [Sale] = []
     ) -> AppDependencies {
         AppDependencies(
             clientRepository: InMemoryClientRepository(clients: clients),
             productRepository: InMemoryProductRepository(products: products),
             serviceRepository: InMemoryServiceRepository(services: services),
+            saleRepository: InMemorySaleRepository(sales: sales),
             analyticsDataSource: PreviewAnalyticsDataSource(),
             crashDataSource: PreviewCrashDataSource()
         )
@@ -92,6 +110,7 @@ extension AppDependencies {
         clientRepository: any ClientRepository,
         productRepository: any ProductRepository,
         serviceRepository: any ServiceRepository,
+        saleRepository: any SaleRepository,
         analyticsDataSource: any AnalyticsDataSource,
         crashDataSource: any CrashDataSource
     ) {
@@ -99,6 +118,8 @@ extension AppDependencies {
             observeClients: ObserveClientsUseCase(repository: clientRepository),
             observeProducts: ObserveProductsUseCase(repository: productRepository),
             observeServices: ObserveServicesUseCase(repository: serviceRepository),
+            observeSales: ObserveSalesUseCase(repository: saleRepository),
+            saveSale: SaveSaleUseCase(repository: saleRepository),
             telemetryReporter: TelemetryReporter(
                 analyticsDataSource: analyticsDataSource,
                 crashDataSource: crashDataSource

@@ -1,7 +1,7 @@
 import Foundation
 
-/// Errors raised when a decimal value cannot participate in the canonical Service transport.
-enum ServiceDecimalDTOError: Error, Equatable {
+/// Errors raised when a decimal value cannot participate in canonical transport.
+enum CanonicalDecimalDTOError: Error, Equatable {
     /// The value is not a finite decimal number.
     case invalidValue
 }
@@ -10,7 +10,7 @@ enum ServiceDecimalDTOError: Error, Equatable {
 ///
 /// Decoding accepts only the exact representation produced by this type. This
 /// prevents provider or locale coercion from silently changing business values.
-struct ServiceDecimalDTO: Codable, Equatable {
+struct CanonicalDecimalDTO: Codable, Equatable {
     private let storedDecimal: Decimal
 
     /// The exact decimal value represented by the transport string.
@@ -24,14 +24,14 @@ struct ServiceDecimalDTO: Codable, Equatable {
     }
 }
 
-extension ServiceDecimalDTO {
+extension CanonicalDecimalDTO {
     /// Creates a transport value from a valid decimal number.
     ///
     /// - Parameter decimal: The decimal value to preserve.
-    /// - Throws: `ServiceDecimalDTOError.invalidValue` when the value is not a number.
+    /// - Throws: `CanonicalDecimalDTOError.invalidValue` when the value is not a number.
     init(_ decimal: Decimal) throws {
         guard !decimal.isNaN else {
-            throw ServiceDecimalDTOError.invalidValue
+            throw CanonicalDecimalDTOError.invalidValue
         }
         self.init(storedDecimal: decimal)
     }
@@ -39,7 +39,7 @@ extension ServiceDecimalDTO {
     /// Reconstructs a decimal only when its persisted string is already canonical.
     ///
     /// - Parameter canonicalString: The exact base-ten representation to validate.
-    /// - Throws: `ServiceDecimalDTOError.invalidValue` when the representation is
+    /// - Throws: `CanonicalDecimalDTOError.invalidValue` when the representation is
     ///   malformed or would be normalized to a different byte sequence.
     init(canonicalString: String) throws {
         guard let decimal = Decimal(
@@ -47,7 +47,7 @@ extension ServiceDecimalDTO {
             locale: Locale(identifier: "en_US_POSIX")
         ), !decimal.isNaN,
         Self.canonicalString(for: decimal) == canonicalString else {
-            throw ServiceDecimalDTOError.invalidValue
+            throw CanonicalDecimalDTOError.invalidValue
         }
         self.init(storedDecimal: decimal)
     }

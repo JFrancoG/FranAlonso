@@ -70,6 +70,117 @@ struct SaleLineDomainTests {
 
 @Suite("Sale lifecycle")
 struct SaleLifecycleTests {
+    @Test("Rejects a nonfinite creation timestamp")
+    func rejectsANonfiniteCreationTimestamp() throws {
+        #expect(throws: SaleError.invalidTimestamp) {
+            try Sale.draft(
+                id: SaleID(rawValue: saleUUID("10000000-0000-0000-0000-000000000099")),
+                clientID: nil,
+                createdAt: Date(timeIntervalSinceReferenceDate: .nan),
+                lines: []
+            )
+        }
+    }
+
+    @Test("Rejects nonfinite lifecycle timestamps before mutating state")
+    func rejectsNonfiniteLifecycleTimestampsBeforeMutatingState() throws {
+        var awaitingPayment = try makeAwaitingPaymentSale()
+        let paymentID = PaymentID(
+            rawValue: saleUUID("10000000-0000-0000-0000-000000000098")
+        )
+
+        #expect(throws: SaleError.invalidTimestamp) {
+            try awaitingPayment.registerPayment(
+                id: paymentID,
+                method: .cash,
+                paidAt: Date(timeIntervalSinceReferenceDate: .infinity)
+            )
+        }
+        #expect(awaitingPayment.status == .awaitingPayment)
+
+        var awaitingDocument = awaitingPayment
+        try awaitingDocument.registerPayment(
+            id: paymentID,
+            method: .cash,
+            paidAt: saleDate(1)
+        )
+        let statusBeforeInvalidClose = awaitingDocument.status
+        #expect(throws: SaleError.invalidTimestamp) {
+            try awaitingDocument.close(
+                documentID: BillingDocumentID(
+                    rawValue: saleUUID("10000000-0000-0000-0000-000000000097")
+                ),
+                closedAt: Date(timeIntervalSinceReferenceDate: -.infinity)
+            )
+        }
+        #expect(awaitingDocument.status == statusBeforeInvalidClose)
+
+        var closed = try makeClosedSale()
+        let statusBeforeInvalidVoid = closed.status
+        #expect(throws: SaleError.invalidTimestamp) {
+            try closed.void(
+                reversalID: SaleReversalID(
+                    rawValue: saleUUID("10000000-0000-0000-0000-000000000096")
+                ),
+                voidedAt: Date(timeIntervalSinceReferenceDate: .nan)
+            )
+        }
+        #expect(closed.status == statusBeforeInvalidVoid)
+    }
+
+    @Test("Decoding rejects every nonfinite persisted timestamp")
+    func decodingRejectsEveryNonfinitePersistedTimestamp() throws {
+        let line = try makeSaleLine()
+        let creationPayload = SalePayload(
+            id: SaleID(rawValue: saleUUID("10000000-0000-0000-0000-000000000095")),
+            clientID: nil,
+            createdAt: Date(timeIntervalSinceReferenceDate: .nan),
+            lines: [line],
+            status: .draft
+        )
+        let encoder = JSONEncoder()
+        encoder.nonConformingFloatEncodingStrategy = .convertToString(
+            positiveInfinity: "Infinity",
+            negativeInfinity: "-Infinity",
+            nan: "NaN"
+        )
+        let decoder = JSONDecoder()
+        decoder.nonConformingFloatDecodingStrategy = .convertFromString(
+            positiveInfinity: "Infinity",
+            negativeInfinity: "-Infinity",
+            nan: "NaN"
+        )
+
+        #expect(throws: SaleError.invalidTimestamp) {
+            try decoder.decode(
+                Sale.self,
+                from: encoder.encode(creationPayload)
+            )
+        }
+
+        let completedLine = try completedSaleLine()
+        let paidPayload = SalePayload(
+            id: SaleID(rawValue: saleUUID("10000000-0000-0000-0000-000000000094")),
+            clientID: nil,
+            createdAt: saleDate(0),
+            lines: [completedLine],
+            status: .awaitingDocument(
+                paymentID: PaymentID(
+                    rawValue: saleUUID("10000000-0000-0000-0000-000000000093")
+                ),
+                method: .card,
+                paidAt: Date(timeIntervalSinceReferenceDate: .infinity)
+            )
+        )
+
+        #expect(throws: SaleError.invalidTimestamp) {
+            try decoder.decode(
+                Sale.self,
+                from: encoder.encode(paidPayload)
+            )
+        }
+    }
+
     @Test("Rejects starting a sale without service lines")
     func rejectsStartingASaleWithoutServiceLines() throws {
         var sale = try Sale.draft(
@@ -409,6 +520,13 @@ private func makeClosedSale() throws -> Sale {
         closedAt: saleDate(2)
     )
     return sale
+}
+
+private func completedSaleLine() throws -> SaleLine {
+    var line = try makeSaleLine()
+    try line.start()
+    try line.complete()
+    return line
 }
 
 private func saleDate(_ dayOffset: TimeInterval) -> Date {

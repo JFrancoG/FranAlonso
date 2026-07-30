@@ -10,6 +10,8 @@ final class AppRuntime {
     private let productObservationSignal: ProductObservationSignal
     private let servicePersistenceActor: ServicePersistenceActor
     private let serviceObservationSignal: ServiceObservationSignal
+    private let salePersistenceActor: SalePersistenceActor
+    private let saleObservationSignal: SaleObservationSignal
     private let environment: FirestoreEnvironment
     private let makeClientRemoteDataSource: (
         FirestoreEnvironment
@@ -20,14 +22,18 @@ final class AppRuntime {
     private let makeServiceRemoteDataSource: (
         FirestoreEnvironment
     ) -> any ServiceRemoteDataSource
+    private let makeSaleRemoteDataSource: (
+        FirestoreEnvironment
+    ) -> any SaleRemoteDataSource
     private(set) var clientSyncEngine: ClientSyncEngine?
     private(set) var productSyncEngine: ProductSyncEngine?
     private(set) var serviceSyncEngine: ServiceSyncEngine?
+    private(set) var saleSyncEngine: SaleSyncEngine?
 
     /// Creates the shared local runtime for one explicit backend environment.
     ///
-    /// The remote factory remains unused until Firebase configuration succeeds. Creating the
-    /// resulting engine never starts synchronization; a later approved trigger must call it.
+    /// Remote factories remain unused until Firebase configuration succeeds. Creating the
+    /// resulting engines never starts synchronization; a later approved trigger must call them.
     init(
         modelContainer: ModelContainer,
         environment: FirestoreEnvironment,
@@ -45,6 +51,11 @@ final class AppRuntime {
             FirestoreEnvironment
         ) -> any ServiceRemoteDataSource = {
             FirestoreServiceRemoteDataSource(environment: $0)
+        },
+        makeSaleRemoteDataSource: @escaping (
+            FirestoreEnvironment
+        ) -> any SaleRemoteDataSource = {
+            FirestoreSaleRemoteDataSource(environment: $0)
         }
     ) {
         let persistenceActor = ClientPersistenceActor(
@@ -59,6 +70,10 @@ final class AppRuntime {
             modelContainer: modelContainer
         )
         let serviceObservationSignal = ServiceObservationSignal()
+        let salePersistenceActor = SalePersistenceActor(
+            modelContainer: modelContainer
+        )
+        let saleObservationSignal = SaleObservationSignal()
 
         self.persistenceActor = persistenceActor
         self.observationSignal = observationSignal
@@ -66,17 +81,22 @@ final class AppRuntime {
         self.productObservationSignal = productObservationSignal
         self.servicePersistenceActor = servicePersistenceActor
         self.serviceObservationSignal = serviceObservationSignal
+        self.salePersistenceActor = salePersistenceActor
+        self.saleObservationSignal = saleObservationSignal
         self.environment = environment
         self.makeClientRemoteDataSource = makeClientRemoteDataSource
         self.makeProductRemoteDataSource = makeProductRemoteDataSource
         self.makeServiceRemoteDataSource = makeServiceRemoteDataSource
+        self.makeSaleRemoteDataSource = makeSaleRemoteDataSource
         dependencies = .live(
             persistenceActor: persistenceActor,
             observationSignal: observationSignal,
             productPersistenceActor: productPersistenceActor,
             productObservationSignal: productObservationSignal,
             servicePersistenceActor: servicePersistenceActor,
-            serviceObservationSignal: serviceObservationSignal
+            serviceObservationSignal: serviceObservationSignal,
+            salePersistenceActor: salePersistenceActor,
+            saleObservationSignal: saleObservationSignal
         )
     }
 
@@ -122,6 +142,21 @@ final class AppRuntime {
             persistenceActor: servicePersistenceActor,
             remoteDataSource: makeServiceRemoteDataSource(environment),
             observationSignal: serviceObservationSignal
+        )
+    }
+
+    /// Composes the inactive Sales sync engine once Firebase is ready.
+    ///
+    /// - Parameter firebaseIsConfigured: Whether the default Firebase app is available.
+    func activateSaleSync(firebaseIsConfigured: Bool) {
+        guard firebaseIsConfigured, saleSyncEngine == nil else {
+            return
+        }
+
+        saleSyncEngine = SaleSyncEngine(
+            persistenceActor: salePersistenceActor,
+            remoteDataSource: makeSaleRemoteDataSource(environment),
+            observationSignal: saleObservationSignal
         )
     }
 }

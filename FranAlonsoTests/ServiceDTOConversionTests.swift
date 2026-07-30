@@ -171,7 +171,7 @@ struct ServiceDTOConversionTests {
             type: valid.type,
             linkedProductID: valid.linkedProductID,
             price: ServiceMoneyDTO(
-                amount: try ServiceDecimalDTO(10.005),
+                amount: try CanonicalDecimalDTO(10.005),
                 currency: .eur
             ),
             taxRate: valid.taxRate,
@@ -199,7 +199,7 @@ struct ServiceDTOConversionTests {
             linkedProductID: valid.linkedProductID,
             price: valid.price,
             taxRate: ServiceTaxRateDTO(
-                percentage: try ServiceDecimalDTO(101)
+                percentage: try CanonicalDecimalDTO(101)
             ),
             discount: valid.discount,
             status: valid.status
@@ -212,7 +212,7 @@ struct ServiceDTOConversionTests {
             price: valid.price,
             taxRate: valid.taxRate,
             discount: ServiceDiscountDTO(
-                percentage: try ServiceDecimalDTO(-1)
+                percentage: try CanonicalDecimalDTO(-1)
             ),
             status: valid.status
         )

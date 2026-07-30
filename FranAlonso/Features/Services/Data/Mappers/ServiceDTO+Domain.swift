@@ -4,7 +4,7 @@ extension ServiceDTO {
     /// Creates a transport payload from a validated Domain Service snapshot.
     ///
     /// - Parameter service: The Domain snapshot whose exact decimal values are preserved.
-    /// - Throws: `ServiceDecimalDTOError.invalidValue` if a Domain decimal is not transportable.
+    /// - Throws: `CanonicalDecimalDTOError.invalidValue` if a Domain decimal is not transportable.
     init(_ service: Service) throws {
         let type: ServiceTypeDTO = switch service.type {
         case .professional: .professional
@@ -20,7 +20,7 @@ extension ServiceDTO {
         }
         let discount = try service.discount.map {
             ServiceDiscountDTO(
-                percentage: try ServiceDecimalDTO($0.percentage)
+                percentage: try CanonicalDecimalDTO($0.percentage)
             )
         }
 
@@ -30,11 +30,11 @@ extension ServiceDTO {
             type: type,
             linkedProductID: service.linkedProductID?.rawValue.uuidString,
             price: ServiceMoneyDTO(
-                amount: try ServiceDecimalDTO(service.price.amount),
+                amount: try CanonicalDecimalDTO(service.price.amount),
                 currency: currency
             ),
             taxRate: ServiceTaxRateDTO(
-                percentage: try ServiceDecimalDTO(service.taxRate.percentage)
+                percentage: try CanonicalDecimalDTO(service.taxRate.percentage)
             ),
             discount: discount,
             status: status

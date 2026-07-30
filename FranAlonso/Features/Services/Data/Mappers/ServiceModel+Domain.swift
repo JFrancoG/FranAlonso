@@ -3,7 +3,7 @@ import Foundation
 extension ServiceModel {
     /// Creates an unmanaged persistent model from a valid Domain Service.
     ///
-    /// - Throws: `ServiceDecimalDTOError.invalidValue` when a Domain decimal
+    /// - Throws: `CanonicalDecimalDTOError.invalidValue` when a Domain decimal
     ///   cannot be represented by the canonical transport format.
     convenience init(_ service: Service) throws {
         let dto = try ServiceDTO(service)
@@ -33,7 +33,7 @@ extension ServiceModel {
     ///
     /// All conversions complete before the managed fields are mutated.
     ///
-    /// - Throws: `ServiceDecimalDTOError.invalidValue` when a Domain decimal
+    /// - Throws: `CanonicalDecimalDTOError.invalidValue` when a Domain decimal
     ///   cannot be represented by the canonical transport format.
     func update(from service: Service) throws {
         let dto = try ServiceDTO(service)
@@ -83,9 +83,9 @@ extension ServiceModel {
 
     private func persistedDecimal(
         _ canonicalString: String
-    ) throws -> ServiceDecimalDTO {
+    ) throws -> CanonicalDecimalDTO {
         do {
-            return try ServiceDecimalDTO(canonicalString: canonicalString)
+            return try CanonicalDecimalDTO(canonicalString: canonicalString)
         } catch {
             throw ServiceMappingError.invalidPersistedDecimal(canonicalString)
         }

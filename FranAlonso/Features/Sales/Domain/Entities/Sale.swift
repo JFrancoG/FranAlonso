@@ -25,6 +25,9 @@ enum SaleError: Error, Equatable {
 
     /// Decoded data violates the sale's line-identity or lifecycle invariants.
     case invalidPersistedState
+
+    /// A creation, payment, closure, or reversal timestamp is not finite.
+    case invalidTimestamp
 }
 
 /// A sale aggregate that preserves historical service snapshots and controls their
@@ -110,14 +113,16 @@ struct Sale: Identifiable, Codable, Equatable {
     ///   - paymentID: The stable identifier that makes payment registration idempotent.
     ///   - method: The payment method to preserve with the sale.
     ///   - paidAt: The payment timestamp to preserve with the sale.
-    /// - Throws: `SaleError.invalidSaleTransition` if service work is not complete,
-    ///   or `SaleError.conflictingPayment` if a recorded payment differs from
-    ///   these values.
+    /// - Throws: `SaleError.invalidTimestamp` if `paidAt` is not finite,
+    ///   `SaleError.invalidSaleTransition` if service work is not complete, or
+    ///   `SaleError.conflictingPayment` if a recorded payment differs from these values.
     mutating func registerPayment(
         id paymentID: PaymentID,
         method: PaymentMethod,
         paidAt: Date
     ) throws {
+        try Self.ensureFinite(paidAt)
+
         switch status {
         case .awaitingPayment:
             storedStatus = .awaitingDocument(
@@ -146,12 +151,15 @@ struct Sale: Identifiable, Codable, Equatable {
     /// - Parameters:
     ///   - documentID: The stable identifier of the billing document.
     ///   - closedAt: The timestamp to preserve for the sale's closure.
-    /// - Throws: `SaleError.invalidSaleTransition` if payment has not been recorded,
-    ///   or `SaleError.conflictingDocument` if recorded closure metadata differs.
+    /// - Throws: `SaleError.invalidTimestamp` if `closedAt` is not finite,
+    ///   `SaleError.invalidSaleTransition` if payment has not been recorded, or
+    ///   `SaleError.conflictingDocument` if recorded closure metadata differs.
     mutating func close(
         documentID: BillingDocumentID,
         closedAt: Date
     ) throws {
+        try Self.ensureFinite(closedAt)
+
         switch status {
         case let .awaitingDocument(paymentID, method, paidAt):
             storedStatus = .closed(
@@ -178,13 +186,15 @@ struct Sale: Identifiable, Codable, Equatable {
     /// - Parameters:
     ///   - reversalID: The stable identifier that makes the operation idempotent.
     ///   - voidedAt: The effective timestamp of the compensating void.
-    /// - Throws: `SaleError.invalidSaleTransition` if the sale is neither closed
-    ///   nor already voided, or `SaleError.conflictingReversal` if recorded
-    ///   reversal metadata differs.
+    /// - Throws: `SaleError.invalidTimestamp` if `voidedAt` is not finite,
+    ///   `SaleError.invalidSaleTransition` if the sale is neither closed nor already
+    ///   voided, or `SaleError.conflictingReversal` if recorded reversal metadata differs.
     mutating func void(
         reversalID: SaleReversalID,
         voidedAt: Date
     ) throws {
+        try Self.ensureFinite(voidedAt)
+
         switch status {
         case let .closed(paymentID, method, paidAt, documentID, closedAt):
             storedStatus = .voided(
@@ -227,14 +237,16 @@ extension Sale {
     ///   - createdAt: The timestamp at which the draft was created.
     ///   - lines: The service-line snapshots to include in the draft.
     /// - Returns: A sale whose status is `SaleStatus.draft`.
-    /// - Throws: `SaleError.invalidDraftState` if a line is not upcoming or line
-    ///   identifiers are not unique.
+    /// - Throws: `SaleError.invalidTimestamp` if `createdAt` is not finite, or
+    ///   `SaleError.invalidDraftState` if a line is not upcoming or line identifiers
+    ///   are not unique.
     static func draft(
         id: SaleID,
         clientID: ClientID?,
         createdAt: Date,
         lines: [SaleLine]
     ) throws -> Sale {
+        try ensureFinite(createdAt)
         guard lines.allSatisfy({ $0.status == .upcoming }),
               hasUniqueLineIdentifiers(lines) else {
             throw SaleError.invalidDraftState
@@ -253,8 +265,10 @@ extension Sale {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let lines = try container.decode([SaleLine].self, forKey: .lines)
         let status = try container.decode(SaleStatus.self, forKey: .status)
+        let createdAt = try container.decode(Date.self, forKey: .createdAt)
 
         try Self.ensurePersistedStateIsConsistent(
+            createdAt: createdAt,
             lines: lines,
             status: status
         )
@@ -262,7 +276,7 @@ extension Sale {
         self.init(
             id: try container.decode(SaleID.self, forKey: .id),
             clientID: try container.decodeIfPresent(ClientID.self, forKey: .clientID),
-            createdAt: try container.decode(Date.self, forKey: .createdAt),
+            createdAt: createdAt,
             storedLines: lines,
             storedStatus: status
         )
@@ -278,9 +292,13 @@ extension Sale {
     }
 
     private static func ensurePersistedStateIsConsistent(
+        createdAt: Date,
         lines: [SaleLine],
         status: SaleStatus
     ) throws {
+        try ensureFinite(createdAt)
+        try ensureFiniteTimestamps(in: status)
+
         guard hasUniqueLineIdentifiers(lines) else {
             throw SaleError.invalidPersistedState
         }
@@ -306,5 +324,27 @@ extension Sale {
 
     private static func hasUniqueLineIdentifiers(_ lines: [SaleLine]) -> Bool {
         Set(lines.map(\.id)).count == lines.count
+    }
+
+    private static func ensureFiniteTimestamps(in status: SaleStatus) throws {
+        switch status {
+        case .draft, .inProgress, .awaitingPayment:
+            break
+        case let .awaitingDocument(_, _, paidAt):
+            try ensureFinite(paidAt)
+        case let .closed(_, _, paidAt, _, closedAt):
+            try ensureFinite(paidAt)
+            try ensureFinite(closedAt)
+        case let .voided(_, _, paidAt, _, closedAt, _, voidedAt):
+            try ensureFinite(paidAt)
+            try ensureFinite(closedAt)
+            try ensureFinite(voidedAt)
+        }
+    }
+
+    private static func ensureFinite(_ date: Date) throws {
+        guard date.timeIntervalSinceReferenceDate.isFinite else {
+            throw SaleError.invalidTimestamp
+        }
     }
 }
