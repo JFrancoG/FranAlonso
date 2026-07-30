@@ -42,7 +42,8 @@ extension FranAlonsoApp {
     init() {
         do {
             let container = try ModelContainer.production(
-                for: Schema.franAlonso
+                for: Schema.franAlonso,
+                migrationPlan: PhaseFiveSchemaMigrationPlan.self
             )
             guard
                 let environmentName = Bundle.main.object(
