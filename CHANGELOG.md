@@ -15,6 +15,7 @@ All notable changes to this project are documented in this file.
 
 ### Added
 
+- 2026-07-30 | ✨ feat(auth): define authentication Domain contracts
 - 2026-07-30 | ✨ feat(data): adopt the versioned SwiftData baseline
 - 2026-07-30 | ✨ feat(data): add Sales sync vertical
 - 2026-07-30 | ✨ feat(data): add Services sync vertical
