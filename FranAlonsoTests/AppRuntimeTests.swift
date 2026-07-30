@@ -9,44 +9,58 @@ struct AppRuntimeTests {
     func syncRemainsUncomposedUntilFirebaseIsConfigured() throws {
         let clientFactory = AppRuntimeRemoteFactory()
         let productFactory = AppRuntimeProductRemoteFactory()
+        let serviceFactory = AppRuntimeServiceRemoteFactory()
         let runtime = try makeAppRuntime(
             clientFactory: clientFactory,
-            productFactory: productFactory
+            productFactory: productFactory,
+            serviceFactory: serviceFactory
         )
 
         runtime.activateClientSync(firebaseIsConfigured: false)
         runtime.activateProductSync(firebaseIsConfigured: false)
+        runtime.activateServiceSync(firebaseIsConfigured: false)
 
         #expect(clientFactory.environments.isEmpty)
         #expect(productFactory.environments.isEmpty)
+        #expect(serviceFactory.environments.isEmpty)
         #expect(runtime.clientSyncEngine == nil)
         #expect(runtime.productSyncEngine == nil)
+        #expect(runtime.serviceSyncEngine == nil)
     }
 
     @Test("Configured Firebase composes one inactive environment-specific engine")
     func configuredFirebaseComposesOneInactiveEnvironmentSpecificEngine() async throws {
         let clientRemote = AppRuntimeRemoteFake()
         let productRemote = AppRuntimeProductRemoteFake()
+        let serviceRemote = AppRuntimeServiceRemoteFake()
         let clientFactory = AppRuntimeRemoteFactory(remote: clientRemote)
         let productFactory = AppRuntimeProductRemoteFactory(remote: productRemote)
+        let serviceFactory = AppRuntimeServiceRemoteFactory(remote: serviceRemote)
         let runtime = try makeAppRuntime(
             clientFactory: clientFactory,
-            productFactory: productFactory
+            productFactory: productFactory,
+            serviceFactory: serviceFactory
         )
 
         runtime.activateClientSync(firebaseIsConfigured: true)
         runtime.activateClientSync(firebaseIsConfigured: true)
         runtime.activateProductSync(firebaseIsConfigured: true)
         runtime.activateProductSync(firebaseIsConfigured: true)
+        runtime.activateServiceSync(firebaseIsConfigured: true)
+        runtime.activateServiceSync(firebaseIsConfigured: true)
 
         #expect(clientFactory.environments == [.develop])
         #expect(productFactory.environments == [.develop])
+        #expect(serviceFactory.environments == [.develop])
         #expect(runtime.clientSyncEngine != nil)
         #expect(runtime.productSyncEngine != nil)
+        #expect(runtime.serviceSyncEngine != nil)
         #expect(await clientRemote.fetchCount == 0)
         #expect(await clientRemote.mutationCount == 0)
         #expect(await productRemote.fetchCount == 0)
         #expect(await productRemote.mutationCount == 0)
+        #expect(await serviceRemote.fetchCount == 0)
+        #expect(await serviceRemote.mutationCount == 0)
     }
 }
 
@@ -155,15 +169,69 @@ private actor AppRuntimeProductRemoteFake: ProductRemoteDataSource {
 }
 
 @MainActor
+private final class AppRuntimeServiceRemoteFactory {
+    private(set) var environments: [FirestoreEnvironment] = []
+    private let remote: AppRuntimeServiceRemoteFake
+
+    init(remote: AppRuntimeServiceRemoteFake = AppRuntimeServiceRemoteFake()) {
+        self.remote = remote
+    }
+
+    func make(environment: FirestoreEnvironment) -> any ServiceRemoteDataSource {
+        environments.append(environment)
+        return remote
+    }
+}
+
+private actor AppRuntimeServiceRemoteFake: ServiceRemoteDataSource {
+    private var fetchCalls = 0
+    private var mutationCalls = 0
+
+    var fetchCount: Int { fetchCalls }
+    var mutationCount: Int { mutationCalls }
+
+    func fetchChanges(
+        after cursor: ServiceSyncCursor?
+    ) async throws -> ServiceRemoteChangeBatch {
+        fetchCalls += 1
+        return ServiceRemoteChangeBatch(
+            records: [],
+            nextCursor: cursor ?? ServiceSyncCursor(changeSequence: 0)
+        )
+    }
+
+    func apply(
+        _ operation: ServicePendingOperation
+    ) async throws -> ServiceRemoteMutationResult {
+        mutationCalls += 1
+        guard case .upsert(let upsert) = operation else {
+            throw ServiceRemoteDataSourceError.unexpected
+        }
+        return .applied(
+            ServiceRemoteRecord(
+                service: upsert.service,
+                version: .versioned(
+                    revision: 1,
+                    lastOperationID: upsert.operationID
+                ),
+                changeSequence: 1
+            )
+        )
+    }
+}
+
+@MainActor
 private func makeAppRuntime(
     clientFactory: AppRuntimeRemoteFactory,
-    productFactory: AppRuntimeProductRemoteFactory
+    productFactory: AppRuntimeProductRemoteFactory,
+    serviceFactory: AppRuntimeServiceRemoteFactory
 ) throws -> AppRuntime {
     let container = try ModelContainer.inMemory(for: Schema.franAlonso)
     return AppRuntime(
         modelContainer: container,
         environment: .develop,
         makeClientRemoteDataSource: clientFactory.make(environment:),
-        makeProductRemoteDataSource: productFactory.make(environment:)
+        makeProductRemoteDataSource: productFactory.make(environment:),
+        makeServiceRemoteDataSource: serviceFactory.make(environment:)
     )
 }

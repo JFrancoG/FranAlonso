@@ -16,7 +16,7 @@ Gestionar todos los conceptos cobrables, incluidos los productos vendidos al pú
 | ID | Tarea | Test primero | Validación |
 |---|---|---|---|
 | 10.1 | Implementar contratos y casos de uso de Service. | CRUD, búsqueda, tipos y estado. | Reglas comerciales en Domain. |
-| 10.2 | Implementar persistencia y sync de Service. | Offline, conflicto, tombstone e idempotencia. | Firestore aislado. |
+| 10.2 | Integrar y completar la persistencia y sync de Service sobre la vertical base de 05.10b. | CRUD de 10.1, repetición, conflicto, tombstone y offline. | UI solo observa SwiftData; sin reimplementar la infraestructura base. |
 | 10.3 | Implementar productos vinculables. | Solo activos, ausencia y producto eliminado. | Contrato entre features explícito. |
 | 10.4 | Implementar ViewModels de lista y formulario. | Precio, descuento, tipo y vínculo obligatorio. | `@Observable @MainActor`. |
 | 10.5 | Implementar lista y formulario adaptativos. | Lógica ya cubierta. | Previews profesional/producto/error. |

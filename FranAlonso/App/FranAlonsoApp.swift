@@ -26,6 +26,9 @@ struct FranAlonsoApp: App {
                     runtime?.activateProductSync(
                         firebaseIsConfigured: appDelegate.firebaseIsConfigured
                     )
+                    runtime?.activateServiceSync(
+                        firebaseIsConfigured: appDelegate.firebaseIsConfigured
+                    )
                 }
         }
         .modelContainer(modelContainer)

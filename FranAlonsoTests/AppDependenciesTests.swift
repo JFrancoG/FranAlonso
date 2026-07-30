@@ -12,6 +12,7 @@ struct AppDependenciesTests {
         let dependencies = AppDependencies(
             clientRepository: CompositionClientRepositoryFake(clients: []),
             productRepository: CompositionProductRepositoryFake(products: []),
+            serviceRepository: CompositionServiceRepositoryFake(services: []),
             analyticsDataSource: analytics,
             crashDataSource: crash
         )
@@ -32,6 +33,7 @@ struct AppDependenciesTests {
         let dependencies = AppDependencies(
             clientRepository: CompositionClientRepositoryFake(clients: []),
             productRepository: CompositionProductRepositoryFake(products: []),
+            serviceRepository: CompositionServiceRepositoryFake(services: []),
             analyticsDataSource: CompositionAnalyticsDataSourceSpy(),
             crashDataSource: CompositionCrashDataSourceSpy()
         )
@@ -72,6 +74,7 @@ struct AppDependenciesTests {
         let dependencies = AppDependencies(
             clientRepository: repository,
             productRepository: CompositionProductRepositoryFake(products: []),
+            serviceRepository: CompositionServiceRepositoryFake(services: []),
             analyticsDataSource: CompositionAnalyticsDataSourceSpy(),
             crashDataSource: CompositionCrashDataSourceSpy()
         )
@@ -115,6 +118,7 @@ struct AppDependenciesTests {
         let dependencies = AppDependencies(
             clientRepository: CompositionClientRepositoryFake(clients: []),
             productRepository: repository,
+            serviceRepository: CompositionServiceRepositoryFake(services: []),
             analyticsDataSource: CompositionAnalyticsDataSourceSpy(),
             crashDataSource: CompositionCrashDataSourceSpy()
         )
@@ -135,6 +139,39 @@ struct AppDependenciesTests {
         var iterator = stream.makeAsyncIterator()
 
         #expect(try await iterator.next() == expectedProducts)
+        #expect(try await iterator.next() == nil)
+    }
+
+    @Test("Application dependencies resolve Services through the injected repository")
+    func dependenciesResolveServicesThroughTheInjectedRepository() async throws {
+        let expectedServices = [try compositionService()]
+        let repository = CompositionServiceRepositoryFake(
+            services: expectedServices
+        )
+        let dependencies = AppDependencies(
+            clientRepository: CompositionClientRepositoryFake(clients: []),
+            productRepository: CompositionProductRepositoryFake(products: []),
+            serviceRepository: repository,
+            analyticsDataSource: CompositionAnalyticsDataSourceSpy(),
+            crashDataSource: CompositionCrashDataSourceSpy()
+        )
+
+        let stream = await dependencies.observeServices()
+        var iterator = stream.makeAsyncIterator()
+
+        #expect(try await iterator.next() == expectedServices)
+        #expect(await repository.observationCallCount() == 1)
+    }
+
+    @Test("Preview dependencies expose their seeded Services")
+    func previewDependenciesExposeTheirSeededServices() async throws {
+        let expectedServices = [try compositionService()]
+        let dependencies = AppDependencies.preview(services: expectedServices)
+
+        let stream = await dependencies.observeServices()
+        var iterator = stream.makeAsyncIterator()
+
+        #expect(try await iterator.next() == expectedServices)
         #expect(try await iterator.next() == nil)
     }
 }
@@ -199,6 +236,36 @@ private actor CompositionProductRepositoryFake: ProductRepository {
     }
 }
 
+private actor CompositionServiceRepositoryFake: ServiceRepository {
+    private var services: [Service]
+    private var callCount = 0
+
+    init(services: [Service]) {
+        self.services = services
+    }
+
+    func observeServices() async -> AsyncThrowingStream<[Service], any Error> {
+        callCount += 1
+
+        return AsyncThrowingStream { continuation in
+            continuation.yield(services)
+            continuation.finish()
+        }
+    }
+
+    func saveService(_ service: Service) async throws {
+        if let index = services.firstIndex(where: { $0.id == service.id }) {
+            services[index] = service
+        } else {
+            services.append(service)
+        }
+    }
+
+    func observationCallCount() -> Int {
+        callCount
+    }
+}
+
 private func compositionProduct() -> Product {
     Product.testSnapshot(
         id: ProductID(
@@ -207,6 +274,16 @@ private func compositionProduct() -> Product {
             )!
         ),
         name: "Champú"
+    )
+}
+
+private func compositionService() throws -> Service {
+    try makeService(
+        id: UUID(
+            uuidString: "CCCCCCCC-DDDD-EEEE-FFFF-AAAAAAAAAAAA"
+        )!,
+        name: "Corte y peinado",
+        discountPercentage: nil
     )
 }
 

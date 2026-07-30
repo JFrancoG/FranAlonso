@@ -3,18 +3,20 @@ import SwiftData
 struct AppDependencies {
     let observeClients: ObserveClientsUseCase
     let observeProducts: ObserveProductsUseCase
+    let observeServices: ObserveServicesUseCase
     let telemetryReporter: TelemetryReporter
 
     /// Creates production dependencies over the supplied local source of truth.
     ///
-    /// The Clients and Products repositories remain local-first and share their persistence
-    /// and observation roles with the application runtime.
+    /// The Clients, Products and Services repositories remain local-first and share their
+    /// persistence and observation roles with the application runtime.
     ///
     /// - Parameter modelContainer: The application container shared with SwiftUI.
     /// - Returns: Dependencies backed by durable local persistence and live telemetry.
     static func live(modelContainer: ModelContainer) -> AppDependencies {
         let observationSignal = ClientObservationSignal()
         let productObservationSignal = ProductObservationSignal()
+        let serviceObservationSignal = ServiceObservationSignal()
         return .live(
             persistenceActor: ClientPersistenceActor(
                 modelContainer: modelContainer
@@ -23,7 +25,11 @@ struct AppDependencies {
             productPersistenceActor: ProductPersistenceActor(
                 modelContainer: modelContainer
             ),
-            productObservationSignal: productObservationSignal
+            productObservationSignal: productObservationSignal,
+            servicePersistenceActor: ServicePersistenceActor(
+                modelContainer: modelContainer
+            ),
+            serviceObservationSignal: serviceObservationSignal
         )
     }
 
@@ -34,11 +40,15 @@ struct AppDependencies {
     ///   - observationSignal: The invalidation shared by local writes and sync reconciliation.
     ///   - productPersistenceActor: The single actor that owns durable Products state.
     ///   - productObservationSignal: The Products invalidation shared by local writes and sync.
+    ///   - servicePersistenceActor: The single actor that owns durable Services state.
+    ///   - serviceObservationSignal: The Services invalidation shared by local writes and sync.
     static func live(
         persistenceActor: ClientPersistenceActor,
         observationSignal: ClientObservationSignal,
         productPersistenceActor: ProductPersistenceActor,
-        productObservationSignal: ProductObservationSignal
+        productObservationSignal: ProductObservationSignal,
+        servicePersistenceActor: ServicePersistenceActor,
+        serviceObservationSignal: ServiceObservationSignal
     ) -> AppDependencies {
         let clientRepository = DefaultClientRepository(
             persistenceActor: persistenceActor,
@@ -48,10 +58,15 @@ struct AppDependencies {
             persistenceActor: productPersistenceActor,
             observationSignal: productObservationSignal
         )
+        let serviceRepository = DefaultServiceRepository(
+            persistenceActor: servicePersistenceActor,
+            observationSignal: serviceObservationSignal
+        )
 
         return AppDependencies(
             clientRepository: clientRepository,
             productRepository: productRepository,
+            serviceRepository: serviceRepository,
             analyticsDataSource: FirebaseAnalyticsDataSource(),
             crashDataSource: FirebaseCrashDataSource()
         )
@@ -59,11 +74,13 @@ struct AppDependencies {
 
     static func preview(
         clients: [Client] = [],
-        products: [Product] = []
+        products: [Product] = [],
+        services: [Service] = []
     ) -> AppDependencies {
         AppDependencies(
             clientRepository: InMemoryClientRepository(clients: clients),
             productRepository: InMemoryProductRepository(products: products),
+            serviceRepository: InMemoryServiceRepository(services: services),
             analyticsDataSource: PreviewAnalyticsDataSource(),
             crashDataSource: PreviewCrashDataSource()
         )
@@ -74,12 +91,14 @@ extension AppDependencies {
     init(
         clientRepository: any ClientRepository,
         productRepository: any ProductRepository,
+        serviceRepository: any ServiceRepository,
         analyticsDataSource: any AnalyticsDataSource,
         crashDataSource: any CrashDataSource
     ) {
         self.init(
             observeClients: ObserveClientsUseCase(repository: clientRepository),
             observeProducts: ObserveProductsUseCase(repository: productRepository),
+            observeServices: ObserveServicesUseCase(repository: serviceRepository),
             telemetryReporter: TelemetryReporter(
                 analyticsDataSource: analyticsDataSource,
                 crashDataSource: crashDataSource

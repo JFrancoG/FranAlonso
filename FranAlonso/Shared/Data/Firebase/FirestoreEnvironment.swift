@@ -8,6 +8,7 @@ enum FirestoreEnvironment: String {
 enum FirestoreCollection: String {
     case clients
     case products
+    case services
 }
 
 extension FirestoreEnvironment {

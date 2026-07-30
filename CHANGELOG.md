@@ -15,6 +15,7 @@ All notable changes to this project are documented in this file.
 
 ### Added
 
+- 2026-07-30 | ✨ feat(data): add Services sync vertical
 - 2026-07-27 | ✨ feat(data): add Products sync vertical
 - 2026-07-26 | ✨ feat(data): add durable sync retry scheduling
 - 2026-07-26 | ✨ feat(data): add durable tombstones and incremental cursor
