@@ -40,6 +40,7 @@ All notable changes to this project are documented in this file.
 
 ### Documentation
 
+- 2026-07-30 | 📝 docs(delivery): record Sales checkpoint
 - 2026-07-30 | 📝 docs(delivery): record Services checkpoint
 - 2026-07-27 | 📝 docs(delivery): record Products checkpoint
 - 2026-07-26 | 📝 docs(progress): record published phase 05.8
