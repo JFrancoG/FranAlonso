@@ -44,6 +44,7 @@ All notable changes to this project are documented in this file.
 
 ### Documentation
 
+- 2026-07-31 | 📝 docs(delivery): record Firebase auth checkpoint
 - 2026-07-31 | 📝 docs(delivery): record auth Data checkpoint
 - 2026-07-30 | 📝 docs(delivery): record authentication checkpoint
 - 2026-07-30 | 📝 docs(code): backfill semantic DocC coverage
