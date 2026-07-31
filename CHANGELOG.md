@@ -15,6 +15,7 @@ All notable changes to this project are documented in this file.
 
 ### Added
 
+- 2026-07-31 | ✨ feat(auth): add Firebase authentication adapter
 - 2026-07-31 | ✨ feat(auth): add authentication Data seam
 - 2026-07-30 | ✨ feat(auth): define authentication Domain contracts
 - 2026-07-30 | ✨ feat(data): adopt the versioned SwiftData baseline
