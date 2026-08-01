@@ -41,6 +41,12 @@ Document semantic production APIs with concise English DocC comments regardless 
 
 Use explicit suffixes: `UseCase`, `Repository`, `DTO`, `Model`, `DataSource`, `Mapper` when justified by an owned responsibility, `PersistenceActor`, `SyncEngine`, `SyncPolicy`, `ViewModel`, `Store`, and `Screen`. Avoid ambiguous `Interactor`, `ModelLogic`, `Manager`, `Helper`, `Utils`, and `Common` types.
 
+## Swift Source Formatting
+
+Use 120 columns, including indentation, as the preferred maximum width. Keep a `func`, `init`, or `subscript` declaration on one line when its complete signature fits within that width and has at most three simple parameters. The complete signature includes attributes, effects such as `async` and `throws`, the return type, and the opening brace when present.
+
+Use vertical formatting when a signature exceeds 120 columns, has four or more parameters, or contains complex parameters such as closures or function types, nested generics or tuples, closure attributes, multiline default values, or generic requirements. In vertical form, place one parameter per line, align the closing delimiter with the declaration, and avoid hybrid wrapping. Apply this rule to new code and touched signatures; keep historical formatting cleanup separate from functional changes.
+
 ## SwiftUI Quality and Accessibility
 
 Keep one type conforming to `View` per Swift source file; extracted subviews live in their own files. Use trailing-closure and multiple-trailing-closure syntax for SwiftUI initializers and modifiers whenever the API is unambiguous. Use `@ViewBuilder` only at real composition boundaries with multiple children or heterogeneous branches; never declare it redundantly on `body`, use it for a single expression, or hide an oversized View behind it.

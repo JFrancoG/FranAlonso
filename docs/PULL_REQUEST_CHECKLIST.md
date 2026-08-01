@@ -36,6 +36,7 @@
 
 - [ ] API moderna compatible con deployment target real.
 - [ ] Declaraciones y call sites usan construcciones nativas de Swift; no hay patrones ceremoniales trasladados, abstracciones sin responsabilidad demostrada ni protocolos heredados repetidos en una lista de conformidad.
+- [ ] Las firmas Swift nuevas o modificadas siguen el límite preferido de 120 columnas: horizontal con hasta tres parámetros simples cuando cabe; vertical para firmas largas, con cuatro o más parámetros o complejas.
 - [ ] Ningún `enum` propio sin casos se usa solo como namespace estático; los enums sin valores posibles modelan un contrato real y cualquier sustitución se eligió por semántica, sin cambiarlo mecánicamente por otro tipo vacío.
 - [ ] Sin APIs deprecated ni usos propios de `@objc`, selectors, `NotificationCenter` por selector, `DateFormatter`, `NSRegularExpression` u otras elecciones Objective-C/legacy no aprobadas.
 - [ ] Presentation usa `@Observable`; no introduce `ObservableObject`, `@Published`, `@StateObject` ni `@ObservedObject`.
