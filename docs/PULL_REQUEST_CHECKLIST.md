@@ -13,7 +13,7 @@
 - [ ] Si una acción inserta, actualiza o borra con SwiftData, la View pasa `@Environment(\.modelContext)` a la función `@MainActor` del ViewModel sin operar sobre el contexto, almacenarlo o cruzarlo entre actores.
 - [ ] La mutación se inyecta como closure `@MainActor` sobre un valor de Domain y `ModelContext`: App la compone, Data ejecuta CRUD/mapping/local-first, Domain no recibe el contexto y Data no importa Presentation.
 - [ ] Si conviven adaptador contextual y Repository context-free, comparten una única primitiva interna de escritura Data y no duplican mapping, cola, idempotencia o la misma mutación.
-- [ ] Los imports Firebase permanecen en Data/Infrastructure; modelos, mappers y políticas SwiftData permanecen en Data, con la composición del `ModelContainer` limitada a App y `ModelContext` como única excepción efímera en Presentation.
+- [ ] Los imports Firebase permanecen en adaptadores concretos propiedad de Data; modelos, mappers y políticas SwiftData permanecen en Data, con la composición del `ModelContainer` limitada a App y `ModelContext` como única excepción efímera en Presentation.
 - [ ] Backend Firebase y telemetría dependen de contratos de sustitución independientes.
 - [ ] Nombres y sufijos expresan responsabilidad.
 - [ ] Las conversiones concretas, deterministas y sin dependencias viven en extensiones de los tipos Data (`toDomain()` e inicializador inverso); todo `Mapper` conserva una responsabilidad real documentada y Domain no conoce DTO ni modelos persistentes.

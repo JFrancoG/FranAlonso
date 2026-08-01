@@ -70,6 +70,7 @@ FranAlonso/
 │       │   ├── Repositories/
 │       │   └── UseCases/
 │       ├── Data/
+│       │   ├── Adapters/    # Integraciones concretas con SDK externos cuando aporten claridad
 │       │   ├── DTOs/
 │       │   ├── Models/
 │       │   ├── DataSources/
@@ -121,7 +122,7 @@ Evitar `Interactor`, `ModelLogic`, `LocalModel`, `SyncService`, `Manager`, `Help
 - Ninguna política usa únicamente el reloj local como autoridad de conflictos.
 - Repetir o reordenar una operación no duplica datos, no cambia el resultado final y no resucita eliminaciones.
 - SwiftData fuera de MainActor se encapsula en un `@ModelActor`; entre actores viajan IDs, DTO o snapshots `Sendable`, nunca modelos SwiftData vivos.
-- Los imports del SDK Firebase quedan dentro de `Data / Infrastructure`. Auth, Firestore y Storage deben poder sustituirse por Vapor sin cambiar Domain o Presentation; Analytics y Crashlytics se sustituyen de forma independiente detrás de contratos propios.
+- Los imports del SDK Firebase quedan confinados a adaptadores concretos propiedad de Data; `Infrastructure` no es un nombre de carpeta obligatorio. Las referencias históricas a `Data/Infrastructure` describen esa propiedad de capa, no una ruta literal. Auth, Firestore y Storage deben poder sustituirse por Vapor sin cambiar Domain o Presentation; Analytics y Crashlytics se sustituyen de forma independiente detrás de contratos propios.
 
 ## Concurrencia y código
 
