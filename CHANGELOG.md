@@ -46,6 +46,7 @@ All notable changes to this project are documented in this file.
 
 ### Documentation
 
+- 2026-08-01 | 📝 docs(delivery): record auth presentation checkpoint
 - 2026-08-01 | 📝 docs(delivery): reconcile biometric delivery
 - 2026-08-01 | 📝 docs(governance): define Swift signature formatting
 - 2026-08-01 | 📝 docs(delivery): record biometric unlock checkpoint
