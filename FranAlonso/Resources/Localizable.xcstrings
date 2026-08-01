@@ -1,6 +1,438 @@
 {
   "sourceLanguage" : "es",
   "strings" : {
+    "authentication.login.email.label" : {
+      "comment" : "Etiqueta visible y accesible del campo de email en la pantalla de inicio de sesión.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Email"
+          }
+        }
+      }
+    },
+    "authentication.login.email.prompt" : {
+      "comment" : "Ejemplo mostrado dentro del campo de email vacío en la pantalla de inicio de sesión.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "nombre@ejemplo.com"
+          }
+        }
+      }
+    },
+    "authentication.login.error.configuration" : {
+      "comment" : "Mensaje mostrado cuando la autenticación no está configurada correctamente.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El acceso no está configurado correctamente. Contacta con soporte."
+          }
+        }
+      }
+    },
+    "authentication.login.error.credentials-rejected" : {
+      "comment" : "Mensaje neutral compartido para credenciales inválidas y cuentas deshabilitadas; no debe revelar si existe la cuenta.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se ha podido iniciar sesión. Revisa el email y la contraseña."
+          }
+        }
+      }
+    },
+    "authentication.login.error.secure-storage" : {
+      "comment" : "Mensaje mostrado cuando el proveedor no puede usar el almacenamiento seguro del dispositivo.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se puede acceder al almacenamiento seguro del dispositivo."
+          }
+        }
+      }
+    },
+    "authentication.login.error.temporarily-unavailable" : {
+      "comment" : "Mensaje mostrado cuando el proveedor de autenticación no está disponible temporalmente.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El acceso no está disponible temporalmente. Inténtalo de nuevo."
+          }
+        }
+      }
+    },
+    "authentication.login.error.unexpected" : {
+      "comment" : "Mensaje genérico mostrado ante un fallo de inicio de sesión no reconocido.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se ha podido iniciar sesión. Inténtalo de nuevo."
+          }
+        }
+      }
+    },
+    "authentication.login.password.label" : {
+      "comment" : "Etiqueta visible y accesible del campo de contraseña en la pantalla de inicio de sesión.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contraseña"
+          }
+        }
+      }
+    },
+    "authentication.login.password.prompt" : {
+      "comment" : "Indicación mostrada dentro del campo de contraseña vacío.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Introduce tu contraseña"
+          }
+        }
+      }
+    },
+    "authentication.login.signing-in" : {
+      "comment" : "Etiqueta accesible del progreso mientras se comprueban las credenciales.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Comprobando credenciales…"
+          }
+        }
+      }
+    },
+    "authentication.login.submit" : {
+      "comment" : "Botón que envía el email y la contraseña para iniciar sesión.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Acceder"
+          }
+        }
+      }
+    },
+    "authentication.login.succeeded" : {
+      "comment" : "Estado mostrado tras aceptar las credenciales mientras la raíz espera la sesión autoritativa.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Credenciales aceptadas. Comprobando la sesión…"
+          }
+        }
+      }
+    },
+    "authentication.login.title" : {
+      "comment" : "Título de navegación de la pantalla de inicio de sesión.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Iniciar sesión"
+          }
+        }
+      }
+    },
+    "authentication.session.biometric.reason" : {
+      "comment" : "Explicación mostrada por el prompt biométrico del sistema para desbloquear una sesión existente.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Desbloquea el acceso a la sesión ya iniciada en este dispositivo."
+          }
+        }
+      }
+    },
+    "authentication.session.biometric.unavailable" : {
+      "comment" : "Aviso visible cuando el dispositivo no puede ofrecer desbloqueo biométrico.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La biometría del dispositivo no está disponible. Accede con email."
+          }
+        }
+      }
+    },
+    "authentication.session.biometric.unlock" : {
+      "comment" : "Botón neutral para solicitar desbloqueo biométrico sin asumir Face ID o Touch ID.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Desbloquear con biometría del dispositivo"
+          }
+        }
+      }
+    },
+    "authentication.session.checking" : {
+      "comment" : "Etiqueta accesible del progreso mientras la raíz comprueba la sesión observada.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Comprobando sesión…"
+          }
+        }
+      }
+    },
+    "authentication.session.email-fallback" : {
+      "comment" : "Alternativa siempre visible en una sesión bloqueada; cierra la sesión para volver al acceso por email.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cerrar sesión y acceder con email"
+          }
+        }
+      }
+    },
+    "authentication.session.error.biometric-cancelled" : {
+      "comment" : "Mensaje mostrado cuando se cancela el prompt biométrico sin cancelar la tarea de la aplicación.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El desbloqueo biométrico se ha cancelado."
+          }
+        }
+      }
+    },
+    "authentication.session.error.biometric-denied" : {
+      "comment" : "Mensaje mostrado cuando la biometría no autoriza el desbloqueo local.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La biometría no ha autorizado el acceso."
+          }
+        }
+      }
+    },
+    "authentication.session.error.biometric-unavailable" : {
+      "comment" : "Mensaje mostrado cuando la biometría deja de estar disponible al intentar desbloquear.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La biometría no está disponible ahora. Accede con email."
+          }
+        }
+      }
+    },
+    "authentication.session.error.configuration" : {
+      "comment" : "Mensaje mostrado cuando la operación de sesión está configurada incorrectamente.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La sesión no está configurada correctamente. Contacta con soporte."
+          }
+        }
+      }
+    },
+    "authentication.session.error.observation-ended" : {
+      "comment" : "Mensaje mostrado cuando la observación de sesión termina antes de recibir un reemplazo autoritativo.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La comprobación de la sesión ha terminado antes de confirmar su estado. Vuelve a abrir la pantalla."
+          }
+        }
+      }
+    },
+    "authentication.session.error.secure-storage" : {
+      "comment" : "Mensaje mostrado cuando el cierre de sesión no puede usar el almacenamiento seguro.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se puede acceder al almacenamiento seguro del dispositivo."
+          }
+        }
+      }
+    },
+    "authentication.session.error.temporarily-unavailable" : {
+      "comment" : "Mensaje mostrado cuando una operación de sesión no está disponible temporalmente.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La operación no está disponible temporalmente. Inténtalo de nuevo."
+          }
+        }
+      }
+    },
+    "authentication.session.error.unexpected" : {
+      "comment" : "Mensaje genérico mostrado ante un fallo de sesión no reconocido.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se ha podido completar la operación. Inténtalo de nuevo."
+          }
+        }
+      }
+    },
+    "authentication.session.locked.message" : {
+      "comment" : "Descripción mostrada cuando existe una sesión conocida pero el acceso local está bloqueado.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Confirma que eres tú para continuar."
+          }
+        }
+      }
+    },
+    "authentication.session.locked.title" : {
+      "comment" : "Título mostrado cuando una sesión conocida requiere desbloqueo local.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sesión bloqueada"
+          }
+        }
+      }
+    },
+    "authentication.session.observation-error.title" : {
+      "comment" : "Título mostrado cuando no se puede mantener la observación autoritativa de sesión.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se ha podido comprobar la sesión"
+          }
+        }
+      }
+    },
+    "authentication.session.signed-out.message" : {
+      "comment" : "Descripción mostrada mientras la raíz cambia desde una sesión cerrada al acceso por email.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Accede de nuevo con tu email y contraseña."
+          }
+        }
+      }
+    },
+    "authentication.session.signed-out.title" : {
+      "comment" : "Título mostrado cuando la observación confirma que no existe una sesión.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sesión cerrada"
+          }
+        }
+      }
+    },
+    "authentication.session.signing-out" : {
+      "comment" : "Etiqueta accesible del progreso mientras se solicita cerrar la sesión.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cerrando sesión…"
+          }
+        }
+      }
+    },
+    "authentication.session.title" : {
+      "comment" : "Título de navegación de la pantalla de sesión bloqueada.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sesión"
+          }
+        }
+      }
+    },
+    "authentication.session.unlocked.message" : {
+      "comment" : "Descripción mostrada tras el desbloqueo mientras la raíz prepara el shell autenticado.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Preparando el acceso seguro…"
+          }
+        }
+      }
+    },
+    "authentication.session.unlocked.title" : {
+      "comment" : "Título mostrado cuando la sesión existente ha sido desbloqueada localmente.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sesión desbloqueada"
+          }
+        }
+      }
+    },
+    "authentication.session.unlocking" : {
+      "comment" : "Etiqueta accesible del progreso mientras se evalúa la biometría del dispositivo.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Desbloqueando sesión…"
+          }
+        }
+      }
+    },
     "bootstrap.welcome.title" : {
       "comment" : "Título temporal de bienvenida mostrado en la pantalla inicial durante el bootstrap.",
       "extractionState" : "manual",

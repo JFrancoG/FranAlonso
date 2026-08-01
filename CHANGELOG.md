@@ -15,6 +15,7 @@ All notable changes to this project are documented in this file.
 
 ### Added
 
+- 2026-08-01 | ✨ feat(auth): add authentication screens
 - 2026-08-01 | ✨ feat(auth): add authentication presentation models
 - 2026-08-01 | ✨ feat(auth): add local biometric session unlock
 - 2026-07-31 | ✨ feat(auth): add Firebase authentication adapter
