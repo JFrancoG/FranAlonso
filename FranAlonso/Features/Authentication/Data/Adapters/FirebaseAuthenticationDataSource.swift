@@ -4,7 +4,7 @@ import Foundation
 /// Adapts Firebase Auth operations to the provider-neutral Authentication boundary.
 ///
 /// Credentials are forwarded ephemerally and never retained. Provider identities are reduced to
-/// opaque `AuthenticationSession` values before leaving Data/Infrastructure.
+/// opaque `AuthenticationSession` values before leaving the Data adapter boundary.
 struct FirebaseAuthenticationDataSource: AuthenticationDataSource {
     private let signInOperation: @Sendable (
         String,

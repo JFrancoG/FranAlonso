@@ -57,7 +57,7 @@ Never use `xcodebuild` for builds, tests, previews, or diagnostics. Use Apple's 
 
 ## Data, Concurrency, and Testing
 
-SwiftData is the local source of truth; Firestore is the temporary remote source. Keep Firebase SDK imports inside Data/Infrastructure. Auth, Firestore, and Storage must remain replaceable by Vapor; Analytics and Crashlytics stay behind independently replaceable telemetry contracts and must never receive PII or business payloads. Sync must be offline-first, bidirectional, idempotent, conflict-aware, and recoverable. Use `@ModelActor` outside MainActor; never pass live SwiftData models across actors.
+SwiftData is the local source of truth; Firestore is the temporary remote source. Keep Firebase SDK imports confined to concrete adapters owned by Data; `Infrastructure` is not a required directory name. Auth, Firestore, and Storage must remain replaceable by Vapor; Analytics and Crashlytics stay behind independently replaceable telemetry contracts and must never receive PII or business payloads. Sync must be offline-first, bidirectional, idempotent, conflict-aware, and recoverable. Use `@ModelActor` outside MainActor; never pass live SwiftData models across actors.
 
 All project-owned asynchronous and concurrent code uses Swift Concurrency end to end: `async`/`await`, structured child tasks, actors or global actors, `AsyncSequence`, sendability, cooperative cancellation, and checked continuations only at isolated adapter boundaries. Do not introduce direct GCD, dispatch groups or semaphores, `OperationQueue`, or callback-first concurrency.
 

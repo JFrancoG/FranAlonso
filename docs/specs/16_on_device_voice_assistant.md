@@ -31,7 +31,7 @@ AVAudioEngine
 ```
 
 - Domain contiene `AssistantContext`, `AssistantIntent`, `AssistantProposal`, `AssistantEffectPolicy` y el contrato `AssistantInterpreter`; todos son `Codable`, `Equatable` y `Sendable` cuando semánticamente proceda.
-- Los adaptadores de `FoundationModels`, `Speech` y `AVFAudio` viven en Data/Infrastructure. Sus tipos no cruzan el límite de Domain o Presentation.
+- Los adaptadores de `FoundationModels`, `Speech` y `AVFAudio` viven en `Data/Adapters`. Sus tipos no cruzan el límite de Domain o Presentation.
 - El contexto contiene únicamente los campos necesarios y snapshots inmutables. Los datos recuperados se tratan como datos, nunca como instrucciones para el modelo.
 - El intérprete devuelve tipos cerrados y validables. Una salida desconocida, incompleta o fuera de política produce aclaración o fallback, no una acción aproximada.
 - `VoiceSessionStore` es `@Observable @MainActor` y posee la máquina de estados de captura, turnos, interrupciones, cancelación y síntesis. `VoiceAssistantViewModel` sigue siendo la fachada de la pantalla y no duplica ese estado.

@@ -18,5 +18,7 @@
 	<false/>
 	<key>GOOGLE_ANALYTICS_IDFV_COLLECTION_ENABLED</key>
 	<false/>
+	<key>NSFaceIDUsageDescription</key>
+	<string>Face ID desbloquea el acceso a la sesión ya iniciada en este dispositivo.</string>
 </dict>
 </plist>
