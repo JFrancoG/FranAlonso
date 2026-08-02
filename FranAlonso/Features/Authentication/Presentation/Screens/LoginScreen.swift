@@ -3,7 +3,8 @@ import SwiftUI
 
 @MainActor
 struct LoginScreen: View {
-    @State private var viewModel: LoginViewModel
+    let viewModel: LoginViewModel
+    let onSignInSucceeded: @MainActor (AuthenticationSession) -> Void
     @State private var signInRequestID: UUID?
 
     var body: some View {
@@ -28,21 +29,22 @@ struct LoginScreen: View {
                 return
             }
 
+            if case let .succeeded(session) = viewModel.state {
+                onSignInSucceeded(session)
+            }
+
             signInRequestID = nil
         }
-    }
-}
-
-extension LoginScreen {
-    init(signIn: SignInUseCase) {
-        _viewModel = State(initialValue: LoginViewModel(signIn: signIn))
     }
 }
 
 #Preview(traits: .modifier(AppPreviewModifier())) {
     NavigationStack {
         LoginScreen(
-            signIn: AuthenticationPreviewFixtures.standard.makeSignInUseCase()
+            viewModel: LoginViewModel(
+                signIn: AuthenticationPreviewFixtures.standard.makeSignInUseCase()
+            ),
+            onSignInSucceeded: { _ in }
         )
     }
 }

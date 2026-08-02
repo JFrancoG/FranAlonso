@@ -50,6 +50,35 @@ struct AuthenticationPresentationLocalizationTests {
     }
 
     @Test(
+        "Root authorization failures map to stable localized resources",
+        arguments: [
+            (
+                AuthenticationRootViewModel.Failure.differentPrincipal,
+                "authentication.root.error.different-principal"
+            ),
+            (
+                AuthenticationRootViewModel.Failure.localStoreNotPristine,
+                "authentication.root.error.local-store-not-pristine"
+            ),
+            (
+                AuthenticationRootViewModel.Failure.secureStorageUnavailable,
+                "authentication.root.error.secure-storage"
+            ),
+            (
+                AuthenticationRootViewModel.Failure.localStoreUnavailable,
+                "authentication.root.error.local-store-unavailable"
+            ),
+            (AuthenticationRootViewModel.Failure.unexpected, "authentication.root.error.unexpected")
+        ]
+    )
+    func rootAuthorizationFailuresMapToStableLocalizedResources(
+        _ failure: AuthenticationRootViewModel.Failure,
+        _ expectedKey: String
+    ) {
+        #expect(failure.localizedMessage.key == expectedKey)
+    }
+
+    @Test(
         "Critical authentication symbols keep their semantic keys",
         arguments: [
             (LocalizedStringResource.authenticationLoginEmailLabel, "authentication.login.email.label"),
@@ -66,6 +95,14 @@ struct AuthenticationPresentationLocalizationTests {
             (
                 LocalizedStringResource.authenticationSessionBiometricReason,
                 "authentication.session.biometric.reason"
+            ),
+            (
+                LocalizedStringResource.authenticationRootSignOut,
+                "authentication.root.sign-out"
+            ),
+            (
+                LocalizedStringResource.authenticationRootRetry,
+                "authentication.root.retry"
             )
         ]
     )

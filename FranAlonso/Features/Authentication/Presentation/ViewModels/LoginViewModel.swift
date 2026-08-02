@@ -57,6 +57,15 @@ final class LoginViewModel {
             state = .failed(.unexpected)
         }
     }
+
+    /// Clears a completed credential intent after authoritative session replacement or logout.
+    ///
+    /// The email remains available for a retry, while the ephemeral password and terminal state
+    /// are discarded.
+    func resetForAuthoritativeSessionChange() {
+        password = ""
+        state = .idle
+    }
 }
 
 private extension LoginViewModel.Failure {
