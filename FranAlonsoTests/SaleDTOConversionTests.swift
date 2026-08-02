@@ -327,11 +327,7 @@ private func saleDTOBaseSale() throws -> Sale {
     )
 }
 
-private func saleDTOLine(
-    id: String,
-    quantity: Int,
-    linkedProductID: ProductID?
-) throws -> SaleLine {
+private func saleDTOLine(id: String, quantity: Int, linkedProductID: ProductID?) throws -> SaleLine {
     try SaleLine.upcoming(
         id: SaleLineID(rawValue: saleDTOUUID(id)),
         serviceID: ServiceID(
@@ -376,10 +372,7 @@ private func replacingSaleLineIdentifier(
     )
 }
 
-private func replacingSaleStatus(
-    in dto: SaleDTO,
-    with status: SaleStatusDTO
-) -> SaleDTO {
+private func replacingSaleStatus(in dto: SaleDTO, with status: SaleStatusDTO) -> SaleDTO {
     SaleDTO(
         payloadVersion: dto.payloadVersion,
         id: dto.id,

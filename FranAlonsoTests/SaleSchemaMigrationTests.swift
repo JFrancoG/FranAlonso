@@ -234,36 +234,51 @@ private func writePublishedStore(at storeURL: URL) throws -> PublishedStoreFixtu
     )
 }
 
-private func verifyPublishedRows(
-    in context: ModelContext,
-    fixture: PublishedStoreFixture
-) throws {
+private func verifyPublishedRows(in context: ModelContext, fixture: PublishedStoreFixture) throws {
     #expect(try context.fetch(FetchDescriptor<ClientModel>()).count == 1)
     #expect(try context.fetch(FetchDescriptor<ClientModel>())[0].toDomain() == fixture.client)
-    #expect(try context.fetch(FetchDescriptor<ClientPendingUpsertModel>())[0].decodePayload() == ClientDTO(fixture.client))
+    #expect(
+        try context.fetch(FetchDescriptor<ClientPendingUpsertModel>())[0].decodePayload()
+            == ClientDTO(fixture.client)
+    )
     #expect(try context.fetch(FetchDescriptor<ClientPendingDeleteModel>())[0].decodeBase() == .versioned(11))
     #expect(try context.fetch(FetchDescriptor<ClientRemoteStateModel>())[0].decodeRecord().changeSequence == 12)
     #expect(try context.fetch(FetchDescriptor<ClientSyncConflictModel>())[0].decodeReason() == .baseChanged)
     #expect(try context.fetch(FetchDescriptor<ClientSyncCursorModel>())[0].changeSequence == 12)
-    #expect(try context.fetch(FetchDescriptor<ClientSyncRetryModel>())[0].decodeState(for: fixture.clientRetry.scope) == fixture.clientRetry)
+    #expect(
+        try context.fetch(FetchDescriptor<ClientSyncRetryModel>())[0].decodeState(for: fixture.clientRetry.scope)
+            == fixture.clientRetry
+    )
 
     #expect(try context.fetch(FetchDescriptor<ProductModel>()).count == 1)
     #expect(try context.fetch(FetchDescriptor<ProductModel>())[0].toDomain() == fixture.product)
-    #expect(try context.fetch(FetchDescriptor<ProductPendingUpsertModel>())[0].decodePayload() == ProductDTO(fixture.product))
+    #expect(
+        try context.fetch(FetchDescriptor<ProductPendingUpsertModel>())[0].decodePayload()
+            == ProductDTO(fixture.product)
+    )
     #expect(try context.fetch(FetchDescriptor<ProductPendingDeleteModel>())[0].decodeBase() == .versioned(21))
     #expect(try context.fetch(FetchDescriptor<ProductRemoteStateModel>())[0].decodeRecord().changeSequence == 22)
     #expect(try context.fetch(FetchDescriptor<ProductSyncConflictModel>())[0].decodeReason() == .baseChanged)
     #expect(try context.fetch(FetchDescriptor<ProductSyncCursorModel>())[0].changeSequence == 22)
-    #expect(try context.fetch(FetchDescriptor<ProductSyncRetryModel>())[0].decodeState(for: fixture.productRetry.scope) == fixture.productRetry)
+    #expect(
+        try context.fetch(FetchDescriptor<ProductSyncRetryModel>())[0].decodeState(for: fixture.productRetry.scope)
+            == fixture.productRetry
+    )
 
     #expect(try context.fetch(FetchDescriptor<ServiceModel>()).count == 1)
     #expect(try context.fetch(FetchDescriptor<ServiceModel>())[0].toDomain() == fixture.service)
-    #expect(try context.fetch(FetchDescriptor<ServicePendingUpsertModel>())[0].decodePayload() == ServiceDTO(fixture.service))
+    #expect(
+        try context.fetch(FetchDescriptor<ServicePendingUpsertModel>())[0].decodePayload()
+            == ServiceDTO(fixture.service)
+    )
     #expect(try context.fetch(FetchDescriptor<ServicePendingDeleteModel>())[0].decodeBase() == .versioned(31))
     #expect(try context.fetch(FetchDescriptor<ServiceRemoteStateModel>())[0].decodeRecord().changeSequence == 32)
     #expect(try context.fetch(FetchDescriptor<ServiceSyncConflictModel>())[0].decodeReason() == .baseChanged)
     #expect(try context.fetch(FetchDescriptor<ServiceSyncCursorModel>())[0].changeSequence == 32)
-    #expect(try context.fetch(FetchDescriptor<ServiceSyncRetryModel>())[0].decodeState(for: fixture.serviceRetry.scope) == fixture.serviceRetry)
+    #expect(
+        try context.fetch(FetchDescriptor<ServiceSyncRetryModel>())[0].decodeState(for: fixture.serviceRetry.scope)
+            == fixture.serviceRetry
+    )
 }
 
 private let publishedTwentyOneModelSchema = Schema([

@@ -58,9 +58,7 @@ extension BillingDocumentNumber {
     /// - Throws: `BillingDocumentNumberError.nonPositiveValue` when `value` is
     ///   zero or negative.
     init(series: BillingDocumentSeries, value: Int) throws {
-        guard value > 0 else {
-            throw BillingDocumentNumberError.nonPositiveValue
-        }
+        guard value > 0 else { throw BillingDocumentNumberError.nonPositiveValue }
 
         self.init(series: series, storedValue: value)
     }

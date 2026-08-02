@@ -83,15 +83,11 @@ struct AuthenticationRootScreen: View {
             await viewModel.authorizeLocalAccessIfNeeded()
         }
         .task(id: signOutRequestID) {
-            guard let requestID = signOutRequestID else {
-                return
-            }
+            guard let requestID = signOutRequestID else { return }
 
             await viewModel.signOut()
 
-            guard signOutRequestID == requestID else {
-                return
-            }
+            guard signOutRequestID == requestID else { return }
             signOutRequestID = nil
         }
     }

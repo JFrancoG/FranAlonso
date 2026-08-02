@@ -59,9 +59,7 @@ extension SyncRetryState {
         guard (1...6).contains(backoffStep) else {
             throw SyncRetryPolicyError.invalidBackoffStep(backoffStep)
         }
-        guard notBefore.timeIntervalSinceReferenceDate.isFinite else {
-            throw SyncRetryPolicyError.invalidDeadline
-        }
+        guard notBefore.timeIntervalSinceReferenceDate.isFinite else { throw SyncRetryPolicyError.invalidDeadline }
 
         storedScope = scope
         storedBackoffStep = backoffStep

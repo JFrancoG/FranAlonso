@@ -3,20 +3,12 @@ import Foundation
 
 /// Adapts Firestore Services documents to the provider-neutral incremental contract.
 actor FirestoreServiceRemoteDataSource: ServiceRemoteDataSource {
-    private let fetchDocuments: (ServiceSyncCursor?) async throws -> [
-        (documentID: String, record: ServiceRemoteRecord)
-    ]
-    private let transactMutation: (
-        ServicePendingOperation
-    ) async throws -> ServiceRemoteMutationResult
+    private let fetchDocuments: (ServiceSyncCursor?) async throws -> [(documentID: String, record: ServiceRemoteRecord)]
+    private let transactMutation: (ServicePendingOperation) async throws -> ServiceRemoteMutationResult
 
     init(
-        fetch: @escaping (ServiceSyncCursor?) async throws -> [
-            (documentID: String, record: ServiceRemoteRecord)
-        ],
-        transact: @escaping (
-            ServicePendingOperation
-        ) async throws -> ServiceRemoteMutationResult
+        fetch: @escaping (ServiceSyncCursor?) async throws -> [(documentID: String, record: ServiceRemoteRecord)],
+        transact: @escaping (ServicePendingOperation) async throws -> ServiceRemoteMutationResult
     ) {
         fetchDocuments = fetch
         transactMutation = transact
@@ -76,9 +68,7 @@ actor FirestoreServiceRemoteDataSource: ServiceRemoteDataSource {
         )
     }
 
-    func fetchChanges(
-        after cursor: ServiceSyncCursor?
-    ) async throws -> ServiceRemoteChangeBatch {
+    func fetchChanges(after cursor: ServiceSyncCursor?) async throws -> ServiceRemoteChangeBatch {
         do {
             let documents = try await fetchDocuments(cursor)
             let records = try documents.map { document in
@@ -89,9 +79,7 @@ actor FirestoreServiceRemoteDataSource: ServiceRemoteDataSource {
                     )
                 }
                 if let sequence = document.record.changeSequence {
-                    guard sequence > 0 else {
-                        throw ServiceSyncPolicyError.invalidChangeSequence
-                    }
+                    guard sequence > 0 else { throw ServiceSyncPolicyError.invalidChangeSequence }
                 } else if cursor != nil {
                     throw ServiceSyncPolicyError.invalidChangeSequence
                 }
@@ -111,9 +99,7 @@ actor FirestoreServiceRemoteDataSource: ServiceRemoteDataSource {
         }
     }
 
-    func apply(
-        _ operation: ServicePendingOperation
-    ) async throws -> ServiceRemoteMutationResult {
+    func apply(_ operation: ServicePendingOperation) async throws -> ServiceRemoteMutationResult {
         do {
             if case .upsert(let upsert) = operation {
                 guard UUID(uuidString: upsert.service.id) == upsert.serviceID else {
@@ -133,12 +119,8 @@ extension FirestoreServiceRemoteDataSource {
     /// - Throws: A typed policy error for negative or exhausted counter state.
     static func nextChangeSequence(after current: Int64?) throws -> Int64 {
         let current = current ?? 0
-        guard current >= 0 else {
-            throw ServiceSyncPolicyError.invalidChangeSequence
-        }
-        guard current < Int64.max else {
-            throw ServiceSyncPolicyError.changeSequenceOverflow
-        }
+        guard current >= 0 else { throw ServiceSyncPolicyError.invalidChangeSequence }
+        guard current < Int64.max else { throw ServiceSyncPolicyError.changeSequenceOverflow }
         return current + 1
     }
 
@@ -496,9 +478,7 @@ struct FirestoreServiceDocumentDTO: Decodable {
         return sequence
     }
 
-    private func missingServiceField(
-        _ key: ServiceDocumentCodingKey
-    ) -> DecodingError {
+    private func missingServiceField(_ key: ServiceDocumentCodingKey) -> DecodingError {
         serviceDocumentDecodingError(
             codingPath: [key],
             description: "A live service requires \(key.stringValue)."
@@ -571,10 +551,7 @@ private extension ServiceRemoteRecord {
     }
 }
 
-private func serviceDocumentDecodingError(
-    codingPath: [any CodingKey],
-    description: String
-) -> DecodingError {
+private func serviceDocumentDecodingError(codingPath: [any CodingKey], description: String) -> DecodingError {
     DecodingError.dataCorrupted(
         DecodingError.Context(
             codingPath: codingPath,
@@ -583,9 +560,7 @@ private func serviceDocumentDecodingError(
     )
 }
 
-private func serviceBusinessDecodingError(
-    _ error: any Error
-) -> DecodingError {
+private func serviceBusinessDecodingError(_ error: any Error) -> DecodingError {
     let codingPath: [any CodingKey]
     switch error {
     case ServiceMappingError.invalidIdentifier:
@@ -626,9 +601,7 @@ private func mapFirestoreServiceError(_ error: any Error) -> any Error {
     if error is CancellationError { return CancellationError() }
 
     let providerError = error as NSError
-    guard providerError.domain == FirestoreErrorDomain else {
-        return ServiceRemoteDataSourceError.unexpected
-    }
+    guard providerError.domain == FirestoreErrorDomain else { return ServiceRemoteDataSourceError.unexpected }
     switch providerError.code {
     case FirestoreErrorCode.deadlineExceeded.rawValue:
         return ServiceRemoteDataSourceError.deadlineExceeded

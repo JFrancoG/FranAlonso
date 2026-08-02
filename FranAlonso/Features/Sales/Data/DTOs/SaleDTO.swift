@@ -399,11 +399,7 @@ private struct SaleDynamicCodingKey: CodingKey, Hashable {
     }
 }
 
-private func requireExactSalePayloadKeys(
-    _ expected: [String],
-    decoder: any Decoder,
-    description: String
-) throws {
+private func requireExactSalePayloadKeys(_ expected: [String], decoder: any Decoder, description: String) throws {
     let container = try decoder.container(keyedBy: SaleDynamicCodingKey.self)
     guard Set(container.allKeys.map(\.stringValue)) == Set(expected) else {
         throw DecodingError.dataCorrupted(

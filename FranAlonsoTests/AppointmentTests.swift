@@ -25,10 +25,7 @@ struct AppointmentTests {
         "Rejects a non-positive appointment duration",
         arguments: [(0.0, 0.0), (1.0, 0.0)]
     )
-    func rejectsANonPositiveAppointmentDuration(
-        startsOffset: TimeInterval,
-        endsOffset: TimeInterval
-    ) {
+    func rejectsANonPositiveAppointmentDuration(startsOffset: TimeInterval, endsOffset: TimeInterval) {
         #expect(throws: AppointmentError.invalidSchedule) {
             try Appointment.scheduled(
                 id: appointmentID("20000000-0000-0000-0000-000000000001"),
@@ -105,9 +102,7 @@ struct AppointmentTests {
             .cancelled(cancelledAt: appointmentDate(-1_800))
         ]
     )
-    func decodingCannotBypassScheduleValidation(
-        status: AppointmentStatus
-    ) throws {
+    func decodingCannotBypassScheduleValidation(status: AppointmentStatus) throws {
         let payload = AppointmentPayload(
             id: appointmentID("40000000-0000-0000-0000-000000000001"),
             clientID: appointmentClientID("40000000-0000-0000-0000-000000000002"),
@@ -129,9 +124,7 @@ struct AppointmentTests {
         "Decoding cannot bypass service-reference validation",
         arguments: [InvalidAppointmentReferences.empty, .duplicate]
     )
-    func decodingCannotBypassServiceReferenceValidation(
-        invalidReferences: InvalidAppointmentReferences
-    ) throws {
+    func decodingCannotBypassServiceReferenceValidation(invalidReferences: InvalidAppointmentReferences) throws {
         let payload = AppointmentPayload(
             id: appointmentID("50000000-0000-0000-0000-000000000001"),
             clientID: appointmentClientID("50000000-0000-0000-0000-000000000002"),
@@ -186,9 +179,7 @@ private struct AppointmentPayload: Codable {
 }
 
 private func scheduledAppointment(
-    serviceIDs: [ServiceID] = [
-        appointmentServiceID("00000000-0000-0000-0000-000000000001")
-    ]
+    serviceIDs: [ServiceID] = [appointmentServiceID("00000000-0000-0000-0000-000000000001")]
 ) throws -> Appointment {
     try Appointment.scheduled(
         id: appointmentID("10000000-0000-0000-0000-000000000003"),

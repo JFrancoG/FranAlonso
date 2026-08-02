@@ -198,9 +198,7 @@ private actor LoginAuthenticationRepositoryFake: AuthenticationRepository {
         }
     }
 
-    func requests() -> [LoginRequest] {
-        recordedRequests
-    }
+    func requests() -> [LoginRequest] { recordedRequests }
 }
 
 private actor LoginOperationGate {

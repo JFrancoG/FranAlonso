@@ -478,9 +478,7 @@ private struct PhaseFiveNineClientFixture {
     let retryState: SyncRetryState
 }
 
-private func writePhaseFiveNineClientStore(
-    at storeURL: URL
-) throws -> PhaseFiveNineClientFixture {
+private func writePhaseFiveNineClientStore(at storeURL: URL) throws -> PhaseFiveNineClientFixture {
     let oldSchema = Schema([
         ClientModel.self,
         ClientPendingUpsertModel.self,

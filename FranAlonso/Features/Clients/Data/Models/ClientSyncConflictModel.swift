@@ -63,9 +63,7 @@ extension ClientSyncConflictModel {
         reason: ClientSyncConflictReason,
         remoteRecord: ClientRemoteRecord?
     ) throws {
-        guard operation.clientID == clientID else {
-            throw ClientSyncPersistenceError.entityIdentityMismatch
-        }
+        guard operation.clientID == clientID else { throw ClientSyncPersistenceError.entityIdentityMismatch }
         let encodedBase = try JSONEncoder().encode(operation.base)
         let encodedLocalClient = try JSONEncoder().encode(operation.client)
         let encodedRemoteRecord = try remoteRecord.map { record in

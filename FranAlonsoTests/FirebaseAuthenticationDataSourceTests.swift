@@ -61,9 +61,7 @@ struct FirebaseAuthenticationDataSourceTests {
         "Sign in maps every approved Firebase error bucket",
         arguments: firebaseAuthenticationErrorFixtures
     )
-    fileprivate func signInMapsFirebaseError(
-        _ fixture: FirebaseAuthenticationErrorFixture
-    ) async {
+    fileprivate func signInMapsFirebaseError(_ fixture: FirebaseAuthenticationErrorFixture) async {
         let dataSource = makeFirebaseAuthenticationDataSource(
             signIn: { _, _ in
                 throw firebaseAuthenticationError(code: fixture.code)
@@ -486,23 +484,18 @@ private func makeFirebaseAuthenticationDataSource(
     )
 }
 
-private func firebaseSessionStream(
-    from upstream: AsyncStream<String?>
-) -> AsyncStream<AuthenticationSession?> {
+private func firebaseSessionStream(from upstream: AsyncStream<String?>) -> AsyncStream<AuthenticationSession?> {
     FirebaseAuthenticationDataSource.sessionStream(
         from: upstream,
         transform: authenticationSession(id:)
     )
 }
 
-private func authenticationSession(id principalID: String?)
-    -> AuthenticationSession? {
+private func authenticationSession(id principalID: String?) -> AuthenticationSession? {
     principalID.map { AuthenticationSession(id: $0) }
 }
 
-private func firebasePrincipalStream(
-    _ principalIDs: [String?]
-) -> AsyncStream<String?> {
+private func firebasePrincipalStream(_ principalIDs: [String?]) -> AsyncStream<String?> {
     AsyncStream { continuation in
         for principalID in principalIDs {
             continuation.yield(principalID)
@@ -511,9 +504,7 @@ private func firebasePrincipalStream(
     }
 }
 
-private func authenticationSessionStream(
-    _ sessions: [AuthenticationSession?]
-) -> AsyncStream<AuthenticationSession?> {
+private func authenticationSessionStream(_ sessions: [AuthenticationSession?]) -> AsyncStream<AuthenticationSession?> {
     AsyncStream { continuation in
         for session in sessions {
             continuation.yield(session)
@@ -526,12 +517,8 @@ private func firebaseAuthenticationError(code: Int) -> NSError {
     NSError(domain: AuthErrors.domain, code: code)
 }
 
-private func requireFirebaseAuthenticationSendable<Value: Sendable>(
-    _ value: Value
-) {}
+private func requireFirebaseAuthenticationSendable<Value: Sendable>(_ value: Value) {}
 
-private func requireFirebaseAuthenticationDataSourceSendable(
-    _ dataSource: any AuthenticationDataSource
-) {
+private func requireFirebaseAuthenticationDataSourceSendable(_ dataSource: any AuthenticationDataSource) {
     requireFirebaseAuthenticationSendable(dataSource)
 }

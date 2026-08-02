@@ -347,9 +347,7 @@ private actor FirestoreSaleFetchGate {
         self.record = record
     }
 
-    func fetch(
-        after cursor: SaleSyncCursor?
-    ) -> [(documentID: String, record: SaleRemoteRecord)] {
+    func fetch(after cursor: SaleSyncCursor?) -> [(documentID: String, record: SaleRemoteRecord)] {
         received.append(cursor)
         return [(record.id, record)]
     }
@@ -385,8 +383,7 @@ private struct InvalidFirestoreSaleIdentifierCase {
     let expectedPath: [String]
 }
 
-private func invalidFirestoreSaleIdentifierCases() throws
-    -> [InvalidFirestoreSaleIdentifierCase] {
+private func invalidFirestoreSaleIdentifierCases() throws -> [InvalidFirestoreSaleIdentifierCase] {
     let invalid = "not-a-uuid"
     let draft = try #require(
         firestoreSaleRecord(progressed: false, sequence: 1).liveSale
@@ -560,10 +557,7 @@ private let firestoreSaleOperationID = firestoreSaleUUID(
     "40000000-0000-0000-0000-000000000002"
 )
 
-private func firestoreSaleRecord(
-    progressed: Bool,
-    sequence: Int64
-) throws -> SaleRemoteRecord {
+private func firestoreSaleRecord(progressed: Bool, sequence: Int64) throws -> SaleRemoteRecord {
     SaleRemoteRecord(
         sale: try SaleDTO(firestoreSale(progressed: progressed)),
         version: .versioned(revision: 2, lastOperationID: firestoreSaleOperationID),

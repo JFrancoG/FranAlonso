@@ -39,7 +39,9 @@ actor SwiftDataStorePristineDataSource {
         return true
     }
 
-    private func contains<Model>(_ modelType: Model.Type) throws -> Bool where Model: PersistentModel {
+    private func contains<Model>(
+        _ modelType: Model.Type
+    ) throws -> Bool where Model: PersistentModel {
         var descriptor = FetchDescriptor<Model>()
         descriptor.fetchLimit = 1
         return try !modelContext.fetch(descriptor).isEmpty

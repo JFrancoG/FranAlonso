@@ -9,9 +9,7 @@ struct FirestoreClientRemoteDataSourceTests {
         "Environments resolve Clients and sync metadata paths",
         arguments: [FirestoreEnvironment.develop, .production]
     )
-    func environmentsResolveApprovedPaths(
-        _ environment: FirestoreEnvironment
-    ) {
+    func environmentsResolveApprovedPaths(_ environment: FirestoreEnvironment) {
         #expect(
             environment.collectionPath(for: .clients)
                 == "\(environment.rawValue)/collections/clients"
@@ -342,9 +340,7 @@ private actor FirestoreFetchGate {
 
     var receivedCursors: [ClientSyncCursor?] { cursors }
 
-    func fetch(
-        after cursor: ClientSyncCursor?
-    ) -> [(documentID: String, record: ClientRemoteRecord)] {
+    func fetch(after cursor: ClientSyncCursor?) -> [(documentID: String, record: ClientRemoteRecord)] {
         cursors.append(cursor)
         return [(documentID: record.id, record: record)]
     }
@@ -353,16 +349,11 @@ private actor FirestoreFetchGate {
 private actor FirestoreTransactionGate {
     private var operations: [ClientPendingOperation] = []
     private var receivedContinuations: [CheckedContinuation<Void, Never>] = []
-    private var acknowledgementContinuation: CheckedContinuation<
-        ClientRemoteMutationResult,
-        Never
-    >?
+    private var acknowledgementContinuation: CheckedContinuation<ClientRemoteMutationResult, Never>?
 
     var receivedOperations: [ClientPendingOperation] { operations }
 
-    func transact(
-        operation: ClientPendingOperation
-    ) async -> ClientRemoteMutationResult {
+    func transact(operation: ClientPendingOperation) async -> ClientRemoteMutationResult {
         operations.append(operation)
         receivedContinuations.forEach { $0.resume() }
         receivedContinuations.removeAll()

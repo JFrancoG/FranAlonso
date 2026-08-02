@@ -68,9 +68,7 @@ private struct ProductMigrationFixture {
     let retry: SyncRetryState
 }
 
-private func writeFourteenModelStore(
-    at storeURL: URL
-) throws -> FourteenModelFixture {
+private func writeFourteenModelStore(at storeURL: URL) throws -> FourteenModelFixture {
     let oldSchema = Schema([
         ClientModel.self,
         ClientPendingUpsertModel.self,
@@ -109,9 +107,7 @@ private func writeFourteenModelStore(
     )
 }
 
-private func insertClientRows(
-    in context: ModelContext
-) throws -> ClientMigrationFixture {
+private func insertClientRows(in context: ModelContext) throws -> ClientMigrationFixture {
     let clientID = migrationUUID("71000000-0000-0000-0000-000000000001")
     let client = Client.draft(
         id: ClientID(rawValue: clientID),
@@ -193,9 +189,7 @@ private func insertClientRows(
     )
 }
 
-private func insertProductRows(
-    in context: ModelContext
-) throws -> ProductMigrationFixture {
+private func insertProductRows(in context: ModelContext) throws -> ProductMigrationFixture {
     let productID = migrationUUID("72000000-0000-0000-0000-000000000001")
     let product = Product.testSnapshot(
         id: ProductID(rawValue: productID),
@@ -277,10 +271,7 @@ private func insertProductRows(
     )
 }
 
-private func verifyClientRows(
-    in context: ModelContext,
-    fixture: ClientMigrationFixture
-) throws {
+private func verifyClientRows(in context: ModelContext, fixture: ClientMigrationFixture) throws {
     let model = try #require(
         context.fetch(FetchDescriptor<ClientModel>()).migrationOnly
     )
@@ -315,10 +306,7 @@ private func verifyClientRows(
     #expect(try retry.decodeState(for: fixture.retry.scope) == fixture.retry)
 }
 
-private func verifyProductRows(
-    in context: ModelContext,
-    fixture: ProductMigrationFixture
-) throws {
+private func verifyProductRows(in context: ModelContext, fixture: ProductMigrationFixture) throws {
     let model = try #require(
         context.fetch(FetchDescriptor<ProductModel>()).migrationOnly
     )

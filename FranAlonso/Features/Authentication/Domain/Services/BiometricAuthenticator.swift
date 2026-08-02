@@ -18,9 +18,7 @@ struct BiometricAuthenticator {
     ///   `BiometricAuthenticationError` for a rejected request.
     func authenticate(localizedReason: String) async throws {
         try Task.checkCancellation()
-        guard !localizedReason.isEmpty else {
-            throw BiometricAuthenticationError.configuration
-        }
+        guard !localizedReason.isEmpty else { throw BiometricAuthenticationError.configuration }
 
         try await authenticateOperation(localizedReason)
         try Task.checkCancellation()

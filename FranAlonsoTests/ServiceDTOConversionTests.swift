@@ -75,10 +75,7 @@ struct ServiceDTOConversionTests {
             )
         ]
     )
-    func invalidNestedDecimalRetainsCodingPath(
-        payload: String,
-        expectedPath: [String]
-    ) {
+    func invalidNestedDecimalRetainsCodingPath(payload: String, expectedPath: [String]) {
         do {
             _ = try JSONDecoder().decode(
                 ServiceDTO.self,

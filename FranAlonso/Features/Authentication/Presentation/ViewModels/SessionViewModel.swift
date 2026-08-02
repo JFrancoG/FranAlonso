@@ -97,18 +97,14 @@ final class SessionViewModel {
         let revision = beginObservation()
         let stream = await observeSessionUseCase()
 
-        guard isCurrentObservation(revision) else {
-            return
-        }
+        guard isCurrentObservation(revision) else { return }
         guard !Task.isCancelled else {
             finishObservation(revision, with: .idle)
             return
         }
 
         for await session in stream {
-            guard isCurrentObservation(revision) else {
-                return
-            }
+            guard isCurrentObservation(revision) else { return }
             guard !Task.isCancelled else {
                 finishObservation(revision, with: .idle)
                 return
@@ -117,9 +113,7 @@ final class SessionViewModel {
             applyObservedSession(session)
         }
 
-        guard isCurrentObservation(revision) else {
-            return
-        }
+        guard isCurrentObservation(revision) else { return }
 
         finishObservation(
             revision,
@@ -134,12 +128,8 @@ final class SessionViewModel {
     ///
     /// - Parameter localizedReason: The localized explanation displayed by the system prompt.
     func unlock(localizedReason: String) async {
-        guard actionState.acceptsNewAction else {
-            return
-        }
-        guard case let .locked(session, _) = state else {
-            return
-        }
+        guard actionState.acceptsNewAction else { return }
+        guard case let .locked(session, _) = state else { return }
 
         let attempt = beginAction(.unlock, principalID: session.id)
         let availability: BiometricAvailability = biometricAuthenticator.canAuthenticate()
@@ -154,12 +144,8 @@ final class SessionViewModel {
 
         do {
             try await biometricAuthenticator.authenticate(localizedReason: localizedReason)
-            guard isCurrentAction(attempt) else {
-                return
-            }
-            guard case let .locked(currentSession, _) = state else {
-                return
-            }
+            guard isCurrentAction(attempt) else { return }
+            guard case let .locked(currentSession, _) = state else { return }
 
             activeAction = nil
             actionState = .idle
@@ -178,17 +164,13 @@ final class SessionViewModel {
     /// Success remains `signingOut` until session observation publishes authoritative `nil`.
     /// Duplicate or crossing actions are ignored, and stale completions have no effect.
     func signOut() async {
-        guard actionState.acceptsNewAction, let session = currentSession else {
-            return
-        }
+        guard actionState.acceptsNewAction, let session = currentSession else { return }
 
         let attempt = beginAction(.signOut, principalID: session.id)
 
         do {
             try await signOutUseCase()
-            guard isCurrentAction(attempt) else {
-                return
-            }
+            guard isCurrentAction(attempt) else { return }
         } catch is CancellationError {
             finishAction(attempt, with: .idle)
         } catch let error as AuthenticationError {
@@ -219,14 +201,10 @@ final class SessionViewModel {
         return observationRevision
     }
 
-    private func isCurrentObservation(_ revision: Int) -> Bool {
-        observationRevision == revision
-    }
+    private func isCurrentObservation(_ revision: Int) -> Bool { observationRevision == revision }
 
     private func finishObservation(_ revision: Int, with finalState: State) {
-        guard isCurrentObservation(revision) else {
-            return
-        }
+        guard isCurrentObservation(revision) else { return }
 
         observationRevision += 1
         invalidateAction()
@@ -243,9 +221,7 @@ final class SessionViewModel {
             return
         }
 
-        guard currentSession?.id != session.id else {
-            return
-        }
+        guard currentSession?.id != session.id else { return }
 
         invalidateAction()
         let availability: BiometricAvailability = biometricAuthenticator.canAuthenticate()
@@ -280,9 +256,7 @@ final class SessionViewModel {
     }
 
     private func isCurrentAction(_ attempt: ActionAttempt) -> Bool {
-        guard let activeAction else {
-            return false
-        }
+        guard let activeAction else { return false }
 
         return activeAction.revision == attempt.revision
             && activeAction.kind == attempt.kind
@@ -291,9 +265,7 @@ final class SessionViewModel {
     }
 
     private func finishAction(_ attempt: ActionAttempt, with finalState: ActionState) {
-        guard isCurrentAction(attempt) else {
-            return
-        }
+        guard isCurrentAction(attempt) else { return }
 
         activeAction = nil
         actionState = finalState

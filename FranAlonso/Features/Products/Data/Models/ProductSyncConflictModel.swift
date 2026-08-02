@@ -63,9 +63,7 @@ extension ProductSyncConflictModel {
         reason: ProductSyncConflictReason,
         remoteRecord: ProductRemoteRecord?
     ) throws {
-        guard operation.productID == productID else {
-            throw ProductSyncPersistenceError.entityIdentityMismatch
-        }
+        guard operation.productID == productID else { throw ProductSyncPersistenceError.entityIdentityMismatch }
         let encodedBase = try JSONEncoder().encode(operation.base)
         let encodedLocalProduct = try JSONEncoder().encode(operation.product)
         let encodedRemoteRecord = try remoteRecord.map { record in

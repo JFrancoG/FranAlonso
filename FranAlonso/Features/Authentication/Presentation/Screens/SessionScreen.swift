@@ -23,9 +23,7 @@ struct SessionScreen: View {
         }
         .navigationTitle(Text(.authenticationSessionTitle))
         .task(id: actionRequest) {
-            guard let request = actionRequest else {
-                return
-            }
+            guard let request = actionRequest else { return }
 
             switch request {
             case .unlock:
@@ -34,9 +32,7 @@ struct SessionScreen: View {
                 await viewModel.signOut()
             }
 
-            guard actionRequest == request else {
-                return
-            }
+            guard actionRequest == request else { return }
 
             actionRequest = nil
         }

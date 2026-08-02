@@ -103,9 +103,7 @@ struct StockWarningPolicy {
         impacts.reserveCapacity(lines.count)
 
         for line in lines {
-            guard let productID = line.linkedProductID else {
-                continue
-            }
+            guard let productID = line.linkedProductID else { continue }
 
             guard let availableQuantity = remainingQuantities[productID] else {
                 throw StockWarningPolicyError.missingAvailableQuantity(

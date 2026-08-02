@@ -8,10 +8,7 @@ actor TelemetryReporter {
     private var consent: TelemetryConsent = .denied
     private var consentRevision = 0
 
-    init(
-        analyticsDataSource: any AnalyticsDataSource,
-        crashDataSource: any CrashDataSource
-    ) {
+    init(analyticsDataSource: any AnalyticsDataSource, crashDataSource: any CrashDataSource) {
         self.analyticsDataSource = analyticsDataSource
         self.crashDataSource = crashDataSource
     }
@@ -35,14 +32,10 @@ actor TelemetryReporter {
             let isEnabled = consent.isGranted
 
             try? await analyticsDataSource.setCollectionEnabled(isEnabled)
-            guard revision == consentRevision else {
-                continue
-            }
+            guard revision == consentRevision else { continue }
 
             try? await crashDataSource.setCollectionEnabled(isEnabled)
-            guard revision == consentRevision else {
-                continue
-            }
+            guard revision == consentRevision else { continue }
 
             return
         }
@@ -54,9 +47,7 @@ actor TelemetryReporter {
     ///
     /// - Parameter event: The technical analytics event to emit.
     func track(_ event: AnalyticsEvent) async {
-        guard consent.isGranted else {
-            return
-        }
+        guard consent.isGranted else { return }
 
         try? await analyticsDataSource.log(event)
     }
@@ -67,9 +58,7 @@ actor TelemetryReporter {
     ///
     /// - Parameter diagnostic: The allowlisted technical diagnostic to record.
     func record(_ diagnostic: CrashDiagnostic) async {
-        guard consent.isGranted else {
-            return
-        }
+        guard consent.isGranted else { return }
 
         try? await crashDataSource.record(diagnostic)
     }

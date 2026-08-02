@@ -43,9 +43,7 @@ struct SaleRemoteRecord: Identifiable, Codable, Equatable {
     var isTombstone: Bool { !isLive }
 
     var liveSale: SaleDTO? {
-        guard case .live(let sale) = content else {
-            return nil
-        }
+        guard case .live(let sale) = content else { return nil }
         return sale
     }
 }

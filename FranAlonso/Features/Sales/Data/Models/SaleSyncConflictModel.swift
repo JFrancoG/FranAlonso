@@ -73,9 +73,7 @@ extension SaleSyncConflictModel {
         reason: SaleSyncConflictReason,
         remoteRecord: SaleRemoteRecord?
     ) throws {
-        guard operation.saleID == saleID else {
-            throw SaleSyncPersistenceError.entityIdentityMismatch
-        }
+        guard operation.saleID == saleID else { throw SaleSyncPersistenceError.entityIdentityMismatch }
         let encodedBase = try JSONEncoder().encode(operation.base)
         let encodedLocalSale = try operation.localSale.map { sale in
             try JSONEncoder().encode(sale)
@@ -136,9 +134,7 @@ extension SaleSyncConflictModel {
                 )
             )
         case "discard":
-            guard localSaleData == nil else {
-                throw SaleSyncPersistenceError.invalidConflictOperation
-            }
+            guard localSaleData == nil else { throw SaleSyncPersistenceError.invalidConflictOperation }
             return .discard(
                 SalePendingDiscard(
                     saleID: saleID,

@@ -43,9 +43,7 @@ struct ClientRemoteRecord: Identifiable, Codable, Equatable {
     var isTombstone: Bool { !isLive }
 
     var liveClient: ClientDTO? {
-        guard case .live(let client) = content else {
-            return nil
-        }
+        guard case .live(let client) = content else { return nil }
         return client
     }
 }

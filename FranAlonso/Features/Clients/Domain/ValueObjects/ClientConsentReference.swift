@@ -26,9 +26,7 @@ extension ClientConsentReference {
     /// - Throws: `ClientConsentReferenceError.empty` if the normalized value is empty.
     init(rawValue: String) throws {
         let normalizedValue = rawValue.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard !normalizedValue.isEmpty else {
-            throw ClientConsentReferenceError.empty
-        }
+        guard !normalizedValue.isEmpty else { throw ClientConsentReferenceError.empty }
 
         self.init(storedValue: normalizedValue)
     }

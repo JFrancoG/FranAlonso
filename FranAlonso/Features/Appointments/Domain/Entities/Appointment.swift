@@ -49,9 +49,7 @@ struct Appointment: Identifiable, Codable, Equatable {
     /// - Parameter cancelledAt: The timestamp at which cancellation occurred.
     /// - Throws: `AppointmentError.invalidTransition` if the appointment is already cancelled.
     mutating func cancel(at cancelledAt: Date) throws {
-        guard status == .scheduled else {
-            throw AppointmentError.invalidTransition
-        }
+        guard status == .scheduled else { throw AppointmentError.invalidTransition }
 
         storedStatus = .cancelled(cancelledAt: cancelledAt)
     }
@@ -134,17 +132,9 @@ extension Appointment {
         try container.encode(status, forKey: .status)
     }
 
-    private static func ensureValid(
-        serviceIDs: [ServiceID],
-        startsAt: Date,
-        endsAt: Date
-    ) throws {
-        guard startsAt < endsAt else {
-            throw AppointmentError.invalidSchedule
-        }
-        guard !serviceIDs.isEmpty else {
-            throw AppointmentError.missingServiceReferences
-        }
+    private static func ensureValid(serviceIDs: [ServiceID], startsAt: Date, endsAt: Date) throws {
+        guard startsAt < endsAt else { throw AppointmentError.invalidSchedule }
+        guard !serviceIDs.isEmpty else { throw AppointmentError.missingServiceReferences }
         guard Set(serviceIDs).count == serviceIDs.count else {
             throw AppointmentError.duplicateServiceReference
         }

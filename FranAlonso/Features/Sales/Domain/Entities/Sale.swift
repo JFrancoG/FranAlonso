@@ -53,12 +53,8 @@ struct Sale: Identifiable, Codable, Equatable {
     /// - Throws: `SaleError.invalidSaleTransition` if the sale is not a draft, or
     ///   `SaleError.emptySale` if it contains no lines.
     mutating func start() throws {
-        guard status == .draft else {
-            throw SaleError.invalidSaleTransition
-        }
-        guard !lines.isEmpty else {
-            throw SaleError.emptySale
-        }
+        guard status == .draft else { throw SaleError.invalidSaleTransition }
+        guard !lines.isEmpty else { throw SaleError.emptySale }
 
         storedStatus = .inProgress
     }
@@ -70,9 +66,7 @@ struct Sale: Identifiable, Codable, Equatable {
     ///   `SaleError.lineNotFound` if the identifier does not belong to the sale,
     ///   or `SaleLineError.invalidTransition` if the line is not upcoming.
     mutating func startLine(id: SaleLineID) throws {
-        guard status == .inProgress else {
-            throw SaleError.invalidSaleTransition
-        }
+        guard status == .inProgress else { throw SaleError.invalidSaleTransition }
         guard let index = storedLines.firstIndex(where: { $0.id == id }) else {
             throw SaleError.lineNotFound
         }
@@ -90,9 +84,7 @@ struct Sale: Identifiable, Codable, Equatable {
     ///   `SaleError.lineNotFound` if the identifier does not belong to the sale,
     ///   or `SaleLineError.invalidTransition` if the line is not in progress.
     mutating func completeLine(id: SaleLineID) throws {
-        guard status == .inProgress else {
-            throw SaleError.invalidSaleTransition
-        }
+        guard status == .inProgress else { throw SaleError.invalidSaleTransition }
         guard let index = storedLines.firstIndex(where: { $0.id == id }) else {
             throw SaleError.lineNotFound
         }
@@ -308,17 +300,11 @@ extension Sale {
 
         switch status {
         case .draft:
-            guard everyLineIsUpcoming else {
-                throw SaleError.invalidPersistedState
-            }
+            guard everyLineIsUpcoming else { throw SaleError.invalidPersistedState }
         case .inProgress:
-            guard !lines.isEmpty, !everyLineIsCompleted else {
-                throw SaleError.invalidPersistedState
-            }
+            guard !lines.isEmpty, !everyLineIsCompleted else { throw SaleError.invalidPersistedState }
         case .awaitingPayment, .awaitingDocument, .closed, .voided:
-            guard everyLineIsCompleted else {
-                throw SaleError.invalidPersistedState
-            }
+            guard everyLineIsCompleted else { throw SaleError.invalidPersistedState }
         }
     }
 
@@ -343,8 +329,6 @@ extension Sale {
     }
 
     private static func ensureFinite(_ date: Date) throws {
-        guard date.timeIntervalSinceReferenceDate.isFinite else {
-            throw SaleError.invalidTimestamp
-        }
+        guard date.timeIntervalSinceReferenceDate.isFinite else { throw SaleError.invalidTimestamp }
     }
 }

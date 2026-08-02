@@ -209,9 +209,7 @@ extension ClientLocalDataSource {
     /// Returns the durable Clients feed position, or nil before the first bootstrap.
     func cursor(in context: ModelContext) throws -> ClientSyncCursor? {
         try cursorModel(in: context).map { model in
-            guard model.changeSequence >= 0 else {
-                throw ClientSyncPersistenceError.invalidCursor
-            }
+            guard model.changeSequence >= 0 else { throw ClientSyncPersistenceError.invalidCursor }
             return ClientSyncCursor(
                 changeSequence: model.changeSequence
             )
@@ -458,9 +456,7 @@ extension ClientLocalDataSource {
                 throw ClientSyncPersistenceError.entityIdentityMismatch
             }
         case .delete:
-            guard record.isTombstone else {
-                throw ClientSyncPersistenceError.entityIdentityMismatch
-            }
+            guard record.isTombstone else { throw ClientSyncPersistenceError.entityIdentityMismatch }
         }
 
         try persistRemoteState(record, in: context)
@@ -504,10 +500,7 @@ extension ClientLocalDataSource {
         }
     }
 
-    private func applyRemoteObservation(
-        _ record: ClientRemoteRecord,
-        in context: ModelContext
-    ) throws {
+    private func applyRemoteObservation(_ record: ClientRemoteRecord, in context: ModelContext) throws {
         let clientID = ClientID(rawValue: try record.stableClientID())
         try persistRemoteState(record, in: context)
         let hasPending = try !pendingOperations(
@@ -563,11 +556,7 @@ extension ClientLocalDataSource {
         }
     }
 
-    private func isStale(
-        _ record: ClientRemoteRecord,
-        for id: ClientID,
-        in context: ModelContext
-    ) throws -> Bool {
+    private func isStale(_ record: ClientRemoteRecord, for id: ClientID, in context: ModelContext) throws -> Bool {
         guard let current = try remoteState(for: id, in: context)?.decodeRecord() else {
             return false
         }
@@ -587,10 +576,7 @@ extension ClientLocalDataSource {
         }
     }
 
-    private func advanceCursor(
-        _ cursor: ClientSyncCursor,
-        in context: ModelContext
-    ) throws {
+    private func advanceCursor(_ cursor: ClientSyncCursor, in context: ModelContext) throws {
         if let model = try cursorModel(in: context) {
             model.advance(to: cursor.changeSequence)
         } else {
@@ -603,9 +589,7 @@ extension ClientLocalDataSource {
         }
     }
 
-    private func cursorModel(
-        in context: ModelContext
-    ) throws -> ClientSyncCursorModel? {
+    private func cursorModel(in context: ModelContext) throws -> ClientSyncCursorModel? {
         var descriptor = FetchDescriptor<ClientSyncCursorModel>(
             predicate: #Predicate { model in
                 model.feedID == clientSyncFeedID
@@ -615,10 +599,7 @@ extension ClientLocalDataSource {
         return try context.fetch(descriptor).first
     }
 
-    private func retryModel(
-        for scope: SyncRetryScope,
-        in context: ModelContext
-    ) throws -> ClientSyncRetryModel? {
+    private func retryModel(for scope: SyncRetryScope, in context: ModelContext) throws -> ClientSyncRetryModel? {
         let scopeID = scope.storageID
         var descriptor = FetchDescriptor<ClientSyncRetryModel>(
             predicate: #Predicate { model in
@@ -629,25 +610,17 @@ extension ClientLocalDataSource {
         return try context.fetch(descriptor).first
     }
 
-    private func deleteRetryState(
-        for scope: SyncRetryScope,
-        in context: ModelContext
-    ) throws {
+    private func deleteRetryState(for scope: SyncRetryScope, in context: ModelContext) throws {
         if let model = try retryModel(for: scope, in: context) {
             context.delete(model)
         }
     }
 
     private func requireClean(_ context: ModelContext) throws {
-        guard !context.hasChanges else {
-            throw ClientLocalDataSourceError.contextHasUncommittedChanges
-        }
+        guard !context.hasChanges else { throw ClientLocalDataSourceError.contextHasUncommittedChanges }
     }
 
-    private func model(
-        for id: ClientID,
-        in context: ModelContext
-    ) throws -> ClientModel? {
+    private func model(for id: ClientID, in context: ModelContext) throws -> ClientModel? {
         let rawIdentifier = id.rawValue
         var descriptor = FetchDescriptor<ClientModel>(
             predicate: #Predicate { model in model.id == rawIdentifier }
@@ -656,19 +629,13 @@ extension ClientLocalDataSource {
         return try context.fetch(descriptor).first
     }
 
-    private func pendingOperations(
-        for id: ClientID,
-        in context: ModelContext
-    ) throws -> [ClientPendingOperation] {
+    private func pendingOperations(for id: ClientID, in context: ModelContext) throws -> [ClientPendingOperation] {
         try pendingOperations(in: context).filter {
             $0.clientID == id.rawValue
         }
     }
 
-    private func pendingUpsertModels(
-        for id: ClientID,
-        in context: ModelContext
-    ) throws -> [ClientPendingUpsertModel] {
+    private func pendingUpsertModels(for id: ClientID, in context: ModelContext) throws -> [ClientPendingUpsertModel] {
         let rawIdentifier = id.rawValue
         return try context.fetch(
             FetchDescriptor<ClientPendingUpsertModel>(
@@ -679,10 +646,7 @@ extension ClientLocalDataSource {
         )
     }
 
-    private func pendingDeleteModels(
-        for id: ClientID,
-        in context: ModelContext
-    ) throws -> [ClientPendingDeleteModel] {
+    private func pendingDeleteModels(for id: ClientID, in context: ModelContext) throws -> [ClientPendingDeleteModel] {
         let rawIdentifier = id.rawValue
         return try context.fetch(
             FetchDescriptor<ClientPendingDeleteModel>(
@@ -693,10 +657,7 @@ extension ClientLocalDataSource {
         )
     }
 
-    private func pendingUpsertModel(
-        operationID: UUID,
-        in context: ModelContext
-    ) throws -> ClientPendingUpsertModel? {
+    private func pendingUpsertModel(operationID: UUID, in context: ModelContext) throws -> ClientPendingUpsertModel? {
         var descriptor = FetchDescriptor<ClientPendingUpsertModel>(
             predicate: #Predicate { model in
                 model.operationID == operationID
@@ -706,10 +667,7 @@ extension ClientLocalDataSource {
         return try context.fetch(descriptor).first
     }
 
-    private func pendingDeleteModel(
-        operationID: UUID,
-        in context: ModelContext
-    ) throws -> ClientPendingDeleteModel? {
+    private func pendingDeleteModel(operationID: UUID, in context: ModelContext) throws -> ClientPendingDeleteModel? {
         var descriptor = FetchDescriptor<ClientPendingDeleteModel>(
             predicate: #Predicate { model in
                 model.operationID == operationID
@@ -719,10 +677,7 @@ extension ClientLocalDataSource {
         return try context.fetch(descriptor).first
     }
 
-    private func requirePendingOperation(
-        operationID: UUID,
-        in context: ModelContext
-    ) throws -> ClientPendingOperation {
+    private func requirePendingOperation(operationID: UUID, in context: ModelContext) throws -> ClientPendingOperation {
         if let model = try pendingUpsertModel(
             operationID: operationID,
             in: context
@@ -753,10 +708,7 @@ extension ClientLocalDataSource {
         throw ClientSyncPersistenceError.entityIdentityMismatch
     }
 
-    private func ensureOperationIdentityAvailable(
-        _ operationID: UUID,
-        in context: ModelContext
-    ) throws {
+    private func ensureOperationIdentityAvailable(_ operationID: UUID, in context: ModelContext) throws {
         guard try pendingUpsertModel(
             operationID: operationID,
             in: context
@@ -787,10 +739,7 @@ extension ClientLocalDataSource {
         return heads.first
     }
 
-    private func remoteState(
-        for id: ClientID,
-        in context: ModelContext
-    ) throws -> ClientRemoteStateModel? {
+    private func remoteState(for id: ClientID, in context: ModelContext) throws -> ClientRemoteStateModel? {
         let rawIdentifier = id.rawValue
         var descriptor = FetchDescriptor<ClientRemoteStateModel>(
             predicate: #Predicate { state in
@@ -801,10 +750,7 @@ extension ClientLocalDataSource {
         return try context.fetch(descriptor).first
     }
 
-    private func remoteBase(
-        for id: ClientID,
-        in context: ModelContext
-    ) throws -> ClientRemoteBase {
+    private func remoteBase(for id: ClientID, in context: ModelContext) throws -> ClientRemoteBase {
         guard let record = try remoteState(for: id, in: context)?.decodeRecord() else {
             return .absent
         }
@@ -820,10 +766,7 @@ extension ClientLocalDataSource {
         }
     }
 
-    private func hasDeletionState(
-        for id: ClientID,
-        in context: ModelContext
-    ) throws -> Bool {
+    private func hasDeletionState(for id: ClientID, in context: ModelContext) throws -> Bool {
         if try !pendingDeleteModels(for: id, in: context).isEmpty {
             return true
         }
@@ -831,10 +774,7 @@ extension ClientLocalDataSource {
             == true
     }
 
-    private func persistRemoteState(
-        _ record: ClientRemoteRecord,
-        in context: ModelContext
-    ) throws {
+    private func persistRemoteState(_ record: ClientRemoteRecord, in context: ModelContext) throws {
         let clientID = ClientID(rawValue: try record.stableClientID())
         if let state = try remoteState(for: clientID, in: context) {
             try state.update(record: record)
@@ -843,10 +783,7 @@ extension ClientLocalDataSource {
         }
     }
 
-    private func conflict(
-        for id: ClientID,
-        in context: ModelContext
-    ) throws -> ClientSyncConflictModel? {
+    private func conflict(for id: ClientID, in context: ModelContext) throws -> ClientSyncConflictModel? {
         let rawIdentifier = id.rawValue
         var descriptor = FetchDescriptor<ClientSyncConflictModel>(
             predicate: #Predicate { conflict in
@@ -857,10 +794,7 @@ extension ClientLocalDataSource {
         return try context.fetch(descriptor).first
     }
 
-    private func removePendingChain(
-        for id: ClientID,
-        in context: ModelContext
-    ) throws {
+    private func removePendingChain(for id: ClientID, in context: ModelContext) throws {
         for model in try pendingUpsertModels(for: id, in: context) {
             context.delete(model)
         }
@@ -869,9 +803,7 @@ extension ClientLocalDataSource {
         }
     }
 
-    private func causallySorted(
-        _ operations: [ClientPendingOperation]
-    ) throws -> [ClientPendingOperation] {
+    private func causallySorted(_ operations: [ClientPendingOperation]) throws -> [ClientPendingOperation] {
         var remaining: [UUID: ClientPendingOperation] = [:]
         for operation in operations {
             guard remaining[operation.operationID] == nil else {
@@ -885,9 +817,7 @@ extension ClientLocalDataSource {
 
         while !remaining.isEmpty {
             let ready = remaining.values.filter { operation in
-                guard let predecessor = operation.predecessorOperationID else {
-                    return true
-                }
+                guard let predecessor = operation.predecessorOperationID else { return true }
                 return remaining[predecessor] == nil
             }.sorted { left, right in
                 let leftKey = "\(left.clientID.uuidString)/\(left.operationID.uuidString)"
@@ -896,9 +826,7 @@ extension ClientLocalDataSource {
             }
 
             guard !ready.isEmpty else {
-                guard let remainingOperation = remaining.values.first else {
-                    return sorted
-                }
+                guard let remainingOperation = remaining.values.first else { return sorted }
                 throw ClientSyncPersistenceError.cyclicPendingLineage(
                     ClientID(rawValue: remainingOperation.clientID)
                 )
@@ -911,10 +839,7 @@ extension ClientLocalDataSource {
         return sorted
     }
 
-    private func materialize(
-        _ client: Client,
-        in context: ModelContext
-    ) throws {
+    private func materialize(_ client: Client, in context: ModelContext) throws {
         if let model = try model(for: client.id, in: context) {
             model.update(from: client)
         } else {
@@ -937,9 +862,7 @@ enum ClientLocalDataSourceError: Error, Equatable {
 
 private extension ClientRemoteRecord {
     var lastOperationID: UUID? {
-        guard case .versioned(_, let lastOperationID) = version else {
-            return nil
-        }
+        guard case .versioned(_, let lastOperationID) = version else { return nil }
         return lastOperationID
     }
 }

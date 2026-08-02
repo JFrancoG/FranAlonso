@@ -100,17 +100,12 @@ private actor ProductRemoteDataSourceFake: ProductRemoteDataSource {
     private let fetchError: (any Error)?
     private var upserts: [ProductPendingUpsert] = []
 
-    init(
-        records: [ProductRemoteRecord] = [],
-        fetchError: (any Error)? = nil
-    ) {
+    init(records: [ProductRemoteRecord] = [], fetchError: (any Error)? = nil) {
         self.records = records
         self.fetchError = fetchError
     }
 
-    func fetchChanges(
-        after cursor: ProductSyncCursor?
-    ) async throws -> ProductRemoteChangeBatch {
+    func fetchChanges(after cursor: ProductSyncCursor?) async throws -> ProductRemoteChangeBatch {
         if let fetchError {
             throw fetchError
         }
@@ -120,12 +115,8 @@ private actor ProductRemoteDataSourceFake: ProductRemoteDataSource {
         )
     }
 
-    func apply(
-        _ operation: ProductPendingOperation
-    ) async throws -> ProductRemoteMutationResult {
-        guard case .upsert(let upsert) = operation else {
-            throw ProductRemoteDataSourceError.unexpected
-        }
+    func apply(_ operation: ProductPendingOperation) async throws -> ProductRemoteMutationResult {
+        guard case .upsert(let upsert) = operation else { throw ProductRemoteDataSourceError.unexpected }
         upserts.append(upsert)
         return .applied(
             ProductRemoteRecord(
@@ -139,9 +130,7 @@ private actor ProductRemoteDataSourceFake: ProductRemoteDataSource {
         )
     }
 
-    func receivedUpserts() -> [ProductPendingUpsert] {
-        upserts
-    }
+    func receivedUpserts() -> [ProductPendingUpsert] { upserts }
 }
 
 private func remotePendingUpsert() -> ProductPendingUpsert {

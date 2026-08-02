@@ -322,10 +322,7 @@ private func expectAmounts(
     #expect(calculation.total == expectedTotal)
 }
 
-private func calculatorMoney(
-    _ value: String,
-    currency: Currency
-) throws -> Money {
+private func calculatorMoney(_ value: String, currency: Currency) throws -> Money {
     try Money(
         amount: calculatorDecimal(value),
         currency: currency

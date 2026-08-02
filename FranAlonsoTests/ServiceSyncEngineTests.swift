@@ -414,15 +414,10 @@ private actor ServiceSyncRemoteFake: ServiceRemoteDataSource {
     private var changeSequence: Int64
     private var cursors: [ServiceSyncCursor?] = []
 
-    init(
-        records: [ServiceRemoteRecord] = [],
-        acknowledgementGate: ServiceSyncAcknowledgementGate? = nil
-    ) {
+    init(records: [ServiceRemoteRecord] = [], acknowledgementGate: ServiceSyncAcknowledgementGate? = nil) {
         self.records = Dictionary(
             uniqueKeysWithValues: records.compactMap { record in
-                guard let identifier = UUID(uuidString: record.id) else {
-                    return nil
-                }
+                guard let identifier = UUID(uuidString: record.id) else { return nil }
                 return (identifier, record)
             }
         )
@@ -434,9 +429,7 @@ private actor ServiceSyncRemoteFake: ServiceRemoteDataSource {
     var receivedOperationIDs: [UUID] { operationIDs }
     var requestedCursors: [ServiceSyncCursor?] { cursors }
 
-    func fetchChanges(
-        after cursor: ServiceSyncCursor?
-    ) async throws -> ServiceRemoteChangeBatch {
+    func fetchChanges(after cursor: ServiceSyncCursor?) async throws -> ServiceRemoteChangeBatch {
         cursors.append(cursor)
         let records = records.values.filter { record in
             guard let cursor else { return true }
@@ -448,9 +441,7 @@ private actor ServiceSyncRemoteFake: ServiceRemoteDataSource {
         )
     }
 
-    func apply(
-        _ operation: ServicePendingOperation
-    ) async throws -> ServiceRemoteMutationResult {
+    func apply(_ operation: ServicePendingOperation) async throws -> ServiceRemoteMutationResult {
         operationIDs.append(operation.operationID)
         let currentRecord = records[operation.serviceID]
         switch policy.decision(for: operation, against: currentRecord) {
@@ -487,18 +478,14 @@ private actor ServiceSyncFailingPushRemote: ServiceRemoteDataSource {
         self.record = record
     }
 
-    func fetchChanges(
-        after cursor: ServiceSyncCursor?
-    ) async throws -> ServiceRemoteChangeBatch {
+    func fetchChanges(after cursor: ServiceSyncCursor?) async throws -> ServiceRemoteChangeBatch {
         ServiceRemoteChangeBatch(
             records: cursor == nil ? [record] : [],
             nextCursor: ServiceSyncCursor(changeSequence: 1)
         )
     }
 
-    func apply(
-        _ operation: ServicePendingOperation
-    ) async throws -> ServiceRemoteMutationResult {
+    func apply(_ operation: ServicePendingOperation) async throws -> ServiceRemoteMutationResult {
         throw ServiceRemoteDataSourceError.unavailable
     }
 }
@@ -507,25 +494,19 @@ private actor ServiceSyncDeleteThenFailRemote: ServiceRemoteDataSource {
     private var changeSequence: Int64 = 0
     private var mutationCount = 0
 
-    func fetchChanges(
-        after cursor: ServiceSyncCursor?
-    ) async throws -> ServiceRemoteChangeBatch {
+    func fetchChanges(after cursor: ServiceSyncCursor?) async throws -> ServiceRemoteChangeBatch {
         ServiceRemoteChangeBatch(
             records: [],
             nextCursor: cursor ?? ServiceSyncCursor(changeSequence: 0)
         )
     }
 
-    func apply(
-        _ operation: ServicePendingOperation
-    ) async throws -> ServiceRemoteMutationResult {
+    func apply(_ operation: ServicePendingOperation) async throws -> ServiceRemoteMutationResult {
         mutationCount += 1
         if mutationCount > 1 {
             throw ServiceRemoteDataSourceError.unavailable
         }
-        guard case .delete(let delete) = operation else {
-            throw ServiceRemoteDataSourceError.unexpected
-        }
+        guard case .delete(let delete) = operation else { throw ServiceRemoteDataSourceError.unexpected }
         changeSequence += 1
         return .applied(
             ServiceRemoteRecord(
@@ -550,18 +531,14 @@ private actor ServiceSyncPushConflictRemote: ServiceRemoteDataSource {
 
     var receivedOperationIDs: [UUID] { operationIDs }
 
-    func fetchChanges(
-        after cursor: ServiceSyncCursor?
-    ) async throws -> ServiceRemoteChangeBatch {
+    func fetchChanges(after cursor: ServiceSyncCursor?) async throws -> ServiceRemoteChangeBatch {
         ServiceRemoteChangeBatch(
             records: [],
             nextCursor: cursor ?? ServiceSyncCursor(changeSequence: 0)
         )
     }
 
-    func apply(
-        _ operation: ServicePendingOperation
-    ) async throws -> ServiceRemoteMutationResult {
+    func apply(_ operation: ServicePendingOperation) async throws -> ServiceRemoteMutationResult {
         operationIDs.append(operation.operationID)
         return .conflict(.baseChanged, record)
     }
@@ -573,9 +550,7 @@ private actor ServiceSyncAcknowledgementGate {
     private var releaseContinuation: CheckedContinuation<Void, Never>?
 
     func blockOnce() async {
-        guard shouldBlock else {
-            return
-        }
+        guard shouldBlock else { return }
         shouldBlock = false
         blockedWaiters.forEach { $0.resume() }
         blockedWaiters.removeAll()
@@ -585,9 +560,7 @@ private actor ServiceSyncAcknowledgementGate {
     }
 
     func waitUntilBlocked() async {
-        guard shouldBlock else {
-            return
-        }
+        guard shouldBlock else { return }
         await withCheckedContinuation { continuation in
             blockedWaiters.append(continuation)
         }

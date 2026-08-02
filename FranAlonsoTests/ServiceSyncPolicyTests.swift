@@ -281,10 +281,7 @@ private func syncOperation(
     )
 }
 
-private func syncDeleteOperation(
-    id: String,
-    base: ServiceRemoteBase
-) -> ServicePendingDelete {
+private func syncDeleteOperation(id: String, base: ServiceRemoteBase) -> ServicePendingDelete {
     ServicePendingDelete(
         serviceID: UUID(
             uuidString: "50000000-0000-0000-0000-000000000001"

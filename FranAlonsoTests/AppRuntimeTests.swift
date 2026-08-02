@@ -153,9 +153,7 @@ private actor AppRuntimeRemoteFake: ClientRemoteDataSource {
     var fetchCount: Int { fetchCalls }
     var mutationCount: Int { mutationCalls }
 
-    func fetchChanges(
-        after cursor: ClientSyncCursor?
-    ) async throws -> ClientRemoteChangeBatch {
+    func fetchChanges(after cursor: ClientSyncCursor?) async throws -> ClientRemoteChangeBatch {
         fetchCalls += 1
         return ClientRemoteChangeBatch(
             records: [],
@@ -163,13 +161,9 @@ private actor AppRuntimeRemoteFake: ClientRemoteDataSource {
         )
     }
 
-    func apply(
-        _ operation: ClientPendingOperation
-    ) async throws -> ClientRemoteMutationResult {
+    func apply(_ operation: ClientPendingOperation) async throws -> ClientRemoteMutationResult {
         mutationCalls += 1
-        guard case .upsert(let upsert) = operation else {
-            throw ClientRemoteDataSourceError.unexpected
-        }
+        guard case .upsert(let upsert) = operation else { throw ClientRemoteDataSourceError.unexpected }
         return .applied(
             ClientRemoteRecord(
                 client: upsert.client,
@@ -205,9 +199,7 @@ private actor AppRuntimeProductRemoteFake: ProductRemoteDataSource {
     var fetchCount: Int { fetchCalls }
     var mutationCount: Int { mutationCalls }
 
-    func fetchChanges(
-        after cursor: ProductSyncCursor?
-    ) async throws -> ProductRemoteChangeBatch {
+    func fetchChanges(after cursor: ProductSyncCursor?) async throws -> ProductRemoteChangeBatch {
         fetchCalls += 1
         return ProductRemoteChangeBatch(
             records: [],
@@ -215,13 +207,9 @@ private actor AppRuntimeProductRemoteFake: ProductRemoteDataSource {
         )
     }
 
-    func apply(
-        _ operation: ProductPendingOperation
-    ) async throws -> ProductRemoteMutationResult {
+    func apply(_ operation: ProductPendingOperation) async throws -> ProductRemoteMutationResult {
         mutationCalls += 1
-        guard case .upsert(let upsert) = operation else {
-            throw ProductRemoteDataSourceError.unexpected
-        }
+        guard case .upsert(let upsert) = operation else { throw ProductRemoteDataSourceError.unexpected }
         return .applied(
             ProductRemoteRecord(
                 product: upsert.product,
@@ -257,9 +245,7 @@ private actor AppRuntimeServiceRemoteFake: ServiceRemoteDataSource {
     var fetchCount: Int { fetchCalls }
     var mutationCount: Int { mutationCalls }
 
-    func fetchChanges(
-        after cursor: ServiceSyncCursor?
-    ) async throws -> ServiceRemoteChangeBatch {
+    func fetchChanges(after cursor: ServiceSyncCursor?) async throws -> ServiceRemoteChangeBatch {
         fetchCalls += 1
         return ServiceRemoteChangeBatch(
             records: [],
@@ -267,13 +253,9 @@ private actor AppRuntimeServiceRemoteFake: ServiceRemoteDataSource {
         )
     }
 
-    func apply(
-        _ operation: ServicePendingOperation
-    ) async throws -> ServiceRemoteMutationResult {
+    func apply(_ operation: ServicePendingOperation) async throws -> ServiceRemoteMutationResult {
         mutationCalls += 1
-        guard case .upsert(let upsert) = operation else {
-            throw ServiceRemoteDataSourceError.unexpected
-        }
+        guard case .upsert(let upsert) = operation else { throw ServiceRemoteDataSourceError.unexpected }
         return .applied(
             ServiceRemoteRecord(
                 service: upsert.service,
@@ -309,9 +291,7 @@ private actor AppRuntimeSaleRemoteFake: SaleRemoteDataSource {
     var fetchCount: Int { fetchCalls }
     var mutationCount: Int { mutationCalls }
 
-    func fetchChanges(
-        after cursor: SaleSyncCursor?
-    ) async throws -> SaleRemoteChangeBatch {
+    func fetchChanges(after cursor: SaleSyncCursor?) async throws -> SaleRemoteChangeBatch {
         fetchCalls += 1
         return SaleRemoteChangeBatch(
             records: [],
@@ -319,13 +299,9 @@ private actor AppRuntimeSaleRemoteFake: SaleRemoteDataSource {
         )
     }
 
-    func apply(
-        _ operation: SalePendingOperation
-    ) async throws -> SaleRemoteMutationResult {
+    func apply(_ operation: SalePendingOperation) async throws -> SaleRemoteMutationResult {
         mutationCalls += 1
-        guard case .upsert(let upsert) = operation else {
-            throw SaleRemoteDataSourceError.unexpected
-        }
+        guard case .upsert(let upsert) = operation else { throw SaleRemoteDataSourceError.unexpected }
         return .applied(
             SaleRemoteRecord(
                 sale: upsert.sale,
@@ -360,9 +336,7 @@ private func makeAppRuntime(
 }
 
 @MainActor
-private func makeAppRuntime(
-    authenticationFactory: AppRuntimeAuthenticationRootFactory
-) throws -> AppRuntime {
+private func makeAppRuntime(authenticationFactory: AppRuntimeAuthenticationRootFactory) throws -> AppRuntime {
     try makeAppRuntime(
         clientFactory: AppRuntimeRemoteFactory(),
         productFactory: AppRuntimeProductRemoteFactory(),

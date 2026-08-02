@@ -112,9 +112,7 @@ struct ProductLocalDataSourceTests {
         "Every Product status round trips through the persistent model",
         arguments: [ProductStatus.active, .inactive]
     )
-    func statusesRoundTripThroughThePersistentModel(
-        _ status: ProductStatus
-    ) throws {
+    func statusesRoundTripThroughThePersistentModel(_ status: ProductStatus) throws {
         let product = Product(
             id: try productID("10000000-0000-0000-0000-000000000006"),
             name: "Catalog product",

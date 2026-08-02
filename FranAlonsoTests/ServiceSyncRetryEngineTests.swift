@@ -343,9 +343,7 @@ private actor RetryPullRemote: ServiceRemoteDataSource {
 
     var fetchCount: Int { calls }
 
-    func fetchChanges(
-        after cursor: ServiceSyncCursor?
-    ) async throws -> ServiceRemoteChangeBatch {
+    func fetchChanges(after cursor: ServiceSyncCursor?) async throws -> ServiceRemoteChangeBatch {
         calls += 1
         if calls <= failuresBeforeSuccess {
             throw ServiceRemoteDataSourceError.unavailable
@@ -356,9 +354,7 @@ private actor RetryPullRemote: ServiceRemoteDataSource {
         )
     }
 
-    func apply(
-        _ operation: ServicePendingOperation
-    ) async throws -> ServiceRemoteMutationResult {
+    func apply(_ operation: ServicePendingOperation) async throws -> ServiceRemoteMutationResult {
         throw ServiceRemoteDataSourceError.unexpected
     }
 }
@@ -375,18 +371,14 @@ private actor RetryOperationsRemote: ServiceRemoteDataSource {
 
     var receivedOperationIDs: [UUID] { received }
 
-    func fetchChanges(
-        after cursor: ServiceSyncCursor?
-    ) async throws -> ServiceRemoteChangeBatch {
+    func fetchChanges(after cursor: ServiceSyncCursor?) async throws -> ServiceRemoteChangeBatch {
         ServiceRemoteChangeBatch(
             records: [],
             nextCursor: cursor ?? ServiceSyncCursor(changeSequence: 0)
         )
     }
 
-    func apply(
-        _ operation: ServicePendingOperation
-    ) async throws -> ServiceRemoteMutationResult {
+    func apply(_ operation: ServicePendingOperation) async throws -> ServiceRemoteMutationResult {
         received.append(operation.operationID)
         let count = attempts[operation.operationID, default: 0] + 1
         attempts[operation.operationID] = count
@@ -412,16 +404,12 @@ private actor RetryDefinitivePullRemote: ServiceRemoteDataSource {
 
     var fetchCount: Int { calls }
 
-    func fetchChanges(
-        after cursor: ServiceSyncCursor?
-    ) async throws -> ServiceRemoteChangeBatch {
+    func fetchChanges(after cursor: ServiceSyncCursor?) async throws -> ServiceRemoteChangeBatch {
         calls += 1
         throw ServiceRemoteDataSourceError.permissionDenied
     }
 
-    func apply(
-        _ operation: ServicePendingOperation
-    ) async throws -> ServiceRemoteMutationResult {
+    func apply(_ operation: ServicePendingOperation) async throws -> ServiceRemoteMutationResult {
         throw ServiceRemoteDataSourceError.unexpected
     }
 }
@@ -443,9 +431,7 @@ private actor RetryGatedPullRemote: ServiceRemoteDataSource {
 
     var fetchCount: Int { calls }
 
-    func fetchChanges(
-        after cursor: ServiceSyncCursor?
-    ) async throws -> ServiceRemoteChangeBatch {
+    func fetchChanges(after cursor: ServiceSyncCursor?) async throws -> ServiceRemoteChangeBatch {
         calls += 1
         await gate.block()
         switch outcome {
@@ -459,9 +445,7 @@ private actor RetryGatedPullRemote: ServiceRemoteDataSource {
         }
     }
 
-    func apply(
-        _ operation: ServicePendingOperation
-    ) async throws -> ServiceRemoteMutationResult {
+    func apply(_ operation: ServicePendingOperation) async throws -> ServiceRemoteMutationResult {
         throw ServiceRemoteDataSourceError.unexpected
     }
 }
@@ -477,9 +461,7 @@ private actor RetryCommittedMutationRemote: ServiceRemoteDataSource {
 
     var applyCount: Int { applies }
 
-    func fetchChanges(
-        after cursor: ServiceSyncCursor?
-    ) async throws -> ServiceRemoteChangeBatch {
+    func fetchChanges(after cursor: ServiceSyncCursor?) async throws -> ServiceRemoteChangeBatch {
         let records: [ServiceRemoteRecord]
         if let record,
            (record.changeSequence ?? 0) > (cursor?.changeSequence ?? -1) {
@@ -495,9 +477,7 @@ private actor RetryCommittedMutationRemote: ServiceRemoteDataSource {
         )
     }
 
-    func apply(
-        _ operation: ServicePendingOperation
-    ) async throws -> ServiceRemoteMutationResult {
+    func apply(_ operation: ServicePendingOperation) async throws -> ServiceRemoteMutationResult {
         applies += 1
         let committed = ServiceRemoteRecord(
             content: retryDesiredContent(for: operation),
@@ -590,9 +570,7 @@ private func retryEngineUUID(_ value: String) -> UUID {
     UUID(uuidString: value)!
 }
 
-private func retryDesiredContent(
-    for operation: ServicePendingOperation
-) -> ServiceRemoteContent {
+private func retryDesiredContent(for operation: ServicePendingOperation) -> ServiceRemoteContent {
     switch operation {
     case .upsert(let upsert):
         .live(upsert.service)

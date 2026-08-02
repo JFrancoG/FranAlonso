@@ -57,17 +57,11 @@ private actor ProductRepositoryFake: ProductRepository {
         persistedProducts.append(product)
     }
 
-    func observationCallCount() -> Int {
-        observationCalls
-    }
+    func observationCallCount() -> Int { observationCalls }
 
-    func saveCallCount() -> Int {
-        saveCalls
-    }
+    func saveCallCount() -> Int { saveCalls }
 
-    func savedProducts() -> [Product] {
-        persistedProducts
-    }
+    func savedProducts() -> [Product] { persistedProducts }
 }
 
 private func repositoryProduct() -> Product {

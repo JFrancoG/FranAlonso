@@ -115,17 +115,11 @@ private actor ClientRepositoryFake: ClientRepository {
         persistedClients.append(client)
     }
 
-    func observationCallCount() -> Int {
-        observationCalls
-    }
+    func observationCallCount() -> Int { observationCalls }
 
-    func saveCallCount() -> Int {
-        saveCalls
-    }
+    func saveCallCount() -> Int { saveCalls }
 
-    func savedClients() -> [Client] {
-        persistedClients
-    }
+    func savedClients() -> [Client] { persistedClients }
 }
 
 private func requireClientUseCaseSendable<Value: Sendable>(_ value: Value) {}

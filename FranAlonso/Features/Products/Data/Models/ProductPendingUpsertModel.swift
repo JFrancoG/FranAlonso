@@ -74,9 +74,7 @@ extension ProductPendingUpsertModel {
         if baseVersion == nil, baseData == nil {
             return .absent
         }
-        guard let baseVersion, let baseData else {
-            throw ProductPendingUpsertPayloadError.incompleteBaseMetadata
-        }
+        guard let baseVersion, let baseData else { throw ProductPendingUpsertPayloadError.incompleteBaseMetadata }
         guard baseVersion == 1 else {
             throw ProductPendingUpsertPayloadError.unsupportedBaseVersion(
                 baseVersion

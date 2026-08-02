@@ -63,9 +63,7 @@ extension ServiceSyncConflictModel {
         reason: ServiceSyncConflictReason,
         remoteRecord: ServiceRemoteRecord?
     ) throws {
-        guard operation.serviceID == serviceID else {
-            throw ServiceSyncPersistenceError.entityIdentityMismatch
-        }
+        guard operation.serviceID == serviceID else { throw ServiceSyncPersistenceError.entityIdentityMismatch }
         let encodedBase = try JSONEncoder().encode(operation.base)
         let encodedLocalService = try JSONEncoder().encode(operation.service)
         let encodedRemoteRecord = try remoteRecord.map { record in

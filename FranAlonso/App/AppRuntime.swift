@@ -16,21 +16,11 @@ final class AppRuntime {
     private let salePersistenceActor: SalePersistenceActor
     private let saleObservationSignal: SaleObservationSignal
     private let environment: FirestoreEnvironment
-    private let makeClientRemoteDataSource: (
-        FirestoreEnvironment
-    ) -> any ClientRemoteDataSource
-    private let makeProductRemoteDataSource: (
-        FirestoreEnvironment
-    ) -> any ProductRemoteDataSource
-    private let makeServiceRemoteDataSource: (
-        FirestoreEnvironment
-    ) -> any ServiceRemoteDataSource
-    private let makeSaleRemoteDataSource: (
-        FirestoreEnvironment
-    ) -> any SaleRemoteDataSource
-    private let makeAuthenticationRootViewModel: @MainActor (
-        ModelContainer
-    ) -> AuthenticationRootViewModel
+    private let makeClientRemoteDataSource: (FirestoreEnvironment) -> any ClientRemoteDataSource
+    private let makeProductRemoteDataSource: (FirestoreEnvironment) -> any ProductRemoteDataSource
+    private let makeServiceRemoteDataSource: (FirestoreEnvironment) -> any ServiceRemoteDataSource
+    private let makeSaleRemoteDataSource: (FirestoreEnvironment) -> any SaleRemoteDataSource
+    private let makeAuthenticationRootViewModel: @MainActor (ModelContainer) -> AuthenticationRootViewModel
     private(set) var clientSyncEngine: ClientSyncEngine?
     private(set) var productSyncEngine: ProductSyncEngine?
     private(set) var serviceSyncEngine: ServiceSyncEngine?
@@ -134,9 +124,7 @@ final class AppRuntime {
     ///
     /// - Parameter firebaseIsConfigured: Whether the default Firebase app is available.
     func activateAuthentication(firebaseIsConfigured: Bool) {
-        guard firebaseIsConfigured, authenticationRootViewModel == nil else {
-            return
-        }
+        guard firebaseIsConfigured, authenticationRootViewModel == nil else { return }
 
         authenticationRootViewModel = makeAuthenticationRootViewModel(modelContainer)
     }
@@ -145,9 +133,7 @@ final class AppRuntime {
     ///
     /// - Parameter firebaseIsConfigured: Whether the default Firebase app is available.
     func activateClientSync(firebaseIsConfigured: Bool) {
-        guard firebaseIsConfigured, clientSyncEngine == nil else {
-            return
-        }
+        guard firebaseIsConfigured, clientSyncEngine == nil else { return }
 
         clientSyncEngine = ClientSyncEngine(
             persistenceActor: persistenceActor,
@@ -160,9 +146,7 @@ final class AppRuntime {
     ///
     /// - Parameter firebaseIsConfigured: Whether the default Firebase app is available.
     func activateProductSync(firebaseIsConfigured: Bool) {
-        guard firebaseIsConfigured, productSyncEngine == nil else {
-            return
-        }
+        guard firebaseIsConfigured, productSyncEngine == nil else { return }
 
         productSyncEngine = ProductSyncEngine(
             persistenceActor: productPersistenceActor,
@@ -175,9 +159,7 @@ final class AppRuntime {
     ///
     /// - Parameter firebaseIsConfigured: Whether the default Firebase app is available.
     func activateServiceSync(firebaseIsConfigured: Bool) {
-        guard firebaseIsConfigured, serviceSyncEngine == nil else {
-            return
-        }
+        guard firebaseIsConfigured, serviceSyncEngine == nil else { return }
 
         serviceSyncEngine = ServiceSyncEngine(
             persistenceActor: servicePersistenceActor,
@@ -190,9 +172,7 @@ final class AppRuntime {
     ///
     /// - Parameter firebaseIsConfigured: Whether the default Firebase app is available.
     func activateSaleSync(firebaseIsConfigured: Bool) {
-        guard firebaseIsConfigured, saleSyncEngine == nil else {
-            return
-        }
+        guard firebaseIsConfigured, saleSyncEngine == nil else { return }
 
         saleSyncEngine = SaleSyncEngine(
             persistenceActor: salePersistenceActor,

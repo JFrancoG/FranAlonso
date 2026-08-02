@@ -157,13 +157,8 @@ extension BillingDocument {
         try container.encode(status, forKey: .status)
     }
 
-    private static func ensureSeriesIsCompatible(
-        kind: BillingDocumentKind,
-        status: BillingDocumentStatus
-    ) throws {
-        guard let number = status.number else {
-            return
-        }
+    private static func ensureSeriesIsCompatible(kind: BillingDocumentKind, status: BillingDocumentStatus) throws {
+        guard let number = status.number else { return }
         guard number.series == kind.series else {
             throw BillingDocumentError.incompatibleSeries(
                 expected: kind.series,

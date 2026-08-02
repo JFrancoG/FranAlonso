@@ -43,9 +43,7 @@ struct ServiceRemoteRecord: Identifiable, Codable, Equatable {
     var isTombstone: Bool { !isLive }
 
     var liveService: ServiceDTO? {
-        guard case .live(let service) = content else {
-            return nil
-        }
+        guard case .live(let service) = content else { return nil }
         return service
     }
 }

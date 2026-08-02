@@ -2,9 +2,7 @@ import Foundation
 @testable import FranAlonso
 
 func makeService(
-    id: UUID = UUID(
-        uuidString: "00000000-0000-0000-0000-000000000510"
-    )!,
+    id: UUID = UUID(uuidString: "00000000-0000-0000-0000-000000000510")!,
     name: String = "Corte y peinado",
     type: ServiceType = .professional,
     linkedProductID: UUID? = nil,
@@ -27,9 +25,7 @@ func makeService(
 }
 
 func makeServiceDTO(
-    id: UUID = UUID(
-        uuidString: "00000000-0000-0000-0000-000000000510"
-    )!,
+    id: UUID = UUID(uuidString: "00000000-0000-0000-0000-000000000510")!,
     name: String = "Corte y peinado",
     type: ServiceType = .professional,
     linkedProductID: UUID? = nil,

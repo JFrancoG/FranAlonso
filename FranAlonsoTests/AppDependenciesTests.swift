@@ -231,9 +231,7 @@ private actor CompositionClientRepositoryFake: ClientRepository {
         }
     }
 
-    func observationCallCount() -> Int {
-        callCount
-    }
+    func observationCallCount() -> Int { callCount }
 }
 
 private actor CompositionProductRepositoryFake: ProductRepository {
@@ -261,9 +259,7 @@ private actor CompositionProductRepositoryFake: ProductRepository {
         }
     }
 
-    func observationCallCount() -> Int {
-        callCount
-    }
+    func observationCallCount() -> Int { callCount }
 }
 
 private actor CompositionServiceRepositoryFake: ServiceRepository {
@@ -291,9 +287,7 @@ private actor CompositionServiceRepositoryFake: ServiceRepository {
         }
     }
 
-    func observationCallCount() -> Int {
-        callCount
-    }
+    func observationCallCount() -> Int { callCount }
 }
 
 private actor CompositionSaleRepositoryFake: SaleRepository {
@@ -381,13 +375,9 @@ private actor CompositionAnalyticsDataSourceSpy: AnalyticsDataSource {
         events.append(event)
     }
 
-    func collectionChanges() -> [Bool] {
-        collectionValues
-    }
+    func collectionChanges() -> [Bool] { collectionValues }
 
-    func loggedEvents() -> [AnalyticsEvent] {
-        events
-    }
+    func loggedEvents() -> [AnalyticsEvent] { events }
 }
 
 private actor CompositionCrashDataSourceSpy: CrashDataSource {
@@ -402,11 +392,7 @@ private actor CompositionCrashDataSourceSpy: CrashDataSource {
         diagnostics.append(diagnostic)
     }
 
-    func collectionChanges() -> [Bool] {
-        collectionValues
-    }
+    func collectionChanges() -> [Bool] { collectionValues }
 
-    func recordedDiagnostics() -> [CrashDiagnostic] {
-        diagnostics
-    }
+    func recordedDiagnostics() -> [CrashDiagnostic] { diagnostics }
 }

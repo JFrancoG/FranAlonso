@@ -571,10 +571,7 @@ private actor SessionObservationChannel {
     private var nextSequence = 0
     private var deliveredSequence: Int?
     private var consumedSequence = 0
-    private var consumptionWaiters: [(
-        sequence: Int,
-        continuation: CheckedContinuation<Bool, Never>
-    )] = []
+    private var consumptionWaiters: [(sequence: Int, continuation: CheckedContinuation<Bool, Never>)] = []
     private var isFinished = false
 
     func next() async -> AuthenticationSession?? {
@@ -585,9 +582,7 @@ private actor SessionObservationChannel {
             deliveredSequence = observation.sequence
             return .some(observation.session)
         }
-        guard !isFinished else {
-            return nil
-        }
+        guard !isFinished else { return nil }
 
         return await withTaskCancellationHandler {
             await withCheckedContinuation { continuation in
@@ -605,9 +600,7 @@ private actor SessionObservationChannel {
     }
 
     func enqueue(_ session: AuthenticationSession?) -> Int? {
-        guard !isFinished else {
-            return nil
-        }
+        guard !isFinished else { return nil }
 
         nextSequence += 1
         let observation = QueuedObservation(sequence: nextSequence, session: session)
@@ -622,12 +615,8 @@ private actor SessionObservationChannel {
     }
 
     func waitUntilConsumed(_ sequence: Int) async -> Bool {
-        guard consumedSequence < sequence else {
-            return true
-        }
-        guard !isFinished else {
-            return false
-        }
+        guard consumedSequence < sequence else { return true }
+        guard !isFinished else { return false }
 
         return await withCheckedContinuation { continuation in
             consumptionWaiters.append((sequence, continuation))
@@ -635,9 +624,7 @@ private actor SessionObservationChannel {
     }
 
     func finish() {
-        guard !isFinished else {
-            return
-        }
+        guard !isFinished else { return }
 
         isFinished = true
         nextWaiter?.resume(returning: nil)
@@ -650,9 +637,7 @@ private actor SessionObservationChannel {
     }
 
     private func acknowledgeDeliveredObservation() {
-        guard let deliveredSequence else {
-            return
-        }
+        guard let deliveredSequence else { return }
 
         consumedSequence = max(consumedSequence, deliveredSequence)
         self.deliveredSequence = nil
@@ -739,9 +724,7 @@ private actor SessionAuthenticationRepositoryFake: AuthenticationRepository {
         }
     }
 
-    func signOutCallCount() -> Int {
-        signOutCalls
-    }
+    func signOutCallCount() -> Int { signOutCalls }
 }
 
 private actor SessionOperationGate {
@@ -780,9 +763,7 @@ private actor BiometricInvocationProbe {
         count += 1
     }
 
-    func invocationCount() -> Int {
-        count
-    }
+    func invocationCount() -> Int { count }
 }
 
 @MainActor
@@ -814,7 +795,9 @@ private func cancelAndWait(_ task: Task<Void, Never>) async {
 }
 
 @MainActor
-private func waitUntil(_ condition: @MainActor () -> Bool) async {
+private func waitUntil(
+    _ condition: @MainActor () -> Bool
+) async {
     for _ in 0..<10_000 {
         if condition() {
             return

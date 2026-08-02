@@ -74,9 +74,7 @@ extension ServicePendingUpsertModel {
         if baseVersion == nil, baseData == nil {
             return .absent
         }
-        guard let baseVersion, let baseData else {
-            throw ServicePendingUpsertPayloadError.incompleteBaseMetadata
-        }
+        guard let baseVersion, let baseData else { throw ServicePendingUpsertPayloadError.incompleteBaseMetadata }
         guard baseVersion == 1 else {
             throw ServicePendingUpsertPayloadError.unsupportedBaseVersion(
                 baseVersion

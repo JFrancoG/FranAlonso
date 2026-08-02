@@ -27,10 +27,7 @@ struct SyncBackoffPolicyTests {
             (.aborted, "aborted")
         ]
     )
-    func retryCategoriesPreservePublishedRawValues(
-        category: SyncRetryCategory,
-        rawValue: String
-    ) {
+    func retryCategoriesPreservePublishedRawValues(category: SyncRetryCategory, rawValue: String) {
         #expect(category.rawValue == rawValue)
     }
 

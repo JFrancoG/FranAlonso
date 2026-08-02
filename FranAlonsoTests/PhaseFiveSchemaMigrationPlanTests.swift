@@ -161,9 +161,7 @@ private func withPhaseFiveMigrationStore(
     try operation(directory.appending(path: "Migration.store"))
 }
 
-private func insertRepresentativeRows(
-    in context: ModelContext
-) throws -> PhaseFiveMigrationFixture {
+private func insertRepresentativeRows(in context: ModelContext) throws -> PhaseFiveMigrationFixture {
     PhaseFiveMigrationFixture(
         client: try insertClientRows(in: context),
         product: try insertProductRows(in: context),
@@ -172,9 +170,7 @@ private func insertRepresentativeRows(
     )
 }
 
-private func insertClientRows(
-    in context: ModelContext
-) throws -> ClientMigrationFixture {
+private func insertClientRows(in context: ModelContext) throws -> ClientMigrationFixture {
     let client = Client.draft(
         id: ClientID(
             rawValue: phaseFiveMigrationUUID(
@@ -259,9 +255,7 @@ private func insertClientRows(
     )
 }
 
-private func insertProductRows(
-    in context: ModelContext
-) throws -> ProductMigrationFixture {
+private func insertProductRows(in context: ModelContext) throws -> ProductMigrationFixture {
     let product = Product.testSnapshot(
         id: ProductID(
             rawValue: phaseFiveMigrationUUID(
@@ -346,9 +340,7 @@ private func insertProductRows(
     )
 }
 
-private func insertServiceRows(
-    in context: ModelContext
-) throws -> ServiceMigrationFixture {
+private func insertServiceRows(in context: ModelContext) throws -> ServiceMigrationFixture {
     let service = try makeService(
         id: phaseFiveMigrationUUID(
             "83000000-0000-0000-0000-000000000001"
@@ -431,9 +423,7 @@ private func insertServiceRows(
     )
 }
 
-private func insertSaleRows(
-    in context: ModelContext
-) throws -> SaleMigrationFixture {
+private func insertSaleRows(in context: ModelContext) throws -> SaleMigrationFixture {
     let sale = try representativeSale()
     let payload = try SaleDTO(sale)
     let upsertOperationID = phaseFiveMigrationUUID(
@@ -511,20 +501,14 @@ private func insertSaleRows(
     )
 }
 
-private func verifyRepresentativeRows(
-    in context: ModelContext,
-    fixture: PhaseFiveMigrationFixture
-) throws {
+private func verifyRepresentativeRows(in context: ModelContext, fixture: PhaseFiveMigrationFixture) throws {
     try verifyClientRows(in: context, fixture: fixture.client)
     try verifyProductRows(in: context, fixture: fixture.product)
     try verifyServiceRows(in: context, fixture: fixture.service)
     try verifySaleRows(in: context, fixture: fixture.sale)
 }
 
-private func verifyClientRows(
-    in context: ModelContext,
-    fixture: ClientMigrationFixture
-) throws {
+private func verifyClientRows(in context: ModelContext, fixture: ClientMigrationFixture) throws {
     #expect(
         try only(ClientModel.self, in: context).toDomain() == fixture.value
     )
@@ -571,10 +555,7 @@ private func verifyClientRows(
     )
 }
 
-private func verifyProductRows(
-    in context: ModelContext,
-    fixture: ProductMigrationFixture
-) throws {
+private func verifyProductRows(in context: ModelContext, fixture: ProductMigrationFixture) throws {
     #expect(
         try only(ProductModel.self, in: context).toDomain() == fixture.value
     )
@@ -621,10 +602,7 @@ private func verifyProductRows(
     )
 }
 
-private func verifyServiceRows(
-    in context: ModelContext,
-    fixture: ServiceMigrationFixture
-) throws {
+private func verifyServiceRows(in context: ModelContext, fixture: ServiceMigrationFixture) throws {
     #expect(
         try only(ServiceModel.self, in: context).toDomain() == fixture.value
     )
@@ -671,10 +649,7 @@ private func verifyServiceRows(
     )
 }
 
-private func verifySaleRows(
-    in context: ModelContext,
-    fixture: SaleMigrationFixture
-) throws {
+private func verifySaleRows(in context: ModelContext, fixture: SaleMigrationFixture) throws {
     #expect(
         try only(SaleModel.self, in: context).toDomain() == fixture.value
     )
@@ -718,10 +693,7 @@ private func verifySaleRows(
     )
 }
 
-private func only<Model: PersistentModel>(
-    _ type: Model.Type,
-    in context: ModelContext
-) throws -> Model {
+private func only<Model: PersistentModel>(_ type: Model.Type, in context: ModelContext) throws -> Model {
     let models = try context.fetch(FetchDescriptor<Model>())
     #expect(models.count == 1)
     return try #require(models.first)

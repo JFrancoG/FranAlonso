@@ -22,7 +22,5 @@ struct ClientTests {
         #expect(identifiableID(of: decodedClient) == client.id)
     }
 
-    private func identifiableID<Model: Identifiable>(of model: Model) -> Model.ID {
-        model.id
-    }
+    private func identifiableID<Model: Identifiable>(of model: Model) -> Model.ID { model.id }
 }

@@ -6,10 +6,7 @@
 struct DefaultAuthenticationRepository: AuthenticationRepository {
     private let authenticationDataSource: any AuthenticationDataSource
 
-    func signIn(
-        email: String,
-        password: String
-    ) async throws -> AuthenticationSession {
+    func signIn(email: String, password: String) async throws -> AuthenticationSession {
         do {
             return try await authenticationDataSource.signIn(
                 email: email,

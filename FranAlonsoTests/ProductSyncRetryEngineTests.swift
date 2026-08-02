@@ -343,9 +343,7 @@ private actor RetryPullRemote: ProductRemoteDataSource {
 
     var fetchCount: Int { calls }
 
-    func fetchChanges(
-        after cursor: ProductSyncCursor?
-    ) async throws -> ProductRemoteChangeBatch {
+    func fetchChanges(after cursor: ProductSyncCursor?) async throws -> ProductRemoteChangeBatch {
         calls += 1
         if calls <= failuresBeforeSuccess {
             throw ProductRemoteDataSourceError.unavailable
@@ -356,9 +354,7 @@ private actor RetryPullRemote: ProductRemoteDataSource {
         )
     }
 
-    func apply(
-        _ operation: ProductPendingOperation
-    ) async throws -> ProductRemoteMutationResult {
+    func apply(_ operation: ProductPendingOperation) async throws -> ProductRemoteMutationResult {
         throw ProductRemoteDataSourceError.unexpected
     }
 }
@@ -375,18 +371,14 @@ private actor RetryOperationsRemote: ProductRemoteDataSource {
 
     var receivedOperationIDs: [UUID] { received }
 
-    func fetchChanges(
-        after cursor: ProductSyncCursor?
-    ) async throws -> ProductRemoteChangeBatch {
+    func fetchChanges(after cursor: ProductSyncCursor?) async throws -> ProductRemoteChangeBatch {
         ProductRemoteChangeBatch(
             records: [],
             nextCursor: cursor ?? ProductSyncCursor(changeSequence: 0)
         )
     }
 
-    func apply(
-        _ operation: ProductPendingOperation
-    ) async throws -> ProductRemoteMutationResult {
+    func apply(_ operation: ProductPendingOperation) async throws -> ProductRemoteMutationResult {
         received.append(operation.operationID)
         let count = attempts[operation.operationID, default: 0] + 1
         attempts[operation.operationID] = count
@@ -412,16 +404,12 @@ private actor RetryDefinitivePullRemote: ProductRemoteDataSource {
 
     var fetchCount: Int { calls }
 
-    func fetchChanges(
-        after cursor: ProductSyncCursor?
-    ) async throws -> ProductRemoteChangeBatch {
+    func fetchChanges(after cursor: ProductSyncCursor?) async throws -> ProductRemoteChangeBatch {
         calls += 1
         throw ProductRemoteDataSourceError.permissionDenied
     }
 
-    func apply(
-        _ operation: ProductPendingOperation
-    ) async throws -> ProductRemoteMutationResult {
+    func apply(_ operation: ProductPendingOperation) async throws -> ProductRemoteMutationResult {
         throw ProductRemoteDataSourceError.unexpected
     }
 }
@@ -443,9 +431,7 @@ private actor RetryGatedPullRemote: ProductRemoteDataSource {
 
     var fetchCount: Int { calls }
 
-    func fetchChanges(
-        after cursor: ProductSyncCursor?
-    ) async throws -> ProductRemoteChangeBatch {
+    func fetchChanges(after cursor: ProductSyncCursor?) async throws -> ProductRemoteChangeBatch {
         calls += 1
         await gate.block()
         switch outcome {
@@ -459,9 +445,7 @@ private actor RetryGatedPullRemote: ProductRemoteDataSource {
         }
     }
 
-    func apply(
-        _ operation: ProductPendingOperation
-    ) async throws -> ProductRemoteMutationResult {
+    func apply(_ operation: ProductPendingOperation) async throws -> ProductRemoteMutationResult {
         throw ProductRemoteDataSourceError.unexpected
     }
 }
@@ -477,9 +461,7 @@ private actor RetryCommittedMutationRemote: ProductRemoteDataSource {
 
     var applyCount: Int { applies }
 
-    func fetchChanges(
-        after cursor: ProductSyncCursor?
-    ) async throws -> ProductRemoteChangeBatch {
+    func fetchChanges(after cursor: ProductSyncCursor?) async throws -> ProductRemoteChangeBatch {
         let records: [ProductRemoteRecord]
         if let record,
            (record.changeSequence ?? 0) > (cursor?.changeSequence ?? -1) {
@@ -495,9 +477,7 @@ private actor RetryCommittedMutationRemote: ProductRemoteDataSource {
         )
     }
 
-    func apply(
-        _ operation: ProductPendingOperation
-    ) async throws -> ProductRemoteMutationResult {
+    func apply(_ operation: ProductPendingOperation) async throws -> ProductRemoteMutationResult {
         applies += 1
         let committed = ProductRemoteRecord(
             content: retryDesiredContent(for: operation),
@@ -589,9 +569,7 @@ private func retryEngineUUID(_ value: String) -> UUID {
     UUID(uuidString: value)!
 }
 
-private func retryDesiredContent(
-    for operation: ProductPendingOperation
-) -> ProductRemoteContent {
+private func retryDesiredContent(for operation: ProductPendingOperation) -> ProductRemoteContent {
     switch operation {
     case .upsert(let upsert):
         .live(upsert.product)

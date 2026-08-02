@@ -332,10 +332,7 @@ private struct PersistedServiceState: Equatable {
     let payload: ServiceDTO
 }
 
-private func makeServiceRepository(
-    container: ModelContainer,
-    operationID: UUID
-) -> DefaultServiceRepository {
+private func makeServiceRepository(container: ModelContainer, operationID: UUID) -> DefaultServiceRepository {
     DefaultServiceRepository(
         persistenceActor: ServicePersistenceActor(modelContainer: container),
         observationSignal: ServiceObservationSignal(),
@@ -358,9 +355,7 @@ private func makeServiceRepositoryContainer() throws -> ModelContainer {
     try ModelContainer.inMemory(for: serviceRepositorySchema())
 }
 
-private func persistedServiceState(
-    in container: ModelContainer
-) throws -> PersistedServiceState {
+private func persistedServiceState(in container: ModelContainer) throws -> PersistedServiceState {
     let context = ModelContext(container)
     let operation = try #require(
         context.fetch(

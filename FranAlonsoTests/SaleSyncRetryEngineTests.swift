@@ -343,9 +343,7 @@ private actor RetryPullRemote: SaleRemoteDataSource {
 
     var fetchCount: Int { calls }
 
-    func fetchChanges(
-        after cursor: SaleSyncCursor?
-    ) async throws -> SaleRemoteChangeBatch {
+    func fetchChanges(after cursor: SaleSyncCursor?) async throws -> SaleRemoteChangeBatch {
         calls += 1
         if calls <= failuresBeforeSuccess {
             throw SaleRemoteDataSourceError.unavailable
@@ -356,9 +354,7 @@ private actor RetryPullRemote: SaleRemoteDataSource {
         )
     }
 
-    func apply(
-        _ operation: SalePendingOperation
-    ) async throws -> SaleRemoteMutationResult {
+    func apply(_ operation: SalePendingOperation) async throws -> SaleRemoteMutationResult {
         throw SaleRemoteDataSourceError.unexpected
     }
 }
@@ -375,18 +371,14 @@ private actor RetryOperationsRemote: SaleRemoteDataSource {
 
     var receivedOperationIDs: [UUID] { received }
 
-    func fetchChanges(
-        after cursor: SaleSyncCursor?
-    ) async throws -> SaleRemoteChangeBatch {
+    func fetchChanges(after cursor: SaleSyncCursor?) async throws -> SaleRemoteChangeBatch {
         SaleRemoteChangeBatch(
             records: [],
             nextCursor: cursor ?? SaleSyncCursor(changeSequence: 0)
         )
     }
 
-    func apply(
-        _ operation: SalePendingOperation
-    ) async throws -> SaleRemoteMutationResult {
+    func apply(_ operation: SalePendingOperation) async throws -> SaleRemoteMutationResult {
         received.append(operation.operationID)
         let count = attempts[operation.operationID, default: 0] + 1
         attempts[operation.operationID] = count
@@ -412,16 +404,12 @@ private actor RetryDefinitivePullRemote: SaleRemoteDataSource {
 
     var fetchCount: Int { calls }
 
-    func fetchChanges(
-        after cursor: SaleSyncCursor?
-    ) async throws -> SaleRemoteChangeBatch {
+    func fetchChanges(after cursor: SaleSyncCursor?) async throws -> SaleRemoteChangeBatch {
         calls += 1
         throw SaleRemoteDataSourceError.permissionDenied
     }
 
-    func apply(
-        _ operation: SalePendingOperation
-    ) async throws -> SaleRemoteMutationResult {
+    func apply(_ operation: SalePendingOperation) async throws -> SaleRemoteMutationResult {
         throw SaleRemoteDataSourceError.unexpected
     }
 }
@@ -443,9 +431,7 @@ private actor RetryGatedPullRemote: SaleRemoteDataSource {
 
     var fetchCount: Int { calls }
 
-    func fetchChanges(
-        after cursor: SaleSyncCursor?
-    ) async throws -> SaleRemoteChangeBatch {
+    func fetchChanges(after cursor: SaleSyncCursor?) async throws -> SaleRemoteChangeBatch {
         calls += 1
         await gate.block()
         switch outcome {
@@ -459,9 +445,7 @@ private actor RetryGatedPullRemote: SaleRemoteDataSource {
         }
     }
 
-    func apply(
-        _ operation: SalePendingOperation
-    ) async throws -> SaleRemoteMutationResult {
+    func apply(_ operation: SalePendingOperation) async throws -> SaleRemoteMutationResult {
         throw SaleRemoteDataSourceError.unexpected
     }
 }
@@ -477,9 +461,7 @@ private actor RetryCommittedMutationRemote: SaleRemoteDataSource {
 
     var applyCount: Int { applies }
 
-    func fetchChanges(
-        after cursor: SaleSyncCursor?
-    ) async throws -> SaleRemoteChangeBatch {
+    func fetchChanges(after cursor: SaleSyncCursor?) async throws -> SaleRemoteChangeBatch {
         let records: [SaleRemoteRecord]
         if let record,
            (record.changeSequence ?? 0) > (cursor?.changeSequence ?? -1) {
@@ -495,9 +477,7 @@ private actor RetryCommittedMutationRemote: SaleRemoteDataSource {
         )
     }
 
-    func apply(
-        _ operation: SalePendingOperation
-    ) async throws -> SaleRemoteMutationResult {
+    func apply(_ operation: SalePendingOperation) async throws -> SaleRemoteMutationResult {
         applies += 1
         let committed = SaleRemoteRecord(
             content: retryDesiredContent(for: operation),
@@ -605,9 +585,7 @@ private func retryEngineUUID(_ value: String) -> UUID {
     UUID(uuidString: value)!
 }
 
-private func retryDesiredContent(
-    for operation: SalePendingOperation
-) -> SaleRemoteContent {
+private func retryDesiredContent(for operation: SalePendingOperation) -> SaleRemoteContent {
     switch operation {
     case .upsert(let upsert):
         .live(upsert.sale)

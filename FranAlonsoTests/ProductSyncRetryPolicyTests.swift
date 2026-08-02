@@ -20,10 +20,7 @@ struct ProductSyncRetryPolicyTests {
             )
         ]
     )
-    func transientProviderFailuresAreRecoverable(
-        error: ProductRemoteDataSourceError,
-        category: SyncRetryCategory
-    ) {
+    func transientProviderFailuresAreRecoverable(error: ProductRemoteDataSourceError, category: SyncRetryCategory) {
         #expect(error.syncClassification == .recoverable(category))
     }
 
@@ -35,9 +32,7 @@ struct ProductSyncRetryPolicyTests {
             .unexpected
         ]
     )
-    func providerFailuresRequiringInterventionAreDefinitive(
-        error: ProductRemoteDataSourceError
-    ) {
+    func providerFailuresRequiringInterventionAreDefinitive(error: ProductRemoteDataSourceError) {
         #expect(error.syncClassification == .definitive)
     }
 }

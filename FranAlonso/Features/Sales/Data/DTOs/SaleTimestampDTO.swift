@@ -28,9 +28,7 @@ extension SaleTimestampDTO {
     /// - Throws: `SaleTimestampDTOError.invalidValue` when the date is not finite.
     init(_ date: Date) throws {
         let interval = date.timeIntervalSinceReferenceDate
-        guard interval.isFinite else {
-            throw SaleTimestampDTOError.invalidValue
-        }
+        guard interval.isFinite else { throw SaleTimestampDTOError.invalidValue }
 
         let canonicalInterval = interval == 0 ? 0.0 : interval
         self.init(storedDate: Date(timeIntervalSinceReferenceDate: canonicalInterval))
@@ -56,9 +54,7 @@ extension SaleTimestampDTO {
         }
 
         try self.init(Date(timeIntervalSinceReferenceDate: interval))
-        guard self.canonicalString == canonicalString else {
-            throw SaleTimestampDTOError.invalidValue
-        }
+        guard self.canonicalString == canonicalString else { throw SaleTimestampDTOError.invalidValue }
     }
 
     init(from decoder: any Decoder) throws {

@@ -81,9 +81,7 @@ extension ServiceModel {
         )
     }
 
-    private func persistedDecimal(
-        _ canonicalString: String
-    ) throws -> CanonicalDecimalDTO {
+    private func persistedDecimal(_ canonicalString: String) throws -> CanonicalDecimalDTO {
         do {
             return try CanonicalDecimalDTO(canonicalString: canonicalString)
         } catch {

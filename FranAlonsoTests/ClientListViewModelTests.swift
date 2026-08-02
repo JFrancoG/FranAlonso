@@ -110,8 +110,7 @@ private actor ClientListRepositoryFake: ClientRepository {
     private var callCount = 0
     private var persistedClients: [Client] = []
     private var observationWaiters: [CheckedContinuation<Void, Never>] = []
-    private var suspendedContinuation:
-        AsyncThrowingStream<[Client], any Error>.Continuation?
+    private var suspendedContinuation: AsyncThrowingStream<[Client], any Error>.Continuation?
 
     init(behavior: Behavior) {
         self.behavior = behavior
@@ -153,16 +152,12 @@ private actor ClientListRepositoryFake: ClientRepository {
     }
 
     func waitUntilObservationStarts() async {
-        guard callCount == 0 else {
-            return
-        }
+        guard callCount == 0 else { return }
 
         await withCheckedContinuation { continuation in
             observationWaiters.append(continuation)
         }
     }
 
-    func observationCallCount() -> Int {
-        callCount
-    }
+    func observationCallCount() -> Int { callCount }
 }

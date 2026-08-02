@@ -100,17 +100,12 @@ private actor ServiceRemoteDataSourceFake: ServiceRemoteDataSource {
     private let fetchError: (any Error)?
     private var upserts: [ServicePendingUpsert] = []
 
-    init(
-        records: [ServiceRemoteRecord] = [],
-        fetchError: (any Error)? = nil
-    ) {
+    init(records: [ServiceRemoteRecord] = [], fetchError: (any Error)? = nil) {
         self.records = records
         self.fetchError = fetchError
     }
 
-    func fetchChanges(
-        after cursor: ServiceSyncCursor?
-    ) async throws -> ServiceRemoteChangeBatch {
+    func fetchChanges(after cursor: ServiceSyncCursor?) async throws -> ServiceRemoteChangeBatch {
         if let fetchError {
             throw fetchError
         }
@@ -120,12 +115,8 @@ private actor ServiceRemoteDataSourceFake: ServiceRemoteDataSource {
         )
     }
 
-    func apply(
-        _ operation: ServicePendingOperation
-    ) async throws -> ServiceRemoteMutationResult {
-        guard case .upsert(let upsert) = operation else {
-            throw ServiceRemoteDataSourceError.unexpected
-        }
+    func apply(_ operation: ServicePendingOperation) async throws -> ServiceRemoteMutationResult {
+        guard case .upsert(let upsert) = operation else { throw ServiceRemoteDataSourceError.unexpected }
         upserts.append(upsert)
         return .applied(
             ServiceRemoteRecord(
@@ -139,9 +130,7 @@ private actor ServiceRemoteDataSourceFake: ServiceRemoteDataSource {
         )
     }
 
-    func receivedUpserts() -> [ServicePendingUpsert] {
-        upserts
-    }
+    func receivedUpserts() -> [ServicePendingUpsert] { upserts }
 }
 
 private func remotePendingUpsert() throws -> ServicePendingUpsert {

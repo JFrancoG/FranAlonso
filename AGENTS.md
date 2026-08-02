@@ -45,7 +45,13 @@ Use explicit suffixes: `UseCase`, `Repository`, `DTO`, `Model`, `DataSource`, `M
 
 Use 120 columns, including indentation, as the preferred maximum width. Keep a `func`, `init`, or `subscript` declaration on one line when its complete signature fits within that width and has at most three simple parameters. The complete signature includes attributes, effects such as `async` and `throws`, the return type, and the opening brace when present.
 
-Use vertical formatting when a signature exceeds 120 columns, has four or more parameters, or contains complex parameters such as closures or function types, nested generics or tuples, closure attributes, multiline default values, or generic requirements. In vertical form, place one parameter per line, align the closing delimiter with the declaration, and avoid hybrid wrapping. Apply this rule to new code and touched signatures; keep historical formatting cleanup separate from functional changes.
+Use vertical formatting when a signature exceeds 120 columns, has four or more parameters, or contains complex parameters such as closures or function types, nested generics or tuples, closure attributes, multiline default values, or generic requirements. In vertical form, place one parameter per line, align the closing delimiter with the declaration, keep each parameter type compact while it fits, and avoid hybrid wrapping.
+
+Keep `let` and `var` declarations, including their type annotation, on one line when the complete declaration fits within 120 columns and has no multiline initializer. A function type, `@Sendable`, or a short generic does not require fragmentation by itself.
+
+Keep a `guard condition else { exit }` statement on one line when it fits within 120 columns and `exit` is one simple immediate transfer such as `return`, `return nil`, `return false`, `continue`, `break`, or a simple `throw`. Retain multiline form for comments, multiline conditions, complex calls, or additional logic; do not extend this exception to `if`, loops, or effectful closures.
+
+Keep a complete function on one line only when it is a genuinely trivial pure predicate, accessor, adapter, or test double whose single obvious expression fits with the signature. Keep business operations, mutations, `await`, `try`, control flow, and effectful calls multiline. Apply these rules to new and touched declarations; keep historical formatting cleanup separate from functional changes.
 
 ## SwiftUI Quality and Accessibility
 
