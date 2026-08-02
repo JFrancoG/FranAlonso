@@ -17,24 +17,58 @@ struct FranAlonsoApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            applicationRoot
                 .environment(\.appDependencies, dependencies)
-                .task(id: appDelegate.firebaseIsConfigured) {
+                .task(id: appDelegate.firebaseBootstrapState) {
+                    let firebaseIsConfigured = appDelegate.firebaseBootstrapState == .configured
+                    runtime?.activateAuthentication(
+                        firebaseIsConfigured: firebaseIsConfigured
+                    )
                     runtime?.activateClientSync(
-                        firebaseIsConfigured: appDelegate.firebaseIsConfigured
+                        firebaseIsConfigured: firebaseIsConfigured
                     )
                     runtime?.activateProductSync(
-                        firebaseIsConfigured: appDelegate.firebaseIsConfigured
+                        firebaseIsConfigured: firebaseIsConfigured
                     )
                     runtime?.activateServiceSync(
-                        firebaseIsConfigured: appDelegate.firebaseIsConfigured
+                        firebaseIsConfigured: firebaseIsConfigured
                     )
                     runtime?.activateSaleSync(
-                        firebaseIsConfigured: appDelegate.firebaseIsConfigured
+                        firebaseIsConfigured: firebaseIsConfigured
                     )
                 }
         }
         .modelContainer(modelContainer)
+    }
+}
+
+private extension FranAlonsoApp {
+    @ViewBuilder
+    var applicationRoot: some View {
+        switch appDelegate.firebaseBootstrapState {
+        case .pending:
+            ProgressView {
+                Text(.authenticationBootstrapPreparing)
+            }
+        case .failed:
+            ContentUnavailableView {
+                Label {
+                    Text(.authenticationBootstrapFailedTitle)
+                } icon: {
+                    Image(systemName: "exclamationmark.icloud.fill")
+                }
+            } description: {
+                Text(.authenticationBootstrapFailedMessage)
+            }
+        case .configured:
+            if let authenticationRootViewModel = runtime?.authenticationRootViewModel {
+                AuthenticationRootScreen(viewModel: authenticationRootViewModel)
+            } else {
+                ProgressView {
+                    Text(.authenticationBootstrapPreparing)
+                }
+            }
+        }
     }
 }
 

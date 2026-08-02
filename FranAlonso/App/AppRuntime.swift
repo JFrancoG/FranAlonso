@@ -1,9 +1,12 @@
+import Observation
 import SwiftData
 
 /// Owns application-lifetime local and remote composition without starting sync work.
+@Observable
 @MainActor
 final class AppRuntime {
     let dependencies: AppDependencies
+    private let modelContainer: ModelContainer
     private let persistenceActor: ClientPersistenceActor
     private let observationSignal: ClientObservationSignal
     private let productPersistenceActor: ProductPersistenceActor
@@ -25,10 +28,14 @@ final class AppRuntime {
     private let makeSaleRemoteDataSource: (
         FirestoreEnvironment
     ) -> any SaleRemoteDataSource
+    private let makeAuthenticationRootViewModel: @MainActor (
+        ModelContainer
+    ) -> AuthenticationRootViewModel
     private(set) var clientSyncEngine: ClientSyncEngine?
     private(set) var productSyncEngine: ProductSyncEngine?
     private(set) var serviceSyncEngine: ServiceSyncEngine?
     private(set) var saleSyncEngine: SaleSyncEngine?
+    private(set) var authenticationRootViewModel: AuthenticationRootViewModel?
 
     /// Creates the shared local runtime for one explicit backend environment.
     ///
@@ -56,6 +63,24 @@ final class AppRuntime {
             FirestoreEnvironment
         ) -> any SaleRemoteDataSource = {
             FirestoreSaleRemoteDataSource(environment: $0)
+        },
+        makeAuthenticationRootViewModel: @escaping @MainActor (
+            ModelContainer
+        ) -> AuthenticationRootViewModel = { modelContainer in
+            let dataSource = FirebaseAuthenticationDataSource()
+            let repository = DefaultAuthenticationRepository(dataSource: dataSource)
+            let localDataSource = KeychainLocalPrincipalDataSource(modelContainer: modelContainer)
+            let localAuthorizer = LocalPrincipalAuthorizer { session in
+                try await localDataSource.authorize(principalID: session.id)
+            }
+
+            return AuthenticationRootViewModel(
+                signIn: SignInUseCase(repository: repository),
+                observeSession: ObserveSessionUseCase(repository: repository),
+                signOut: SignOutUseCase(repository: repository),
+                biometricAuthenticator: .localAuthentication(),
+                authorizeLocalPrincipal: AuthorizeLocalPrincipalUseCase(authorizer: localAuthorizer)
+            )
         }
     ) {
         let persistenceActor = ClientPersistenceActor(
@@ -75,6 +100,7 @@ final class AppRuntime {
         )
         let saleObservationSignal = SaleObservationSignal()
 
+        self.modelContainer = modelContainer
         self.persistenceActor = persistenceActor
         self.observationSignal = observationSignal
         self.productPersistenceActor = productPersistenceActor
@@ -88,6 +114,7 @@ final class AppRuntime {
         self.makeProductRemoteDataSource = makeProductRemoteDataSource
         self.makeServiceRemoteDataSource = makeServiceRemoteDataSource
         self.makeSaleRemoteDataSource = makeSaleRemoteDataSource
+        self.makeAuthenticationRootViewModel = makeAuthenticationRootViewModel
         dependencies = .live(
             persistenceActor: persistenceActor,
             observationSignal: observationSignal,
@@ -98,6 +125,20 @@ final class AppRuntime {
             salePersistenceActor: salePersistenceActor,
             saleObservationSignal: saleObservationSignal
         )
+    }
+
+    /// Composes the application authentication root once Firebase is ready.
+    ///
+    /// Construction is idempotent and is the only point that resolves the live Firebase Auth,
+    /// LocalAuthentication, Keychain and local-store inspection adapters.
+    ///
+    /// - Parameter firebaseIsConfigured: Whether the default Firebase app is available.
+    func activateAuthentication(firebaseIsConfigured: Bool) {
+        guard firebaseIsConfigured, authenticationRootViewModel == nil else {
+            return
+        }
+
+        authenticationRootViewModel = makeAuthenticationRootViewModel(modelContainer)
     }
 
     /// Composes the inactive Clients sync engine once Firebase is ready.

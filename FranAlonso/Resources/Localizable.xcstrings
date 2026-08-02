@@ -433,6 +433,198 @@
         }
       }
     },
+    "authentication.bootstrap.failed.message" : {
+      "comment" : "Descripción mostrada cuando Firebase no puede configurarse durante el arranque.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cierra y vuelve a abrir la aplicación. Si el problema continúa, contacta con soporte."
+          }
+        }
+      }
+    },
+    "authentication.bootstrap.failed.title" : {
+      "comment" : "Título mostrado cuando falla la configuración inicial de Firebase.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se pudo preparar el acceso"
+          }
+        }
+      }
+    },
+    "authentication.bootstrap.preparing" : {
+      "comment" : "Etiqueta accesible del progreso durante la configuración de Firebase y la composición de autenticación.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Preparando acceso…"
+          }
+        }
+      }
+    },
+    "authentication.root.access-denied.title" : {
+      "comment" : "Título mostrado cuando el principal no puede acceder de forma segura al almacén local.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Acceso local bloqueado"
+          }
+        }
+      }
+    },
+    "authentication.root.authorizing-local-access" : {
+      "comment" : "Etiqueta accesible del progreso mientras se comprueba el vínculo entre la cuenta y SwiftData.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Comprobando los datos de este dispositivo…"
+          }
+        }
+      }
+    },
+    "authentication.root.checking-session" : {
+      "comment" : "Etiqueta accesible del progreso mientras se espera el primer estado de sesión de Firebase.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Comprobando sesión…"
+          }
+        }
+      }
+    },
+    "authentication.root.error.different-principal" : {
+      "comment" : "Mensaje mostrado cuando los datos locales pertenecen a otra cuenta.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Los datos de este dispositivo están vinculados a otra cuenta."
+          }
+        }
+      }
+    },
+    "authentication.root.error.local-store-not-pristine" : {
+      "comment" : "Mensaje mostrado cuando existen datos locales pero falta un vínculo de cuenta fiable.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hay datos locales sin un vínculo de cuenta verificable. Contacta con soporte."
+          }
+        }
+      }
+    },
+    "authentication.root.error.local-store-unavailable" : {
+      "comment" : "Mensaje mostrado cuando SwiftData no puede comprobar si el almacén puede reclamarse.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se pudieron comprobar los datos locales de forma segura."
+          }
+        }
+      }
+    },
+    "authentication.root.error.secure-storage" : {
+      "comment" : "Mensaje mostrado cuando Keychain no permite comprobar el vínculo de la cuenta.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se pudo comprobar de forma segura la cuenta vinculada a este dispositivo."
+          }
+        }
+      }
+    },
+    "authentication.root.error.unexpected" : {
+      "comment" : "Mensaje genérico para un fallo local fuera del contrato conocido.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se pudo autorizar el acceso local. Inténtalo de nuevo."
+          }
+        }
+      }
+    },
+    "authentication.root.observation-failed.message" : {
+      "comment" : "Descripción mostrada cuando termina inesperadamente la observación de sesión.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El acceso protegido se ha cerrado hasta volver a comprobar la sesión."
+          }
+        }
+      }
+    },
+    "authentication.root.observation-failed.title" : {
+      "comment" : "Título mostrado cuando termina inesperadamente la observación de sesión.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se pudo comprobar la sesión"
+          }
+        }
+      }
+    },
+    "authentication.root.retry" : {
+      "comment" : "Acción para sustituir la observación de sesión fallida por un nuevo intento.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reintentar"
+          }
+        }
+      }
+    },
+    "authentication.root.sign-out" : {
+      "comment" : "Acción de cierre de sesión disponible desde el shell protegido y los fallos locales.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cerrar sesión"
+          }
+        }
+      }
+    },
+    "authentication.root.signing-out" : {
+      "comment" : "Etiqueta accesible del progreso mientras la raíz espera el nil autoritativo de sesión.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cerrando sesión…"
+          }
+        }
+      }
+    },
     "bootstrap.welcome.title" : {
       "comment" : "Título temporal de bienvenida mostrado en la pantalla inicial durante el bootstrap.",
       "extractionState" : "manual",

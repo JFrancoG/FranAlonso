@@ -9,7 +9,7 @@ struct SessionScreen: View {
     }
 
     @Environment(\.locale) private var locale
-    @State private var viewModel: SessionViewModel
+    let viewModel: SessionViewModel
     @State private var actionRequest: ActionRequest?
 
     var body: some View {
@@ -49,16 +49,10 @@ struct SessionScreen: View {
     }
 }
 
-extension SessionScreen {
-    init(sessionViewModel: SessionViewModel) {
-        _viewModel = State(initialValue: sessionViewModel)
-    }
-}
-
 #Preview(traits: .modifier(AppPreviewModifier())) {
     let viewModel = AuthenticationPreviewFixtures.standard.makeSessionViewModel()
 
     NavigationStack {
-        SessionScreen(sessionViewModel: viewModel)
+        SessionScreen(viewModel: viewModel)
     }
 }

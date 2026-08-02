@@ -61,6 +61,15 @@ final class SessionViewModel {
     private(set) var state: State = .idle
     private(set) var actionState: ActionState = .idle
 
+    /// Monotonically identifies every value received from the authoritative session stream.
+    ///
+    /// The root uses this event identity for presentation cleanup even when consecutive values map
+    /// to the same state. Security-sensitive invalidation uses `localAccessRevision` instead.
+    private(set) var sessionEventRevision = 0
+
+    /// Changes synchronously when a stream event invalidates prior local-access evidence.
+    private(set) var localAccessRevision = 0
+
     private let observeSessionUseCase: ObserveSessionUseCase
     private let signOutUseCase: SignOutUseCase
     private let biometricAuthenticator: BiometricAuthenticator
@@ -68,6 +77,7 @@ final class SessionViewModel {
     private var observationRevision = 0
     private var actionRevision = 0
     private var activeAction: ActionAttempt?
+    private var lastPublishedPrincipalID: String?
 
     init(
         observeSession: ObserveSessionUseCase,
@@ -198,7 +208,12 @@ final class SessionViewModel {
     }
 
     private func beginObservation() -> Int {
+        let replacesExistingObservation = observationRevision != 0
         observationRevision += 1
+        if replacesExistingObservation {
+            localAccessRevision += 1
+            lastPublishedPrincipalID = nil
+        }
         invalidateAction()
         state = .loading
         return observationRevision
@@ -219,6 +234,9 @@ final class SessionViewModel {
     }
 
     private func applyObservedSession(_ session: AuthenticationSession?) {
+        sessionEventRevision += 1
+        recordLocalAccessAuthority(for: session)
+
         guard let session else {
             invalidateAction()
             state = .signedOut
@@ -234,6 +252,19 @@ final class SessionViewModel {
             ? .available
             : .unavailable
         state = .locked(session, availability)
+    }
+
+    private func recordLocalAccessAuthority(for session: AuthenticationSession?) {
+        guard let session else {
+            localAccessRevision += 1
+            lastPublishedPrincipalID = nil
+            return
+        }
+
+        if let lastPublishedPrincipalID, lastPublishedPrincipalID != session.id {
+            localAccessRevision += 1
+        }
+        lastPublishedPrincipalID = session.id
     }
 
     private func beginAction(_ kind: ActionKind, principalID: String) -> ActionAttempt {

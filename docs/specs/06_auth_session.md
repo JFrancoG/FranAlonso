@@ -14,6 +14,9 @@ Implementar acceso Firebase con email y contraseña, observación de sesión, lo
 - Data implementa `FirebaseAuthenticationDataSource` y `DefaultAuthenticationRepository`.
 - `BiometricAuthenticator` encapsula LocalAuthentication como capacidad Apple sustituible en tests.
 - Face ID/Touch ID desbloquea una sesión Firebase ya válida; no almacena ni reconstruye contraseñas.
+- La raíz exige un principal publicado por el stream y una prueba local válida. Una sesión restaurada usa biometría; un login reciente puede usar email/password solo cuando el stream confirma exactamente el mismo UID.
+- El almacén local se vincula a un UID opaco mediante Keychain. Si el binding falta, solo las 28 tablas completamente vacías permiten un claim atómico; cualquier fila o error falla cerrado, conforme al [ADR 0021](../ADRs/0021-local-store-principal-authorization.md).
+- Un `nil`, UID distinto, reemplazo, cancelación o resultado obsoleto invalida la prueba efímera del login. Esa invalidez se registra atómicamente al consumir el stream y no depende de que SwiftUI entregue cada actualización visual. Por ello, email/password sigue siendo la recuperación si la biometría falla sin convertir el resultado aislado de `signIn` en autoridad.
 - `LoginViewModel` y `SessionViewModel` son `@Observable @MainActor`.
 - No se introduce Store: el alcance inicial es cohesivo. Solo se extraerá uno si el ViewModel acumula responsabilidades independientes demostrables.
 
@@ -27,7 +30,7 @@ Implementar acceso Firebase con email y contraseña, observación de sesión, lo
 | 06.4 | Implementar `BiometricAuthenticator`. | Disponible, autorizado, denegado, cancelado y no disponible. | Sin almacenamiento de contraseña. |
 | 06.5 | Implementar `LoginViewModel` y `SessionViewModel`. | Estado inicial, loading, error, éxito, logout y cancelación. | `@Observable @MainActor`. |
 | 06.6 | Implementar pantallas y previews. | Lógica cubierta en ViewModels. | Textos en xcstrings y estados completos. |
-| 06.7 | Integrar sesión con la raíz y el composition root. | Estado autenticado/no autenticado. | Login o shell autenticado, sin acceso protegido sin sesión válida. |
+| 06.7 | Integrar sesión con la raíz y el composition root. | Bootstrap, login confirmado, sesión restaurada, binding local, retry, logout y resultados obsoletos. | Login o shell autorizado, sin acceso protegido sin sesión observada y vinculada. |
 
 ## Resultado de fase
 

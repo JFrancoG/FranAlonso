@@ -76,6 +76,59 @@ struct AppRuntimeTests {
         #expect(await saleRemote.fetchCount == 0)
         #expect(await saleRemote.mutationCount == 0)
     }
+
+    @Test("Authentication remains absent before Firebase and is composed exactly once after configuration")
+    func authenticationComposesExactlyOnceAfterFirebaseConfiguration() throws {
+        let authenticationFactory = AppRuntimeAuthenticationRootFactory()
+        let runtime = try makeAppRuntime(authenticationFactory: authenticationFactory)
+
+        runtime.activateAuthentication(firebaseIsConfigured: false)
+
+        #expect(authenticationFactory.invocationCount == 0)
+        #expect(runtime.authenticationRootViewModel == nil)
+
+        runtime.activateAuthentication(firebaseIsConfigured: true)
+        let firstRoot = runtime.authenticationRootViewModel
+        runtime.activateAuthentication(firebaseIsConfigured: true)
+
+        #expect(authenticationFactory.invocationCount == 1)
+        #expect(runtime.authenticationRootViewModel === firstRoot)
+    }
+}
+
+@MainActor
+private final class AppRuntimeAuthenticationRootFactory {
+    private(set) var invocationCount = 0
+
+    func make(modelContainer _: ModelContainer) -> AuthenticationRootViewModel {
+        invocationCount += 1
+        let repository = AppRuntimeAuthenticationRepositoryFake()
+
+        return AuthenticationRootViewModel(
+            signIn: SignInUseCase(repository: repository),
+            observeSession: ObserveSessionUseCase(repository: repository),
+            signOut: SignOutUseCase(repository: repository),
+            biometricAuthenticator: BiometricAuthenticator(
+                canAuthenticate: { false },
+                authenticate: { _ in }
+            ),
+            authorizeLocalPrincipal: AuthorizeLocalPrincipalUseCase(
+                authorizer: LocalPrincipalAuthorizer { _ in }
+            )
+        )
+    }
+}
+
+private struct AppRuntimeAuthenticationRepositoryFake: AuthenticationRepository {
+    func signIn(email: String, password: String) async throws -> AuthenticationSession {
+        AuthenticationSession(id: "app-runtime-principal")
+    }
+
+    func signOut() async throws {}
+
+    func observeSession() async -> AsyncStream<AuthenticationSession?> {
+        AsyncStream { _ in }
+    }
 }
 
 @MainActor
@@ -291,7 +344,8 @@ private func makeAppRuntime(
     clientFactory: AppRuntimeRemoteFactory,
     productFactory: AppRuntimeProductRemoteFactory,
     serviceFactory: AppRuntimeServiceRemoteFactory,
-    saleFactory: AppRuntimeSaleRemoteFactory
+    saleFactory: AppRuntimeSaleRemoteFactory,
+    authenticationFactory: AppRuntimeAuthenticationRootFactory = AppRuntimeAuthenticationRootFactory()
 ) throws -> AppRuntime {
     let container = try ModelContainer.inMemory(for: Schema.franAlonso)
     return AppRuntime(
@@ -300,6 +354,20 @@ private func makeAppRuntime(
         makeClientRemoteDataSource: clientFactory.make(environment:),
         makeProductRemoteDataSource: productFactory.make(environment:),
         makeServiceRemoteDataSource: serviceFactory.make(environment:),
-        makeSaleRemoteDataSource: saleFactory.make(environment:)
+        makeSaleRemoteDataSource: saleFactory.make(environment:),
+        makeAuthenticationRootViewModel: authenticationFactory.make(modelContainer:)
+    )
+}
+
+@MainActor
+private func makeAppRuntime(
+    authenticationFactory: AppRuntimeAuthenticationRootFactory
+) throws -> AppRuntime {
+    try makeAppRuntime(
+        clientFactory: AppRuntimeRemoteFactory(),
+        productFactory: AppRuntimeProductRemoteFactory(),
+        serviceFactory: AppRuntimeServiceRemoteFactory(),
+        saleFactory: AppRuntimeSaleRemoteFactory(),
+        authenticationFactory: authenticationFactory
     )
 }
