@@ -114,9 +114,7 @@ extension FirebaseAuthenticationDataSource {
 
 private extension FirebaseAuthenticationDataSource {
     /// Converts Firebase's unstable error surface into the stable DataSource contract.
-    static func authenticationError(
-        from error: any Error
-    ) -> AuthenticationDataSourceError {
+    static func authenticationError(from error: any Error) -> AuthenticationDataSourceError {
         let providerError = error as NSError
         guard providerError.domain == AuthErrors.domain,
               let code = AuthErrorCode(rawValue: providerError.code) else {

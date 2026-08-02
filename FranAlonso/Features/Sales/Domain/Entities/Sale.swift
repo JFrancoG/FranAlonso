@@ -108,11 +108,7 @@ struct Sale: Identifiable, Codable, Equatable {
     /// - Throws: `SaleError.invalidTimestamp` if `paidAt` is not finite,
     ///   `SaleError.invalidSaleTransition` if service work is not complete, or
     ///   `SaleError.conflictingPayment` if a recorded payment differs from these values.
-    mutating func registerPayment(
-        id paymentID: PaymentID,
-        method: PaymentMethod,
-        paidAt: Date
-    ) throws {
+    mutating func registerPayment(id paymentID: PaymentID, method: PaymentMethod, paidAt: Date) throws {
         try Self.ensureFinite(paidAt)
 
         switch status {
@@ -146,10 +142,7 @@ struct Sale: Identifiable, Codable, Equatable {
     /// - Throws: `SaleError.invalidTimestamp` if `closedAt` is not finite,
     ///   `SaleError.invalidSaleTransition` if payment has not been recorded, or
     ///   `SaleError.conflictingDocument` if recorded closure metadata differs.
-    mutating func close(
-        documentID: BillingDocumentID,
-        closedAt: Date
-    ) throws {
+    mutating func close(documentID: BillingDocumentID, closedAt: Date) throws {
         try Self.ensureFinite(closedAt)
 
         switch status {
@@ -181,10 +174,7 @@ struct Sale: Identifiable, Codable, Equatable {
     /// - Throws: `SaleError.invalidTimestamp` if `voidedAt` is not finite,
     ///   `SaleError.invalidSaleTransition` if the sale is neither closed nor already
     ///   voided, or `SaleError.conflictingReversal` if recorded reversal metadata differs.
-    mutating func void(
-        reversalID: SaleReversalID,
-        voidedAt: Date
-    ) throws {
+    mutating func void(reversalID: SaleReversalID, voidedAt: Date) throws {
         try Self.ensureFinite(voidedAt)
 
         switch status {

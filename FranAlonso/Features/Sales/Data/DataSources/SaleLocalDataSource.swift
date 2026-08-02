@@ -28,11 +28,7 @@ extension SaleLocalDataSource {
     ///
     /// A tombstone or pending discard blocks ordinary upserts so restoration cannot occur
     /// accidentally. A future explicit restore flow owns that separate state transition.
-    func persistPendingUpsert(
-        _ sale: Sale,
-        operationID: UUID,
-        in context: ModelContext
-    ) throws {
+    func persistPendingUpsert(_ sale: Sale, operationID: UUID, in context: ModelContext) throws {
         try requireClean(context)
 
         do {
@@ -90,11 +86,7 @@ extension SaleLocalDataSource {
     ///
     /// An already discarded draft is a no-op only when no live remote state or pending chain
     /// remains. A repeated discard keeps the existing pending operation identity.
-    func persistPendingDiscard(
-        _ id: SaleID,
-        operationID: UUID,
-        in context: ModelContext
-    ) throws {
+    func persistPendingDiscard(_ id: SaleID, operationID: UUID, in context: ModelContext) throws {
         try requireClean(context)
 
         do {
@@ -151,9 +143,7 @@ extension SaleLocalDataSource {
     }
 
     /// Returns every immutable pending operation in deterministic causal order.
-    func pendingOperations(
-        in context: ModelContext
-    ) throws -> [SalePendingOperation] {
+    func pendingOperations(in context: ModelContext) throws -> [SalePendingOperation] {
         let upserts = try context.fetch(
             FetchDescriptor<SalePendingUpsertModel>()
         ).map { model in
@@ -191,9 +181,7 @@ extension SaleLocalDataSource {
     }
 
     /// Returns operations eligible for delivery while preserving explicit conflicts.
-    func deliverablePendingOperations(
-        in context: ModelContext
-    ) throws -> [SalePendingOperation] {
+    func deliverablePendingOperations(in context: ModelContext) throws -> [SalePendingOperation] {
         let conflictedSaleIDs = Set(
             try context.fetch(
                 FetchDescriptor<SaleSyncConflictModel>()
@@ -206,9 +194,7 @@ extension SaleLocalDataSource {
     }
 
     /// Returns only deliverable upserts that are not blocked by conflicts.
-    func deliverablePendingUpserts(
-        in context: ModelContext
-    ) throws -> [SalePendingUpsert] {
+    func deliverablePendingUpserts(in context: ModelContext) throws -> [SalePendingUpsert] {
         try deliverablePendingOperations(in: context).compactMap { operation in
             guard case .upsert(let upsert) = operation else { return nil }
             return upsert
@@ -226,18 +212,12 @@ extension SaleLocalDataSource {
     }
 
     /// Returns the validated durable schedule for one retry scope, when present.
-    func retryState(
-        for scope: SyncRetryScope,
-        in context: ModelContext
-    ) throws -> SyncRetryState? {
+    func retryState(for scope: SyncRetryScope, in context: ModelContext) throws -> SyncRetryState? {
         try retryModel(for: scope, in: context)?.decodeState(for: scope)
     }
 
     /// Inserts or replaces one durable retry schedule and commits it explicitly.
-    func saveRetryState(
-        _ state: SyncRetryState,
-        in context: ModelContext
-    ) throws {
+    func saveRetryState(_ state: SyncRetryState, in context: ModelContext) throws {
         try requireClean(context)
         do {
             if let model = try retryModel(for: state.scope, in: context) {
@@ -253,10 +233,7 @@ extension SaleLocalDataSource {
     }
 
     /// Removes a transient backoff without discarding its pending sync operation.
-    func clearRetryState(
-        for scope: SyncRetryScope,
-        in context: ModelContext
-    ) throws {
+    func clearRetryState(for scope: SyncRetryScope, in context: ModelContext) throws {
         try requireClean(context)
         do {
             try deleteRetryState(for: scope, in: context)
@@ -399,10 +376,7 @@ extension SaleLocalDataSource {
     }
 
     /// Records an authoritative remote observation while preserving pending work.
-    func recordRemoteObservation(
-        _ record: SaleRemoteRecord,
-        in context: ModelContext
-    ) throws {
+    func recordRemoteObservation(_ record: SaleRemoteRecord, in context: ModelContext) throws {
         try requireClean(context)
         do {
             try applyRemoteObservation(record, in: context)

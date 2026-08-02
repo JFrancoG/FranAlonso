@@ -13,10 +13,7 @@ struct SignInUseCase {
     /// - Returns: The principal reported by the repository.
     /// - Throws: `CancellationError` before delegation, `AuthenticationError.invalidCredentials`
     ///   for an empty value, or the repository error unchanged.
-    func callAsFunction(
-        email: String,
-        password: String
-    ) async throws -> AuthenticationSession {
+    func callAsFunction(email: String, password: String) async throws -> AuthenticationSession {
         try Task.checkCancellation()
 
         guard !email.isEmpty, !password.isEmpty else { throw AuthenticationError.invalidCredentials }

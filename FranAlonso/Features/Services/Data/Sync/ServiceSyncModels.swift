@@ -50,11 +50,7 @@ struct ServiceRemoteRecord: Identifiable, Codable, Equatable {
 
 extension ServiceRemoteRecord {
     /// Creates a live remote record from its transport snapshot and metadata.
-    init(
-        service: ServiceDTO,
-        version: ServiceRemoteVersion,
-        changeSequence: Int64? = nil
-    ) {
+    init(service: ServiceDTO, version: ServiceRemoteVersion, changeSequence: Int64? = nil) {
         self.init(
             content: .live(service),
             version: version,

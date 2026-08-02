@@ -50,11 +50,7 @@ struct SaleRemoteRecord: Identifiable, Codable, Equatable {
 
 extension SaleRemoteRecord {
     /// Creates a live remote record from its transport snapshot and metadata.
-    init(
-        sale: SaleDTO,
-        version: SaleRemoteVersion,
-        changeSequence: Int64? = nil
-    ) {
+    init(sale: SaleDTO, version: SaleRemoteVersion, changeSequence: Int64? = nil) {
         self.init(
             content: .live(sale),
             version: version,

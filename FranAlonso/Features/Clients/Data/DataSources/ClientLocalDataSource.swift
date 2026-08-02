@@ -25,11 +25,7 @@ extension ClientLocalDataSource {
     ///
     /// A tombstone or pending deletion blocks ordinary upserts so restoration cannot occur
     /// accidentally. A future explicit restore flow owns that separate state transition.
-    func persistPendingUpsert(
-        _ client: Client,
-        operationID: UUID,
-        in context: ModelContext
-    ) throws {
+    func persistPendingUpsert(_ client: Client, operationID: UUID, in context: ModelContext) throws {
         try requireClean(context)
 
         do {
@@ -87,11 +83,7 @@ extension ClientLocalDataSource {
     ///
     /// An already deleted client is a no-op only when no live remote state or pending chain
     /// remains. A repeated delete keeps the existing pending operation identity.
-    func persistPendingDelete(
-        _ id: ClientID,
-        operationID: UUID,
-        in context: ModelContext
-    ) throws {
+    func persistPendingDelete(_ id: ClientID, operationID: UUID, in context: ModelContext) throws {
         try requireClean(context)
 
         do {
@@ -137,9 +129,7 @@ extension ClientLocalDataSource {
     }
 
     /// Returns every immutable pending operation in deterministic causal order.
-    func pendingOperations(
-        in context: ModelContext
-    ) throws -> [ClientPendingOperation] {
+    func pendingOperations(in context: ModelContext) throws -> [ClientPendingOperation] {
         let upserts = try context.fetch(
             FetchDescriptor<ClientPendingUpsertModel>()
         ).map { model in
@@ -177,9 +167,7 @@ extension ClientLocalDataSource {
     }
 
     /// Returns operations eligible for delivery while preserving delete-wins semantics.
-    func deliverablePendingOperations(
-        in context: ModelContext
-    ) throws -> [ClientPendingOperation] {
+    func deliverablePendingOperations(in context: ModelContext) throws -> [ClientPendingOperation] {
         let conflictedClientIDs = Set(
             try context.fetch(
                 FetchDescriptor<ClientSyncConflictModel>()
@@ -197,9 +185,7 @@ extension ClientLocalDataSource {
     }
 
     /// Preserves the 05.7 deliverable-upsert inspection boundary.
-    func deliverablePendingUpserts(
-        in context: ModelContext
-    ) throws -> [ClientPendingUpsert] {
+    func deliverablePendingUpserts(in context: ModelContext) throws -> [ClientPendingUpsert] {
         try deliverablePendingOperations(in: context).compactMap { operation in
             guard case .upsert(let upsert) = operation else { return nil }
             return upsert
@@ -217,18 +203,12 @@ extension ClientLocalDataSource {
     }
 
     /// Returns the validated durable schedule for one retry scope, when present.
-    func retryState(
-        for scope: SyncRetryScope,
-        in context: ModelContext
-    ) throws -> SyncRetryState? {
+    func retryState(for scope: SyncRetryScope, in context: ModelContext) throws -> SyncRetryState? {
         try retryModel(for: scope, in: context)?.decodeState(for: scope)
     }
 
     /// Inserts or replaces one durable retry schedule and commits it explicitly.
-    func saveRetryState(
-        _ state: SyncRetryState,
-        in context: ModelContext
-    ) throws {
+    func saveRetryState(_ state: SyncRetryState, in context: ModelContext) throws {
         try requireClean(context)
         do {
             if let model = try retryModel(for: state.scope, in: context) {
@@ -244,10 +224,7 @@ extension ClientLocalDataSource {
     }
 
     /// Removes a transient backoff without discarding its pending sync operation.
-    func clearRetryState(
-        for scope: SyncRetryScope,
-        in context: ModelContext
-    ) throws {
+    func clearRetryState(for scope: SyncRetryScope, in context: ModelContext) throws {
         try requireClean(context)
         do {
             try deleteRetryState(for: scope, in: context)
@@ -393,10 +370,7 @@ extension ClientLocalDataSource {
     }
 
     /// Records an authoritative remote observation while preserving pending work.
-    func recordRemoteObservation(
-        _ record: ClientRemoteRecord,
-        in context: ModelContext
-    ) throws {
+    func recordRemoteObservation(_ record: ClientRemoteRecord, in context: ModelContext) throws {
         try requireClean(context)
         do {
             try applyRemoteObservation(record, in: context)
