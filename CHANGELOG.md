@@ -6,6 +6,7 @@ All notable changes to this project are documented in this file.
 
 ### Changed
 
+- 2026-08-02 | 💄 style(swift): complete signature normalization
 - 2026-08-02 | 💄 style(swift): normalize source formatting
 - 2026-07-30 | ♻️ refactor(sync): share pure retry scheduling
 - 2026-07-25 | ♻️ refactor(app): clarify isolation boundaries

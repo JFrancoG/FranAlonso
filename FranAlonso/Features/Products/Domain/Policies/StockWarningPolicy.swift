@@ -48,11 +48,7 @@ extension StockImpact {
     ///   - availableQuantity: Stock available immediately before this line.
     /// - Throws: `StockWarningPolicyError.quantityOverflow` when the projected
     ///   quantity cannot be represented by `Int`.
-    fileprivate init(
-        line: SaleLine,
-        productID: ProductID,
-        availableQuantity: Int
-    ) throws {
+    fileprivate init(line: SaleLine, productID: ProductID, availableQuantity: Int) throws {
         let (projectedQuantity, overflow) = availableQuantity
             .subtractingReportingOverflow(line.quantity)
 
@@ -89,10 +85,7 @@ struct StockWarningPolicy {
     ///   line IDs, `StockWarningPolicyError.missingAvailableQuantity` when a
     ///   linked product has no input stock, or
     ///   `StockWarningPolicyError.quantityOverflow` when subtraction overflows.
-    func analyze(
-        lines: [SaleLine],
-        availableQuantities: [ProductID: Int]
-    ) throws -> [StockImpact] {
+    func analyze(lines: [SaleLine], availableQuantities: [ProductID: Int]) throws -> [StockImpact] {
         guard Set(lines.map(\.id)).count == lines.count else {
             throw StockWarningPolicyError.duplicateLineIdentity
         }

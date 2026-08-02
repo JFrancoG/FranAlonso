@@ -41,7 +41,9 @@ struct LocalPrincipalAuthorizer {
 
 extension LocalPrincipalAuthorizer {
     /// Creates the capability from a concurrency-safe authorization operation.
-    init(authorize: @escaping @Sendable (AuthenticationSession) async throws -> Void) {
+    init(
+        authorize: @escaping @Sendable (AuthenticationSession) async throws -> Void
+    ) {
         authorizeOperation = authorize
     }
 }

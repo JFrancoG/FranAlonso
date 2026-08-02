@@ -50,11 +50,7 @@ struct ProductRemoteRecord: Identifiable, Codable, Equatable {
 
 extension ProductRemoteRecord {
     /// Creates a live remote record from its transport snapshot and metadata.
-    init(
-        product: ProductDTO,
-        version: ProductRemoteVersion,
-        changeSequence: Int64? = nil
-    ) {
+    init(product: ProductDTO, version: ProductRemoteVersion, changeSequence: Int64? = nil) {
         self.init(
             content: .live(product),
             version: version,

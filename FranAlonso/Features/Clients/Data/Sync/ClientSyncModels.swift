@@ -50,11 +50,7 @@ struct ClientRemoteRecord: Identifiable, Codable, Equatable {
 
 extension ClientRemoteRecord {
     /// Creates a live remote record while preserving the compact 05.7 call-site meaning.
-    init(
-        client: ClientDTO,
-        version: ClientRemoteVersion,
-        changeSequence: Int64? = nil
-    ) {
+    init(client: ClientDTO, version: ClientRemoteVersion, changeSequence: Int64? = nil) {
         self.init(
             content: .live(client),
             version: version,
