@@ -3,20 +3,12 @@ import Foundation
 
 /// Adapts Firestore Sales documents to the provider-neutral incremental contract.
 actor FirestoreSaleRemoteDataSource: SaleRemoteDataSource {
-    private let fetchDocuments: (SaleSyncCursor?) async throws -> [
-        (documentID: String, record: SaleRemoteRecord)
-    ]
-    private let transactMutation: (
-        SalePendingOperation
-    ) async throws -> SaleRemoteMutationResult
+    private let fetchDocuments: (SaleSyncCursor?) async throws -> [(documentID: String, record: SaleRemoteRecord)]
+    private let transactMutation: (SalePendingOperation) async throws -> SaleRemoteMutationResult
 
     init(
-        fetch: @escaping (SaleSyncCursor?) async throws -> [
-            (documentID: String, record: SaleRemoteRecord)
-        ],
-        transact: @escaping (
-            SalePendingOperation
-        ) async throws -> SaleRemoteMutationResult
+        fetch: @escaping (SaleSyncCursor?) async throws -> [(documentID: String, record: SaleRemoteRecord)],
+        transact: @escaping (SalePendingOperation) async throws -> SaleRemoteMutationResult
     ) {
         fetchDocuments = fetch
         transactMutation = transact
@@ -76,9 +68,7 @@ actor FirestoreSaleRemoteDataSource: SaleRemoteDataSource {
         )
     }
 
-    func fetchChanges(
-        after cursor: SaleSyncCursor?
-    ) async throws -> SaleRemoteChangeBatch {
+    func fetchChanges(after cursor: SaleSyncCursor?) async throws -> SaleRemoteChangeBatch {
         do {
             let documents = try await fetchDocuments(cursor)
             let records = try documents.map { document in
@@ -89,9 +79,7 @@ actor FirestoreSaleRemoteDataSource: SaleRemoteDataSource {
                     )
                 }
                 if let sequence = document.record.changeSequence {
-                    guard sequence > 0 else {
-                        throw SaleSyncPolicyError.invalidChangeSequence
-                    }
+                    guard sequence > 0 else { throw SaleSyncPolicyError.invalidChangeSequence }
                 } else if cursor != nil {
                     throw SaleSyncPolicyError.invalidChangeSequence
                 }
@@ -111,9 +99,7 @@ actor FirestoreSaleRemoteDataSource: SaleRemoteDataSource {
         }
     }
 
-    func apply(
-        _ operation: SalePendingOperation
-    ) async throws -> SaleRemoteMutationResult {
+    func apply(_ operation: SalePendingOperation) async throws -> SaleRemoteMutationResult {
         do {
             if case .upsert(let upsert) = operation {
                 guard UUID(uuidString: upsert.sale.id) == upsert.saleID else {
@@ -133,12 +119,8 @@ extension FirestoreSaleRemoteDataSource {
     /// - Throws: A typed policy error for negative or exhausted counter state.
     static func nextChangeSequence(after current: Int64?) throws -> Int64 {
         let current = current ?? 0
-        guard current >= 0 else {
-            throw SaleSyncPolicyError.invalidChangeSequence
-        }
-        guard current < Int64.max else {
-            throw SaleSyncPolicyError.changeSequenceOverflow
-        }
+        guard current >= 0 else { throw SaleSyncPolicyError.invalidChangeSequence }
+        guard current < Int64.max else { throw SaleSyncPolicyError.changeSequenceOverflow }
         return current + 1
     }
 
@@ -221,9 +203,7 @@ extension FirestoreSaleRemoteDataSource {
             } completion: { encodedOutcome, error in
                 do {
                     if let error { throw error }
-                    guard let outcomeData = encodedOutcome as? Data else {
-                        throw SaleRemoteDataSourceError.unexpected
-                    }
+                    guard let outcomeData = encodedOutcome as? Data else { throw SaleRemoteDataSourceError.unexpected }
                     switch try JSONDecoder().decode(
                         FirestoreSaleTransactionOutcome.self,
                         from: outcomeData
@@ -497,9 +477,7 @@ struct FirestoreSaleDocumentDTO: Decodable {
         return sequence
     }
 
-    private func missingSaleField(
-        _ key: SaleDocumentCodingKey
-    ) -> DecodingError {
+    private func missingSaleField(_ key: SaleDocumentCodingKey) -> DecodingError {
         saleDocumentDecodingError(
             codingPath: [key],
             description: "A live sale requires \(key.stringValue)."
@@ -642,10 +620,7 @@ private extension SaleRemoteRecord {
     }
 }
 
-private func saleDocumentDecodingError(
-    codingPath: [any CodingKey],
-    description: String
-) -> DecodingError {
+private func saleDocumentDecodingError(codingPath: [any CodingKey], description: String) -> DecodingError {
     DecodingError.dataCorrupted(
         DecodingError.Context(
             codingPath: codingPath,
@@ -654,9 +629,7 @@ private func saleDocumentDecodingError(
     )
 }
 
-private func saleBusinessDecodingError(
-    _ error: any Error
-) -> DecodingError {
+private func saleBusinessDecodingError(_ error: any Error) -> DecodingError {
     let codingPath: [any CodingKey]
     switch error {
     case let SaleMappingError.invalidIdentifier(_, location):
@@ -689,9 +662,7 @@ private func saleBusinessDecodingError(
     )
 }
 
-private func saleIdentifierCodingPath(
-    _ location: SaleIdentifierLocation
-) -> [any CodingKey] {
+private func saleIdentifierCodingPath(_ location: SaleIdentifierLocation) -> [any CodingKey] {
     switch location {
     case .sale:
         [SaleDocumentCodingKey.id]
@@ -761,9 +732,7 @@ private func mapFirestoreSaleError(_ error: any Error) -> any Error {
     if error is CancellationError { return CancellationError() }
 
     let providerError = error as NSError
-    guard providerError.domain == FirestoreErrorDomain else {
-        return SaleRemoteDataSourceError.unexpected
-    }
+    guard providerError.domain == FirestoreErrorDomain else { return SaleRemoteDataSourceError.unexpected }
     switch providerError.code {
     case FirestoreErrorCode.deadlineExceeded.rawValue:
         return SaleRemoteDataSourceError.deadlineExceeded

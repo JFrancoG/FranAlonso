@@ -58,9 +58,7 @@ extension ClientDTO {
             try rejectUnexpectedConsentReference()
             return .consentPendingUpload
         case .active:
-            guard let consentReference else {
-                throw ClientMappingError.missingConsentReference
-            }
+            guard let consentReference else { throw ClientMappingError.missingConsentReference }
 
             return .active(
                 consentReference: try ClientConsentReference(rawValue: consentReference)

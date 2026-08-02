@@ -37,9 +37,7 @@ actor SaleSyncEngine {
     /// - Throws: `SaleSyncEngineError.alreadySynchronizing` for an overlapping pass,
     ///   `CancellationError` when the caller cancels, or a remote, policy or persistence error.
     func synchronize() async throws {
-        guard !isSynchronizing else {
-            throw SaleSyncEngineError.alreadySynchronizing
-        }
+        guard !isSynchronizing else { throw SaleSyncEngineError.alreadySynchronizing }
         isSynchronizing = true
         defer { isSynchronizing = false }
 
@@ -150,9 +148,7 @@ actor SaleSyncEngine {
                     try await persistenceActor.saveRetryState(nextState)
                     state = nextState
 
-                    guard attempt < 3 else {
-                        throw error
-                    }
+                    guard attempt < 3 else { throw error }
                     try await wait(until: nextState.notBefore)
                 }
             }
@@ -164,9 +160,7 @@ actor SaleSyncEngine {
     private func wait(until deadline: Date) async throws {
         let currentDate = await timing.now()
         let remaining = deadline.timeIntervalSince(currentDate)
-        guard remaining.isFinite else {
-            throw SyncRetryPolicyError.invalidDeadline
-        }
+        guard remaining.isFinite else { throw SyncRetryPolicyError.invalidDeadline }
         let boundedRemaining = min(max(remaining, 0), 60)
         guard boundedRemaining > 0 else { return }
 

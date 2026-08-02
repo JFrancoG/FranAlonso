@@ -9,9 +9,7 @@ struct FirestoreServiceRemoteDataSourceTests {
         "Environments resolve Services and sync metadata paths",
         arguments: [FirestoreEnvironment.develop, .production]
     )
-    func environmentsResolveApprovedPaths(
-        _ environment: FirestoreEnvironment
-    ) {
+    func environmentsResolveApprovedPaths(_ environment: FirestoreEnvironment) {
         #expect(
             environment.collectionPath(for: .services)
                 == "\(environment.rawValue)/collections/services"
@@ -392,9 +390,7 @@ struct FirestoreServiceRemoteDataSourceTests {
         "Firestore provider errors map to stable Service transport errors",
         arguments: firestoreProviderFailureFixtures
     )
-    fileprivate func providerErrorsPreserveStableMeaning(
-        _ fixture: FirestoreProviderFailureFixture
-    ) async {
+    fileprivate func providerErrorsPreserveStableMeaning(_ fixture: FirestoreProviderFailureFixture) async {
         let dataSource = makeFirestoreDataSource(fetch: { _ in
             throw firestoreError(code: fixture.code)
         })
@@ -453,9 +449,7 @@ private actor FirestoreServiceFetchGate {
 
     var receivedCursors: [ServiceSyncCursor?] { cursors }
 
-    func fetch(
-        after cursor: ServiceSyncCursor?
-    ) -> [(documentID: String, record: ServiceRemoteRecord)] {
+    func fetch(after cursor: ServiceSyncCursor?) -> [(documentID: String, record: ServiceRemoteRecord)] {
         cursors.append(cursor)
         return records.map { (documentID: $0.id, record: $0) }
     }
@@ -464,16 +458,11 @@ private actor FirestoreServiceFetchGate {
 private actor FirestoreServiceTransactionGate {
     private var operations: [ServicePendingOperation] = []
     private var receivedContinuations: [CheckedContinuation<Void, Never>] = []
-    private var acknowledgementContinuation: CheckedContinuation<
-        ServiceRemoteMutationResult,
-        Never
-    >?
+    private var acknowledgementContinuation: CheckedContinuation<ServiceRemoteMutationResult, Never>?
 
     var receivedOperations: [ServicePendingOperation] { operations }
 
-    func transact(
-        operation: ServicePendingOperation
-    ) async -> ServiceRemoteMutationResult {
+    func transact(operation: ServicePendingOperation) async -> ServiceRemoteMutationResult {
         operations.append(operation)
         receivedContinuations.forEach { $0.resume() }
         receivedContinuations.removeAll()
@@ -554,9 +543,7 @@ private func firestorePendingUpsert() throws -> ServicePendingUpsert {
 }
 
 private func firestoreServiceRecord(
-    serviceID: UUID = firestoreUUID(
-        "58000000-0000-0000-0000-000000000001"
-    ),
+    serviceID: UUID = firestoreUUID("58000000-0000-0000-0000-000000000001"),
     type: ServiceType = .professional,
     linkedProductID: UUID? = nil,
     discountPercentage: Decimal? = 10,
@@ -586,9 +573,7 @@ private func firestoreServiceRecord(
 }
 
 private func firestoreServiceDTO(
-    serviceID: UUID = firestoreUUID(
-        "58000000-0000-0000-0000-000000000001"
-    ),
+    serviceID: UUID = firestoreUUID("58000000-0000-0000-0000-000000000001"),
     type: ServiceType = .professional,
     linkedProductID: UUID? = nil,
     discountPercentage: Decimal? = 10

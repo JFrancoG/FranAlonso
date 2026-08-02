@@ -218,9 +218,7 @@ extension SaleLocalDataSource {
     /// Returns the durable Sales feed position, or nil before the first bootstrap.
     func cursor(in context: ModelContext) throws -> SaleSyncCursor? {
         try cursorModel(in: context).map { model in
-            guard model.changeSequence >= 0 else {
-                throw SaleSyncPersistenceError.invalidCursor
-            }
+            guard model.changeSequence >= 0 else { throw SaleSyncPersistenceError.invalidCursor }
             return SaleSyncCursor(
                 changeSequence: model.changeSequence
             )
@@ -457,9 +455,7 @@ extension SaleLocalDataSource {
                 throw SaleSyncPersistenceError.entityIdentityMismatch
             }
         case .discard:
-            guard record.isTombstone else {
-                throw SaleSyncPersistenceError.entityIdentityMismatch
-            }
+            guard record.isTombstone else { throw SaleSyncPersistenceError.entityIdentityMismatch }
         }
 
         try persistRemoteState(record, in: context)
@@ -503,10 +499,7 @@ extension SaleLocalDataSource {
         }
     }
 
-    private func applyRemoteObservation(
-        _ record: SaleRemoteRecord,
-        in context: ModelContext
-    ) throws {
+    private func applyRemoteObservation(_ record: SaleRemoteRecord, in context: ModelContext) throws {
         let saleID = SaleID(rawValue: try record.stableSaleID())
         try persistRemoteState(record, in: context)
         let hasPending = try !pendingOperations(
@@ -562,11 +555,7 @@ extension SaleLocalDataSource {
         }
     }
 
-    private func isStale(
-        _ record: SaleRemoteRecord,
-        for id: SaleID,
-        in context: ModelContext
-    ) throws -> Bool {
+    private func isStale(_ record: SaleRemoteRecord, for id: SaleID, in context: ModelContext) throws -> Bool {
         guard let current = try remoteState(for: id, in: context)?.decodeRecord() else {
             return false
         }
@@ -586,10 +575,7 @@ extension SaleLocalDataSource {
         }
     }
 
-    private func advanceCursor(
-        _ cursor: SaleSyncCursor,
-        in context: ModelContext
-    ) throws {
+    private func advanceCursor(_ cursor: SaleSyncCursor, in context: ModelContext) throws {
         if let model = try cursorModel(in: context) {
             model.advance(to: cursor.changeSequence)
         } else {
@@ -602,9 +588,7 @@ extension SaleLocalDataSource {
         }
     }
 
-    private func cursorModel(
-        in context: ModelContext
-    ) throws -> SaleSyncCursorModel? {
+    private func cursorModel(in context: ModelContext) throws -> SaleSyncCursorModel? {
         var descriptor = FetchDescriptor<SaleSyncCursorModel>(
             predicate: #Predicate { model in
                 model.feedID == saleSyncFeedID
@@ -614,10 +598,7 @@ extension SaleLocalDataSource {
         return try context.fetch(descriptor).first
     }
 
-    private func retryModel(
-        for scope: SyncRetryScope,
-        in context: ModelContext
-    ) throws -> SaleSyncRetryModel? {
+    private func retryModel(for scope: SyncRetryScope, in context: ModelContext) throws -> SaleSyncRetryModel? {
         let scopeID = scope.storageID
         var descriptor = FetchDescriptor<SaleSyncRetryModel>(
             predicate: #Predicate { model in
@@ -628,25 +609,17 @@ extension SaleLocalDataSource {
         return try context.fetch(descriptor).first
     }
 
-    private func deleteRetryState(
-        for scope: SyncRetryScope,
-        in context: ModelContext
-    ) throws {
+    private func deleteRetryState(for scope: SyncRetryScope, in context: ModelContext) throws {
         if let model = try retryModel(for: scope, in: context) {
             context.delete(model)
         }
     }
 
     private func requireClean(_ context: ModelContext) throws {
-        guard !context.hasChanges else {
-            throw SaleLocalDataSourceError.contextHasUncommittedChanges
-        }
+        guard !context.hasChanges else { throw SaleLocalDataSourceError.contextHasUncommittedChanges }
     }
 
-    private func model(
-        for id: SaleID,
-        in context: ModelContext
-    ) throws -> SaleModel? {
+    private func model(for id: SaleID, in context: ModelContext) throws -> SaleModel? {
         let rawIdentifier = id.rawValue
         var descriptor = FetchDescriptor<SaleModel>(
             predicate: #Predicate { model in model.id == rawIdentifier }
@@ -655,19 +628,13 @@ extension SaleLocalDataSource {
         return try context.fetch(descriptor).first
     }
 
-    private func pendingOperations(
-        for id: SaleID,
-        in context: ModelContext
-    ) throws -> [SalePendingOperation] {
+    private func pendingOperations(for id: SaleID, in context: ModelContext) throws -> [SalePendingOperation] {
         try pendingOperations(in: context).filter {
             $0.saleID == id.rawValue
         }
     }
 
-    private func pendingUpsertModels(
-        for id: SaleID,
-        in context: ModelContext
-    ) throws -> [SalePendingUpsertModel] {
+    private func pendingUpsertModels(for id: SaleID, in context: ModelContext) throws -> [SalePendingUpsertModel] {
         let rawIdentifier = id.rawValue
         return try context.fetch(
             FetchDescriptor<SalePendingUpsertModel>(
@@ -678,10 +645,7 @@ extension SaleLocalDataSource {
         )
     }
 
-    private func pendingDiscardModels(
-        for id: SaleID,
-        in context: ModelContext
-    ) throws -> [SalePendingDiscardModel] {
+    private func pendingDiscardModels(for id: SaleID, in context: ModelContext) throws -> [SalePendingDiscardModel] {
         let rawIdentifier = id.rawValue
         return try context.fetch(
             FetchDescriptor<SalePendingDiscardModel>(
@@ -692,10 +656,7 @@ extension SaleLocalDataSource {
         )
     }
 
-    private func pendingUpsertModel(
-        operationID: UUID,
-        in context: ModelContext
-    ) throws -> SalePendingUpsertModel? {
+    private func pendingUpsertModel(operationID: UUID, in context: ModelContext) throws -> SalePendingUpsertModel? {
         var descriptor = FetchDescriptor<SalePendingUpsertModel>(
             predicate: #Predicate { model in
                 model.operationID == operationID
@@ -705,10 +666,7 @@ extension SaleLocalDataSource {
         return try context.fetch(descriptor).first
     }
 
-    private func pendingDiscardModel(
-        operationID: UUID,
-        in context: ModelContext
-    ) throws -> SalePendingDiscardModel? {
+    private func pendingDiscardModel(operationID: UUID, in context: ModelContext) throws -> SalePendingDiscardModel? {
         var descriptor = FetchDescriptor<SalePendingDiscardModel>(
             predicate: #Predicate { model in
                 model.operationID == operationID
@@ -718,10 +676,7 @@ extension SaleLocalDataSource {
         return try context.fetch(descriptor).first
     }
 
-    private func requirePendingOperation(
-        operationID: UUID,
-        in context: ModelContext
-    ) throws -> SalePendingOperation {
+    private func requirePendingOperation(operationID: UUID, in context: ModelContext) throws -> SalePendingOperation {
         if let model = try pendingUpsertModel(
             operationID: operationID,
             in: context
@@ -752,10 +707,7 @@ extension SaleLocalDataSource {
         throw SaleSyncPersistenceError.entityIdentityMismatch
     }
 
-    private func ensureOperationIdentityAvailable(
-        _ operationID: UUID,
-        in context: ModelContext
-    ) throws {
+    private func ensureOperationIdentityAvailable(_ operationID: UUID, in context: ModelContext) throws {
         guard try pendingUpsertModel(
             operationID: operationID,
             in: context
@@ -770,10 +722,7 @@ extension SaleLocalDataSource {
         }
     }
 
-    private func pendingHead(
-        from operations: [SalePendingOperation],
-        saleID: SaleID
-    ) throws -> SalePendingOperation? {
+    private func pendingHead(from operations: [SalePendingOperation], saleID: SaleID) throws -> SalePendingOperation? {
         let predecessorIDs = Set(
             operations.compactMap(\.predecessorOperationID)
         )
@@ -786,10 +735,7 @@ extension SaleLocalDataSource {
         return heads.first
     }
 
-    private func remoteState(
-        for id: SaleID,
-        in context: ModelContext
-    ) throws -> SaleRemoteStateModel? {
+    private func remoteState(for id: SaleID, in context: ModelContext) throws -> SaleRemoteStateModel? {
         let rawIdentifier = id.rawValue
         var descriptor = FetchDescriptor<SaleRemoteStateModel>(
             predicate: #Predicate { state in
@@ -800,10 +746,7 @@ extension SaleLocalDataSource {
         return try context.fetch(descriptor).first
     }
 
-    private func remoteBase(
-        for id: SaleID,
-        in context: ModelContext
-    ) throws -> SaleRemoteBase {
+    private func remoteBase(for id: SaleID, in context: ModelContext) throws -> SaleRemoteBase {
         guard let record = try remoteState(for: id, in: context)?.decodeRecord() else {
             return .absent
         }
@@ -819,10 +762,7 @@ extension SaleLocalDataSource {
         }
     }
 
-    private func hasDeletionState(
-        for id: SaleID,
-        in context: ModelContext
-    ) throws -> Bool {
+    private func hasDeletionState(for id: SaleID, in context: ModelContext) throws -> Bool {
         if try !pendingDiscardModels(for: id, in: context).isEmpty {
             return true
         }
@@ -830,10 +770,7 @@ extension SaleLocalDataSource {
             == true
     }
 
-    private func persistRemoteState(
-        _ record: SaleRemoteRecord,
-        in context: ModelContext
-    ) throws {
+    private func persistRemoteState(_ record: SaleRemoteRecord, in context: ModelContext) throws {
         let saleID = SaleID(rawValue: try record.stableSaleID())
         if let state = try remoteState(for: saleID, in: context) {
             try state.update(record: record)
@@ -842,10 +779,7 @@ extension SaleLocalDataSource {
         }
     }
 
-    private func conflict(
-        for id: SaleID,
-        in context: ModelContext
-    ) throws -> SaleSyncConflictModel? {
+    private func conflict(for id: SaleID, in context: ModelContext) throws -> SaleSyncConflictModel? {
         let rawIdentifier = id.rawValue
         var descriptor = FetchDescriptor<SaleSyncConflictModel>(
             predicate: #Predicate { conflict in
@@ -856,10 +790,7 @@ extension SaleLocalDataSource {
         return try context.fetch(descriptor).first
     }
 
-    private func removePendingChain(
-        for id: SaleID,
-        in context: ModelContext
-    ) throws {
+    private func removePendingChain(for id: SaleID, in context: ModelContext) throws {
         for model in try pendingUpsertModels(for: id, in: context) {
             context.delete(model)
         }
@@ -868,9 +799,7 @@ extension SaleLocalDataSource {
         }
     }
 
-    private func causallySorted(
-        _ operations: [SalePendingOperation]
-    ) throws -> [SalePendingOperation] {
+    private func causallySorted(_ operations: [SalePendingOperation]) throws -> [SalePendingOperation] {
         var remaining: [UUID: SalePendingOperation] = [:]
         for operation in operations {
             guard remaining[operation.operationID] == nil else {
@@ -884,9 +813,7 @@ extension SaleLocalDataSource {
 
         while !remaining.isEmpty {
             let ready = remaining.values.filter { operation in
-                guard let predecessor = operation.predecessorOperationID else {
-                    return true
-                }
+                guard let predecessor = operation.predecessorOperationID else { return true }
                 return remaining[predecessor] == nil
             }.sorted { left, right in
                 let leftKey = "\(left.saleID.uuidString)/\(left.operationID.uuidString)"
@@ -895,9 +822,7 @@ extension SaleLocalDataSource {
             }
 
             guard !ready.isEmpty else {
-                guard let remainingOperation = remaining.values.first else {
-                    return sorted
-                }
+                guard let remainingOperation = remaining.values.first else { return sorted }
                 throw SaleSyncPersistenceError.cyclicPendingLineage(
                     SaleID(rawValue: remainingOperation.saleID)
                 )
@@ -910,10 +835,7 @@ extension SaleLocalDataSource {
         return sorted
     }
 
-    private func materialize(
-        _ sale: Sale,
-        in context: ModelContext
-    ) throws {
+    private func materialize(_ sale: Sale, in context: ModelContext) throws {
         if let model = try model(for: sale.id, in: context) {
             try model.update(from: sale)
         } else {
@@ -937,9 +859,7 @@ enum SaleLocalDataSourceError: Error, Equatable {
 
 private extension SaleRemoteRecord {
     var lastOperationID: UUID? {
-        guard case .versioned(_, let lastOperationID) = version else {
-            return nil
-        }
+        guard case .versioned(_, let lastOperationID) = version else { return nil }
         return lastOperationID
     }
 }

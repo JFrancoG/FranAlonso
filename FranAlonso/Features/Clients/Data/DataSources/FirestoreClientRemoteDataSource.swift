@@ -2,20 +2,12 @@ import FirebaseFirestore
 
 /// Adapts Firestore Clients documents to the provider-neutral incremental contract.
 actor FirestoreClientRemoteDataSource: ClientRemoteDataSource {
-    private let fetchDocuments: (ClientSyncCursor?) async throws -> [
-        (documentID: String, record: ClientRemoteRecord)
-    ]
-    private let transactMutation: (
-        ClientPendingOperation
-    ) async throws -> ClientRemoteMutationResult
+    private let fetchDocuments: (ClientSyncCursor?) async throws -> [(documentID: String, record: ClientRemoteRecord)]
+    private let transactMutation: (ClientPendingOperation) async throws -> ClientRemoteMutationResult
 
     init(
-        fetch: @escaping (ClientSyncCursor?) async throws -> [
-            (documentID: String, record: ClientRemoteRecord)
-        ],
-        transact: @escaping (
-            ClientPendingOperation
-        ) async throws -> ClientRemoteMutationResult
+        fetch: @escaping (ClientSyncCursor?) async throws -> [(documentID: String, record: ClientRemoteRecord)],
+        transact: @escaping (ClientPendingOperation) async throws -> ClientRemoteMutationResult
     ) {
         fetchDocuments = fetch
         transactMutation = transact
@@ -75,9 +67,7 @@ actor FirestoreClientRemoteDataSource: ClientRemoteDataSource {
         )
     }
 
-    func fetchChanges(
-        after cursor: ClientSyncCursor?
-    ) async throws -> ClientRemoteChangeBatch {
+    func fetchChanges(after cursor: ClientSyncCursor?) async throws -> ClientRemoteChangeBatch {
         do {
             let documents = try await fetchDocuments(cursor)
             let records = try documents.map { document in
@@ -88,9 +78,7 @@ actor FirestoreClientRemoteDataSource: ClientRemoteDataSource {
                     )
                 }
                 if let sequence = document.record.changeSequence {
-                    guard sequence > 0 else {
-                        throw ClientSyncPolicyError.invalidChangeSequence
-                    }
+                    guard sequence > 0 else { throw ClientSyncPolicyError.invalidChangeSequence }
                 } else if cursor != nil {
                     throw ClientSyncPolicyError.invalidChangeSequence
                 }
@@ -110,9 +98,7 @@ actor FirestoreClientRemoteDataSource: ClientRemoteDataSource {
         }
     }
 
-    func apply(
-        _ operation: ClientPendingOperation
-    ) async throws -> ClientRemoteMutationResult {
+    func apply(_ operation: ClientPendingOperation) async throws -> ClientRemoteMutationResult {
         do {
             if case .upsert(let upsert) = operation {
                 guard UUID(uuidString: upsert.client.id) == upsert.clientID else {
@@ -132,12 +118,8 @@ extension FirestoreClientRemoteDataSource {
     /// - Throws: A typed policy error for negative or exhausted counter state.
     static func nextChangeSequence(after current: Int64?) throws -> Int64 {
         let current = current ?? 0
-        guard current >= 0 else {
-            throw ClientSyncPolicyError.invalidChangeSequence
-        }
-        guard current < Int64.max else {
-            throw ClientSyncPolicyError.changeSequenceOverflow
-        }
+        guard current >= 0 else { throw ClientSyncPolicyError.invalidChangeSequence }
+        guard current < Int64.max else { throw ClientSyncPolicyError.changeSequenceOverflow }
         return current + 1
     }
 
@@ -465,9 +447,7 @@ struct FirestoreClientDocumentDTO: Decodable {
         return sequence
     }
 
-    private func missingClientField(
-        _ key: ClientDocumentCodingKey
-    ) -> DecodingError {
+    private func missingClientField(_ key: ClientDocumentCodingKey) -> DecodingError {
         clientDocumentDecodingError(
             codingPath: [key],
             description: "A live client requires \(key.stringValue)."
@@ -533,10 +513,7 @@ private extension ClientRemoteRecord {
     }
 }
 
-private func clientDocumentDecodingError(
-    codingPath: [any CodingKey],
-    description: String
-) -> DecodingError {
+private func clientDocumentDecodingError(codingPath: [any CodingKey], description: String) -> DecodingError {
     DecodingError.dataCorrupted(
         DecodingError.Context(
             codingPath: codingPath,
@@ -552,9 +529,7 @@ private func mapFirestoreError(_ error: any Error) -> any Error {
     if error is CancellationError { return CancellationError() }
 
     let providerError = error as NSError
-    guard providerError.domain == FirestoreErrorDomain else {
-        return ClientRemoteDataSourceError.unexpected
-    }
+    guard providerError.domain == FirestoreErrorDomain else { return ClientRemoteDataSourceError.unexpected }
     switch providerError.code {
     case FirestoreErrorCode.deadlineExceeded.rawValue:
         return ClientRemoteDataSourceError.deadlineExceeded

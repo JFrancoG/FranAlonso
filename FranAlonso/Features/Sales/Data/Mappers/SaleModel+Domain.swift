@@ -124,9 +124,7 @@ extension SaleModel {
     }
 
     private func documentDTO() throws -> SaleDocumentDTO {
-        guard let documentID, let closedAtCanonical else {
-            throw SaleModelPayloadError.invalidLifecycleMetadata
-        }
+        guard let documentID, let closedAtCanonical else { throw SaleModelPayloadError.invalidLifecycleMetadata }
         return SaleDocumentDTO(
             id: documentID.uuidString,
             closedAt: try SaleTimestampDTO(canonicalString: closedAtCanonical)
@@ -134,9 +132,7 @@ extension SaleModel {
     }
 
     private func reversalDTO() throws -> SaleReversalDTO {
-        guard let reversalID, let voidedAtCanonical else {
-            throw SaleModelPayloadError.invalidLifecycleMetadata
-        }
+        guard let reversalID, let voidedAtCanonical else { throw SaleModelPayloadError.invalidLifecycleMetadata }
         return SaleReversalDTO(
             id: reversalID.uuidString,
             voidedAt: try SaleTimestampDTO(canonicalString: voidedAtCanonical)
@@ -165,9 +161,7 @@ extension SaleModel {
     }
 
     private func requireReversalAbsent() throws {
-        guard reversalID == nil, voidedAtCanonical == nil else {
-            throw SaleModelPayloadError.invalidLifecycleMetadata
-        }
+        guard reversalID == nil, voidedAtCanonical == nil else { throw SaleModelPayloadError.invalidLifecycleMetadata }
     }
 }
 

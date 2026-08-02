@@ -74,9 +74,7 @@ extension ClientPendingUpsertModel {
         if baseVersion == nil, baseData == nil {
             return .absent
         }
-        guard let baseVersion, let baseData else {
-            throw ClientPendingUpsertPayloadError.incompleteBaseMetadata
-        }
+        guard let baseVersion, let baseData else { throw ClientPendingUpsertPayloadError.incompleteBaseMetadata }
         guard baseVersion == 1 else {
             throw ClientPendingUpsertPayloadError.unsupportedBaseVersion(
                 baseVersion

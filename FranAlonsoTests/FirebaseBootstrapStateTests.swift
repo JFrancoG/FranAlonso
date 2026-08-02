@@ -13,10 +13,7 @@ struct FirebaseBootstrapStateTests {
         "The launch result becomes an explicit terminal bootstrap state",
         arguments: [(true, FirebaseBootstrapState.configured), (false, .failed)]
     )
-    func launchResultBecomesExplicitTerminalState(
-        configurationSucceeded: Bool,
-        expectedState: FirebaseBootstrapState
-    ) {
+    func launchResultBecomesExplicitTerminalState(configurationSucceeded: Bool, expectedState: FirebaseBootstrapState) {
         let delegate = AppDelegate()
 
         delegate.completeFirebaseBootstrap(configurationSucceeded: configurationSucceeded)

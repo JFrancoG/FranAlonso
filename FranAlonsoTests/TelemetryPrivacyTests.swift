@@ -157,21 +157,13 @@ private actor AnalyticsDataSourceSpy: AnalyticsDataSource {
         events.append(event)
     }
 
-    func collectionChanges() -> [Bool] {
-        collectionValues
-    }
+    func collectionChanges() -> [Bool] { collectionValues }
 
-    func loggedEvents() -> [AnalyticsEvent] {
-        events
-    }
+    func loggedEvents() -> [AnalyticsEvent] { events }
 
-    func collectionAttemptCount() -> Int {
-        collectionAttempts
-    }
+    func collectionAttemptCount() -> Int { collectionAttempts }
 
-    func logAttemptCount() -> Int {
-        logAttempts
-    }
+    func logAttemptCount() -> Int { logAttempts }
 }
 
 private actor CrashDataSourceSpy: CrashDataSource {
@@ -201,21 +193,13 @@ private actor CrashDataSourceSpy: CrashDataSource {
         diagnostics.append(diagnostic)
     }
 
-    func collectionChanges() -> [Bool] {
-        collectionValues
-    }
+    func collectionChanges() -> [Bool] { collectionValues }
 
-    func recordedDiagnostics() -> [CrashDiagnostic] {
-        diagnostics
-    }
+    func recordedDiagnostics() -> [CrashDiagnostic] { diagnostics }
 
-    func collectionAttemptCount() -> Int {
-        collectionAttempts
-    }
+    func collectionAttemptCount() -> Int { collectionAttempts }
 
-    func recordAttemptCount() -> Int {
-        recordAttempts
-    }
+    func recordAttemptCount() -> Int { recordAttempts }
 }
 
 private actor SuspendingCrashDataSource: CrashDataSource {
@@ -245,9 +229,7 @@ private actor SuspendingCrashDataSource: CrashDataSource {
     func record(_ diagnostic: CrashDiagnostic) {}
 
     func waitUntilEnableIsSuspended() async {
-        guard enableContinuation == nil else {
-            return
-        }
+        guard enableContinuation == nil else { return }
 
         await withCheckedContinuation { continuation in
             enableWaiters.append(continuation)
@@ -255,9 +237,7 @@ private actor SuspendingCrashDataSource: CrashDataSource {
     }
 
     func waitUntilDisableIsApplied() async {
-        guard !collectionValues.contains(false) else {
-            return
-        }
+        guard !collectionValues.contains(false) else { return }
 
         await withCheckedContinuation { continuation in
             disableWaiters.append(continuation)
@@ -270,7 +250,5 @@ private actor SuspendingCrashDataSource: CrashDataSource {
         continuation?.resume()
     }
 
-    func lastCollectionValue() -> Bool? {
-        collectionValues.last
-    }
+    func lastCollectionValue() -> Bool? { collectionValues.last }
 }

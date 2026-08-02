@@ -89,9 +89,7 @@ extension AuthenticationPreviewFixtures {
 private struct AuthenticationPreviewRepository: AuthenticationRepository {
     let session: AuthenticationSession
 
-    func signIn(email: String, password: String) async throws -> AuthenticationSession {
-        session
-    }
+    func signIn(email: String, password: String) async throws -> AuthenticationSession { session }
 
     func signOut() async throws {}
 
@@ -107,9 +105,7 @@ private struct AuthenticationPreviewRepository: AuthenticationRepository {
 private struct AuthenticationSignedOutPreviewRepository: AuthenticationRepository {
     let session: AuthenticationSession
 
-    func signIn(email: String, password: String) async throws -> AuthenticationSession {
-        session
-    }
+    func signIn(email: String, password: String) async throws -> AuthenticationSession { session }
 
     func signOut() async throws {}
 
@@ -123,9 +119,7 @@ private struct AuthenticationSignedOutPreviewRepository: AuthenticationRepositor
 private struct AuthenticationFinishedPreviewRepository: AuthenticationRepository {
     let session: AuthenticationSession
 
-    func signIn(email: String, password: String) async throws -> AuthenticationSession {
-        session
-    }
+    func signIn(email: String, password: String) async throws -> AuthenticationSession { session }
 
     func signOut() async throws {}
 

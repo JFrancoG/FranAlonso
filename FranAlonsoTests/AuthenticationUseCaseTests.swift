@@ -253,10 +253,7 @@ private actor AuthenticationRepositoryFake: AuthenticationRepository {
         self.signInGate = signInGate
     }
 
-    func signIn(
-        email: String,
-        password: String
-    ) async throws -> AuthenticationSession {
+    func signIn(email: String, password: String) async throws -> AuthenticationSession {
         recordedSignInRequests.append(
             AuthenticationSignInRequest(email: email, password: password)
         )
@@ -300,17 +297,11 @@ private actor AuthenticationRepositoryFake: AuthenticationRepository {
         }
     }
 
-    func signInRequests() -> [AuthenticationSignInRequest] {
-        recordedSignInRequests
-    }
+    func signInRequests() -> [AuthenticationSignInRequest] { recordedSignInRequests }
 
-    func signOutCallCount() -> Int {
-        signOutCalls
-    }
+    func signOutCallCount() -> Int { signOutCalls }
 
-    func observationCallCount() -> Int {
-        observationCalls
-    }
+    func observationCallCount() -> Int { observationCalls }
 }
 
 private actor AuthenticationTestGate {
@@ -346,8 +337,6 @@ private actor AuthenticationTestGate {
 
 private func requireAuthenticationSendable<Value: Sendable>(_ value: Value) {}
 
-private func requireAuthenticationRepositorySendable(
-    _ repository: any AuthenticationRepository
-) {
+private func requireAuthenticationRepositorySendable(_ repository: any AuthenticationRepository) {
     requireAuthenticationSendable(repository)
 }

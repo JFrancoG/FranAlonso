@@ -19,15 +19,11 @@ struct LoginScreen: View {
         }
         .navigationTitle(Text(.authenticationLoginTitle))
         .task(id: signInRequestID) {
-            guard let requestID = signInRequestID else {
-                return
-            }
+            guard let requestID = signInRequestID else { return }
 
             await viewModel.signIn()
 
-            guard signInRequestID == requestID else {
-                return
-            }
+            guard signInRequestID == requestID else { return }
 
             if case let .succeeded(session) = viewModel.state {
                 onSignInSucceeded(session)

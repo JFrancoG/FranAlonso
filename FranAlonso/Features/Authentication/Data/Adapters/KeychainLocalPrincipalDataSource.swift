@@ -57,9 +57,7 @@ struct KeychainLocalPrincipalDataSource {
             throw LocalPrincipalAuthorizationError.localStoreUnavailable
         }
 
-        guard isPristine else {
-            throw LocalPrincipalAuthorizationError.localStoreNotPristine
-        }
+        guard isPristine else { throw LocalPrincipalAuthorizationError.localStoreNotPristine }
         try Task.checkCancellation()
 
         switch await addBindingOperation(principalData) {
@@ -78,9 +76,7 @@ struct KeychainLocalPrincipalDataSource {
     }
 
     private static func requireMatch(_ storedData: Data, principalData: Data) throws {
-        guard storedData == principalData else {
-            throw LocalPrincipalAuthorizationError.differentPrincipal
-        }
+        guard storedData == principalData else { throw LocalPrincipalAuthorizationError.differentPrincipal }
     }
 }
 
@@ -126,9 +122,7 @@ private extension KeychainLocalPrincipalDataSource {
         var result: CFTypeRef?
         switch SecItemCopyMatching(query as CFDictionary, &result) {
         case errSecSuccess:
-            guard let data = result as? Data else {
-                return .failed
-            }
+            guard let data = result as? Data else { return .failed }
             return .found(data)
         case errSecItemNotFound:
             return .missing

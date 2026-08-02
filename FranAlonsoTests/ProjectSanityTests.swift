@@ -14,9 +14,7 @@ import Testing
 #error("FranAlonsoTests must compile in Swift 6 language mode")
 #endif
 
-private func defaultIsolationFixture() -> Int {
-    42
-}
+private func defaultIsolationFixture() -> Int { 42 }
 
 @Suite("Project sanity")
 @MainActor

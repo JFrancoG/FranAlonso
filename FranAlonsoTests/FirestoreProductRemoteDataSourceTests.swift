@@ -9,9 +9,7 @@ struct FirestoreProductRemoteDataSourceTests {
         "Environments resolve Products and sync metadata paths",
         arguments: [FirestoreEnvironment.develop, .production]
     )
-    func environmentsResolveApprovedPaths(
-        _ environment: FirestoreEnvironment
-    ) {
+    func environmentsResolveApprovedPaths(_ environment: FirestoreEnvironment) {
         #expect(
             environment.collectionPath(for: .products)
                 == "\(environment.rawValue)/collections/products"
@@ -336,9 +334,7 @@ private actor FirestoreFetchGate {
 
     var receivedCursors: [ProductSyncCursor?] { cursors }
 
-    func fetch(
-        after cursor: ProductSyncCursor?
-    ) -> [(documentID: String, record: ProductRemoteRecord)] {
+    func fetch(after cursor: ProductSyncCursor?) -> [(documentID: String, record: ProductRemoteRecord)] {
         cursors.append(cursor)
         return [(documentID: record.id, record: record)]
     }
@@ -347,16 +343,11 @@ private actor FirestoreFetchGate {
 private actor FirestoreTransactionGate {
     private var operations: [ProductPendingOperation] = []
     private var receivedContinuations: [CheckedContinuation<Void, Never>] = []
-    private var acknowledgementContinuation: CheckedContinuation<
-        ProductRemoteMutationResult,
-        Never
-    >?
+    private var acknowledgementContinuation: CheckedContinuation<ProductRemoteMutationResult, Never>?
 
     var receivedOperations: [ProductPendingOperation] { operations }
 
-    func transact(
-        operation: ProductPendingOperation
-    ) async -> ProductRemoteMutationResult {
+    func transact(operation: ProductPendingOperation) async -> ProductRemoteMutationResult {
         operations.append(operation)
         receivedContinuations.forEach { $0.resume() }
         receivedContinuations.removeAll()

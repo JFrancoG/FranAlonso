@@ -414,15 +414,10 @@ private actor SaleSyncRemoteFake: SaleRemoteDataSource {
     private var changeSequence: Int64
     private var cursors: [SaleSyncCursor?] = []
 
-    init(
-        records: [SaleRemoteRecord] = [],
-        acknowledgementGate: SaleSyncAcknowledgementGate? = nil
-    ) {
+    init(records: [SaleRemoteRecord] = [], acknowledgementGate: SaleSyncAcknowledgementGate? = nil) {
         self.records = Dictionary(
             uniqueKeysWithValues: records.compactMap { record in
-                guard let identifier = UUID(uuidString: record.id) else {
-                    return nil
-                }
+                guard let identifier = UUID(uuidString: record.id) else { return nil }
                 return (identifier, record)
             }
         )
@@ -434,9 +429,7 @@ private actor SaleSyncRemoteFake: SaleRemoteDataSource {
     var receivedOperationIDs: [UUID] { operationIDs }
     var requestedCursors: [SaleSyncCursor?] { cursors }
 
-    func fetchChanges(
-        after cursor: SaleSyncCursor?
-    ) async throws -> SaleRemoteChangeBatch {
+    func fetchChanges(after cursor: SaleSyncCursor?) async throws -> SaleRemoteChangeBatch {
         cursors.append(cursor)
         let records = records.values.filter { record in
             guard let cursor else { return true }
@@ -448,9 +441,7 @@ private actor SaleSyncRemoteFake: SaleRemoteDataSource {
         )
     }
 
-    func apply(
-        _ operation: SalePendingOperation
-    ) async throws -> SaleRemoteMutationResult {
+    func apply(_ operation: SalePendingOperation) async throws -> SaleRemoteMutationResult {
         operationIDs.append(operation.operationID)
         let currentRecord = records[operation.saleID]
         switch policy.decision(for: operation, against: currentRecord) {
@@ -487,18 +478,14 @@ private actor SaleSyncFailingPushRemote: SaleRemoteDataSource {
         self.record = record
     }
 
-    func fetchChanges(
-        after cursor: SaleSyncCursor?
-    ) async throws -> SaleRemoteChangeBatch {
+    func fetchChanges(after cursor: SaleSyncCursor?) async throws -> SaleRemoteChangeBatch {
         SaleRemoteChangeBatch(
             records: cursor == nil ? [record] : [],
             nextCursor: SaleSyncCursor(changeSequence: 1)
         )
     }
 
-    func apply(
-        _ operation: SalePendingOperation
-    ) async throws -> SaleRemoteMutationResult {
+    func apply(_ operation: SalePendingOperation) async throws -> SaleRemoteMutationResult {
         throw SaleRemoteDataSourceError.unavailable
     }
 }
@@ -507,25 +494,19 @@ private actor SaleSyncDeleteThenFailRemote: SaleRemoteDataSource {
     private var changeSequence: Int64 = 0
     private var mutationCount = 0
 
-    func fetchChanges(
-        after cursor: SaleSyncCursor?
-    ) async throws -> SaleRemoteChangeBatch {
+    func fetchChanges(after cursor: SaleSyncCursor?) async throws -> SaleRemoteChangeBatch {
         SaleRemoteChangeBatch(
             records: [],
             nextCursor: cursor ?? SaleSyncCursor(changeSequence: 0)
         )
     }
 
-    func apply(
-        _ operation: SalePendingOperation
-    ) async throws -> SaleRemoteMutationResult {
+    func apply(_ operation: SalePendingOperation) async throws -> SaleRemoteMutationResult {
         mutationCount += 1
         if mutationCount > 1 {
             throw SaleRemoteDataSourceError.unavailable
         }
-        guard case .discard(let delete) = operation else {
-            throw SaleRemoteDataSourceError.unexpected
-        }
+        guard case .discard(let delete) = operation else { throw SaleRemoteDataSourceError.unexpected }
         changeSequence += 1
         return .applied(
             SaleRemoteRecord(
@@ -550,18 +531,14 @@ private actor SaleSyncPushConflictRemote: SaleRemoteDataSource {
 
     var receivedOperationIDs: [UUID] { operationIDs }
 
-    func fetchChanges(
-        after cursor: SaleSyncCursor?
-    ) async throws -> SaleRemoteChangeBatch {
+    func fetchChanges(after cursor: SaleSyncCursor?) async throws -> SaleRemoteChangeBatch {
         SaleRemoteChangeBatch(
             records: [],
             nextCursor: cursor ?? SaleSyncCursor(changeSequence: 0)
         )
     }
 
-    func apply(
-        _ operation: SalePendingOperation
-    ) async throws -> SaleRemoteMutationResult {
+    func apply(_ operation: SalePendingOperation) async throws -> SaleRemoteMutationResult {
         operationIDs.append(operation.operationID)
         return .conflict(.baseChanged, record)
     }
@@ -573,9 +550,7 @@ private actor SaleSyncAcknowledgementGate {
     private var releaseContinuation: CheckedContinuation<Void, Never>?
 
     func blockOnce() async {
-        guard shouldBlock else {
-            return
-        }
+        guard shouldBlock else { return }
         shouldBlock = false
         blockedWaiters.forEach { $0.resume() }
         blockedWaiters.removeAll()
@@ -585,9 +560,7 @@ private actor SaleSyncAcknowledgementGate {
     }
 
     func waitUntilBlocked() async {
-        guard shouldBlock else {
-            return
-        }
+        guard shouldBlock else { return }
         await withCheckedContinuation { continuation in
             blockedWaiters.append(continuation)
         }

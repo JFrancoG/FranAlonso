@@ -60,9 +60,7 @@ extension BiometricAuthenticator {
                 }
 
                 try Task.checkCancellation()
-                guard authorized else {
-                    throw BiometricAuthenticationError.denied
-                }
+                guard authorized else { throw BiometricAuthenticationError.denied }
             }
         )
     }
@@ -130,9 +128,7 @@ private extension BiometricAuthenticator {
         }
 
         let providerError = error as NSError
-        guard providerError.domain == LAError.errorDomain else {
-            return .unexpected
-        }
+        guard providerError.domain == LAError.errorDomain else { return .unexpected }
 
         return switch providerError.code {
         case LAError.Code.authenticationFailed.rawValue:

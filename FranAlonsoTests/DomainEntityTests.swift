@@ -149,10 +149,7 @@ private struct ServicePayload: Codable {
     let status: ServiceStatus
 }
 
-private func makeService(
-    type: ServiceType,
-    linkedProductID: ProductID? = nil
-) throws -> Service {
+private func makeService(type: ServiceType, linkedProductID: ProductID? = nil) throws -> Service {
     try Service(
         id: ServiceID(rawValue: fixedUUID()),
         name: "Corte y peinado",

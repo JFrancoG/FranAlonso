@@ -39,9 +39,7 @@ final class LoginViewModel {
     /// The password is cleared only after success. Cooperative cancellation restores `idle`,
     /// while provider failures become stable presentation categories.
     func signIn() async {
-        guard state != .loading else {
-            return
-        }
+        guard state != .loading else { return }
 
         state = .loading
 

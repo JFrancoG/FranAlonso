@@ -74,29 +74,19 @@ struct ClientSyncPolicy {
         decision(for: .upsert(operation), against: remoteRecord)
     }
 
-    private func identifiersMatch(
-        _ operation: ClientPendingOperation,
-        remoteRecord: ClientRemoteRecord?
-    ) -> Bool {
+    private func identifiersMatch(_ operation: ClientPendingOperation, remoteRecord: ClientRemoteRecord?) -> Bool {
         switch operation {
         case .upsert(let upsert):
-            guard UUID(uuidString: upsert.client.id) == upsert.clientID else {
-                return false
-            }
+            guard UUID(uuidString: upsert.client.id) == upsert.clientID else { return false }
         case .delete:
             break
         }
 
-        guard let remoteRecord else {
-            return true
-        }
+        guard let remoteRecord else { return true }
         return UUID(uuidString: remoteRecord.id) == operation.clientID
     }
 
-    private func rootBaseMatches(
-        _ base: ClientRemoteBase,
-        remoteRecord: ClientRemoteRecord?
-    ) -> Bool {
+    private func rootBaseMatches(_ base: ClientRemoteBase, remoteRecord: ClientRemoteRecord?) -> Bool {
         switch (base, remoteRecord) {
         case (.absent, nil):
             true
@@ -145,9 +135,7 @@ struct ClientSyncPolicy {
         )
     }
 
-    private func desiredContent(
-        for operation: ClientPendingOperation
-    ) -> ClientRemoteContent {
+    private func desiredContent(for operation: ClientPendingOperation) -> ClientRemoteContent {
         switch operation {
         case .upsert(let upsert):
             .live(upsert.client)
@@ -159,16 +147,12 @@ struct ClientSyncPolicy {
 
 private extension ClientRemoteRecord {
     var revision: Int64? {
-        guard case .versioned(let revision, _) = version else {
-            return nil
-        }
+        guard case .versioned(let revision, _) = version else { return nil }
         return revision
     }
 
     var lastOperationID: UUID? {
-        guard case .versioned(_, let lastOperationID) = version else {
-            return nil
-        }
+        guard case .versioned(_, let lastOperationID) = version else { return nil }
         return lastOperationID
     }
 }

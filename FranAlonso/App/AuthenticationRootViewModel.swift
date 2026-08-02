@@ -152,9 +152,7 @@ final class AuthenticationRootViewModel {
     /// Late results are ignored unless their authorization revision, principal and evidence still
     /// match the current authoritative state.
     func authorizeLocalAccessIfNeeded() async {
-        guard let request = authorizationRequest else {
-            return
-        }
+        guard let request = authorizationRequest else { return }
         if case let .authorizing(principalID, localAccessRevision) = localAccessState,
            principalID == request.session.id,
            localAccessRevision == request.localAccessRevision {
@@ -224,20 +222,14 @@ final class AuthenticationRootViewModel {
     }
 
     private func performAuthorization(
-        _ request: (
-            session: AuthenticationSession,
-            evidence: AccessEvidence,
-            localAccessRevision: Int
-        )
+        _ request: (session: AuthenticationSession, evidence: AccessEvidence, localAccessRevision: Int)
     ) async {
         let revision = authorizationRevision
 
         do {
             try await authorizeLocalPrincipalUseCase(session: request.session)
             try Task.checkCancellation()
-            guard authorizationRevision == revision, evidenceIsCurrent(request) else {
-                return
-            }
+            guard authorizationRevision == revision, evidenceIsCurrent(request) else { return }
 
             localAccessState = .authorized(request.session, request.localAccessRevision)
             if case .recentCredentials = request.evidence {
@@ -269,15 +261,9 @@ final class AuthenticationRootViewModel {
     }
 
     private func evidenceIsCurrent(
-        _ request: (
-            session: AuthenticationSession,
-            evidence: AccessEvidence,
-            localAccessRevision: Int
-        )
+        _ request: (session: AuthenticationSession, evidence: AccessEvidence, localAccessRevision: Int)
     ) -> Bool {
-        guard sessionViewModel.localAccessRevision == request.localAccessRevision else {
-            return false
-        }
+        guard sessionViewModel.localAccessRevision == request.localAccessRevision else { return false }
 
         switch (sessionViewModel.state, request.evidence) {
         case let (.locked(currentSession, _), .recentCredentials(proof)),
@@ -290,10 +276,7 @@ final class AuthenticationRootViewModel {
         }
     }
 
-    private func protectedState(
-        for session: AuthenticationSession,
-        allowsBiometricEvidence: Bool
-    ) -> State {
+    private func protectedState(for session: AuthenticationSession, allowsBiometricEvidence: Bool) -> State {
         let localAccessRevision = sessionViewModel.localAccessRevision
 
         switch localAccessState {

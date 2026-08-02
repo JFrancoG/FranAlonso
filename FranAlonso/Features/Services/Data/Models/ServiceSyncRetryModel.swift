@@ -36,9 +36,7 @@ extension ServiceSyncRetryModel {
 
     /// Replaces this scope's schedule without changing its durable identity.
     func update(with state: SyncRetryState) throws {
-        guard scopeID == state.scope.storageID else {
-            throw SyncRetryPolicyError.scopeMismatch
-        }
+        guard scopeID == state.scope.storageID else { throw SyncRetryPolicyError.scopeMismatch }
         backoffStep = state.backoffStep
         notBefore = state.notBefore
         lastRecoverableCategoryRawValue = state
@@ -49,9 +47,7 @@ extension ServiceSyncRetryModel {
     func decodeState(
         for scope: SyncRetryScope
     ) throws -> SyncRetryState {
-        guard scopeID == scope.storageID else {
-            throw SyncRetryPolicyError.scopeMismatch
-        }
+        guard scopeID == scope.storageID else { throw SyncRetryPolicyError.scopeMismatch }
         guard let category = SyncRetryCategory(
             rawValue: lastRecoverableCategoryRawValue
         ) else {

@@ -343,9 +343,7 @@ private actor RetryPullRemote: ClientRemoteDataSource {
 
     var fetchCount: Int { calls }
 
-    func fetchChanges(
-        after cursor: ClientSyncCursor?
-    ) async throws -> ClientRemoteChangeBatch {
+    func fetchChanges(after cursor: ClientSyncCursor?) async throws -> ClientRemoteChangeBatch {
         calls += 1
         if calls <= failuresBeforeSuccess {
             throw ClientRemoteDataSourceError.unavailable
@@ -356,9 +354,7 @@ private actor RetryPullRemote: ClientRemoteDataSource {
         )
     }
 
-    func apply(
-        _ operation: ClientPendingOperation
-    ) async throws -> ClientRemoteMutationResult {
+    func apply(_ operation: ClientPendingOperation) async throws -> ClientRemoteMutationResult {
         throw ClientRemoteDataSourceError.unexpected
     }
 }
@@ -375,18 +371,14 @@ private actor RetryOperationsRemote: ClientRemoteDataSource {
 
     var receivedOperationIDs: [UUID] { received }
 
-    func fetchChanges(
-        after cursor: ClientSyncCursor?
-    ) async throws -> ClientRemoteChangeBatch {
+    func fetchChanges(after cursor: ClientSyncCursor?) async throws -> ClientRemoteChangeBatch {
         ClientRemoteChangeBatch(
             records: [],
             nextCursor: cursor ?? ClientSyncCursor(changeSequence: 0)
         )
     }
 
-    func apply(
-        _ operation: ClientPendingOperation
-    ) async throws -> ClientRemoteMutationResult {
+    func apply(_ operation: ClientPendingOperation) async throws -> ClientRemoteMutationResult {
         received.append(operation.operationID)
         let count = attempts[operation.operationID, default: 0] + 1
         attempts[operation.operationID] = count
@@ -412,16 +404,12 @@ private actor RetryDefinitivePullRemote: ClientRemoteDataSource {
 
     var fetchCount: Int { calls }
 
-    func fetchChanges(
-        after cursor: ClientSyncCursor?
-    ) async throws -> ClientRemoteChangeBatch {
+    func fetchChanges(after cursor: ClientSyncCursor?) async throws -> ClientRemoteChangeBatch {
         calls += 1
         throw ClientRemoteDataSourceError.permissionDenied
     }
 
-    func apply(
-        _ operation: ClientPendingOperation
-    ) async throws -> ClientRemoteMutationResult {
+    func apply(_ operation: ClientPendingOperation) async throws -> ClientRemoteMutationResult {
         throw ClientRemoteDataSourceError.unexpected
     }
 }
@@ -443,9 +431,7 @@ private actor RetryGatedPullRemote: ClientRemoteDataSource {
 
     var fetchCount: Int { calls }
 
-    func fetchChanges(
-        after cursor: ClientSyncCursor?
-    ) async throws -> ClientRemoteChangeBatch {
+    func fetchChanges(after cursor: ClientSyncCursor?) async throws -> ClientRemoteChangeBatch {
         calls += 1
         await gate.block()
         switch outcome {
@@ -459,9 +445,7 @@ private actor RetryGatedPullRemote: ClientRemoteDataSource {
         }
     }
 
-    func apply(
-        _ operation: ClientPendingOperation
-    ) async throws -> ClientRemoteMutationResult {
+    func apply(_ operation: ClientPendingOperation) async throws -> ClientRemoteMutationResult {
         throw ClientRemoteDataSourceError.unexpected
     }
 }
@@ -477,9 +461,7 @@ private actor RetryCommittedMutationRemote: ClientRemoteDataSource {
 
     var applyCount: Int { applies }
 
-    func fetchChanges(
-        after cursor: ClientSyncCursor?
-    ) async throws -> ClientRemoteChangeBatch {
+    func fetchChanges(after cursor: ClientSyncCursor?) async throws -> ClientRemoteChangeBatch {
         let records: [ClientRemoteRecord]
         if let record,
            (record.changeSequence ?? 0) > (cursor?.changeSequence ?? -1) {
@@ -495,9 +477,7 @@ private actor RetryCommittedMutationRemote: ClientRemoteDataSource {
         )
     }
 
-    func apply(
-        _ operation: ClientPendingOperation
-    ) async throws -> ClientRemoteMutationResult {
+    func apply(_ operation: ClientPendingOperation) async throws -> ClientRemoteMutationResult {
         applies += 1
         let committed = ClientRemoteRecord(
             content: retryDesiredContent(for: operation),
@@ -589,9 +569,7 @@ private func retryEngineUUID(_ value: String) -> UUID {
     UUID(uuidString: value)!
 }
 
-private func retryDesiredContent(
-    for operation: ClientPendingOperation
-) -> ClientRemoteContent {
+private func retryDesiredContent(for operation: ClientPendingOperation) -> ClientRemoteContent {
     switch operation {
     case .upsert(let upsert):
         .live(upsert.client)

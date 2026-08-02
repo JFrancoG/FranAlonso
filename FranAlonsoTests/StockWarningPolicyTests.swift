@@ -43,9 +43,7 @@ struct StockWarningPolicyTests {
         "Warns without rejecting insufficient stock",
         arguments: [0, -2]
     )
-    func warnsWithoutRejectingInsufficientStock(
-        availableQuantity: Int
-    ) throws {
+    func warnsWithoutRejectingInsufficientStock(availableQuantity: Int) throws {
         let productID = stockProductID("30000000-0000-0000-0000-000000000001")
         let line = try stockLine(productID: productID, quantity: 1)
 

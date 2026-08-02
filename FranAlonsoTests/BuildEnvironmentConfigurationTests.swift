@@ -225,11 +225,7 @@ private struct FirebaseServiceConfiguration: Decodable {
     }
 }
 
-private func verifyScheme(
-    named schemeName: String,
-    debugConfiguration: String,
-    releaseConfiguration: String
-) throws {
+private func verifyScheme(named schemeName: String, debugConfiguration: String, releaseConfiguration: String) throws {
     let scheme = try repositoryFile(
         at: "FranAlonso.xcodeproj/xcshareddata/xcschemes/\(schemeName).xcscheme"
     )

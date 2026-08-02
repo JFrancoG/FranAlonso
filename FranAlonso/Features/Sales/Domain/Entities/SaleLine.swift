@@ -34,9 +34,7 @@ struct SaleLine: Identifiable, Codable, Equatable {
     ///
     /// - Throws: `SaleLineError.invalidTransition` if the line is not upcoming.
     mutating func start() throws {
-        guard status == .upcoming else {
-            throw SaleLineError.invalidTransition
-        }
+        guard status == .upcoming else { throw SaleLineError.invalidTransition }
 
         storedStatus = .inProgress
     }
@@ -45,9 +43,7 @@ struct SaleLine: Identifiable, Codable, Equatable {
     ///
     /// - Throws: `SaleLineError.invalidTransition` if the line is not in progress.
     mutating func complete() throws {
-        guard status == .inProgress else {
-            throw SaleLineError.invalidTransition
-        }
+        guard status == .inProgress else { throw SaleLineError.invalidTransition }
 
         storedStatus = .completed
     }
@@ -141,9 +137,7 @@ extension SaleLine {
         linkedProductID: ProductID?,
         status: SaleLineStatus
     ) throws {
-        guard quantity > 0 else {
-            throw SaleLineError.invalidQuantity
-        }
+        guard quantity > 0 else { throw SaleLineError.invalidQuantity }
 
         self.init(
             id: id,

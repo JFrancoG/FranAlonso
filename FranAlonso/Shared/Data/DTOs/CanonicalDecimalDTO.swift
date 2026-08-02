@@ -30,9 +30,7 @@ extension CanonicalDecimalDTO {
     /// - Parameter decimal: The decimal value to preserve.
     /// - Throws: `CanonicalDecimalDTOError.invalidValue` when the value is not a number.
     init(_ decimal: Decimal) throws {
-        guard !decimal.isNaN else {
-            throw CanonicalDecimalDTOError.invalidValue
-        }
+        guard !decimal.isNaN else { throw CanonicalDecimalDTOError.invalidValue }
         self.init(storedDecimal: decimal)
     }
 

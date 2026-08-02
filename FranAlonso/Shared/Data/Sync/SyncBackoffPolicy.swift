@@ -20,9 +20,7 @@ struct SyncBackoffPolicy {
               (1...2).contains(jitterFactor) else {
             throw SyncRetryPolicyError.invalidJitterFactor
         }
-        guard failedAt.timeIntervalSinceReferenceDate.isFinite else {
-            throw SyncRetryPolicyError.invalidDeadline
-        }
+        guard failedAt.timeIntervalSinceReferenceDate.isFinite else { throw SyncRetryPolicyError.invalidDeadline }
 
         let step = min((previous?.backoffStep ?? 0) + 1, 6)
         let exponentialSeconds = Double(1 << (step - 1))

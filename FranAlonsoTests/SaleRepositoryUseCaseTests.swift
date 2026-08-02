@@ -59,10 +59,7 @@ private actor SaleRepositoryFake: SaleRepository {
     private var saveCalls = 0
     private var persistedSales: [Sale] = []
 
-    init(
-        sales: [Sale],
-        saveError: RepositoryUseCaseTestError? = nil
-    ) {
+    init(sales: [Sale], saveError: RepositoryUseCaseTestError? = nil) {
         self.sales = sales
         self.saveError = saveError
     }
@@ -84,17 +81,11 @@ private actor SaleRepositoryFake: SaleRepository {
         persistedSales.append(sale)
     }
 
-    func observationCallCount() -> Int {
-        observationCalls
-    }
+    func observationCallCount() -> Int { observationCalls }
 
-    func saveCallCount() -> Int {
-        saveCalls
-    }
+    func saveCallCount() -> Int { saveCalls }
 
-    func savedSales() -> [Sale] {
-        persistedSales
-    }
+    func savedSales() -> [Sale] { persistedSales }
 }
 
 private func repositorySale() throws -> Sale {

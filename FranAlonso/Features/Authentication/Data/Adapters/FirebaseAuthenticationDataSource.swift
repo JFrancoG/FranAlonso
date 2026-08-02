@@ -6,19 +6,11 @@ import Foundation
 /// Credentials are forwarded ephemerally and never retained. Provider identities are reduced to
 /// opaque `AuthenticationSession` values before leaving the Data adapter boundary.
 struct FirebaseAuthenticationDataSource: AuthenticationDataSource {
-    private let signInOperation: @Sendable (
-        String,
-        String
-    ) async throws -> String
+    private let signInOperation: @Sendable (String, String) async throws -> String
     private let signOutOperation: @Sendable () throws -> Void
-    private let makeSessionStream: @Sendable () -> AsyncStream<
-        AuthenticationSession?
-    >
+    private let makeSessionStream: @Sendable () -> AsyncStream<AuthenticationSession?>
 
-    func signIn(
-        email: String,
-        password: String
-    ) async throws -> AuthenticationSession {
+    func signIn(email: String, password: String) async throws -> AuthenticationSession {
         do {
             let principalID = try await signInOperation(email, password)
             return AuthenticationSession(id: principalID)

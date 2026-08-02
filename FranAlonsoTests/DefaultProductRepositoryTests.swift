@@ -465,10 +465,7 @@ private struct PersistedProductState: Equatable {
     let payload: ProductDTO
 }
 
-private func makeRepository(
-    container: ModelContainer,
-    operationID: UUID
-) -> DefaultProductRepository {
+private func makeRepository(container: ModelContainer, operationID: UUID) -> DefaultProductRepository {
     DefaultProductRepository(
         persistenceActor: ProductPersistenceActor(modelContainer: container),
         observationSignal: ProductObservationSignal(),

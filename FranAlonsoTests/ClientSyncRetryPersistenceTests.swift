@@ -290,10 +290,7 @@ private func retryPersistenceContainer() throws -> ModelContainer {
     try ModelContainer.inMemory(for: .franAlonso)
 }
 
-private func retryPersistenceState(
-    scope: SyncRetryScope,
-    step: Int
-) throws -> SyncRetryState {
+private func retryPersistenceState(scope: SyncRetryScope, step: Int) throws -> SyncRetryState {
     try SyncRetryState(
         scope: scope,
         backoffStep: step,

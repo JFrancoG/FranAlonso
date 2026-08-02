@@ -383,10 +383,7 @@ private actor LocalAuthorizationFake {
     private let error: LocalPrincipalAuthorizationError?
     private(set) var sessions: [AuthenticationSession] = []
 
-    init(
-        gate: AuthorizationGate? = nil,
-        error: LocalPrincipalAuthorizationError? = nil
-    ) {
+    init(gate: AuthorizationGate? = nil, error: LocalPrincipalAuthorizationError? = nil) {
         self.gate = gate
         self.error = error
     }
@@ -474,7 +471,9 @@ private func cancelRootObservation(_ task: Task<Void, Never>) async {
 }
 
 @MainActor
-private func waitUntil(_ condition: @MainActor () -> Bool) async {
+private func waitUntil(
+    _ condition: @MainActor () -> Bool
+) async {
     for _ in 0..<10_000 {
         if condition() {
             return

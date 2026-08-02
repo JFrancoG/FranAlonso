@@ -78,9 +78,7 @@ extension SaleDTO {
                 throw SaleMappingError.invalidLifecycle
             }
             try replayLineProgress(in: &sale)
-            guard sale.status == .inProgress else {
-                throw SaleMappingError.invalidLifecycle
-            }
+            guard sale.status == .inProgress else { throw SaleMappingError.invalidLifecycle }
         case .awaitingPayment:
             try replayCompletedLines(in: &sale)
         case let .awaitingDocument(payment):
@@ -139,9 +137,7 @@ extension SaleDTO {
             throw SaleMappingError.invalidLifecycle
         }
         try replayLineProgress(in: &sale)
-        guard sale.status == .awaitingPayment else {
-            throw SaleMappingError.invalidLifecycle
-        }
+        guard sale.status == .awaitingPayment else { throw SaleMappingError.invalidLifecycle }
     }
 
     private func replayLineProgress(in sale: inout Sale) throws {
@@ -307,10 +303,7 @@ private extension SalePaymentMethodDTO {
     }
 }
 
-private func saleUUID(
-    _ rawValue: String,
-    location: SaleIdentifierLocation
-) throws -> UUID {
+private func saleUUID(_ rawValue: String, location: SaleIdentifierLocation) throws -> UUID {
     guard let identifier = UUID(uuidString: rawValue) else {
         throw SaleMappingError.invalidIdentifier(
             rawValue,

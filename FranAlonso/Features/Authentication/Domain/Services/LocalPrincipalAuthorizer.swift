@@ -32,9 +32,7 @@ struct LocalPrincipalAuthorizer {
     /// - Throws: `CancellationError` or a `LocalPrincipalAuthorizationError`.
     func authorize(_ session: AuthenticationSession) async throws {
         try Task.checkCancellation()
-        guard !session.id.isEmpty else {
-            throw LocalPrincipalAuthorizationError.unexpected
-        }
+        guard !session.id.isEmpty else { throw LocalPrincipalAuthorizationError.unexpected }
 
         try await authorizeOperation(session)
         try Task.checkCancellation()

@@ -57,17 +57,11 @@ private actor ServiceRepositoryFake: ServiceRepository {
         persistedServices.append(service)
     }
 
-    func observationCallCount() -> Int {
-        observationCalls
-    }
+    func observationCallCount() -> Int { observationCalls }
 
-    func saveCallCount() -> Int {
-        saveCalls
-    }
+    func saveCallCount() -> Int { saveCalls }
 
-    func savedServices() -> [Service] {
-        persistedServices
-    }
+    func savedServices() -> [Service] { persistedServices }
 }
 
 private func repositoryService() throws -> Service {

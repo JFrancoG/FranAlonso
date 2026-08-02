@@ -70,9 +70,7 @@ extension Money {
     ///   - currency: The currency that determines the minor-unit scale.
     /// - Throws: `MoneyError.invalidAmount` when `amount` is not a number.
     init(amount: Decimal, currency: Currency) throws {
-        guard !amount.isNaN else {
-            throw MoneyError.invalidAmount
-        }
+        guard !amount.isNaN else { throw MoneyError.invalidAmount }
 
         self.init(
             storedAmount: amount.rounded(
@@ -99,10 +97,7 @@ extension Money {
 }
 
 private extension Decimal {
-    func rounded(
-        scale: Int,
-        mode: NSDecimalNumber.RoundingMode
-    ) -> Decimal {
+    func rounded(scale: Int, mode: NSDecimalNumber.RoundingMode) -> Decimal {
         var source = self
         var result = Decimal()
         NSDecimalRound(&result, &source, scale, mode)

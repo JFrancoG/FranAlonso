@@ -477,10 +477,7 @@ private struct PersistedClientState: Equatable {
     let payload: ClientDTO
 }
 
-private func makeRepository(
-    container: ModelContainer,
-    operationID: UUID
-) -> DefaultClientRepository {
+private func makeRepository(container: ModelContainer, operationID: UUID) -> DefaultClientRepository {
     DefaultClientRepository(
         persistenceActor: ClientPersistenceActor(modelContainer: container),
         observationSignal: ClientObservationSignal(),

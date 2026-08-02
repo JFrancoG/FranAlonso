@@ -336,10 +336,7 @@ private actor AuthenticationDataSourceFake: AuthenticationDataSource {
         self.sessionStream = sessionStream
     }
 
-    func signIn(
-        email: String,
-        password: String
-    ) async throws -> AuthenticationSession {
+    func signIn(email: String, password: String) async throws -> AuthenticationSession {
         recordedSignInRequests.append(
             AuthenticationDataSourceSignInRequest(
                 email: email,
@@ -379,22 +376,14 @@ private actor AuthenticationDataSourceFake: AuthenticationDataSource {
         return sessionStream
     }
 
-    func signInRequests() -> [AuthenticationDataSourceSignInRequest] {
-        recordedSignInRequests
-    }
+    func signInRequests() -> [AuthenticationDataSourceSignInRequest] { recordedSignInRequests }
 
-    func signOutCallCount() -> Int {
-        signOutCalls
-    }
+    func signOutCallCount() -> Int { signOutCalls }
 
-    func observationCallCount() -> Int {
-        observationCalls
-    }
+    func observationCallCount() -> Int { observationCalls }
 }
 
-private func authenticationSessionStream(
-    _ sessions: [AuthenticationSession?]
-) -> AsyncStream<AuthenticationSession?> {
+private func authenticationSessionStream(_ sessions: [AuthenticationSession?]) -> AsyncStream<AuthenticationSession?> {
     AsyncStream { continuation in
         for session in sessions {
             continuation.yield(session)
@@ -403,12 +392,8 @@ private func authenticationSessionStream(
     }
 }
 
-private func requireAuthenticationDataSendable<Value: Sendable>(
-    _ value: Value
-) {}
+private func requireAuthenticationDataSendable<Value: Sendable>(_ value: Value) {}
 
-private func requireAuthenticationDataSourceSendable(
-    _ dataSource: any AuthenticationDataSource
-) {
+private func requireAuthenticationDataSourceSendable(_ dataSource: any AuthenticationDataSource) {
     requireAuthenticationDataSendable(dataSource)
 }

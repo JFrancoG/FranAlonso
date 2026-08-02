@@ -2,20 +2,12 @@ import FirebaseFirestore
 
 /// Adapts Firestore Products documents to the provider-neutral incremental contract.
 actor FirestoreProductRemoteDataSource: ProductRemoteDataSource {
-    private let fetchDocuments: (ProductSyncCursor?) async throws -> [
-        (documentID: String, record: ProductRemoteRecord)
-    ]
-    private let transactMutation: (
-        ProductPendingOperation
-    ) async throws -> ProductRemoteMutationResult
+    private let fetchDocuments: (ProductSyncCursor?) async throws -> [(documentID: String, record: ProductRemoteRecord)]
+    private let transactMutation: (ProductPendingOperation) async throws -> ProductRemoteMutationResult
 
     init(
-        fetch: @escaping (ProductSyncCursor?) async throws -> [
-            (documentID: String, record: ProductRemoteRecord)
-        ],
-        transact: @escaping (
-            ProductPendingOperation
-        ) async throws -> ProductRemoteMutationResult
+        fetch: @escaping (ProductSyncCursor?) async throws -> [(documentID: String, record: ProductRemoteRecord)],
+        transact: @escaping (ProductPendingOperation) async throws -> ProductRemoteMutationResult
     ) {
         fetchDocuments = fetch
         transactMutation = transact
@@ -75,9 +67,7 @@ actor FirestoreProductRemoteDataSource: ProductRemoteDataSource {
         )
     }
 
-    func fetchChanges(
-        after cursor: ProductSyncCursor?
-    ) async throws -> ProductRemoteChangeBatch {
+    func fetchChanges(after cursor: ProductSyncCursor?) async throws -> ProductRemoteChangeBatch {
         do {
             let documents = try await fetchDocuments(cursor)
             let records = try documents.map { document in
@@ -88,9 +78,7 @@ actor FirestoreProductRemoteDataSource: ProductRemoteDataSource {
                     )
                 }
                 if let sequence = document.record.changeSequence {
-                    guard sequence > 0 else {
-                        throw ProductSyncPolicyError.invalidChangeSequence
-                    }
+                    guard sequence > 0 else { throw ProductSyncPolicyError.invalidChangeSequence }
                 } else if cursor != nil {
                     throw ProductSyncPolicyError.invalidChangeSequence
                 }
@@ -110,9 +98,7 @@ actor FirestoreProductRemoteDataSource: ProductRemoteDataSource {
         }
     }
 
-    func apply(
-        _ operation: ProductPendingOperation
-    ) async throws -> ProductRemoteMutationResult {
+    func apply(_ operation: ProductPendingOperation) async throws -> ProductRemoteMutationResult {
         do {
             if case .upsert(let upsert) = operation {
                 guard UUID(uuidString: upsert.product.id) == upsert.productID else {
@@ -132,12 +118,8 @@ extension FirestoreProductRemoteDataSource {
     /// - Throws: A typed policy error for negative or exhausted counter state.
     static func nextChangeSequence(after current: Int64?) throws -> Int64 {
         let current = current ?? 0
-        guard current >= 0 else {
-            throw ProductSyncPolicyError.invalidChangeSequence
-        }
-        guard current < Int64.max else {
-            throw ProductSyncPolicyError.changeSequenceOverflow
-        }
+        guard current >= 0 else { throw ProductSyncPolicyError.invalidChangeSequence }
+        guard current < Int64.max else { throw ProductSyncPolicyError.changeSequenceOverflow }
         return current + 1
     }
 
@@ -444,9 +426,7 @@ struct FirestoreProductDocumentDTO: Decodable {
         return sequence
     }
 
-    private func missingProductField(
-        _ key: ProductDocumentCodingKey
-    ) -> DecodingError {
+    private func missingProductField(_ key: ProductDocumentCodingKey) -> DecodingError {
         productDocumentDecodingError(
             codingPath: [key],
             description: "A live product requires \(key.stringValue)."
@@ -512,10 +492,7 @@ private extension ProductRemoteRecord {
     }
 }
 
-private func productDocumentDecodingError(
-    codingPath: [any CodingKey],
-    description: String
-) -> DecodingError {
+private func productDocumentDecodingError(codingPath: [any CodingKey], description: String) -> DecodingError {
     DecodingError.dataCorrupted(
         DecodingError.Context(
             codingPath: codingPath,
@@ -531,9 +508,7 @@ private func mapFirestoreError(_ error: any Error) -> any Error {
     if error is CancellationError { return CancellationError() }
 
     let providerError = error as NSError
-    guard providerError.domain == FirestoreErrorDomain else {
-        return ProductRemoteDataSourceError.unexpected
-    }
+    guard providerError.domain == FirestoreErrorDomain else { return ProductRemoteDataSourceError.unexpected }
     switch providerError.code {
     case FirestoreErrorCode.deadlineExceeded.rawValue:
         return ProductRemoteDataSourceError.deadlineExceeded

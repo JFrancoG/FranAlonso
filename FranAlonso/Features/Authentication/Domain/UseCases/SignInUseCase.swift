@@ -19,9 +19,7 @@ struct SignInUseCase {
     ) async throws -> AuthenticationSession {
         try Task.checkCancellation()
 
-        guard !email.isEmpty, !password.isEmpty else {
-            throw AuthenticationError.invalidCredentials
-        }
+        guard !email.isEmpty, !password.isEmpty else { throw AuthenticationError.invalidCredentials }
 
         return try await authenticationRepository.signIn(
             email: email,

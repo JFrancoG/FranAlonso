@@ -8,9 +8,7 @@ func configureFirebase() -> Bool {
     if FirebaseApp.app() != nil {
         return true
     }
-    guard FirebaseOptions.defaultOptions() != nil else {
-        return false
-    }
+    guard FirebaseOptions.defaultOptions() != nil else { return false }
 
     FirebaseApp.configure()
     return FirebaseApp.app() != nil

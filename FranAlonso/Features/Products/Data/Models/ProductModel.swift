@@ -11,11 +11,7 @@ final class ProductModel {
     var name: String
     var statusRawValue: String
 
-    init(
-        id: UUID,
-        name: String,
-        statusRawValue: String
-    ) {
+    init(id: UUID, name: String, statusRawValue: String) {
         self.id = id
         self.name = name
         self.statusRawValue = statusRawValue
