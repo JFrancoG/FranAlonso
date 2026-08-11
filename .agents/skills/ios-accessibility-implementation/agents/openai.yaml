@@ -1,0 +1,4 @@
+interface:
+  display_name: "iOS Accessibility Implementation"
+  short_description: "Build accessible native iOS screens by design"
+  default_prompt: "Use $ios-accessibility-implementation while building or fixing a screen."

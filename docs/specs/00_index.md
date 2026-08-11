@@ -49,7 +49,7 @@ Para iniciar una subfase, proporcionar o cargar:
 - Los ADR aceptados aplicables.
 - Los contratos, `docs/Progress.md` y el diff del que dependa.
 
-Invocar `$ios-development-standards` para implementar. Tras validar, crear un subagente nuevo con `$review-ios-standards` para arquitectura, datos y concurrencia. Si existe alcance SwiftUI, crear en paralelo otro con `$review-swiftui-accessibility`; si no, registrar esa puerta como `N/A`. Corregir los hallazgos válidos y repetir solo la auditoría especializada cuyo ámbito cambie. Actualizar `docs/Progress.md` con la evidencia y el siguiente paso.
+Invocar `$ios-development-standards` para implementar. Tras validar, crear un subagente nuevo con `$franalonso-review-ios-standards` para arquitectura, datos y concurrencia. Si existe alcance SwiftUI, crear en paralelo otro con `$franalonso-review-accessibility`; si no, registrar esa puerta como `N/A`. Corregir los hallazgos válidos y repetir solo la auditoría especializada cuyo ámbito cambie. Actualizar `docs/Progress.md` con la evidencia y el siguiente paso.
 
 ## Decisiones transversales
 

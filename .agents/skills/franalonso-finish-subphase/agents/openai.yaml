@@ -1,0 +1,4 @@
+interface:
+  display_name: "Finish FranAlonso Subphase"
+  short_description: "Close a subphase with auditable evidence"
+  default_prompt: "Use $franalonso-finish-subphase to validate and close the current subphase."

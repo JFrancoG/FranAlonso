@@ -1,0 +1,4 @@
+interface:
+  display_name: "FranAlonso Accessibility Reviewer"
+  short_description: "Audit SwiftUI accessibility without edits"
+  default_prompt: "Use $franalonso-review-accessibility to audit the current UI change without editing."

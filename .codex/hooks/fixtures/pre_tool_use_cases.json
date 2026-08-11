@@ -1,0 +1,14 @@
+[
+  {"name": "xcodebuild", "command": "xcodebuild test", "violation": true},
+  {"name": "xcodebuild path", "command": "/usr/bin/xcodebuild -version", "violation": true},
+  {"name": "quoted word", "command": "echo 'xcodebuild test'", "violation": false},
+  {"name": "multiline", "command": "git status\nxcodebuild test", "violation": true},
+  {"name": "hard reset", "command": "git reset --hard HEAD", "violation": true},
+  {"name": "safe reset", "command": "git reset HEAD file.swift", "violation": false},
+  {"name": "forced clean", "command": "git clean -fd", "violation": true},
+  {"name": "dry clean", "command": "git clean -nd", "violation": false},
+  {"name": "checkout discard", "command": "git checkout -- File.swift", "violation": true},
+  {"name": "safe status", "command": "git status --short", "violation": false},
+  {"name": "home deletion", "command": "rm -rf $HOME", "violation": true},
+  {"name": "narrow deletion", "command": "rm -rf /tmp/franalonso-test", "violation": false}
+]

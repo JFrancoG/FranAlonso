@@ -1,0 +1,18 @@
+{
+  "description": "Audit-only deterministic shell policy for FranAlonso.",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "^Bash$",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/usr/bin/python3 \"$(git rev-parse --show-toplevel)/.codex/hooks/pre_tool_use_policy.py\" --mode audit",
+            "timeout": 1,
+            "statusMessage": "Auditing repository shell policy"
+          }
+        ]
+      }
+    ]
+  }
+}

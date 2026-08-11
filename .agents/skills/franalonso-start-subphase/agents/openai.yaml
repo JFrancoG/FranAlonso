@@ -1,0 +1,4 @@
+interface:
+  display_name: "Start FranAlonso Subphase"
+  short_description: "Verify a subphase gate before implementation"
+  default_prompt: "Use $franalonso-start-subphase to prepare the next approved subphase."

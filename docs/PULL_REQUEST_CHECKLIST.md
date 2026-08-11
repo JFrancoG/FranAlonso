@@ -1,72 +1,47 @@
-# Checklist de Pull Request
+# Pull Request Checklist
 
-## Alcance y arquitectura
+## Alcance y autoridad
 
-- [ ] La PR cubre una subfase revisable y enlaza su ID.
-- [ ] El diff no contiene cambios ajenos.
-- [ ] La solución cita fuentes primarias actuales y no depende del conocimiento recordado del modelo.
-- [ ] Un revisor de solo lectura validó la propuesta y sus fuentes antes de escribir código ejecutable, o se documentó que no había aislamiento multiagente.
-- [ ] Todo cambio de código ya funcional coincide con una propuesta exacta aprobada por el propietario; no hay refactors oportunistas.
-- [ ] Se respetan `Domain`, `Data`, `Presentation` y `App`.
-- [ ] ViewModel sigue siendo la fachada; cada Store está justificado y no duplica estado.
-- [ ] La View solo representa estado y llama acciones semánticas del ViewModel; no contiene negocio, persistencia, red, validación, filtrado o cálculo.
-- [ ] Si una acción inserta, actualiza o borra con SwiftData, la View pasa `@Environment(\.modelContext)` a la función `@MainActor` del ViewModel sin operar sobre el contexto, almacenarlo o cruzarlo entre actores.
-- [ ] La mutación se inyecta como closure `@MainActor` sobre un valor de Domain y `ModelContext`: App la compone, Data ejecuta CRUD/mapping/local-first, Domain no recibe el contexto y Data no importa Presentation.
-- [ ] Si conviven adaptador contextual y Repository context-free, comparten una única primitiva interna de escritura Data y no duplican mapping, cola, idempotencia o la misma mutación.
-- [ ] Los imports Firebase permanecen en adaptadores concretos propiedad de Data; modelos, mappers y políticas SwiftData permanecen en Data, con la composición del `ModelContainer` limitada a App y `ModelContext` como única excepción efímera en Presentation.
-- [ ] Backend Firebase y telemetría dependen de contratos de sustitución independientes.
-- [ ] Nombres y sufijos expresan responsabilidad.
-- [ ] Las conversiones concretas, deterministas y sin dependencias viven en extensiones de los tipos Data (`toDomain()` e inicializador inverso); todo `Mapper` conserva una responsabilidad real documentada y Domain no conoce DTO ni modelos persistentes.
+- [ ] Cambio limitado a la subfase y aprobación registradas.
+- [ ] Spec activa, constitución y ADR aplicables revisados.
+- [ ] Alternativas, riesgos y fuentes primarias revisados por un par read-only antes del código.
+- [ ] Sin limpieza oportunista ni cambios locales ajenos incluidos.
+- [ ] ADR nuevo o actualizado cuando existe una decisión no trivial.
 
-## Datos, concurrencia y producto
+## Arquitectura y datos
 
-- [ ] SwiftData/Firestore mantienen sus fuentes de verdad.
-- [ ] Cambios de sync son idempotentes y cubren conflicto, tombstone y recuperación.
-- [ ] SwiftData fuera de MainActor usa `@ModelActor`.
-- [ ] UI está en MainActor e I/O no lo bloquea.
-- [ ] La inferencia de `Sendable` y la cancelación están revisadas; los actores no repiten conformidad y toda declaración explícita de un tipo valor responde a una frontera pública o genérica demostrada.
-- [ ] Todo flujo concurrente propio usa Swift Concurrency y `async`/`await`; no hay GCD, Dispatch, `OperationQueue` ni callbacks como modelo de concurrencia.
-- [ ] No existe `@preconcurrency`, `@unchecked Sendable`, `nonisolated(unsafe)` ni salida equivalente sin una excepción respaldada por fuentes y aprobada explícitamente antes de implementarla.
-- [ ] Invariantes de producto y snapshots históricos se preservan.
-- [ ] Analytics y Crashlytics no reciben PII ni payloads de negocio; consentimiento y activación se respetan.
-- [ ] Si cambia el asistente, su salida es tipada y solo consulta, navega o rellena borradores; guardar sigue siendo visual y ningún UseCase mutador es accesible desde voz/modelo.
-- [ ] Audio, transcripciones, prompts, respuestas y estado conversacional no se persisten, registran ni telemetrizan; cancelar/interrumpir los descarta.
+- [ ] Domain permanece libre de UI, persistencia y SDK externos.
+- [ ] Views renderizan estado y delegan intenciones al `@Observable @MainActor` ViewModel.
+- [ ] Stores, protocolos, mappers y servicios poseen una responsabilidad demostrada.
+- [ ] SwiftData, Firebase, sincronización y `ModelContext` respetan los ADR aplicables.
+- [ ] Concurrencia estructurada, aislamiento y sendability son seguros, sin opt-outs no aprobados.
+- [ ] Sin PII, payloads de negocio, secretos ni estado efímero del asistente en logs, telemetría o persistencia.
 
-## Código y testing
+## Código y tests
 
-- [ ] API moderna compatible con deployment target real.
-- [ ] Declaraciones y call sites usan construcciones nativas de Swift; no hay patrones ceremoniales trasladados, abstracciones sin responsabilidad demostrada ni protocolos heredados repetidos en una lista de conformidad.
-- [ ] Las firmas Swift nuevas o modificadas siguen el límite preferido de 120 columnas: horizontal con hasta tres parámetros simples cuando cabe; vertical para firmas largas, con cuatro o más parámetros o complejas.
-- [ ] Las declaraciones `let` y `var` mantienen compactos los tipos función y genéricos cortos cuando caben; no hay fragmentación interna innecesaria.
-- [ ] Solo los `guard` con salida inmediata simple y los helpers puros genuinamente triviales usan cuerpo en una línea; negocio y efectos permanecen multilínea.
-- [ ] Ningún `enum` propio sin casos se usa solo como namespace estático; los enums sin valores posibles modelan un contrato real y cualquier sustitución se eligió por semántica, sin cambiarlo mecánicamente por otro tipo vacío.
-- [ ] Sin APIs deprecated ni usos propios de `@objc`, selectors, `NotificationCenter` por selector, `DateFormatter`, `NSRegularExpression` u otras elecciones Objective-C/legacy no aprobadas.
-- [ ] Presentation usa `@Observable`; no introduce `ObservableObject`, `@Published`, `@StateObject` ni `@ObservedObject`.
-- [ ] Las APIs del asistente son estables para iOS/Xcode 26; disponibilidad, permisos y fallback manual están cubiertos sin fallback cloud o background mode.
-- [ ] Warnings como errores y cero warnings.
-- [ ] Codable; sin `JSONSerialization`.
-- [ ] Textos visibles en `.xcstrings`.
-- [ ] Cada archivo Swift contiene como máximo un tipo que conforme a `View`; las subviews extraídas tienen archivo propio.
-- [ ] Los inicializadores/modificadores SwiftUI usan trailing closures y multiple trailing closures cuando no existe ambigüedad.
-- [ ] `@ViewBuilder` aparece solo en fronteras reales de composición; no es redundante en `body`, una helper de una expresión o una View sobredimensionada.
-- [ ] Las dimensiones numéricas explícitas de contenido no textual significativo que acompañan Dynamic Type usan `@ScaledMetric(relativeTo:)`; excepciones automáticas o fijas están justificadas.
-- [ ] Cada `View` tiene un `#Preview` en su archivo y cada preview usa el trait `PreviewModifier` compartido con `ModelContainer` de test en memoria y datos deterministas, idempotentes y navegables.
-- [ ] Sin dependencias externas fuera de Firebase aprobado.
-- [ ] `GoogleService-Info.plist` permanece ignorado y `Package.resolved` compartido está versionado.
-- [ ] TDD con Swift Testing y evidencia RED/GREEN, o `N/A` justificado porque la subfase no cambia comportamiento ejecutable.
-- [ ] Tests nuevos y anteriores afectados verdes, o `N/A` justificado cuando no hay targets afectados.
-- [ ] Sin XCTest, XCUITest ni tests UI nativos.
-- [ ] Fakes remotos y ModelContainer in-memory cuando aplica.
+- [ ] API moderna compatible con configuración real; cero warnings.
+- [ ] Swift legible, 120 columnas preferidas y sin APIs legacy/deprecated no aprobadas.
+- [ ] Codable y `.xcstrings`; dependencias limitadas a las aprobadas.
+- [ ] DocC preciso en contratos semánticos modificados.
+- [ ] Evidencia TDD con Swift Testing, o `N/A` justificado.
+- [ ] Tests afectados y build verdes mediante Xcode MCP.
+- [ ] Sin XCTest, XCUITest, UI tests nativos ni `xcodebuild`.
 
-## Documentación y revisión
+## SwiftUI y accesibilidad
 
-- [ ] ADR creado/actualizado antes de decisiones no triviales.
-- [ ] La API semántica nueva o modificada tiene DocC preciso y no redundante, independientemente de su visibilidad; invariantes, parámetros, retorno y errores se documentan solo cuando aportan contrato.
-- [ ] Validación mediante Xcode MCP para cambios de código/configuración, o `N/A` justificado para documentación, QA manual o distribución.
-- [ ] Auditoría `$review-ios-standards` registrada para arquitectura, datos, concurrencia, testing y gobernanza.
-- [ ] Auditoría `$review-swiftui-accessibility` registrada para UI, previews y accesibilidad, o `N/A` justificado sin alcance SwiftUI.
-- [ ] Las pantallas afectadas se renderizaron e inspeccionaron con Xcode MCP en las variantes soportadas `Large`, `XXX Large` y `AX 5`, o se registró `N/A` porque no cambió ninguna pantalla.
-- [ ] Cada revisor contrastó de forma independiente las fuentes y la evidencia de su ámbito.
-- [ ] Hallazgos válidos corregidos o descartados con evidencia y revisados de nuevo solo por el especialista afectado.
-- [ ] `docs/Progress.md` actualizado con estado, evidencia, siguiente acción y bloqueos.
-- [ ] Definition of Done de la subfase completamente marcada.
+- [ ] Un tipo `View` por archivo; preview determinista propio con trait compartido.
+- [ ] Estados carga, vacío, contenido y error cubiertos cuando aplican.
+- [ ] Variantes soportadas `Large`, `XXX Large` y `AX 5` renderizadas e inspeccionadas.
+- [ ] Matriz de ADR 0022 completada para cada pantalla afectada.
+- [ ] VoiceOver, Voice Control, Switch Control, teclado, orden/foco y anuncios validados cuando aplican.
+- [ ] Contraste, color, Dynamic Type, Reduce Motion/Transparency, orientación, ventana, RTL y gestos alternativos validados.
+- [ ] Objetivos interactivos cumplen la política de 44×44 pt o documentan excepción equivalente y operable.
+
+## Revisión y cierre
+
+- [ ] `$franalonso-review-ios-standards` sin hallazgos abiertos.
+- [ ] `$franalonso-review-accessibility` sin hallazgos abiertos, o `N/A` justificado.
+- [ ] Solo se repitieron las auditorías cuyos ámbitos cambiaron.
+- [ ] `docs/Progress.md` y `docs/progress/phase-XX.md` contienen estado, evidencia, pendiente y bloqueos.
+- [ ] Linear coincide con el estado real; activación live y siguiente subfase siguen siendo gates separados.
+- [ ] Diff final, secretos y archivos previstos revisados antes de cualquier commit/push/PR autorizado.

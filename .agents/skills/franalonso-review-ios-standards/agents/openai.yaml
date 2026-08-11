@@ -1,0 +1,4 @@
+interface:
+  display_name: "FranAlonso iOS Standards Reviewer"
+  short_description: "Audit architecture and delivery without edits"
+  default_prompt: "Use $franalonso-review-ios-standards to audit the current FranAlonso change without editing."
