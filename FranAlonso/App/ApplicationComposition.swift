@@ -19,16 +19,23 @@ struct ApplicationComposition {
             try makeLiveComposition()
         },
         makeFixture: @MainActor (
-            DevelopAuthenticationFixture.Mode
-        ) throws -> ApplicationComposition = { mode in
-            try DevelopAuthenticationFixture.make(mode: mode).applicationComposition
+            DevelopAuthenticationFixture.Configuration
+        ) throws -> ApplicationComposition = { configuration in
+            try DevelopAuthenticationFixture.make(
+                configuration: configuration
+            ).applicationComposition
+        },
+        makeInvalidFixture: @MainActor () throws -> ApplicationComposition = {
+            try DevelopAuthenticationFixture.makeInvalidApplicationComposition()
         }
     ) rethrows -> ApplicationComposition {
         switch plan {
         case .live:
             try makeLive()
-        case let .authenticationFixture(mode):
-            try makeFixture(mode)
+        case let .authenticationFixture(configuration):
+            try makeFixture(configuration)
+        case .invalidFixtureConfiguration:
+            try makeInvalidFixture()
         }
     }
 #else

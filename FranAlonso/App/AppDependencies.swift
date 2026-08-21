@@ -45,13 +45,14 @@ struct AppDependencies {
     static func local(
         modelContainer: ModelContainer,
         analyticsDataSource: any AnalyticsDataSource,
-        crashDataSource: any CrashDataSource
+        crashDataSource: any CrashDataSource,
+        clientRepository: (any ClientRepository)? = nil
     ) -> AppDependencies {
         let observationSignal = ClientObservationSignal()
         let productObservationSignal = ProductObservationSignal()
         let serviceObservationSignal = ServiceObservationSignal()
         let saleObservationSignal = SaleObservationSignal()
-        return .composed(
+        return .fixtureComposed(
             persistenceActor: ClientPersistenceActor(
                 modelContainer: modelContainer
             ),
@@ -69,7 +70,8 @@ struct AppDependencies {
             ),
             saleObservationSignal: saleObservationSignal,
             analyticsDataSource: analyticsDataSource,
-            crashDataSource: crashDataSource
+            crashDataSource: crashDataSource,
+            clientRepository: clientRepository
         )
     }
 #endif
@@ -147,6 +149,48 @@ struct AppDependencies {
             crashDataSource: crashDataSource
         )
     }
+
+#if FRANALONSO_AUTH_FIXTURE
+    private static func fixtureComposed(
+        persistenceActor: ClientPersistenceActor,
+        observationSignal: ClientObservationSignal,
+        productPersistenceActor: ProductPersistenceActor,
+        productObservationSignal: ProductObservationSignal,
+        servicePersistenceActor: ServicePersistenceActor,
+        serviceObservationSignal: ServiceObservationSignal,
+        salePersistenceActor: SalePersistenceActor,
+        saleObservationSignal: SaleObservationSignal,
+        analyticsDataSource: any AnalyticsDataSource,
+        crashDataSource: any CrashDataSource,
+        clientRepository injectedClientRepository: (any ClientRepository)?
+    ) -> AppDependencies {
+        let clientRepository = injectedClientRepository ?? DefaultClientRepository(
+            persistenceActor: persistenceActor,
+            observationSignal: observationSignal
+        )
+        let productRepository = DefaultProductRepository(
+            persistenceActor: productPersistenceActor,
+            observationSignal: productObservationSignal
+        )
+        let serviceRepository = DefaultServiceRepository(
+            persistenceActor: servicePersistenceActor,
+            observationSignal: serviceObservationSignal
+        )
+        let saleRepository = DefaultSaleRepository(
+            persistenceActor: salePersistenceActor,
+            observationSignal: saleObservationSignal
+        )
+
+        return AppDependencies(
+            clientRepository: clientRepository,
+            productRepository: productRepository,
+            serviceRepository: serviceRepository,
+            saleRepository: saleRepository,
+            analyticsDataSource: analyticsDataSource,
+            crashDataSource: crashDataSource
+        )
+    }
+#endif
 
     static func preview(
         clients: [Client] = [],

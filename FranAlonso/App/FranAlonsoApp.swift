@@ -54,15 +54,11 @@ private extension FranAlonsoApp {
                 Text(.authenticationBootstrapPreparing)
             }
         case .failed:
-            ContentUnavailableView {
-                Label {
-                    Text(.authenticationBootstrapFailedTitle)
-                } icon: {
-                    Image(systemName: "exclamationmark.icloud.fill")
-                }
-            } description: {
-                Text(.authenticationBootstrapFailedMessage)
-            }
+            bootstrapFailure
+#if FRANALONSO_AUTH_FIXTURE
+        case .fixtureConfigurationFailed:
+            bootstrapFailure
+#endif
         case .configured:
             if let authenticationRootViewModel = runtime?.authenticationRootViewModel {
                 AuthenticationRootScreen(viewModel: authenticationRootViewModel)
@@ -81,6 +77,18 @@ private extension FranAlonsoApp {
                 }
             }
 #endif
+        }
+    }
+
+    var bootstrapFailure: some View {
+        ContentUnavailableView {
+            Label {
+                Text(.authenticationBootstrapFailedTitle)
+            } icon: {
+                Image(systemName: "exclamationmark.icloud.fill")
+            }
+        } description: {
+            Text(.authenticationBootstrapFailedMessage)
         }
     }
 }

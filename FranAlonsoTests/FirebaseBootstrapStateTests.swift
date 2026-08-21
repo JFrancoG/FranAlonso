@@ -28,7 +28,9 @@ struct FirebaseBootstrapStateTests {
         var configurationCalls = 0
 
         delegate.completeApplicationBootstrap(
-            for: .authenticationFixture(.signedOut),
+            for: .authenticationFixture(
+                .standard(.signedOut)
+            ),
             configureFirebase: {
                 configurationCalls += 1
                 return true
@@ -36,6 +38,23 @@ struct FirebaseBootstrapStateTests {
         )
 
         #expect(delegate.firebaseBootstrapState == .fixtureReady)
+        #expect(configurationCalls == 0)
+    }
+
+    @Test("Invalid fixture configuration fails without configuring Firebase")
+    func invalidFixtureConfigurationFailsWithoutConfiguringFirebase() {
+        let delegate = AppDelegate()
+        var configurationCalls = 0
+
+        delegate.completeApplicationBootstrap(
+            for: .invalidFixtureConfiguration,
+            configureFirebase: {
+                configurationCalls += 1
+                return true
+            }
+        )
+
+        #expect(delegate.firebaseBootstrapState == .fixtureConfigurationFailed)
         #expect(configurationCalls == 0)
     }
 #endif

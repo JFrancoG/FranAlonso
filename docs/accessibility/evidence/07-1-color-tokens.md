@@ -1,17 +1,19 @@
 # Evidencia de accesibilidad — 07.1 tokens visuales
 
-Fecha: 2026-08-21
-Alcance: PLU-26 / subfase 07.1 y fixture no-live PLU-27. Catálogo de 18 colores semánticos y AccentColor con Light,
+Fecha: 2026-08-22
+Alcance: PLU-26 / subfase 07.1 y fixtures no-live PLU-27 bajo ADR 0023/0024. Catálogo de 18 colores semánticos y AccentColor con Light,
 Dark, High Contrast Light y High Contrast Dark, remediaciones de Login y corrección de reflow Dynamic Type en
 `SessionContent`. No cambian navegación, copy ni lógica de negocio.
 
 ## Evidencia transversal
 
-- Tests: 26/26 focales de PLU-27 y 815/815 del plan completo mediante Xcode MCP; incluyen el catálogo, orientación,
-  Firebase Auth 12.18.0, triple gate de fixture y la cadena DataSource → raíz autenticada.
-- Build: correcto mediante Xcode MCP tras los cambios; cero warnings en build log y cero issues warning+ en Navigator.
+- Tests: 29/29 focales del suplemento y 830/830 del plan completo mediante Xcode MCP; incluyen catálogo, orientación,
+  Firebase Auth 12.18.0, gates de fixture y cadenas Data → Domain → Presentation.
+- Build: correcto mediante Xcode MCP tras los cambios; cero warnings Swift/Clang y cero issues warning+ en Navigator.
+  El log conserva solo el aviso de tooling `Metadata extraction skipped. No AppIntents.framework dependency found`.
 - Contraste: valores sRGB exactos, AccentColor idéntico a BrandPrimaryInk, pares de texto con umbral 4.5:1 y acento no
-  textual con umbral 3:1 verificados por Swift Testing. El CTA usa explícitamente `BrandPrimary`/`OnBrandPrimary`.
+  textual con umbral 3:1 verificados por Swift Testing. CTA y botón biométrico usan explícitamente
+  `BrandPrimary`/`OnBrandPrimary`; Inspector no conserva ningún fallo de contraste.
 - Previews: Light/Dark × Large/XXX Large/AX 5 inspeccionados en Login, sesión bloqueada, error raíz y carga de clientes. También se inspeccionaron Light/Dark Large en Login loading, Session unlocking, raíz local-denied/authenticated y lista empty/content/error.
 - Limitación histórica del 11 de agosto: RenderPreview no exponía Increase Contrast. El 20 de agosto la superficie sí
   ofreció `Contrast` y se inspeccionó Login post-parche en Dark + Increased Contrast + AX 5, además de la variante
@@ -159,10 +161,19 @@ Dark, High Contrast Light y High Contrast Dark, remediaciones de Login y correcc
   `Dynamic Type font sizes are unsupported` sobre `SwiftUI.AccessibilityNode`. El nodo resaltado escala a AX 5, envuelve
   todo el texto y no presenta recorte, solape ni pérdida de contenido; el aviso no se reproduce como defecto y no se
   suprime. No equivale a un pase general de Inspector para estados no inspeccionados.
-- Full Keyboard Access de sesión y Clientes: **Limitado** por ausencia actual de teclado externo. Login conserva su pase
-  anterior con teclado hardware en Simulator; el teclado software no sustituye esta comprobación.
+- Full Keyboard Access de sesión y Clientes (2026-08-21): **Pasa** en iPhone 17 Simulator/iOS 26.5 con teclado hardware
+  del Mac. En sesión bloqueada, `Tab` entra en el grupo y las flechas recorren desbloqueo biométrico y fallback de email;
+  `Espacio` activa Face ID y `Matching Face` llega a Clientes. En Clientes, el único control interactivo recibe foco y
+  `Espacio` activa logout hasta Login. El estado con biometría no disponible permite activar el fallback por teclado;
+  Login conserva además su recorrido directo e inverso con `Tab`/`Mayúsculas + Tab`. El foco permanece visible y no hay
+  trampas ni cambios de contexto inesperados.
+- iPad y multitarea (2026-08-21): **Pasa** en iPad Air 11 pulgadas (M4), iPadOS 26.5. Login, sesión bloqueada y Clientes
+  vacío conservan contenido y acciones en portrait, landscape, ventana a medio ancho y el tamaño mínimo permitido por
+  Apps en Ventanas. No aparecen truncamientos, solapes ni scroll horizontal; en el ancho mínimo el control inferior
+  queda ajustado pero visible y el scroll vertical permite exponerlo completamente. Touch ID con `Matching Touch`
+  completa la ruta de sesión a Clientes.
 
-## Bootstrap y raíz de autenticación
+## Bootstrap y raíz de autenticación — baseline histórico
 
 - Alcance/cambio: AccentColor en ProgressView, Retry y acciones destructivas; sin cambios semánticos.
 - Dispositivo, iOS y build: Xcode Preview en destino activo del esquema FranAlonso-Develop; SDK iOS 26.5; modelo exacto no devuelto por MCP.
@@ -189,7 +200,7 @@ Dark, High Contrast Light y High Contrast Dark, remediaciones de Login y correcc
 | 1.4.5 | Aplicable | Texto real. | Pasa | Inspección estática + RenderPreview | Xcode Preview · destino activo · 2026-08-11 | Sin dependencia exclusiva de color, recorte ni imagen de texto observada. | Implementación; auditor pendiente |
 | 1.4.10 | Aplicable | Reflow. | Limitado | RenderPreview iPad portrait | Xcode Preview · destino activo · 2026-08-11 | iPhone/ventana estrecha pendientes. | Implementación; auditor pendiente |
 | 1.4.11 | Aplicable | Contraste de controles. | Pasa | Test DesignSystemColorAssetTests | Xcode MCP · iOS 26.5 SDK · 2026-08-11 | Cuatro apariencias verificadas con umbral aplicable. | Implementación; auditor pendiente |
-| 1.4.12 | Aplicable | Espaciado de texto. | Limitado | RenderPreview iPad portrait | Xcode Preview · destino activo · 2026-08-11 | Ajuste explícito de espaciado no expuesto por MCP. | Implementación; auditor pendiente |
+| 1.4.12 | N/A | SwiftUI nativo no usa markup ni expone override de espaciado de texto. | Pasa | Inspección de tecnología + WCAG2Mobile | Código SwiftUI · 2026-08-21 | Reclasificación aprobada; Dynamic Type y reflow se validan en 1.4.4/1.4.10. | Propietario; auditor final pendiente |
 | 1.4.13 | N/A | Sin contenido hover/foco. | Pasa | Inspección estática | Xcode Preview · destino activo · 2026-08-11 | Sin contenido hover/foco no existe en el alcance. | Implementación; auditor pendiente |
 | 2.1.1 | Aplicable | Operación por teclado. | Pendiente | Inspector/AT pendiente | Xcode Preview · destino activo · 2026-08-11 | Árbol, foco o anuncio requieren ejecución manual. | Implementación; auditor pendiente |
 | 2.1.2 | Aplicable | Salida del foco. | Pendiente | Inspector/AT pendiente | Xcode Preview · destino activo · 2026-08-11 | Árbol, foco o anuncio requieren ejecución manual. | Implementación; auditor pendiente |
@@ -227,7 +238,7 @@ Dark, High Contrast Light y High Contrast Dark, remediaciones de Login y correcc
 | 4.1.2 | Aplicable | Nombre, función y valor. | Pendiente | Inspector/AT pendiente | Xcode Preview · destino activo · 2026-08-11 | Árbol, foco o anuncio requieren ejecución manual. | Implementación; auditor pendiente |
 | 4.1.3 | Aplicable | Mensajes de estado. | Pendiente | Inspector/AT pendiente | Xcode Preview · destino activo · 2026-08-11 | Árbol, foco o anuncio requieren ejecución manual. | Implementación; auditor pendiente |
 
-## Login
+## Login — baseline histórico
 
 - Alcance/cambio: AccentColor en foco y progreso; el CTA usa el par semántico `BrandPrimary`/`OnBrandPrimary` y los
   estados de éxito/error conservan colores del sistema. Los campos añaden nombres de entrada localizados y viven en dos
@@ -251,7 +262,7 @@ Dark, High Contrast Light y High Contrast Dark, remediaciones de Login y correcc
 | 1.3.1 | Aplicable | Jerarquía, labels y grupos. | Pasa | Inspector final + VoiceOver/Switch Control final | iPhone 17 Simulator · 26.5; iPhone 14 · 26.6 (23G71) · 2026-08-21 | Título, Email, Contraseña y Acceder se exponen por separado; Switch Control agrupado conserva tres controles operables. | Propietario; auditor P2 corregido |
 | 1.3.2 | Aplicable | Orden visual y accesible. | Pasa | Full Keyboard Access + VoiceOver/Switch Control final | iPhone 17 Simulator · 26.5; iPhone 14 · 26.6 (23G71) · 2026-08-21 | El orden coincide por teclado, VoiceOver en ambos sentidos y Switch Control sobre la superficie final. | Propietario; auditor P2 corregido |
 | 1.3.3 | Aplicable | Copy no sensorial. | Pasa | Inspección estática + previews | Xcode Preview · destino activo · 2026-08-11 | Sin regresión observada en el cambio de tokens. | Implementación; auditor pendiente |
-| 1.3.4 | Aplicable | Orientación y ventana. | Pasa | Test de contrato + runtime portrait/ambos landscape | iPhone 17 Simulator · iOS 26.5 · 2026-08-21 | Las cuatro configuraciones iPhone admiten portrait y ambas orientaciones landscape; Login conserva contenido y acciones al rotar y restaurar. Multitarea iPad se mantiene como evidencia de ventana separada. | Implementación; auditor final pendiente |
+| 1.3.4 | Aplicable | Orientación y ventana. | Pasa | Runtime iPhone + iPad Apps en Ventanas | iPhone 17 Simulator; iPad Air 11 pulgadas (M4) · iOS/iPadOS 26.5 · 2026-08-21 | Login conserva contenido y acciones en portrait, landscape, medio ancho y ancho mínimo; el scroll vertical mantiene accesible el control inferior. | Propietario; auditor final pendiente |
 | 1.3.5 | Aplicable | Propósito de entrada. | Limitado | Inspección de código + intento runtime sin fixture | iPhone 14 · iOS 26.6 (23G71) · 2026-08-21 | `.username`/`.password` identifican el propósito; no hay proveedor ni usuario de pruebas con que verificar Autorrelleno end-to-end. | Implementación; propietario |
 | 1.4.1 | Aplicable | Estados no dependen sólo del color. | Pasa | Inspección estática + RenderPreview | Xcode Preview · destino activo · 2026-08-11 | Sin dependencia exclusiva de color, recorte ni imagen de texto observada. | Implementación; auditor pendiente |
 | 1.4.2 | N/A | Sin audio automático. | Pasa | Inspección estática | Xcode Preview · destino activo · 2026-08-11 | Sin audio automático no existe en el alcance. | Implementación; auditor pendiente |
@@ -260,7 +271,7 @@ Dark, High Contrast Light y High Contrast Dark, remediaciones de Login y correcc
 | 1.4.5 | Aplicable | Texto real. | Pasa | Inspección estática + RenderPreview | Xcode Preview · destino activo · 2026-08-11 | Sin dependencia exclusiva de color, recorte ni imagen de texto observada. | Implementación; auditor pendiente |
 | 1.4.10 | Aplicable | Reflow. | Pasa | RenderPreview AX 5 + runtime portrait/landscape | iPhone 17 Simulator · iOS 26.5 · 2026-08-21 | Login refluye sin recortes, solapes ni pérdida de título, campos o CTA en AX 5 y ambas orientaciones landscape. | Implementación; auditor final pendiente |
 | 1.4.11 | Aplicable | Contraste de controles. | Pasa | Test DesignSystemColorAssetTests | Xcode MCP · iOS 26.5 SDK · 2026-08-11 | Cuatro apariencias verificadas con umbral aplicable. | Implementación; auditor pendiente |
-| 1.4.12 | Aplicable | Espaciado de texto. | Limitado | RenderPreview iPad portrait | Xcode Preview · destino activo · 2026-08-11 | Ajuste explícito de espaciado no expuesto por MCP. | Implementación; auditor pendiente |
+| 1.4.12 | N/A | SwiftUI nativo no usa markup ni expone override de espaciado de texto. | Pasa | Inspección de tecnología + WCAG2Mobile | Código SwiftUI · 2026-08-21 | Reclasificación aprobada; Dynamic Type y reflow se validan en 1.4.4/1.4.10. | Propietario; auditor final pendiente |
 | 1.4.13 | N/A | Sin contenido hover/foco. | Pasa | Inspección estática | Xcode Preview · destino activo · 2026-08-11 | Sin contenido hover/foco no existe en el alcance. | Implementación; auditor pendiente |
 | 2.1.1 | Aplicable | Operación por teclado. | Pasa | Full Keyboard Access final | iPhone 17 Simulator · iOS 26.5 · teclado hardware conectado · 2026-08-21 | `Tab`, `Mayúsculas + Tab` y `Espacio` recorren y activan los tres controles sin depender del puntero. | Implementación; auditor final pendiente |
 | 2.1.2 | Aplicable | Salida del foco. | Pasa | Full Keyboard Access + Switch Control final | iPhone 17 Simulator · iOS 26.5; iPhone 14 · iOS 26.6 (23G71) · 2026-08-21 | No hay trampa por teclado ni por Switch Control agrupado sobre la superficie final. | Propietario; auditor P2 corregido |
@@ -298,7 +309,7 @@ Dark, High Contrast Light y High Contrast Dark, remediaciones de Login y correcc
 | 4.1.2 | Aplicable | Nombre, función y valor. | Pasa | Inspector final + VoiceOver/Voice Control final | iPhone 17 Simulator · iOS 26.5; iPhone 14 · iOS 26.6 (23G71) · 2026-08-21 | Nombre, función, orden y activación se confirman sobre la superficie final. | Propietario; auditor P2 corregido |
 | 4.1.3 | Aplicable | Mensajes de estado. | Pendiente | Inspector/AT pendiente | Xcode Preview · destino activo · 2026-08-11 | Árbol, foco o anuncio requieren ejecución manual. | Implementación; auditor pendiente |
 
-## Sesión protegida
+## Sesión protegida — baseline histórico
 
 - Alcance/cambio: AccentColor en desbloqueo y progreso, más reflow Dynamic Type aprobado tras el RED físico; acciones
   destructivas y errores conservan colores del sistema.
@@ -307,8 +318,8 @@ Dark, High Contrast Light y High Contrast Dark, remediaciones de Login y correcc
 - Previews y apariencias: biometría disponible/no disponible en Large, XXX Large y AX 5, portrait/landscape y Dark con
   Increased Contrast; el `Form` conserva todo el contenido mediante scroll cuando la altura no basta.
 - Inspector y tecnologías de asistencia: VoiceOver, Voice Control y Switch Control pasan físicamente. Inspector no
-  reproduce como defecto su único aviso genérico de Dynamic Type. Full Keyboard Access queda limitado por falta de
-  teclado externo.
+  reproduce como defecto su único aviso genérico de Dynamic Type. Full Keyboard Access pasa en Simulator con teclado
+  hardware conectado.
 - La tabla siguiente conserva el baseline previo a la fixture. Las disposiciones finales posteriores la sustituyen en
   los criterios runtime indicados; las filas estáticas `Pasa`/`N/A` no listadas permanecen vigentes.
 
@@ -332,7 +343,7 @@ Dark, High Contrast Light y High Contrast Dark, remediaciones de Login y correcc
 | 1.4.5 | Aplicable | Texto real. | Pasa | Inspección estática + RenderPreview | Xcode Preview · destino activo · 2026-08-11 | Sin dependencia exclusiva de color, recorte ni imagen de texto observada. | Implementación; auditor pendiente |
 | 1.4.10 | Aplicable | Reflow. | Limitado | RenderPreview iPad portrait | Xcode Preview · destino activo · 2026-08-11 | iPhone/ventana estrecha pendientes. | Implementación; auditor pendiente |
 | 1.4.11 | Aplicable | Contraste de controles. | Pasa | Test DesignSystemColorAssetTests | Xcode MCP · iOS 26.5 SDK · 2026-08-11 | Cuatro apariencias verificadas con umbral aplicable. | Implementación; auditor pendiente |
-| 1.4.12 | Aplicable | Espaciado de texto. | Limitado | RenderPreview iPad portrait | Xcode Preview · destino activo · 2026-08-11 | Ajuste explícito de espaciado no expuesto por MCP. | Implementación; auditor pendiente |
+| 1.4.12 | N/A | SwiftUI nativo no usa markup ni expone override de espaciado de texto. | Pasa | Inspección de tecnología + WCAG2Mobile | Código SwiftUI · 2026-08-21 | Reclasificación aprobada; Dynamic Type y reflow se validan en 1.4.4/1.4.10. | Propietario; auditor final pendiente |
 | 1.4.13 | N/A | Sin contenido hover/foco. | Pasa | Inspección estática | Xcode Preview · destino activo · 2026-08-11 | Sin contenido hover/foco no existe en el alcance. | Implementación; auditor pendiente |
 | 2.1.1 | Aplicable | Operación por teclado. | Pendiente | Inspector/AT pendiente | Xcode Preview · destino activo · 2026-08-11 | Árbol, foco o anuncio requieren ejecución manual. | Implementación; auditor pendiente |
 | 2.1.2 | Aplicable | Salida del foco. | Pendiente | Inspector/AT pendiente | Xcode Preview · destino activo · 2026-08-11 | Árbol, foco o anuncio requieren ejecución manual. | Implementación; auditor pendiente |
@@ -377,37 +388,37 @@ Dark, High Contrast Light y High Contrast Dark, remediaciones de Login y correcc
 | 1.1.1 | Pasa | Iconos decorativos quedan ocultos y VoiceOver anuncia título, estado y acciones una vez. |
 | 1.3.1 | Pasa | Inspector y AT exponen encabezado, mensaje y dos acciones separadas. |
 | 1.3.2 | Pasa | VoiceOver y Switch Control conservan orden bloqueada → biometría → fallback. |
-| 1.3.4 | Limitado | iPhone 11/14 portrait y landscape pasan; falta iPad/multitarea final. |
+| 1.3.4 | Pasa | iPhone 11/14 portrait/landscape e iPad Air 11 pulgadas (M4) portrait/landscape/medio ancho/ancho mínimo pasan. |
 | 1.4.4 | Pasa | Large, XXX Large y AX 5; RED de truncamiento corregido y GREEN físico/previews. |
 | 1.4.10 | Pasa | Reflow multilínea y scroll del `Form` conservan texto y acciones. |
-| 1.4.12 | Limitado | Escalado nativo inspeccionado; no existe override MCP para espaciado de texto arbitrario. |
-| 2.1.1 | Limitado | Full Keyboard Access no ejecutado por ausencia de teclado externo. |
-| 2.1.2 | Limitado | VoiceOver y Switch Control salen sin trampa; falta Full Keyboard Access. |
+| 1.4.12 | N/A | SwiftUI nativo no usa markup ni expone override; reclasificación aprobada según WCAG2Mobile. |
+| 2.1.1 | Pasa | Full Keyboard Access opera desbloqueo, fallback, Face ID y llegada a Clientes mediante teclado. |
+| 2.1.2 | Pasa | Tab/flechas permiten abandonar cada control y ambos grupos sin trampa; fallback y biometría completan sus rutas. |
 | 2.4.1 | Pasa | Encabezado y dos acciones permiten un recorrido corto y comprensible. |
 | 2.4.2 | Pasa | `Sesión` y `Sesión bloqueada` identifican la pantalla y el estado. |
-| 2.4.3 | Limitado | Orden estable en VoiceOver y Switch Control; falta recorrido por teclado. |
+| 2.4.3 | Pasa | Tab entra en el grupo y las flechas recorren biometría y fallback en orden estable. |
 | 2.4.6 | Pasa | Inspector identifica el encabezado; labels visibles y accesibles coinciden. |
-| 2.4.7 | Limitado | Foco de AT visible/operable; Full Keyboard Access no ejecutado. |
-| 2.4.11 | Limitado | AT y AX 5 no ocultan acciones al desplazarse; falta recorrido con teclado externo. |
+| 2.4.7 | Pasa | El foco de Full Keyboard Access permanece visible sobre ambas acciones. |
+| 2.4.11 | Pasa | Ninguna acción enfocada queda oculta y el diálogo de Face ID conserva una salida operable. |
 | 2.5.3 | Pasa | Voice Control activa `Desbloquear con biometría del dispositivo` a la primera. |
 | 2.5.8 | Pasa | Ambos botones nativos son operables de forma independiente en dispositivo físico. |
 | 3.1.1 | Pasa | VoiceOver pronuncia correctamente el copy español. |
-| 3.2.1 | Limitado | VoiceOver no cambia de contexto al enfocar; falta recorrido por teclado. |
+| 3.2.1 | Pasa | Mover el foco no cambia de contexto; solo Espacio activa la acción seleccionada. |
 | 3.3.1 | Pasa | Biometría no disponible se presenta con texto y alternativa de acceso por email. |
 | 3.3.4 | Pasa | Logout se anuncia y opera como acción separada. |
 | 3.3.8 | Pasa | Face ID funciona y existe alternativa cognitiva por email. |
 | 4.1.2 | Pasa | VoiceOver anuncia nombres y rol botón; iconos decorativos no duplican contenido. |
 | 4.1.3 | Pasa | Bloqueo y biometría no disponible se anuncian como estados textuales. |
 
-## Área autenticada y lista de clientes
+## Área autenticada y lista de clientes — baseline histórico
 
 - Alcance/cambio: AccentColor en progreso y controles del contenedor; estados loading, empty, content y error.
 - Dispositivo, iOS y build: iPhone 11/iOS 26.6 físico y previews en iPhone 17 Simulator/iOS 26.5; build limpio y
   815/815 outcomes.
 - Previews y apariencias: empty/content/error en variantes soportadas; el shell vacío se validó en portrait/landscape y
   AX 5 sin truncamiento.
-- Inspector y tecnologías de asistencia: VoiceOver, Voice Control y Switch Control pasan en shell vacío y logout. Full
-  Keyboard Access queda limitado por ausencia de teclado externo.
+- Inspector y tecnologías de asistencia: VoiceOver, Voice Control, Switch Control y Full Keyboard Access pasan en shell
+  vacío y logout.
 - La tabla siguiente conserva el baseline previo a la fixture. Las disposiciones finales posteriores la sustituyen en
   los criterios runtime indicados; las filas estáticas `Pasa`/`N/A` no listadas permanecen vigentes.
 
@@ -431,7 +442,7 @@ Dark, High Contrast Light y High Contrast Dark, remediaciones de Login y correcc
 | 1.4.5 | Aplicable | Texto real. | Pasa | Inspección estática + RenderPreview | Xcode Preview · destino activo · 2026-08-11 | Sin dependencia exclusiva de color, recorte ni imagen de texto observada. | Implementación; auditor pendiente |
 | 1.4.10 | Aplicable | Reflow. | Limitado | RenderPreview iPad portrait | Xcode Preview · destino activo · 2026-08-11 | iPhone/ventana estrecha pendientes. | Implementación; auditor pendiente |
 | 1.4.11 | Aplicable | Contraste de controles. | Pasa | Test DesignSystemColorAssetTests | Xcode MCP · iOS 26.5 SDK · 2026-08-11 | Cuatro apariencias verificadas con umbral aplicable. | Implementación; auditor pendiente |
-| 1.4.12 | Aplicable | Espaciado de texto. | Limitado | RenderPreview iPad portrait | Xcode Preview · destino activo · 2026-08-11 | Ajuste explícito de espaciado no expuesto por MCP. | Implementación; auditor pendiente |
+| 1.4.12 | N/A | SwiftUI nativo no usa markup ni expone override de espaciado de texto. | Pasa | Inspección de tecnología + WCAG2Mobile | Código SwiftUI · 2026-08-21 | Reclasificación aprobada; Dynamic Type y reflow se validan en 1.4.4/1.4.10. | Propietario; auditor final pendiente |
 | 1.4.13 | N/A | Sin contenido hover/foco. | Pasa | Inspección estática | Xcode Preview · destino activo · 2026-08-11 | Sin contenido hover/foco no existe en el alcance. | Implementación; auditor pendiente |
 | 2.1.1 | Aplicable | Operación por teclado. | Pendiente | Inspector/AT pendiente | Xcode Preview · destino activo · 2026-08-11 | Árbol, foco o anuncio requieren ejecución manual. | Implementación; auditor pendiente |
 | 2.1.2 | Aplicable | Salida del foco. | Pendiente | Inspector/AT pendiente | Xcode Preview · destino activo · 2026-08-11 | Árbol, foco o anuncio requieren ejecución manual. | Implementación; auditor pendiente |
@@ -476,38 +487,108 @@ Dark, High Contrast Light y High Contrast Dark, remediaciones de Login y correcc
 | 1.1.1 | Pasa | VoiceOver anuncia el estado vacío y la acción de logout sin duplicados. |
 | 1.3.1 | Pasa | Jerarquía nativa de título, estado vacío y acción. |
 | 1.3.2 | Pasa | Orden físico estable por VoiceOver y Switch Control. |
-| 1.3.4 | Limitado | iPhone portrait/landscape pasa; falta iPad/multitarea final. |
+| 1.3.4 | Pasa | iPhone portrait/landscape e iPad Air 11 pulgadas (M4) portrait/landscape/medio ancho/ancho mínimo pasan. |
 | 1.4.4 | Pasa | AX 5 físico sin recortes; previews cubren estados empty/content/error. |
 | 1.4.10 | Pasa | El estado vacío refluye y permanece legible en ventana estrecha. |
-| 1.4.12 | Limitado | Escalado nativo inspeccionado; no existe override MCP para espaciado de texto arbitrario. |
-| 2.1.1 | Limitado | Full Keyboard Access no ejecutado por ausencia de teclado externo. |
-| 2.1.2 | Limitado | Switch Control abandona logout sin trampa; falta Full Keyboard Access. |
+| 1.4.12 | N/A | SwiftUI nativo no usa markup ni expone override; reclasificación aprobada según WCAG2Mobile. |
+| 2.1.1 | Pasa | Full Keyboard Access enfoca el único control interactivo y Espacio activa logout hasta Login. |
+| 2.1.2 | Pasa | El único control no crea una trampa; su activación abandona Clientes y vuelve a Login. |
 | 2.4.1 | Pasa | Recorrido corto: título, estado vacío y logout. |
 | 2.4.2 | Pasa | `Clientes` identifica el área autenticada. |
-| 2.4.3 | Limitado | VoiceOver y Switch Control mantienen el orden; falta recorrido por teclado. |
+| 2.4.3 | Pasa | El foco inicial recae en logout, único control interactivo de la pantalla vacía. |
 | 2.4.6 | Pasa | Título y estado vacío poseen labels comprensibles. |
-| 2.4.7 | Limitado | Foco de AT visible; Full Keyboard Access no ejecutado. |
-| 2.4.11 | Limitado | AT no oculta contenido; falta recorrido con teclado externo. |
+| 2.4.7 | Pasa | El indicador de Full Keyboard Access sobre logout permanece visible. |
+| 2.4.11 | Pasa | El control enfocado no queda oculto por contenido creado por la app. |
 | 2.5.3 | Pasa | Voice Control reconoce y activa logout a la primera. |
 | 2.5.8 | Pasa | Logout posee superficie nativa suficiente y se activa por separado. |
 | 3.1.1 | Pasa | VoiceOver pronuncia correctamente el copy español. |
-| 3.2.1 | Limitado | VoiceOver no navega al enfocar; falta recorrido por teclado. |
-| 3.3.1 | Limitado | Estado vacío pasa físicamente; error conserva preview determinista, sin error físico forzado. |
+| 3.2.1 | Pasa | Recibir foco no navega; solo Espacio sobre logout cambia a Login. |
+| 3.3.1 | Pasa | Estado vacío y error forzado comunican título y descripción; el error se validó con las cuatro tecnologías de asistencia. |
 | 3.3.4 | Pasa | Logout vuelve a Login y se anuncia como acción independiente. |
 | 4.1.2 | Pasa | Nombre y rol de logout se anuncian correctamente. |
 | 4.1.3 | Pasa | `No hay clientes` comunica el estado vacío de forma textual. |
 
+## Registro final consolidado por criterio y flujo
+
+Esta tabla es la autoridad final y sustituye los resultados `Pendiente`/`Limitado` de los baselines fechados el 11 de
+agosto. `A/P` significa `Aplicable/Pasa`; `N/A` conserva su justificación normativa; `A/L` es
+`Aplicable/Limitado`. La columna Clientes cubre por separado vacío y error cuando su aplicabilidad difiere.
+
+| ID | Raíz | Login | Sesión | Clientes vacío/error | Método y disposición final |
+|---|---|---|---|---|---|
+| 1.1.1 | A/P | A/P | A/P | A/P | Preview, Inspector y VoiceOver: iconos decorativos ocultos; información textual conservada. |
+| 1.2.1 | N/A | N/A | N/A | N/A | Sin audio o vídeo. |
+| 1.2.2 | N/A | N/A | N/A | N/A | Sin audio sincronizado. |
+| 1.2.3 | N/A | N/A | N/A | N/A | Sin vídeo pregrabado. |
+| 1.2.4 | N/A | N/A | N/A | N/A | Sin contenido en directo. |
+| 1.2.5 | N/A | N/A | N/A | N/A | Sin vídeo pregrabado. |
+| 1.3.1 | A/P | A/P | A/P | A/P | VoiceOver/Switch Control: jerarquía nativa, grupos y controles separados. |
+| 1.3.2 | A/P | A/P | A/P | A/P | VoiceOver, Switch Control y teclado confirman el orden visual. |
+| 1.3.3 | A/P | A/P | A/P | A/P | Copy no sensorial inspeccionado. |
+| 1.3.4 | A/P | A/P | A/P | A/P | iPhone/iPad portrait, landscape, medio ancho y ventana mínima. |
+| 1.3.5 | N/A | A/L | N/A | N/A | Login usa `.username`/`.password`; selector del sistema pasa, sin Associated Domains. |
+| 1.4.1 | A/P | A/P | A/P | A/P | Estados combinan texto, símbolos y estructura; no dependen solo del color. |
+| 1.4.2 | N/A | N/A | N/A | N/A | Sin audio automático. |
+| 1.4.3 | A/P | A/P | A/P | A/P | Tests de cuatro apariencias e Inspector; botones usan pares semánticos aprobados. |
+| 1.4.4 | A/P | A/P | A/P | A/P | Large/XXX Large/AX 5 y runtime AX 5 sin pérdida de texto o acciones. |
+| 1.4.5 | A/P | A/P | A/P | A/P | Todo el contenido significativo es texto real. |
+| 1.4.10 | A/P | A/P | A/P | A/P | Reflow en AX 5, orientaciones y ventana mínima mediante scroll vertical. |
+| 1.4.11 | A/P | A/P | A/P | A/P | Tests de contraste no textual e Inspector sin hallazgos finales. |
+| 1.4.12 | N/A | N/A | N/A | N/A | SwiftUI nativo sin markup ni override de espaciado; reclasificación WCAG2Mobile aprobada. |
+| 1.4.13 | N/A | N/A | N/A | N/A | Sin contenido adicional por hover o foco. |
+| 2.1.1 | A/P | A/P | A/P | A/P | Full Keyboard Access opera todos los controles aplicables. |
+| 2.1.2 | A/P | A/P | A/P | A/P | Teclado y Switch Control abandonan cada control sin trampa. |
+| 2.1.4 | N/A | N/A | N/A | N/A | Sin atajos de carácter. |
+| 2.2.1 | N/A | N/A | N/A | N/A | Sin límites temporales. |
+| 2.2.2 | N/A | N/A | N/A | N/A | Sin movimiento o actualización automática que requiera control. |
+| 2.3.1 | A/P | A/P | A/P | A/P | Sin destellos ni animación intermitente. |
+| 2.4.1 | A/P | A/P | A/P | A/P | Recorridos cortos y estructura nativa comprobados manualmente. |
+| 2.4.2 | A/P | A/P | A/P | A/P | Títulos visibles describen cada pantalla y estado. |
+| 2.4.3 | A/P | A/P | A/P | A/P | VoiceOver, Switch Control y teclado confirman orden estable. |
+| 2.4.4 | A/P | A/P | A/P | A/P | Acciones identifican su propósito en contexto. |
+| 2.4.5 | N/A | N/A | N/A | N/A | No existe colección extensa de páginas alternativas. |
+| 2.4.6 | A/P | A/P | A/P | A/P | Encabezados y labels visibles coinciden con nombres accesibles. |
+| 2.4.7 | A/P | A/P | A/P | A/P | Foco visible en campos, botones y logout. |
+| 2.4.11 | A/P | A/P | A/P | A/P | Scroll conserva visible el elemento enfocado; Face ID mantiene salida. |
+| 2.5.1 | N/A | N/A | N/A | N/A | Sin gestos multipunto o de trayectoria. |
+| 2.5.2 | A/P | A/P | A/P | A/P | Controles nativos activan al finalizar la interacción. |
+| 2.5.3 | A/P | A/P | A/P | A/P | Voice Control activa por el texto visible a la primera. |
+| 2.5.4 | N/A | N/A | N/A | N/A | Sin activación por movimiento del dispositivo. |
+| 2.5.7 | N/A | N/A | N/A | N/A | Sin arrastre. |
+| 2.5.8 | A/P | A/P | A/P | A/P | Controles nativos y campos cumplen 44 pt y se operan por separado. |
+| 3.1.1 | A/P | A/P | A/P | A/P | VoiceOver pronuncia correctamente el español. |
+| 3.1.2 | N/A | N/A | N/A | N/A | Sin cambios de idioma dentro del contenido. |
+| 3.2.1 | A/P | A/P | A/P | A/P | Recibir foco no cambia de contexto. |
+| 3.2.2 | N/A | A/P | N/A | N/A | Editar campos no navega; los demás flujos no poseen entrada editable. |
+| 3.2.3 | A/P | A/P | A/P | A/P | Patrones de navegación y estado consistentes. |
+| 3.2.4 | A/P | A/P | A/P | A/P | Acciones con la misma función mantienen nombre consistente. |
+| 3.2.6 | N/A | N/A | N/A | N/A | No existe ayuda contextual repetida. |
+| 3.3.1 | A/P | A/P | A/P | vacío N/A; error A/P | Errores se comunican con texto; error Clientes anunciado automáticamente. |
+| 3.3.2 | N/A | A/P | N/A | N/A | Login conserva labels visibles e instrucciones de validación. |
+| 3.3.3 | N/A | A/P | N/A | N/A | Mensaje y foco identifican el primer campo que debe corregirse. |
+| 3.3.4 | N/A | N/A | A/P | A/P | Logout destructivo se anuncia y vuelve a Login. |
+| 3.3.7 | N/A | A/P | N/A | N/A | AutoFill rellena ambos campos sin solicitar reentrada. |
+| 3.3.8 | N/A | A/P | A/P | N/A | Passwords/biometría funcionan y existe fallback por email. |
+| 4.1.2 | A/P | A/P | A/P | A/P | VoiceOver confirma nombres, roles, estados y acciones separados. |
+| 4.1.3 | A/P | A/P | A/P | vacío A/P; error A/P | `loading → failed` anuncia una vez el título; siguiente gesto lee la descripción. |
+
+Revisor de implementación: propietario, 2026-08-21/22. Revisión independiente final: sin P0–P3, gate `PASS`. El único
+`A/L` es AutoFill sin Associated Domains, límite aceptado por ADR 0023 y no bloqueo de ADR 0022.
+
 ## Puerta de cierre
 
-La fixture no-live, su validación automática y los dos recorridos físicos están completos sin actividad Firebase live.
-El plan final pasa 815/815; Develop y Production compilan sin warnings. Login, AutoFill limitado, sesión restaurada,
-Face ID, shell vacío, logout, VoiceOver, Voice Control, Switch Control, Dynamic Type AX 5 y orientación iPhone pasan en
-el alcance registrado. La entrada temporal de Passwords fue eliminada y ambos argumentos del esquema quedaron
-desactivados.
+La fixture no-live, su validación automática y los recorridos físicos están completos sin actividad Firebase live. ADR
+0024 añade un error determinista de Clientes que corta antes de Firebase y atraviesa Repository, UseCase y ViewModel.
+El error muestra sus cuatro elementos en orden y pasa VoiceOver, Voice Control, Switch Control y Full Keyboard Access;
+también pasa portrait/landscape, iPad Air 11 pulgadas y ventana al ancho mínimo. La omisión adaptativa del icono
+redundante en landscape no elimina información. El plan final pasa 830/830; Develop y Production compilan sin warnings
+Swift/Clang ni issues warning+. El aviso del extractor de metadata sin AppIntents se clasifica como tooling de Xcode.
+Los tres argumentos del esquema quedan desactivados.
 
-El aviso genérico de Dynamic Type del Inspector sobre el nodo de biometría no disponible no se reproduce como defecto:
-AX 5 escala, envuelve y conserva todo el texto. La corrección de `SessionContent` quedó aprobada tras el RED físico y
-validada en iPhone 11/iPhone 14 y previews. El gate ADR 0022 permanece **Limitado**, no cerrado: faltan Full Keyboard
-Access de sesión/Clientes, iPad/multitarea, tolerancia a espaciado de texto equivalente y un error físico de Clientes.
+Inspector detectó un contraste real de 2,14:1 en el botón biométrico; `brandPrimary`/`onBrandPrimary` lo corrige sin
+cambiar la paleta y la repetición final elimina el hallazgo. El único aviso restante, Dynamic Type sobre el nodo de
+biometría no disponible, no se reproduce como defecto: AX 5 escala, envuelve y conserva todo el texto. Full Keyboard
+Access pasa en Login, sesión y Clientes; iPad/multitarea pasa en las tres pantallas. 1.4.12 queda `N/A` para SwiftUI
+nativo conforme a WCAG2Mobile. El gate de evidencia de ADR 0022 queda **Pasa**, pendiente de reauditoría read-only.
 AutoFill permanece deliberadamente `Limitado` por ausencia de Associated Domains; esa limitación está aceptada por ADR
 0023 y no requiere activar un proveedor live.

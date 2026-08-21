@@ -8,8 +8,39 @@ struct DevelopAuthenticationFixture {
         case restoredSession
     }
 
+    enum ClientsMode: Equatable {
+        case standard
+        case observationError
+    }
+
+    struct Configuration: Equatable {
+        let authenticationMode: Mode
+        let clientsMode: ClientsMode
+
+        private init(
+            authenticationMode: Mode,
+            clientsMode: ClientsMode
+        ) {
+            self.authenticationMode = authenticationMode
+            self.clientsMode = clientsMode
+        }
+
+        static func standard(_ authenticationMode: Mode) -> Configuration {
+            Configuration(
+                authenticationMode: authenticationMode,
+                clientsMode: .standard
+            )
+        }
+
+        static let clientsObservationError = Configuration(
+            authenticationMode: .restoredSession,
+            clientsMode: .observationError
+        )
+    }
+
     static let signedOutLaunchArgument = "--franalonso-auth-fixture-signed-out"
     static let restoredSessionLaunchArgument = "--franalonso-auth-fixture-restored-session"
+    static let clientsObservationErrorLaunchArgument = "--franalonso-clients-fixture-observation-error"
     static let principalID = "fixture-auth-principal-v1"
     static let email = "accessibility@franalonso.invalid"
     static let password = "FranAlonso-Fixture-Only"
@@ -31,17 +62,24 @@ struct DevelopAuthenticationFixture {
     /// Composes real application layers over isolated local storage and deterministic auth state.
     @MainActor
     static func make(
-        mode: Mode,
+        configuration: Configuration,
         biometricAuthenticator: BiometricAuthenticator = .localAuthentication()
     ) throws -> DevelopAuthenticationFixture {
         let container = try ModelContainer.inMemory(for: Schema.franAlonso)
+        let clientRepository: (any ClientRepository)? = switch configuration.clientsMode {
+        case .standard:
+            nil
+        case .observationError:
+            DevelopClientErrorRepository()
+        }
         let dependencies = AppDependencies.local(
             modelContainer: container,
             analyticsDataSource: DevelopAnalyticsDataSource(),
-            crashDataSource: DevelopCrashDataSource()
+            crashDataSource: DevelopCrashDataSource(),
+            clientRepository: clientRepository
         )
         let dataSource = DevelopAuthenticationDataSource(
-            initialState: mode == .signedOut ? .signedOut : .restoredSession
+            initialState: configuration.authenticationMode == .signedOut ? .signedOut : .restoredSession
         )
         let repository = DefaultAuthenticationRepository(dataSource: dataSource)
         let root = AuthenticationRootViewModel(
@@ -58,6 +96,24 @@ struct DevelopAuthenticationFixture {
             modelContainer: container,
             dependencies: dependencies,
             authenticationRootViewModel: root
+        )
+    }
+
+    /// Creates a fail-closed local terminal for malformed fixture arguments.
+    @MainActor
+    static func makeInvalidApplicationComposition() throws -> ApplicationComposition {
+        let container = try ModelContainer.inMemory(for: Schema.franAlonso)
+        let dependencies = AppDependencies.local(
+            modelContainer: container,
+            analyticsDataSource: DevelopAnalyticsDataSource(),
+            crashDataSource: DevelopCrashDataSource()
+        )
+
+        return ApplicationComposition(
+            modelContainer: container,
+            dependencies: dependencies,
+            runtime: nil,
+            authenticationRootViewModel: nil
         )
     }
 

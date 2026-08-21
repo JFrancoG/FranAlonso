@@ -3,11 +3,9 @@
 ## Estado
 
 - Fase: 07 — Design system, localización y navegación.
-- 07.1 — tokens visuales y nombres semánticos (PLU-26): entrega publicada en `5284ef1`; cierre en espera de la fixture
-  de autenticación no-live de PLU-27 y su último gate de teclado.
-- 07.1a — fixture de autenticación no-live (PLU-27): ADR 0023 y suplemento ejecutable aprobados; implementación y
-  validación automática completas, ambos recorridos físicos pasan y Full Keyboard Access de sesión/Clientes queda
-  limitado por ausencia de teclado externo.
+- 07.1 — tokens visuales y nombres semánticos (PLU-26): entrega base publicada en `f779f77`; suplemento de error de
+  Clientes y evidencia final completos, pendiente de reauditoría y entrega.
+- 07.1a — fixture no-live (PLU-27): ADR 0023/0024, implementación, validación automática y recorridos manuales completos.
 - 07.2 — componentes reutilizables (PLU-28): preflight completado y aclaración de fila/tarjeta `N/A` aprobada; código
   ejecutable y validación runtime bloqueados por PLU-27; solo puede continuar su preflight read-only.
 
@@ -179,8 +177,39 @@
 - Xcode MCP final: `SessionContent.swift` sin diagnósticos, build Develop correcto, cero warnings/issues warning+ y
   815/815 outcomes. Previews con y sin biometría pasan en Large, XXX Large y AX 5, portrait/landscape y Dark + Increased
   Contrast. La corrección visual usa RED/GREEN manual porque el proyecto no permite UI tests nativos.
-- Full Keyboard Access de sesión protegida y Clientes no pudo ejecutarse por ausencia de teclado externo; se conserva
-  como `Limitado`. Login mantiene el pase previo con teclado hardware. Ambos argumentos de fixture quedaron desactivados.
+- Full Keyboard Access de sesión protegida y Clientes se completó después en iPhone 17 Simulator/iOS 26.5 con el teclado
+  hardware del Mac; la evidencia detallada se registra en la pasada específica inferior. Los argumentos de fixture
+  permanecen como controles manuales del esquema Develop y deben quedar desactivados fuera de cada validación.
+
+### 2026-08-21 — Full Keyboard Access de sesión protegida y Clientes
+
+- Con la fixture de sesión restaurada y Face ID enrolled, `Tab` entra en el grupo de acciones y las flechas recorren
+  desbloqueo biométrico y fallback de email. `Espacio` abre Face ID; `Matching Face` completa la autorización y llega a
+  Clientes. La ruta con biometría no disponible permite activar el fallback por teclado hasta Login.
+- En Clientes vacío, logout es el único control interactivo, recibe el foco inicial y `Espacio` vuelve a Login. Allí se
+  reconfirmó `Tab` sobre `Email → Contraseña → Acceder` y `Mayúsculas + Tab` en sentido inverso.
+- El foco permanece visible, ningún elemento queda oculto y no existen trampas ni cambios de contexto provocados solo
+  por el foco. Pasan 2.1.1, 2.1.2, 2.4.3, 2.4.7, 2.4.11 y 3.2.1 para sesión protegida y Clientes.
+- La modificación local actual del esquema Develop corresponde al argumento temporal de fixture usado en estas pruebas;
+  se preserva fuera del alcance documental y deberá desactivarse al terminar toda la validación manual.
+
+### 2026-08-21 — iPad, orientación y multitarea
+
+- iPad Air 11 pulgadas (M4), iPadOS 26.5, ejecutó Login, sesión bloqueada y Clientes vacío en portrait y landscape sin
+  truncamientos, solapes, pérdida de contenido ni scroll horizontal. Touch ID con `Matching Touch` completó el acceso.
+- Con Apps en Ventanas, las tres pantallas pasan a medio ancho y en el tamaño mínimo permitido. El control inferior queda
+  ajustado en el ancho mínimo, pero sigue visible y el scroll vertical permite mostrarlo y operarlo completamente.
+- La evidencia cierra 1.3.4 para Login, sesión protegida y Clientes; el reflow de 1.4.10 permanece `Pasa` también en la
+  ventana mínima.
+
+### 2026-08-21 — Reclasificación de espaciado de texto
+
+- El propietario aprobó reclasificar 1.4.12 de `Aplicable/Limitado` a `N/A` para las pantallas SwiftUI nativas actuales.
+- WCAG2Mobile limita el criterio a software no web implementado mediante markup que permita modificar las propiedades de
+  espaciado. SwiftUI no usa markup ni expone en estas pantallas un mecanismo de override de línea, párrafo, letra o
+  palabra; una preview artificial no demostraría una preferencia real de plataforma.
+- La matriz normativa y las filas de Login, sesión protegida y Clientes quedan corregidas. Dynamic Type y adaptación de
+  layout continúan cubiertas y validadas por 1.4.4 y 1.4.10; no se rebajan esas puertas.
 
 ### 2026-08-21 — Preflight y propuesta revisada de 07.2
 
@@ -384,17 +413,43 @@
 - La aceptación de ADR 0022 se sincronizó en el proyecto, milestone, PLU-25 y PLU-26; ambas issues permanecen en
   Backlog y la propuesta revisada de 07.1 sigue siendo la siguiente puerta.
 
+### 2026-08-22 — Error determinista de Clientes y cierre manual de ADR 0022
+
+- ADR 0024 incorpora `--franalonso-clients-fixture-observation-error`, válido únicamente junto a la sesión restaurada
+  de Develop. La composición corta antes de Firebase, usa un repositorio Data sin estado y lleva el fallo por la cadena
+  Repository → UseCase → `ClientListViewModel.failed`; una configuración inválida falla cerrada y nunca deriva a live.
+- RED/GREEN focal terminó en 29/29; la validación final pasa 830/830, build Develop y Production correctos, cero warnings
+  Swift/Clang y cero issues warning+ mediante Xcode MCP. Ambos logs contienen únicamente el aviso de tooling
+  `Metadata extraction skipped. No AppIntents.framework dependency found`. Los tres argumentos del scheme quedan
+  desactivados y Develop es el scheme activo.
+- En iPhone 11 físico, el error de Clientes muestra título, mensaje y logout con los cuatro elementos accesibles en orden.
+  VoiceOver, Voice Control y Switch Control pasan; Full Keyboard Access en Simulator enfoca logout y `Espacio` vuelve a
+  Login. Las acciones de sesión protegida también pasan por nombre visible y sin trampas.
+- Portrait/landscape pasan en iPhone; iPad Air 11 pulgadas (M4), iOS 26.5, pasa ambas orientaciones y ventana al ancho
+  mínimo. En landscape el `ContentUnavailableView` puede omitir el icono redundante sin perder información textual.
+- Accessibility Inspector detectó 2,14:1 en el botón biométrico al combinar el acento claro con blanco. La corrección
+  mínima aplica `brandPrimary`/`onBrandPrimary`; el test de los cuatro pares pasa y la repetición de Inspector elimina el
+  hallazgo. Solo permanece el aviso genérico de Dynamic Type no reproducido: AX 5 conserva texto y controles completos.
+- El registro de ADR 0022 queda completo para las superficies de 07.1. AutoFill conserva únicamente la limitación
+  aceptada de Associated Domains; no constituye un bloqueo ni autoriza activar Firebase live.
+- La primera auditoría iOS de cierre detectó un P2: la sustitución opcional de `ClientRepository` también compilaba en
+  Production. RED source-backed confirmó el seam; GREEN lo mueve a una factory completa bajo
+  `FRANALONSO_AUTH_FIXTURE`, mantiene la composición Production sin ese parámetro y vuelve a pasar 830/830. La pasada de
+  accesibilidad concurrente se descartó al cambiar la huella; ambos revisores deben repetirse sobre el estado estable.
+- El build Production posterior al refactor pasa mediante Xcode MCP. VoiceOver físico confirma la transición
+  `loading → failed`: anuncia una sola vez `No se pudieron cargar los clientes`; el siguiente gesto lee `Inténtalo de
+  nuevo más tarde`, demostrando foco inicial, orden y ausencia de duplicados para 4.1.3.
+- La matriz consolidada contiene 55/55 criterios por flujo. Las reauditorías finales iOS y accesibilidad usan huellas
+  pre/post idénticas, no encuentran P0–P3 y devuelven `PASS`. El único límite residual es AutoFill sin Associated
+  Domains, aceptado por ADR 0023 y no bloqueante.
+
 ## Pendiente
 
-- Completar Full Keyboard Access en sesión protegida/Clientes, iPad/multitarea, tolerancia de espaciado de texto y un
-  error físico de Clientes cuando estén disponibles sus precondiciones.
-- Repetir únicamente la auditoría iOS y de accesibilidad tras esta reconciliación documental.
-- No iniciar implementación de PLU-28 ni cerrar PLU-26/PLU-27 hasta resolver o aceptar explícitamente ese límite.
+- Reconciliar Linear y solicitar autorización de entrega; no iniciar implementación de PLU-28 antes de ese gate.
 
 ## Bloqueos
 
 No quedan defectos físicos conocidos en Login, sesión protegida ni Clientes. La validación automática, previews,
-Inspector y tecnologías de asistencia ejecutadas están reconciliados; AutoFill conserva el límite esperado de
-Associated Domains. Permanecen limitadas las comprobaciones de Full Keyboard Access en sesión/Clientes, iPad/multitarea,
-espaciado de texto equivalente y error físico de Clientes. PLU-27/PLU-26 siguen abiertos y bloquean
-implementación/runtime de PLU-28; el preflight read-only de 07.2 continúa siendo válido.
+Inspector y tecnologías de asistencia ejecutadas están reconciliados; AutoFill conserva el límite aceptado de
+Associated Domains. Full Keyboard Access e iPad/multitarea pasan también en sesión/Clientes; 1.4.12 queda `N/A` para
+SwiftUI nativo. PLU-27/PLU-26 siguen abiertos hasta entrega; el preflight read-only de 07.2 continúa válido.

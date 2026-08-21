@@ -9,11 +9,15 @@ struct ApplicationLaunchPlanTests {
         arguments: [
             (
                 DevelopAuthenticationFixture.signedOutLaunchArgument,
-                ApplicationLaunchPlan.authenticationFixture(.signedOut)
+                ApplicationLaunchPlan.authenticationFixture(
+                    .standard(.signedOut)
+                )
             ),
             (
                 DevelopAuthenticationFixture.restoredSessionLaunchArgument,
-                ApplicationLaunchPlan.authenticationFixture(.restoredSession)
+                ApplicationLaunchPlan.authenticationFixture(
+                    .standard(.restoredSession)
+                )
             )
         ]
     )
@@ -28,6 +32,86 @@ struct ApplicationLaunchPlanTests {
         )
 
         #expect(plan == expectedPlan)
+    }
+
+    @Test("The Clients error fixture requires one exact restored session pair")
+    func clientsErrorFixtureRequiresExactRestoredSessionPair() {
+        let plan = ApplicationLaunchPlan.resolve(
+            appEnvironment: "develop",
+            bundleIdentifier: "com.plusprojects.FranAlonso.develop",
+            arguments: [
+                "/fixture/app",
+                DevelopAuthenticationFixture.restoredSessionLaunchArgument,
+                DevelopAuthenticationFixture.clientsObservationErrorLaunchArgument
+            ]
+        )
+
+        #expect(
+            plan == .authenticationFixture(
+                .clientsObservationError
+            )
+        )
+    }
+
+    @Test(
+        "Every malformed Clients fixture intent fails closed",
+        arguments: [
+            [
+                "/fixture/app",
+                DevelopAuthenticationFixture.clientsObservationErrorLaunchArgument
+            ],
+            [
+                "/fixture/app",
+                DevelopAuthenticationFixture.signedOutLaunchArgument,
+                DevelopAuthenticationFixture.clientsObservationErrorLaunchArgument
+            ],
+            [
+                "/fixture/app",
+                DevelopAuthenticationFixture.restoredSessionLaunchArgument,
+                "--franalonso-clients-fixture-unknown"
+            ],
+            [
+                "/fixture/app",
+                DevelopAuthenticationFixture.restoredSessionLaunchArgument,
+                DevelopAuthenticationFixture.clientsObservationErrorLaunchArgument,
+                DevelopAuthenticationFixture.clientsObservationErrorLaunchArgument
+            ],
+            [
+                "/fixture/app",
+                DevelopAuthenticationFixture.restoredSessionLaunchArgument,
+                DevelopAuthenticationFixture.signedOutLaunchArgument,
+                DevelopAuthenticationFixture.clientsObservationErrorLaunchArgument
+            ],
+            [
+                "/fixture/app",
+                "--franalonso-auth-fixture-unknown",
+                DevelopAuthenticationFixture.clientsObservationErrorLaunchArgument
+            ]
+        ]
+    )
+    func malformedClientsFixtureIntentFailsClosed(_ arguments: [String]) {
+        let plan = ApplicationLaunchPlan.resolve(
+            appEnvironment: "develop",
+            bundleIdentifier: "com.plusprojects.FranAlonso.develop",
+            arguments: arguments
+        )
+
+        #expect(plan == .invalidFixtureConfiguration)
+    }
+
+    @Test("A Clients fixture intent fails closed when its Develop identity gate is invalid")
+    func clientsFixtureIntentFailsClosedOutsideExactDevelopIdentity() {
+        let plan = ApplicationLaunchPlan.resolve(
+            appEnvironment: "production",
+            bundleIdentifier: "com.plusprojects.FranAlonso",
+            arguments: [
+                "/fixture/app",
+                DevelopAuthenticationFixture.restoredSessionLaunchArgument,
+                DevelopAuthenticationFixture.clientsObservationErrorLaunchArgument
+            ]
+        )
+
+        #expect(plan == .invalidFixtureConfiguration)
     }
 
     @Test("A missing environment or bundle gate always resolves live")

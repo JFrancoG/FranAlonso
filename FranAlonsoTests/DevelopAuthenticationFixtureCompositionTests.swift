@@ -12,19 +12,21 @@ struct DevelopAuthenticationFixtureCompositionTests {
         let fixtureFactory = ApplicationCompositionFactorySpy()
 
         _ = try ApplicationComposition.make(
-            plan: .authenticationFixture(.signedOut),
+            plan: .authenticationFixture(.standard(.signedOut)),
             makeLive: liveFactory.make,
-            makeFixture: fixtureFactory.make(mode:)
+            makeFixture: fixtureFactory.make(configuration:),
+            makeInvalidFixture: fixtureFactory.makeInvalid
         )
 
         #expect(liveFactory.liveInvocationCount == 0)
-        #expect(fixtureFactory.fixtureModes == [.signedOut])
+        #expect(fixtureFactory.fixtureConfigurations == [.standard(.signedOut)])
+        #expect(fixtureFactory.invalidInvocationCount == 0)
     }
 
     @Test("The real fixture has no live runtime and all 28 schema tables start empty")
     func realFixtureHasNoLiveRuntimeAndStartsPristine() async throws {
         let composition = try ApplicationComposition.make(
-            plan: .authenticationFixture(.signedOut)
+            plan: .authenticationFixture(.standard(.signedOut))
         )
         let pristineDataSource = SwiftDataStorePristineDataSource(
             modelContainer: composition.modelContainer
@@ -54,10 +56,10 @@ struct DevelopAuthenticationFixtureCompositionTests {
     @Test("Signed-out fixture traverses DataSource, Repository, Use Cases and root")
     func signedOutFixtureTraversesFullAuthenticationChain() async throws {
         let composition = try ApplicationComposition.make(
-            plan: .authenticationFixture(.signedOut),
-            makeFixture: { mode in
+            plan: .authenticationFixture(.standard(.signedOut)),
+            makeFixture: { configuration in
                 try DevelopAuthenticationFixture.make(
-                    mode: mode,
+                    configuration: configuration,
                     biometricAuthenticator: BiometricAuthenticator(
                         canAuthenticate: { true },
                         authenticate: { _ in }
@@ -96,7 +98,7 @@ struct DevelopAuthenticationFixtureCompositionTests {
     @Test("Restored fixture reaches a locked root without invoking sign in")
     func restoredFixtureReachesLockedRootWithoutSignIn() async throws {
         let composition = try ApplicationComposition.make(
-            plan: .authenticationFixture(.restoredSession)
+            plan: .authenticationFixture(.standard(.restoredSession))
         )
         let root = try #require(composition.authenticationRootViewModel)
         let observation = Task { @MainActor in
@@ -112,20 +114,101 @@ struct DevelopAuthenticationFixtureCompositionTests {
         observation.cancel()
         await observation.value
     }
+
+    @Test("Invalid fixture configuration never constructs a live or auth fixture")
+    func invalidFixtureConfigurationNeverConstructsOtherRoutes() throws {
+        let liveFactory = ApplicationCompositionFactorySpy()
+        let fixtureFactory = ApplicationCompositionFactorySpy()
+        _ = try ApplicationComposition.make(
+            plan: .invalidFixtureConfiguration,
+            makeLive: liveFactory.make,
+            makeFixture: fixtureFactory.make(configuration:),
+            makeInvalidFixture: fixtureFactory.makeInvalid
+        )
+
+        #expect(liveFactory.liveInvocationCount == 0)
+        #expect(fixtureFactory.fixtureConfigurations.isEmpty)
+        #expect(fixtureFactory.invalidInvocationCount == 1)
+    }
+
+    @Test("The real invalid fixture composition is pristine and isolated")
+    func realInvalidFixtureCompositionIsPristineAndIsolated() async throws {
+        let composition = try ApplicationComposition.make(
+            plan: .invalidFixtureConfiguration
+        )
+        let pristineDataSource = SwiftDataStorePristineDataSource(
+            modelContainer: composition.modelContainer
+        )
+
+        #expect(composition.runtime == nil)
+        #expect(composition.authenticationRootViewModel == nil)
+        #expect(try await pristineDataSource.isPristine())
+    }
+
+    @Test("Clients error fixture traverses Repository, Use Case and ViewModel")
+    func clientsErrorFixtureTraversesRealPresentationChain() async throws {
+        let composition = try ApplicationComposition.make(
+            plan: .authenticationFixture(.clientsObservationError)
+        )
+        let root = try #require(composition.authenticationRootViewModel)
+        let rootObservation = Task { @MainActor in
+            await root.sessionViewModel.load()
+        }
+
+        await waitUntil { root.sessionViewModel.sessionEventRevision == 1 }
+        root.sessionEventDidChange()
+        #expect(root.state == .locked)
+
+        let clients = ClientListViewModel(
+            observeClients: composition.dependencies.observeClients
+        )
+        await clients.load()
+        #expect(clients.state == .failed)
+
+        rootObservation.cancel()
+        await rootObservation.value
+    }
+
+    @Test("Standard restored fixture keeps the empty Clients state")
+    func standardRestoredFixtureKeepsEmptyClientsState() async throws {
+        let composition = try ApplicationComposition.make(
+            plan: .authenticationFixture(.standard(.restoredSession))
+        )
+        let clients = ClientListViewModel(
+            observeClients: composition.dependencies.observeClients
+        )
+        let observation = Task { @MainActor in
+            await clients.load()
+        }
+
+        await waitUntil { clients.state == .empty }
+        #expect(clients.state == .empty)
+
+        observation.cancel()
+        await observation.value
+    }
 }
 
 @MainActor
 private final class ApplicationCompositionFactorySpy {
     private(set) var liveInvocationCount = 0
-    private(set) var fixtureModes: [DevelopAuthenticationFixture.Mode] = []
+    private(set) var fixtureConfigurations: [
+        DevelopAuthenticationFixture.Configuration
+    ] = []
+    private(set) var invalidInvocationCount = 0
 
     func make() throws -> ApplicationComposition {
         liveInvocationCount += 1
         return try makeComposition()
     }
 
-    func make(mode: DevelopAuthenticationFixture.Mode) throws -> ApplicationComposition {
-        fixtureModes.append(mode)
+    func make(configuration: DevelopAuthenticationFixture.Configuration) throws -> ApplicationComposition {
+        fixtureConfigurations.append(configuration)
+        return try makeComposition()
+    }
+
+    func makeInvalid() throws -> ApplicationComposition {
+        invalidInvocationCount += 1
         return try makeComposition()
     }
 

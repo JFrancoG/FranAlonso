@@ -286,7 +286,8 @@ struct BuildEnvironmentConfigurationTests {
 
         for argument in [
             "--franalonso-auth-fixture-signed-out",
-            "--franalonso-auth-fixture-restored-session"
+            "--franalonso-auth-fixture-restored-session",
+            "--franalonso-clients-fixture-observation-error"
         ] {
             #expect(
                 developScheme.contains(
@@ -301,6 +302,7 @@ struct BuildEnvironmentConfigurationTests {
     func fixtureImplementationFilesAreCompletelyGuarded() throws {
         for relativePath in [
             "FranAlonso/App/DevelopAuthenticationFixture.swift",
+            "FranAlonso/Features/Clients/Data/Repositories/DevelopClientErrorRepository.swift",
             "FranAlonso/Features/Authentication/Data/Adapters/DevelopAuthenticationDataSource.swift"
         ] {
             let source = try repositoryFile(at: relativePath)
@@ -316,7 +318,11 @@ struct BuildEnvironmentConfigurationTests {
         let guardedSeams = [
             (
                 "FranAlonso/App/ApplicationLaunchPlan.swift",
-                "case authenticationFixture(DevelopAuthenticationFixture.Mode)"
+                "case authenticationFixture(DevelopAuthenticationFixture.Configuration)"
+            ),
+            (
+                "FranAlonso/App/ApplicationLaunchPlan.swift",
+                "case invalidFixtureConfiguration"
             ),
             (
                 "FranAlonso/App/ApplicationComposition.swift",
@@ -327,8 +333,16 @@ struct BuildEnvironmentConfigurationTests {
                 "case fixtureReady"
             ),
             (
+                "FranAlonso/App/AppDelegate.swift",
+                "case fixtureConfigurationFailed"
+            ),
+            (
                 "FranAlonso/App/AppDependencies.swift",
                 "static func local("
+            ),
+            (
+                "FranAlonso/App/AppDependencies.swift",
+                "clientRepository injectedClientRepository"
             ),
             (
                 "FranAlonso/App/FranAlonsoApp.swift",

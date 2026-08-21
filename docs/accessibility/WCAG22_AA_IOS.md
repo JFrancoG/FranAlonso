@@ -26,7 +26,7 @@ adjunta evidencia. `N/A` sin motivo no es válido.
 | 1.4.5 Imágenes de texto (AA) | Usar texto real salvo que la presentación sea esencial. | Inspección de assets. |
 | 1.4.10 Reflow (AA) | Sin scroll bidimensional innecesario; contenido se adapta a ventana y multitarea. | iPhone, iPad y ventanas estrechas. |
 | 1.4.11 Contraste no textual (AA) | Controles, estados y gráficos esenciales alcanzan 3:1 frente a colores adyacentes. | Medición en cuatro apariencias. |
-| 1.4.12 Espaciado de texto (AA) | El layout tolera cambios equivalentes de espaciado sin recorte o pérdida. | Inspección con contenido exigente. |
+| 1.4.12 Espaciado de texto (AA) | Condicional: solo aplica a UI implementada mediante markup que permita al usuario modificar esas propiedades; `N/A` motivado para SwiftUI nativo. | Inspección de tecnología y mecanismo de override; si aplica, contenido exigente. |
 | 1.4.13 Contenido al hover/foco (AA) | Popovers o ayudas adicionales son descartables, alcanzables y persistentes cuando aplican. | Puntero, teclado y foco. |
 
 ## Criterios operables
@@ -124,6 +124,7 @@ Métodos: `Test`, `Preview`, `Inspector`, `VoiceOver`, `Voice Control`, `Switch 
 
 - [WCAG 2.2](https://www.w3.org/TR/WCAG22/)
 - [WCAG2ICT 2.2](https://www.w3.org/TR/wcag2ict-22/)
+- [WCAG2Mobile 2.2 — 1.4.12 Text Spacing](https://www.w3.org/TR/wcag2mobile-22/#text-spacing)
 - [Apple HIG Accessibility](https://developer.apple.com/design/human-interface-guidelines/accessibility)
 - [Apple HIG VoiceOver](https://developer.apple.com/design/human-interface-guidelines/voiceover)
 - [Apple HIG Motion](https://developer.apple.com/design/human-interface-guidelines/motion)

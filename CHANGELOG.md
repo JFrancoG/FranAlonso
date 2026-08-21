@@ -17,6 +17,7 @@ All notable changes to this project are documented in this file.
 
 ### Added
 
+- 2026-08-21 | ✨ feat(clients): add develop-only error fixture
 - 2026-08-21 | ✨ feat(auth): add develop-only auth fixture
 - 2026-08-21 | ✨ feat(design-system): add semantic color tokens
 - 2026-08-02 | ✨ feat(auth): compose protected application root

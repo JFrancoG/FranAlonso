@@ -8,6 +8,7 @@ enum FirebaseBootstrapState: Equatable {
     case failed
 #if FRANALONSO_AUTH_FIXTURE
     case fixtureReady
+    case fixtureConfigurationFailed
 #endif
 }
 
@@ -40,6 +41,8 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
             )
         case .authenticationFixture:
             firebaseBootstrapState = .fixtureReady
+        case .invalidFixtureConfiguration:
+            firebaseBootstrapState = .fixtureConfigurationFailed
         }
 #else
         completeFirebaseBootstrap(

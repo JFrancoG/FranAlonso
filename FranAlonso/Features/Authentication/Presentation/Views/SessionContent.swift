@@ -88,7 +88,9 @@ struct SessionContent: View {
                                 .frame(maxWidth: .infinity)
                             }
                         }
+                        .foregroundStyle(.onBrandPrimary)
                         .buttonStyle(.borderedProminent)
+                        .tint(.brandPrimary)
                         .frame(maxWidth: .infinity)
                         .accessibilityLabel(Text(.authenticationSessionBiometricUnlock))
                         .disabled(actionInFlight)
