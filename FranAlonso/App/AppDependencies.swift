@@ -40,6 +40,40 @@ struct AppDependencies {
         )
     }
 
+#if FRANALONSO_AUTH_FIXTURE
+    /// Creates isolated local-first dependencies with explicitly supplied telemetry boundaries.
+    static func local(
+        modelContainer: ModelContainer,
+        analyticsDataSource: any AnalyticsDataSource,
+        crashDataSource: any CrashDataSource
+    ) -> AppDependencies {
+        let observationSignal = ClientObservationSignal()
+        let productObservationSignal = ProductObservationSignal()
+        let serviceObservationSignal = ServiceObservationSignal()
+        let saleObservationSignal = SaleObservationSignal()
+        return .composed(
+            persistenceActor: ClientPersistenceActor(
+                modelContainer: modelContainer
+            ),
+            observationSignal: observationSignal,
+            productPersistenceActor: ProductPersistenceActor(
+                modelContainer: modelContainer
+            ),
+            productObservationSignal: productObservationSignal,
+            servicePersistenceActor: ServicePersistenceActor(
+                modelContainer: modelContainer
+            ),
+            serviceObservationSignal: serviceObservationSignal,
+            salePersistenceActor: SalePersistenceActor(
+                modelContainer: modelContainer
+            ),
+            saleObservationSignal: saleObservationSignal,
+            analyticsDataSource: analyticsDataSource,
+            crashDataSource: crashDataSource
+        )
+    }
+#endif
+
     /// Creates production dependencies over runtime-owned local-first roles.
     ///
     /// - Parameters:
@@ -60,6 +94,32 @@ struct AppDependencies {
         serviceObservationSignal: ServiceObservationSignal,
         salePersistenceActor: SalePersistenceActor,
         saleObservationSignal: SaleObservationSignal
+    ) -> AppDependencies {
+        .composed(
+            persistenceActor: persistenceActor,
+            observationSignal: observationSignal,
+            productPersistenceActor: productPersistenceActor,
+            productObservationSignal: productObservationSignal,
+            servicePersistenceActor: servicePersistenceActor,
+            serviceObservationSignal: serviceObservationSignal,
+            salePersistenceActor: salePersistenceActor,
+            saleObservationSignal: saleObservationSignal,
+            analyticsDataSource: FirebaseAnalyticsDataSource(),
+            crashDataSource: FirebaseCrashDataSource()
+        )
+    }
+
+    private static func composed(
+        persistenceActor: ClientPersistenceActor,
+        observationSignal: ClientObservationSignal,
+        productPersistenceActor: ProductPersistenceActor,
+        productObservationSignal: ProductObservationSignal,
+        servicePersistenceActor: ServicePersistenceActor,
+        serviceObservationSignal: ServiceObservationSignal,
+        salePersistenceActor: SalePersistenceActor,
+        saleObservationSignal: SaleObservationSignal,
+        analyticsDataSource: any AnalyticsDataSource,
+        crashDataSource: any CrashDataSource
     ) -> AppDependencies {
         let clientRepository = DefaultClientRepository(
             persistenceActor: persistenceActor,
@@ -83,8 +143,8 @@ struct AppDependencies {
             productRepository: productRepository,
             serviceRepository: serviceRepository,
             saleRepository: saleRepository,
-            analyticsDataSource: FirebaseAnalyticsDataSource(),
-            crashDataSource: FirebaseCrashDataSource()
+            analyticsDataSource: analyticsDataSource,
+            crashDataSource: crashDataSource
         )
     }
 

@@ -11,6 +11,8 @@ sin introducir lógica de negocio en Views.
 - Navegación aprobada: [`../design/navigation.md`](../design/navigation.md).
 - Accesibilidad: ADR 0022 y [`../accessibility/WCAG22_AA_IOS.md`](../accessibility/WCAG22_AA_IOS.md).
 - Tokens y componentes viven en `Shared/Presentation` solo cuando existe reutilización real.
+- En 07.2, fila y tarjeta compartidas quedan `N/A`/diferidas mientras no exista un segundo consumidor o una invariante
+  común demostrada; se reevaluarán con el primer flujo real de Clientes o Jornada, sin crear APIs ni Views sin uso.
 - La raíz autenticada usa `TabView` con `.sidebarAdaptable`; `AppShellViewModel` posee `AppSection` y comienza en Jornada.
 - Cada sección conserva su `NavigationStack`; las rutas tipadas son locales y solo existen si hay varios destinos.
 - No se crea router global, `NavigationPath` global, deep links ni restauración completa sin requisito demostrado.
@@ -23,7 +25,7 @@ sin introducir lógica de negocio en Views.
 | ID | Alcance | Evidencia principal |
 |---|---|---|
 | 07.1 | Tokens visuales y nombres semánticos desde la paleta aprobada. | Catálogo, cuatro apariencias, contraste y Dynamic Type. |
-| 07.2 | Botones, campos, filas y tarjetas reutilizables. | Tests de lógica fuera de View, estados, interacción y accesibilidad. |
+| 07.2 | Botones y campos reutilizables demostrados; fila y tarjeta `N/A`/diferidas hasta su primer consumidor real. | Tests de lógica fuera de View, estados, interacción y accesibilidad; decisión `N/A` trazada. |
 | 07.3 | Vistas de carga, vacío y error. | Estados de ViewModel, previews y localización completa. |
 | 07.4 | Confirmación genérica y alerta de stock semántica. | Política, foco, anuncio y acciones accesibles. |
 | 07.5 | `AppSection`, `AppShellViewModel` y rutas locales necesarias. | Selección, push/pop y presentación por identidad. |

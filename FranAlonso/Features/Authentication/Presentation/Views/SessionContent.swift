@@ -13,6 +13,7 @@ struct SessionContent: View {
     let requestUnlock: () -> Void
     let requestSignOut: () -> Void
 
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     @AccessibilityFocusState private var feedbackFocus: FeedbackFocus?
 
     var body: some View {
@@ -41,11 +42,15 @@ struct SessionContent: View {
                     ContentUnavailableView {
                         Label {
                             Text(.authenticationSessionLockedTitle)
+                                .lineLimit(nil)
+                                .fixedSize(horizontal: false, vertical: true)
                         } icon: {
                             Image(systemName: "lock.fill")
                         }
                     } description: {
                         Text(.authenticationSessionLockedMessage)
+                            .lineLimit(nil)
+                            .fixedSize(horizontal: false, vertical: true)
                     }
                 }
 
@@ -64,13 +69,28 @@ struct SessionContent: View {
                         Button {
                             requestUnlock()
                         } label: {
-                            Label {
-                                Text(.authenticationSessionBiometricUnlock)
-                            } icon: {
-                                Image(systemName: "lock.open.fill")
+                            if dynamicTypeSize.isAccessibilitySize {
+                                VStack(spacing: 8) {
+                                    Image(systemName: "lock.open.fill")
+                                        .accessibilityHidden(true)
+                                    Text(.authenticationSessionBiometricUnlock)
+                                        .multilineTextAlignment(.center)
+                                        .lineLimit(nil)
+                                        .fixedSize(horizontal: false, vertical: true)
+                                }
+                                .frame(maxWidth: .infinity)
+                            } else {
+                                HStack(spacing: 8) {
+                                    Image(systemName: "lock.open.fill")
+                                        .accessibilityHidden(true)
+                                    Text(.authenticationSessionBiometricUnlock)
+                                }
+                                .frame(maxWidth: .infinity)
                             }
                         }
                         .buttonStyle(.borderedProminent)
+                        .frame(maxWidth: .infinity)
+                        .accessibilityLabel(Text(.authenticationSessionBiometricUnlock))
                         .disabled(actionInFlight)
                     }
 
@@ -100,6 +120,8 @@ struct SessionContent: View {
                     } label: {
                         Label {
                             Text(.authenticationSessionEmailFallback)
+                                .lineLimit(nil)
+                                .fixedSize(horizontal: false, vertical: true)
                         } icon: {
                             Image(systemName: "envelope.fill")
                         }

@@ -20,4 +20,23 @@ struct FirebaseBootstrapStateTests {
 
         #expect(delegate.firebaseBootstrapState == expectedState)
     }
+
+#if FRANALONSO_AUTH_FIXTURE
+    @Test("Fixture launch becomes ready without configuring Firebase")
+    func fixtureLaunchBecomesReadyWithoutConfiguringFirebase() {
+        let delegate = AppDelegate()
+        var configurationCalls = 0
+
+        delegate.completeApplicationBootstrap(
+            for: .authenticationFixture(.signedOut),
+            configureFirebase: {
+                configurationCalls += 1
+                return true
+            }
+        )
+
+        #expect(delegate.firebaseBootstrapState == .fixtureReady)
+        #expect(configurationCalls == 0)
+    }
+#endif
 }

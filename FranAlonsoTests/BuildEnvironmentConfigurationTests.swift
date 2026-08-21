@@ -229,6 +229,121 @@ struct BuildEnvironmentConfigurationTests {
             #expect(productionAsset == developAsset)
         }
     }
+
+    @Test("The authentication fixture compiles only in app and test Debug-Develop targets")
+    func authenticationFixtureCompilesOnlyInDebugDevelopTargets() throws {
+        let project = try repositoryFile(
+            at: "FranAlonso.xcodeproj/project.pbxproj"
+        )
+        let fixtureCondition = "FRANALONSO_AUTH_FIXTURE"
+        let expectedConfigurations = [
+            "E08BC64A2FDB2B72008EECFF": false,
+            "E08BC64B2FDB2B72008EECFF": false,
+            "E0C0D010300F000100000001": false,
+            "E0C0D011300F000100000001": false,
+            "E08BC64D2FDB2B72008EECFF": true,
+            "E08BC64E2FDB2B72008EECFF": false,
+            "E0C0D012300F000100000001": false,
+            "E0C0D013300F000100000001": false,
+            "E08BC6502FDB2B72008EECFF": true,
+            "E08BC6512FDB2B72008EECFF": false,
+            "E0C0D014300F000100000001": false,
+            "E0C0D015300F000100000001": false
+        ]
+
+        #expect(expectedConfigurations.count == 12)
+        #expect(
+            buildConfigurationIDs(in: project)
+                == Set(expectedConfigurations.keys)
+        )
+
+        for (configurationID, expectsFixture) in expectedConfigurations {
+            let settings = buildSettings(
+                configurationID: configurationID,
+                in: project
+            )
+            #expect(!settings.isEmpty)
+            #expect(settings.contains(fixtureCondition) == expectsFixture)
+        }
+
+        for configurationPath in [
+            "Configuration/BuildSettings/Develop.xcconfig",
+            "Configuration/BuildSettings/Production.xcconfig"
+        ] {
+            let inheritedSettings = try repositoryFile(at: configurationPath)
+            #expect(!inheritedSettings.contains(fixtureCondition))
+        }
+    }
+
+    @Test("Develop launch arguments are present and disabled by default")
+    func developFixtureLaunchArgumentsAreDisabledByDefault() throws {
+        let developScheme = try repositoryFile(
+            at: "FranAlonso.xcodeproj/xcshareddata/xcschemes/FranAlonso-Develop.xcscheme"
+        )
+        let productionScheme = try repositoryFile(
+            at: "FranAlonso.xcodeproj/xcshareddata/xcschemes/FranAlonso-Production.xcscheme"
+        )
+
+        for argument in [
+            "--franalonso-auth-fixture-signed-out",
+            "--franalonso-auth-fixture-restored-session"
+        ] {
+            #expect(
+                developScheme.contains(
+                    "argument = \"\(argument)\"\n            isEnabled = \"NO\""
+                )
+            )
+            #expect(!productionScheme.contains(argument))
+        }
+    }
+
+    @Test("Fixture implementation files are excluded as complete compilation units")
+    func fixtureImplementationFilesAreCompletelyGuarded() throws {
+        for relativePath in [
+            "FranAlonso/App/DevelopAuthenticationFixture.swift",
+            "FranAlonso/Features/Authentication/Data/Adapters/DevelopAuthenticationDataSource.swift"
+        ] {
+            let source = try repositoryFile(at: relativePath)
+                .trimmingCharacters(in: .whitespacesAndNewlines)
+
+            #expect(source.hasPrefix("#if FRANALONSO_AUTH_FIXTURE"))
+            #expect(source.hasSuffix("#endif"))
+        }
+    }
+
+    @Test("Every shared fixture seam remains inside its compilation guard")
+    func sharedFixtureSeamsRemainInsideCompilationGuard() throws {
+        let guardedSeams = [
+            (
+                "FranAlonso/App/ApplicationLaunchPlan.swift",
+                "case authenticationFixture(DevelopAuthenticationFixture.Mode)"
+            ),
+            (
+                "FranAlonso/App/ApplicationComposition.swift",
+                "let authenticationRootViewModel: AuthenticationRootViewModel?"
+            ),
+            (
+                "FranAlonso/App/AppDelegate.swift",
+                "case fixtureReady"
+            ),
+            (
+                "FranAlonso/App/AppDependencies.swift",
+                "static func local("
+            ),
+            (
+                "FranAlonso/App/FranAlonsoApp.swift",
+                "private let authenticationRootViewModel: AuthenticationRootViewModel?"
+            )
+        ]
+
+        for (relativePath, seam) in guardedSeams {
+            let source = try repositoryFile(at: relativePath)
+            #expect(
+                sourceContainsFixtureGuarded(seam, in: source),
+                "Expected \(seam) to be excluded outside Debug-Develop"
+            )
+        }
+    }
 }
 
 private struct FirebaseServiceConfiguration: Decodable {
@@ -286,4 +401,50 @@ private func repositoryData(at relativePath: String) throws -> Data {
 
 private func occurrenceCount(of value: String, in text: String) -> Int {
     text.components(separatedBy: value).count - 1
+}
+
+private func buildSettings(configurationID: String, in project: String) -> Substring {
+    let startMarker = "\(configurationID) /*"
+    guard let start = project.range(of: startMarker)?.lowerBound else { return "" }
+    let suffix = project[start...]
+    guard let end = suffix.range(of: "\n\t\t};")?.upperBound else { return "" }
+
+    return suffix[..<end]
+}
+
+private func buildConfigurationIDs(in project: String) -> Set<String> {
+    let lines = project.split(separator: "\n", omittingEmptySubsequences: false)
+    var identifiers = Set<String>()
+
+    for index in lines.indices where lines[index].contains("isa = XCBuildConfiguration;") && index > lines.startIndex {
+        let header = lines[lines.index(before: index)]
+            .trimmingCharacters(in: .whitespaces)
+        if let identifier = header.split(separator: " ").first {
+            identifiers.insert(String(identifier))
+        }
+    }
+
+    return identifiers
+}
+
+private func sourceContainsFixtureGuarded(_ value: String, in source: String) -> Bool {
+    guard let valueRange = source.range(of: value) else { return false }
+    let prefix = source[..<valueRange.lowerBound]
+    guard let guardRange = prefix.range(
+        of: "#if FRANALONSO_AUTH_FIXTURE",
+        options: .backwards
+    ) else {
+        return false
+    }
+
+    let lastEnd = prefix.range(of: "#endif", options: .backwards)
+    let lastElse = prefix.range(of: "#else", options: .backwards)
+    let guardStartsAfterEnd = lastEnd.map {
+        guardRange.lowerBound > $0.lowerBound
+    } ?? true
+    let guardStartsAfterElse = lastElse.map {
+        guardRange.lowerBound > $0.lowerBound
+    } ?? true
+
+    return guardStartsAfterEnd && guardStartsAfterElse
 }

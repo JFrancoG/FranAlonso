@@ -1,14 +1,14 @@
 # Evidencia de accesibilidad — 07.1 tokens visuales
 
 Fecha: 2026-08-21
-Alcance: PLU-26 / subfase 07.1. Catálogo de 18 colores semánticos y AccentColor con Light, Dark, High Contrast Light y
-High Contrast Dark, más las remediaciones puntuales de entrada, agrupación y contraste del CTA en Login. No cambian
-navegación, copy ni lógica de negocio.
+Alcance: PLU-26 / subfase 07.1 y fixture no-live PLU-27. Catálogo de 18 colores semánticos y AccentColor con Light,
+Dark, High Contrast Light y High Contrast Dark, remediaciones de Login y corrección de reflow Dynamic Type en
+`SessionContent`. No cambian navegación, copy ni lógica de negocio.
 
 ## Evidencia transversal
 
-- Tests: 6/6 del catálogo y 788/788 del plan completo mediante Xcode MCP; la pasada final incluye la regresión de
-  orientación y la nueva clasificación explícita de Firebase Auth 12.18.0.
+- Tests: 26/26 focales de PLU-27 y 815/815 del plan completo mediante Xcode MCP; incluyen el catálogo, orientación,
+  Firebase Auth 12.18.0, triple gate de fixture y la cadena DataSource → raíz autenticada.
 - Build: correcto mediante Xcode MCP tras los cambios; cero warnings en build log y cero issues warning+ en Navigator.
 - Contraste: valores sRGB exactos, AccentColor idéntico a BrandPrimaryInk, pares de texto con umbral 4.5:1 y acento no
   textual con umbral 3:1 verificados por Swift Testing. El CTA usa explícitamente `BrandPrimary`/`OnBrandPrimary`.
@@ -143,6 +143,24 @@ navegación, copy ni lógica de negocio.
   credencial de prueba y el proyecto no tiene configurado todavía un método de acceso ni un usuario registrado. La
   inspección confirma `.textContentType(.username)` y `.textContentType(.password)`; la prueba end-to-end queda
   `Limitado`, no `Falla`. No se activó Firebase Auth ni se creó un usuario live fuera de 07.1.
+- Validación física PLU-27 (2026-08-21): iPhone 11, iOS 26.6. En modo signed-out, la credencial sintética permite llegar
+  al shell vacío de Clientes y logout devuelve Login. Password AutoFill se validó de forma limitada mediante el selector
+  del sistema: Passwords ofreció Face ID, rellenó correctamente email y contraseña y permitió autenticar tras corregir
+  una errata manual; la entrada temporal se eliminó al terminar. Sin Associated Domains no se afirma sugerencia
+  automática por dominio.
+- Sesión restaurada PLU-27 (2026-08-21): la raíz muestra sesión bloqueada, desbloqueo biométrico y fallback de email como
+  acciones separadas. Face ID autorizado llega a Clientes; logout y el fallback regresan a Login. VoiceOver, Voice
+  Control y Switch Control con agrupación por defecto recorren y activan las acciones por separado.
+- RED/GREEN Dynamic Type de sesión (2026-08-21): AX 5 en portrait truncaba `Sesión bloqueada` y el CTA biométrico. El
+  propietario aprobó ampliar PLU-27 con la corrección puntual de `SessionContent`; textos flexibles y layout adaptativo
+  eliminan el truncamiento. Pasa en iPhone 11 e iPhone 14, portrait/landscape, tamaño estándar y AX 5; VoiceOver anuncia
+  un único botón, Voice Control lo reconoce por el texto completo y Switch Control lo mantiene separado.
+- Inspector de sesión (2026-08-21): en el estado biometría no disponible emitió un único aviso genérico
+  `Dynamic Type font sizes are unsupported` sobre `SwiftUI.AccessibilityNode`. El nodo resaltado escala a AX 5, envuelve
+  todo el texto y no presenta recorte, solape ni pérdida de contenido; el aviso no se reproduce como defecto y no se
+  suprime. No equivale a un pase general de Inspector para estados no inspeccionados.
+- Full Keyboard Access de sesión y Clientes: **Limitado** por ausencia actual de teclado externo. Login conserva su pase
+  anterior con teclado hardware en Simulator; el teclado software no sustituye esta comprobación.
 
 ## Bootstrap y raíz de autenticación
 
@@ -282,10 +300,17 @@ navegación, copy ni lógica de negocio.
 
 ## Sesión protegida
 
-- Alcance/cambio: AccentColor en desbloqueo y progreso; acciones destructivas y errores conservan colores del sistema.
-- Dispositivo, iOS y build: Xcode Preview en destino activo del esquema FranAlonso-Develop; SDK iOS 26.5; modelo exacto no devuelto por MCP.
-- Previews y apariencias: ver evidencia transversal; sin recortes ni solapes en las variantes ejecutadas.
-- Inspector y tecnologías de asistencia: pendientes; las filas afectadas no se marcan como superadas.
+- Alcance/cambio: AccentColor en desbloqueo y progreso, más reflow Dynamic Type aprobado tras el RED físico; acciones
+  destructivas y errores conservan colores del sistema.
+- Dispositivo, iOS y build: iPhone 11/iOS 26.6 físico y previews en iPhone 17 Simulator/iOS 26.5 con
+  `FranAlonso-Develop`; build limpio y 815/815 outcomes.
+- Previews y apariencias: biometría disponible/no disponible en Large, XXX Large y AX 5, portrait/landscape y Dark con
+  Increased Contrast; el `Form` conserva todo el contenido mediante scroll cuando la altura no basta.
+- Inspector y tecnologías de asistencia: VoiceOver, Voice Control y Switch Control pasan físicamente. Inspector no
+  reproduce como defecto su único aviso genérico de Dynamic Type. Full Keyboard Access queda limitado por falta de
+  teclado externo.
+- La tabla siguiente conserva el baseline previo a la fixture. Las disposiciones finales posteriores la sustituyen en
+  los criterios runtime indicados; las filas estáticas `Pasa`/`N/A` no listadas permanecen vigentes.
 
 | ID | Aplicabilidad | Justificación | Resultado | Método y artefacto | Dispositivo/iOS/configuración/fecha | Hallazgo y disposición | Revisor |
 |---|---|---|---|---|---|---|---|
@@ -345,12 +370,46 @@ navegación, copy ni lógica de negocio.
 | 4.1.2 | Aplicable | Nombre, función y valor. | Pendiente | Inspector/AT pendiente | Xcode Preview · destino activo · 2026-08-11 | Árbol, foco o anuncio requieren ejecución manual. | Implementación; auditor pendiente |
 | 4.1.3 | Aplicable | Mensajes de estado. | Pendiente | Inspector/AT pendiente | Xcode Preview · destino activo · 2026-08-11 | Árbol, foco o anuncio requieren ejecución manual. | Implementación; auditor pendiente |
 
+### Disposición final de sesión protegida
+
+| ID | Resultado final | Evidencia y límite |
+|---|---|---|
+| 1.1.1 | Pasa | Iconos decorativos quedan ocultos y VoiceOver anuncia título, estado y acciones una vez. |
+| 1.3.1 | Pasa | Inspector y AT exponen encabezado, mensaje y dos acciones separadas. |
+| 1.3.2 | Pasa | VoiceOver y Switch Control conservan orden bloqueada → biometría → fallback. |
+| 1.3.4 | Limitado | iPhone 11/14 portrait y landscape pasan; falta iPad/multitarea final. |
+| 1.4.4 | Pasa | Large, XXX Large y AX 5; RED de truncamiento corregido y GREEN físico/previews. |
+| 1.4.10 | Pasa | Reflow multilínea y scroll del `Form` conservan texto y acciones. |
+| 1.4.12 | Limitado | Escalado nativo inspeccionado; no existe override MCP para espaciado de texto arbitrario. |
+| 2.1.1 | Limitado | Full Keyboard Access no ejecutado por ausencia de teclado externo. |
+| 2.1.2 | Limitado | VoiceOver y Switch Control salen sin trampa; falta Full Keyboard Access. |
+| 2.4.1 | Pasa | Encabezado y dos acciones permiten un recorrido corto y comprensible. |
+| 2.4.2 | Pasa | `Sesión` y `Sesión bloqueada` identifican la pantalla y el estado. |
+| 2.4.3 | Limitado | Orden estable en VoiceOver y Switch Control; falta recorrido por teclado. |
+| 2.4.6 | Pasa | Inspector identifica el encabezado; labels visibles y accesibles coinciden. |
+| 2.4.7 | Limitado | Foco de AT visible/operable; Full Keyboard Access no ejecutado. |
+| 2.4.11 | Limitado | AT y AX 5 no ocultan acciones al desplazarse; falta recorrido con teclado externo. |
+| 2.5.3 | Pasa | Voice Control activa `Desbloquear con biometría del dispositivo` a la primera. |
+| 2.5.8 | Pasa | Ambos botones nativos son operables de forma independiente en dispositivo físico. |
+| 3.1.1 | Pasa | VoiceOver pronuncia correctamente el copy español. |
+| 3.2.1 | Limitado | VoiceOver no cambia de contexto al enfocar; falta recorrido por teclado. |
+| 3.3.1 | Pasa | Biometría no disponible se presenta con texto y alternativa de acceso por email. |
+| 3.3.4 | Pasa | Logout se anuncia y opera como acción separada. |
+| 3.3.8 | Pasa | Face ID funciona y existe alternativa cognitiva por email. |
+| 4.1.2 | Pasa | VoiceOver anuncia nombres y rol botón; iconos decorativos no duplican contenido. |
+| 4.1.3 | Pasa | Bloqueo y biometría no disponible se anuncian como estados textuales. |
+
 ## Área autenticada y lista de clientes
 
 - Alcance/cambio: AccentColor en progreso y controles del contenedor; estados loading, empty, content y error.
-- Dispositivo, iOS y build: Xcode Preview en destino activo del esquema FranAlonso-Develop; SDK iOS 26.5; modelo exacto no devuelto por MCP.
-- Previews y apariencias: ver evidencia transversal; sin recortes ni solapes en las variantes ejecutadas.
-- Inspector y tecnologías de asistencia: pendientes; las filas afectadas no se marcan como superadas.
+- Dispositivo, iOS y build: iPhone 11/iOS 26.6 físico y previews en iPhone 17 Simulator/iOS 26.5; build limpio y
+  815/815 outcomes.
+- Previews y apariencias: empty/content/error en variantes soportadas; el shell vacío se validó en portrait/landscape y
+  AX 5 sin truncamiento.
+- Inspector y tecnologías de asistencia: VoiceOver, Voice Control y Switch Control pasan en shell vacío y logout. Full
+  Keyboard Access queda limitado por ausencia de teclado externo.
+- La tabla siguiente conserva el baseline previo a la fixture. Las disposiciones finales posteriores la sustituyen en
+  los criterios runtime indicados; las filas estáticas `Pasa`/`N/A` no listadas permanecen vigentes.
 
 | ID | Aplicabilidad | Justificación | Resultado | Método y artefacto | Dispositivo/iOS/configuración/fecha | Hallazgo y disposición | Revisor |
 |---|---|---|---|---|---|---|---|
@@ -410,11 +469,45 @@ navegación, copy ni lógica de negocio.
 | 4.1.2 | Aplicable | Nombre, función y valor. | Pendiente | Inspector/AT pendiente | Xcode Preview · destino activo · 2026-08-11 | Árbol, foco o anuncio requieren ejecución manual. | Implementación; auditor pendiente |
 | 4.1.3 | Aplicable | Mensajes de estado. | Pendiente | Inspector/AT pendiente | Xcode Preview · destino activo · 2026-08-11 | Árbol, foco o anuncio requieren ejecución manual. | Implementación; auditor pendiente |
 
+### Disposición final del shell autenticado vacío
+
+| ID | Resultado final | Evidencia y límite |
+|---|---|---|
+| 1.1.1 | Pasa | VoiceOver anuncia el estado vacío y la acción de logout sin duplicados. |
+| 1.3.1 | Pasa | Jerarquía nativa de título, estado vacío y acción. |
+| 1.3.2 | Pasa | Orden físico estable por VoiceOver y Switch Control. |
+| 1.3.4 | Limitado | iPhone portrait/landscape pasa; falta iPad/multitarea final. |
+| 1.4.4 | Pasa | AX 5 físico sin recortes; previews cubren estados empty/content/error. |
+| 1.4.10 | Pasa | El estado vacío refluye y permanece legible en ventana estrecha. |
+| 1.4.12 | Limitado | Escalado nativo inspeccionado; no existe override MCP para espaciado de texto arbitrario. |
+| 2.1.1 | Limitado | Full Keyboard Access no ejecutado por ausencia de teclado externo. |
+| 2.1.2 | Limitado | Switch Control abandona logout sin trampa; falta Full Keyboard Access. |
+| 2.4.1 | Pasa | Recorrido corto: título, estado vacío y logout. |
+| 2.4.2 | Pasa | `Clientes` identifica el área autenticada. |
+| 2.4.3 | Limitado | VoiceOver y Switch Control mantienen el orden; falta recorrido por teclado. |
+| 2.4.6 | Pasa | Título y estado vacío poseen labels comprensibles. |
+| 2.4.7 | Limitado | Foco de AT visible; Full Keyboard Access no ejecutado. |
+| 2.4.11 | Limitado | AT no oculta contenido; falta recorrido con teclado externo. |
+| 2.5.3 | Pasa | Voice Control reconoce y activa logout a la primera. |
+| 2.5.8 | Pasa | Logout posee superficie nativa suficiente y se activa por separado. |
+| 3.1.1 | Pasa | VoiceOver pronuncia correctamente el copy español. |
+| 3.2.1 | Limitado | VoiceOver no navega al enfocar; falta recorrido por teclado. |
+| 3.3.1 | Limitado | Estado vacío pasa físicamente; error conserva preview determinista, sin error físico forzado. |
+| 3.3.4 | Pasa | Logout vuelve a Login y se anuncia como acción independiente. |
+| 4.1.2 | Pasa | Nombre y rol de logout se anuncian correctamente. |
+| 4.1.3 | Pasa | `No hay clientes` comunica el estado vacío de forma textual. |
+
 ## Puerta de cierre
 
-La implementación automática y visual soportada está en verde, incluido Firebase 12.18.0, orientación iPhone,
-Full Keyboard Access, objetivos operables de 44 pt y la regresión física final de Login. Accessibility Inspector confirma
-resuelto el P1 de contraste del CTA y de los prompts, no emite `Hit Region` y sus cinco avisos genéricos de Dynamic Type
-no se reproducen en runtime AX 5. El plan final pasa 788/788. ADR 0022 impide cerrar mientras Autorrelleno y los demás
-flujos/ventanas autenticados no puedan validarse. No existe todavía método de acceso ni usuario de pruebas; la subfase
-queda en espera de esa fixture autorizada, sin activar Firebase live dentro de 07.1.
+La fixture no-live, su validación automática y los dos recorridos físicos están completos sin actividad Firebase live.
+El plan final pasa 815/815; Develop y Production compilan sin warnings. Login, AutoFill limitado, sesión restaurada,
+Face ID, shell vacío, logout, VoiceOver, Voice Control, Switch Control, Dynamic Type AX 5 y orientación iPhone pasan en
+el alcance registrado. La entrada temporal de Passwords fue eliminada y ambos argumentos del esquema quedaron
+desactivados.
+
+El aviso genérico de Dynamic Type del Inspector sobre el nodo de biometría no disponible no se reproduce como defecto:
+AX 5 escala, envuelve y conserva todo el texto. La corrección de `SessionContent` quedó aprobada tras el RED físico y
+validada en iPhone 11/iPhone 14 y previews. El gate ADR 0022 permanece **Limitado**, no cerrado: faltan Full Keyboard
+Access de sesión/Clientes, iPad/multitarea, tolerancia a espaciado de texto equivalente y un error físico de Clientes.
+AutoFill permanece deliberadamente `Limitado` por ausencia de Associated Domains; esa limitación está aceptada por ADR
+0023 y no requiere activar un proveedor live.

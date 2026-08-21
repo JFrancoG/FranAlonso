@@ -1,10 +1,38 @@
 import Foundation
+import SwiftData
 import SwiftUI
 import Testing
 @testable import FranAlonso
 
 @Suite("Application dependency composition")
 struct AppDependenciesTests {
+#if FRANALONSO_AUTH_FIXTURE
+    @Test("Local dependencies use the SwiftData source of truth with injected telemetry")
+    @MainActor
+    func localDependenciesUseSwiftDataWithInjectedTelemetry() async throws {
+        let container = try ModelContainer.inMemory(for: Schema.franAlonso)
+        let dependencies = AppDependencies.local(
+            modelContainer: container,
+            analyticsDataSource: CompositionAnalyticsDataSourceSpy(),
+            crashDataSource: CompositionCrashDataSourceSpy()
+        )
+
+        let clients = await dependencies.observeClients()
+        let products = await dependencies.observeProducts()
+        let services = await dependencies.observeServices()
+        let sales = await dependencies.observeSales()
+        var clientIterator = clients.makeAsyncIterator()
+        var productIterator = products.makeAsyncIterator()
+        var serviceIterator = services.makeAsyncIterator()
+        var saleIterator = sales.makeAsyncIterator()
+
+        #expect(try await clientIterator.next() == [])
+        #expect(try await productIterator.next() == [])
+        #expect(try await serviceIterator.next() == [])
+        #expect(try await saleIterator.next() == [])
+    }
+#endif
+
     @Test("Injected telemetry data sources compose the shared reporter")
     func injectedTelemetryDataSourcesComposeTheSharedReporter() async {
         let analytics = CompositionAnalyticsDataSourceSpy()

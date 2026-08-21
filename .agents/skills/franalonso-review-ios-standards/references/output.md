@@ -6,6 +6,7 @@ evidence, impact and smallest recommended direction without a patch.
 Then report:
 
 - Scope and diff audited.
+- Read-only evidence mode: enforced sandbox or matching operational pre/post digest.
 - Repository and primary sources checked.
 - Build/tests/diagnostics evidence inspected or missing.
 - Out-of-scope observations.

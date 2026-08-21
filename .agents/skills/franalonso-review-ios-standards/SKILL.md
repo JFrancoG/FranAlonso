@@ -27,5 +27,7 @@ Read [references/output.md](references/output.md) before reporting.
 
 ## Limits
 
-If the platform cannot create a fresh technically read-only agent, report the gate as blocked. Do not represent a
-self-review as equivalent independent evidence.
+Prefer an enforced read-only sandbox. If unavailable, the owner accepts an operationally read-only review only when a
+fresh independent agent receives an explicit no-write/no-publish instruction and the orchestrator proves an identical
+deterministic digest of every Git tracked and nonignored untracked file before and after. Any repository change,
+unreproducible digest or self-review blocks the gate.

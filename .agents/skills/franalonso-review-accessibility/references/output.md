@@ -6,6 +6,7 @@ recommended direction without a patch.
 Then report:
 
 - UI diff and flows audited.
+- Read-only evidence mode: enforced sandbox or matching operational pre/post digest.
 - Preview variants rendered and visually inspected.
 - Criterion register coverage.
 - Static, Inspector and manual assistive-technology evidence separately.

@@ -39,6 +39,9 @@ propuesta antes de código ejecutable. La aprobación del propietario se refiere
 - Ejecutar en paralelo `$franalonso-review-accessibility` cuando cambien SwiftUI, previews, recursos visuales, localización o
   accesibilidad.
 - Corregir hallazgos válidos y repetir solo la revisión afectada; ambas si la corrección cruza ámbitos.
+- Si la plataforma no ofrece sandbox read-only, se acepta un fallback operacional: agente nuevo e independiente con
+  prohibición explícita de escribir/publicar y huella determinista idéntica de todos los archivos Git tracked y
+  untracked no ignorados antes y después. Cualquier cambio, huella no reproducible o auto-revisión invalida el gate.
 
 ## Cierre
 

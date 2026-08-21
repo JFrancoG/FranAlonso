@@ -14,6 +14,9 @@ struct FranAlonsoApp: App {
     private let modelContainer: ModelContainer
     private let dependencies: AppDependencies
     private let runtime: AppRuntime?
+#if FRANALONSO_AUTH_FIXTURE
+    private let authenticationRootViewModel: AuthenticationRootViewModel?
+#endif
 
     var body: some Scene {
         WindowGroup {
@@ -68,6 +71,16 @@ private extension FranAlonsoApp {
                     Text(.authenticationBootstrapPreparing)
                 }
             }
+#if FRANALONSO_AUTH_FIXTURE
+        case .fixtureReady:
+            if let authenticationRootViewModel {
+                AuthenticationRootScreen(viewModel: authenticationRootViewModel)
+            } else {
+                ProgressView {
+                    Text(.authenticationBootstrapPreparing)
+                }
+            }
+#endif
         }
     }
 }
@@ -75,29 +88,17 @@ private extension FranAlonsoApp {
 extension FranAlonsoApp {
     init() {
         do {
-            let container = try ModelContainer.production(
-                for: Schema.franAlonso,
-                migrationPlan: PhaseFiveSchemaMigrationPlan.self
+            let composition = try ApplicationComposition.make(
+                plan: ApplicationLaunchPlan.current
             )
-            guard
-                let environmentName = Bundle.main.object(
-                    forInfoDictionaryKey: "AppEnvironment"
-                ) as? String,
-                let environment = FirestoreEnvironment(
-                    rawValue: environmentName
-                )
-            else {
-                fatalError("Unable to resolve the configured application environment")
-            }
-            let runtime = AppRuntime(
-                modelContainer: container,
-                environment: environment
-            )
-            modelContainer = container
-            dependencies = runtime.dependencies
-            self.runtime = runtime
+            modelContainer = composition.modelContainer
+            dependencies = composition.dependencies
+            runtime = composition.runtime
+#if FRANALONSO_AUTH_FIXTURE
+            authenticationRootViewModel = composition.authenticationRootViewModel
+#endif
         } catch {
-            fatalError("Unable to create the production model container: \(error)")
+            fatalError("Unable to compose the application: \(error)")
         }
     }
 
@@ -105,5 +106,8 @@ extension FranAlonsoApp {
         self.modelContainer = modelContainer
         self.dependencies = dependencies
         runtime = nil
+#if FRANALONSO_AUTH_FIXTURE
+        authenticationRootViewModel = nil
+#endif
     }
 }
