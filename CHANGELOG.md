@@ -17,6 +17,7 @@ All notable changes to this project are documented in this file.
 
 ### Added
 
+- 2026-08-21 | ✨ feat(design-system): add semantic color tokens
 - 2026-08-02 | ✨ feat(auth): compose protected application root
 - 2026-08-01 | ✨ feat(auth): add authentication screens
 - 2026-08-01 | ✨ feat(auth): add authentication presentation models

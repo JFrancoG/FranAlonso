@@ -27,18 +27,26 @@ struct LoginContent: View {
                         .authenticationLoginEmailLabel,
                         text: $email,
                         prompt: Text(.authenticationLoginEmailPrompt)
+                            .foregroundStyle(.textSecondary)
                     )
                     .keyboardType(.emailAddress)
                     .textContentType(.username)
                     .textInputAutocapitalization(.never)
                     .autocorrectionDisabled()
+                    .accessibilityInputLabels([Text(.authenticationLoginEmailLabel)])
+                    .frame(minHeight: 44)
+                    .contentShape(.interaction, Rectangle())
+                    .gesture(TapGesture().onEnded { focusedField = .email }, isEnabled: !interactionDisabled)
                     .submitLabel(.next)
                     .focused($focusedField, equals: .email)
                     .onSubmit {
                         focusedField = .password
                     }
                 }
+            }
+            .disabled(interactionDisabled)
 
+            Section {
                 VStack(alignment: .leading) {
                     Text(.authenticationLoginPasswordLabel)
                         .font(.headline)
@@ -47,8 +55,13 @@ struct LoginContent: View {
                         .authenticationLoginPasswordLabel,
                         text: $password,
                         prompt: Text(.authenticationLoginPasswordPrompt)
+                            .foregroundStyle(.textSecondary)
                     )
                     .textContentType(.password)
+                    .accessibilityInputLabels([Text(.authenticationLoginPasswordLabel)])
+                    .frame(minHeight: 44)
+                    .contentShape(.interaction, Rectangle())
+                    .gesture(TapGesture().onEnded { focusedField = .password }, isEnabled: !interactionDisabled)
                     .submitLabel(.done)
                     .focused($focusedField, equals: .password)
                     .onSubmit {
@@ -69,8 +82,10 @@ struct LoginContent: View {
                     } icon: {
                         Image(systemName: "arrow.right.circle.fill")
                     }
+                    .foregroundStyle(.onBrandPrimary)
                 }
                 .buttonStyle(.borderedProminent)
+                .tint(.brandPrimary)
                 .disabled(interactionDisabled)
             }
 

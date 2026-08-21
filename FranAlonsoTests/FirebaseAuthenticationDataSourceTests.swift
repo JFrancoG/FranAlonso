@@ -372,6 +372,11 @@ private let firebaseAuthenticationErrorFixtures = [
         expectedError: .credentialsRejected
     ),
     FirebaseAuthenticationErrorFixture(
+        name: "passwordDoesNotMeetRequirements",
+        code: AuthErrorCode.passwordDoesNotMeetRequirements.rawValue,
+        expectedError: .credentialsRejected
+    ),
+    FirebaseAuthenticationErrorFixture(
         name: "missingEmail",
         code: AuthErrorCode.missingEmail.rawValue,
         expectedError: .credentialsRejected

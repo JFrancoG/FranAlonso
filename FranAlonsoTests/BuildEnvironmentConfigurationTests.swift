@@ -42,6 +42,22 @@ struct BuildEnvironmentConfigurationTests {
         #expect(configuration.projectIdentifier == "agendapeluqueria-3155f")
     }
 
+    @Test("The hosted application supports iPhone portrait and landscape")
+    func hostedApplicationSupportsIPhonePortraitAndLandscape() throws {
+        let orientations = try #require(
+            Bundle.main.object(
+                forInfoDictionaryKey: "UISupportedInterfaceOrientations"
+            ) as? [String]
+        )
+        let requiredOrientations = Set([
+            "UIInterfaceOrientationPortrait",
+            "UIInterfaceOrientationLandscapeLeft",
+            "UIInterfaceOrientationLandscapeRight"
+        ])
+
+        #expect(Set(orientations).isSuperset(of: requiredOrientations))
+    }
+
     @Test("The build phase rejects Firebase configuration from another project")
     func buildPhaseRejectsFirebaseConfigurationFromAnotherProject() throws {
         let project = try repositoryFile(

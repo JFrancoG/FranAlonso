@@ -127,6 +127,7 @@ private extension FirebaseAuthenticationDataSource {
              .wrongPassword,
              .userNotFound,
              .rejectedCredential,
+             .passwordDoesNotMeetRequirements,
              .missingEmail:
             .credentialsRejected
         case .userDisabled:
