@@ -8,12 +8,12 @@
 |---|---|---|---|
 | 07.1 — tokens visuales y nombres semánticos | PLU-26 | `Done` | Entregada en `074ce5e` |
 | 07.1a — fixtures Develop no-live | PLU-27 | `Done` | ADR 0023/0024; entregada en `074ce5e` |
-| 07.2 — controles reutilizables | PLU-28 | `In Progress` | Commit, push y PR autorizados; merge/Done separados |
+| 07.2 — controles reutilizables | PLU-28 | `In Review` | [PR #4](https://github.com/JFrancoG/FranAlonso/pull/4); merge/Done separados |
 | Fase 07 | PLU-25 | `In Progress` | Continúa después de 07.2 |
 
-La base aprobada al iniciar 07.2 fue `main == origin/main == 074ce5e`, con worktree limpio. El estado actual contiene
-solo la implementación y documentación autorizadas de PLU-28. El owner autorizó commit, push y PR; merge, cambio a
-`Done` y cierre de Linear continúan siendo puertas separadas.
+La base aprobada al iniciar 07.2 fue `main == origin/main == 074ce5e`, con worktree limpio. La implementación quedó
+publicada en `91e9a58` y la [PR #4](https://github.com/JFrancoG/FranAlonso/pull/4) está abierta contra `main`. Merge,
+cambio a `Done` y cierre de Linear continúan siendo puertas separadas.
 
 ## Decisiones vigentes
 
@@ -139,4 +139,5 @@ solo la implementación y documentación autorizadas de PLU-28. El owner autoriz
 - TDD visual: `N/A` razonado; lógica accesible extraída: GREEN con Swift Testing.
 - Sin blockers ni hallazgos abiertos. La auditoría iOS pasó sin P0–P3; la auditoría AX fresca certificó el contraste
   corregido y su único P3 documental quedó reconciliado con la build final de 13,424 s.
-- Entregar mediante rama y PR; no declarar 07.2/PLU-28 `Done`, hacer merge ni cerrar Linear sin autorización separada.
+- La [PR #4](https://github.com/JFrancoG/FranAlonso/pull/4) queda entregada para revisión; no declarar 07.2/PLU-28
+  `Done`, hacer merge ni cerrar Linear sin autorización separada.

@@ -187,6 +187,7 @@ aplicó, 2026-08-22/23. Full Keyboard Access y previews: iPhone 17e Simulator/iO
 - Build, diagnósticos, previews, focales, suite completa y validación manual aplicable están completados. La auditoría
   iOS final pasó sin P0–P3; la auditoría AX fresca certificó la corrección de contraste y su P3 documental quedó
   reconciliado con la build final de 13,424 s. No quedan hallazgos abiertos.
-- PLU-28 sigue `In Progress` hasta abrir la PR autorizada; merge, `Done` y cierre requieren autorización separada.
+- PLU-28 está `In Review` mediante la [PR #4](https://github.com/JFrancoG/FranAlonso/pull/4); merge, `Done` y cierre
+  requieren autorización separada.
 - Las dos `Section` de Login deben continuar separadas para Switch Control. El modificador compartido debe seguir
   preservando enabled/disabled y contraste; ambos riesgos están acreditados en el estado evaluado.
