@@ -5,13 +5,13 @@
 ## Puerta actual
 
 - Fases 01–06 cerradas. La baseline aprobada de fase 07 es `main == origin/main == 074ce5e`.
-- PLU-25 está `In Progress`; PLU-28 está `In Review`; PLU-26 y PLU-27 están `Done`. PLU-28 no tiene blockers.
+- PLU-25 está `In Progress`; PLU-26, PLU-27 y PLU-28 están `Done`.
 - 07.1 y sus fixtures Develop no-live están entregadas en `074ce5e`. Los motores live continúan inactivos.
 - 07.2 implementa controles reutilizables de autenticación y conserva fuera de alcance filas/tarjetas sin un segundo
   consumidor, Domain, Data, App, navegación, configuración, servicios live y subfases 07.3/07.4.
 - La implementación, las validaciones y las auditorías read-only finales están completas sin hallazgos abiertos.
-  El commit `91e9a58` está publicado y la [PR #4](https://github.com/JFrancoG/FranAlonso/pull/4) permanece abierta;
-  PLU-28 pasa a `In Review`.
+  La [PR #4](https://github.com/JFrancoG/FranAlonso/pull/4) se integró por rebase en `main`: implementación
+  `24802e6` y handoff `e8eca5a`. PLU-28 queda `Done`.
 
 ## 07.2 — snapshot funcional
 
@@ -49,6 +49,8 @@
   semántica posterior pasó build, Issue Navigator sin warnings, `DesignSystemColorAssetTests` 6/6 y previews de Login
   error, Session warning/fallback y Session error/fallback en Light/Dark × contraste normal/incrementado.
 - Los tres argumentos de fixture del esquema Develop quedaron desactivados (`NO`).
+- El rebase merge se aplicó sobre la misma base validada y no alteró el árbol entregado. Este checkpoint posterior solo
+  cambia documentación; repetir Xcode MCP es `N/A` razonado y se conserva la evidencia anterior.
 
 ## Evidencia manual ADR 0022
 
@@ -79,8 +81,8 @@
 
 ## Siguiente acción
 
-1. Revisar la [PR #4](https://github.com/JFrancoG/FranAlonso/pull/4) y mantener PLU-28 `In Review`.
-2. No hacer merge, cambiar PLU-28 a `Done` ni cerrar Linear sin autorización separada.
+1. Mantener PLU-25 `In Progress`; 07.2 no completa la fase 07.
+2. Aplicar `$franalonso-start-subphase` a 07.3 y obtener aprobación explícita antes de cualquier implementación nueva.
 
 ## Bloqueos
 

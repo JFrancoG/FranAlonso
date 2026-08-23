@@ -8,12 +8,12 @@
 |---|---|---|---|
 | 07.1 — tokens visuales y nombres semánticos | PLU-26 | `Done` | Entregada en `074ce5e` |
 | 07.1a — fixtures Develop no-live | PLU-27 | `Done` | ADR 0023/0024; entregada en `074ce5e` |
-| 07.2 — controles reutilizables | PLU-28 | `In Review` | [PR #4](https://github.com/JFrancoG/FranAlonso/pull/4); merge/Done separados |
+| 07.2 — controles reutilizables | PLU-28 | `Done` | [PR #4](https://github.com/JFrancoG/FranAlonso/pull/4); rebase merge `e8eca5a` |
 | Fase 07 | PLU-25 | `In Progress` | Continúa después de 07.2 |
 
-La base aprobada al iniciar 07.2 fue `main == origin/main == 074ce5e`, con worktree limpio. La implementación quedó
-publicada en `91e9a58` y la [PR #4](https://github.com/JFrancoG/FranAlonso/pull/4) está abierta contra `main`. Merge,
-cambio a `Done` y cierre de Linear continúan siendo puertas separadas.
+La base aprobada al iniciar 07.2 fue `main == origin/main == 074ce5e`, con worktree limpio. La
+[PR #4](https://github.com/JFrancoG/FranAlonso/pull/4) quedó integrada por rebase en `main`: `24802e6` contiene la
+implementación y `e8eca5a` el handoff. PLU-28 queda cerrado sin ampliar el alcance a 07.3/07.4.
 
 ## Decisiones vigentes
 
@@ -96,6 +96,8 @@ cambio a `Done` y cierre de Linear continúan siendo puertas separadas.
 - Una ejecución de colores en iPhone 11 físico obtuvo 3/6: los tres casos source-backed no pueden leer la ruta fuente
   del Mac desde el sandbox del dispositivo. Su repetición en simulador pasó 6/6; se clasifica como límite ambiental.
 - Los tres argumentos de fixture de `FranAlonso-Develop` quedaron desactivados (`NO`) al terminar.
+- El rebase merge usó la misma base validada y preservó el árbol fuente; este checkpoint post-merge modifica solo
+  documentación. Repetir build/tests/diagnósticos Xcode MCP es `N/A` razonado.
 - La auditoría AX inicial halló un P1 de contraste en `.red`, `.orange` y el fallback destructivo nativos. Tras migrar
   esos estados a los inks semánticos, el build volvió a pasar, Issue Navigator quedó en cero warnings, los tests de
   color pasaron 6/6 y las tres superficies afectadas renderizaron sin errores en las cuatro apariencias.
@@ -139,5 +141,5 @@ cambio a `Done` y cierre de Linear continúan siendo puertas separadas.
 - TDD visual: `N/A` razonado; lógica accesible extraída: GREEN con Swift Testing.
 - Sin blockers ni hallazgos abiertos. La auditoría iOS pasó sin P0–P3; la auditoría AX fresca certificó el contraste
   corregido y su único P3 documental quedó reconciliado con la build final de 13,424 s.
-- La [PR #4](https://github.com/JFrancoG/FranAlonso/pull/4) queda entregada para revisión; no declarar 07.2/PLU-28
-  `Done`, hacer merge ni cerrar Linear sin autorización separada.
+- La [PR #4](https://github.com/JFrancoG/FranAlonso/pull/4) está integrada y 07.2/PLU-28 queda `Done`. PLU-25 continúa
+  `In Progress`; iniciar 07.3 exige su propio gate y aprobación explícita.
