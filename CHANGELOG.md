@@ -58,6 +58,7 @@ All notable changes to this project are documented in this file.
 
 ### Documentation
 
+- 2026-08-23 | 📝 docs(delivery): record PLU-28 review handoff
 - 2026-08-11 | 📝 docs(governance): streamline project rules
 - 2026-08-02 | 📝 docs(delivery): record formatting pull request
 - 2026-08-02 | 📝 docs(delivery): record phase six integration

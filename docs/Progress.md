@@ -5,12 +5,13 @@
 ## Puerta actual
 
 - Fases 01–06 cerradas. La baseline aprobada de fase 07 es `main == origin/main == 074ce5e`.
-- PLU-25 y PLU-28 están `In Progress`; PLU-26 y PLU-27 están `Done`. PLU-28 no tiene blockers en Linear.
+- PLU-25 está `In Progress`; PLU-28 está `In Review`; PLU-26 y PLU-27 están `Done`. PLU-28 no tiene blockers.
 - 07.1 y sus fixtures Develop no-live están entregadas en `074ce5e`. Los motores live continúan inactivos.
 - 07.2 implementa controles reutilizables de autenticación y conserva fuera de alcance filas/tarjetas sin un segundo
   consumidor, Domain, Data, App, navegación, configuración, servicios live y subfases 07.3/07.4.
 - La implementación, las validaciones y las auditorías read-only finales están completas sin hallazgos abiertos.
-  El owner autorizó commit, push y PR; PLU-28 permanece `In Progress` hasta que exista la PR.
+  El commit `91e9a58` está publicado y la [PR #4](https://github.com/JFrancoG/FranAlonso/pull/4) permanece abierta;
+  PLU-28 pasa a `In Review`.
 
 ## 07.2 — snapshot funcional
 
@@ -78,8 +79,8 @@
 
 ## Siguiente acción
 
-1. Entregar 07.2 en una rama `codex/…`, abrir PR contra `main` y mover PLU-28 a `In Review`.
-2. No hacer merge, cambiar PLU-28 a `Done` ni cerrar Linear con la autorización actual.
+1. Revisar la [PR #4](https://github.com/JFrancoG/FranAlonso/pull/4) y mantener PLU-28 `In Review`.
+2. No hacer merge, cambiar PLU-28 a `Done` ni cerrar Linear sin autorización separada.
 
 ## Bloqueos
 
