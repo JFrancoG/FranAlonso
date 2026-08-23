@@ -83,14 +83,24 @@ struct AuthenticationPresentationLocalizationTests {
         arguments: [
             (LocalizedStringResource.authenticationLoginEmailLabel, "authentication.login.email.label"),
             (LocalizedStringResource.authenticationLoginPasswordLabel, "authentication.login.password.label"),
+            (LocalizedStringResource.authenticationLoginPasswordShow, "authentication.login.password.show"),
+            (LocalizedStringResource.authenticationLoginPasswordHide, "authentication.login.password.hide"),
             (LocalizedStringResource.authenticationLoginSubmit, "authentication.login.submit"),
             (
                 LocalizedStringResource.authenticationSessionBiometricUnlock,
                 "authentication.session.biometric.unlock"
             ),
             (
+                LocalizedStringResource.authenticationSessionBiometricUnlockShort,
+                "authentication.session.biometric.unlock.short"
+            ),
+            (
                 LocalizedStringResource.authenticationSessionEmailFallback,
                 "authentication.session.email-fallback"
+            ),
+            (
+                LocalizedStringResource.authenticationSessionEmailFallbackShort,
+                "authentication.session.email-fallback.short"
             ),
             (
                 LocalizedStringResource.authenticationSessionBiometricReason,

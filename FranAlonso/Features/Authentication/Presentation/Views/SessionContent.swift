@@ -1,3 +1,4 @@
+import Accessibility
 import Foundation
 import SwiftUI
 
@@ -13,8 +14,11 @@ struct SessionContent: View {
     let requestUnlock: () -> Void
     let requestSignOut: () -> Void
 
-    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
-    @AccessibilityFocusState private var feedbackFocus: FeedbackFocus?
+    @Environment(\.accessibilityVoiceOverEnabled) private var voiceOverEnabled
+    @Environment(\.locale) private var locale
+    @Environment(\.scenePhase) private var scenePhase
+    @State private var biometricAnnouncementGate = BiometricAnnouncementGate()
+    @AccessibilityFocusState(for: .voiceOver) private var feedbackFocus: FeedbackFocus?
 
     var body: some View {
         Form {
@@ -61,38 +65,28 @@ struct SessionContent: View {
                         } icon: {
                             Image(systemName: "exclamationmark.shield.fill")
                         }
-                        .foregroundStyle(.orange)
+                        .foregroundStyle(.warningInk)
                         .accessibilityFocused($feedbackFocus, equals: .state)
                     }
 
                     if availability == .available {
                         Button {
+                            if voiceOverEnabled {
+                                biometricAnnouncementGate.beginAttempt()
+                            }
                             requestUnlock()
                         } label: {
-                            if dynamicTypeSize.isAccessibilitySize {
-                                VStack(spacing: 8) {
-                                    Image(systemName: "lock.open.fill")
-                                        .accessibilityHidden(true)
-                                    Text(.authenticationSessionBiometricUnlock)
-                                        .multilineTextAlignment(.center)
-                                        .lineLimit(nil)
-                                        .fixedSize(horizontal: false, vertical: true)
-                                }
+                            Text(.authenticationSessionBiometricUnlockShort)
+                                .lineLimit(1)
                                 .frame(maxWidth: .infinity)
-                            } else {
-                                HStack(spacing: 8) {
-                                    Image(systemName: "lock.open.fill")
-                                        .accessibilityHidden(true)
-                                    Text(.authenticationSessionBiometricUnlock)
-                                }
-                                .frame(maxWidth: .infinity)
-                            }
                         }
-                        .foregroundStyle(.onBrandPrimary)
-                        .buttonStyle(.borderedProminent)
-                        .tint(.brandPrimary)
+                        .primaryActionStyle()
                         .frame(maxWidth: .infinity)
                         .accessibilityLabel(Text(.authenticationSessionBiometricUnlock))
+                        .accessibilityInputLabels([
+                            Text(.authenticationSessionBiometricUnlockShort),
+                            Text(.authenticationSessionBiometricUnlock)
+                        ])
                         .disabled(actionInFlight)
                     }
 
@@ -113,21 +107,30 @@ struct SessionContent: View {
                         } icon: {
                             Image(systemName: "exclamationmark.triangle.fill")
                         }
-                        .foregroundStyle(.red)
+                        .foregroundStyle(.errorInk)
                         .accessibilityFocused($feedbackFocus, equals: .action)
                     }
 
                     Button(role: .destructive) {
+                        biometricAnnouncementGate.reset()
                         requestSignOut()
                     } label: {
-                        Label {
+                        ViewThatFits(in: .horizontal) {
                             Text(.authenticationSessionEmailFallback)
-                                .lineLimit(nil)
-                                .fixedSize(horizontal: false, vertical: true)
-                        } icon: {
-                            Image(systemName: "envelope.fill")
+                                .lineLimit(1)
+                                .fixedSize(horizontal: true, vertical: false)
+                            Text(.authenticationSessionEmailFallbackShort)
+                                .lineLimit(1)
+                                .fixedSize(horizontal: true, vertical: false)
                         }
+                        .frame(maxWidth: .infinity)
+                        .foregroundStyle(.errorInk)
                     }
+                    .accessibilityLabel(Text(.authenticationSessionEmailFallback))
+                    .accessibilityInputLabels([
+                        Text(.authenticationSessionEmailFallback),
+                        Text(.authenticationSessionEmailFallbackShort)
+                    ])
                     .disabled(actionInFlight)
                 }
             case .unlocked:
@@ -163,10 +166,24 @@ struct SessionContent: View {
             updateAccessibilityFocus(state: state, actionState: actionState)
         }
         .onChange(of: state) { _, newState in
+            if case .locked = newState {
+                // Keep an attempted biometric return even if its fresh availability check failed.
+                guard !biometricAnnouncementGate.isCoordinatingAttempt else { return }
+            } else {
+                biometricAnnouncementGate.reset()
+            }
             updateAccessibilityFocus(state: newState, actionState: actionState)
         }
         .onChange(of: actionState) { _, newActionState in
-            updateAccessibilityFocus(state: state, actionState: newActionState)
+            handleActionStateChange(newActionState)
+        }
+        .onChange(of: scenePhase) { oldPhase, newPhase in
+            handleScenePhaseChange(from: oldPhase, to: newPhase)
+        }
+        .onChange(of: voiceOverEnabled) { _, isEnabled in
+            if !isEnabled {
+                biometricAnnouncementGate.reset()
+            }
         }
     }
 
@@ -176,6 +193,55 @@ struct SessionContent: View {
             true
         case .idle, .failed:
             false
+        }
+    }
+
+    private func handleActionStateChange(_ newActionState: SessionViewModel.ActionState) {
+        switch newActionState {
+        case let .failed(failure):
+            handleBiometricAnnouncementEffect(
+                biometricAnnouncementGate.receiveFailure(
+                    failure,
+                    sceneIsActive: scenePhase == .active
+                ),
+                actionState: newActionState
+            )
+            return
+        case .unlocking:
+            return
+        case .idle, .signingOut:
+            biometricAnnouncementGate.reset()
+        }
+
+        updateAccessibilityFocus(state: state, actionState: newActionState)
+    }
+
+    private func handleScenePhaseChange(from oldPhase: ScenePhase, to newPhase: ScenePhase) {
+        guard voiceOverEnabled else {
+            biometricAnnouncementGate.reset()
+            return
+        }
+
+        if oldPhase == .active, newPhase != .active {
+            biometricAnnouncementGate.sceneBecameInactive()
+            return
+        }
+
+        guard newPhase == .active else { return }
+        handleBiometricAnnouncementEffect(biometricAnnouncementGate.sceneBecameActive(), actionState: actionState)
+    }
+
+    private func handleBiometricAnnouncementEffect(
+        _ effect: BiometricAnnouncementGate.Effect,
+        actionState: SessionViewModel.ActionState
+    ) {
+        switch effect {
+        case .none:
+            break
+        case let .announce(failure):
+            announceBiometricFailure(failure)
+        case .presentFailureNormally:
+            updateAccessibilityFocus(state: state, actionState: actionState)
         }
     }
 
@@ -191,6 +257,16 @@ struct SessionContent: View {
         case .idle, .loading, .signedOut, .locked(_, .available), .unlocked:
             feedbackFocus = nil
         }
+    }
+
+    private func announceBiometricFailure(_ failure: SessionViewModel.ActionFailure) {
+        guard voiceOverEnabled else { return }
+
+        var resource = failure.localizedMessage
+        resource.locale = locale
+        var announcement = AttributedString(String(localized: resource))
+        announcement.accessibilitySpeechAnnouncementPriority = .high
+        AccessibilityNotification.Announcement(announcement).post()
     }
 }
 
@@ -252,6 +328,14 @@ extension SessionViewModel.ActionFailure {
         state: .locked(AuthenticationPreviewFixtures.standard.session, .available),
         actionState: .idle
     ) {} requestSignOut: {}
+}
+
+#Preview("Locked with biometrics RTL", traits: .modifier(AppPreviewModifier())) {
+    SessionContent(
+        state: .locked(AuthenticationPreviewFixtures.standard.session, .available),
+        actionState: .idle
+    ) {} requestSignOut: {}
+        .environment(\.layoutDirection, .rightToLeft)
 }
 
 #Preview("Locked without biometrics", traits: .modifier(AppPreviewModifier())) {

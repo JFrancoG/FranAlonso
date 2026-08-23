@@ -6,6 +6,10 @@ All notable changes to this project are documented in this file.
 
 ### Changed
 
+- 2026-08-23 | ♿ fix(auth): apply semantic status inks for accessible text contrast
+- 2026-08-23 | 💄 style(auth): unify native primary actions as large capsule buttons
+- 2026-08-23 | ♿ fix(auth): coordinate Login focus and biometric announcements with native accessibility
+- 2026-08-23 | ♿ fix(auth): add field labels, password reveal semantics, and adaptive localized Session actions
 - 2026-08-02 | 💄 style(swift): complete signature normalization
 - 2026-08-02 | 💄 style(swift): normalize source formatting
 - 2026-07-30 | ♻️ refactor(sync): share pure retry scheduling
@@ -17,6 +21,7 @@ All notable changes to this project are documented in this file.
 
 ### Added
 
+- 2026-08-23 | ✨ feat(auth): add reusable auth controls
 - 2026-08-21 | ✨ feat(clients): add develop-only error fixture
 - 2026-08-21 | ✨ feat(auth): add develop-only auth fixture
 - 2026-08-21 | ✨ feat(design-system): add semantic color tokens
