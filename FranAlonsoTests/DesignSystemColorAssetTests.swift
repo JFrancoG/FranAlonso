@@ -76,13 +76,18 @@ struct DesignSystemColorAssetTests {
 
     @Test("Accent control boundaries meet non-text contrast")
     func accentControlBoundariesMeetNonTextContrast() throws {
-        for backgroundName in ["Canvas", "Surface"] {
-            for appearance in Appearance.allCases {
-                let accent = try #require(Self.approvedTokens["BrandPrimaryInk"]?[appearance])
-                let background = try #require(Self.approvedTokens[backgroundName]?[appearance])
-                let ratio = try Self.contrastRatio(accent, background)
+        for accentName in ["BrandPrimary", "BrandPrimaryInk"] {
+            for backgroundName in ["Canvas", "Surface"] {
+                for appearance in Appearance.allCases {
+                    let accent = try #require(Self.approvedTokens[accentName]?[appearance])
+                    let background = try #require(Self.approvedTokens[backgroundName]?[appearance])
+                    let ratio = try Self.contrastRatio(accent, background)
 
-                #expect(ratio >= 3.0, "Accent on \(backgroundName) is \(ratio):1 in \(appearance.rawValue)")
+                    #expect(
+                        ratio >= 3.0,
+                        "\(accentName) on \(backgroundName) is \(ratio):1 in \(appearance.rawValue)"
+                    )
+                }
             }
         }
     }

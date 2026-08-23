@@ -5,7 +5,8 @@ import SwiftUI
 struct LoginContent: View {
     private enum Field: Hashable {
         case email
-        case password
+        case passwordHidden
+        case passwordVisible
     }
 
     @Binding var email: String
@@ -13,60 +14,55 @@ struct LoginContent: View {
     let state: LoginViewModel.State
     let requestSignIn: () -> Void
 
+    @State private var isPasswordVisible = false
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+    @Environment(\.locale) private var locale
     @FocusState private var focusedField: Field?
     @AccessibilityFocusState private var errorFocused: Bool
 
     var body: some View {
         Form {
-            Section {
-                VStack(alignment: .leading) {
-                    Text(.authenticationLoginEmailLabel)
-                        .font(.headline)
-                        .accessibilityHidden(true)
-                    TextField(
-                        .authenticationLoginEmailLabel,
-                        text: $email,
-                        prompt: Text(.authenticationLoginEmailPrompt)
-                            .foregroundStyle(.textSecondary)
-                    )
-                    .keyboardType(.emailAddress)
-                    .textContentType(.username)
-                    .textInputAutocapitalization(.never)
-                    .autocorrectionDisabled()
-                    .accessibilityInputLabels([Text(.authenticationLoginEmailLabel)])
-                    .frame(minHeight: 44)
-                    .contentShape(.interaction, Rectangle())
-                    .gesture(TapGesture().onEnded { focusedField = .email }, isEnabled: !interactionDisabled)
-                    .submitLabel(.next)
-                    .focused($focusedField, equals: .email)
-                    .onSubmit {
-                        focusedField = .password
-                    }
+            FormFieldSection(
+                .authenticationLoginEmailLabel,
+                systemImage: "envelope"
+            ) {
+                TextField(
+                    .authenticationLoginEmailLabel,
+                    text: $email,
+                    prompt: Text(localizedEmailPrompt)
+                        .foregroundStyle(.textSecondary)
+                )
+                .keyboardType(.emailAddress)
+                .textContentType(.username)
+                .textInputAutocapitalization(.never)
+                .autocorrectionDisabled()
+                .accessibilityInputLabels([Text(.authenticationLoginEmailLabel)])
+                .accessibilityLabel(Text(.authenticationLoginEmailLabel))
+                .frame(minHeight: 44)
+                .contentShape(.interaction, Rectangle())
+                .gesture(TapGesture().onEnded { focusedField = .email }, isEnabled: !interactionDisabled)
+                .submitLabel(.next)
+                .focused($focusedField, equals: .email)
+                .onSubmit {
+                    focusedField = activePasswordField
                 }
             }
             .disabled(interactionDisabled)
 
-            Section {
-                VStack(alignment: .leading) {
-                    Text(.authenticationLoginPasswordLabel)
-                        .font(.headline)
-                        .accessibilityHidden(true)
-                    SecureField(
-                        .authenticationLoginPasswordLabel,
-                        text: $password,
-                        prompt: Text(.authenticationLoginPasswordPrompt)
-                            .foregroundStyle(.textSecondary)
-                    )
-                    .textContentType(.password)
-                    .accessibilityInputLabels([Text(.authenticationLoginPasswordLabel)])
-                    .frame(minHeight: 44)
-                    .contentShape(.interaction, Rectangle())
-                    .gesture(TapGesture().onEnded { focusedField = .password }, isEnabled: !interactionDisabled)
-                    .submitLabel(.done)
-                    .focused($focusedField, equals: .password)
-                    .onSubmit {
-                        focusedField = nil
-                        requestSignIn()
+            FormFieldSection(
+                .authenticationLoginPasswordLabel,
+                systemImage: "lock"
+            ) {
+                if dynamicTypeSize.isAccessibilitySize {
+                    VStack(alignment: .trailing, spacing: 8) {
+                        passwordEntry
+                        passwordVisibilityButton
+                    }
+                    .frame(maxWidth: .infinity, alignment: .trailing)
+                } else {
+                    HStack(spacing: 8) {
+                        passwordEntry
+                        passwordVisibilityButton
                     }
                 }
             }
@@ -77,16 +73,21 @@ struct LoginContent: View {
                     focusedField = nil
                     requestSignIn()
                 } label: {
-                    Label {
-                        Text(.authenticationLoginSubmit)
-                    } icon: {
-                        Image(systemName: "arrow.right.circle.fill")
-                    }
-                    .foregroundStyle(.onBrandPrimary)
+                    Text(.authenticationLoginSubmit)
+                        .lineLimit(1)
+                        .frame(maxWidth: .infinity)
                 }
-                .buttonStyle(.borderedProminent)
-                .tint(.brandPrimary)
+                .primaryActionStyle()
                 .disabled(interactionDisabled)
+                .listRowBackground(Color.clear)
+                .listRowInsets(
+                    EdgeInsets(
+                        top: 32,
+                        leading: 16,
+                        bottom: 8,
+                        trailing: 16
+                    )
+                )
             }
 
             Section {
@@ -103,21 +104,20 @@ struct LoginContent: View {
                     } icon: {
                         Image(systemName: "checkmark.circle.fill")
                     }
-                    .foregroundStyle(.green)
+                    .foregroundStyle(.successInk)
                 case let .failed(failure):
                     Label {
                         Text(failure.localizedMessage)
                     } icon: {
                         Image(systemName: "exclamationmark.triangle.fill")
                     }
-                    .foregroundStyle(.red)
+                    .foregroundStyle(.errorInk)
                     .accessibilityFocused($errorFocused)
                 }
             }
         }
-        .onAppear {
-            updateAccessibilityFocus(for: state)
-        }
+        .scrollContentBackground(.hidden)
+        .background(.canvas)
         .onChange(of: state) { _, newState in
             updateAccessibilityFocus(for: newState)
         }
@@ -130,6 +130,96 @@ struct LoginContent: View {
         case .idle, .failed:
             false
         }
+    }
+
+    private var localizedEmailPrompt: String {
+        var resource = LocalizedStringResource.authenticationLoginEmailPrompt
+        resource.locale = locale
+        return String(localized: resource)
+    }
+
+    private var passwordVisibilityLabel: LocalizedStringResource {
+        isPasswordVisible
+            ? .authenticationLoginPasswordHide
+            : .authenticationLoginPasswordShow
+    }
+
+    private var activePasswordField: Field {
+        isPasswordVisible ? .passwordVisible : .passwordHidden
+    }
+
+    private var passwordFieldIsFocused: Bool {
+        focusedField == .passwordHidden || focusedField == .passwordVisible
+    }
+
+    private var passwordEntry: some View {
+        Group {
+            if isPasswordVisible {
+                passwordField(
+                    TextField(
+                        .authenticationLoginPasswordLabel,
+                        text: $password,
+                        prompt: Text(.authenticationLoginPasswordPrompt)
+                            .foregroundStyle(.textSecondary)
+                    )
+                    .textInputAutocapitalization(.never)
+                    .autocorrectionDisabled(),
+                    focusedAs: .passwordVisible
+                )
+            } else {
+                passwordField(
+                    SecureField(
+                        .authenticationLoginPasswordLabel,
+                        text: $password,
+                        prompt: Text(.authenticationLoginPasswordPrompt)
+                            .foregroundStyle(.textSecondary)
+                    ),
+                    focusedAs: .passwordHidden
+                )
+            }
+        }
+        .layoutPriority(1)
+    }
+
+    private func passwordField<Content: View>(_ content: Content, focusedAs field: Field) -> some View {
+        content
+            .textContentType(.password)
+            .accessibilityInputLabels([Text(.authenticationLoginPasswordLabel)])
+            .accessibilityLabel(Text(.authenticationLoginPasswordLabel))
+            .frame(minHeight: 44)
+            .contentShape(.interaction, Rectangle())
+            .gesture(TapGesture().onEnded { focusedField = field }, isEnabled: !interactionDisabled)
+            .submitLabel(.done)
+            .focused($focusedField, equals: field)
+            .onSubmit {
+                focusedField = nil
+                requestSignIn()
+            }
+    }
+
+    private var passwordVisibilityButton: some View {
+        Button {
+            togglePasswordVisibility()
+        } label: {
+            Label {
+                Text(passwordVisibilityLabel)
+            } icon: {
+                Image(systemName: isPasswordVisible ? "eye.slash" : "eye")
+            }
+            .labelStyle(.iconOnly)
+            .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
+        }
+        .buttonStyle(.plain)
+        .foregroundStyle(.brandPrimaryInk)
+        .frame(minWidth: 44, minHeight: 44)
+        .contentShape(.interaction, Rectangle())
+    }
+
+    private func togglePasswordVisibility() {
+        let shouldPreserveFocus = passwordFieldIsFocused
+        isPasswordVisible.toggle()
+        guard shouldPreserveFocus else { return }
+        focusedField = activePasswordField
     }
 
     private func updateAccessibilityFocus(for state: LoginViewModel.State) {
@@ -169,6 +259,18 @@ extension LoginViewModel.Failure {
         password: $password,
         state: .idle
     ) {}
+}
+
+#Preview("Idle RTL", traits: .modifier(AppPreviewModifier())) {
+    @Previewable @State var email = ""
+    @Previewable @State var password = ""
+
+    LoginContent(
+        email: $email,
+        password: $password,
+        state: .idle
+    ) {}
+    .environment(\.layoutDirection, .rightToLeft)
 }
 
 #Preview("Loading", traits: .modifier(AppPreviewModifier())) {

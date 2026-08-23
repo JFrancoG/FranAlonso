@@ -1,3 +1,4 @@
+import Accessibility
 import Foundation
 import SwiftUI
 
@@ -6,6 +7,7 @@ struct LoginScreen: View {
     let viewModel: LoginViewModel
     let onSignInSucceeded: @MainActor (AuthenticationSession) -> Void
     @State private var signInRequestID: UUID?
+    @State private var hasPostedScreenChange = false
 
     var body: some View {
         @Bindable var viewModel = viewModel
@@ -18,6 +20,11 @@ struct LoginScreen: View {
             signInRequestID = UUID()
         }
         .navigationTitle(Text(.authenticationLoginTitle))
+        .onAppear {
+            guard !hasPostedScreenChange else { return }
+            hasPostedScreenChange = true
+            AccessibilityNotification.ScreenChanged().post()
+        }
         .task(id: signInRequestID) {
             guard let requestID = signInRequestID else { return }
 
