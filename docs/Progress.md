@@ -5,16 +5,17 @@
 ## Puerta actual
 
 - Fases 01–06 cerradas. 07.3 parte de `main == origin/main == fda767b`, con worktree limpio.
-- PLU-25 y PLU-29 están `In Progress`; PLU-26, PLU-27 y PLU-28 están `Done`.
+- PLU-25 está `In Progress`; PLU-29 está `In Review`; PLU-26, PLU-27 y PLU-28 están `Done`.
 - 07.1 y sus fixtures Develop no-live están entregadas en `074ce5e`. Los motores live continúan inactivos.
 - 07.2 está entregada por la [PR #4](https://github.com/JFrancoG/FranAlonso/pull/4): implementación `24802e6`,
   handoff `e8eca5a` y cierre documental `fda767b`.
-- El gate independiente de 07.3 pasó sin P0–P3 y el owner aprobó el alcance exacto. La implementación permanece local
-  en `codex/plu-29-073-content-state-views`; no hay autorización de commit, push, PR, merge ni cierre.
+- El gate independiente de 07.3 pasó sin P0–P3. La implementación `cbec2b0` está publicada en
+  [`codex/plu-29-073-content-state-views`](https://github.com/JFrancoG/FranAlonso/tree/codex/plu-29-073-content-state-views)
+  y entregada a revisión mediante la [PR #5](https://github.com/JFrancoG/FranAlonso/pull/5).
 - ADR 0025 añade dos errores raíz y hace fail-closed toda fixture inválida. El owner amplía PLU-29 y acepta ADR 0026:
   iPhone queda portrait-only, iPad adaptativo y 1.3.4 se registra `A/No pasa — excepción de producto aceptada`.
 
-## 07.3 — implementación en curso
+## 07.3 — en revisión
 
 - `LoadingStateView` conserva un `ProgressView` nativo y un `LocalizedStringResource` caller-owned. No contiene estado,
   estilo, foco, anuncios ni lógica.
@@ -84,13 +85,14 @@
 
 ## Siguiente acción
 
-1. Esperar autorización explícita para cualquier commit, push, PR, merge o cierre de Linear.
+1. Revisar e integrar la [PR #5](https://github.com/JFrancoG/FranAlonso/pull/5); después reconciliar el cierre documental
+   y operativo de PLU-29 sin iniciar 07.4.
 
 ## Bloqueos
 
 Sin blocker de código. La excepción 1.3.4 está aceptada, no se presenta como conformidad y su gate runtime/automático
-pasa. Loading permanece como evidencia limitada aceptada y las auditorías finales pasan. No hay autorización de commit,
-push, PR, merge ni cierre.
+pasa. Loading permanece como evidencia limitada aceptada y las auditorías finales pasan. La PR #5 está lista para su
+gate de integración.
 
 El histórico de fases 01–06 se conserva en [`progress/phases-00-06.md`](progress/phases-00-06.md), y el detalle de
 fase 07 en [`progress/phase-07.md`](progress/phase-07.md).

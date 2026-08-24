@@ -4,6 +4,10 @@ All notable changes to this project are documented in this file.
 
 ## [Unreleased]
 
+### Documentation
+
+- 2026-08-24 | 📝 docs(delivery): record PLU-29 review handoff
+
 ### Changed
 
 - 2026-08-24 | 📦 build(config): limit iPhone to portrait while preserving adaptive iPad orientations
