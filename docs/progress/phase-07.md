@@ -9,8 +9,8 @@
 | 07.1 — tokens visuales y nombres semánticos | PLU-26 | `Done` | Entregada en `074ce5e` |
 | 07.1a — fixtures Develop no-live | PLU-27 | `Done` | ADR 0023/0024; entregada en `074ce5e` |
 | 07.2 — controles reutilizables | PLU-28 | `Done` | [PR #4](https://github.com/JFrancoG/FranAlonso/pull/4); rebase merge `e8eca5a` |
-| 07.3 — vistas de carga, vacío y error | PLU-29 | `In Review` | [PR #5](https://github.com/JFrancoG/FranAlonso/pull/5); implementación `cbec2b0` |
-| Fase 07 | PLU-25 | `In Progress` | 07.3 en revisión; 07.4 no iniciada |
+| 07.3 — vistas de carga, vacío y error | PLU-29 | `Done` | [PR #5](https://github.com/JFrancoG/FranAlonso/pull/5); rebase merge `266489a` |
+| Fase 07 | PLU-25 | `In Progress` | 07.3 entregada; 07.4 no iniciada |
 
 La base aprobada al iniciar 07.2 fue `main == origin/main == 074ce5e`, con worktree limpio. La
 [PR #4](https://github.com/JFrancoG/FranAlonso/pull/4) quedó integrada por rebase en `main`: `24802e6` contiene la
@@ -251,7 +251,7 @@ implementación y `e8eca5a` el handoff. El cierre documental `fda767b` es la bas
 - Las auditorías finales iOS y accesibilidad pasan sin hallazgos P0–P3. Ambas operan read-only y comprueban huellas
   pre/post idénticas sobre 414 archivos. Confirman la solución 4.1.3, loading `A/L`, la ausencia honesta de VoiceOver
   iPad y la excepción 1.3.4 de ADR 0026.
-- PLU-25 continúa `In Progress` y PLU-29 pasa a `In Review` mediante la
-  [PR #5](https://github.com/JFrancoG/FranAlonso/pull/5). 07.4 no está iniciada.
+- PLU-29 queda `Done` tras integrar por rebase la [PR #5](https://github.com/JFrancoG/FranAlonso/pull/5):
+  implementación `56133a2` y handoff `266489a`. PLU-25 continúa `In Progress` y 07.4 no está iniciada.
 - El P1 de contraste post-cápsula queda cerrado tras repetir el Inspector. El gate runtime de ADR 0026 y las auditorías
-  finales están completos; la implementación `cbec2b0` está publicada y lista para integración en la PR #5.
+  finales están completos y entregados en `main`.
