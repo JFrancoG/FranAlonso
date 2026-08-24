@@ -1,7 +1,9 @@
+import Accessibility
 import SwiftUI
 
 @MainActor
 struct ClientListScreen: View {
+    @State private var hasNotifiedFailureLayout = false
     @State private var viewModel: ClientListViewModel
 
     var body: some View {
@@ -10,6 +12,15 @@ struct ClientListScreen: View {
             .task {
                 await viewModel.load()
             }
+            .onChange(of: viewModel.state) { _, newState in
+                notifyFailureLayoutIfNeeded(newState)
+            }
+    }
+
+    private func notifyFailureLayoutIfNeeded(_ state: ClientListViewModel.State) {
+        guard case .failed = state, !hasNotifiedFailureLayout else { return }
+        hasNotifiedFailureLayout = true
+        AccessibilityNotification.LayoutChanged().post()
     }
 }
 

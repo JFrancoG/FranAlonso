@@ -6,6 +6,8 @@ All notable changes to this project are documented in this file.
 
 ### Changed
 
+- 2026-08-24 | 📦 build(config): limit iPhone to portrait while preserving adaptive iPad orientations
+- 2026-08-24 | ♿ fix(clients): present loading failures without moving accessibility focus
 - 2026-08-23 | ♿ fix(auth): apply semantic status inks for accessible text contrast
 - 2026-08-23 | 💄 style(auth): unify native primary actions as large capsule buttons
 - 2026-08-23 | ♿ fix(auth): coordinate Login focus and biometric announcements with native accessibility
@@ -21,6 +23,8 @@ All notable changes to this project are documented in this file.
 
 ### Added
 
+- 2026-08-24 | ✨ feat(auth): add develop-only root error fixtures
+- 2026-08-24 | ✨ feat(ui): add reusable loading and unavailable state views
 - 2026-08-23 | ✨ feat(auth): add reusable auth controls
 - 2026-08-21 | ✨ feat(clients): add develop-only error fixture
 - 2026-08-21 | ✨ feat(auth): add develop-only auth fixture
@@ -58,6 +62,7 @@ All notable changes to this project are documented in this file.
 
 ### Documentation
 
+- 2026-08-24 | 📝 docs(architecture): record the accepted iPhone orientation exception
 - 2026-08-23 | 📝 docs(delivery): close PLU-28 after merge
 - 2026-08-23 | 📝 docs(delivery): record PLU-28 review handoff
 - 2026-08-11 | 📝 docs(governance): streamline project rules

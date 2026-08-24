@@ -1,6 +1,6 @@
 # Phase 07 Progress
 
-Última actualización: 2026-08-23
+Última actualización: 2026-08-24
 
 ## Estado
 
@@ -9,24 +9,27 @@
 | 07.1 — tokens visuales y nombres semánticos | PLU-26 | `Done` | Entregada en `074ce5e` |
 | 07.1a — fixtures Develop no-live | PLU-27 | `Done` | ADR 0023/0024; entregada en `074ce5e` |
 | 07.2 — controles reutilizables | PLU-28 | `Done` | [PR #4](https://github.com/JFrancoG/FranAlonso/pull/4); rebase merge `e8eca5a` |
-| Fase 07 | PLU-25 | `In Progress` | Continúa después de 07.2 |
+| 07.3 — vistas de carga, vacío y error | PLU-29 | `In Progress` | Gate ADR 0026 completo; auditorías finales PASS |
+| Fase 07 | PLU-25 | `In Progress` | 07.3 en implementación local |
 
 La base aprobada al iniciar 07.2 fue `main == origin/main == 074ce5e`, con worktree limpio. La
 [PR #4](https://github.com/JFrancoG/FranAlonso/pull/4) quedó integrada por rebase en `main`: `24802e6` contiene la
-implementación y `e8eca5a` el handoff. PLU-28 queda cerrado sin ampliar el alcance a 07.3/07.4.
+implementación y `e8eca5a` el handoff. El cierre documental `fda767b` es la baseline limpia de 07.3.
 
 ## Decisiones vigentes
 
 - ADR 0022 fija el objetivo interno de accesibilidad nativa basado en WCAG 2.2 A/AA aplicable, WCAG2ICT, convenciones
   Apple y runtime iOS. No declara certificación ni conformidad legal.
-- ADR 0023/0024 mantienen las fixtures exclusivamente en `Debug-Develop`, cortadas antes de Firebase y sin datos
-  persistentes o actividad live.
+- ADR 0023/0024/0025 mantienen las fixtures exclusivamente en `Debug-Develop`, cortadas antes de Firebase y sin datos
+  persistentes o actividad live. ADR 0025 hace fail-closed toda intención fixture explícita inválida.
 - 07.2 no requiere ADR nuevo: extrae composición SwiftUI nativa y aplica refinamientos visuales aprobados sin cambiar
   arquitectura, navegación, contratos de datos ni comportamiento live.
 - Fila compartida y tarjeta quedan diferidas: no existe un segundo consumidor demostrado. `ClientRow`, tarjetas,
-  formatters, validators y 07.3/07.4 permanecen fuera de alcance.
+  formatters, validators y 07.4 permanecen fuera de alcance.
 - Toda View conserva el límite declarativo: representa estado y envía intenciones; la lógica pertenece al ViewModel o
   a tipos de Presentation puros cuando no depende de la interfaz.
+- La extracción visual de 07.3 no requiere ADR nuevo. Su ampliación posterior de evidencia runtime sí queda gobernada
+  por ADR 0025 y toca únicamente el plan de lanzamiento, composición Develop y DataSource local.
 
 ## Snapshot entregado de 07.1 y 07.1a
 
@@ -137,9 +140,117 @@ implementación y `e8eca5a` el handoff. PLU-28 queda cerrado sin ampliar el alca
 
 ## Puerta y pendiente
 
-- Implementación, build, previews, focales, suite completa y validación manual aplicable: completados.
-- TDD visual: `N/A` razonado; lógica accesible extraída: GREEN con Swift Testing.
-- Sin blockers ni hallazgos abiertos. La auditoría iOS pasó sin P0–P3; la auditoría AX fresca certificó el contraste
-  corregido y su único P3 documental quedó reconciliado con la build final de 13,424 s.
-- La [PR #4](https://github.com/JFrancoG/FranAlonso/pull/4) está integrada y 07.2/PLU-28 queda `Done`. PLU-25 continúa
-  `In Progress`; iniciar 07.3 exige su propio gate y aprobación explícita.
+### 07.3 — implementación autorizada
+
+- `LoadingStateView` y `UnavailableStateView<Actions>` viven en `Shared/Presentation/Components`; conservan
+  `ProgressView` y `ContentUnavailableView` nativos con recursos y acciones caller-owned.
+- `ClientListContent`, `AuthenticationRootScreen` y `FranAlonsoApp` migran siete cargas y cinco estados no disponibles
+  equivalentes. No cambian estados, copy, roles, `disabled`, acciones, comportamiento de retry ni composición de
+  dependencias. Como corrección de accesibilidad autorizada durante el gate runtime, solo «Reintentar» pasa a `Text` de
+  una línea, sin icono y con `primaryActionStyle()` en su caller.
+- Los componentes no declaran `@MainActor` explícito ni contienen estado, lógica, foco, anuncios o decisiones de
+  vacío/error. `UnavailableStateView` aplica únicamente `TextSecondary` a su descripción para satisfacer el contraste
+  mínimo; Login y Session permanecen fuera de alcance.
+- RED/GREEN es `N/A` razonado para composición visual. Los siete focales existentes pasan 71/71 —incluidos 6/6 de
+  color— y la suite completa pasa 843/843.
+- Xcode MCP ha indexado los dos archivos nuevos: los seis Swift afectados reportan cero diagnósticos, el build final
+  pasa en 11,842 s y build log/Issue Navigator no contienen warnings.
+- Las previews cubren Light/Dark, contraste normal/incrementado, Large/XXX Large/AX 5, portrait/landscape y LTR/RTL.
+  En el destino iPad Simulator, carga, Clientes vacío/error y raíz/bootstrap quedan completos y sin solapes a pantalla
+  completa; Clientes refluye también completo al ancho mínimo de multitarea.
+- [`07-3-state-views.md`](../accessibility/evidence/07-3-state-views.md) clasifica 55/55 criterios para Clientes y
+  raíz/bootstrap. Las comprobaciones manuales aplicables a Clientes, las nuevas fixtures raíz y adaptación iPad están
+  completas; loading queda limitado por no disponer de una ruta suspendida estable y ADR 0026 registra 1.3.4 como
+  `A/No pasa — excepción de producto aceptada`.
+- VoiceOver recorre completos los estados vacío y error de Clientes y no crea una parada separada para los SF Symbols.
+  En el error determinista, el foco inicial nativo comienza en «Cerrar sesión» y continúa por encabezamiento, título y
+  descripción; la app no fuerza el foco de la barra de navegación.
+- Voice Control activa «Cerrar sesión» por su nombre a la primera desde el error determinista y vuelve a Login.
+- Switch Control resalta solo «Cerrar sesión» en ese estado, no crea objetivos redundantes y lo activa a la primera
+  sin trampa, volviendo a Login.
+- Full Keyboard Access muestra un marco azul solo sobre «Cerrar sesión»; flechas y Tab no incorporan contenido estático
+  al circuito. Espacio lo activa a la primera y vuelve a Login sin trampa.
+- El objetivo táctil del logout no cambia y conserva la validación física 07.1; no se repite una medición ajena al diff.
+- 4.1.3 detectó que VoiceOver anunciaba solo logout al aparecer el error. Un anuncio textual propio duplicaba después
+  el título nativo, tanto con prioridad normal como alta. La solución final publica un único `LayoutChanged` sin texto ni
+  destino al transitar a `.failed`: VoiceOver dice el título una vez y conserva foco en logout. Las trazas temporales
+  están retiradas; build Xcode MCP correcto en 7,348 s.
+- El owner amplía PLU-29 y acepta ADR 0026: las cuatro configuraciones iPhone pasan a portrait-only y las cuatro iPad
+  conservan sus orientaciones. No existe necesidad esencial; 1.3.4 queda `A/No pasa` como excepción de producto
+  consciente, sin presentarse como conformidad.
+- El test hospedado del `Info.plist` generado pasa en iPhone y en iPad; el test source-backed exige el valor exacto en
+  cada una de las cuatro configuraciones de aplicación y rechaza claves extra. En runtime, iPhone no rota a landscape
+  por ninguno de los dos lados y Login permanece completo y operativo. iPad rota en portrait, portrait invertido y
+  ambos landscape.
+- En iPad Simulator con AX 5, Login permanece completo y operativo en las cuatro orientaciones y en la ventana mínima;
+  en esta última requiere desplazamiento sin perder Email, Contraseña, ojo ni Acceder. `observationFailed` conserva
+  título, explicación y Retry completos y operables en portrait, landscape y ventana mínima; Retry vuelve a Login a la
+  primera. El error de Clientes conserva igualmente título, descripción y logout, que vuelve a Login a la primera.
+- VoiceOver no está disponible en Simulator según Apple. No se atribuye por tanto evidencia VoiceOver nueva al iPad;
+  se conserva la evidencia física ya observada en iPhone y se registra la adaptación iPad solo por runtime visual,
+  Inspector y AX 5.
+- iPhone 11/iOS 26.6.1 en portrait y AX 5 muestra completos el error de Clientes y logout, sin cortes ni solapes y con
+  todos los elementos operables. iPad full-size portrait/landscape pasa en previews AX 5; en la ventana de multitarea
+  más estrecha, error y logout siguen completos sin necesitar scroll. «Cerrar sesión» responde a la primera, vuelve una
+  sola vez a Login y la pantalla de destino conserva todo el contenido completo.
+- Accessibility Inspector emitió dos falsos avisos de contraste en Session: al seleccionarlos, los rectángulos quedan
+  desplazados sobre el fondo/chrome exterior de la ventana iPad y los pares casi blancos no existen en los tokens de la
+  app. El aviso Dynamic Type de Session vuelve a señalar el exterior; los dos de Clientes delimitan las dos líneas del
+  título nativo, que está visiblemente escalado y refluye completo en AX 5. Los cinco se cierran como no reproducidos
+  como defectos de la app; no se cambia código.
+- La pasada post-cápsula sobre `observationFailed` detecta un P1 real en el texto descriptivo: 3,44:1 a 14 pt sobre
+  blanco. Tres avisos adicionales de Dynamic Type resaltan nodos nativos que sí escalan y refluyen hasta AX 5 y se
+  clasifican como no reproducidos. El owner autorizó la corrección mínima y el `Text(message)` compartido ya aplica
+  `TextSecondary`; la repetición del Inspector elimina el aviso de contraste y cierra el P1.
+- El delta de contraste pasa diagnóstico focal, build Xcode MCP en 10,847 s sin warnings y tests de color 6/6. Las
+  cuatro apariencias y Large/XXX Large/AX 5 conservan jerarquía y reflow.
+- El owner aprobó sustituir la acción compacta con icono de `localAccessDenied` por una cápsula textual grande. El
+  `Button(role: .destructive)` y `requestSignOut()` permanecen intactos; la cadena visual local usa `OnError/ErrorFill`
+  y no crea una abstracción Shared sin reutilización demostrada. Diagnóstico cero, build Develop en 11,666 s sin
+  warnings, focales 13/13 y previews finales Light/Dark × contraste normal/incrementado en Large/XXX Large/AX 5. La
+  cápsula final también aparece a la primera, completa y sin solapes en runtime AX 5 de iPhone Simulator.
+- Con VoiceOver, `localAccessDenied` recorre título → explicación → «Cerrar sesión, botón», sin parada para el símbolo.
+  El doble toque conduce a Login, que anuncia «Iniciar sesión, encabezamiento» y mantiene allí el foco.
+- Voice Control activa «Tocar Cerrar sesión» a la primera desde `localAccessDenied` y conduce a Login.
+- Switch Control resalta únicamente «Cerrar sesión» en `localAccessDenied`; seleccionarlo conduce a Login sin trampa.
+- Full Keyboard Access enfoca únicamente «Cerrar sesión» en `localAccessDenied`; Espacio lo activa y conduce a Login.
+- En iPhone físico, centro y cuatro extremos visibles de la cápsula `localAccessDenied` responden a la primera y llevan
+  a Login, acreditando la superficie operable de 44×44 pt.
+- El Inspector final registra dos avisos Dynamic Type en Session y tres en `localAccessDenied`. Los rectángulos señalan
+  título+símbolo, descripción y, en la segunda ruta, su cápsula; todos escalan y refluyen completos en AX 5, sin fuente
+  fija ni avisos de contraste. La auditoría AX independiente cierra el hallazgo como no reproducido, PASS sin P0–P3.
+- La intención inválida formada solo por `clients-fixture-observation-error` falla cerrada en bootstrap: muestra «No se
+  pudo preparar el acceso» y su explicación completa en runtime AX 5, sin solapes ni composición live.
+- VoiceOver sitúa el foco inicial del fallo bootstrap en su título y recorre después la explicación completa. El símbolo
+  no añade una parada y la superficie no tiene controles aplicables a Voice Control, Switch Control o teclado.
+- El Inspector bootstrap añade solo dos avisos Dynamic Type sobre título+símbolo y explicación. Ambos están visiblemente
+  escalados y completos en AX 5, sin solapes, fuente fija ni avisos de contraste; se cierran como no reproducidos.
+- En iPad Simulator a pantalla completa y AX 5, bootstrap mantiene título y explicación completos, sin cortes ni
+  solapes, tanto en portrait como en landscape. En la ventana de ancho mínimo ambos siguen completos y sin solapes;
+  `observationFailed` mantiene además «Reintentar» completo, visible y operable. 2.4.11 queda cerrado; la restricción
+  iPhone de 1.3.4 se gobierna por la excepción explícita de ADR 0026.
+- Al ser una superficie estática, bootstrap no tiene controles aplicables a Voice Control, Switch Control o Full
+  Keyboard Access. Los cinco argumentos de fixture de `FranAlonso-Develop` quedan restaurados a `NO` antes del gate
+  automático final.
+- VoiceOver reprodujo un large title visualmente vacío después de `checkingSession` y `authorizingLocalAccess`, aunque
+  el nodo seguía anunciado. Ambos recorridos atravesaban el loading compartido nuevo; al no requerir scroll,
+  `LoadingStateView` centra directamente su `ProgressView`. Tras la corrección, Sesión conservó visible y grande el
+  título en 3/3 relanzamientos y Clientes también lo mostró correctamente; el hallazgo queda cerrado.
+- Loading runtime no tiene fixture suspendida. Se registrará como preview/no observado; ampliar ADR 0024 sería una
+  ampliación material no autorizada.
+- ADR 0025 añade `local-access-denied` y `observation-failed`, ambos desactivados por defecto. La primera ruta conserva
+  biometría y rechazo real del authorizer; la segunda consume un fallo one-shot por instancia y recupera signed-out al
+  reintentar. Una intención fixture ausente sigue live; cualquier intención inválida termina localmente y nunca live.
+- RED/GREEN: el primer focal falló por los modos ausentes; tras la implementación, la ampliación pasó cero diagnósticos
+  en 7/7 Swift, focales auth/config 84/84, build Develop en 11,410 s y suite 859/859. Con las cinco fixtures ya en `NO`,
+  el gate final conserva cero diagnósticos en 13/13 Swift y en el test de configuración, build Develop en 3,034 s sin
+  warnings, suite completa 860/860 y build Production en 18,741 s. Ambos logs de build e Issue Navigator quedan a cero
+  warnings. El gate de orientación pasa 1/1 en iPhone y 2/2 en iPad para runtime y source-backed.
+- ADR 0026 documenta e implementa la decisión portrait-only de iPhone dentro de la ampliación aceptada de PLU-29. iPad
+  permanece adaptativo; la evidencia iPad no compensa la clasificación `A/No pasa` de iPhone.
+- Las auditorías finales iOS y accesibilidad pasan sin hallazgos P0–P3. Ambas operan read-only y comprueban huellas
+  pre/post idénticas sobre 414 archivos. Confirman la solución 4.1.3, loading `A/L`, la ausencia honesta de VoiceOver
+  iPad y la excepción 1.3.4 de ADR 0026.
+- PLU-25 y PLU-29 continúan `In Progress`. No hay autorización de commit, push, PR, merge, cierre ni 07.4.
+- El P1 de contraste post-cápsula queda cerrado tras repetir el Inspector. El gate runtime de ADR 0026 y las auditorías
+  finales están completos; la implementación permanece local a la espera de autorización de entrega.

@@ -69,11 +69,19 @@
             isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
-            argument = "--franalonso-clients-fixture-observation-error"
+            argument = "--franalonso-auth-fixture-restored-session"
             isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
-            argument = "--franalonso-auth-fixture-restored-session"
+            argument = "--franalonso-auth-fixture-local-access-denied"
+            isEnabled = "NO">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "--franalonso-auth-fixture-observation-failed"
+            isEnabled = "NO">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "--franalonso-clients-fixture-observation-error"
             isEnabled = "NO">
          </CommandLineArgument>
       </CommandLineArguments>

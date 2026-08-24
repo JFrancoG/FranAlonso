@@ -18,6 +18,18 @@ struct ApplicationLaunchPlanTests {
                 ApplicationLaunchPlan.authenticationFixture(
                     .standard(.restoredSession)
                 )
+            ),
+            (
+                DevelopAuthenticationFixture.localAccessDeniedLaunchArgument,
+                ApplicationLaunchPlan.authenticationFixture(
+                    .localAccessDenied
+                )
+            ),
+            (
+                DevelopAuthenticationFixture.observationFailedLaunchArgument,
+                ApplicationLaunchPlan.authenticationFixture(
+                    .observationFailed
+                )
             )
         ]
     )
@@ -63,6 +75,16 @@ struct ApplicationLaunchPlanTests {
             [
                 "/fixture/app",
                 DevelopAuthenticationFixture.signedOutLaunchArgument,
+                DevelopAuthenticationFixture.clientsObservationErrorLaunchArgument
+            ],
+            [
+                "/fixture/app",
+                DevelopAuthenticationFixture.localAccessDeniedLaunchArgument,
+                DevelopAuthenticationFixture.clientsObservationErrorLaunchArgument
+            ],
+            [
+                "/fixture/app",
+                DevelopAuthenticationFixture.observationFailedLaunchArgument,
                 DevelopAuthenticationFixture.clientsObservationErrorLaunchArgument
             ],
             [
@@ -114,8 +136,8 @@ struct ApplicationLaunchPlanTests {
         #expect(plan == .invalidFixtureConfiguration)
     }
 
-    @Test("A missing environment or bundle gate always resolves live")
-    func missingEnvironmentOrBundleGateResolvesLive() {
+    @Test("An explicit Authentication fixture intent fails closed outside its exact Develop identity")
+    func authenticationFixtureIntentFailsClosedOutsideExactDevelopIdentity() {
         let invalidGates: [(appEnvironment: String?, bundleIdentifier: String?)] = [
             (nil, "com.plusprojects.FranAlonso.develop"),
             ("production", "com.plusprojects.FranAlonso.develop"),
@@ -133,14 +155,13 @@ struct ApplicationLaunchPlanTests {
                 ]
             )
 
-            #expect(plan == .live)
+            #expect(plan == .invalidFixtureConfiguration)
         }
     }
 
     @Test(
-        "Absent, unknown, duplicate or conflicting fixture arguments resolve live",
+        "Every malformed Authentication fixture intent fails closed",
         arguments: [
-            ["/fixture/app"],
             ["/fixture/app", "--franalonso-auth-fixture-unknown"],
             [
                 "/fixture/app",
@@ -159,11 +180,22 @@ struct ApplicationLaunchPlanTests {
             ]
         ]
     )
-    func unsupportedFixtureArgumentsResolveLive(_ arguments: [String]) {
+    func malformedAuthenticationFixtureIntentFailsClosed(_ arguments: [String]) {
         let plan = ApplicationLaunchPlan.resolve(
             appEnvironment: "develop",
             bundleIdentifier: "com.plusprojects.FranAlonso.develop",
             arguments: arguments
+        )
+
+        #expect(plan == .invalidFixtureConfiguration)
+    }
+
+    @Test("No fixture intent preserves the live route")
+    func noFixtureIntentPreservesLiveRoute() {
+        let plan = ApplicationLaunchPlan.resolve(
+            appEnvironment: "develop",
+            bundleIdentifier: "com.plusprojects.FranAlonso.develop",
+            arguments: ["/fixture/app", "--unrelated-argument"]
         )
 
         #expect(plan == .live)

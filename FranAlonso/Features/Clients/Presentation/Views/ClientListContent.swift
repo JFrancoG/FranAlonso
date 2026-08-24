@@ -9,33 +9,23 @@ struct ClientListContent: View {
     var body: some View {
         switch state {
         case .idle, .loading:
-            ProgressView {
-                Text(.clientsListLoading)
-            }
+            LoadingStateView(label: .clientsListLoading)
         case .empty:
-            ContentUnavailableView {
-                Label {
-                    Text(.clientsListEmptyTitle)
-                } icon: {
-                    Image(systemName: "person.2")
-                }
-            } description: {
-                Text(.clientsListEmptyMessage)
-            }
+            UnavailableStateView(
+                title: .clientsListEmptyTitle,
+                systemImage: "person.2",
+                message: .clientsListEmptyMessage
+            )
         case let .content(clients):
             List(clients) { client in
                 ClientRow(client: client)
             }
         case .failed:
-            ContentUnavailableView {
-                Label {
-                    Text(.clientsListErrorTitle)
-                } icon: {
-                    Image(systemName: "exclamationmark.triangle")
-                }
-            } description: {
-                Text(.clientsListErrorMessage)
-            }
+            UnavailableStateView(
+                title: .clientsListErrorTitle,
+                systemImage: "exclamationmark.triangle",
+                message: .clientsListErrorMessage
+            )
         }
     }
 }

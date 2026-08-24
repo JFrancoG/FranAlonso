@@ -31,14 +31,17 @@ enum ApplicationLaunchPlan: Equatable {
         let clientsArguments = arguments.filter {
             $0.hasPrefix("--franalonso-clients-fixture-")
         }
+        let hasFixtureIntent = !authenticationArguments.isEmpty || !clientsArguments.isEmpty
+
+        guard hasFixtureIntent else { return .live }
+        guard appEnvironment == "develop" else {
+            return .invalidFixtureConfiguration
+        }
+        guard bundleIdentifier == "com.plusprojects.FranAlonso.develop" else {
+            return .invalidFixtureConfiguration
+        }
 
         if !clientsArguments.isEmpty {
-            guard appEnvironment == "develop" else {
-                return .invalidFixtureConfiguration
-            }
-            guard bundleIdentifier == "com.plusprojects.FranAlonso.develop" else {
-                return .invalidFixtureConfiguration
-            }
             guard authenticationArguments == [
                 DevelopAuthenticationFixture.restoredSessionLaunchArgument
             ] else {
@@ -53,19 +56,21 @@ enum ApplicationLaunchPlan: Equatable {
             return .authenticationFixture(.clientsObservationError)
         }
 
-        guard appEnvironment == "develop" else { return .live }
-        guard bundleIdentifier == "com.plusprojects.FranAlonso.develop" else {
-            return .live
+        guard authenticationArguments.count == 1 else {
+            return .invalidFixtureConfiguration
         }
-        guard authenticationArguments.count == 1 else { return .live }
 
         return switch authenticationArguments[0] {
         case DevelopAuthenticationFixture.signedOutLaunchArgument:
             .authenticationFixture(.standard(.signedOut))
         case DevelopAuthenticationFixture.restoredSessionLaunchArgument:
             .authenticationFixture(.standard(.restoredSession))
+        case DevelopAuthenticationFixture.localAccessDeniedLaunchArgument:
+            .authenticationFixture(.localAccessDenied)
+        case DevelopAuthenticationFixture.observationFailedLaunchArgument:
+            .authenticationFixture(.observationFailed)
         default:
-            .live
+            .invalidFixtureConfiguration
         }
 #else
         .live
