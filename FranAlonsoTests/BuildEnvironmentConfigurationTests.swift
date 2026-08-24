@@ -1,5 +1,6 @@
 import Foundation
 import Testing
+import UIKit
 
 @Suite("Build environment configuration")
 struct BuildEnvironmentConfigurationTests {
@@ -42,20 +43,26 @@ struct BuildEnvironmentConfigurationTests {
         #expect(configuration.projectIdentifier == "agendapeluqueria-3155f")
     }
 
-    @Test("The hosted application supports iPhone portrait and landscape")
-    func hostedApplicationSupportsIPhonePortraitAndLandscape() throws {
+    @Test("The hosted application uses the device-specific orientation policy")
+    @MainActor
+    func hostedApplicationUsesDeviceSpecificOrientationPolicy() throws {
         let orientations = try #require(
             Bundle.main.object(
                 forInfoDictionaryKey: "UISupportedInterfaceOrientations"
             ) as? [String]
         )
-        let requiredOrientations = Set([
-            "UIInterfaceOrientationPortrait",
-            "UIInterfaceOrientationLandscapeLeft",
-            "UIInterfaceOrientationLandscapeRight"
-        ])
+        let expectedOrientations: Set<String> = if UIDevice.current.userInterfaceIdiom == .pad {
+            [
+                "UIInterfaceOrientationLandscapeLeft",
+                "UIInterfaceOrientationLandscapeRight",
+                "UIInterfaceOrientationPortrait",
+                "UIInterfaceOrientationPortraitUpsideDown"
+            ]
+        } else {
+            ["UIInterfaceOrientationPortrait"]
+        }
 
-        #expect(Set(orientations).isSuperset(of: requiredOrientations))
+        #expect(Set(orientations) == expectedOrientations)
     }
 
     @Test("The build phase rejects Firebase configuration from another project")
@@ -113,6 +120,55 @@ struct BuildEnvironmentConfigurationTests {
                 in: project
             ) == 3
         )
+    }
+
+    @Test("Every app configuration keeps iPhone portrait-only and iPad adaptive")
+    func projectDefinesDeviceSpecificOrientationPolicy() throws {
+        let project = try repositoryFile(
+            at: "FranAlonso.xcodeproj/project.pbxproj"
+        )
+        let appConfigurationIDs = [
+            "E08BC64D2FDB2B72008EECFF",
+            "E08BC64E2FDB2B72008EECFF",
+            "E0C0D012300F000100000001",
+            "E0C0D013300F000100000001"
+        ]
+        let iPhoneOrientations =
+            "INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;"
+        let iPhoneOrientationKey =
+            "INFOPLIST_KEY_UISupportedInterfaceOrientations = "
+        let iPadOrientationValues = [
+            "UIInterfaceOrientationLandscapeLeft",
+            "UIInterfaceOrientationLandscapeRight",
+            "UIInterfaceOrientationPortrait",
+            "UIInterfaceOrientationPortraitUpsideDown"
+        ].joined(separator: " ")
+        let iPadOrientations =
+            "INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "
+            + String(reflecting: iPadOrientationValues)
+            + ";"
+        let iPadOrientationKey =
+            "INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "
+
+        for configurationID in appConfigurationIDs {
+            let settings = String(
+                buildSettings(
+                    configurationID: configurationID,
+                    in: project
+                )
+            )
+
+            #expect(!settings.isEmpty)
+            #expect(occurrenceCount(of: iPhoneOrientations, in: settings) == 1)
+            #expect(occurrenceCount(of: iPhoneOrientationKey, in: settings) == 1)
+            #expect(occurrenceCount(of: iPadOrientations, in: settings) == 1)
+            #expect(occurrenceCount(of: iPadOrientationKey, in: settings) == 1)
+        }
+
+        #expect(occurrenceCount(of: iPhoneOrientations, in: project) == 4)
+        #expect(occurrenceCount(of: iPhoneOrientationKey, in: project) == 4)
+        #expect(occurrenceCount(of: iPadOrientations, in: project) == 4)
+        #expect(occurrenceCount(of: iPadOrientationKey, in: project) == 4)
     }
 
     @Test("Shared schemes map every action to their own environment")
@@ -287,6 +343,8 @@ struct BuildEnvironmentConfigurationTests {
         for argument in [
             "--franalonso-auth-fixture-signed-out",
             "--franalonso-auth-fixture-restored-session",
+            "--franalonso-auth-fixture-local-access-denied",
+            "--franalonso-auth-fixture-observation-failed",
             "--franalonso-clients-fixture-observation-error"
         ] {
             #expect(
@@ -294,6 +352,7 @@ struct BuildEnvironmentConfigurationTests {
                     "argument = \"\(argument)\"\n            isEnabled = \"NO\""
                 )
             )
+            #expect(occurrenceCount(of: argument, in: developScheme) == 1)
             #expect(!productionScheme.contains(argument))
         }
     }

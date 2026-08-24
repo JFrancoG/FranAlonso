@@ -1,92 +1,96 @@
 # Project Progress
 
-Última actualización: 2026-08-23
+Última actualización: 2026-08-24
 
 ## Puerta actual
 
-- Fases 01–06 cerradas. La baseline aprobada de fase 07 es `main == origin/main == 074ce5e`.
-- PLU-25 está `In Progress`; PLU-26, PLU-27 y PLU-28 están `Done`.
+- Fases 01–06 cerradas. 07.3 parte de `main == origin/main == fda767b`, con worktree limpio.
+- PLU-25 y PLU-29 están `In Progress`; PLU-26, PLU-27 y PLU-28 están `Done`.
 - 07.1 y sus fixtures Develop no-live están entregadas en `074ce5e`. Los motores live continúan inactivos.
-- 07.2 implementa controles reutilizables de autenticación y conserva fuera de alcance filas/tarjetas sin un segundo
-  consumidor, Domain, Data, App, navegación, configuración, servicios live y subfases 07.3/07.4.
-- La implementación, las validaciones y las auditorías read-only finales están completas sin hallazgos abiertos.
-  La [PR #4](https://github.com/JFrancoG/FranAlonso/pull/4) se integró por rebase en `main`: implementación
-  `24802e6` y handoff `e8eca5a`. PLU-28 queda `Done`.
+- 07.2 está entregada por la [PR #4](https://github.com/JFrancoG/FranAlonso/pull/4): implementación `24802e6`,
+  handoff `e8eca5a` y cierre documental `fda767b`.
+- El gate independiente de 07.3 pasó sin P0–P3 y el owner aprobó el alcance exacto. La implementación permanece local
+  en `codex/plu-29-073-content-state-views`; no hay autorización de commit, push, PR, merge ni cierre.
+- ADR 0025 añade dos errores raíz y hace fail-closed toda fixture inválida. El owner amplía PLU-29 y acepta ADR 0026:
+  iPhone queda portrait-only, iPad adaptativo y 1.3.4 se registra `A/No pasa — excepción de producto aceptada`.
 
-## 07.2 — snapshot funcional
+## 07.3 — implementación en curso
 
-- `PrimaryActionStyle` se aplica al `Button` nativo completo y comparte foreground semántico, estilo prominent, tint,
-  cápsula y tamaño `.large`. Login y Session conservan sus acciones, estados `disabled` y labels caller-owned.
-- Los dos CTA «Acceder» quedan unificados, sin iconos, con una altura visual aproximada de 49 pt y contraste correcto
-  en enabled/disabled. El fallback «Salir y acceder con email» permanece como acción de texto nativa.
-- Los estados de éxito, aviso y error usan `successInk`, `warningInk` y `errorInk`; el label del fallback destructivo
-  aplica `errorInk` sin perder `role: .destructive`, para cumplir contraste textual también en Light.
-- `FormFieldSection` conserva exactamente una `Section` nativa, el `VStack` leading, el label visual y contenido
-  caller-owned. Las dos secciones de campos de Login siguen separadas para Switch Control.
-- Email y Contraseña conservan bindings, prompts, teclado, AutoFill, autocorrección, input labels, superficie mínima,
-  submit y foco. Los labels incorporan SF Symbols; el botón de ojo, único control solo-icono, muestra u oculta la
-  contraseña sin trasladar lógica de negocio a la View.
-- La transición inicial a Login y los errores importantes coordinan la semántica accesible sin delays, UIKit ni foco
-  forzado tras el retorno biométrico. El copy breve del fallback se selecciona con `ViewThatFits`.
-- RED/GREEN es `N/A` para la extracción visual sin lógica. La coordinación biométrica pura sí tiene cobertura con
-  Swift Testing; no se añadieron XCTest, XCUITest ni UI tests ceremoniales.
+- `LoadingStateView` conserva un `ProgressView` nativo y un `LocalizedStringResource` caller-owned. No contiene estado,
+  estilo, foco, anuncios ni lógica.
+- `UnavailableStateView<Actions: View>` conserva un `ContentUnavailableView` nativo con título, SF Symbol, descripción
+  y acciones caller-owned. Su variante sin acciones usa `EmptyView`; los inicializadores de composición viven en
+  extensiones del mismo archivo.
+- Ambos componentes son Views pasivas sin `@MainActor` explícito, siguiendo el precedente de `FormFieldSection`.
+- `ClientListContent`, `AuthenticationRootScreen` y `FranAlonsoApp` sustituyen solo las composiciones full-content
+  equivalentes. Estados, transiciones, `List`, copy, símbolos, roles y acciones permanecen en sus propietarios.
+- Login y Session quedan fuera: sus indicadores son feedback inline o semántica de sesión validada en 07.2.
+- TDD RED/GREEN es `N/A` para esta extracción visual sin lógica. No se añaden tests ceremoniales, XCTest, XCUITest ni
+  UI tests.
+- La ampliación de fixture sí siguió RED/GREEN con Swift Testing: acceso local denegado atraviesa sesión restaurada,
+  unlock, authorizer y logout reales; el fallo de observación termina solo el primer stream por instancia y Retry
+  recupera signed-out mediante una segunda observación.
+- Con las cinco fixtures restauradas a `NO`, Xcode MCP mantiene cero diagnósticos en los trece Swift afectados y en el
+  test final de configuración. El build Develop pasa en 3,034 s, la suite completa en 860/860 y el build Production en
+  18,741 s; ambos builds, sus logs y el Issue Navigator quedan sin warnings.
+- La matriz de previews cubre Light/Dark, contraste normal/incrementado, Large/XXX Large/AX 5,
+  portrait/landscape y LTR/RTL. En el destino iPad Simulator, carga, Clientes vacío/error y raíz/bootstrap quedan
+  completos y sin solapes a pantalla completa; el pase runtime bootstrap confirma portrait y landscape en AX 5, y
+  Clientes refluye también completo al ancho mínimo de multitarea.
+- [`07-3-state-views.md`](accessibility/evidence/07-3-state-views.md) clasifica 55/55 criterios para Clientes y
+  raíz/bootstrap. Los recorridos manuales solicitados pasan; loading queda limitado por no disponer de fixture
+  suspendida y 1.3.4 queda como excepción de producto `A/No pasa` mediante ADR 0026.
+- VoiceOver recorre completos los estados vacío y error de Clientes sin parada redundante para sus SF Symbols. En el
+  error determinista, el foco inicial nativo comienza en «Cerrar sesión» y continúa por encabezamiento, título y
+  descripción; la app no fuerza el foco de la barra de navegación.
+- Voice Control activa «Cerrar sesión» por su nombre a la primera desde el error determinista y vuelve a Login.
+- Switch Control resalta solo «Cerrar sesión» en ese estado, no crea objetivos redundantes y lo activa a la primera
+  sin trampa, volviendo a Login.
+- Full Keyboard Access muestra un marco azul solo sobre «Cerrar sesión»; flechas y Tab no incorporan contenido estático
+  al circuito. Espacio lo activa a la primera y vuelve a Login sin trampa.
+- El objetivo táctil del logout no cambia y conserva la validación física 07.1; no se repite una medición ajena al diff.
+- 4.1.3 detectó que VoiceOver anunciaba solo logout al aparecer el error. Un anuncio textual propio duplicaba después
+  el título nativo, tanto con prioridad normal como alta. La solución final publica un único `LayoutChanged` sin texto ni
+  destino al transitar a `.failed`: VoiceOver dice el título una vez y conserva foco en logout. Las trazas temporales
+  están retiradas; build Xcode MCP correcto en 7,348 s.
+- iPhone 11/iOS 26.6.1 en portrait y AX 5 muestra completos el error de Clientes y logout, sin cortes ni solapes y con
+  todos los elementos operables. iPad full-size portrait/landscape pasa en previews AX 5; en la ventana de multitarea
+  más estrecha, error y logout siguen completos sin necesitar scroll. «Cerrar sesión» responde a la primera, vuelve una
+  sola vez a Login y la pantalla de destino conserva todo el contenido completo.
+- Accessibility Inspector emitió dos falsos avisos de contraste en Session: al seleccionarlos, los rectángulos quedan
+  desplazados sobre el fondo/chrome exterior de la ventana iPad y los pares casi blancos no existen en los tokens de la
+  app. El aviso Dynamic Type de Session vuelve a señalar el exterior; los dos de Clientes delimitan las dos líneas del
+  título nativo, que está visiblemente escalado y refluye completo en AX 5. Los cinco se cierran como no reproducidos
+  como defectos de la app; no se cambia código.
+- Los cinco argumentos de fixture de `FranAlonso-Develop` quedan restaurados a `NO` antes del gate automático final.
+- El gate ADR 0026 pasa sus tests runtime/source-backed en iPhone e iPad. iPhone permanece en portrait al girar a ambos
+  lados y Login sigue completo y operativo. iPad rota en sus cuatro orientaciones; con AX 5, Login, el error raíz con
+  Retry y el error de Clientes permanecen completos y operables en portrait, landscape y ventana mínima. El Login
+  requiere desplazamiento en el ancho mínimo, sin perder controles. VoiceOver de iPad no se declara validado porque
+  Apple no lo ofrece en Simulator; se conserva la evidencia física de iPhone sin extrapolarla.
+- La comprobación VoiceOver detectó que el título grande podía conservar su nodo pero perder el glyph tras atravesar el
+  loading compartido. `LoadingStateView` vuelve a un `ProgressView` centrado sin scroll; después, Sesión conservó el
+  título visible y grande en 3/3 relanzamientos y Clientes también lo mostró correctamente. El hallazgo queda cerrado.
+- Las auditorías finales iOS y accesibilidad pasan sin hallazgos P0–P3. Ambas usaron modo operacionalmente read-only y
+  comprobaron huellas pre/post idénticas sobre 414 archivos. Confirman las clasificaciones 4.1.3, loading `A/L`,
+  VoiceOver iPad no ejecutado y 1.3.4 `A/No pasa` mediante ADR 0026.
 
-## Evidencia automática final
+## 07.2 — entregada
 
-- Xcode MCP, `FranAlonso-Develop`, iPhone 17e Simulator/iOS 26.5: build final correcto en 13,424 s; Issue Navigator sin
-  warnings; cero diagnósticos en los Swift de producción afectados.
-- La consulta aislada de `BiometricAnnouncementGateTests.swift` devolvió `SourceEditor error 5`; el archivo compiló y
-  ejecutó correctamente, por lo que se registra como límite del editor, no como regresión.
-- Previews de `FormFieldSection`, Login y Session: Light/Dark, contraste normal/incrementado, Large/XXX Large/AX 5,
-  portrait/landscape y RTL, incluidos estados enabled/disabled.
-- Focales: 6/6 `DesignSystemColorAssetTests`; 39/39 localización + anuncio biométrico; 58/58 root/Login/Session
-  ViewModels; 28/28 lanzamiento/configuración. Total focal: 131/131.
-- Suite completa: 843/843 outcomes.
-- Una ejecución de `DesignSystemColorAssetTests` en iPhone 11 físico obtuvo 3/6 porque tres casos source-backed no
-  pueden acceder a la ruta fuente del Mac desde el sandbox del dispositivo. La repetición equivalente en simulador
-  pasó 6/6; no es una regresión del producto.
-- La auditoría AX inicial detectó contraste insuficiente en los colores nativos de estado y del fallback. La corrección
-  semántica posterior pasó build, Issue Navigator sin warnings, `DesignSystemColorAssetTests` 6/6 y previews de Login
-  error, Session warning/fallback y Session error/fallback en Light/Dark × contraste normal/incrementado.
-- Los tres argumentos de fixture del esquema Develop quedaron desactivados (`NO`).
-- El rebase merge se aplicó sobre la misma base validada y no alteró el árbol entregado. Este checkpoint posterior solo
-  cambia documentación; repetir Xcode MCP es `N/A` razonado y se conserva la evidencia anterior.
-
-## Evidencia manual ADR 0022
-
-- VoiceOver, Voice Control, Switch Control agrupado y Full Keyboard Access pasan en los flujos aplicables de Login y
-  Session. Los nombres, roles, orden, foco visible, activación única y recuperación tras error se comprobaron en
-  runtime.
-- Login conserva tres grupos de primer nivel en Switch Control: Email; Contraseña + ojo; Acceder. Email, contraseña
-  oculta/visible, ojo y CTA pasan las comprobaciones de centro y extremos y ejecutan una única acción.
-- Session conserva dos controles independientes cuando la biometría está disponible. Acceder abre una sola petición y
-  completa una única transición. El fallback, aunque no dibuja fondo ni borde, respondió siempre a la primera en centro
-  y extremos y navegó exactamente una vez a Login.
-- AutoFill, Dynamic Type hasta AX 5, Light/Dark, contraste normal/incrementado, orientaciones, RTL y superficies
-  operables están comprobados. Los CTA compartidos mantienen contraste y aspecto disabled.
-- El fallback corto está implementado mediante `ViewThatFits` y cubierto por localización y previews; no se presenta
-  como observado manualmente en runtime porque esa variante no llegó a mostrarse.
-- La matriz detallada vive en
-  [`accessibility/evidence/07-2-reusable-controls.md`](accessibility/evidence/07-2-reusable-controls.md).
-
-## Limitaciones aceptadas
-
-- Al volver de contraseña visible a `SecureField`, el comportamiento nativo puede reemplazar el valor al reanudar la
-  escritura. Se conserva SwiftUI moderno y no se añade un wrapper UIKit para controlar selección interna.
-- Tras anunciar completo un fallo biométrico, el destino final de VoiceOver puede variar entre dispositivos. La app no
-  fuerza un foco posterior ni introduce saltos o trampas.
-- Si se reactiva Login mientras el foco está en su nodo dinámico de error, iOS puede volver al encabezamiento. Cada
-  error nuevo sí recibe foco y se anuncia completo una vez; no se añade lógica compensatoria.
-- AutoFill funciona con la cuenta sintética, pero permanece limitado por la ausencia deliberada de Associated Domains.
+- Los controles compartidos, la coordinación accesible de Login/Session y sus limitaciones nativas aceptadas están
+  cerrados en [`07-2-reusable-controls.md`](accessibility/evidence/07-2-reusable-controls.md).
+- Las dos `Section` de Login deben seguir separadas para Switch Control. `PrimaryActionStyle` debe conservar
+  enabled/disabled y contraste; 07.3 no modifica ninguno de esos riesgos.
 
 ## Siguiente acción
 
-1. Mantener PLU-25 `In Progress`; 07.2 no completa la fase 07.
-2. Aplicar `$franalonso-start-subphase` a 07.3 y obtener aprobación explícita antes de cualquier implementación nueva.
+1. Esperar autorización explícita para cualquier commit, push, PR, merge o cierre de Linear.
 
 ## Bloqueos
 
-Ninguno. Las limitaciones anteriores están aceptadas y documentadas; no habilitan Firebase/live ni amplían 07.2.
+Sin blocker de código. La excepción 1.3.4 está aceptada, no se presenta como conformidad y su gate runtime/automático
+pasa. Loading permanece como evidencia limitada aceptada y las auditorías finales pasan. No hay autorización de commit,
+push, PR, merge ni cierre.
 
 El histórico de fases 01–06 se conserva en [`progress/phases-00-06.md`](progress/phases-00-06.md), y el detalle de
 fase 07 en [`progress/phase-07.md`](progress/phase-07.md).

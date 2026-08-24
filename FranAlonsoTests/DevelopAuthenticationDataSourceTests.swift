@@ -28,6 +28,42 @@ struct DevelopAuthenticationDataSourceTests {
         #expect(await iterator.next() == .some(expectedSession))
     }
 
+    @Test("Observation failure ends only the first stream and the next observation recovers")
+    func observationFailureEndsOnlyFirstStreamAndThenRecovers() async {
+        let dataSource = DevelopAuthenticationDataSource(
+            initialState: .signedOut,
+            observationBehavior: .firstObservationEndsThenRecovers
+        )
+        let failedStream = await dataSource.observeSession()
+        var failedIterator = failedStream.makeAsyncIterator()
+
+        #expect(await failedIterator.next() == nil)
+        #expect(await dataSource.activeObservationCount == 0)
+
+        let recoveredStream = await dataSource.observeSession()
+        var recoveredIterator = recoveredStream.makeAsyncIterator()
+
+        #expect(await recoveredIterator.next() == .some(nil))
+        #expect(await dataSource.activeObservationCount == 1)
+    }
+
+    @Test("Observation failure state belongs to each data source instance")
+    func observationFailureStateBelongsToEachInstance() async {
+        let first = DevelopAuthenticationDataSource(
+            initialState: .signedOut,
+            observationBehavior: .firstObservationEndsThenRecovers
+        )
+        let second = DevelopAuthenticationDataSource(
+            initialState: .signedOut,
+            observationBehavior: .firstObservationEndsThenRecovers
+        )
+        var firstIterator = await first.observeSession().makeAsyncIterator()
+        var secondIterator = await second.observeSession().makeAsyncIterator()
+
+        #expect(await firstIterator.next() == nil)
+        #expect(await secondIterator.next() == nil)
+    }
+
     @Test("Only the exact fake credential signs in and publishes the same session")
     func exactCredentialSignsInAndPublishesSession() async throws {
         let dataSource = DevelopAuthenticationDataSource(initialState: .signedOut)

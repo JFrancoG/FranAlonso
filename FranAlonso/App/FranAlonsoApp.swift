@@ -50,9 +50,7 @@ private extension FranAlonsoApp {
     var applicationRoot: some View {
         switch appDelegate.firebaseBootstrapState {
         case .pending:
-            ProgressView {
-                Text(.authenticationBootstrapPreparing)
-            }
+            LoadingStateView(label: .authenticationBootstrapPreparing)
         case .failed:
             bootstrapFailure
 #if FRANALONSO_AUTH_FIXTURE
@@ -63,33 +61,25 @@ private extension FranAlonsoApp {
             if let authenticationRootViewModel = runtime?.authenticationRootViewModel {
                 AuthenticationRootScreen(viewModel: authenticationRootViewModel)
             } else {
-                ProgressView {
-                    Text(.authenticationBootstrapPreparing)
-                }
+                LoadingStateView(label: .authenticationBootstrapPreparing)
             }
 #if FRANALONSO_AUTH_FIXTURE
         case .fixtureReady:
             if let authenticationRootViewModel {
                 AuthenticationRootScreen(viewModel: authenticationRootViewModel)
             } else {
-                ProgressView {
-                    Text(.authenticationBootstrapPreparing)
-                }
+                LoadingStateView(label: .authenticationBootstrapPreparing)
             }
 #endif
         }
     }
 
     var bootstrapFailure: some View {
-        ContentUnavailableView {
-            Label {
-                Text(.authenticationBootstrapFailedTitle)
-            } icon: {
-                Image(systemName: "exclamationmark.icloud.fill")
-            }
-        } description: {
-            Text(.authenticationBootstrapFailedMessage)
-        }
+        UnavailableStateView(
+            title: .authenticationBootstrapFailedTitle,
+            systemImage: "exclamationmark.icloud.fill",
+            message: .authenticationBootstrapFailedMessage
+        )
     }
 }
 

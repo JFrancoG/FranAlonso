@@ -6,27 +6,49 @@ import Testing
 @Suite("Develop authentication fixture composition")
 @MainActor
 struct DevelopAuthenticationFixtureCompositionTests {
-    @Test("Fixture selection never constructs the live runtime")
-    func fixtureSelectionNeverConstructsLiveRuntime() throws {
+    @Test(
+        "Fixture selection never constructs the live runtime",
+        arguments: [
+            DevelopAuthenticationFixture.Configuration.standard(.signedOut),
+            .standard(.restoredSession),
+            .localAccessDenied,
+            .observationFailed,
+            .clientsObservationError
+        ]
+    )
+    func fixtureSelectionNeverConstructsLiveRuntime(
+        configuration: DevelopAuthenticationFixture.Configuration
+    ) throws {
         let liveFactory = ApplicationCompositionFactorySpy()
         let fixtureFactory = ApplicationCompositionFactorySpy()
 
         _ = try ApplicationComposition.make(
-            plan: .authenticationFixture(.standard(.signedOut)),
+            plan: .authenticationFixture(configuration),
             makeLive: liveFactory.make,
             makeFixture: fixtureFactory.make(configuration:),
             makeInvalidFixture: fixtureFactory.makeInvalid
         )
 
         #expect(liveFactory.liveInvocationCount == 0)
-        #expect(fixtureFactory.fixtureConfigurations == [.standard(.signedOut)])
+        #expect(fixtureFactory.fixtureConfigurations == [configuration])
         #expect(fixtureFactory.invalidInvocationCount == 0)
     }
 
-    @Test("The real fixture has no live runtime and all 28 schema tables start empty")
-    func realFixtureHasNoLiveRuntimeAndStartsPristine() async throws {
+    @Test(
+        "Every real fixture has no live runtime and all 28 schema tables start empty",
+        arguments: [
+            DevelopAuthenticationFixture.Configuration.standard(.signedOut),
+            .standard(.restoredSession),
+            .localAccessDenied,
+            .observationFailed,
+            .clientsObservationError
+        ]
+    )
+    func realFixtureHasNoLiveRuntimeAndStartsPristine(
+        configuration: DevelopAuthenticationFixture.Configuration
+    ) async throws {
         let composition = try ApplicationComposition.make(
-            plan: .authenticationFixture(.standard(.signedOut))
+            plan: .authenticationFixture(configuration)
         )
         let pristineDataSource = SwiftDataStorePristineDataSource(
             modelContainer: composition.modelContainer
@@ -113,6 +135,67 @@ struct DevelopAuthenticationFixtureCompositionTests {
 
         observation.cancel()
         await observation.value
+    }
+
+    @Test("Local-access-denied fixture traverses unlock, authorization rejection and logout")
+    func localAccessDeniedFixtureTraversesRealRootChain() async throws {
+        let composition = try ApplicationComposition.make(
+            plan: .authenticationFixture(.localAccessDenied),
+            makeFixture: { configuration in
+                try DevelopAuthenticationFixture.make(
+                    configuration: configuration,
+                    biometricAuthenticator: BiometricAuthenticator(
+                        canAuthenticate: { true },
+                        authenticate: { _ in }
+                    )
+                ).applicationComposition
+            }
+        )
+        let root = try #require(composition.authenticationRootViewModel)
+        let observation = Task { @MainActor in
+            await root.sessionViewModel.load()
+        }
+
+        await waitUntil { root.sessionViewModel.sessionEventRevision == 1 }
+        root.sessionEventDidChange()
+        #expect(root.state == .locked)
+
+        await root.sessionViewModel.unlock(localizedReason: "Fixture authorization")
+        await root.authorizeLocalAccessIfNeeded()
+        #expect(root.state == .localAccessDenied(.differentPrincipal))
+
+        await root.signOut()
+        await waitUntil { root.sessionViewModel.sessionEventRevision == 2 }
+        root.sessionEventDidChange()
+        #expect(root.state == .signedOut)
+
+        observation.cancel()
+        await observation.value
+    }
+
+    @Test("Observation-failed fixture recovers through a real replacement observation")
+    func observationFailedFixtureRecoversThroughReplacementObservation() async throws {
+        let composition = try ApplicationComposition.make(
+            plan: .authenticationFixture(.observationFailed)
+        )
+        let root = try #require(composition.authenticationRootViewModel)
+        let failedObservation = Task { @MainActor in
+            await root.sessionViewModel.load()
+        }
+
+        await failedObservation.value
+        #expect(root.state == .observationFailed)
+
+        root.retryObservation()
+        let recoveredObservation = Task { @MainActor in
+            await root.sessionViewModel.load()
+        }
+        await waitUntil { root.sessionViewModel.sessionEventRevision == 1 }
+        root.sessionEventDidChange()
+        #expect(root.state == .signedOut)
+
+        recoveredObservation.cancel()
+        await recoveredObservation.value
     }
 
     @Test("Invalid fixture configuration never constructs a live or auth fixture")

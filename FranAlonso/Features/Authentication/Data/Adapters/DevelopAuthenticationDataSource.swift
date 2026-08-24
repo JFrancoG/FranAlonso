@@ -8,20 +8,30 @@ actor DevelopAuthenticationDataSource: AuthenticationDataSource {
         case restoredSession
     }
 
+    enum ObservationBehavior: Equatable {
+        case continuous
+        case firstObservationEndsThenRecovers
+    }
+
     private var currentSession: AuthenticationSession?
+    private var shouldEndNextObservation: Bool
     private var observers: [
         UUID: AsyncStream<AuthenticationSession?>.Continuation
     ] = [:]
 
     var activeObservationCount: Int { observers.count }
 
-    init(initialState: InitialState) {
+    init(
+        initialState: InitialState,
+        observationBehavior: ObservationBehavior = .continuous
+    ) {
         currentSession = switch initialState {
         case .signedOut:
             nil
         case .restoredSession:
             AuthenticationSession(id: DevelopAuthenticationFixture.principalID)
         }
+        shouldEndNextObservation = observationBehavior == .firstObservationEndsThenRecovers
     }
 
     func signIn(
@@ -50,6 +60,13 @@ actor DevelopAuthenticationDataSource: AuthenticationDataSource {
     }
 
     func observeSession() async -> AsyncStream<AuthenticationSession?> {
+        if shouldEndNextObservation {
+            shouldEndNextObservation = false
+            let pair = AsyncStream<AuthenticationSession?>.makeStream()
+            pair.continuation.finish()
+            return pair.stream
+        }
+
         let observerID = UUID()
         let pair = AsyncStream<AuthenticationSession?>.makeStream(
             bufferingPolicy: .unbounded

@@ -10,9 +10,7 @@ struct AuthenticationRootScreen: View {
         NavigationStack {
             switch viewModel.state {
             case .checkingSession:
-                ProgressView {
-                    Text(.authenticationRootCheckingSession)
-                }
+                LoadingStateView(label: .authenticationRootCheckingSession)
             case .signedOut:
                 LoginScreen(
                     viewModel: viewModel.loginViewModel,
@@ -21,55 +19,43 @@ struct AuthenticationRootScreen: View {
             case .locked:
                 SessionScreen(viewModel: viewModel.sessionViewModel)
             case .authorizingLocalAccess:
-                ProgressView {
-                    Text(.authenticationRootAuthorizingLocalAccess)
-                }
+                LoadingStateView(label: .authenticationRootAuthorizingLocalAccess)
             case let .authenticated(session):
                 ContentView(requestSignOut: requestSignOut)
                     .id(session.id)
             case let .localAccessDenied(failure):
-                ContentUnavailableView {
-                    Label {
-                        Text(.authenticationRootAccessDeniedTitle)
-                    } icon: {
-                        Image(systemName: "person.crop.circle.badge.exclamationmark")
-                    }
-                } description: {
-                    Text(failure.localizedMessage)
-                } actions: {
+                UnavailableStateView(
+                    title: .authenticationRootAccessDeniedTitle,
+                    systemImage: "person.crop.circle.badge.exclamationmark",
+                    message: failure.localizedMessage
+                ) {
                     Button(role: .destructive) {
                         requestSignOut()
                     } label: {
-                        Label {
-                            Text(.authenticationRootSignOut)
-                        } icon: {
-                            Image(systemName: "rectangle.portrait.and.arrow.right")
-                        }
+                        Text(.authenticationRootSignOut)
+                            .lineLimit(1)
                     }
+                    .foregroundStyle(.onError)
+                    .buttonStyle(.borderedProminent)
+                    .buttonBorderShape(.capsule)
+                    .controlSize(.large)
+                    .tint(.errorFill)
                 }
             case .signingOut:
-                ProgressView {
-                    Text(.authenticationRootSigningOut)
-                }
+                LoadingStateView(label: .authenticationRootSigningOut)
             case .observationFailed:
-                ContentUnavailableView {
-                    Label {
-                        Text(.authenticationRootObservationFailedTitle)
-                    } icon: {
-                        Image(systemName: "exclamationmark.arrow.trianglehead.2.clockwise.rotate.90")
-                    }
-                } description: {
-                    Text(.authenticationRootObservationFailedMessage)
-                } actions: {
+                UnavailableStateView(
+                    title: .authenticationRootObservationFailedTitle,
+                    systemImage: "exclamationmark.arrow.trianglehead.2.clockwise.rotate.90",
+                    message: .authenticationRootObservationFailedMessage
+                ) {
                     Button {
                         viewModel.retryObservation()
                     } label: {
-                        Label {
-                            Text(.authenticationRootRetry)
-                        } icon: {
-                            Image(systemName: "arrow.clockwise")
-                        }
+                        Text(.authenticationRootRetry)
+                            .lineLimit(1)
                     }
+                    .primaryActionStyle()
                 }
             }
         }
