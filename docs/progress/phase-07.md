@@ -1,6 +1,6 @@
 # Phase 07 Progress
 
-Última actualización: 2026-08-24
+Última actualización: 2026-08-29
 
 ## Estado
 
@@ -10,7 +10,8 @@
 | 07.1a — fixtures Develop no-live | PLU-27 | `Done` | ADR 0023/0024; entregada en `074ce5e` |
 | 07.2 — controles reutilizables | PLU-28 | `Done` | [PR #4](https://github.com/JFrancoG/FranAlonso/pull/4); rebase merge `e8eca5a` |
 | 07.3 — vistas de carga, vacío y error | PLU-29 | `Done` | [PR #5](https://github.com/JFrancoG/FranAlonso/pull/5); rebase merge `266489a` |
-| Fase 07 | PLU-25 | `In Progress` | 07.3 entregada; 07.4 no iniciada |
+| 07.4 — confirmación y alerta de stock | Sin issue | `N/A`/diferida | Consumidor real asignado a 12.3–12.4 |
+| Fase 07 | PLU-25 | `In Progress` | 07.4 reconciliada; gate 07.5 pendiente |
 
 La base aprobada al iniciar 07.2 fue `main == origin/main == 074ce5e`, con worktree limpio. La
 [PR #4](https://github.com/JFrancoG/FranAlonso/pull/4) quedó integrada por rebase en `main`: `24802e6` contiene la
@@ -30,6 +31,29 @@ implementación y `e8eca5a` el handoff. El cierre documental `fda767b` es la bas
   a tipos de Presentation puros cuando no depende de la interfaz.
 - La extracción visual de 07.3 no requiere ADR nuevo. Su ampliación posterior de evidencia runtime sí queda gobernada
   por ADR 0025 y toca únicamente el plan de lanzamiento, composición Develop y DataSource local.
+- 07.4 no crea una API especulativa. `StockWarningPolicy` permanece en Domain y la confirmación se implementará en
+  12.3–12.4 junto con `SaleDraftStore`, `SaleDraftViewModel` y el detalle real de Jornada. Logout conserva su conducta.
+
+## Gate 07.4 — N/A/diferida
+
+- El inventario de producción no contiene `alert`, `confirmationDialog` ni Presentation de Ventas. Los únicos botones
+  destructivos visibles ejecutan logout y convertirlos en confirmación sería un cambio de producto independiente.
+- La fase 12 ya posee la autoridad exacta: 12.3 presenta la advertencia y 12.4 coordina continuar, cancelar y repetir
+  sin registrar efectos por mostrarla.
+- Apple recomienda usar estas superficies modales con moderación en
+  [HIG Alerts](https://developer.apple.com/design/human-interface-guidelines/alerts). SwiftUI proporciona dismiss y
+  orden por roles mediante
+  [`confirmationDialog`](https://developer.apple.com/documentation/swiftui/view/confirmationdialog(_:ispresented:titlevisibility:actions:message:))
+  y [`alert`](https://developer.apple.com/documentation/swiftui/view/alert(_:ispresented:actions:message:)); no se
+  añade un wrapper sin consumidor ni reutilización demostrada.
+- Alternativas rechazadas: componente Shared sin uso, preview-only de stock, estado anticipado de Presentation y
+  reutilizar logout. Todas inventan contrato o comportamiento antes de existir el flujo propietario.
+- TDD, build, previews y matriz ADR 0022: `N/A` razonado por ser reconciliación documental sin código/configuración.
+  Baseline preservada: 860/860, builds Develop/Production sin warnings y cero errores actuales en Xcode.
+- Revisión independiente read-only: PASS condicionado, sin P0–P3, huellas pre/post idénticas sobre 414 archivos.
+  Condición satisfecha al registrar 07.4 como diferida, sin PLU-30, rama, copy, tests ni ADR.
+- Riesgo residual: foco, anuncio, textos y acciones solo se diseñarán y validarán con el consumidor real en fase 12.
+  El siguiente trabajo permitido es el gate separado de propuesta 07.5; su implementación sigue sin autorizar.
 
 ## Snapshot entregado de 07.1 y 07.1a
 

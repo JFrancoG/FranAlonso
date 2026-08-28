@@ -1,6 +1,6 @@
 # Project Progress
 
-Última actualización: 2026-08-24
+Última actualización: 2026-08-29
 
 ## Puerta actual
 
@@ -14,6 +14,8 @@
   pasó sin P0–P3.
 - ADR 0025 añade dos errores raíz y hace fail-closed toda fixture inválida. El owner amplía PLU-29 y acepta ADR 0026:
   iPhone queda portrait-only, iPad adaptativo y 1.3.4 se registra `A/No pasa — excepción de producto aceptada`.
+- El gate de propuesta 07.4 pasa sin P0–P3 y queda `N/A`/diferido a 12.3–12.4: no existe todavía pantalla de venta,
+  estado de Presentation ni consumidor real. No se crea PLU-30, rama, componente, copy ni test ceremonial.
 
 ## 07.3 — entregada
 
@@ -85,7 +87,8 @@
 
 ## Siguiente acción
 
-1. Mantener PLU-25 `In Progress`. 07.4 requiere su propio inicio y no se ha iniciado.
+1. Mantener PLU-25 `In Progress` e iniciar un gate separado de propuesta para 07.5. Esta reconciliación no autoriza su
+   implementación, issue ni rama.
 
 ## Bloqueos
 

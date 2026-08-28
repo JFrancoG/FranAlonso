@@ -13,6 +13,9 @@ sin introducir lógica de negocio en Views.
 - Tokens y componentes viven en `Shared/Presentation` solo cuando existe reutilización real.
 - En 07.2, fila y tarjeta compartidas quedan `N/A`/diferidas mientras no exista un segundo consumidor o una invariante
   común demostrada; se reevaluarán con el primer flujo real de Clientes o Jornada, sin crear APIs ni Views sin uso.
+- 07.4 queda `N/A`/diferida a 12.3–12.4: no existe todavía una pantalla de venta ni un estado de Presentation que
+  consuma la advertencia o confirmación. La fase 12 conserva `SaleDraftStore` y `SaleDraftViewModel` como propietarios
+  del flujo real; no se crea una abstracción compartida, copy ni comportamiento de logout para anticiparlo.
 - La raíz autenticada usa `TabView` con `.sidebarAdaptable`; `AppShellViewModel` posee `AppSection` y comienza en Jornada.
 - Cada sección conserva su `NavigationStack`; las rutas tipadas son locales y solo existen si hay varios destinos.
 - No se crea router global, `NavigationPath` global, deep links ni restauración completa sin requisito demostrado.
@@ -27,7 +30,7 @@ sin introducir lógica de negocio en Views.
 | 07.1 | Tokens visuales y nombres semánticos desde la paleta aprobada. | Catálogo, cuatro apariencias, contraste y Dynamic Type. |
 | 07.2 | Botones y campos reutilizables demostrados; fila y tarjeta `N/A`/diferidas hasta su primer consumidor real. | Tests de lógica fuera de View, estados, interacción y accesibilidad; decisión `N/A` trazada. |
 | 07.3 | Vistas de carga, vacío y error. | Estados de ViewModel, previews y localización completa. |
-| 07.4 | Confirmación genérica y alerta de stock semántica. | Política, foco, anuncio y acciones accesibles. |
+| 07.4 | `N/A`/diferida: confirmación y alerta de stock con su consumidor real en 12.3–12.4. | Gate read-only: sin consumidor de Presentation; no se anticipa API ni evidencia runtime. |
 | 07.5 | `AppSection`, `AppShellViewModel` y rutas locales necesarias. | Selección, push/pop y presentación por identidad. |
 | 07.6 | Shell adaptable con Jornada inicial. | Estado por sección, iPhone, iPad, orientación y multitarea. |
 | 07.7 | Completar `Localizable.xcstrings`. | Claves, placeholders, truncamiento y RTL. |
