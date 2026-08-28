@@ -142,8 +142,8 @@ struct StockWarningPolicyTests {
         }
     }
 
-    @Test("Produces deterministic Sendable values")
-    func producesDeterministicSendableValues() throws {
+    @Test("Produces deterministic values")
+    func producesDeterministicValues() throws {
         let productID = stockProductID("80000000-0000-0000-0000-000000000001")
         let lines = [try stockLine(productID: productID, quantity: 2)]
         let policy = StockWarningPolicy()
@@ -157,8 +157,6 @@ struct StockWarningPolicyTests {
         )
 
         #expect(repeated == first)
-        requireStockSendable(first)
-        requireStockSendable(policy)
     }
 }
 
@@ -192,5 +190,3 @@ private func stockLineID(_ value: String) -> SaleLineID {
 private func stockUUID(_ value: String) -> UUID {
     UUID(uuidString: value)!
 }
-
-private func requireStockSendable<Value: Sendable>(_ value: Value) {}

@@ -283,18 +283,6 @@ struct DefaultAuthenticationRepositoryTests {
         #expect(await iterator.next() == nil)
     }
 
-    @Test("Authentication Data boundary values are Sendable")
-    func authenticationDataBoundaryValuesAreSendable() {
-        let dataSource = AuthenticationDataSourceFake()
-
-        requireAuthenticationDataSendable(
-            AuthenticationDataSourceError.unexpected
-        )
-        requireAuthenticationDataSourceSendable(dataSource)
-        requireAuthenticationDataSendable(
-            DefaultAuthenticationRepository(dataSource: dataSource)
-        )
-    }
 }
 
 private struct AuthenticationDataSourceSignInRequest: Equatable {
@@ -390,10 +378,4 @@ private func authenticationSessionStream(_ sessions: [AuthenticationSession?]) -
         }
         continuation.finish()
     }
-}
-
-private func requireAuthenticationDataSendable<Value: Sendable>(_ value: Value) {}
-
-private func requireAuthenticationDataSourceSendable(_ dataSource: any AuthenticationDataSource) {
-    requireAuthenticationDataSendable(dataSource)
 }

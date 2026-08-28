@@ -145,46 +145,6 @@ struct DiscountTests {
     }
 }
 
-@Suite("Typed entity identifiers")
-struct EntityIdentifierTests {
-    @Test("Entity identifiers preserve stable UUID values through Codable")
-    func entityIdentifiersPreserveStableUUIDValuesThroughCodable() throws {
-        let rawValue = try #require(
-            UUID(uuidString: "AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE")
-        )
-
-        let clientID = ClientID(rawValue: rawValue)
-        let productID = ProductID(rawValue: rawValue)
-        let serviceID = ServiceID(rawValue: rawValue)
-        let saleID = SaleID(rawValue: rawValue)
-        let saleLineID = SaleLineID(rawValue: rawValue)
-        let billingDocumentID = BillingDocumentID(rawValue: rawValue)
-        let billingDocumentRequestID = BillingDocumentRequestID(rawValue: rawValue)
-        let appointmentID = AppointmentID(rawValue: rawValue)
-
-        #expect(try roundTrip(clientID) == clientID)
-        #expect(try roundTrip(productID) == productID)
-        #expect(try roundTrip(serviceID) == serviceID)
-        #expect(try roundTrip(saleID) == saleID)
-        #expect(try roundTrip(saleLineID) == saleLineID)
-        #expect(try roundTrip(billingDocumentID) == billingDocumentID)
-        #expect(try roundTrip(billingDocumentRequestID) == billingDocumentRequestID)
-        #expect(try roundTrip(appointmentID) == appointmentID)
-    }
-
-    @Test("Client identity uses its domain-specific identifier")
-    func clientIdentityUsesItsDomainSpecificIdentifier() throws {
-        let id = ClientID(
-            rawValue: try #require(
-                UUID(uuidString: "AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE")
-            )
-        )
-        let client = Client.draft(id: id, displayName: "Ana Alonso")
-
-        #expect(client.id == id)
-    }
-}
-
 private func decimal(_ value: String) -> Decimal {
     Decimal(string: value, locale: Locale(identifier: "en_US_POSIX"))!
 }

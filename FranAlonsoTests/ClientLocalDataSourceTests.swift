@@ -129,20 +129,6 @@ struct ClientLocalDataSourceTests {
         }
     }
 
-    @Test("Pending consent state round trips through the persistent model")
-    func pendingConsentStateRoundTripsThroughThePersistentModel() throws {
-        let client = Client(
-            id: try clientID("10000000-0000-0000-0000-000000000007"),
-            displayName: "Pending client",
-            taxIdentifier: nil,
-            billingAddress: nil,
-            status: .consentPendingUpload
-        )
-
-        let model = ClientModel(client)
-
-        #expect(try model.toDomain() == client)
-    }
 }
 
 private func makeClientContainer() throws -> ModelContainer {

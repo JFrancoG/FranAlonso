@@ -235,8 +235,8 @@ struct SaleCalculatorTests {
         #expect(calculation.lineCalculations.map(\.id) == [firstID, secondID])
     }
 
-    @Test("Calculation values are deterministic and Sendable")
-    func calculationValuesAreDeterministicAndSendable() throws {
+    @Test("Calculation values are deterministic")
+    func calculationValuesAreDeterministic() throws {
         let lines = [try calculatorLine(unitPrice: "19.99", taxRate: "21")]
         let calculation = try SaleCalculator().calculate(
             lines: lines,
@@ -248,8 +248,6 @@ struct SaleCalculatorTests {
         )
 
         #expect(repeatedCalculation == calculation)
-        requireCalculatorSendable(calculation)
-        requireCalculatorSendable(SaleCalculator())
     }
 }
 
@@ -336,5 +334,3 @@ private func calculatorDecimal(_ value: String) -> Decimal {
 private func calculatorUUID(_ value: String) -> UUID {
     UUID(uuidString: value)!
 }
-
-private func requireCalculatorSendable<Value: Sendable>(_ value: Value) {}

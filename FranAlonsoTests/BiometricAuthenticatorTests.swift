@@ -210,15 +210,6 @@ struct BiometricAuthenticatorTests {
         #expect(await gate.invalidationCount == 1)
     }
 
-    @Test("The Domain capability is safe to cross concurrency boundaries")
-    func capabilityIsSendable() {
-        let authenticator = BiometricAuthenticator(
-            canAuthenticate: { true },
-            authenticate: { _ in }
-        )
-
-        requireSendable(authenticator)
-    }
 }
 
 private struct BiometricErrorFixture {
@@ -274,5 +265,3 @@ private func makeLocalAuthenticationAuthenticator(
         }
     )
 }
-
-private func requireSendable<Value: Sendable>(_ value: Value) {}

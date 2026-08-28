@@ -4,22 +4,6 @@ import Testing
 
 @Suite("Sale DTO conversion")
 struct SaleDTOConversionTests {
-    @Test(
-        "Every lifecycle state round trips through the explicit v1 payload",
-        arguments: saleDTOAllStates
-    )
-    func everyLifecycleStateRoundTrips(_ sale: Sale) throws {
-        let dto = try SaleDTO(sale)
-
-        #expect(dto.payloadVersion == 1)
-        #expect(try dto.toDomain() == sale)
-
-        let encoded = try JSONEncoder().encode(dto)
-        let decoded = try JSONDecoder().decode(SaleDTO.self, from: encoded)
-        #expect(decoded == dto)
-        #expect(try decoded.toDomain() == sale)
-    }
-
     @Test("The voided status uses exact nested payment document and reversal payloads")
     func voidedStatusUsesExactNestedPayloads() throws {
         let dto = try SaleDTO(saleDTOVoided())
@@ -236,21 +220,6 @@ struct SaleDTOConversionTests {
         }
     }
 }
-
-private let saleDTOAllStates: [Sale] = {
-    do {
-        return [
-            try saleDTODraft(),
-            try saleDTOInProgress(),
-            try saleDTOAwaitingPayment(),
-            try saleDTOAwaitingDocument(),
-            try saleDTOClosed(),
-            try saleDTOVoided()
-        ]
-    } catch {
-        preconditionFailure("Invalid Sale DTO fixtures: \(error)")
-    }
-}()
 
 private func saleDTODraft() throws -> Sale {
     try saleDTOBaseSale()

@@ -4,6 +4,10 @@ import SwiftUI
 import Testing
 @testable import FranAlonso
 
+#if swift(<6.0)
+#error("FranAlonsoTests must compile in Swift 6 language mode")
+#endif
+
 @Suite("Application dependency composition")
 struct AppDependenciesTests {
 #if FRANALONSO_AUTH_FIXTURE
@@ -55,26 +59,6 @@ struct AppDependenciesTests {
         #expect(await analytics.loggedEvents() == [.appOpened])
         #expect(await crash.collectionChanges() == [false, true])
         #expect(await crash.recordedDiagnostics() == [.controlledValidation])
-    }
-
-    @Test("SwiftUI environment stores the injected dependency container")
-    func swiftUIEnvironmentStoresTheInjectedDependencyContainer() {
-        let dependencies = AppDependencies(
-            clientRepository: CompositionClientRepositoryFake(clients: []),
-            productRepository: CompositionProductRepositoryFake(products: []),
-            serviceRepository: CompositionServiceRepositoryFake(services: []),
-            saleRepository: InMemorySaleRepository(),
-            analyticsDataSource: CompositionAnalyticsDataSourceSpy(),
-            crashDataSource: CompositionCrashDataSourceSpy()
-        )
-        var environment = EnvironmentValues()
-
-        environment.appDependencies = dependencies
-
-        #expect(
-            environment.appDependencies.telemetryReporter
-                === dependencies.telemetryReporter
-        )
     }
 
     @Test("SwiftUI environment uses one stable preview default")

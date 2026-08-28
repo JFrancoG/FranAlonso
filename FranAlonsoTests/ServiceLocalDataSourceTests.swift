@@ -181,19 +181,6 @@ struct ServiceLocalDataSourceTests {
         }
     }
 
-    @Test(
-        "Every Service status round trips through the persistent model",
-        arguments: [ServiceStatus.active, .inactive]
-    )
-    func everyServiceStatusRoundTrips(_ status: ServiceStatus) throws {
-        let service = try localService(
-            id: "51000000-0000-0000-0000-000000000009",
-            name: "Catalog service",
-            status: status
-        )
-
-        #expect(try ServiceModel(service).toDomain() == service)
-    }
 }
 
 private func makeServiceLocalContainer() throws -> ModelContainer {

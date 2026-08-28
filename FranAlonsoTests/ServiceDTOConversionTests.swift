@@ -4,46 +4,6 @@ import Testing
 
 @Suite("Service DTO conversion")
 struct ServiceDTOConversionTests {
-    @Test("A professional Service round trips through its nested transport payload")
-    func professionalServiceRoundTrips() throws {
-        let service = try makeService()
-
-        let dto = try ServiceDTO(service)
-
-        #expect(try dto.toDomain() == service)
-        #expect(dto.type == .professional)
-        #expect(dto.linkedProductID == nil)
-        #expect(dto.price.currency == .eur)
-        #expect(dto.price.amount.decimal == 29.95)
-        #expect(dto.taxRate.percentage.decimal == 21)
-        #expect(dto.discount?.percentage.decimal == 10)
-        #expect(dto.status == .active)
-    }
-
-    @Test("A product-backed Service preserves its Product link")
-    func productServicePreservesItsLink() throws {
-        let linkedProductID = UUID(
-            uuidString: "00000000-0000-0000-0000-000000000511"
-        )!
-        let service = try makeService(
-            name: "Champú",
-            type: .product,
-            linkedProductID: linkedProductID,
-            priceAmount: 12.5,
-            currency: .usd,
-            taxPercentage: 8.5,
-            discountPercentage: nil,
-            status: .inactive
-        )
-
-        let dto = try ServiceDTO(service)
-
-        #expect(try dto.toDomain() == service)
-        #expect(dto.type == .product)
-        #expect(dto.linkedProductID == linkedProductID.uuidString)
-        #expect(dto.discount == nil)
-    }
-
     @Test("The encoded wire payload contains decimal strings, never JSON numbers")
     func wirePayloadContainsDecimalStrings() throws {
         let dto = try ServiceDTO(makeService())

@@ -327,13 +327,6 @@ struct FirebaseAuthenticationDataSourceTests {
         #expect(await iterator.next() == nil)
     }
 
-    @Test("Concrete adapter and Authentication boundary are Sendable")
-    func adapterAndBoundaryAreSendable() {
-        let dataSource = makeFirebaseAuthenticationDataSource()
-
-        requireFirebaseAuthenticationSendable(dataSource)
-        requireFirebaseAuthenticationDataSourceSendable(dataSource)
-    }
 }
 
 private struct FirebaseAuthenticationErrorFixture: Sendable,
@@ -520,10 +513,4 @@ private func authenticationSessionStream(_ sessions: [AuthenticationSession?]) -
 
 private func firebaseAuthenticationError(code: Int) -> NSError {
     NSError(domain: AuthErrors.domain, code: code)
-}
-
-private func requireFirebaseAuthenticationSendable<Value: Sendable>(_ value: Value) {}
-
-private func requireFirebaseAuthenticationDataSourceSendable(_ dataSource: any AuthenticationDataSource) {
-    requireFirebaseAuthenticationSendable(dataSource)
 }

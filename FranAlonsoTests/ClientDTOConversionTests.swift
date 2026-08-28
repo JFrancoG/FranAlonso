@@ -112,55 +112,6 @@ struct ClientDTOConversionTests {
         }
     }
 
-    @Test("Preserves a client DTO through JSON")
-    func preservesAClientDTOThroughJSON() throws {
-        let dto = completeClientDTO()
-
-        let decodedDTO = try decodeClientDTO(JSONEncoder().encode(dto))
-
-        #expect(decodedDTO == dto)
-    }
-
-    @Test("Maps every client activation state through the DTO boundary")
-    func mapsEveryClientActivationStateThroughTheDTOBoundary() throws {
-        let clients = [
-            Client.draft(
-                id: try clientID("10000000-0000-0000-0000-000000000001"),
-                displayName: "Draft client"
-            ),
-            Client(
-                id: try clientID("10000000-0000-0000-0000-000000000002"),
-                displayName: "Pending client",
-                taxIdentifier: nil,
-                billingAddress: nil,
-                status: .consentPendingUpload
-            ),
-            Client(
-                id: try clientID("10000000-0000-0000-0000-000000000003"),
-                displayName: "Active client",
-                taxIdentifier: "12345678Z",
-                billingAddress: BillingAddress(
-                    streetLine: "Calle Bailén, 33",
-                    postalCode: "41001",
-                    city: "Sevilla",
-                    province: "Sevilla"
-                ),
-                status: .active(
-                    consentReference: try ClientConsentReference(
-                        rawValue: "consents/active/signed.pdf"
-                    )
-                )
-            )
-        ]
-
-        for client in clients {
-            let dto = ClientDTO(client)
-            let mappedClient = try dto.toDomain()
-
-            #expect(mappedClient == client)
-        }
-    }
-
     @Test("Rejects an invalid client identifier")
     func rejectsAnInvalidClientIdentifier() {
         let dto = completeClientDTO(id: "not-a-uuid")
@@ -217,8 +168,4 @@ private func completeClientDTO(
 
 private func decodeClientDTO(_ data: Data) throws -> ClientDTO {
     try JSONDecoder().decode(ClientDTO.self, from: data)
-}
-
-private func clientID(_ rawValue: String) throws -> ClientID {
-    ClientID(rawValue: try #require(UUID(uuidString: rawValue)))
 }

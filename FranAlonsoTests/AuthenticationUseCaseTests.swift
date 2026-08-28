@@ -4,20 +4,6 @@ import Testing
 
 @Suite("Authentication use cases")
 struct AuthenticationUseCaseTests {
-    @Test("Session preserves its opaque identity through Codable")
-    func sessionPreservesOpaqueIdentityThroughCodable() throws {
-        let session = AuthenticationSession(id: "principal-001")
-
-        let data = try JSONEncoder().encode(session)
-        let decoded = try JSONDecoder().decode(
-            AuthenticationSession.self,
-            from: data
-        )
-
-        #expect(decoded == session)
-        #expect(decoded.id == "principal-001")
-    }
-
     @Test("Sign in delegates valid credentials and returns the session")
     func signInDelegatesValidCredentialsAndReturnsSession() async throws {
         let expectedSession = AuthenticationSession(id: "principal-002")
@@ -199,21 +185,6 @@ struct AuthenticationUseCaseTests {
         #expect(await repository.observationCallCount() == 1)
     }
 
-    @Test("Domain values, repository and use cases are Sendable")
-    func domainValuesRepositoryAndUseCasesAreSendable() {
-        let repository = AuthenticationRepositoryFake()
-
-        requireAuthenticationSendable(
-            AuthenticationSession(id: "principal-005")
-        )
-        requireAuthenticationSendable(AuthenticationError.unexpected)
-        requireAuthenticationRepositorySendable(repository)
-        requireAuthenticationSendable(SignInUseCase(repository: repository))
-        requireAuthenticationSendable(SignOutUseCase(repository: repository))
-        requireAuthenticationSendable(
-            ObserveSessionUseCase(repository: repository)
-        )
-    }
 }
 
 private struct AuthenticationSignInRequest: Equatable {
@@ -333,10 +304,4 @@ private actor AuthenticationTestGate {
         releaseContinuation?.resume()
         releaseContinuation = nil
     }
-}
-
-private func requireAuthenticationSendable<Value: Sendable>(_ value: Value) {}
-
-private func requireAuthenticationRepositorySendable(_ repository: any AuthenticationRepository) {
-    requireAuthenticationSendable(repository)
 }

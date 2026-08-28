@@ -10,6 +10,10 @@ All notable changes to this project are documented in this file.
 - 2026-08-24 | 📝 docs(delivery): close PLU-29 after merge
 - 2026-08-24 | 📝 docs(delivery): record PLU-29 review handoff
 
+### Tests
+
+- 2026-08-29 | ✅ test(suite): remove low-value tests
+
 ### Changed
 
 - 2026-08-24 | 📦 build(config): limit iPhone to portrait while preserving adaptive iPad orientations

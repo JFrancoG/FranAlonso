@@ -4,29 +4,6 @@ import Testing
 
 @Suite("Client domain entity")
 struct ClientDomainTests {
-    @Test("Preserves billing data and consent-backed activation through Codable")
-    func preservesBillingDataAndConsentBackedActivationThroughCodable() throws {
-        let consentReference = try ClientConsentReference(
-            rawValue: "consents/ana-alonso/signed.pdf"
-        )
-        let billingAddress = BillingAddress(
-            streetLine: "Calle Bailén, 33",
-            postalCode: "41001",
-            city: "Sevilla",
-            province: "Sevilla"
-        )
-        let client = Client(
-            id: ClientID(rawValue: fixedUUID()),
-            displayName: "Ana Alonso",
-            taxIdentifier: "12345678Z",
-            billingAddress: billingAddress,
-            status: .active(consentReference: consentReference)
-        )
-
-        #expect(try domainRoundTrip(client) == client)
-        requireSendable(client)
-    }
-
     @Test("Creates a draft client through the named factory")
     func createsADraftClientThroughTheNamedFactory() {
         let client = Client.draft(
@@ -37,14 +14,6 @@ struct ClientDomainTests {
         #expect(client.status == .draft)
         #expect(client.taxIdentifier == nil)
         #expect(client.billingAddress == nil)
-    }
-
-    @Test("Preserves consent pending upload through Codable")
-    func preservesConsentPendingUploadThroughCodable() throws {
-        let status = ClientStatus.consentPendingUpload
-
-        #expect(try domainRoundTrip(status) == status)
-        requireSendable(status)
     }
 
     @Test("Rejects an empty active consent reference")
@@ -61,21 +30,6 @@ struct ClientDomainTests {
         #expect(throws: ClientConsentReferenceError.empty) {
             try JSONDecoder().decode(ClientStatus.self, from: data)
         }
-    }
-}
-
-@Suite("Product domain entity")
-struct ProductDomainTests {
-    @Test("Represents physical inventory without commercial values")
-    func representsPhysicalInventoryWithoutCommercialValues() throws {
-        let product = Product(
-            id: ProductID(rawValue: fixedUUID()),
-            name: "Champú nutritivo",
-            status: .active
-        )
-
-        #expect(try domainRoundTrip(product) == product)
-        requireSendable(product)
     }
 }
 

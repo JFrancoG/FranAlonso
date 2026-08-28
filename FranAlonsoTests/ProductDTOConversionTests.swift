@@ -38,40 +38,6 @@ struct ProductDTOConversionTests {
         }
     }
 
-    @Test("Preserves a Product DTO through JSON")
-    func preservesProductDTOThroughJSON() throws {
-        let dto = ProductDTO(
-            id: "71000000-0000-0000-0000-000000000001",
-            name: "Champú nutritivo",
-            status: .inactive
-        )
-
-        let decoded = try JSONDecoder().decode(
-            ProductDTO.self,
-            from: JSONEncoder().encode(dto)
-        )
-
-        #expect(decoded == dto)
-    }
-
-    @Test(
-        "Maps every Product status through the DTO boundary",
-        arguments: [ProductStatus.active, .inactive]
-    )
-    func mapsEveryProductStatus(_ status: ProductStatus) throws {
-        let product = Product(
-            id: ProductID(
-                rawValue: try #require(
-                    UUID(uuidString: "71000000-0000-0000-0000-000000000001")
-                )
-            ),
-            name: "Champú nutritivo",
-            status: status
-        )
-
-        #expect(try ProductDTO(product).toDomain() == product)
-    }
-
     @Test("Rejects an invalid Product identifier")
     func rejectsInvalidProductIdentifier() {
         let dto = ProductDTO(

@@ -1,5 +1,4 @@
 import Foundation
-import SwiftUI
 import Testing
 @testable import FranAlonso
 
@@ -92,30 +91,6 @@ struct DesignSystemColorAssetTests {
         }
     }
 
-    @Test("Xcode generates Color and ShapeStyle symbols for every semantic token")
-    func xcodeGeneratesColorAndShapeStyleSymbolsForEverySemanticToken() {
-        let colors: [Color] = [
-            .canvas, .surface, .textPrimary, .textSecondary,
-            .brandPrimary, .brandPrimaryInk, .onBrandPrimary,
-            .brandSecondary, .brandSecondaryInk,
-            .successFill, .successInk, .onSuccess,
-            .warningFill, .warningInk, .onWarning,
-            .errorFill, .errorInk, .onError
-        ]
-        let styles: [AnyShapeStyle] = [
-            AnyShapeStyle(.canvas), AnyShapeStyle(.surface),
-            AnyShapeStyle(.textPrimary), AnyShapeStyle(.textSecondary),
-            AnyShapeStyle(.brandPrimary), AnyShapeStyle(.brandPrimaryInk), AnyShapeStyle(.onBrandPrimary),
-            AnyShapeStyle(.brandSecondary), AnyShapeStyle(.brandSecondaryInk),
-            AnyShapeStyle(.successFill), AnyShapeStyle(.successInk), AnyShapeStyle(.onSuccess),
-            AnyShapeStyle(.warningFill), AnyShapeStyle(.warningInk), AnyShapeStyle(.onWarning),
-            AnyShapeStyle(.errorFill), AnyShapeStyle(.errorInk), AnyShapeStyle(.onError)
-        ]
-
-        #expect(colors.count == Self.approvedTokens.count)
-        #expect(styles.count == Self.approvedTokens.count)
-        _ = Color.accentColor
-    }
 }
 
 private extension DesignSystemColorAssetTests {

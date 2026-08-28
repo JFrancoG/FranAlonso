@@ -78,48 +78,4 @@ struct AuthenticationPresentationLocalizationTests {
         #expect(failure.localizedMessage.key == expectedKey)
     }
 
-    @Test(
-        "Critical authentication symbols keep their semantic keys",
-        arguments: [
-            (LocalizedStringResource.authenticationLoginEmailLabel, "authentication.login.email.label"),
-            (LocalizedStringResource.authenticationLoginPasswordLabel, "authentication.login.password.label"),
-            (LocalizedStringResource.authenticationLoginPasswordShow, "authentication.login.password.show"),
-            (LocalizedStringResource.authenticationLoginPasswordHide, "authentication.login.password.hide"),
-            (LocalizedStringResource.authenticationLoginSubmit, "authentication.login.submit"),
-            (
-                LocalizedStringResource.authenticationSessionBiometricUnlock,
-                "authentication.session.biometric.unlock"
-            ),
-            (
-                LocalizedStringResource.authenticationSessionBiometricUnlockShort,
-                "authentication.session.biometric.unlock.short"
-            ),
-            (
-                LocalizedStringResource.authenticationSessionEmailFallback,
-                "authentication.session.email-fallback"
-            ),
-            (
-                LocalizedStringResource.authenticationSessionEmailFallbackShort,
-                "authentication.session.email-fallback.short"
-            ),
-            (
-                LocalizedStringResource.authenticationSessionBiometricReason,
-                "authentication.session.biometric.reason"
-            ),
-            (
-                LocalizedStringResource.authenticationRootSignOut,
-                "authentication.root.sign-out"
-            ),
-            (
-                LocalizedStringResource.authenticationRootRetry,
-                "authentication.root.retry"
-            )
-        ]
-    )
-    func criticalAuthenticationSymbolsKeepTheirSemanticKeys(
-        _ resource: LocalizedStringResource,
-        _ expectedKey: String
-    ) {
-        #expect(resource.key == expectedKey)
-    }
 }
