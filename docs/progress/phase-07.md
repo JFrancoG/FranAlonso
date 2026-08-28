@@ -11,8 +11,8 @@
 | 07.2 — controles reutilizables | PLU-28 | `Done` | [PR #4](https://github.com/JFrancoG/FranAlonso/pull/4); rebase merge `e8eca5a` |
 | 07.3 — vistas de carga, vacío y error | PLU-29 | `Done` | [PR #5](https://github.com/JFrancoG/FranAlonso/pull/5); rebase merge `266489a` |
 | 07.4 — confirmación y alerta de stock | Sin issue | `N/A`/diferida | Consumidor real asignado a 12.3–12.4 |
-| 07.5 — selección tipada del shell | PLU-30 | `In Progress` | Implementación local validada; entrega pendiente |
-| Fase 07 | PLU-25 | `In Progress` | 07.5 localmente validada; 07.6 no iniciada |
+| 07.5 — selección tipada del shell | PLU-30 | `Done` | [PR #6](https://github.com/JFrancoG/FranAlonso/pull/6); rebase merge `a220a3d` |
+| Fase 07 | PLU-25 | `In Progress` | 07.5 entregada; gate 07.6 pendiente |
 
 La base aprobada al iniciar 07.2 fue `main == origin/main == 074ce5e`, con worktree limpio. La
 [PR #4](https://github.com/JFrancoG/FranAlonso/pull/4) quedó integrada por rebase en `main`: `24802e6` contiene la
@@ -58,7 +58,7 @@ implementación y `e8eca5a` el handoff. El cierre documental `fda767b` es la bas
 - Riesgo residual: foco, anuncio, textos y acciones solo se diseñarán y validarán con el consumidor real en fase 12.
   El gate separado de 07.5 se ejecutó después con autoridad independiente.
 
-## 07.5 — implementación local validada
+## 07.5 — entregada
 
 - El gate de propuesta read-only pasó sin hallazgos P0–P3 antes del código y acotó el alcance a la fachada mínima
   descrita por la spec: no existen destinos secundarios que justifiquen rutas tipadas locales en esta subfase.
@@ -85,8 +85,8 @@ implementación y `e8eca5a` el handoff. El cierre documental `fda767b` es la bas
 - La auditoría iOS post-implementación detectó únicamente un P2 de paridad en la descripción de PLU-25. Tras actualizar
   solo ese texto en Linear, la repetición afectada devolvió `Sin hallazgos` y gate `pass`; PLU-25 y PLU-30 conservaron
   `In Progress`. La auditoría de accesibilidad es `N/A` por ausencia de View, copy o superficie interactiva.
-- PLU-30 permanece `In Progress` en `codex/plu-30-075-app-shell-selection`. Commit, push, PR, merge, estado `Done`,
-  eliminación de rama, activación live y comienzo de 07.6 requieren autorizaciones separadas.
+- La [PR #6](https://github.com/JFrancoG/FranAlonso/pull/6) integra PLU-30 por rebase en `a220a3d`. PLU-30 queda
+  `Done`; PLU-25 permanece `In Progress`, y activación live o comienzo de 07.6 requieren autorizaciones separadas.
 
 ## Snapshot entregado de 07.1 y 07.1a
 

@@ -6,7 +6,7 @@
 
 - Fases 01–06 cerradas. 07.3 está integrada en `main` mediante la
   [PR #5](https://github.com/JFrancoG/FranAlonso/pull/5).
-- PLU-25 y PLU-30 están `In Progress`; PLU-26, PLU-27, PLU-28 y PLU-29 están `Done`.
+- PLU-25 está `In Progress`; PLU-26, PLU-27, PLU-28, PLU-29 y PLU-30 están `Done`.
 - 07.1 y sus fixtures Develop no-live están entregadas en `074ce5e`. Los motores live continúan inactivos.
 - 07.2 está entregada por la [PR #4](https://github.com/JFrancoG/FranAlonso/pull/4): implementación `24802e6`,
   handoff `e8eca5a` y cierre documental `fda767b`.
@@ -16,10 +16,10 @@
   iPhone queda portrait-only, iPad adaptativo y 1.3.4 se registra `A/No pasa — excepción de producto aceptada`.
 - El gate de propuesta 07.4 pasa sin P0–P3 y queda `N/A`/diferido a 12.3–12.4: no existe todavía pantalla de venta,
   estado de Presentation ni consumidor real. No creó issue propio, rama, componente, copy ni test ceremonial.
-- El gate de propuesta 07.5 pasa sin P0–P3. PLU-30 y la rama `codex/plu-30-075-app-shell-selection` contienen la
-  implementación local aprobada; su entrega remota y 07.6 continúan sin autorizar.
+- El gate de propuesta 07.5 pasa sin P0–P3. La [PR #6](https://github.com/JFrancoG/FranAlonso/pull/6) integra PLU-30
+  por rebase en `a220a3d`; 07.6 continúa sin iniciar.
 
-## 07.5 — implementación local validada
+## 07.5 — entregada
 
 - `AppSection` modela exactamente Jornada, Histórico, Clientes, Catálogo e Informes; `AppShellViewModel` posee solo
   `selectedSection` y comienza en `.workday`.
@@ -56,14 +56,13 @@
 
 ## Siguiente acción
 
-1. Mantener PLU-25 y PLU-30 `In Progress` hasta una autorización separada de entrega. No iniciar 07.6 desde este cierre
-   local.
+1. Mantener PLU-25 `In Progress`. Iniciar el gate separado de propuesta 07.6 solo con autorización explícita; este
+   cierre no lo inicia.
 
 ## Bloqueos
 
-Sin blocker de código. La entrega de PLU-30 permanece pendiente de autorización explícita. La excepción 1.3.4 está
-aceptada, no se presenta como conformidad y su gate runtime/automático pasa. Loading permanece como evidencia limitada
-aceptada y PLU-29 no conserva bloqueos pendientes.
+Sin blocker de código en PLU-30. La excepción 1.3.4 está aceptada, no se presenta como conformidad y su gate
+runtime/automático pasa. Loading permanece como evidencia limitada aceptada y PLU-29 no conserva bloqueos pendientes.
 
 El histórico de fases 01–06 se conserva en [`progress/phases-00-06.md`](progress/phases-00-06.md), y el detalle de
 fase 07 en [`progress/phase-07.md`](progress/phase-07.md).

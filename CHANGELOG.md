@@ -6,6 +6,7 @@ All notable changes to this project are documented in this file.
 
 ### Documentation
 
+- 2026-08-29 | 📝 docs(delivery): close PLU-30 after merge
 - 2026-08-29 | 📝 docs(scope): defer stock confirmation to phase 12
 - 2026-08-24 | 📝 docs(delivery): close PLU-29 after merge
 - 2026-08-24 | 📝 docs(delivery): record PLU-29 review handoff
