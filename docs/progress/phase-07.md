@@ -11,7 +11,8 @@
 | 07.2 — controles reutilizables | PLU-28 | `Done` | [PR #4](https://github.com/JFrancoG/FranAlonso/pull/4); rebase merge `e8eca5a` |
 | 07.3 — vistas de carga, vacío y error | PLU-29 | `Done` | [PR #5](https://github.com/JFrancoG/FranAlonso/pull/5); rebase merge `266489a` |
 | 07.4 — confirmación y alerta de stock | Sin issue | `N/A`/diferida | Consumidor real asignado a 12.3–12.4 |
-| Fase 07 | PLU-25 | `In Progress` | 07.4 reconciliada; gate 07.5 pendiente |
+| 07.5 — selección tipada del shell | PLU-30 | `In Progress` | Implementación local validada; entrega pendiente |
+| Fase 07 | PLU-25 | `In Progress` | 07.5 localmente validada; 07.6 no iniciada |
 
 La base aprobada al iniciar 07.2 fue `main == origin/main == 074ce5e`, con worktree limpio. La
 [PR #4](https://github.com/JFrancoG/FranAlonso/pull/4) quedó integrada por rebase en `main`: `24802e6` contiene la
@@ -33,6 +34,8 @@ implementación y `e8eca5a` el handoff. El cierre documental `fda767b` es la bas
   por ADR 0025 y toca únicamente el plan de lanzamiento, composición Develop y DataSource local.
 - 07.4 no crea una API especulativa. `StockWarningPolicy` permanece en Domain y la confirmación se implementará en
   12.3–12.4 junto con `SaleDraftStore`, `SaleDraftViewModel` y el detalle real de Jornada. Logout conserva su conducta.
+- 07.5 materializa solo la selección principal ya acordada. Las rutas locales se crean cuando una feature demuestre
+  más de un destino; el shell visual adaptable y sus `NavigationStack` permanecen en 07.6.
 
 ## Gate 07.4 — N/A/diferida
 
@@ -51,9 +54,39 @@ implementación y `e8eca5a` el handoff. El cierre documental `fda767b` es la bas
 - TDD, build, previews y matriz ADR 0022: `N/A` razonado por ser reconciliación documental sin código/configuración.
   Baseline preservada: 860/860, builds Develop/Production sin warnings y cero errores actuales en Xcode.
 - Revisión independiente read-only: PASS condicionado, sin P0–P3, huellas pre/post idénticas sobre 414 archivos.
-  Condición satisfecha al registrar 07.4 como diferida, sin PLU-30, rama, copy, tests ni ADR.
+  Condición satisfecha al registrar 07.4 como diferida, sin issue propio, rama, copy, tests ni ADR.
 - Riesgo residual: foco, anuncio, textos y acciones solo se diseñarán y validarán con el consumidor real en fase 12.
-  El siguiente trabajo permitido es el gate separado de propuesta 07.5; su implementación sigue sin autorizar.
+  El gate separado de 07.5 se ejecutó después con autoridad independiente.
+
+## 07.5 — implementación local validada
+
+- El gate de propuesta read-only pasó sin hallazgos P0–P3 antes del código y acotó el alcance a la fachada mínima
+  descrita por la spec: no existen destinos secundarios que justifiquen rutas tipadas locales en esta subfase.
+- `App/Navigation/AppSection.swift` declara únicamente `workday`, `history`, `clients`, `catalog` y `reports` con
+  `Hashable`; no repite `Equatable` ni declara `Sendable` explícito cuando la inferencia es suficiente.
+- `App/AppShellViewModel.swift` es `@Observable @MainActor`, posee exclusivamente `selectedSection` y comienza en
+  `.workday`. No absorbe lógica de features, navegación interna, sesión, dependencias ni un Store ceremonial.
+- El `TabView` con `.sidebarAdaptable`, el shell visible, sus cinco `NavigationStack` y el estado preservado por
+  sección permanecen en 07.6, junto con previews, copy y adaptación iPhone/iPad/multitarea. Push/pop y `.sheet(item:)`
+  son `N/A` hasta que aparezcan un destino secundario o una edición identificada reales.
+- RED: el test focal falló al compilar porque `AppShellViewModel` y `.workday` aún no existían. GREEN: la expectativa
+  de selección inicial pasó 1/1 mediante Swift Testing. Se descartó el caso «asignar y leer la misma propiedad» porque
+  no aportaba un oráculo independiente y solo comprobaría almacenamiento del lenguaje.
+- La suite completa de `FranAlonso-Production` registra 793 tests: 761 pasan, 0 fallan y 32 no se ejecutan por el gate
+  conocido `FRANALONSO_AUTH_FIXTURE`. El build final pasa en 8,596 s; su log y el Issue Navigator contienen cero
+  warnings.
+- La consulta focal `XcodeRefreshCodeIssuesInFile` devolvió `SourceEditor.SourceEditorCallableDiagnosticError error 5`
+  para los tres archivos nuevos. No se atribuyen cero diagnósticos focales: Xcode sí indexa los archivos, el test los
+  compila y ejecuta, y build log más Issue Navigator aportan la evidencia de cero warnings.
+- Preview, localización, interacción y ADR 0022 son `N/A` razonado porque no cambia ninguna View, texto visible ni
+  superficie accesible. Tampoco cambia configuración, persistencia, Firebase o actividad live.
+- El validador de gobernanza y `git diff --check` pasan; la revisión de paths sensibles no encuentra secretos ni
+  archivos inesperados. `docs/Progress.md` permanece por debajo de su límite de 8192 bytes.
+- La auditoría iOS post-implementación detectó únicamente un P2 de paridad en la descripción de PLU-25. Tras actualizar
+  solo ese texto en Linear, la repetición afectada devolvió `Sin hallazgos` y gate `pass`; PLU-25 y PLU-30 conservaron
+  `In Progress`. La auditoría de accesibilidad es `N/A` por ausencia de View, copy o superficie interactiva.
+- PLU-30 permanece `In Progress` en `codex/plu-30-075-app-shell-selection`. Commit, push, PR, merge, estado `Done`,
+  eliminación de rama, activación live y comienzo de 07.6 requieren autorizaciones separadas.
 
 ## Snapshot entregado de 07.1 y 07.1a
 
@@ -276,6 +309,7 @@ implementación y `e8eca5a` el handoff. El cierre documental `fda767b` es la bas
   pre/post idénticas sobre 414 archivos. Confirman la solución 4.1.3, loading `A/L`, la ausencia honesta de VoiceOver
   iPad y la excepción 1.3.4 de ADR 0026.
 - PLU-29 queda `Done` tras integrar por rebase la [PR #5](https://github.com/JFrancoG/FranAlonso/pull/5):
-  implementación `56133a2` y handoff `266489a`. PLU-25 continúa `In Progress` y 07.4 no está iniciada.
+  implementación `56133a2` y handoff `266489a`. PLU-25 continúa `In Progress`; 07.4 quedó diferida y 07.5 se gestiona en
+  PLU-30.
 - El P1 de contraste post-cápsula queda cerrado tras repetir el Inspector. El gate runtime de ADR 0026 y las auditorías
   finales están completos y entregados en `main`.
