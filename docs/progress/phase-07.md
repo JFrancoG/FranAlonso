@@ -1,6 +1,6 @@
 # Phase 07 Progress
 
-Última actualización: 2026-08-29
+Última actualización: 2026-08-30
 
 ## Estado
 
@@ -12,7 +12,8 @@
 | 07.3 — vistas de carga, vacío y error | PLU-29 | `Done` | [PR #5](https://github.com/JFrancoG/FranAlonso/pull/5); rebase merge `266489a` |
 | 07.4 — confirmación y alerta de stock | Sin issue | `N/A`/diferida | Consumidor real asignado a 12.3–12.4 |
 | 07.5 — selección tipada del shell | PLU-30 | `Done` | [PR #6](https://github.com/JFrancoG/FranAlonso/pull/6); rebase merge `a220a3d` |
-| Fase 07 | PLU-25 | `In Progress` | 07.5 entregada; gate 07.6 pendiente |
+| 07.6 — shell autenticado adaptable | PLU-31 | `In Progress` | Commit/push autorizados; PR pendiente |
+| Fase 07 | PLU-25 | `In Progress` | 07.6 hasta push; PR pendiente; 07.7 no iniciada |
 
 La base aprobada al iniciar 07.2 fue `main == origin/main == 074ce5e`, con worktree limpio. La
 [PR #4](https://github.com/JFrancoG/FranAlonso/pull/4) quedó integrada por rebase en `main`: `24802e6` contiene la
@@ -87,6 +88,144 @@ implementación y `e8eca5a` el handoff. El cierre documental `fda767b` es la bas
   `In Progress`. La auditoría de accesibilidad es `N/A` por ausencia de View, copy o superficie interactiva.
 - La [PR #6](https://github.com/JFrancoG/FranAlonso/pull/6) integra PLU-30 por rebase en `a220a3d`. PLU-30 queda
   `Done`; PLU-25 permanece `In Progress`, y activación live o comienzo de 07.6 requieren autorizaciones separadas.
+
+## 07.6 — cierre validado; commit/push autorizados
+
+- La propuesta corregida recibió revisión independiente read-only y pasó `Sin hallazgos`. El ajuste previo al código
+  conserva un único `NavigationStack` para todos los estados no autenticados y extrae únicamente el shell protegido.
+  El owner autorizó ese alcance exacto; PLU-31 y la rama local
+  `codex/plu-31-076-adaptive-app-shell` nacen desde `main == origin/main == 2dd4746`.
+- `App/AppShellScreen.swift` posee un `AppShellViewModel` en `@State` y enlaza `selectedSection` mediante
+  `@Bindable`. El `TabView(selection:)` usa `.sidebarAdaptable` y cinco `Tab` semánticos localizados con identidad
+  estable: Jornada, Histórico, Clientes, Catálogo e Informes.
+- Cada sección conserva su propio `NavigationStack`. Clientes compone el `ClientListScreen` real con las dependencias
+  del entorno; las otras cuatro raíces reutilizan `UnavailableStateView` como contenido inerte y no crean Screens,
+  ViewModels, Stores, rutas o datos de fases futuras. Logout sigue siendo un `Button` nativo caller-owned que envía la
+  intención a Authentication desde las cinco toolbars.
+- `AuthenticationRootScreen` toma una instantánea síncrona de su estado, mantiene todos los casos públicos dentro de
+  un stack común y presenta el shell fuera solo para `.authenticated(session)`. Conserva `.id(session.id)`, por lo que
+  la selección y los stacks no pueden cruzar identidades. `ContentView` queda eliminado como wrapper ya sustituido.
+- Push/pop, sheets y restauración de rutas internas permanecen `N/A`: no existe todavía un segundo destino o una
+  edición identificada real. La persistencia de selección y estado local entre tabs depende del contenedor nativo y
+  requiere comprobación runtime; no se inventa un test de almacenamiento o una ruta ficticia.
+- RED/GREEN nuevo con Swift Testing es `N/A` razonado para esta composición declarativa. El requisito independiente
+  de Jornada inicial ya está protegido por `AppShellViewModelTests`; la regresión focal posterior cubre además raíz de
+  autenticación, Clientes y fixtures deterministas: 22/22 en `FranAlonso-Develop`.
+- La primera matriz de previews encontró una regresión visual reproducible: construir labels de `Tab` como contenido
+  genérico expandía el shell fuera del viewport de iPhone en `XXX Large` y `AX 5`, ocultando safe areas y barra. El
+  inicializador semántico `Tab(_:systemImage:value:content:)` del SDK activo permite al estilo adaptable aplicar su
+  layout especializado; los rerenders actuales conservan navegación, toolbar y contenido completos.
+- Previews finales Xcode MCP: iPhone 17e/iOS 26.5 en `Large`, `XXX Large` y `AX 5` portrait; iPad mini (A17 Pro)/
+  iPadOS 26.5 en `AX 5` portrait y landscape; Light/Dark, contraste normal/incrementado y LTR/RTL dentro de esa matriz
+  trazada. En iPad portrait, el overflow de la top bar usa el affordance nativo; en landscape el sidebar muestra las
+  cinco secciones y el copy completo refluye sin solapes. Las cuatro previews de raíz —signed out, denied,
+  observation failed y authenticated— renderizan sin error. iPad `Large`/`XXX Large` no se duplicó como preview;
+  `XXX Large` y `AX 5` quedaron comprobados posteriormente en runtime.
+- Validación automática final: build Develop correcto en 14,184 s y suite 815/815; build Production correcto en
+  18,167 s y plan de 793 con 787 pasados, 0 fallos y 6 no ejecutados por su gate de fixtures. Los dos Swift afectados
+  reportan cero diagnósticos; build log e Issue Navigator reportan cero warnings.
+- La evidencia ADR 0022 de [`07-6-app-shell.md`](../accessibility/evidence/07-6-app-shell.md) acredita Inspector,
+  tecnologías de asistencia, Touch, foco, logout, Dynamic Type, preferencias, orientaciones iPad y multitarea mínima.
+  RTL sigue siendo inversión sintética, no localización RTL. iPhone 1.3.4 continúa `A/No pasa — excepción de producto
+  aceptada` por ADR 0026; no quedan pruebas manuales adicionales para el shell actual.
+- El primer recorrido VoiceOver reportado de la barra realiza una única parada por pestaña: Jornada se anuncia como
+  seleccionada `1 de 5`, seguida de Histórico, Clientes, Catálogo e Informes hasta `5 de 5`. Todas exponen rol de
+  pestaña y los símbolos no crean paradas adicionales. La comprobación se realizó en iPhone 14/iOS 26.6. La evidencia
+  confirma además que enfocar Histórico no cambia de sección y que el doble toque lo selecciona. Al seleccionar
+  Clientes con doble toque, VoiceOver anuncia «Seleccionado, Clientes, pestaña, 3 de 5»; después identifica «Clientes,
+  encabezamiento», «Cerrar sesión, botón» y los dos textos del vacío sin parada adicional para el símbolo. Las otras
+  activaciones continúan con Catálogo: el doble toque cambia la sección y anuncia su selección `4 de 5`; su título se
+  anuncia «Catálogo, encabezamiento» y el logout «Cerrar sesión,
+  botón». La acción no se ha activado desde esa sección. El recorrido posterior realiza una parada por elemento, usa
+  locuciones correctas y no crea una parada para el símbolo; no se aportó transcripción literal. Informes cambia
+  también con doble toque y anuncia su selección `5 de 5`; título, logout y contenido se reportan correctos, una vez
+  por elemento y sin parada para el símbolo, aunque sin transcripción literal. El doble toque final sobre Jornada
+  vuelve a la sección y anuncia su selección `1 de 5`; título, logout y contenido se reportan correctos, una vez por
+  elemento y sin parada para el símbolo, aunque sin transcripción literal. Histórico confirma después el mismo
+  resultado para título, logout y contenido. La preservación aplicable, el orden global y la restauración de foco se
+  validaron posteriormente. El doble toque posterior sobre logout desde Histórico vuelve una vez a Login y VoiceOver
+  enfoca «Iniciar sesión, encabezamiento». Tras autenticarse de nuevo, Jornada vuelve a ser inicial y el foco cae en
+  «Cerrar sesión, botón». Activarlo vuelve también una vez a Login con foco en su encabezamiento. El owner confirma el
+  mismo resultado en Clientes, Catálogo e Informes: cada logout se ejecuta una vez y vuelve a «Iniciar sesión,
+  encabezamiento». Quedan cubiertos los cinco logout con VoiceOver.
+- Con VoiceOver desactivado y Control por voz activo, las cinco órdenes «Tocar <nombre de pestaña>» cambian al destino
+  correcto a la primera. «Tocar Cerrar sesión» vuelve una vez a Login desde una sección activa no identificada; las
+  cinco secciones comparten el toolbar y no se atribuyen cinco ejecuciones por voz.
+- Control por botón expone exactamente seis objetivos interactivos independientes: cinco pestañas y logout, sin
+  objetivos adicionales para los iconos. Las cinco pestañas se activan a la primera; logout vuelve a Login y el escaneo
+  continúa allí sin trampa.
+- Acceso total con teclado recorre con foco visible los seis controles propios sin paradas de icono y añade únicamente
+  el control split nativo para mostrar u ocultar la barra lateral. Espacio activa las cinco pestañas a la primera;
+  logout vuelve una vez a Login y las flechas continúan moviendo allí el foco sin trampa.
+- Con las tecnologías de asistencia desactivadas, un toque sobre cada pestaña activa solo el destino elegido a la
+  primera, sin activar una pestaña contigua. Logout se ejecuta una vez y vuelve a Login.
+- En tabs, mover el dedo verticalmente fuera de la barra antes de levantar cancela; terminar horizontalmente sobre otra
+  pestaña activa el destino final. En logout, levantar fuera conserva la sesión y no navega a Login. 2.5.2 pasa.
+- No hay puntero físico conectado. Esto no limita 2.5.8: `Tab` y `Button` conservan superficies nativas sin `frame` ni
+  `contentShape` reductores, Touch no activa objetivos contiguos y cuatro modalidades adicionales operan cada control.
+- Accessibility Inspector muestra siete avisos idénticos de Dynamic Type: cinco labels de tabs y los dos textos de
+  Jornada. Son nodos nativos sin fuente fija ni límite; en ese punto quedaron pendientes de contraste runtime AX 5.
+  El audit no muestra otras categorías en las capturas aportadas.
+- Con Texto más grande al máximo, título y mensaje de Jornada escalan y permanecen completos y sin solape. Sus dos
+  avisos quedan como falsos positivos; los cinco labels nativos se comprobaron a continuación.
+- Al mismo tamaño máximo, los cinco nombres de tabs permanecen completos y seleccionables. Los siete avisos quedan
+  clasificados como falsos positivos de Inspector; no hay defecto de Dynamic Type accionable en el shell.
+- El owner confirma que Aumentar contraste, Reducir transparencia y Diferenciar sin color estaban activos a la vez. En
+  ese perfil combinado, tanto en apariencia clara como oscura, selección, tabs, textos y logout permanecen completos y
+  claramente distinguibles. Los dos audits no detectan avisos de contraste y el shell no introduce colores custom;
+  1.4.3 y 1.4.11 pasan sin duplicar la medición automática con ratios manuales.
+- Con Reducir movimiento activo, cambiar repetidamente entre las cinco pestañas termina siempre en la sección correcta,
+  sin animaciones molestas, destellos ni pérdida de contenido.
+- El recorrido global con VoiceOver sigue la geometría: logout primero por su posición superior, después las cinco tabs
+  de izquierda a derecha y finalmente el contenido en orden visual, sin saltos ni trampa. 1.3.2 y 2.4.3 pasan.
+- Desde logout, el rotor Encabezamientos salta directamente a «Jornada, encabezamiento»; estando ya allí informa que no
+  hay otro encabezamiento, como corresponde al único del destino. 2.4.1 y 2.4.6 pasan.
+- Tras enfocar el mensaje de Jornada, cambiar a Clientes y regresar, VoiceOver queda en «Jornada, pestaña,
+  seleccionado»: un destino visible, operativo y predecible, sin foco perdido ni retenido. No hay aún estado navegable
+  interno que preservar; 3.2.3 pasa para el shell actual.
+- En iPad mini Simulator portrait, tabs, control de barra lateral, logout y contenido son completos y utilizables. Las
+  últimas tabs requieren desplazamiento horizontal dentro de su contenedor nativo; en landscape quedan visibles sin
+  ese desplazamiento. No hay pérdida ni solape; las demás orientaciones y la ventana mínima se ejecutaron después.
+- Portrait invertido reproduce exactamente el mismo resultado: elementos utilizables, sin recortes ni solapes, y el
+  mismo desplazamiento horizontal nativo para las últimas tabs. El landscape opuesto y la ventana mínima se ejecutaron
+  después.
+- En landscape con el control lateral a la izquierda, las cinco tabs quedan visibles simultáneamente y control lateral,
+  logout y contenido permanecen completos y utilizables, sin recortes ni solapes.
+- El landscape opuesto ofrece el mismo resultado correcto. Las cuatro orientaciones iPad quedan cubiertas.
+- En la ventana de multitarea mínima, las cinco tabs siguen accesibles mediante desplazamiento horizontal nativo y el
+  control lateral, logout y contenido permanecen completos, utilizables y sin recortes ni solapes. 1.4.10 pasa.
+- En esa ventana mínima, Acceso total con teclado mantiene el foco siempre visible y cada control completo; la barra se
+  desplaza al alcanzar las últimas tabs sin ocultar el indicador. 2.4.11 pasa.
+- En iPad XXX Large, con los tamaños de accesibilidad mayores desactivados, contenido, logout y las cinco tabs siguen
+  completos y utilizables mediante el desplazamiento horizontal nativo. Large/XXX Large/AX 5 quedan cubiertos y 1.4.4
+  pasa; los siete avisos de Inspector permanecen clasificados como falsos positivos para esta configuración.
+- Un segundo audit en iPad oscuro devuelve seis avisos de la misma categoría: cuatro tabs visibles y los dos textos de
+  Jornada; la quinta tab queda fuera del área visible. No aparecen categorías nuevas; los paneles de propiedades se
+  inspeccionaron después.
+- El panel de propiedades de Jornada confirma etiqueta, estado seleccionado, rol tabulador, acción Activar y una sola
+  etiqueta de entrada sobre `_UIFloatingTabBarItemCell`; la jerarquía contiene las cinco tabs y controles nativos del
+  contenedor. El identificador interno `calendar` no se anuncia y los nodos internos repetidos no producen paradas
+  duplicadas en el recorrido VoiceOver.
+- El panel de propiedades de logout confirma etiqueta «Cerrar sesión», rol botón, acción Activar y una sola etiqueta de
+  entrada, sin value, hint ni identifier innecesarios, sobre el control nativo `_UIButtonBarButton`. La jerarquía lo
+  sitúa en la barra de navegación junto al encabezamiento Jornada.
+- El título de navegación Jornada expone etiqueta «Jornada» y rasgo cabecera, sin value, hint ni identifier
+  innecesarios, mediante un `UILabel` nativo. Esta inspección no sustituye la del título central del estado
+  indisponible.
+- El título central Jornada expone etiqueta correcta y rol texto estático, sin value, hint ni identifier innecesarios,
+  mediante un `SwiftUI.AccessibilityNode`. Su jerarquía presenta título y mensaje como dos nodos de texto separados y
+  omite el símbolo decorativo.
+- El mensaje expone la etiqueta completa «Esta sección todavía no está disponible.» y rol texto estático, sin value,
+  hint ni identifier innecesarios, mediante otro `SwiftUI.AccessibilityNode`. La inspección estructural queda completa
+  sin hallazgos. La matriz queda en 29 Pasa, 0 Limitado, 0 Pendiente, 25 N/A y 1 excepción
+  ADR 0026.
+- La fixture no-live permaneció cortada antes de Firebase y permitió comprobar el estado Session bloqueado en iPad,
+  pero no alcanzó el shell; no se presenta como evidencia runtime de 07.6. No hubo Firebase/Keychain live, seed
+  durable, sincronización, dependencia, cambio de target, commit, push, PR, merge o cierre de issue.
+- Las auditorías iOS y accesibilidad no encontraron defectos de implementación. Tras reconciliar cobertura Dynamic
+  Type, contraste, targets y multitarea, las repeticiones afectadas pasan con huellas pre/post idénticas sobre 417
+  rutas. El gate iOS y ADR 0022 pasan; PLU-31 y PLU-25 continúan `In Progress` porque PR, merge y cierre no están
+  autorizados, y 07.7 no está iniciada.
 
 ## Snapshot entregado de 07.1 y 07.1a
 

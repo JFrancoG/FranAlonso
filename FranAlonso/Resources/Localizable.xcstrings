@@ -1,6 +1,78 @@
 {
   "sourceLanguage" : "es",
   "strings" : {
+    "app.shell.tab.catalog" : {
+      "comment" : "Etiqueta visible y accesible de la sección Catálogo en la navegación principal.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Catálogo"
+          }
+        }
+      }
+    },
+    "app.shell.tab.clients" : {
+      "comment" : "Etiqueta visible y accesible de la sección Clientes en la navegación principal.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Clientes"
+          }
+        }
+      }
+    },
+    "app.shell.tab.history" : {
+      "comment" : "Etiqueta visible y accesible de la sección Histórico en la navegación principal.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Histórico"
+          }
+        }
+      }
+    },
+    "app.shell.tab.reports" : {
+      "comment" : "Etiqueta visible y accesible de la sección Informes en la navegación principal.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Informes"
+          }
+        }
+      }
+    },
+    "app.shell.tab.workday" : {
+      "comment" : "Etiqueta visible y accesible de la sección Jornada en la navegación principal.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jornada"
+          }
+        }
+      }
+    },
+    "app.shell.unavailable.message" : {
+      "comment" : "Descripción mostrada en una sección principal cuya pantalla de producto todavía no está disponible.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Esta sección todavía no está disponible."
+          }
+        }
+      }
+    },
     "authentication.login.email.label" : {
       "comment" : "Etiqueta visible y accesible del campo de email en la pantalla de inicio de sesión.",
       "extractionState" : "manual",
