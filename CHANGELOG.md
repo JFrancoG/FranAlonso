@@ -34,6 +34,7 @@ All notable changes to this project are documented in this file.
 
 ### Added
 
+- 2026-08-29 | ✨ feat(navigation): add adaptive authenticated app shell
 - 2026-08-29 | ✨ feat(navigation): add typed app-shell selection state
 - 2026-08-24 | ✨ feat(auth): add develop-only root error fixtures
 - 2026-08-24 | ✨ feat(ui): add reusable loading and unavailable state views

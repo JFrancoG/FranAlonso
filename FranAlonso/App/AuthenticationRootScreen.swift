@@ -7,55 +7,15 @@ struct AuthenticationRootScreen: View {
     @State private var signOutRequestID: Int?
 
     var body: some View {
-        NavigationStack {
-            switch viewModel.state {
-            case .checkingSession:
-                LoadingStateView(label: .authenticationRootCheckingSession)
-            case .signedOut:
-                LoginScreen(
-                    viewModel: viewModel.loginViewModel,
-                    onSignInSucceeded: viewModel.registerRecentSignIn
-                )
-            case .locked:
-                SessionScreen(viewModel: viewModel.sessionViewModel)
-            case .authorizingLocalAccess:
-                LoadingStateView(label: .authenticationRootAuthorizingLocalAccess)
-            case let .authenticated(session):
-                ContentView(requestSignOut: requestSignOut)
+        let state = viewModel.state
+
+        Group {
+            if case let .authenticated(session) = state {
+                AppShellScreen(requestSignOut: requestSignOut)
                     .id(session.id)
-            case let .localAccessDenied(failure):
-                UnavailableStateView(
-                    title: .authenticationRootAccessDeniedTitle,
-                    systemImage: "person.crop.circle.badge.exclamationmark",
-                    message: failure.localizedMessage
-                ) {
-                    Button(role: .destructive) {
-                        requestSignOut()
-                    } label: {
-                        Text(.authenticationRootSignOut)
-                            .lineLimit(1)
-                    }
-                    .foregroundStyle(.onError)
-                    .buttonStyle(.borderedProminent)
-                    .buttonBorderShape(.capsule)
-                    .controlSize(.large)
-                    .tint(.errorFill)
-                }
-            case .signingOut:
-                LoadingStateView(label: .authenticationRootSigningOut)
-            case .observationFailed:
-                UnavailableStateView(
-                    title: .authenticationRootObservationFailedTitle,
-                    systemImage: "exclamationmark.arrow.trianglehead.2.clockwise.rotate.90",
-                    message: .authenticationRootObservationFailedMessage
-                ) {
-                    Button {
-                        viewModel.retryObservation()
-                    } label: {
-                        Text(.authenticationRootRetry)
-                            .lineLimit(1)
-                    }
-                    .primaryActionStyle()
+            } else {
+                NavigationStack {
+                    unauthenticatedContent(for: state)
                 }
             }
         }
@@ -75,6 +35,61 @@ struct AuthenticationRootScreen: View {
 
             guard signOutRequestID == requestID else { return }
             signOutRequestID = nil
+        }
+    }
+
+    @ViewBuilder
+    private func unauthenticatedContent(
+        for state: AuthenticationRootViewModel.State
+    ) -> some View {
+        switch state {
+        case .checkingSession:
+            LoadingStateView(label: .authenticationRootCheckingSession)
+        case .signedOut:
+            LoginScreen(
+                viewModel: viewModel.loginViewModel,
+                onSignInSucceeded: viewModel.registerRecentSignIn
+            )
+        case .locked:
+            SessionScreen(viewModel: viewModel.sessionViewModel)
+        case .authorizingLocalAccess:
+            LoadingStateView(label: .authenticationRootAuthorizingLocalAccess)
+        case .authenticated:
+            EmptyView()
+        case let .localAccessDenied(failure):
+            UnavailableStateView(
+                title: .authenticationRootAccessDeniedTitle,
+                systemImage: "person.crop.circle.badge.exclamationmark",
+                message: failure.localizedMessage
+            ) {
+                Button(role: .destructive) {
+                    requestSignOut()
+                } label: {
+                    Text(.authenticationRootSignOut)
+                        .lineLimit(1)
+                }
+                .foregroundStyle(.onError)
+                .buttonStyle(.borderedProminent)
+                .buttonBorderShape(.capsule)
+                .controlSize(.large)
+                .tint(.errorFill)
+            }
+        case .signingOut:
+            LoadingStateView(label: .authenticationRootSigningOut)
+        case .observationFailed:
+            UnavailableStateView(
+                title: .authenticationRootObservationFailedTitle,
+                systemImage: "exclamationmark.arrow.trianglehead.2.clockwise.rotate.90",
+                message: .authenticationRootObservationFailedMessage
+            ) {
+                Button {
+                    viewModel.retryObservation()
+                } label: {
+                    Text(.authenticationRootRetry)
+                        .lineLimit(1)
+                }
+                .primaryActionStyle()
+            }
         }
     }
 
