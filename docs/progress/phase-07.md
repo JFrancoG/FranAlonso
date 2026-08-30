@@ -12,8 +12,8 @@
 | 07.3 — vistas de carga, vacío y error | PLU-29 | `Done` | [PR #5](https://github.com/JFrancoG/FranAlonso/pull/5); rebase merge `266489a` |
 | 07.4 — confirmación y alerta de stock | Sin issue | `N/A`/diferida | Consumidor real asignado a 12.3–12.4 |
 | 07.5 — selección tipada del shell | PLU-30 | `Done` | [PR #6](https://github.com/JFrancoG/FranAlonso/pull/6); rebase merge `a220a3d` |
-| 07.6 — shell autenticado adaptable | PLU-31 | `In Progress` | Commit/push autorizados; PR pendiente |
-| Fase 07 | PLU-25 | `In Progress` | 07.6 hasta push; PR pendiente; 07.7 no iniciada |
+| 07.6 — shell autenticado adaptable | PLU-31 | `Done` | [PR #7](https://github.com/JFrancoG/FranAlonso/pull/7); rebase merge `bc23bb9` |
+| Fase 07 | PLU-25 | `In Progress` | 07.6 entregada; 07.7 no iniciada |
 
 La base aprobada al iniciar 07.2 fue `main == origin/main == 074ce5e`, con worktree limpio. La
 [PR #4](https://github.com/JFrancoG/FranAlonso/pull/4) quedó integrada por rebase en `main`: `24802e6` contiene la
@@ -89,7 +89,7 @@ implementación y `e8eca5a` el handoff. El cierre documental `fda767b` es la bas
 - La [PR #6](https://github.com/JFrancoG/FranAlonso/pull/6) integra PLU-30 por rebase en `a220a3d`. PLU-30 queda
   `Done`; PLU-25 permanece `In Progress`, y activación live o comienzo de 07.6 requieren autorizaciones separadas.
 
-## 07.6 — cierre validado; commit/push autorizados
+## 07.6 — entregada
 
 - La propuesta corregida recibió revisión independiente read-only y pasó `Sin hallazgos`. El ajuste previo al código
   conserva un único `NavigationStack` para todos los estados no autenticados y extrae únicamente el shell protegido.
@@ -221,11 +221,11 @@ implementación y `e8eca5a` el handoff. El cierre documental `fda767b` es la bas
   ADR 0026.
 - La fixture no-live permaneció cortada antes de Firebase y permitió comprobar el estado Session bloqueado en iPad,
   pero no alcanzó el shell; no se presenta como evidencia runtime de 07.6. No hubo Firebase/Keychain live, seed
-  durable, sincronización, dependencia, cambio de target, commit, push, PR, merge o cierre de issue.
+  durable, sincronización, dependencia ni cambio de target.
 - Las auditorías iOS y accesibilidad no encontraron defectos de implementación. Tras reconciliar cobertura Dynamic
   Type, contraste, targets y multitarea, las repeticiones afectadas pasan con huellas pre/post idénticas sobre 417
-  rutas. El gate iOS y ADR 0022 pasan; PLU-31 y PLU-25 continúan `In Progress` porque PR, merge y cierre no están
-  autorizados, y 07.7 no está iniciada.
+  rutas. El gate iOS y ADR 0022 pasan. La [PR #7](https://github.com/JFrancoG/FranAlonso/pull/7) integra PLU-31 por
+  rebase en `bc23bb9`; PLU-31 queda `Done`, PLU-25 continúa `In Progress` y 07.7 no está iniciada.
 
 ## Snapshot entregado de 07.1 y 07.1a
 

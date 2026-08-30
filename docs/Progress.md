@@ -6,7 +6,7 @@
 
 - Fases 01–06 cerradas. 07.3 está integrada en `main` mediante la
   [PR #5](https://github.com/JFrancoG/FranAlonso/pull/5).
-- PLU-25 y PLU-31 están `In Progress`; PLU-26, PLU-27, PLU-28, PLU-29 y PLU-30 están `Done`.
+- PLU-25 está `In Progress`; PLU-26, PLU-27, PLU-28, PLU-29, PLU-30 y PLU-31 están `Done`.
 - 07.1 y sus fixtures Develop no-live están entregadas en `074ce5e`. Los motores live continúan inactivos.
 - 07.2 está entregada por la [PR #4](https://github.com/JFrancoG/FranAlonso/pull/4): implementación `24802e6`,
   handoff `e8eca5a` y cierre documental `fda767b`.
@@ -18,11 +18,11 @@
   estado de Presentation ni consumidor real. No creó issue propio, rama, componente, copy ni test ceremonial.
 - El gate de propuesta 07.5 pasa sin P0–P3. La [PR #6](https://github.com/JFrancoG/FranAlonso/pull/6) integra PLU-30
   por rebase en `a220a3d`.
-- El gate corregido de propuesta 07.6 pasa sin P0–P3 y el owner autoriza su alcance exacto. PLU-31 permanece
-  `In Progress` en `codex/plu-31-076-adaptive-app-shell`: la implementación local está validada automáticamente,
-  las auditorías y ADR 0022 pasan tras reconciliar su evidencia; commit/push están autorizados y PR sigue separada.
+- El gate corregido de propuesta 07.6 pasa sin P0–P3 y el owner autoriza su alcance exacto. La
+  [PR #7](https://github.com/JFrancoG/FranAlonso/pull/7) integra PLU-31 por rebase en `bc23bb9`; las auditorías y
+  ADR 0022 pasan tras reconciliar su evidencia.
 
-## 07.6 — cierre local validado
+## 07.6 — entregada
 
 - `AppShellScreen` compone las cinco secciones en `TabView(selection:)` con `.sidebarAdaptable`; cada sección posee su
   `NavigationStack`, Jornada continúa siendo inicial y Clientes reutiliza su pantalla real. Las otras cuatro raíces
@@ -41,7 +41,8 @@
   geometría ni color custom; la ausencia de puntero físico no limita 2.5.8.
 - Las auditorías iOS y accesibilidad pasan tras corregir únicamente imprecisiones documentales; no quedan P0–P3 ni
   pruebas manuales adicionales para el shell actual.
-- No hubo Firebase/Keychain live, persistencia durable, dependencia, ruta ficticia, cambio de target, commit, push o PR.
+- No hubo Firebase/Keychain live, persistencia durable, dependencia, ruta ficticia ni cambio de target. PLU-31 queda
+  integrado y `Done`; 07.7 no está iniciada.
 
 ## 07.5 — entregada
 
@@ -80,12 +81,12 @@
 
 ## Siguiente acción
 
-1. Mantener PLU-25/PLU-31 `In Progress`; ejecutar solo commit/push y no abrir PR ni iniciar 07.7 sin autorización.
+1. Mantener PLU-25 `In Progress`; iniciar el gate de 07.7 solo tras autorización explícita.
 
 ## Bloqueos
 
-Sin blocker de código, auditoría o accesibilidad en PLU-31. La excepción 1.3.4 está aceptada y no se presenta como
-conformidad. Loading conserva su limitación aceptada de 07.3.
+Sin blocker de código, auditoría, accesibilidad o entrega en 07.6. La excepción 1.3.4 está aceptada y no se presenta
+como conformidad. Loading conserva su limitación aceptada de 07.3.
 
 El histórico de fases 01–06 se conserva en [`progress/phases-00-06.md`](progress/phases-00-06.md), y el detalle de
 fase 07 en [`progress/phase-07.md`](progress/phase-07.md).
