@@ -13,14 +13,14 @@
 | 07.4 — confirmación y alerta de stock | Sin issue | `N/A`/diferida | Consumidor real asignado a 12.3–12.4 |
 | 07.5 — selección tipada del shell | PLU-30 | `Done` | [PR #6](https://github.com/JFrancoG/FranAlonso/pull/6); rebase merge `a220a3d` |
 | 07.6 — shell autenticado adaptable | PLU-31 | `Done` | [PR #7](https://github.com/JFrancoG/FranAlonso/pull/7); rebase merge `bc23bb9` |
-| 07.7 — catálogo español existente | PLU-32 | `In Progress` | Gate técnico pasa; commit/push autorizados, integración pendiente |
-| Fase 07 | PLU-25 | `In Progress` | 07.6 entregada; 07.7 en curso |
+| 07.7 — catálogo español existente | PLU-32 | `Done` | [PR #8](https://github.com/JFrancoG/FranAlonso/pull/8); rebase merge `e4fe70d` |
+| Fase 07 | PLU-25 | `In Progress` | 07.7 entregada; cierre de fase independiente |
 
 La base aprobada al iniciar 07.2 fue `main == origin/main == 074ce5e`, con worktree limpio. La
 [PR #4](https://github.com/JFrancoG/FranAlonso/pull/4) quedó integrada por rebase en `main`: `24802e6` contiene la
 implementación y `e8eca5a` el handoff. El cierre documental `fda767b` es la baseline limpia de 07.3.
 
-## 07.7 — implementación y validación autorizadas
+## 07.7 — entregada
 
 - Base limpia verificada: `main == origin/main == 601517dd86680fc1876160ffc55dbad1c2e070a1`.
   Tras la propuesta independiente, su corrección P1 sobre aislamiento del host y la aprobación explícita del owner,
@@ -67,9 +67,16 @@ implementación y `e8eca5a` el handoff. El cierre documental `fda767b` es la bas
 - El owner autoriza commit/push de 07.7 en `codex/plu-32-077-spanish-localization`. Se reutilizan builds, 18/18
   focales y auditorías de esta sesión porque no cambia producto ni configuración después de esa evidencia;
   el checkpoint solo ajusta documentación de entrega y su entrada de changelog.
-- PLU-25 y PLU-32 permanecen `In Progress`; PR, merge y Done no forman parte de esa autorización. 07 termina
-  en 07.7: la siguiente propuesta es 08.1, contratos y casos de uso CRUD/búsqueda de Clientes. Su preparación
-  read-only puede comenzar, pero la implementación necesita su gate de inicio y aprobación de alcance propios.
+- La autorización posterior del owner completa PR, merge, cierre de PLU-32 y eliminación de rama.
+  La [PR #8](https://github.com/JFrancoG/FranAlonso/pull/8) integra el checkpoint `396d62b` por rebase en `e4fe70d`.
+  GitHub declara MERGEABLE/CLEAN antes del merge, sin checks reportados en su rollup; no se presenta como un CI
+  ejecutado. La comprobación independiente de entrega no encuentra bloqueantes.
+- El árbol integrado coincide exactamente con el checkpoint y `git cherry` confirma que no quedan cambios únicos.
+  Se actualiza main por fast-forward y se elimina `codex/plu-32-077-spanish-localization` local y remotamente.
+  PLU-32 queda `Done`; PLU-25 continúa `In Progress` para su cierre de fase independiente.
+- El cierre documental no cambia producto ni configuración: Xcode adicional N/A; gobernanza y diff check pasan.
+  07 termina en 07.7: la siguiente propuesta es 08.1, contratos y casos de uso CRUD/búsqueda de Clientes. Su
+  preparación read-only puede comenzar, pero la implementación necesita su gate y aprobación propios.
 
 ## Decisiones vigentes
 

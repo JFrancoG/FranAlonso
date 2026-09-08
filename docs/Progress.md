@@ -7,8 +7,8 @@
 - Fases 01–06 cerradas. 07.3 está integrada en `main` mediante la
   [PR #5](https://github.com/JFrancoG/FranAlonso/pull/5).
 - PLU-25 está `In Progress`; PLU-26, PLU-27, PLU-28, PLU-29, PLU-30 y PLU-31 están `Done`.
-- PLU-32 / 07.7 está `In Progress`: propuesta revisada y aprobada; Linear reconectado y paridad verificada.
-  Gate técnico aprobado; commit/push autorizados en su rama. Integración y cierre operativo pendientes.
+- PLU-32 / 07.7 está `Done`, integrada por [PR #8](https://github.com/JFrancoG/FranAlonso/pull/8) en `e4fe70d`.
+  Rama eliminada local y remotamente; PLU-25 mantiene el cierre de fase como puerta independiente.
 - 07.1 y sus fixtures Develop no-live están entregadas en `074ce5e`. Los motores live continúan inactivos.
 - 07.2 está entregada por la [PR #4](https://github.com/JFrancoG/FranAlonso/pull/4): implementación `24802e6`,
   handoff `e8eca5a` y cierre documental `fda767b`.
@@ -24,7 +24,7 @@
   [PR #7](https://github.com/JFrancoG/FranAlonso/pull/7) integra PLU-31 por rebase en `bc23bb9`; las auditorías y
   ADR 0022 pasan tras reconciliar su evidencia.
 
-## 07.7 — checkpoint en rama
+## 07.7 — entregada
 
 - Se retira solo `bootstrap.welcome.title`; las 68 entradas consumidas conservan valores y metadatos exactos.
 - Xcode MCP: Develop/Production compilan y la suite focal de localización pasa 18/18 en Develop,
@@ -96,8 +96,8 @@
 
 ## Siguiente acción
 
-1. Commit/push de PLU-32 autorizados en `codex/plu-32-077-spanish-localization`; PR/merge y cierre quedan separados.
-2. Siguiente propuesta: 08.1, contratos y casos de uso CRUD/búsqueda de Clientes. Fase 07 sigue `In Progress`.
+1. Cierre independiente de fase 07 / PLU-25; 07.7 está integrada y PLU-32 `Done`.
+2. Siguiente propuesta: 08.1, contratos y casos de uso CRUD/búsqueda de Clientes; implementación aún no iniciada.
 
 ## Bloqueos
 

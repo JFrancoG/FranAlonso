@@ -1,7 +1,7 @@
 # 07.7 — Catálogo español existente
 
 Fecha: 2026-09-08. Issue: [PLU-32](https://linear.app/plusprojects/issue/PLU-32/077-complete-the-existing-spanish-localization-catalog).
-Rama: `codex/plu-32-077-spanish-localization`. Base: `601517d`.
+Rama de origen, eliminada tras merge: `codex/plu-32-077-spanish-localization`. Base: `601517d`.
 
 ## Alcance y autoridad
 
@@ -10,7 +10,7 @@ concretó la configuración no-live de tests/snippets y quedó cerrado antes del
 verificaron PLU-25 In Progress, los seis hijos anteriores Done y la ausencia de otro issue de 07.7.
 
 Se elimina exclusivamente `bootstrap.welcome.title`, que describía una bienvenida temporal sin consumidor.
-Las otras 68 entradas, valores, comentarios y metadatos son idénticos a HEAD; ningún Swift, View, preview, asset,
+Las otras 68 entradas, valores, comentarios y metadatos son idénticos a la base `601517d`; ningún Swift, View, preview, asset,
 configuración de producto ni comportamiento cambia. El español sigue siendo el único idioma (`es`, regiones `es/Base`).
 No se añaden idiomas, plurales, rutas, pantallas ni abstracciones.
 
@@ -33,7 +33,7 @@ Los archivos de producto y referencias principales son
 | authentication.root | 13 | Consumidas; español translated, valor y comentario presentes |
 | clients.list | 6 | Consumidas; español translated, valor y comentario presentes |
 
-La comparación estructural contra HEAD confirma que solo desaparece la clave huérfana. La búsqueda por claves y
+La comparación estructural contra `601517d` confirma que solo desaparece la clave huérfana. La búsqueda por claves y
 símbolos generados en los Swift de la aplicación encuentra consumidor para las 68 restantes. No se encontró copy
 estático visible fuera del catálogo en los constructores SwiftUI revisados. `ClientRow` representa nombres de usuario,
 que son datos y no copy traducible.
@@ -246,4 +246,8 @@ orquestador verifica 417 archivos con huellas pre/post idénticas:
 Se conserva el aviso explícito y no se declara un log con cero warnings.
 El owner autoriza commit/push del checkpoint 07.7 en su rama. La validación de esta sesión se reutiliza sin repetir
 builds/tests: el recurso de producto permanece idéntico al auditado y solo se actualiza el registro de entrega.
-PLU-25 y PLU-32 permanecen In Progress; PR, merge, Done e implementación de 08.1 conservan puertas separadas.
+La autorización posterior del owner completa la entrega mediante [PR #8](https://github.com/JFrancoG/FranAlonso/pull/8),
+rebase merge `e4fe70d` desde el checkpoint `396d62b`. El árbol integrado coincide exactamente con el revisado;
+la rama se elimina local y remotamente sin cambios únicos pendientes. PLU-32 queda Done; PLU-25 mantiene In Progress
+para su cierre de fase independiente. No se inicia implementación de 08.1 ni se activa comportamiento live.
+El cierre documental reutiliza la validación existente: no cambia producto/configuración y no requiere otro build.
