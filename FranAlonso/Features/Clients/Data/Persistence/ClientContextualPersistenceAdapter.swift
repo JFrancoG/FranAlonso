@@ -18,11 +18,7 @@ struct ClientContextualPersistenceAdapter {
     ///   - context: The main-actor context used for this operation only.
     /// - Throws: A mapping, encoding, SwiftData fetch or SwiftData save error.
     func save(_ client: Client, in context: ModelContext) async throws {
-        try dataSource.persistPendingUpsert(
-            client,
-            operationID: makeOperationID(),
-            in: context
-        )
+        try dataSource.persistPendingUpsert(client, operationID: makeOperationID(), in: context)
         await observationSignal.publishChange()
     }
 }
@@ -39,10 +35,6 @@ extension ClientContextualPersistenceAdapter {
         observationSignal: ClientObservationSignal,
         operationID: @escaping @Sendable () -> UUID = { UUID() }
     ) {
-        self.init(
-            dataSource: dataSource,
-            observationSignal: observationSignal,
-            makeOperationID: operationID
-        )
+        self.init(dataSource: dataSource, observationSignal: observationSignal, makeOperationID: operationID)
     }
 }

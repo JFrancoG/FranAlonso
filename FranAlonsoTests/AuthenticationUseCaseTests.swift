@@ -7,24 +7,16 @@ struct AuthenticationUseCaseTests {
     @Test("Sign in delegates valid credentials and returns the session")
     func signInDelegatesValidCredentialsAndReturnsSession() async throws {
         let expectedSession = AuthenticationSession(id: "principal-002")
-        let repository = AuthenticationRepositoryFake(
-            signInBehavior: .succeeds(expectedSession)
-        )
+        let repository = AuthenticationRepositoryFake(signInBehavior: .succeeds(expectedSession))
         let useCase = SignInUseCase(repository: repository)
 
-        let session = try await useCase(
-            email: "owner@example.com",
-            password: "valid-password"
-        )
+        let session = try await useCase(email: "owner@example.com", password: "valid-password")
 
         #expect(session == expectedSession)
         #expect(
             await repository.signInRequests()
                 == [
-                    AuthenticationSignInRequest(
-                        email: "owner@example.com",
-                        password: "valid-password"
-                    )
+                    AuthenticationSignInRequest(email: "owner@example.com", password: "valid-password")
                 ]
         )
     }
@@ -32,9 +24,7 @@ struct AuthenticationUseCaseTests {
     @Test("Sign in rejects an empty email before delegating")
     func signInRejectsEmptyEmailBeforeDelegating() async {
         let repository = AuthenticationRepositoryFake(
-            signInBehavior: .succeeds(
-                AuthenticationSession(id: "unused-principal")
-            )
+            signInBehavior: .succeeds(AuthenticationSession(id: "unused-principal"))
         )
         let useCase = SignInUseCase(repository: repository)
 
@@ -47,9 +37,7 @@ struct AuthenticationUseCaseTests {
     @Test("Sign in rejects an empty password before delegating")
     func signInRejectsEmptyPasswordBeforeDelegating() async {
         let repository = AuthenticationRepositoryFake(
-            signInBehavior: .succeeds(
-                AuthenticationSession(id: "unused-principal")
-            )
+            signInBehavior: .succeeds(AuthenticationSession(id: "unused-principal"))
         )
         let useCase = SignInUseCase(repository: repository)
 
@@ -63,9 +51,7 @@ struct AuthenticationUseCaseTests {
     func preCancelledSignInWinsOverCredentialValidation() async {
         let gate = AuthenticationTestGate()
         let repository = AuthenticationRepositoryFake(
-            signInBehavior: .succeeds(
-                AuthenticationSession(id: "unused-principal")
-            )
+            signInBehavior: .succeeds(AuthenticationSession(id: "unused-principal"))
         )
         let useCase = SignInUseCase(repository: repository)
         let task = Task {
@@ -85,32 +71,22 @@ struct AuthenticationUseCaseTests {
 
     @Test("Sign in propagates a repository authentication failure")
     func signInPropagatesRepositoryFailure() async {
-        let repository = AuthenticationRepositoryFake(
-            signInBehavior: .fails(.invalidCredentials)
-        )
+        let repository = AuthenticationRepositoryFake(signInBehavior: .fails(.invalidCredentials))
         let useCase = SignInUseCase(repository: repository)
 
         await #expect(throws: AuthenticationError.invalidCredentials) {
-            try await useCase(
-                email: "owner@example.com",
-                password: "invalid-password"
-            )
+            try await useCase(email: "owner@example.com", password: "invalid-password")
         }
         #expect(await repository.signInRequests().count == 1)
     }
 
     @Test("Sign in propagates repository cancellation")
     func signInPropagatesRepositoryCancellation() async {
-        let repository = AuthenticationRepositoryFake(
-            signInBehavior: .cancels
-        )
+        let repository = AuthenticationRepositoryFake(signInBehavior: .cancels)
         let useCase = SignInUseCase(repository: repository)
 
         await #expect(throws: CancellationError.self) {
-            try await useCase(
-                email: "owner@example.com",
-                password: "valid-password"
-            )
+            try await useCase(email: "owner@example.com", password: "valid-password")
         }
         #expect(await repository.signInRequests().count == 1)
     }
@@ -119,16 +95,10 @@ struct AuthenticationUseCaseTests {
     func cancellationAfterDelegationDoesNotOverrideRepositorySuccess() async throws {
         let expectedSession = AuthenticationSession(id: "principal-003")
         let gate = AuthenticationTestGate()
-        let repository = AuthenticationRepositoryFake(
-            signInBehavior: .succeeds(expectedSession),
-            signInGate: gate
-        )
+        let repository = AuthenticationRepositoryFake(signInBehavior: .succeeds(expectedSession), signInGate: gate)
         let useCase = SignInUseCase(repository: repository)
         let task = Task {
-            try await useCase(
-                email: "owner@example.com",
-                password: "valid-password"
-            )
+            try await useCase(email: "owner@example.com", password: "valid-password")
         }
 
         await gate.waitUntilBlocked()
@@ -151,9 +121,7 @@ struct AuthenticationUseCaseTests {
 
     @Test("Sign out propagates secure storage failure")
     func signOutPropagatesSecureStorageFailure() async {
-        let repository = AuthenticationRepositoryFake(
-            signOutBehavior: .fails(.secureStorageUnavailable)
-        )
+        let repository = AuthenticationRepositoryFake(signOutBehavior: .fails(.secureStorageUnavailable))
         let useCase = SignOutUseCase(repository: repository)
 
         await #expect(throws: AuthenticationError.secureStorageUnavailable) {
@@ -165,22 +133,14 @@ struct AuthenticationUseCaseTests {
     @Test("Session observation preserves signed-out then signed-in order")
     func observeSessionPreservesSignedOutThenSignedInOrder() async {
         let session = AuthenticationSession(id: "principal-004")
-        let repository = AuthenticationRepositoryFake(
-            observedSessions: [nil, session]
-        )
+        let repository = AuthenticationRepositoryFake(observedSessions: [nil, session])
         let useCase = ObserveSessionUseCase(repository: repository)
 
         let stream = await useCase()
         var iterator = stream.makeAsyncIterator()
 
-        #expect(
-            await iterator.next()
-                == Optional<AuthenticationSession?>.some(nil)
-        )
-        #expect(
-            await iterator.next()
-                == Optional<AuthenticationSession?>.some(session)
-        )
+        #expect(await iterator.next() == Optional<AuthenticationSession?>.some(nil))
+        #expect(await iterator.next() == Optional<AuthenticationSession?>.some(session))
         #expect(await iterator.next() == nil)
         #expect(await repository.observationCallCount() == 1)
     }
@@ -225,9 +185,7 @@ private actor AuthenticationRepositoryFake: AuthenticationRepository {
     }
 
     func signIn(email: String, password: String) async throws -> AuthenticationSession {
-        recordedSignInRequests.append(
-            AuthenticationSignInRequest(email: email, password: password)
-        )
+        recordedSignInRequests.append(AuthenticationSignInRequest(email: email, password: password))
 
         if let signInGate {
             await signInGate.wait()

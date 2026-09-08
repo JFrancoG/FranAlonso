@@ -2,7 +2,6 @@ import Accessibility
 import Foundation
 import SwiftUI
 
-@MainActor
 struct SessionContent: View {
     private enum FeedbackFocus: Hashable {
         case state
@@ -200,10 +199,7 @@ struct SessionContent: View {
         switch newActionState {
         case let .failed(failure):
             handleBiometricAnnouncementEffect(
-                biometricAnnouncementGate.receiveFailure(
-                    failure,
-                    sceneIsActive: scenePhase == .active
-                ),
+                biometricAnnouncementGate.receiveFailure(failure, sceneIsActive: scenePhase == .active),
                 actionState: newActionState
             )
             return
@@ -303,24 +299,15 @@ extension SessionViewModel.ActionFailure {
 }
 
 #Preview("Idle", traits: .modifier(AppPreviewModifier())) {
-    SessionContent(
-        state: .idle,
-        actionState: .idle
-    ) {} requestSignOut: {}
+    SessionContent(state: .idle, actionState: .idle) {} requestSignOut: {}
 }
 
 #Preview("Loading", traits: .modifier(AppPreviewModifier())) {
-    SessionContent(
-        state: .loading,
-        actionState: .idle
-    ) {} requestSignOut: {}
+    SessionContent(state: .loading, actionState: .idle) {} requestSignOut: {}
 }
 
 #Preview("Signed out", traits: .modifier(AppPreviewModifier())) {
-    SessionContent(
-        state: .signedOut,
-        actionState: .idle
-    ) {} requestSignOut: {}
+    SessionContent(state: .signedOut, actionState: .idle) {} requestSignOut: {}
 }
 
 #Preview("Locked with biometrics", traits: .modifier(AppPreviewModifier())) {
@@ -416,8 +403,5 @@ extension SessionViewModel.ActionFailure {
 }
 
 #Preview("Observation failed", traits: .modifier(AppPreviewModifier())) {
-    SessionContent(
-        state: .failed(.observationEnded),
-        actionState: .idle
-    ) {} requestSignOut: {}
+    SessionContent(state: .failed(.observationEnded), actionState: .idle) {} requestSignOut: {}
 }

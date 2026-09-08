@@ -46,14 +46,7 @@ extension ProductRemoteStateModel {
     /// - Returns: The provider-neutral record last committed locally.
     /// - Throws: A version or native decoding error for invalid persisted data.
     func decodeRecord() throws -> ProductRemoteRecord {
-        guard recordVersion == 1 else {
-            throw ProductSyncPersistenceError.unsupportedRecordVersion(
-                recordVersion
-            )
-        }
-        return try JSONDecoder().decode(
-            ProductRemoteRecord.self,
-            from: recordData
-        )
+        guard recordVersion == 1 else { throw ProductSyncPersistenceError.unsupportedRecordVersion(recordVersion) }
+        return try JSONDecoder().decode(ProductRemoteRecord.self, from: recordData)
     }
 }

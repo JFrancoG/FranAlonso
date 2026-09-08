@@ -72,11 +72,7 @@ extension SalePendingUpsertModel {
     ///   native decoding error for malformed persisted data.
     func decodeBase() throws -> SaleRemoteBase {
         guard let baseVersion, let baseData else { throw SalePendingUpsertPayloadError.incompleteBaseMetadata }
-        guard baseVersion == 1 else {
-            throw SalePendingUpsertPayloadError.unsupportedBaseVersion(
-                baseVersion
-            )
-        }
+        guard baseVersion == 1 else { throw SalePendingUpsertPayloadError.unsupportedBaseVersion(baseVersion) }
 
         return try JSONDecoder().decode(SaleRemoteBase.self, from: baseData)
     }
@@ -87,11 +83,7 @@ extension SalePendingUpsertModel {
     /// - Throws: `SalePendingUpsertPayloadError` for an unsupported version, or the
     ///   native decoding error for malformed persisted data.
     func decodePayload() throws -> SaleDTO {
-        guard payloadVersion == 1 else {
-            throw SalePendingUpsertPayloadError.unsupportedVersion(
-                payloadVersion
-            )
-        }
+        guard payloadVersion == 1 else { throw SalePendingUpsertPayloadError.unsupportedVersion(payloadVersion) }
 
         return try JSONDecoder().decode(SaleDTO.self, from: payloadData)
     }

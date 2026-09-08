@@ -1,6 +1,5 @@
 import SwiftUI
 
-@MainActor
 struct AppShellScreen: View {
     @Environment(\.appDependencies) private var dependencies
     @State private var viewModel = AppShellViewModel()
@@ -10,33 +9,15 @@ struct AppShellScreen: View {
         @Bindable var viewModel = viewModel
 
         TabView(selection: $viewModel.selectedSection) {
-            Tab(
-                .appShellTabWorkday,
-                systemImage: "calendar",
-                value: AppSection.workday
-            ) {
-                unavailableSection(
-                    title: .appShellTabWorkday,
-                    systemImage: "calendar"
-                )
+            Tab(.appShellTabWorkday, systemImage: "calendar", value: AppSection.workday) {
+                unavailableSection(title: .appShellTabWorkday, systemImage: "calendar")
             }
 
-            Tab(
-                .appShellTabHistory,
-                systemImage: "clock.arrow.circlepath",
-                value: AppSection.history
-            ) {
-                unavailableSection(
-                    title: .appShellTabHistory,
-                    systemImage: "clock.arrow.circlepath"
-                )
+            Tab(.appShellTabHistory, systemImage: "clock.arrow.circlepath", value: AppSection.history) {
+                unavailableSection(title: .appShellTabHistory, systemImage: "clock.arrow.circlepath")
             }
 
-            Tab(
-                .appShellTabClients,
-                systemImage: "person.2",
-                value: AppSection.clients
-            ) {
+            Tab(.appShellTabClients, systemImage: "person.2", value: AppSection.clients) {
                 NavigationStack {
                     ClientListScreen(observeClients: dependencies.observeClients)
                         .toolbar {
@@ -45,41 +26,20 @@ struct AppShellScreen: View {
                 }
             }
 
-            Tab(
-                .appShellTabCatalog,
-                systemImage: "square.grid.2x2",
-                value: AppSection.catalog
-            ) {
-                unavailableSection(
-                    title: .appShellTabCatalog,
-                    systemImage: "square.grid.2x2"
-                )
+            Tab(.appShellTabCatalog, systemImage: "square.grid.2x2", value: AppSection.catalog) {
+                unavailableSection(title: .appShellTabCatalog, systemImage: "square.grid.2x2")
             }
 
-            Tab(
-                .appShellTabReports,
-                systemImage: "chart.bar.xaxis",
-                value: AppSection.reports
-            ) {
-                unavailableSection(
-                    title: .appShellTabReports,
-                    systemImage: "chart.bar.xaxis"
-                )
+            Tab(.appShellTabReports, systemImage: "chart.bar.xaxis", value: AppSection.reports) {
+                unavailableSection(title: .appShellTabReports, systemImage: "chart.bar.xaxis")
             }
         }
         .tabViewStyle(.sidebarAdaptable)
     }
 
-    private func unavailableSection(
-        title: LocalizedStringResource,
-        systemImage: String
-    ) -> some View {
+    private func unavailableSection(title: LocalizedStringResource, systemImage: String) -> some View {
         NavigationStack {
-            UnavailableStateView(
-                title: title,
-                systemImage: systemImage,
-                message: .appShellUnavailableMessage
-            )
+            UnavailableStateView(title: title, systemImage: systemImage, message: .appShellUnavailableMessage)
             .navigationTitle(Text(title))
             .toolbar {
                 signOutToolbar

@@ -9,10 +9,7 @@ struct StockWarningPolicyTests {
         let productID = stockProductID("10000000-0000-0000-0000-000000000001")
         let line = try stockLine(productID: productID, quantity: 2)
 
-        let impacts = try StockWarningPolicy().analyze(
-            lines: [line],
-            availableQuantities: [productID: 3]
-        )
+        let impacts = try StockWarningPolicy().analyze(lines: [line], availableQuantities: [productID: 3])
 
         let impact = try #require(impacts.first)
         #expect(impacts.count == 1)
@@ -29,20 +26,14 @@ struct StockWarningPolicyTests {
         let productID = stockProductID("20000000-0000-0000-0000-000000000001")
         let line = try stockLine(productID: productID, quantity: 2)
 
-        let impacts = try StockWarningPolicy().analyze(
-            lines: [line],
-            availableQuantities: [productID: 2]
-        )
+        let impacts = try StockWarningPolicy().analyze(lines: [line], availableQuantities: [productID: 2])
 
         let impact = try #require(impacts.first)
         #expect(impact.projectedQuantity == 0)
         #expect(impact.requiresWarning == false)
     }
 
-    @Test(
-        "Warns without rejecting insufficient stock",
-        arguments: [0, -2]
-    )
+    @Test("Warns without rejecting insufficient stock", arguments: [0, -2])
     func warnsWithoutRejectingInsufficientStock(availableQuantity: Int) throws {
         let productID = stockProductID("30000000-0000-0000-0000-000000000001")
         let line = try stockLine(productID: productID, quantity: 1)
@@ -87,10 +78,7 @@ struct StockWarningPolicyTests {
     func ignoresLinesWithoutPhysicalInventory() throws {
         let line = try stockLine(productID: nil, quantity: 3)
 
-        let impacts = try StockWarningPolicy().analyze(
-            lines: [line],
-            availableQuantities: [:]
-        )
+        let impacts = try StockWarningPolicy().analyze(lines: [line], availableQuantities: [:])
 
         #expect(impacts.isEmpty)
     }
@@ -100,15 +88,8 @@ struct StockWarningPolicyTests {
         let productID = stockProductID("50000000-0000-0000-0000-000000000001")
         let line = try stockLine(productID: productID, quantity: 1)
 
-        #expect(
-            throws: StockWarningPolicyError.missingAvailableQuantity(
-                productID: productID
-            )
-        ) {
-            try StockWarningPolicy().analyze(
-                lines: [line],
-                availableQuantities: [:]
-            )
+        #expect(throws: StockWarningPolicyError.missingAvailableQuantity(productID: productID)) {
+            try StockWarningPolicy().analyze(lines: [line], availableQuantities: [:])
         }
     }
 
@@ -118,10 +99,7 @@ struct StockWarningPolicyTests {
         let line = try stockLine(productID: productID, quantity: 1)
 
         #expect(throws: StockWarningPolicyError.duplicateLineIdentity) {
-            try StockWarningPolicy().analyze(
-                lines: [line, line],
-                availableQuantities: [productID: 2]
-            )
+            try StockWarningPolicy().analyze(lines: [line, line], availableQuantities: [productID: 2])
         }
     }
 
@@ -130,15 +108,8 @@ struct StockWarningPolicyTests {
         let productID = stockProductID("70000000-0000-0000-0000-000000000001")
         let line = try stockLine(productID: productID, quantity: 1)
 
-        #expect(
-            throws: StockWarningPolicyError.quantityOverflow(
-                productID: productID
-            )
-        ) {
-            try StockWarningPolicy().analyze(
-                lines: [line],
-                availableQuantities: [productID: .min]
-            )
+        #expect(throws: StockWarningPolicyError.quantityOverflow(productID: productID)) {
+            try StockWarningPolicy().analyze(lines: [line], availableQuantities: [productID: .min])
         }
     }
 
@@ -147,14 +118,8 @@ struct StockWarningPolicyTests {
         let productID = stockProductID("80000000-0000-0000-0000-000000000001")
         let lines = [try stockLine(productID: productID, quantity: 2)]
         let policy = StockWarningPolicy()
-        let first = try policy.analyze(
-            lines: lines,
-            availableQuantities: [productID: 4]
-        )
-        let repeated = try policy.analyze(
-            lines: lines,
-            availableQuantities: [productID: 4]
-        )
+        let first = try policy.analyze(lines: lines, availableQuantities: [productID: 4])
+        let repeated = try policy.analyze(lines: lines, availableQuantities: [productID: 4])
 
         #expect(repeated == first)
     }
@@ -167,9 +132,7 @@ private func stockLine(
 ) throws -> SaleLine {
     try SaleLine.upcoming(
         id: id,
-        serviceID: ServiceID(
-            rawValue: stockUUID("00000000-0000-0000-0000-000000000002")
-        ),
+        serviceID: ServiceID(rawValue: stockUUID("00000000-0000-0000-0000-000000000002")),
         serviceName: "Service snapshot",
         quantity: quantity,
         unitPrice: Money(amount: 1, currency: .eur),

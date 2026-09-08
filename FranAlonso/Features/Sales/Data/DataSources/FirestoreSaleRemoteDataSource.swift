@@ -16,36 +16,25 @@ actor FirestoreSaleRemoteDataSource: SaleRemoteDataSource {
 
     /// Creates the adapter for the Sales collection in an explicitly selected environment.
     init(firestore: Firestore, environment: FirestoreEnvironment) {
-        let collection = firestore.collection(
-            environment.collectionPath(for: .sales)
-        )
-        let counterDocument = firestore.document(
-            environment.syncMetadataDocumentPath(for: .sales)
-        )
+        let collection = firestore.collection(environment.collectionPath(for: .sales))
+        let counterDocument = firestore.document(environment.syncMetadataDocumentPath(for: .sales))
         let policy = SaleSyncPolicy()
 
         fetchDocuments = { cursor in
             let query: Query
             if let cursor {
                 query = collection
-                    .whereField(
-                        "_sync.changeSequence",
-                        isGreaterThan: cursor.changeSequence
-                    )
+                    .whereField("_sync.changeSequence", isGreaterThan: cursor.changeSequence)
                     .order(by: "_sync.changeSequence")
             } else {
                 query = collection
             }
             let snapshot = try await query.getDocuments(source: .server)
             return try snapshot.documents.map { document in
-                let payload = try document.data(
-                    as: FirestoreSaleDocumentDTO.self
-                )
+                let payload = try document.data(as: FirestoreSaleDocumentDTO.self)
                 return (
                     documentID: document.documentID,
-                    record: try payload.toRemoteRecord(
-                        documentID: document.documentID
-                    )
+                    record: try payload.toRemoteRecord(documentID: document.documentID)
                 )
             }
         }
@@ -62,10 +51,7 @@ actor FirestoreSaleRemoteDataSource: SaleRemoteDataSource {
 
     /// Creates the live adapter after the default Firebase app has been configured.
     init(environment: FirestoreEnvironment) {
-        self.init(
-            firestore: Firestore.firestore(),
-            environment: environment
-        )
+        self.init(firestore: Firestore.firestore(), environment: environment)
     }
 
     func fetchChanges(after cursor: SaleSyncCursor?) async throws -> SaleRemoteChangeBatch {
@@ -88,12 +74,7 @@ actor FirestoreSaleRemoteDataSource: SaleRemoteDataSource {
             let nextSequence = records.compactMap(\.changeSequence).max()
                 ?? cursor?.changeSequence
                 ?? 0
-            return SaleRemoteChangeBatch(
-                records: records,
-                nextCursor: SaleSyncCursor(
-                    changeSequence: nextSequence
-                )
-            )
+            return SaleRemoteChangeBatch(records: records, nextCursor: SaleSyncCursor(changeSequence: nextSequence))
         } catch {
             throw mapFirestoreSaleError(error)
         }
@@ -145,21 +126,14 @@ extension FirestoreSaleRemoteDataSource {
                         remoteRecord = nil
                     }
 
-                    let decision = policy.decision(
-                        for: operation,
-                        against: remoteRecord
-                    )
+                    let decision = policy.decision(for: operation, against: remoteRecord)
                     let counterState: FirestoreSaleCounterState
                     if case .apply = decision {
-                        let counterSnapshot = try transaction.getDocument(
-                            counterDocument
-                        )
+                        let counterSnapshot = try transaction.getDocument(counterDocument)
                         if counterSnapshot.exists {
                             do {
                                 counterState = .value(
-                                    try counterSnapshot.data(
-                                        as: FirestoreSaleCounterDTO.self
-                                    ).changeSequence
+                                    try counterSnapshot.data(as: FirestoreSaleCounterDTO.self).changeSequence
                                 )
                             } catch is DecodingError {
                                 counterState = .malformed
@@ -184,11 +158,7 @@ extension FirestoreSaleRemoteDataSource {
                             forDocument: document,
                             merge: false
                         )
-                        try transaction.setData(
-                            from: write.counter,
-                            forDocument: counterDocument,
-                            merge: false
-                        )
+                        try transaction.setData(from: write.counter, forDocument: counterDocument, merge: false)
                         outcome = .result(.applied(write.record))
                     case .result(let result):
                         outcome = .result(result)
@@ -202,12 +172,11 @@ extension FirestoreSaleRemoteDataSource {
                 }
             } completion: { encodedOutcome, error in
                 do {
-                    if let error { throw error }
+                    if let error {
+                        throw error
+                    }
                     guard let outcomeData = encodedOutcome as? Data else { throw SaleRemoteDataSourceError.unexpected }
-                    switch try JSONDecoder().decode(
-                        FirestoreSaleTransactionOutcome.self,
-                        from: outcomeData
-                    ) {
+                    switch try JSONDecoder().decode(FirestoreSaleTransactionOutcome.self, from: outcomeData) {
                     case .result(let result):
                         continuation.resume(returning: result)
                     case .invalid(let error):
@@ -242,19 +211,10 @@ extension FirestoreSaleRemoteDataSource {
             case .malformed, .unread:
                 throw SaleSyncPolicyError.invalidChangeSequence
             }
-            let nextSequence = try nextChangeSequence(
-                after: currentSequence
-            )
-            let record = recordWithoutSequence.withChangeSequence(
-                nextSequence
-            )
+            let nextSequence = try nextChangeSequence(after: currentSequence)
+            let record = recordWithoutSequence.withChangeSequence(nextSequence)
             return .atomic(
-                FirestoreSaleAtomicWrite(
-                    record: record,
-                    counter: FirestoreSaleCounterDTO(
-                        changeSequence: nextSequence
-                    )
-                )
+                FirestoreSaleAtomicWrite(record: record, counter: FirestoreSaleCounterDTO(changeSequence: nextSequence))
             )
         case .alreadyApplied(let record):
             return .result(.alreadyApplied(record))
@@ -393,32 +353,20 @@ struct FirestoreSaleDocumentDTO: Decodable {
         }
 
         let sale = try validatedLiveSale()
-        return SaleRemoteRecord(
-            content: .live(sale),
-            version: version,
-            changeSequence: changeSequence
-        )
+        return SaleRemoteRecord(content: .live(sale), version: version, changeSequence: changeSequence)
     }
 
     private func validatedLiveSale() throws -> SaleDTO {
-        guard let payloadVersion else {
-            throw missingSaleField(.payloadVersion)
-        }
+        guard let payloadVersion else { throw missingSaleField(.payloadVersion) }
         guard payloadVersion == SaleDTO.currentPayloadVersion else {
             throw saleDocumentDecodingError(
                 codingPath: [SaleDocumentCodingKey.payloadVersion],
                 description: "The Sale payload version is unsupported."
             )
         }
-        guard let createdAt else {
-            throw missingSaleField(.createdAt)
-        }
-        guard let lines else {
-            throw missingSaleField(.lines)
-        }
-        guard let status else {
-            throw missingSaleField(.status)
-        }
+        guard let createdAt else { throw missingSaleField(.createdAt) }
+        guard let lines else { throw missingSaleField(.lines) }
+        guard let status else { throw missingSaleField(.status) }
         let sale = SaleDTO(
             payloadVersion: payloadVersion,
             id: id,
@@ -446,9 +394,7 @@ struct FirestoreSaleDocumentDTO: Decodable {
                 description: "A synchronized sale revision must be positive."
             )
         }
-        guard let operationID = UUID(
-            uuidString: syncMetadata.lastOperationID
-        ) else {
+        guard let operationID = UUID(uuidString: syncMetadata.lastOperationID) else {
             throw saleDocumentDecodingError(
                 codingPath: [
                     SaleDocumentCodingKey.syncMetadata,
@@ -457,10 +403,7 @@ struct FirestoreSaleDocumentDTO: Decodable {
                 description: "The synchronized sale operation identifier is invalid."
             )
         }
-        return .versioned(
-            revision: syncMetadata.revision,
-            lastOperationID: operationID
-        )
+        return .versioned(revision: syncMetadata.revision, lastOperationID: operationID)
     }
 
     private func validatedChangeSequence() throws -> Int64? {
@@ -478,18 +421,13 @@ struct FirestoreSaleDocumentDTO: Decodable {
     }
 
     private func missingSaleField(_ key: SaleDocumentCodingKey) -> DecodingError {
-        saleDocumentDecodingError(
-            codingPath: [key],
-            description: "A live sale requires \(key.stringValue)."
-        )
+        saleDocumentDecodingError(codingPath: [key], description: "A live sale requires \(key.stringValue).")
     }
 }
 
 extension FirestoreSaleDocumentDTO {
     init(from decoder: any Decoder) throws {
-        let strictContainer = try decoder.container(
-            keyedBy: FirestoreSaleDynamicCodingKey.self
-        )
+        let strictContainer = try decoder.container(keyedBy: FirestoreSaleDynamicCodingKey.self)
         let allowedKeys: Set<String> = [
             CodingKeys.payloadVersion.rawValue,
             CodingKeys.id.rawValue,
@@ -510,26 +448,14 @@ extension FirestoreSaleDocumentDTO {
 
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.init(
-            payloadVersion: try container.decodeIfPresent(
-                Int.self,
-                forKey: .payloadVersion
-            ),
+            payloadVersion: try container.decodeIfPresent(Int.self, forKey: .payloadVersion),
             id: try container.decode(String.self, forKey: .id),
             isDeleted: try container.decodeIfPresent(Bool.self, forKey: .isDeleted),
             clientID: try container.decodeIfPresent(String.self, forKey: .clientID),
-            createdAt: try container.decodeIfPresent(
-                SaleTimestampDTO.self,
-                forKey: .createdAt
-            ),
-            lines: try container.decodeIfPresent(
-                [SaleLineDTO].self,
-                forKey: .lines
-            ),
+            createdAt: try container.decodeIfPresent(SaleTimestampDTO.self, forKey: .createdAt),
+            lines: try container.decodeIfPresent([SaleLineDTO].self, forKey: .lines),
             status: try container.decodeIfPresent(SaleStatusDTO.self, forKey: .status),
-            syncMetadata: try container.decodeIfPresent(
-                FirestoreSaleSyncMetadataDTO.self,
-                forKey: .syncMetadata
-            )
+            syncMetadata: try container.decodeIfPresent(FirestoreSaleSyncMetadataDTO.self, forKey: .syncMetadata)
         )
     }
 }
@@ -612,21 +538,12 @@ private enum SaleDocumentCodingKey: String, CodingKey {
 
 private extension SaleRemoteRecord {
     func withChangeSequence(_ changeSequence: Int64) -> SaleRemoteRecord {
-        SaleRemoteRecord(
-            content: content,
-            version: version,
-            changeSequence: changeSequence
-        )
+        SaleRemoteRecord(content: content, version: version, changeSequence: changeSequence)
     }
 }
 
 private func saleDocumentDecodingError(codingPath: [any CodingKey], description: String) -> DecodingError {
-    DecodingError.dataCorrupted(
-        DecodingError.Context(
-            codingPath: codingPath,
-            debugDescription: description
-        )
-    )
+    DecodingError.dataCorrupted(DecodingError.Context(codingPath: codingPath, debugDescription: description))
 }
 
 private func saleBusinessDecodingError(_ error: any Error) -> DecodingError {
@@ -729,7 +646,9 @@ private func mapFirestoreSaleError(_ error: any Error) -> any Error {
     if error is DecodingError || error is SaleSyncPolicyError {
         return error
     }
-    if error is CancellationError { return CancellationError() }
+    if error is CancellationError {
+        return CancellationError()
+    }
 
     let providerError = error as NSError
     guard providerError.domain == FirestoreErrorDomain else { return SaleRemoteDataSourceError.unexpected }

@@ -16,10 +16,7 @@ struct FirebaseCrashDataSource: CrashDataSource {
     ///
     /// - Parameter diagnostic: The allowlisted diagnostic to record.
     func record(_ diagnostic: CrashDiagnostic) async throws {
-        let error = NSError(
-            domain: diagnostic.errorDomain,
-            code: diagnostic.rawValue
-        )
+        let error = NSError(domain: diagnostic.errorDomain, code: diagnostic.rawValue)
         Crashlytics.crashlytics().record(error: error)
     }
 }

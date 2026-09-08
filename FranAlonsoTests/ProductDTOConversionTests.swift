@@ -14,11 +14,7 @@ struct ProductDTOConversionTests {
         )
 
         #expect(
-            dto == ProductDTO(
-                id: "71000000-0000-0000-0000-000000000001",
-                name: "Champú nutritivo",
-                status: .active
-            )
+            dto == ProductDTO(id: "71000000-0000-0000-0000-000000000001", name: "Champú nutritivo", status: .active)
         )
     }
 
@@ -40,15 +36,9 @@ struct ProductDTOConversionTests {
 
     @Test("Rejects an invalid Product identifier")
     func rejectsInvalidProductIdentifier() {
-        let dto = ProductDTO(
-            id: "not-a-product-id",
-            name: "Champú nutritivo",
-            status: .active
-        )
+        let dto = ProductDTO(id: "not-a-product-id", name: "Champú nutritivo", status: .active)
 
-        #expect(
-            throws: ProductMappingError.invalidIdentifier("not-a-product-id")
-        ) {
+        #expect(throws: ProductMappingError.invalidIdentifier("not-a-product-id")) {
             try dto.toDomain()
         }
     }

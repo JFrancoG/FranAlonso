@@ -20,11 +20,7 @@ struct DevelopClientErrorRepositoryTests {
     func savingFailsWithUnavailable() async {
         let repository = DevelopClientErrorRepository()
         let client = Client.draft(
-            id: ClientID(
-                rawValue: UUID(
-                    uuidString: "ABCDEFAB-CDEF-ABCD-EFAB-CDEFABCDEFAB"
-                )!
-            ),
+            id: ClientID(rawValue: UUID(uuidString: "ABCDEFAB-CDEF-ABCD-EFAB-CDEFABCDEFAB")!),
             displayName: "Fixture error"
         )
 

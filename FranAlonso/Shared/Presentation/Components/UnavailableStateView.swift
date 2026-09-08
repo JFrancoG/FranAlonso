@@ -50,11 +50,7 @@ extension UnavailableStateView where Actions == EmptyView {
 }
 
 #Preview("Without actions", traits: .modifier(AppPreviewModifier())) {
-    UnavailableStateView(
-        title: .clientsListEmptyTitle,
-        systemImage: "person.2",
-        message: .clientsListEmptyMessage
-    )
+    UnavailableStateView(title: .clientsListEmptyTitle, systemImage: "person.2", message: .clientsListEmptyMessage)
 }
 
 #Preview("With action", traits: .modifier(AppPreviewModifier())) {

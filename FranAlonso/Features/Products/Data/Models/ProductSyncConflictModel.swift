@@ -81,9 +81,7 @@ extension ProductSyncConflictModel {
     /// Decodes the stable conflict classification retained for resolution.
     func decodeReason() throws -> ProductSyncConflictReason {
         guard let reason = ProductSyncConflictReason(rawValue: reasonRawValue) else {
-            throw ProductSyncPersistenceError.invalidConflictReason(
-                reasonRawValue
-            )
+            throw ProductSyncPersistenceError.invalidConflictReason(reasonRawValue)
         }
         return reason
     }
@@ -109,11 +107,7 @@ extension ProductSyncConflictModel {
     }
 
     private func requireSupportedVersion() throws {
-        guard payloadVersion == 1 else {
-            throw ProductSyncPersistenceError.unsupportedConflictVersion(
-                payloadVersion
-            )
-        }
+        guard payloadVersion == 1 else { throw ProductSyncPersistenceError.unsupportedConflictVersion(payloadVersion) }
     }
 }
 
@@ -134,9 +128,7 @@ extension ProductDTO {
     ///
     /// - Throws: `ProductSyncPersistenceError.entityIdentityMismatch` when `id` is invalid.
     func stableUUID() throws -> UUID {
-        guard let identifier = UUID(uuidString: id) else {
-            throw ProductSyncPersistenceError.entityIdentityMismatch
-        }
+        guard let identifier = UUID(uuidString: id) else { throw ProductSyncPersistenceError.entityIdentityMismatch }
         return identifier
     }
 }

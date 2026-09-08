@@ -47,10 +47,7 @@ extension FirebaseAuthenticationDataSource {
 
         self.init(
             signIn: { email, password in
-                let result = try await auth.signIn(
-                    withEmail: email,
-                    password: password
-                )
+                let result = try await auth.signIn(withEmail: email, password: password)
                 return result.user.uid
             },
             signOut: {
@@ -72,14 +69,9 @@ extension FirebaseAuthenticationDataSource {
     /// The closures must be safe to invoke from any concurrency domain. The sign-in operation
     /// returns only the provider principal identifier; credentials remain operation arguments.
     init(
-        signIn: @escaping @Sendable (
-            String,
-            String
-        ) async throws -> String,
+        signIn: @escaping @Sendable (String, String) async throws -> String,
         signOut: @escaping @Sendable () throws -> Void,
-        observeSession: @escaping @Sendable () -> AsyncStream<
-            AuthenticationSession?
-        >
+        observeSession: @escaping @Sendable () -> AsyncStream<AuthenticationSession?>
     ) {
         signInOperation = signIn
         signOutOperation = signOut
@@ -92,9 +84,7 @@ extension FirebaseAuthenticationDataSource {
     /// stream cancels the relay task, which releases the upstream iterator and its listener.
     static func sessionStream<States>(
         from states: States,
-        transform: @escaping @Sendable (
-            States.Element
-        ) -> AuthenticationSession?
+        transform: @escaping @Sendable (States.Element) -> AuthenticationSession?
     ) -> AsyncStream<AuthenticationSession?>
     where States: AsyncSequence & Sendable, States.Failure == Never {
         AsyncStream { continuation in

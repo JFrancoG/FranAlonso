@@ -10,10 +10,7 @@ struct FirestoreServiceRemoteDataSourceTests {
         arguments: [FirestoreEnvironment.develop, .production]
     )
     func environmentsResolveApprovedPaths(_ environment: FirestoreEnvironment) {
-        #expect(
-            environment.collectionPath(for: .services)
-                == "\(environment.rawValue)/collections/services"
-        )
+        #expect(environment.collectionPath(for: .services) == "\(environment.rawValue)/collections/services")
         #expect(
             environment.syncMetadataDocumentPath(for: .services)
                 == "\(environment.rawValue)/collections/syncMetadata/services"
@@ -30,10 +27,7 @@ struct FirestoreServiceRemoteDataSourceTests {
 
         #expect(
             try await dataSource.fetchChanges(after: nil)
-                == ServiceRemoteChangeBatch(
-                    records: [expectedRecord],
-                    nextCursor: ServiceSyncCursor(changeSequence: 0)
-                )
+                == ServiceRemoteChangeBatch(records: [expectedRecord], nextCursor: ServiceSyncCursor(changeSequence: 0))
         )
     }
 
@@ -42,9 +36,7 @@ struct FirestoreServiceRemoteDataSourceTests {
         let records = [
             try firestoreServiceRecord(changeSequence: 6),
             try firestoreServiceRecord(
-                serviceID: firestoreUUID(
-                    "58000000-0000-0000-0000-000000000002"
-                ),
+                serviceID: firestoreUUID("58000000-0000-0000-0000-000000000002"),
                 changeSequence: 9
             )
         ]
@@ -53,23 +45,16 @@ struct FirestoreServiceRemoteDataSourceTests {
             await gate.fetch(after: cursor)
         })
 
-        let batch = try await dataSource.fetchChanges(
-            after: ServiceSyncCursor(changeSequence: 4)
-        )
+        let batch = try await dataSource.fetchChanges(after: ServiceSyncCursor(changeSequence: 4))
 
-        #expect(
-            await gate.receivedCursors
-                == [ServiceSyncCursor(changeSequence: 4)]
-        )
+        #expect(await gate.receivedCursors == [ServiceSyncCursor(changeSequence: 4)])
         #expect(batch.records == records)
         #expect(batch.nextCursor == ServiceSyncCursor(changeSequence: 9))
     }
 
     @Test("A mutation waits for its transaction acknowledgement")
     func mutationWaitsForTransactionAcknowledgement() async throws {
-        let operation = ServicePendingOperation.upsert(
-            try firestorePendingUpsert()
-        )
+        let operation = ServicePendingOperation.upsert(try firestorePendingUpsert())
         let gate = FirestoreServiceTransactionGate()
         let dataSource = makeFirestoreDataSource(transact: { operation in
             await gate.transact(operation: operation)
@@ -115,22 +100,16 @@ struct FirestoreServiceRemoteDataSourceTests {
 
     @Test("A live write contains the complete nested Service snapshot and sync metadata")
     func liveWriteContainsCompleteBusinessSnapshot() throws {
-        let linkedProductID = firestoreUUID(
-            "59000000-0000-0000-0000-000000000001"
-        )
+        let linkedProductID = firestoreUUID("59000000-0000-0000-0000-000000000001")
         let record = try firestoreServiceRecord(
             type: .product,
             linkedProductID: linkedProductID,
             revision: 2,
-            operationID: firestoreUUID(
-                "5A000000-0000-0000-0000-000000000002"
-            ),
+            operationID: firestoreUUID("5A000000-0000-0000-0000-000000000002"),
             changeSequence: 9
         )
 
-        let fields = try Firestore.Encoder().encode(
-            FirestoreServiceWriteDTO(record)
-        )
+        let fields = try Firestore.Encoder().encode(FirestoreServiceWriteDTO(record))
         let price = try #require(fields["price"] as? [String: Any])
         let taxRate = try #require(fields["taxRate"] as? [String: Any])
         let discount = try #require(fields["discount"] as? [String: Any])
@@ -147,32 +126,20 @@ struct FirestoreServiceRemoteDataSourceTests {
         #expect(discount["percentage"] as? String == "10")
         #expect(fields["status"] as? String == "active")
         #expect(sync["revision"] as? Int64 == 2)
-        #expect(
-            sync["lastOperationID"] as? String
-                == "5A000000-0000-0000-0000-000000000002"
-        )
+        #expect(sync["lastOperationID"] as? String == "5A000000-0000-0000-0000-000000000002")
         #expect(sync["changeSequence"] as? Int64 == 9)
     }
 
     @Test("A complete live document reconstructs the exact nested Service snapshot")
     func completeLiveDocumentReconstructsNestedSnapshot() throws {
-        let serviceID = firestoreUUID(
-            "58000000-0000-0000-0000-000000000001"
-        )
-        let linkedProductID = firestoreUUID(
-            "59000000-0000-0000-0000-000000000001"
-        )
-        let operationID = firestoreUUID(
-            "5A000000-0000-0000-0000-000000000002"
-        )
+        let serviceID = firestoreUUID("58000000-0000-0000-0000-000000000001")
+        let linkedProductID = firestoreUUID("59000000-0000-0000-0000-000000000001")
+        let operationID = firestoreUUID("5A000000-0000-0000-0000-000000000002")
         let payload = Data(
             #"{"id":"58000000-0000-0000-0000-000000000001","_deleted":false,"name":"Corte y peinado","type":"product","linkedProductID":"59000000-0000-0000-0000-000000000001","price":{"amount":"29.95","currency":"EUR"},"taxRate":{"percentage":"21"},"discount":{"percentage":"10"},"status":"active","_sync":{"revision":2,"lastOperationID":"5A000000-0000-0000-0000-000000000002","changeSequence":9}}"#.utf8
         )
 
-        let document = try JSONDecoder().decode(
-            FirestoreServiceDocumentDTO.self,
-            from: payload
-        )
+        let document = try JSONDecoder().decode(FirestoreServiceDocumentDTO.self, from: payload)
 
         #expect(
             try document.toRemoteRecord(documentID: serviceID.uuidString)
@@ -192,46 +159,28 @@ struct FirestoreServiceRemoteDataSourceTests {
         let record = try firestoreServiceRecord(
             discountPercentage: nil,
             revision: 2,
-            operationID: firestoreUUID(
-                "5A000000-0000-0000-0000-000000000003"
-            ),
+            operationID: firestoreUUID("5A000000-0000-0000-0000-000000000003"),
             changeSequence: 10
         )
 
-        let fields = try Firestore.Encoder().encode(
-            FirestoreServiceWriteDTO(record)
-        )
+        let fields = try Firestore.Encoder().encode(FirestoreServiceWriteDTO(record))
 
         #expect(fields["type"] as? String == "professional")
         #expect(fields["linkedProductID"] == nil)
         #expect(fields["discount"] == nil)
-        #expect(
-            Set(fields.keys) == [
-                "id", "_deleted", "name", "type", "price", "taxRate",
-                "status", "_sync"
-            ]
-        )
+        #expect(Set(fields.keys) == [ "id", "_deleted", "name", "type", "price", "taxRate", "status", "_sync" ])
     }
 
     @Test("A tombstone write contains no Service business fields")
     func tombstoneWriteContainsNoServiceBusinessFields() throws {
-        let operationID = firestoreUUID(
-            "5A000000-0000-0000-0000-000000000004"
-        )
+        let operationID = firestoreUUID("5A000000-0000-0000-0000-000000000004")
         let record = ServiceRemoteRecord(
-            content: .tombstone(
-                serviceID: try firestorePendingUpsert().serviceID
-            ),
-            version: .versioned(
-                revision: 3,
-                lastOperationID: operationID
-            ),
+            content: .tombstone(serviceID: try firestorePendingUpsert().serviceID),
+            version: .versioned(revision: 3, lastOperationID: operationID),
             changeSequence: 11
         )
 
-        let fields = try Firestore.Encoder().encode(
-            FirestoreServiceWriteDTO(record)
-        )
+        let fields = try Firestore.Encoder().encode(FirestoreServiceWriteDTO(record))
 
         #expect(fields["_deleted"] as? Bool == true)
         for businessKey in [
@@ -244,29 +193,19 @@ struct FirestoreServiceRemoteDataSourceTests {
 
     @Test("Counter progression rejects negative and exhausted values")
     func counterProgressionFailsClosed() throws {
-        #expect(
-            try FirestoreServiceRemoteDataSource.nextChangeSequence(after: nil)
-                == 1
-        )
-        #expect(
-            try FirestoreServiceRemoteDataSource.nextChangeSequence(after: 8)
-                == 9
-        )
+        #expect(try FirestoreServiceRemoteDataSource.nextChangeSequence(after: nil) == 1)
+        #expect(try FirestoreServiceRemoteDataSource.nextChangeSequence(after: 8) == 9)
         #expect(throws: ServiceSyncPolicyError.invalidChangeSequence) {
             try FirestoreServiceRemoteDataSource.nextChangeSequence(after: -1)
         }
         #expect(throws: ServiceSyncPolicyError.changeSequenceOverflow) {
-            try FirestoreServiceRemoteDataSource.nextChangeSequence(
-                after: Int64.max
-            )
+            try FirestoreServiceRemoteDataSource.nextChangeSequence(after: Int64.max)
         }
     }
 
     @Test("Transaction planning emits one atomic Service-and-counter pair")
     func transactionPlanningWritesServiceAndCounterTogether() throws {
-        let upsert = ServicePendingOperation.upsert(
-            try firestorePendingUpsert()
-        )
+        let upsert = ServicePendingOperation.upsert(try firestorePendingUpsert())
         let upsertPlan = try FirestoreServiceRemoteDataSource.transactionPlan(
             for: upsert,
             against: nil,
@@ -276,26 +215,17 @@ struct FirestoreServiceRemoteDataSourceTests {
         let upsertWrite = try #require(upsertPlan.atomicWrite)
         #expect(upsertWrite.record.isLive)
         #expect(upsertWrite.record.changeSequence == 1)
-        #expect(
-            upsertWrite.counter
-                == FirestoreServiceCounterDTO(changeSequence: 1)
-        )
+        #expect(upsertWrite.counter == FirestoreServiceCounterDTO(changeSequence: 1))
 
         let delete = ServicePendingOperation.delete(
             ServicePendingDelete(
                 serviceID: upsert.serviceID,
-                operationID: firestoreUUID(
-                    "5A000000-0000-0000-0000-000000000005"
-                ),
+                operationID: firestoreUUID("5A000000-0000-0000-0000-000000000005"),
                 predecessorOperationID: nil,
                 base: .versioned(1)
             )
         )
-        let liveRemote = try firestoreServiceRecord(
-            revision: 1,
-            operationID: upsert.operationID,
-            changeSequence: 1
-        )
+        let liveRemote = try firestoreServiceRecord(revision: 1, operationID: upsert.operationID, changeSequence: 1)
         let deletePlan = try FirestoreServiceRemoteDataSource.transactionPlan(
             for: delete,
             against: liveRemote,
@@ -305,17 +235,12 @@ struct FirestoreServiceRemoteDataSourceTests {
         let deleteWrite = try #require(deletePlan.atomicWrite)
         #expect(deleteWrite.record.isTombstone)
         #expect(deleteWrite.record.changeSequence == 2)
-        #expect(
-            deleteWrite.counter
-                == FirestoreServiceCounterDTO(changeSequence: 2)
-        )
+        #expect(deleteWrite.counter == FirestoreServiceCounterDTO(changeSequence: 2))
     }
 
     @Test("Invalid counter states produce no transaction write plan")
     func invalidCounterStatesProduceNoWrites() throws {
-        let operation = ServicePendingOperation.upsert(
-            try firestorePendingUpsert()
-        )
+        let operation = ServicePendingOperation.upsert(try firestorePendingUpsert())
 
         for counter in [
             FirestoreServiceCounterState.value(-1),
@@ -342,16 +267,10 @@ struct FirestoreServiceRemoteDataSourceTests {
         let malformedCounter = Data(#"{"changeSequence":"nine"}"#.utf8)
 
         #expect(throws: DecodingError.self) {
-            _ = try JSONDecoder().decode(
-                FirestoreServiceDocumentDTO.self,
-                from: partialService
-            )
+            _ = try JSONDecoder().decode(FirestoreServiceDocumentDTO.self, from: partialService)
         }
         #expect(throws: DecodingError.self) {
-            _ = try JSONDecoder().decode(
-                FirestoreServiceCounterDTO.self,
-                from: malformedCounter
-            )
+            _ = try JSONDecoder().decode(FirestoreServiceCounterDTO.self, from: malformedCounter)
         }
     }
 
@@ -380,9 +299,7 @@ struct FirestoreServiceRemoteDataSourceTests {
         })
 
         await #expect(throws: ServiceSyncPolicyError.invalidChangeSequence) {
-            try await dataSource.fetchChanges(
-                after: ServiceSyncCursor(changeSequence: 1)
-            )
+            try await dataSource.fetchChanges(after: ServiceSyncCursor(changeSequence: 1))
         }
     }
 
@@ -484,8 +401,7 @@ private actor FirestoreServiceTransactionGate {
     }
 }
 
-private struct FirestoreProviderFailureFixture: Sendable,
-    CustomTestStringConvertible {
+private struct FirestoreProviderFailureFixture: CustomTestStringConvertible {
     let code: Int
     let expected: ServiceRemoteDataSourceError
 
@@ -504,9 +420,7 @@ private func makeFirestoreDataSource(
     fetch: @escaping @Sendable (ServiceSyncCursor?) async throws -> [
         (documentID: String, record: ServiceRemoteRecord)
     ] = { _ in [] },
-    transact: @escaping @Sendable (
-        ServicePendingOperation
-    ) async throws -> ServiceRemoteMutationResult = { operation in
+    transact: @escaping @Sendable (ServicePendingOperation) async throws -> ServiceRemoteMutationResult = { operation in
         let content: ServiceRemoteContent
         switch operation {
         case .upsert(let upsert):
@@ -517,10 +431,7 @@ private func makeFirestoreDataSource(
         return .applied(
             ServiceRemoteRecord(
                 content: content,
-                version: .versioned(
-                    revision: 1,
-                    lastOperationID: operation.operationID
-                ),
+                version: .versioned(revision: 1, lastOperationID: operation.operationID),
                 changeSequence: 1
             )
         )
@@ -533,9 +444,7 @@ private func firestorePendingUpsert() throws -> ServicePendingUpsert {
     let service = try firestoreServiceDTO()
     return ServicePendingUpsert(
         serviceID: firestoreUUID(service.id),
-        operationID: firestoreUUID(
-            "5A000000-0000-0000-0000-000000000001"
-        ),
+        operationID: firestoreUUID("5A000000-0000-0000-0000-000000000001"),
         predecessorOperationID: nil,
         base: .absent,
         service: service
@@ -553,10 +462,7 @@ private func firestoreServiceRecord(
 ) throws -> ServiceRemoteRecord {
     let version: ServiceRemoteVersion
     if let revision, let operationID {
-        version = .versioned(
-            revision: revision,
-            lastOperationID: operationID
-        )
+        version = .versioned(revision: revision, lastOperationID: operationID)
     } else {
         version = .legacy
     }

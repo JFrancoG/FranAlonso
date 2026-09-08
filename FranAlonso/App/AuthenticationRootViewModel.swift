@@ -243,19 +243,11 @@ final class AuthenticationRootViewModel {
             }
         } catch let error as LocalPrincipalAuthorizationError {
             guard authorizationRevision == revision, evidenceIsCurrent(request) else { return }
-            localAccessState = .denied(
-                request.session.id,
-                request.localAccessRevision,
-                Failure(error)
-            )
+            localAccessState = .denied(request.session.id, request.localAccessRevision, Failure(error))
             clearCredentialProof()
         } catch {
             guard authorizationRevision == revision, evidenceIsCurrent(request) else { return }
-            localAccessState = .denied(
-                request.session.id,
-                request.localAccessRevision,
-                .unexpected
-            )
+            localAccessState = .denied(request.session.id, request.localAccessRevision, .unexpected)
             clearCredentialProof()
         }
     }

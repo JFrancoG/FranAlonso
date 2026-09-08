@@ -84,11 +84,7 @@ extension Appointment {
         startsAt: Date,
         endsAt: Date
     ) throws -> Appointment {
-        try ensureValid(
-            serviceIDs: serviceIDs,
-            startsAt: startsAt,
-            endsAt: endsAt
-        )
+        try ensureValid(serviceIDs: serviceIDs, startsAt: startsAt, endsAt: endsAt)
 
         return Appointment(
             id: id,
@@ -106,11 +102,7 @@ extension Appointment {
         let startsAt = try container.decode(Date.self, forKey: .startsAt)
         let endsAt = try container.decode(Date.self, forKey: .endsAt)
 
-        try Self.ensureValid(
-            serviceIDs: serviceIDs,
-            startsAt: startsAt,
-            endsAt: endsAt
-        )
+        try Self.ensureValid(serviceIDs: serviceIDs, startsAt: startsAt, endsAt: endsAt)
 
         self.init(
             id: try container.decode(AppointmentID.self, forKey: .id),
@@ -135,8 +127,6 @@ extension Appointment {
     private static func ensureValid(serviceIDs: [ServiceID], startsAt: Date, endsAt: Date) throws {
         guard startsAt < endsAt else { throw AppointmentError.invalidSchedule }
         guard !serviceIDs.isEmpty else { throw AppointmentError.missingServiceReferences }
-        guard Set(serviceIDs).count == serviceIDs.count else {
-            throw AppointmentError.duplicateServiceReference
-        }
+        guard Set(serviceIDs).count == serviceIDs.count else { throw AppointmentError.duplicateServiceReference }
     }
 }

@@ -31,27 +31,13 @@ actor SalePersistenceActor {
     ///   - sale: The detached Domain value to persist.
     ///   - operationID: The identifier assigned if the pending payload changes.
     /// - Throws: A mapping, encoding, SwiftData fetch or SwiftData save error.
-    func persistPendingUpsert(
-        _ sale: Sale,
-        operationID: UUID
-    ) throws {
-        try dataSource.persistPendingUpsert(
-            sale,
-            operationID: operationID,
-            in: modelContext
-        )
+    func persistPendingUpsert(_ sale: Sale, operationID: UUID) throws {
+        try dataSource.persistPendingUpsert(sale, operationID: operationID, in: modelContext)
     }
 
     /// Removes an active draft and commits one durable discard operation.
-    func persistPendingDiscard(
-        _ id: SaleID,
-        operationID: UUID
-    ) throws {
-        try dataSource.persistPendingDiscard(
-            id,
-            operationID: operationID,
-            in: modelContext
-        )
+    func persistPendingDiscard(_ id: SaleID, operationID: UUID) throws {
+        try dataSource.persistPendingDiscard(id, operationID: operationID, in: modelContext)
     }
 
     /// Returns the combined causal upsert and draft-discard chain.
@@ -80,9 +66,7 @@ actor SalePersistenceActor {
     }
 
     /// Returns the durable backoff schedule for one pull or pending operation.
-    func retryState(
-        for scope: SyncRetryScope
-    ) throws -> SyncRetryState? {
+    func retryState(for scope: SyncRetryScope) throws -> SyncRetryState? {
         try dataSource.retryState(for: scope, in: modelContext)
     }
 

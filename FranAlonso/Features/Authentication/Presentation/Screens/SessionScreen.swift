@@ -1,7 +1,6 @@
 import Foundation
 import SwiftUI
 
-@MainActor
 struct SessionScreen: View {
     private enum ActionRequest: Equatable {
         case unlock(UUID)
@@ -13,10 +12,7 @@ struct SessionScreen: View {
     @State private var actionRequest: ActionRequest?
 
     var body: some View {
-        SessionContent(
-            state: viewModel.state,
-            actionState: viewModel.actionState
-        ) {
+        SessionContent(state: viewModel.state, actionState: viewModel.actionState) {
             actionRequest = .unlock(UUID())
         } requestSignOut: {
             actionRequest = .signOut(UUID())

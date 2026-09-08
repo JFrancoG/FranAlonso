@@ -11,10 +11,7 @@ struct SaleSchemaMigrationTests {
             path: "FranAlonso-05.10c-Sale-Migration-\(UUID())",
             directoryHint: .isDirectory
         )
-        try FileManager.default.createDirectory(
-            at: directory,
-            withIntermediateDirectories: true
-        )
+        try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
         defer { try? FileManager.default.removeItem(at: directory) }
         let storeURL = directory.appending(path: "Published-21.store")
 
@@ -26,10 +23,7 @@ struct SaleSchemaMigrationTests {
             allowsSave: true,
             cloudKitDatabase: .none
         )
-        let reopened = try ModelContainer(
-            for: Schema.franAlonso,
-            configurations: [configuration]
-        )
+        let reopened = try ModelContainer(for: Schema.franAlonso, configurations: [configuration])
         let context = ModelContext(reopened)
 
         try verifyPublishedRows(in: context, fixture: fixture)
@@ -107,11 +101,7 @@ private func writePublishedStore(at storeURL: URL) throws -> PublishedStoreFixtu
     )
     context.insert(try ClientRemoteStateModel(record: clientRecord))
     context.insert(
-        try ClientSyncConflictModel(
-            operation: clientUpsert,
-            reason: .baseChanged,
-            remoteRecord: clientRecord
-        )
+        try ClientSyncConflictModel(operation: clientUpsert, reason: .baseChanged, remoteRecord: clientRecord)
     )
     context.insert(ClientSyncCursorModel(feedID: "clients", changeSequence: 12))
     context.insert(ClientSyncRetryModel(clientRetry))
@@ -159,11 +149,7 @@ private func writePublishedStore(at storeURL: URL) throws -> PublishedStoreFixtu
     )
     context.insert(try ProductRemoteStateModel(record: productRecord))
     context.insert(
-        try ProductSyncConflictModel(
-            operation: productUpsert,
-            reason: .baseChanged,
-            remoteRecord: productRecord
-        )
+        try ProductSyncConflictModel(operation: productUpsert, reason: .baseChanged, remoteRecord: productRecord)
     )
     context.insert(ProductSyncCursorModel(feedID: "products", changeSequence: 22))
     context.insert(ProductSyncRetryModel(productRetry))
@@ -214,11 +200,7 @@ private func writePublishedStore(at storeURL: URL) throws -> PublishedStoreFixtu
     )
     context.insert(try ServiceRemoteStateModel(record: serviceRecord))
     context.insert(
-        try ServiceSyncConflictModel(
-            operation: serviceUpsert,
-            reason: .baseChanged,
-            remoteRecord: serviceRecord
-        )
+        try ServiceSyncConflictModel(operation: serviceUpsert, reason: .baseChanged, remoteRecord: serviceRecord)
     )
     context.insert(ServiceSyncCursorModel(feedID: "services", changeSequence: 32))
     context.insert(ServiceSyncRetryModel(serviceRetry))

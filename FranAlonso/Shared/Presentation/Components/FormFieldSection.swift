@@ -53,10 +53,7 @@ extension FormFieldSection {
     @Previewable @State var email = "fran@example.com"
 
     Form {
-        FormFieldSection(
-            .authenticationLoginEmailLabel,
-            systemImage: "envelope"
-        ) {
+        FormFieldSection(.authenticationLoginEmailLabel, systemImage: "envelope") {
             TextField(.authenticationLoginEmailLabel, text: $email)
                 .textContentType(.username)
         }
@@ -67,10 +64,7 @@ extension FormFieldSection {
     @Previewable @State var email = "fran@example.com"
 
     Form {
-        FormFieldSection(
-            .authenticationLoginEmailLabel,
-            systemImage: "envelope"
-        ) {
+        FormFieldSection(.authenticationLoginEmailLabel, systemImage: "envelope") {
             TextField(.authenticationLoginEmailLabel, text: $email)
                 .textContentType(.username)
         }

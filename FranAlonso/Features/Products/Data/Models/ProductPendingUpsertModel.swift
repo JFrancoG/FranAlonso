@@ -75,11 +75,7 @@ extension ProductPendingUpsertModel {
             return .absent
         }
         guard let baseVersion, let baseData else { throw ProductPendingUpsertPayloadError.incompleteBaseMetadata }
-        guard baseVersion == 1 else {
-            throw ProductPendingUpsertPayloadError.unsupportedBaseVersion(
-                baseVersion
-            )
-        }
+        guard baseVersion == 1 else { throw ProductPendingUpsertPayloadError.unsupportedBaseVersion(baseVersion) }
 
         return try JSONDecoder().decode(ProductRemoteBase.self, from: baseData)
     }
@@ -90,11 +86,7 @@ extension ProductPendingUpsertModel {
     /// - Throws: `ProductPendingUpsertPayloadError` for an unsupported version, or the
     ///   native decoding error for malformed persisted data.
     func decodePayload() throws -> ProductDTO {
-        guard payloadVersion == 1 else {
-            throw ProductPendingUpsertPayloadError.unsupportedVersion(
-                payloadVersion
-            )
-        }
+        guard payloadVersion == 1 else { throw ProductPendingUpsertPayloadError.unsupportedVersion(payloadVersion) }
 
         return try JSONDecoder().decode(ProductDTO.self, from: payloadData)
     }

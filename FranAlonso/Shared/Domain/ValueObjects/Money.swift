@@ -43,16 +43,10 @@ struct Money: Codable, Hashable {
     ///   or `MoneyError.invalidAmount` when the resulting amount is not a number.
     func adding(_ other: Money) throws -> Money {
         guard currency == other.currency else {
-            throw MoneyError.incompatibleCurrencies(
-                expected: currency,
-                actual: other.currency
-            )
+            throw MoneyError.incompatibleCurrencies(expected: currency, actual: other.currency)
         }
 
-        return try Money(
-            amount: amount + other.amount,
-            currency: currency
-        )
+        return try Money(amount: amount + other.amount, currency: currency)
     }
 
     private enum CodingKeys: String, CodingKey {
@@ -72,13 +66,7 @@ extension Money {
     init(amount: Decimal, currency: Currency) throws {
         guard !amount.isNaN else { throw MoneyError.invalidAmount }
 
-        self.init(
-            storedAmount: amount.rounded(
-                scale: currency.minorUnitScale,
-                mode: .plain
-            ),
-            currency: currency
-        )
+        self.init(storedAmount: amount.rounded(scale: currency.minorUnitScale, mode: .plain), currency: currency)
     }
 
     init(from decoder: any Decoder) throws {

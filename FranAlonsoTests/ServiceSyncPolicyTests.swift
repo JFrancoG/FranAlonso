@@ -18,10 +18,7 @@ struct ServiceSyncPolicyTests {
             policy.decision(for: operation, against: nil) == .apply(
                 ServiceRemoteRecord(
                     service: operation.service,
-                    version: .versioned(
-                        revision: 1,
-                        lastOperationID: operation.operationID
-                    )
+                    version: .versioned(revision: 1, lastOperationID: operation.operationID)
                 )
             )
         )
@@ -38,18 +35,10 @@ struct ServiceSyncPolicyTests {
         )
         let remote = ServiceRemoteRecord(
             service: try syncService(name: "Unrelated remote"),
-            version: .versioned(
-                revision: 4,
-                lastOperationID: syncUUID(
-                    "51000000-0000-0000-0000-000000000004"
-                )
-            )
+            version: .versioned(revision: 4, lastOperationID: syncUUID("51000000-0000-0000-0000-000000000004"))
         )
 
-        #expect(
-            policy.decision(for: operation, against: remote)
-                == .conflict(.causalPredecessorMissing, remote)
-        )
+        #expect(policy.decision(for: operation, against: remote) == .conflict(.causalPredecessorMissing, remote))
     }
 
     @Test("A successor advances only after its predecessor")
@@ -63,20 +52,14 @@ struct ServiceSyncPolicyTests {
         )
         let remote = ServiceRemoteRecord(
             service: try syncService(name: "Predecessor"),
-            version: .versioned(
-                revision: 8,
-                lastOperationID: predecessorID
-            )
+            version: .versioned(revision: 8, lastOperationID: predecessorID)
         )
 
         #expect(
             policy.decision(for: operation, against: remote) == .apply(
                 ServiceRemoteRecord(
                     service: operation.service,
-                    version: .versioned(
-                        revision: 9,
-                        lastOperationID: operation.operationID
-                    )
+                    version: .versioned(revision: 9, lastOperationID: operation.operationID)
                 )
             )
         )
@@ -91,16 +74,10 @@ struct ServiceSyncPolicyTests {
         )
         let remote = ServiceRemoteRecord(
             service: operation.service,
-            version: .versioned(
-                revision: 3,
-                lastOperationID: operation.operationID
-            )
+            version: .versioned(revision: 3, lastOperationID: operation.operationID)
         )
 
-        #expect(
-            policy.decision(for: operation, against: remote)
-                == .alreadyApplied(remote)
-        )
+        #expect(policy.decision(for: operation, against: remote) == .alreadyApplied(remote))
     }
 
     @Test("The same operation with another payload is an identity conflict")
@@ -112,16 +89,10 @@ struct ServiceSyncPolicyTests {
         )
         let remote = ServiceRemoteRecord(
             service: try syncService(name: "Different payload"),
-            version: .versioned(
-                revision: 3,
-                lastOperationID: operation.operationID
-            )
+            version: .versioned(revision: 3, lastOperationID: operation.operationID)
         )
 
-        #expect(
-            policy.decision(for: operation, against: remote)
-                == .conflict(.operationIdentityMismatch, remote)
-        )
+        #expect(policy.decision(for: operation, against: remote) == .conflict(.operationIdentityMismatch, remote))
     }
 
     @Test("A legacy base must still match its exact business snapshot")
@@ -137,24 +108,15 @@ struct ServiceSyncPolicyTests {
             version: .legacy
         )
 
-        #expect(
-            policy.decision(for: operation, against: changedLegacy)
-                == .conflict(.baseChanged, changedLegacy)
-        )
+        #expect(policy.decision(for: operation, against: changedLegacy) == .conflict(.baseChanged, changedLegacy))
         #expect(
             policy.decision(
                 for: operation,
-                against: ServiceRemoteRecord(
-                    service: baseService,
-                    version: .legacy
-                )
+                against: ServiceRemoteRecord(service: baseService, version: .legacy)
             ) == .apply(
                 ServiceRemoteRecord(
                     service: operation.service,
-                    version: .versioned(
-                        revision: 1,
-                        lastOperationID: operation.operationID
-                    )
+                    version: .versioned(revision: 1, lastOperationID: operation.operationID)
                 )
             )
         )
@@ -169,34 +131,18 @@ struct ServiceSyncPolicyTests {
         )
         let remote = ServiceRemoteRecord(
             service: try syncService(name: "Remote maximum"),
-            version: .versioned(
-                revision: Int64.max,
-                lastOperationID: syncUUID(
-                    "51000000-0000-0000-0000-000000000011"
-                )
-            )
+            version: .versioned(revision: Int64.max, lastOperationID: syncUUID("51000000-0000-0000-0000-000000000011"))
         )
 
-        #expect(
-            policy.decision(for: operation, against: remote)
-                == .invalid(.remoteRevisionOverflow)
-        )
+        #expect(policy.decision(for: operation, against: remote) == .invalid(.remoteRevisionOverflow))
     }
 
     @Test("A pending delete wins over a concurrent remote edit")
     func pendingDeleteWinsOverConcurrentRemoteEdit() throws {
-        let delete = syncDeleteOperation(
-            id: "51000000-0000-0000-0000-000000000012",
-            base: .versioned(3)
-        )
+        let delete = syncDeleteOperation(id: "51000000-0000-0000-0000-000000000012", base: .versioned(3))
         let remote = ServiceRemoteRecord(
             service: try syncService(name: "Concurrent remote edit"),
-            version: .versioned(
-                revision: 4,
-                lastOperationID: syncUUID(
-                    "51000000-0000-0000-0000-000000000013"
-                )
-            ),
+            version: .versioned(revision: 4, lastOperationID: syncUUID("51000000-0000-0000-0000-000000000013")),
             changeSequence: 6
         )
 
@@ -205,10 +151,7 @@ struct ServiceSyncPolicyTests {
                 == .apply(
                     ServiceRemoteRecord(
                         content: .tombstone(serviceID: delete.serviceID),
-                        version: .versioned(
-                            revision: 5,
-                            lastOperationID: delete.operationID
-                        ),
+                        version: .versioned(revision: 5, lastOperationID: delete.operationID),
                         changeSequence: nil
                     )
                 )
@@ -224,45 +167,26 @@ struct ServiceSyncPolicyTests {
         )
         let tombstone = ServiceRemoteRecord(
             content: .tombstone(serviceID: operation.serviceID),
-            version: .versioned(
-                revision: 3,
-                lastOperationID: syncUUID(
-                    "51000000-0000-0000-0000-000000000015"
-                )
-            ),
+            version: .versioned(revision: 3, lastOperationID: syncUUID("51000000-0000-0000-0000-000000000015")),
             changeSequence: 7
         )
 
         #expect(
             policy.decision(for: operation, against: tombstone)
-                == .conflict(
-                    .tombstoneRequiresExplicitRestore,
-                    tombstone
-                )
+                == .conflict(.tombstoneRequiresExplicitRestore, tombstone)
         )
     }
 
     @Test("A remote tombstone makes a repeated deletion converged")
     func remoteTombstoneMakesRepeatedDeleteConverged() {
-        let delete = syncDeleteOperation(
-            id: "51000000-0000-0000-0000-000000000016",
-            base: .absent
-        )
+        let delete = syncDeleteOperation(id: "51000000-0000-0000-0000-000000000016", base: .absent)
         let tombstone = ServiceRemoteRecord(
             content: .tombstone(serviceID: delete.serviceID),
-            version: .versioned(
-                revision: 8,
-                lastOperationID: syncUUID(
-                    "51000000-0000-0000-0000-000000000017"
-                )
-            ),
+            version: .versioned(revision: 8, lastOperationID: syncUUID("51000000-0000-0000-0000-000000000017")),
             changeSequence: 9
         )
 
-        #expect(
-            policy.decision(for: .delete(delete), against: tombstone)
-                == .alreadyApplied(tombstone)
-        )
+        #expect(policy.decision(for: .delete(delete), against: tombstone) == .alreadyApplied(tombstone))
     }
 }
 
@@ -283,9 +207,7 @@ private func syncOperation(
 
 private func syncDeleteOperation(id: String, base: ServiceRemoteBase) -> ServicePendingDelete {
     ServicePendingDelete(
-        serviceID: UUID(
-            uuidString: "50000000-0000-0000-0000-000000000001"
-        )!,
+        serviceID: UUID(uuidString: "50000000-0000-0000-0000-000000000001")!,
         operationID: syncUUID(id),
         predecessorOperationID: nil,
         base: base
@@ -294,9 +216,7 @@ private func syncDeleteOperation(id: String, base: ServiceRemoteBase) -> Service
 
 private func syncService(name: String) throws -> ServiceDTO {
     try makeServiceDTO(
-        id: UUID(
-            uuidString: "50000000-0000-0000-0000-000000000001"
-        )!,
+        id: UUID(uuidString: "50000000-0000-0000-0000-000000000001")!,
         name: name,
         discountPercentage: nil
     )

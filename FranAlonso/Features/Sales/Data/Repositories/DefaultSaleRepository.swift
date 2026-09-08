@@ -11,16 +11,12 @@ struct DefaultSaleRepository: SaleRepository {
 
     func observeSales() async -> AsyncThrowingStream<[Sale], any Error> {
         let changes = await observationSignal.stream()
-        let pair = AsyncThrowingStream<[Sale], any Error>.makeStream(
-            bufferingPolicy: .bufferingNewest(1)
-        )
+        let pair = AsyncThrowingStream<[Sale], any Error>.makeStream(bufferingPolicy: .bufferingNewest(1))
         let observationTask = Task {
             do {
                 for await _ in changes {
                     try Task.checkCancellation()
-                    pair.continuation.yield(
-                        try await persistenceActor.fetchAll()
-                    )
+                    pair.continuation.yield(try await persistenceActor.fetchAll())
                 }
                 pair.continuation.finish()
             } catch {
@@ -34,10 +30,7 @@ struct DefaultSaleRepository: SaleRepository {
     }
 
     func saveSale(_ sale: Sale) async throws {
-        try await persistenceActor.persistPendingUpsert(
-            sale,
-            operationID: makeOperationID()
-        )
+        try await persistenceActor.persistPendingUpsert(sale, operationID: makeOperationID())
         await observationSignal.publishChange()
     }
 }

@@ -79,12 +79,7 @@ struct ClientDTOConversionTests {
             _ = try decodeClientDTO(data)
             Issue.record("Expected a postalCode type mismatch")
         } catch DecodingError.typeMismatch(_, let context) {
-            #expect(
-                context.codingPath.map(\.stringValue) == [
-                    "billingAddress",
-                    "postalCode"
-                ]
-            )
+            #expect(context.codingPath.map(\.stringValue) == [ "billingAddress", "postalCode" ])
         } catch {
             Issue.record("Unexpected decoding error: \(error)")
         }

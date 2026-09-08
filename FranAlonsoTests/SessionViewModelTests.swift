@@ -159,10 +159,7 @@ struct SessionViewModelTests {
         #expect(viewModel.actionState == .idle)
     }
 
-    @Test(
-        "An obsolete observation cannot overwrite its replacement",
-        arguments: ObsoleteObservationEvent.allCases
-    )
+    @Test("An obsolete observation cannot overwrite its replacement", arguments: ObsoleteObservationEvent.allCases)
     fileprivate func obsoleteObservationCannotOverwriteReplacement(_ event: ObsoleteObservationEvent) async {
         let repository = SessionAuthenticationRepositoryFake()
         let viewModel = makeSessionViewModel(repository: repository)
@@ -177,10 +174,7 @@ struct SessionViewModelTests {
 
         switch event {
         case .emits:
-            await repository.emit(
-                AuthenticationSession(id: "principal-session-obsolete"),
-                observation: 0
-            )
+            await repository.emit(AuthenticationSession(id: "principal-session-obsolete"), observation: 0)
         case .finishes:
             await repository.finishObservation(0)
         case .cancels:

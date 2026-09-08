@@ -4,9 +4,7 @@ struct AuthenticationPreviewFixtures {
 
     /// Creates a sign-in use case that never contacts a live provider.
     func makeSignInUseCase() -> SignInUseCase {
-        SignInUseCase(
-            repository: AuthenticationPreviewRepository(session: session)
-        )
+        SignInUseCase(repository: AuthenticationPreviewRepository(session: session))
     }
 
     /// Creates an uncomposed session model backed by a stable preview observation.
@@ -81,9 +79,7 @@ struct AuthenticationPreviewFixtures {
 
 extension AuthenticationPreviewFixtures {
     /// The stable authenticated principal shared by authentication previews.
-    static let standard = AuthenticationPreviewFixtures(
-        session: AuthenticationSession(id: "preview-principal")
-    )
+    static let standard = AuthenticationPreviewFixtures(session: AuthenticationSession(id: "preview-principal"))
 }
 
 private struct AuthenticationPreviewRepository: AuthenticationRepository {

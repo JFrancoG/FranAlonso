@@ -38,11 +38,7 @@ enum SaleStatus: Codable, Equatable {
     ///   - paymentID: The stable identifier of the payment operation.
     ///   - method: The recorded payment method.
     ///   - paidAt: The recorded payment timestamp.
-    case awaitingDocument(
-        paymentID: PaymentID,
-        method: PaymentMethod,
-        paidAt: Date
-    )
+    case awaitingDocument(paymentID: PaymentID, method: PaymentMethod, paidAt: Date)
 
     /// Payment and billing document metadata are recorded and the sale is closed.
     ///

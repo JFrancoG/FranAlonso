@@ -46,12 +46,8 @@ extension ProductSyncRetryModel {
     /// Reconstructs and validates the schedule requested for this exact scope.
     func decodeState(for scope: SyncRetryScope) throws -> SyncRetryState {
         guard scopeID == scope.storageID else { throw SyncRetryPolicyError.scopeMismatch }
-        guard let category = SyncRetryCategory(
-            rawValue: lastRecoverableCategoryRawValue
-        ) else {
-            throw SyncRetryPolicyError.invalidStoredCategory(
-                lastRecoverableCategoryRawValue
-            )
+        guard let category = SyncRetryCategory(rawValue: lastRecoverableCategoryRawValue) else {
+            throw SyncRetryPolicyError.invalidStoredCategory(lastRecoverableCategoryRawValue)
         }
         return try SyncRetryState(
             scope: scope,

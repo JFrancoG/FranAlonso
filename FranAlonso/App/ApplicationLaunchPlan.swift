@@ -11,9 +11,7 @@ enum ApplicationLaunchPlan: Equatable {
 
     /// The sole launch decision consumed by both the application delegate and composition root.
     static let current = resolve(
-        appEnvironment: Bundle.main.object(
-            forInfoDictionaryKey: "AppEnvironment"
-        ) as? String,
+        appEnvironment: Bundle.main.object(forInfoDictionaryKey: "AppEnvironment") as? String,
         bundleIdentifier: Bundle.main.bundleIdentifier,
         arguments: ProcessInfo.processInfo.arguments
     )
@@ -34,12 +32,8 @@ enum ApplicationLaunchPlan: Equatable {
         let hasFixtureIntent = !authenticationArguments.isEmpty || !clientsArguments.isEmpty
 
         guard hasFixtureIntent else { return .live }
-        guard appEnvironment == "develop" else {
-            return .invalidFixtureConfiguration
-        }
-        guard bundleIdentifier == "com.plusprojects.FranAlonso.develop" else {
-            return .invalidFixtureConfiguration
-        }
+        guard appEnvironment == "develop" else { return .invalidFixtureConfiguration }
+        guard bundleIdentifier == "com.plusprojects.FranAlonso.develop" else { return .invalidFixtureConfiguration }
 
         if !clientsArguments.isEmpty {
             guard authenticationArguments == [
@@ -56,9 +50,7 @@ enum ApplicationLaunchPlan: Equatable {
             return .authenticationFixture(.clientsObservationError)
         }
 
-        guard authenticationArguments.count == 1 else {
-            return .invalidFixtureConfiguration
-        }
+        guard authenticationArguments.count == 1 else { return .invalidFixtureConfiguration }
 
         return switch authenticationArguments[0] {
         case DevelopAuthenticationFixture.signedOutLaunchArgument:

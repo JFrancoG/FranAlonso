@@ -37,10 +37,7 @@ struct ServiceDTOConversionTests {
     )
     func invalidNestedDecimalRetainsCodingPath(payload: String, expectedPath: [String]) {
         do {
-            _ = try JSONDecoder().decode(
-                ServiceDTO.self,
-                from: Data(payload.utf8)
-            )
+            _ = try JSONDecoder().decode(ServiceDTO.self, from: Data(payload.utf8))
             Issue.record("Expected the nested decimal payload to fail")
         } catch DecodingError.dataCorrupted(let context) {
             #expect(context.codingPath.map(\.stringValue) == expectedPath)
@@ -73,16 +70,10 @@ struct ServiceDTOConversionTests {
             status: valid.status
         )
 
-        #expect(
-            throws: ServiceMappingError.invalidIdentifier("not-a-uuid")
-        ) {
+        #expect(throws: ServiceMappingError.invalidIdentifier("not-a-uuid")) {
             _ = try invalidServiceID.toDomain()
         }
-        #expect(
-            throws: ServiceMappingError.invalidLinkedProductIdentifier(
-                "not-a-uuid"
-            )
-        ) {
+        #expect(throws: ServiceMappingError.invalidLinkedProductIdentifier("not-a-uuid")) {
             _ = try invalidProductID.toDomain()
         }
     }
@@ -127,21 +118,13 @@ struct ServiceDTOConversionTests {
             name: valid.name,
             type: valid.type,
             linkedProductID: valid.linkedProductID,
-            price: ServiceMoneyDTO(
-                amount: try CanonicalDecimalDTO(10.005),
-                currency: .eur
-            ),
+            price: ServiceMoneyDTO(amount: try CanonicalDecimalDTO(10.005), currency: .eur),
             taxRate: valid.taxRate,
             discount: valid.discount,
             status: valid.status
         )
 
-        #expect(
-            throws: ServiceMappingError.moneyNormalizationChanged(
-                original: 10.005,
-                normalized: 10.01
-            )
-        ) {
+        #expect(throws: ServiceMappingError.moneyNormalizationChanged(original: 10.005, normalized: 10.01)) {
             _ = try unnormalizedPrice.toDomain()
         }
     }
@@ -155,9 +138,7 @@ struct ServiceDTOConversionTests {
             type: valid.type,
             linkedProductID: valid.linkedProductID,
             price: valid.price,
-            taxRate: ServiceTaxRateDTO(
-                percentage: try CanonicalDecimalDTO(101)
-            ),
+            taxRate: ServiceTaxRateDTO(percentage: try CanonicalDecimalDTO(101)),
             discount: valid.discount,
             status: valid.status
         )
@@ -168,9 +149,7 @@ struct ServiceDTOConversionTests {
             linkedProductID: valid.linkedProductID,
             price: valid.price,
             taxRate: valid.taxRate,
-            discount: ServiceDiscountDTO(
-                percentage: try CanonicalDecimalDTO(-1)
-            ),
+            discount: ServiceDiscountDTO(percentage: try CanonicalDecimalDTO(-1)),
             status: valid.status
         )
 

@@ -6,10 +6,7 @@ import Testing
 struct SaleCalculatorTests {
     @Test("Returns zero amounts for an empty sale")
     func returnsZeroAmountsForAnEmptySale() throws {
-        let calculation = try SaleCalculator().calculate(
-            lines: [],
-            currency: .eur
-        )
+        let calculation = try SaleCalculator().calculate(lines: [], currency: .eur)
 
         try expectAmounts(
             calculation,
@@ -24,16 +21,9 @@ struct SaleCalculatorTests {
 
     @Test("Extracts included tax from quantity-adjusted price")
     func extractsIncludedTaxFromQuantityAdjustedPrice() throws {
-        let line = try calculatorLine(
-            unitPrice: "12.10",
-            quantity: 2,
-            taxRate: "21"
-        )
+        let line = try calculatorLine(unitPrice: "12.10", quantity: 2, taxRate: "21")
 
-        let calculation = try SaleCalculator().calculate(
-            lines: [line],
-            currency: .eur
-        )
+        let calculation = try SaleCalculator().calculate(lines: [line], currency: .eur)
 
         try expectAmounts(
             calculation,
@@ -47,16 +37,9 @@ struct SaleCalculatorTests {
 
     @Test("Applies the line discount before extracting tax")
     func appliesTheLineDiscountBeforeExtractingTax() throws {
-        let line = try calculatorLine(
-            unitPrice: "100",
-            taxRate: "21",
-            discount: "10"
-        )
+        let line = try calculatorLine(unitPrice: "100", taxRate: "21", discount: "10")
 
-        let calculation = try SaleCalculator().calculate(
-            lines: [line],
-            currency: .eur
-        )
+        let calculation = try SaleCalculator().calculate(lines: [line], currency: .eur)
 
         try expectAmounts(
             calculation,
@@ -81,10 +64,7 @@ struct SaleCalculatorTests {
             taxRate: "10"
         )
 
-        let calculation = try SaleCalculator().calculate(
-            lines: [standardTaxLine, reducedTaxLine],
-            currency: .eur
-        )
+        let calculation = try SaleCalculator().calculate(lines: [standardTaxLine, reducedTaxLine], currency: .eur)
 
         try expectAmounts(
             calculation,
@@ -130,10 +110,7 @@ struct SaleCalculatorTests {
             discount: "10"
         )
 
-        let calculation = try SaleCalculator().calculate(
-            lines: [firstLine, secondLine],
-            currency: .eur
-        )
+        let calculation = try SaleCalculator().calculate(lines: [firstLine, secondLine], currency: .eur)
 
         try expectAmounts(
             calculation,
@@ -157,16 +134,9 @@ struct SaleCalculatorTests {
 
     @Test("Allows a full discount without negative amounts")
     func allowsAFullDiscountWithoutNegativeAmounts() throws {
-        let line = try calculatorLine(
-            unitPrice: "35",
-            taxRate: "21",
-            discount: "100"
-        )
+        let line = try calculatorLine(unitPrice: "35", taxRate: "21", discount: "100")
 
-        let calculation = try SaleCalculator().calculate(
-            lines: [line],
-            currency: .eur
-        )
+        let calculation = try SaleCalculator().calculate(lines: [line], currency: .eur)
 
         try expectAmounts(
             calculation,
@@ -180,57 +150,32 @@ struct SaleCalculatorTests {
 
     @Test("Rejects a line expressed in another currency")
     func rejectsALineExpressedInAnotherCurrency() throws {
-        let line = try calculatorLine(
-            unitPrice: "10",
-            taxRate: "21",
-            currency: .usd
-        )
+        let line = try calculatorLine(unitPrice: "10", taxRate: "21", currency: .usd)
 
-        #expect(
-            throws: SaleCalculatorError.incompatibleCurrency(
-                expected: .eur,
-                actual: .usd
-            )
-        ) {
-            try SaleCalculator().calculate(
-                lines: [line],
-                currency: .eur
-            )
+        #expect(throws: SaleCalculatorError.incompatibleCurrency(expected: .eur, actual: .usd)) {
+            try SaleCalculator().calculate(lines: [line], currency: .eur)
         }
     }
 
     @Test("Rejects duplicate line identity")
     func rejectsDuplicateLineIdentity() throws {
-        let line = try calculatorLine(
-            unitPrice: "10",
-            taxRate: "21"
-        )
+        let line = try calculatorLine(unitPrice: "10", taxRate: "21")
 
         #expect(throws: SaleCalculatorError.duplicateLineIdentity) {
-            try SaleCalculator().calculate(
-                lines: [line, line],
-                currency: .eur
-            )
+            try SaleCalculator().calculate(lines: [line, line], currency: .eur)
         }
     }
 
     @Test("Preserves line identity and input order")
     func preservesLineIdentityAndInputOrder() throws {
-        let firstID = SaleLineID(
-            rawValue: calculatorUUID("30000000-0000-0000-0000-000000000001")
-        )
-        let secondID = SaleLineID(
-            rawValue: calculatorUUID("30000000-0000-0000-0000-000000000002")
-        )
+        let firstID = SaleLineID(rawValue: calculatorUUID("30000000-0000-0000-0000-000000000001"))
+        let secondID = SaleLineID(rawValue: calculatorUUID("30000000-0000-0000-0000-000000000002"))
         let lines = [
             try calculatorLine(id: firstID.rawValue, unitPrice: "10", taxRate: "21"),
             try calculatorLine(id: secondID.rawValue, unitPrice: "20", taxRate: "10")
         ]
 
-        let calculation = try SaleCalculator().calculate(
-            lines: lines,
-            currency: .eur
-        )
+        let calculation = try SaleCalculator().calculate(lines: lines, currency: .eur)
 
         #expect(calculation.lineCalculations.map(\.id) == [firstID, secondID])
     }
@@ -238,14 +183,8 @@ struct SaleCalculatorTests {
     @Test("Calculation values are deterministic")
     func calculationValuesAreDeterministic() throws {
         let lines = [try calculatorLine(unitPrice: "19.99", taxRate: "21")]
-        let calculation = try SaleCalculator().calculate(
-            lines: lines,
-            currency: .eur
-        )
-        let repeatedCalculation = try SaleCalculator().calculate(
-            lines: lines,
-            currency: .eur
-        )
+        let calculation = try SaleCalculator().calculate(lines: lines, currency: .eur)
+        let repeatedCalculation = try SaleCalculator().calculate(lines: lines, currency: .eur)
 
         #expect(repeatedCalculation == calculation)
     }
@@ -264,10 +203,7 @@ private func calculatorLine(
         serviceID: ServiceID(rawValue: calculatorUUID("00000000-0000-0000-0000-000000000002")),
         serviceName: "Servicio snapshot",
         quantity: quantity,
-        unitPrice: Money(
-            amount: calculatorDecimal(unitPrice),
-            currency: currency
-        ),
+        unitPrice: Money(amount: calculatorDecimal(unitPrice), currency: currency),
         taxRate: TaxRate(percentage: calculatorDecimal(taxRate)),
         discount: try discount.map {
             try Discount(percentage: calculatorDecimal($0))
@@ -321,10 +257,7 @@ private func expectAmounts(
 }
 
 private func calculatorMoney(_ value: String, currency: Currency) throws -> Money {
-    try Money(
-        amount: calculatorDecimal(value),
-        currency: currency
-    )
+    try Money(amount: calculatorDecimal(value), currency: currency)
 }
 
 private func calculatorDecimal(_ value: String) -> Decimal {

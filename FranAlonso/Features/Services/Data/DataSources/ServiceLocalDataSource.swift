@@ -9,9 +9,7 @@ struct ServiceLocalDataSource {}
 extension ServiceLocalDataSource {
     /// Fetches and maps the locally persisted service snapshot.
     func fetchAll(in context: ModelContext) throws -> [Service] {
-        let descriptor = FetchDescriptor<ServiceModel>(
-            sortBy: [SortDescriptor(\ServiceModel.name)]
-        )
+        let descriptor = FetchDescriptor<ServiceModel>(sortBy: [SortDescriptor(\ServiceModel.name)])
         return try context.fetch(descriptor).map { try $0.toDomain() }
     }
 
@@ -33,20 +31,12 @@ extension ServiceLocalDataSource {
                 throw ServiceLocalDataSourceError.syncConflictPending(service.id)
             }
             guard try !hasDeletionState(for: service.id, in: context) else {
-                throw ServiceLocalDataSourceError.restoreRequiresExplicitResolution(
-                    service.id
-                )
+                throw ServiceLocalDataSourceError.restoreRequiresExplicitResolution(service.id)
             }
 
             let payload = try ServiceDTO(service)
-            let operations = try pendingOperations(
-                for: service.id,
-                in: context
-            )
-            let head = try pendingHead(
-                from: operations,
-                serviceID: service.id
-            )
+            let operations = try pendingOperations(for: service.id, in: context)
+            let head = try pendingHead(from: operations, serviceID: service.id)
             let headPayload: ServiceDTO?
             if case .upsert(let upsert) = head {
                 headPayload = upsert.service
@@ -55,10 +45,7 @@ extension ServiceLocalDataSource {
             }
 
             if headPayload != payload {
-                try ensureOperationIdentityAvailable(
-                    operationID,
-                    in: context
-                )
+                try ensureOperationIdentityAvailable(operationID, in: context)
                 context.insert(
                     try ServicePendingUpsertModel(
                         serviceID: service.id.rawValue,
@@ -89,7 +76,9 @@ extension ServiceLocalDataSource {
         do {
             let operations = try pendingOperations(for: id, in: context)
             if operations.contains(where: { operation in
-                if case .delete = operation { return true }
+                if case .delete = operation {
+                    return true
+                }
                 return false
             }) {
                 if let model = try model(for: id, in: context) {
@@ -130,9 +119,7 @@ extension ServiceLocalDataSource {
 
     /// Returns every immutable pending operation in deterministic causal order.
     func pendingOperations(in context: ModelContext) throws -> [ServicePendingOperation] {
-        let upserts = try context.fetch(
-            FetchDescriptor<ServicePendingUpsertModel>()
-        ).map { model in
+        let upserts = try context.fetch(FetchDescriptor<ServicePendingUpsertModel>()).map { model in
             ServicePendingOperation.upsert(
                 ServicePendingUpsert(
                     serviceID: model.serviceID,
@@ -143,9 +130,7 @@ extension ServiceLocalDataSource {
                 )
             )
         }
-        let deletes = try context.fetch(
-            FetchDescriptor<ServicePendingDeleteModel>()
-        ).map { model in
+        let deletes = try context.fetch(FetchDescriptor<ServicePendingDeleteModel>()).map { model in
             ServicePendingOperation.delete(
                 ServicePendingDelete(
                     serviceID: model.serviceID,
@@ -168,11 +153,7 @@ extension ServiceLocalDataSource {
 
     /// Returns operations eligible for delivery while preserving delete-wins semantics.
     func deliverablePendingOperations(in context: ModelContext) throws -> [ServicePendingOperation] {
-        let conflictedServiceIDs = Set(
-            try context.fetch(
-                FetchDescriptor<ServiceSyncConflictModel>()
-            ).map(\.serviceID)
-        )
+        let conflictedServiceIDs = Set(try context.fetch(FetchDescriptor<ServiceSyncConflictModel>()).map(\.serviceID))
 
         return try pendingOperations(in: context).filter { operation in
             switch operation {
@@ -196,9 +177,7 @@ extension ServiceLocalDataSource {
     func cursor(in context: ModelContext) throws -> ServiceSyncCursor? {
         try cursorModel(in: context).map { model in
             guard model.changeSequence >= 0 else { throw ServiceSyncPersistenceError.invalidCursor }
-            return ServiceSyncCursor(
-                changeSequence: model.changeSequence
-            )
+            return ServiceSyncCursor(changeSequence: model.changeSequence)
         }
     }
 
@@ -268,10 +247,7 @@ extension ServiceLocalDataSource {
                 .compactMap(\.changeSequence)
                 .max()
                 ?? 0
-            let expectedNextSequence = max(
-                currentCursor?.changeSequence ?? 0,
-                receivedMaximum
-            )
+            let expectedNextSequence = max(currentCursor?.changeSequence ?? 0, receivedMaximum)
             guard batch.nextCursor.changeSequence
                     == expectedNextSequence else {
                 throw ServiceSyncPersistenceError.invalidCursor
@@ -287,10 +263,7 @@ extension ServiceLocalDataSource {
                 if try isStale(record, for: serviceID, in: context) {
                     continue
                 }
-                let operation = try pendingOperations(
-                    for: serviceID,
-                    in: context
-                ).first
+                let operation = try pendingOperations(for: serviceID, in: context).first
                 guard let operation else {
                     try applyRemoteObservation(record, in: context)
                     continue
@@ -300,15 +273,8 @@ extension ServiceLocalDataSource {
                 case .apply:
                     try applyRemoteObservation(record, in: context)
                 case .alreadyApplied(let acknowledgedRecord):
-                    try applyAcknowledgement(
-                        operation: operation,
-                        record: acknowledgedRecord,
-                        in: context
-                    )
-                    try deleteRetryState(
-                        for: .operation(operation.operationID),
-                        in: context
-                    )
+                    try applyAcknowledgement(operation: operation, record: acknowledgedRecord, in: context)
+                    try deleteRetryState(for: .operation(operation.operationID), in: context)
                 case .conflict(let reason, let remoteRecord):
                     guard case .upsert(let upsert) = operation else {
                         throw ServiceSyncPersistenceError.entityIdentityMismatch
@@ -319,10 +285,7 @@ extension ServiceLocalDataSource {
                         remoteRecord: remoteRecord,
                         in: context
                     )
-                    try deleteRetryState(
-                        for: .operation(operation.operationID),
-                        in: context
-                    )
+                    try deleteRetryState(for: .operation(operation.operationID), in: context)
                 case .invalid(let error):
                     throw error
                 }
@@ -349,15 +312,8 @@ extension ServiceLocalDataSource {
     ) throws {
         try requireClean(context)
         do {
-            let operation = try requirePendingOperation(
-                operationID: operationID,
-                in: context
-            )
-            try applyAcknowledgement(
-                operation: operation,
-                record: record,
-                in: context
-            )
+            let operation = try requirePendingOperation(operationID: operationID, in: context)
+            try applyAcknowledgement(operation: operation, record: record, in: context)
             if let retryScope {
                 try deleteRetryState(for: retryScope, in: context)
             }
@@ -436,10 +392,7 @@ extension ServiceLocalDataSource {
         try persistRemoteState(record, in: context)
         switch operation {
         case .upsert(let upsert):
-            if let model = try pendingUpsertModel(
-                operationID: upsert.operationID,
-                in: context
-            ) {
+            if let model = try pendingUpsertModel(operationID: upsert.operationID, in: context) {
                 context.delete(model)
             }
             let descendantsRemain = try pendingOperations(
@@ -447,28 +400,16 @@ extension ServiceLocalDataSource {
                 in: context
             ).contains { $0.operationID != upsert.operationID }
             if !descendantsRemain,
-               try conflict(
-                for: ServiceID(rawValue: upsert.serviceID),
-                in: context
-               ) == nil,
+               try conflict(for: ServiceID(rawValue: upsert.serviceID), in: context) == nil,
                let service = record.liveService {
                 try materialize(try service.toDomain(), in: context)
             }
         case .delete(let delete):
-            try removePendingChain(
-                for: ServiceID(rawValue: delete.serviceID),
-                in: context
-            )
-            if let conflict = try conflict(
-                for: ServiceID(rawValue: delete.serviceID),
-                in: context
-            ) {
+            try removePendingChain(for: ServiceID(rawValue: delete.serviceID), in: context)
+            if let conflict = try conflict(for: ServiceID(rawValue: delete.serviceID), in: context) {
                 context.delete(conflict)
             }
-            if let model = try model(
-                for: ServiceID(rawValue: delete.serviceID),
-                in: context
-            ) {
+            if let model = try model(for: ServiceID(rawValue: delete.serviceID), in: context) {
                 context.delete(model)
             }
         }
@@ -477,10 +418,7 @@ extension ServiceLocalDataSource {
     private func applyRemoteObservation(_ record: ServiceRemoteRecord, in context: ModelContext) throws {
         let serviceID = ServiceID(rawValue: try record.stableServiceID())
         try persistRemoteState(record, in: context)
-        let hasPending = try !pendingOperations(
-            for: serviceID,
-            in: context
-        ).isEmpty
+        let hasPending = try !pendingOperations(for: serviceID, in: context).isEmpty
         let hasConflict = try conflict(for: serviceID, in: context) != nil
 
         switch record.content {
@@ -507,18 +445,10 @@ extension ServiceLocalDataSource {
         }
         let serviceID = ServiceID(rawValue: operation.serviceID)
         if let model = try conflict(for: serviceID, in: context) {
-            try model.update(
-                operation: operation,
-                reason: reason,
-                remoteRecord: remoteRecord
-            )
+            try model.update(operation: operation, reason: reason, remoteRecord: remoteRecord)
         } else {
             context.insert(
-                try ServiceSyncConflictModel(
-                    operation: operation,
-                    reason: reason,
-                    remoteRecord: remoteRecord
-                )
+                try ServiceSyncConflictModel(operation: operation, reason: reason, remoteRecord: remoteRecord)
             )
         }
         if let remoteRecord {
@@ -531,12 +461,12 @@ extension ServiceLocalDataSource {
     }
 
     private func isStale(_ record: ServiceRemoteRecord, for id: ServiceID, in context: ModelContext) throws -> Bool {
-        guard let current = try remoteState(for: id, in: context)?.decodeRecord() else {
-            return false
-        }
+        guard let current = try remoteState(for: id, in: context)?.decodeRecord() else { return false }
         switch (current.changeSequence, record.changeSequence) {
         case (.some(let currentSequence), .some(let incomingSequence)):
-            if incomingSequence < currentSequence { return true }
+            if incomingSequence < currentSequence {
+                return true
+            }
             if incomingSequence == currentSequence, current != record {
                 throw ServiceSyncPersistenceError.invalidCursor
             }
@@ -554,12 +484,7 @@ extension ServiceLocalDataSource {
         if let model = try cursorModel(in: context) {
             model.advance(to: cursor.changeSequence)
         } else {
-            context.insert(
-                ServiceSyncCursorModel(
-                    feedID: serviceSyncFeedID,
-                    changeSequence: cursor.changeSequence
-                )
-            )
+            context.insert(ServiceSyncCursorModel(feedID: serviceSyncFeedID, changeSequence: cursor.changeSequence))
         }
     }
 
@@ -661,10 +586,7 @@ extension ServiceLocalDataSource {
         operationID: UUID,
         in context: ModelContext
     ) throws -> ServicePendingOperation {
-        if let model = try pendingUpsertModel(
-            operationID: operationID,
-            in: context
-        ) {
+        if let model = try pendingUpsertModel(operationID: operationID, in: context) {
             return .upsert(
                 ServicePendingUpsert(
                     serviceID: model.serviceID,
@@ -675,10 +597,7 @@ extension ServiceLocalDataSource {
                 )
             )
         }
-        if let model = try pendingDeleteModel(
-            operationID: operationID,
-            in: context
-        ) {
+        if let model = try pendingDeleteModel(operationID: operationID, in: context) {
             return .delete(
                 ServicePendingDelete(
                     serviceID: model.serviceID,
@@ -692,17 +611,9 @@ extension ServiceLocalDataSource {
     }
 
     private func ensureOperationIdentityAvailable(_ operationID: UUID, in context: ModelContext) throws {
-        guard try pendingUpsertModel(
-            operationID: operationID,
-            in: context
-        ) == nil,
-        try pendingDeleteModel(
-            operationID: operationID,
-            in: context
-        ) == nil else {
-            throw ServiceSyncPersistenceError.duplicateOperationIdentity(
-                operationID
-            )
+        guard try pendingUpsertModel(operationID: operationID, in: context) == nil,
+        try pendingDeleteModel(operationID: operationID, in: context) == nil else {
+            throw ServiceSyncPersistenceError.duplicateOperationIdentity(operationID)
         }
     }
 
@@ -710,15 +621,11 @@ extension ServiceLocalDataSource {
         from operations: [ServicePendingOperation],
         serviceID: ServiceID
     ) throws -> ServicePendingOperation? {
-        let predecessorIDs = Set(
-            operations.compactMap(\.predecessorOperationID)
-        )
+        let predecessorIDs = Set(operations.compactMap(\.predecessorOperationID))
         let heads = operations.filter {
             !predecessorIDs.contains($0.operationID)
         }
-        guard heads.count <= 1 else {
-            throw ServiceSyncPersistenceError.ambiguousPendingLineage(serviceID)
-        }
+        guard heads.count <= 1 else { throw ServiceSyncPersistenceError.ambiguousPendingLineage(serviceID) }
         return heads.first
     }
 
@@ -734,9 +641,7 @@ extension ServiceLocalDataSource {
     }
 
     private func remoteBase(for id: ServiceID, in context: ModelContext) throws -> ServiceRemoteBase {
-        guard let record = try remoteState(for: id, in: context)?.decodeRecord() else {
-            return .absent
-        }
+        guard let record = try remoteState(for: id, in: context)?.decodeRecord() else { return .absent }
         switch (record.version, record.content) {
         case (.legacy, .live(let service)):
             return .legacy(service)
@@ -790,9 +695,7 @@ extension ServiceLocalDataSource {
         var remaining: [UUID: ServicePendingOperation] = [:]
         for operation in operations {
             guard remaining[operation.operationID] == nil else {
-                throw ServiceSyncPersistenceError.duplicateOperationIdentity(
-                    operation.operationID
-                )
+                throw ServiceSyncPersistenceError.duplicateOperationIdentity(operation.operationID)
             }
             remaining[operation.operationID] = operation
         }

@@ -15,10 +15,7 @@ struct FirebaseAuthenticationDataSourceTests {
             }
         )
 
-        let session = try await dataSource.signIn(
-            email: "owner@example.com",
-            password: "ephemeral-password"
-        )
+        let session = try await dataSource.signIn(email: "owner@example.com", password: "ephemeral-password")
 
         #expect(session == AuthenticationSession(id: "principal-201"))
     }
@@ -32,35 +29,23 @@ struct FirebaseAuthenticationDataSourceTests {
             }
         )
         let signIn = Task {
-            try await dataSource.signIn(
-                email: "owner@example.com",
-                password: "ephemeral-password"
-            )
+            try await dataSource.signIn(email: "owner@example.com", password: "ephemeral-password")
         }
 
         await gate.waitUntilReceived()
         signIn.cancel()
         await gate.succeed(with: "principal-202")
 
-        #expect(
-            try await signIn.value
-                == AuthenticationSession(id: "principal-202")
-        )
+        #expect(try await signIn.value == AuthenticationSession(id: "principal-202"))
         #expect(
             await gate.receivedCredentials
                 == [
-                    FirebaseSignInCredentials(
-                        email: "owner@example.com",
-                        password: "ephemeral-password"
-                    )
+                    FirebaseSignInCredentials(email: "owner@example.com", password: "ephemeral-password")
                 ]
         )
     }
 
-    @Test(
-        "Sign in maps every approved Firebase error bucket",
-        arguments: firebaseAuthenticationErrorFixtures
-    )
+    @Test("Sign in maps every approved Firebase error bucket", arguments: firebaseAuthenticationErrorFixtures)
     fileprivate func signInMapsFirebaseError(_ fixture: FirebaseAuthenticationErrorFixture) async {
         let dataSource = makeFirebaseAuthenticationDataSource(
             signIn: { _, _ in
@@ -69,10 +54,7 @@ struct FirebaseAuthenticationDataSourceTests {
         )
 
         await #expect(throws: fixture.expectedError) {
-            try await dataSource.signIn(
-                email: "owner@example.com",
-                password: "ephemeral-password"
-            )
+            try await dataSource.signIn(email: "owner@example.com", password: "ephemeral-password")
         }
     }
 
@@ -80,9 +62,7 @@ struct FirebaseAuthenticationDataSourceTests {
     func signInMapsUnsupportedFailuresToUnexpected() async {
         let knownButUnmapped = makeFirebaseAuthenticationDataSource(
             signIn: { _, _ in
-                throw firebaseAuthenticationError(
-                    code: AuthErrorCode.emailAlreadyInUse.rawValue
-                )
+                throw firebaseAuthenticationError(code: AuthErrorCode.emailAlreadyInUse.rawValue)
             }
         )
         let unknownCode = makeFirebaseAuthenticationDataSource(
@@ -92,19 +72,13 @@ struct FirebaseAuthenticationDataSourceTests {
         )
         let foreignDomain = makeFirebaseAuthenticationDataSource(
             signIn: { _, _ in
-                throw NSError(
-                    domain: "ExampleAuthenticationErrorDomain",
-                    code: AuthErrorCode.networkError.rawValue
-                )
+                throw NSError(domain: "ExampleAuthenticationErrorDomain", code: AuthErrorCode.networkError.rawValue)
             }
         )
 
         for dataSource in [knownButUnmapped, unknownCode, foreignDomain] {
             await #expect(throws: AuthenticationDataSourceError.unexpected) {
-                try await dataSource.signIn(
-                    email: "owner@example.com",
-                    password: "ephemeral-password"
-                )
+                try await dataSource.signIn(email: "owner@example.com", password: "ephemeral-password")
             }
         }
     }
@@ -116,19 +90,13 @@ struct FirebaseAuthenticationDataSourceTests {
         )
 
         await #expect(throws: CancellationError.self) {
-            try await dataSource.signIn(
-                email: "owner@example.com",
-                password: "ephemeral-password"
-            )
+            try await dataSource.signIn(email: "owner@example.com", password: "ephemeral-password")
         }
     }
 
     @Test("Sign out delegates exactly once")
     func signOutDelegatesExactlyOnce() async throws {
-        try await confirmation(
-            "The Firebase sign-out operation is called once",
-            expectedCount: 1
-        ) { signOutCalled in
+        try await confirmation("The Firebase sign-out operation is called once", expectedCount: 1) { signOutCalled in
             let dataSource = makeFirebaseAuthenticationDataSource(
                 signOut: { signOutCalled() }
             )
@@ -141,22 +109,16 @@ struct FirebaseAuthenticationDataSourceTests {
     func signOutMapsFailures() async {
         let secureStorageFailure = makeFirebaseAuthenticationDataSource(
             signOut: {
-                throw firebaseAuthenticationError(
-                    code: AuthErrorCode.keychainError.rawValue
-                )
+                throw firebaseAuthenticationError(code: AuthErrorCode.keychainError.rawValue)
             }
         )
         let unsupportedFailure = makeFirebaseAuthenticationDataSource(
             signOut: {
-                throw firebaseAuthenticationError(
-                    code: AuthErrorCode.internalError.rawValue
-                )
+                throw firebaseAuthenticationError(code: AuthErrorCode.internalError.rawValue)
             }
         )
 
-        await #expect(
-            throws: AuthenticationDataSourceError.secureStorageUnavailable
-        ) {
+        await #expect(throws: AuthenticationDataSourceError.secureStorageUnavailable) {
             try await secureStorageFailure.signOut()
         }
         await #expect(throws: AuthenticationDataSourceError.unexpected) {
@@ -186,14 +148,8 @@ struct FirebaseAuthenticationDataSourceTests {
         let stream = await dataSource.observeSession()
         var iterator = stream.makeAsyncIterator()
 
-        #expect(
-            await iterator.next()
-                == Optional<AuthenticationSession?>.some(nil)
-        )
-        #expect(
-            await iterator.next()
-                == Optional<AuthenticationSession?>.some(expectedSession)
-        )
+        #expect(await iterator.next() == Optional<AuthenticationSession?>.some(nil))
+        #expect(await iterator.next() == Optional<AuthenticationSession?>.some(expectedSession))
         #expect(await iterator.next() == nil)
     }
 
@@ -212,10 +168,7 @@ struct FirebaseAuthenticationDataSourceTests {
 
     @Test("Consumer cancellation terminates upstream exactly once")
     func consumerCancellationTerminatesUpstreamExactlyOnce() async {
-        await confirmation(
-            "The upstream sequence terminates once",
-            expectedCount: 1
-        ) { upstreamTerminated in
+        await confirmation("The upstream sequence terminates once", expectedCount: 1) { upstreamTerminated in
             let upstream = AsyncStream.makeStream(of: String?.self)
             upstream.continuation.onTermination = { _ in
                 upstreamTerminated()
@@ -244,10 +197,7 @@ struct FirebaseAuthenticationDataSourceTests {
 
     @Test("Abandoning observation before iteration terminates upstream once")
     func abandonmentBeforeIterationTerminatesUpstreamExactlyOnce() async {
-        await confirmation(
-            "The upstream sequence terminates once",
-            expectedCount: 1
-        ) { upstreamTerminated in
+        await confirmation("The upstream sequence terminates once", expectedCount: 1) { upstreamTerminated in
             let upstream = AsyncStream.makeStream(of: String?.self)
             upstream.continuation.onTermination = { _ in
                 upstreamTerminated()
@@ -264,8 +214,7 @@ struct FirebaseAuthenticationDataSourceTests {
                     )
                 }
             )
-            var stream: AsyncStream<AuthenticationSession?>? =
-                await dataSource.observeSession()
+            var stream: AsyncStream<AuthenticationSession?>? = await dataSource.observeSession()
             var relayStartedIterator = relayStarted.stream.makeAsyncIterator()
 
             upstream.continuation.yield(nil)
@@ -279,10 +228,7 @@ struct FirebaseAuthenticationDataSourceTests {
 
     @Test("Breaking observation then releasing it terminates upstream once")
     func earlyBreakThenReleaseTerminatesUpstreamExactlyOnce() async {
-        await confirmation(
-            "The upstream sequence terminates once",
-            expectedCount: 1
-        ) { upstreamTerminated in
+        await confirmation("The upstream sequence terminates once", expectedCount: 1) { upstreamTerminated in
             let upstream = AsyncStream.makeStream(of: String?.self)
             upstream.continuation.onTermination = { _ in
                 upstreamTerminated()
@@ -292,8 +238,7 @@ struct FirebaseAuthenticationDataSourceTests {
                     firebaseSessionStream(from: upstream.stream)
                 }
             )
-            var stream: AsyncStream<AuthenticationSession?>? =
-                await dataSource.observeSession()
+            var stream: AsyncStream<AuthenticationSession?>? = await dataSource.observeSession()
             upstream.continuation.yield(nil)
 
             if let observedStream = stream {
@@ -320,17 +265,13 @@ struct FirebaseAuthenticationDataSourceTests {
         let stream = await dataSource.observeSession()
         var iterator = stream.makeAsyncIterator()
 
-        #expect(
-            await iterator.next()
-                == Optional<AuthenticationSession?>.some(nil)
-        )
+        #expect(await iterator.next() == Optional<AuthenticationSession?>.some(nil))
         #expect(await iterator.next() == nil)
     }
 
 }
 
-private struct FirebaseAuthenticationErrorFixture: Sendable,
-    CustomTestStringConvertible {
+private struct FirebaseAuthenticationErrorFixture: CustomTestStringConvertible {
     let name: String
     let code: Int
     let expectedError: AuthenticationDataSourceError
@@ -439,9 +380,7 @@ private actor FirebaseSignInGate {
     var receivedCredentials: [FirebaseSignInCredentials] { credentials }
 
     func signIn(email: String, password: String) async -> String {
-        credentials.append(
-            FirebaseSignInCredentials(email: email, password: password)
-        )
+        credentials.append(FirebaseSignInCredentials(email: email, password: password))
         receivedWaiters.forEach { $0.resume() }
         receivedWaiters.removeAll()
 
@@ -464,29 +403,17 @@ private actor FirebaseSignInGate {
 }
 
 private func makeFirebaseAuthenticationDataSource(
-    signIn: @escaping @Sendable (
-        String,
-        String
-    ) async throws -> String = { _, _ in
+    signIn: @escaping @Sendable (String, String) async throws -> String = { _, _ in
         throw AuthenticationDataSourceError.unexpected
     },
     signOut: @escaping @Sendable () throws -> Void = {},
-    observeSession: @escaping @Sendable () -> AsyncStream<
-        AuthenticationSession?
-    > = { authenticationSessionStream([]) }
+    observeSession: @escaping @Sendable () -> AsyncStream<AuthenticationSession?> = { authenticationSessionStream([]) }
 ) -> FirebaseAuthenticationDataSource {
-    FirebaseAuthenticationDataSource(
-        signIn: signIn,
-        signOut: signOut,
-        observeSession: observeSession
-    )
+    FirebaseAuthenticationDataSource(signIn: signIn, signOut: signOut, observeSession: observeSession)
 }
 
 private func firebaseSessionStream(from upstream: AsyncStream<String?>) -> AsyncStream<AuthenticationSession?> {
-    FirebaseAuthenticationDataSource.sessionStream(
-        from: upstream,
-        transform: authenticationSession(id:)
-    )
+    FirebaseAuthenticationDataSource.sessionStream(from: upstream, transform: authenticationSession(id:))
 }
 
 private func authenticationSession(id principalID: String?) -> AuthenticationSession? {

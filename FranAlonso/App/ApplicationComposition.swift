@@ -21,9 +21,7 @@ struct ApplicationComposition {
         makeFixture: @MainActor (
             DevelopAuthenticationFixture.Configuration
         ) throws -> ApplicationComposition = { configuration in
-            try DevelopAuthenticationFixture.make(
-                configuration: configuration
-            ).applicationComposition
+            try DevelopAuthenticationFixture.make(configuration: configuration).applicationComposition
         },
         makeInvalidFixture: @MainActor () throws -> ApplicationComposition = {
             try DevelopAuthenticationFixture.makeInvalidApplicationComposition()
@@ -40,9 +38,7 @@ struct ApplicationComposition {
     }
 #else
     /// Creates the only composition route available outside the fixture compilation boundary.
-    static func make(
-        plan _: ApplicationLaunchPlan = .current
-    ) throws -> ApplicationComposition {
+    static func make(plan _: ApplicationLaunchPlan = .current) throws -> ApplicationComposition {
         try makeLiveComposition()
     }
 #endif
@@ -55,17 +51,12 @@ private extension ApplicationComposition {
             migrationPlan: PhaseFiveSchemaMigrationPlan.self
         )
         guard
-            let environmentName = Bundle.main.object(
-                forInfoDictionaryKey: "AppEnvironment"
-            ) as? String,
+            let environmentName = Bundle.main.object(forInfoDictionaryKey: "AppEnvironment") as? String,
             let environment = FirestoreEnvironment(rawValue: environmentName)
         else {
             throw ApplicationCompositionError.environmentUnavailable
         }
-        let runtime = AppRuntime(
-            modelContainer: container,
-            environment: environment
-        )
+        let runtime = AppRuntime(modelContainer: container, environment: environment)
 
 #if FRANALONSO_AUTH_FIXTURE
         return ApplicationComposition(
@@ -75,11 +66,7 @@ private extension ApplicationComposition {
             authenticationRootViewModel: nil
         )
 #else
-        return ApplicationComposition(
-            modelContainer: container,
-            dependencies: runtime.dependencies,
-            runtime: runtime
-        )
+        return ApplicationComposition(modelContainer: container, dependencies: runtime.dependencies, runtime: runtime)
 #endif
     }
 }

@@ -84,9 +84,7 @@ struct LoginViewModelTests {
     func duplicateSubmissionsAreIgnoredWhileFirstIntentIsLoading() async {
         let gate = LoginOperationGate()
         let expectedSession = AuthenticationSession(id: "principal-login-gated")
-        let repository = LoginAuthenticationRepositoryFake(
-            behavior: .waits(expectedSession, gate)
-        )
+        let repository = LoginAuthenticationRepositoryFake(behavior: .waits(expectedSession, gate))
         let viewModel = makeLoginViewModel(repository: repository)
         viewModel.email = "owner@example.com"
         viewModel.password = "ephemeral-password"
@@ -122,9 +120,7 @@ struct LoginViewModelTests {
     func cancellationAfterRepositoryDelegationDoesNotOverrideSuccessfulIntent() async {
         let gate = LoginOperationGate()
         let expectedSession = AuthenticationSession(id: "principal-login-cancelled-after-delegation")
-        let repository = LoginAuthenticationRepositoryFake(
-            behavior: .waits(expectedSession, gate)
-        )
+        let repository = LoginAuthenticationRepositoryFake(behavior: .waits(expectedSession, gate))
         let viewModel = makeLoginViewModel(repository: repository)
         viewModel.email = "owner@example.com"
         viewModel.password = "ephemeral-password"

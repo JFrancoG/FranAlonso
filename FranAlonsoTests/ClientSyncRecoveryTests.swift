@@ -10,9 +10,7 @@ struct ClientSyncRecoveryTests {
         let container = try recoveryContainer()
         let dataSource = ClientLocalDataSource()
         let client = recoveryClient(name: "Delete locally")
-        let operationID = recoveryUUID(
-            "61000000-0000-0000-0000-000000000001"
-        )
+        let operationID = recoveryUUID("61000000-0000-0000-0000-000000000001")
         try dataSource.upsert(client, in: ModelContext(container))
         try dataSource.reconcileRemoteBatch(
             ClientRemoteChangeBatch(
@@ -20,9 +18,7 @@ struct ClientSyncRecoveryTests {
                     recoveryLiveRecord(
                         client: client,
                         revision: 4,
-                        operationID: recoveryUUID(
-                            "61000000-0000-0000-0000-000000000002"
-                        ),
+                        operationID: recoveryUUID("61000000-0000-0000-0000-000000000002"),
                         changeSequence: 7
                     )
                 ],
@@ -32,17 +28,11 @@ struct ClientSyncRecoveryTests {
             in: ModelContext(container)
         )
 
-        try dataSource.persistPendingDelete(
-            client.id,
-            operationID: operationID,
-            in: ModelContext(container)
-        )
+        try dataSource.persistPendingDelete(client.id, operationID: operationID, in: ModelContext(container))
 
         #expect(try dataSource.fetchAll(in: ModelContext(container)).isEmpty)
         let restartedActor = ClientPersistenceActor(modelContainer: container)
-        let operation = try #require(
-            try await restartedActor.pendingOperations().only
-        )
+        let operation = try #require(try await restartedActor.pendingOperations().only)
         guard case .delete(let pendingDelete) = operation else {
             Issue.record("Expected a durable pending delete")
             return
@@ -56,45 +46,27 @@ struct ClientSyncRecoveryTests {
         let container = try recoveryContainer()
         let dataSource = ClientLocalDataSource()
         let client = recoveryClient(name: "Pending local snapshot")
-        let localOperationID = recoveryUUID(
-            "61000000-0000-0000-0000-000000000003"
-        )
-        try dataSource.persistPendingUpsert(
-            client,
-            operationID: localOperationID,
-            in: ModelContext(container)
-        )
+        let localOperationID = recoveryUUID("61000000-0000-0000-0000-000000000003")
+        try dataSource.persistPendingUpsert(client, operationID: localOperationID, in: ModelContext(container))
         let tombstone = recoveryTombstoneRecord(
             clientID: client.id.rawValue,
             revision: 2,
-            operationID: recoveryUUID(
-                "61000000-0000-0000-0000-000000000004"
-            ),
+            operationID: recoveryUUID("61000000-0000-0000-0000-000000000004"),
             changeSequence: 8
         )
 
         try dataSource.reconcileRemoteBatch(
-            ClientRemoteChangeBatch(
-                records: [tombstone],
-                nextCursor: ClientSyncCursor(changeSequence: 8)
-            ),
+            ClientRemoteChangeBatch(records: [tombstone], nextCursor: ClientSyncCursor(changeSequence: 8)),
             policy: ClientSyncPolicy(),
             in: ModelContext(container)
         )
 
         let verificationContext = ModelContext(container)
         #expect(try dataSource.fetchAll(in: verificationContext).isEmpty)
-        let conflict = try #require(
-            verificationContext.fetch(
-                FetchDescriptor<ClientSyncConflictModel>()
-            ).only
-        )
+        let conflict = try #require(verificationContext.fetch(FetchDescriptor<ClientSyncConflictModel>()).only)
         #expect(try conflict.decodeLocalClient() == ClientDTO(client))
         #expect(try conflict.decodeRemoteRecord() == tombstone)
-        #expect(
-            try dataSource.cursor(in: verificationContext)
-                == ClientSyncCursor(changeSequence: 8)
-        )
+        #expect(try dataSource.cursor(in: verificationContext) == ClientSyncCursor(changeSequence: 8))
     }
 
     @Test("A failed remote batch rolls back its materialization and cursor")
@@ -110,11 +82,7 @@ struct ClientSyncRecoveryTests {
             status: .draft,
             consentReference: nil
         )
-        let invalidRecord = ClientRemoteRecord(
-            content: .live(invalidDTO),
-            version: .legacy,
-            changeSequence: nil
-        )
+        let invalidRecord = ClientRemoteRecord(content: .live(invalidDTO), version: .legacy, changeSequence: nil)
 
         #expect(throws: ClientSyncPersistenceError.entityIdentityMismatch) {
             try dataSource.reconcileRemoteBatch(
@@ -123,9 +91,7 @@ struct ClientSyncRecoveryTests {
                         recoveryLiveRecord(
                             client: validClient,
                             revision: 1,
-                            operationID: recoveryUUID(
-                                "61000000-0000-0000-0000-000000000005"
-                            ),
+                            operationID: recoveryUUID("61000000-0000-0000-0000-000000000005"),
                             changeSequence: 1
                         ),
                         invalidRecord
@@ -140,11 +106,7 @@ struct ClientSyncRecoveryTests {
         let verificationContext = ModelContext(container)
         #expect(try dataSource.fetchAll(in: verificationContext).isEmpty)
         #expect(try dataSource.cursor(in: verificationContext) == nil)
-        #expect(
-            try verificationContext.fetchCount(
-                FetchDescriptor<ClientRemoteStateModel>()
-            ) == 0
-        )
+        #expect(try verificationContext.fetchCount(FetchDescriptor<ClientRemoteStateModel>()) == 0)
     }
 
     @Test("A stale live record cannot resurrect a sequenced tombstone")
@@ -155,16 +117,11 @@ struct ClientSyncRecoveryTests {
         let tombstone = recoveryTombstoneRecord(
             clientID: client.id.rawValue,
             revision: 5,
-            operationID: recoveryUUID(
-                "61000000-0000-0000-0000-000000000006"
-            ),
+            operationID: recoveryUUID("61000000-0000-0000-0000-000000000006"),
             changeSequence: 10
         )
         try dataSource.reconcileRemoteBatch(
-            ClientRemoteChangeBatch(
-                records: [tombstone],
-                nextCursor: ClientSyncCursor(changeSequence: 10)
-            ),
+            ClientRemoteChangeBatch(records: [tombstone], nextCursor: ClientSyncCursor(changeSequence: 10)),
             policy: ClientSyncPolicy(),
             in: ModelContext(container)
         )
@@ -172,27 +129,18 @@ struct ClientSyncRecoveryTests {
         let staleLive = recoveryLiveRecord(
             client: client,
             revision: 4,
-            operationID: recoveryUUID(
-                "61000000-0000-0000-0000-000000000007"
-            ),
+            operationID: recoveryUUID("61000000-0000-0000-0000-000000000007"),
             changeSequence: 9
         )
         try dataSource.reconcileRemoteBatch(
-            ClientRemoteChangeBatch(
-                records: [staleLive],
-                nextCursor: ClientSyncCursor(changeSequence: 10)
-            ),
+            ClientRemoteChangeBatch(records: [staleLive], nextCursor: ClientSyncCursor(changeSequence: 10)),
             policy: ClientSyncPolicy(),
             in: ModelContext(container)
         )
 
         let verificationContext = ModelContext(container)
         #expect(try dataSource.fetchAll(in: verificationContext).isEmpty)
-        let state = try #require(
-            verificationContext.fetch(
-                FetchDescriptor<ClientRemoteStateModel>()
-            ).only
-        )
+        let state = try #require(verificationContext.fetch(FetchDescriptor<ClientRemoteStateModel>()).only)
         #expect(try state.decodeRecord() == tombstone)
     }
 
@@ -202,16 +150,10 @@ struct ClientSyncRecoveryTests {
         let dataSource = ClientLocalDataSource()
         let firstClient = recoveryClient(name: "First identity")
         let secondClient = Client.draft(
-            id: ClientID(
-                rawValue: recoveryUUID(
-                    "60000000-0000-0000-0000-000000000099"
-                )
-            ),
+            id: ClientID(rawValue: recoveryUUID("60000000-0000-0000-0000-000000000099")),
             displayName: "Second identity"
         )
-        let duplicateOperationID = recoveryUUID(
-            "61000000-0000-0000-0000-000000000008"
-        )
+        let duplicateOperationID = recoveryUUID("61000000-0000-0000-0000-000000000008")
         try dataSource.upsert(firstClient, in: ModelContext(container))
         try dataSource.persistPendingDelete(
             firstClient.id,
@@ -219,11 +161,7 @@ struct ClientSyncRecoveryTests {
             in: ModelContext(container)
         )
 
-        #expect(
-            throws: ClientSyncPersistenceError.duplicateOperationIdentity(
-                duplicateOperationID
-            )
-        ) {
+        #expect(throws: ClientSyncPersistenceError.duplicateOperationIdentity(duplicateOperationID)) {
             try dataSource.persistPendingUpsert(
                 secondClient,
                 operationID: duplicateOperationID,
@@ -240,21 +178,14 @@ struct ClientSyncRecoveryTests {
         try dataSource.upsert(client, in: ModelContext(container))
         try dataSource.persistPendingDelete(
             client.id,
-            operationID: recoveryUUID(
-                "61000000-0000-0000-0000-000000000009"
-            ),
+            operationID: recoveryUUID("61000000-0000-0000-0000-000000000009"),
             in: ModelContext(container)
         )
 
-        #expect(
-            throws: ClientLocalDataSourceError
-                .restoreRequiresExplicitResolution(client.id)
-        ) {
+        #expect(throws: ClientLocalDataSourceError .restoreRequiresExplicitResolution(client.id)) {
             try dataSource.persistPendingUpsert(
                 client,
-                operationID: recoveryUUID(
-                    "61000000-0000-0000-0000-000000000010"
-                ),
+                operationID: recoveryUUID("61000000-0000-0000-0000-000000000010"),
                 in: ModelContext(container)
             )
         }
@@ -267,36 +198,23 @@ struct ClientSyncRecoveryTests {
 
         try ClientLocalDataSource().persistPendingDelete(
             recoveryClient(name: "Unknown").id,
-            operationID: recoveryUUID(
-                "61000000-0000-0000-0000-000000000011"
-            ),
+            operationID: recoveryUUID("61000000-0000-0000-0000-000000000011"),
             in: context
         )
 
         #expect(!context.hasChanges)
-        #expect(
-            try context.fetchCount(
-                FetchDescriptor<ClientPendingDeleteModel>()
-            ) == 0
-        )
+        #expect(try context.fetchCount(FetchDescriptor<ClientPendingDeleteModel>()) == 0)
     }
 
     @Test("A negative persisted cursor fails closed")
     func negativePersistedCursorFailsClosed() throws {
         let container = try recoveryContainer()
         let context = ModelContext(container)
-        context.insert(
-            ClientSyncCursorModel(
-                feedID: "clients",
-                changeSequence: -1
-            )
-        )
+        context.insert(ClientSyncCursorModel(feedID: "clients", changeSequence: -1))
         try context.save()
 
         #expect(throws: ClientSyncPersistenceError.invalidCursor) {
-            _ = try ClientLocalDataSource().cursor(
-                in: ModelContext(container)
-            )
+            _ = try ClientLocalDataSource().cursor(in: ModelContext(container))
         }
     }
 
@@ -313,9 +231,7 @@ struct ClientSyncRecoveryTests {
                         recoveryLiveRecord(
                             client: client,
                             revision: 1,
-                            operationID: recoveryUUID(
-                                "61000000-0000-0000-0000-000000000012"
-                            ),
+                            operationID: recoveryUUID("61000000-0000-0000-0000-000000000012"),
                             changeSequence: 1
                         )
                     ],
@@ -336,10 +252,7 @@ struct ClientSyncRecoveryTests {
             #"{"client":{"displayName":"Legacy 05.7","id":"60000000-0000-0000-0000-000000000001","status":"draft"},"version":{"versioned":{"lastOperationID":"60000000-0000-0000-0000-000000000002","revision":3}}}"#.utf8
         )
 
-        let record = try JSONDecoder().decode(
-            ClientRemoteRecord.self,
-            from: fixture
-        )
+        let record = try JSONDecoder().decode(ClientRemoteRecord.self, from: fixture)
 
         #expect(record.content == .live(ClientDTO(
             id: "60000000-0000-0000-0000-000000000001",
@@ -352,9 +265,7 @@ struct ClientSyncRecoveryTests {
         #expect(
             record.version == .versioned(
                 revision: 3,
-                lastOperationID: recoveryUUID(
-                    "60000000-0000-0000-0000-000000000002"
-                )
+                lastOperationID: recoveryUUID("60000000-0000-0000-0000-000000000002")
             )
         )
         #expect(record.changeSequence == nil)
@@ -366,15 +277,9 @@ struct ClientSyncRecoveryTests {
             path: "FranAlonso-05.8-Migration-\(UUID())",
             directoryHint: .isDirectory
         )
-        try FileManager.default.createDirectory(
-            at: directoryURL,
-            withIntermediateDirectories: true
-        )
+        try FileManager.default.createDirectory(at: directoryURL, withIntermediateDirectories: true)
         defer { try? FileManager.default.removeItem(at: directoryURL) }
-        let storeURL = directoryURL.appending(
-            path: "Clients.store",
-            directoryHint: .notDirectory
-        )
+        let storeURL = directoryURL.appending(path: "Clients.store", directoryHint: .notDirectory)
         try writePhaseFiveSevenStore(at: storeURL)
         let configuration = ModelConfiguration(
             "PhaseFiveEight",
@@ -383,36 +288,17 @@ struct ClientSyncRecoveryTests {
             allowsSave: true,
             cloudKitDatabase: .none
         )
-        let reopened = try ModelContainer(
-            for: Schema.franAlonso,
-            configurations: [configuration]
-        )
+        let reopened = try ModelContainer(for: Schema.franAlonso, configurations: [configuration])
         let context = ModelContext(reopened)
 
         #expect(try context.fetchCount(FetchDescriptor<ClientModel>()) == 1)
-        #expect(
-            try context.fetchCount(
-                FetchDescriptor<ClientPendingUpsertModel>()
-            ) == 1
-        )
-        let remoteState = try #require(
-            context.fetch(FetchDescriptor<ClientRemoteStateModel>()).only
-        )
+        #expect(try context.fetchCount(FetchDescriptor<ClientPendingUpsertModel>()) == 1)
+        let remoteState = try #require(context.fetch(FetchDescriptor<ClientRemoteStateModel>()).only)
         #expect(try remoteState.decodeRecord().isLive)
-        let conflict = try #require(
-            context.fetch(FetchDescriptor<ClientSyncConflictModel>()).only
-        )
+        let conflict = try #require(context.fetch(FetchDescriptor<ClientSyncConflictModel>()).only)
         #expect(try conflict.decodeRemoteRecord()?.isLive == true)
-        #expect(
-            try context.fetchCount(
-                FetchDescriptor<ClientPendingDeleteModel>()
-            ) == 0
-        )
-        #expect(
-            try context.fetchCount(
-                FetchDescriptor<ClientSyncCursorModel>()
-            ) == 0
-        )
+        #expect(try context.fetchCount(FetchDescriptor<ClientPendingDeleteModel>()) == 0)
+        #expect(try context.fetchCount(FetchDescriptor<ClientSyncCursorModel>()) == 0)
     }
 
     @Test("The published 05.8 store reopens with empty 05.9 retry state")
@@ -421,15 +307,9 @@ struct ClientSyncRecoveryTests {
             path: "FranAlonso-05.9-Migration-\(UUID())",
             directoryHint: .isDirectory
         )
-        try FileManager.default.createDirectory(
-            at: directoryURL,
-            withIntermediateDirectories: true
-        )
+        try FileManager.default.createDirectory(at: directoryURL, withIntermediateDirectories: true)
         defer { try? FileManager.default.removeItem(at: directoryURL) }
-        let storeURL = directoryURL.appending(
-            path: "Clients.store",
-            directoryHint: .notDirectory
-        )
+        let storeURL = directoryURL.appending(path: "Clients.store", directoryHint: .notDirectory)
         try writePhaseFiveEightStore(at: storeURL)
         let configuration = ModelConfiguration(
             "PhaseFiveNine",
@@ -439,22 +319,12 @@ struct ClientSyncRecoveryTests {
             cloudKitDatabase: .none
         )
 
-        let reopened = try ModelContainer(
-            for: Schema.franAlonso,
-            configurations: [configuration]
-        )
+        let reopened = try ModelContainer(for: Schema.franAlonso, configurations: [configuration])
         let context = ModelContext(reopened)
 
         #expect(try context.fetchCount(FetchDescriptor<ClientModel>()) == 1)
-        #expect(
-            try context.fetch(FetchDescriptor<ClientSyncCursorModel>())
-                .only?.changeSequence == 9
-        )
-        #expect(
-            try context.fetchCount(
-                FetchDescriptor<ClientSyncRetryModel>()
-            ) == 0
-        )
+        #expect(try context.fetch(FetchDescriptor<ClientSyncCursorModel>()) .only?.changeSequence == 9)
+        #expect(try context.fetchCount(FetchDescriptor<ClientSyncRetryModel>()) == 0)
     }
 }
 
@@ -463,14 +333,7 @@ private func recoveryContainer() throws -> ModelContainer {
 }
 
 private func recoveryClient(name: String) -> Client {
-    Client.draft(
-        id: ClientID(
-            rawValue: recoveryUUID(
-                "60000000-0000-0000-0000-000000000001"
-            )
-        ),
-        displayName: name
-    )
+    Client.draft(id: ClientID(rawValue: recoveryUUID("60000000-0000-0000-0000-000000000001")), displayName: name)
 }
 
 private func recoveryLiveRecord(
@@ -481,10 +344,7 @@ private func recoveryLiveRecord(
 ) -> ClientRemoteRecord {
     ClientRemoteRecord(
         content: .live(ClientDTO(client)),
-        version: .versioned(
-            revision: revision,
-            lastOperationID: operationID
-        ),
+        version: .versioned(revision: revision, lastOperationID: operationID),
         changeSequence: changeSequence
     )
 }
@@ -497,10 +357,7 @@ private func recoveryTombstoneRecord(
 ) -> ClientRemoteRecord {
     ClientRemoteRecord(
         content: .tombstone(clientID: clientID),
-        version: .versioned(
-            revision: revision,
-            lastOperationID: operationID
-        ),
+        version: .versioned(revision: revision, lastOperationID: operationID),
         changeSequence: changeSequence
     )
 }
@@ -519,34 +376,17 @@ private func writePhaseFiveSevenStore(at storeURL: URL) throws {
         allowsSave: true,
         cloudKitDatabase: .none
     )
-    let container = try ModelContainer(
-        for: oldSchema,
-        configurations: [configuration]
-    )
+    let container = try ModelContainer(for: oldSchema, configurations: [configuration])
     let context = ModelContext(container)
     let client = recoveryClient(name: "Published 05.7 client")
     let dto = ClientDTO(client)
-    let operationID = recoveryUUID(
-        "60000000-0000-0000-0000-000000000002"
-    )
+    let operationID = recoveryUUID("60000000-0000-0000-0000-000000000002")
     let recordFixture = Data(
         #"{"client":{"displayName":"Legacy 05.7","id":"60000000-0000-0000-0000-000000000001","status":"draft"},"version":{"versioned":{"lastOperationID":"60000000-0000-0000-0000-000000000002","revision":3}}}"#.utf8
     )
     context.insert(ClientModel(client))
-    context.insert(
-        try ClientPendingUpsertModel(
-            clientID: client.id.rawValue,
-            operationID: operationID,
-            payload: dto
-        )
-    )
-    context.insert(
-        ClientRemoteStateModel(
-            clientID: client.id.rawValue,
-            recordVersion: 1,
-            recordData: recordFixture
-        )
-    )
+    context.insert(try ClientPendingUpsertModel(clientID: client.id.rawValue, operationID: operationID, payload: dto))
+    context.insert(ClientRemoteStateModel(clientID: client.id.rawValue, recordVersion: 1, recordData: recordFixture))
     context.insert(
         ClientSyncConflictModel(
             clientID: client.id.rawValue,
@@ -577,18 +417,10 @@ private func writePhaseFiveEightStore(at storeURL: URL) throws {
         allowsSave: true,
         cloudKitDatabase: .none
     )
-    let container = try ModelContainer(
-        for: oldSchema,
-        configurations: [configuration]
-    )
+    let container = try ModelContainer(for: oldSchema, configurations: [configuration])
     let context = ModelContext(container)
     context.insert(ClientModel(recoveryClient(name: "Published 05.8 client")))
-    context.insert(
-        ClientSyncCursorModel(
-            feedID: "clients",
-            changeSequence: 9
-        )
-    )
+    context.insert(ClientSyncCursorModel(feedID: "clients", changeSequence: 9))
     try context.save()
 }
 

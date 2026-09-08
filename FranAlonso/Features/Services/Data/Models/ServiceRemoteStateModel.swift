@@ -46,14 +46,7 @@ extension ServiceRemoteStateModel {
     /// - Returns: The provider-neutral record last committed locally.
     /// - Throws: A version or native decoding error for invalid persisted data.
     func decodeRecord() throws -> ServiceRemoteRecord {
-        guard recordVersion == 1 else {
-            throw ServiceSyncPersistenceError.unsupportedRecordVersion(
-                recordVersion
-            )
-        }
-        return try JSONDecoder().decode(
-            ServiceRemoteRecord.self,
-            from: recordData
-        )
+        guard recordVersion == 1 else { throw ServiceSyncPersistenceError.unsupportedRecordVersion(recordVersion) }
+        return try JSONDecoder().decode(ServiceRemoteRecord.self, from: recordData)
     }
 }

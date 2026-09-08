@@ -10,18 +10,12 @@ struct FirestoreClientRemoteDataSourceTests {
         arguments: [FirestoreEnvironment.develop, .production]
     )
     func environmentsResolveApprovedPaths(_ environment: FirestoreEnvironment) {
-        #expect(
-            environment.collectionPath(for: .clients)
-                == "\(environment.rawValue)/collections/clients"
-        )
+        #expect(environment.collectionPath(for: .clients) == "\(environment.rawValue)/collections/clients")
         #expect(
             environment.syncMetadataDocumentPath(for: .clients)
                 == "\(environment.rawValue)/collections/syncMetadata/clients"
         )
-        #expect(
-            environment.collectionPath(for: .products)
-                == "\(environment.rawValue)/collections/products"
-        )
+        #expect(environment.collectionPath(for: .products) == "\(environment.rawValue)/collections/products")
         #expect(
             environment.syncMetadataDocumentPath(for: .products)
                 == "\(environment.rawValue)/collections/syncMetadata/products"
@@ -38,30 +32,20 @@ struct FirestoreClientRemoteDataSourceTests {
 
         #expect(
             try await dataSource.fetchChanges(after: nil)
-                == ClientRemoteChangeBatch(
-                    records: [expectedRecord],
-                    nextCursor: ClientSyncCursor(changeSequence: 0)
-                )
+                == ClientRemoteChangeBatch(records: [expectedRecord], nextCursor: ClientSyncCursor(changeSequence: 0))
         )
     }
 
     @Test("Incremental fetch forwards its cursor and advances to the largest sequence")
     func incrementalFetchAdvancesCursor() async throws {
-        let gate = FirestoreFetchGate(
-            record: firestoreClientRecord(changeSequence: 6)
-        )
+        let gate = FirestoreFetchGate(record: firestoreClientRecord(changeSequence: 6))
         let dataSource = makeFirestoreDataSource(fetch: { cursor in
             await gate.fetch(after: cursor)
         })
 
-        let batch = try await dataSource.fetchChanges(
-            after: ClientSyncCursor(changeSequence: 4)
-        )
+        let batch = try await dataSource.fetchChanges(after: ClientSyncCursor(changeSequence: 4))
 
-        #expect(
-            await gate.receivedCursors
-                == [ClientSyncCursor(changeSequence: 4)]
-        )
+        #expect(await gate.receivedCursors == [ClientSyncCursor(changeSequence: 4)])
         #expect(batch.nextCursor == ClientSyncCursor(changeSequence: 6))
     }
 
@@ -72,11 +56,7 @@ struct FirestoreClientRemoteDataSourceTests {
         let dataSource = makeFirestoreDataSource(transact: { operation in
             await gate.transact(operation: operation)
         })
-        let acknowledged = firestoreClientRecord(
-            revision: 1,
-            operationID: operation.operationID,
-            changeSequence: 1
-        )
+        let acknowledged = firestoreClientRecord(revision: 1, operationID: operation.operationID, changeSequence: 1)
 
         async let result = dataSource.apply(operation)
         await gate.waitUntilReceived()
@@ -113,14 +93,10 @@ struct FirestoreClientRemoteDataSourceTests {
     func liveWriteContainsBusinessFieldsAndSyncMetadata() throws {
         let record = firestoreClientRecord(
             revision: 2,
-            operationID: firestoreUUID(
-                "57000000-0000-0000-0000-000000000002"
-            ),
+            operationID: firestoreUUID("57000000-0000-0000-0000-000000000002"),
             changeSequence: 9
         )
-        let fields = try Firestore.Encoder().encode(
-            FirestoreClientWriteDTO(record)
-        )
+        let fields = try Firestore.Encoder().encode(FirestoreClientWriteDTO(record))
 
         #expect(fields["_deleted"] as? Bool == false)
         #expect(fields["displayName"] as? String == "Ana Alonso")
@@ -129,22 +105,13 @@ struct FirestoreClientRemoteDataSourceTests {
 
     @Test("A tombstone write contains no client PII")
     func tombstoneWriteContainsNoClientPII() throws {
-        let operationID = firestoreUUID(
-            "57000000-0000-0000-0000-000000000003"
-        )
+        let operationID = firestoreUUID("57000000-0000-0000-0000-000000000003")
         let record = ClientRemoteRecord(
-            content: .tombstone(
-                clientID: firestorePendingUpsert().clientID
-            ),
-            version: .versioned(
-                revision: 3,
-                lastOperationID: operationID
-            ),
+            content: .tombstone(clientID: firestorePendingUpsert().clientID),
+            version: .versioned(revision: 3, lastOperationID: operationID),
             changeSequence: 10
         )
-        let fields = try Firestore.Encoder().encode(
-            FirestoreClientWriteDTO(record)
-        )
+        let fields = try Firestore.Encoder().encode(FirestoreClientWriteDTO(record))
 
         #expect(fields["_deleted"] as? Bool == true)
         #expect(fields["displayName"] == nil)
@@ -156,21 +123,13 @@ struct FirestoreClientRemoteDataSourceTests {
 
     @Test("Counter progression fails closed for invalid and exhausted values")
     func counterProgressionFailsClosed() throws {
-        #expect(
-            try FirestoreClientRemoteDataSource.nextChangeSequence(after: nil)
-                == 1
-        )
-        #expect(
-            try FirestoreClientRemoteDataSource.nextChangeSequence(after: 8)
-                == 9
-        )
+        #expect(try FirestoreClientRemoteDataSource.nextChangeSequence(after: nil) == 1)
+        #expect(try FirestoreClientRemoteDataSource.nextChangeSequence(after: 8) == 9)
         #expect(throws: ClientSyncPolicyError.invalidChangeSequence) {
             try FirestoreClientRemoteDataSource.nextChangeSequence(after: -1)
         }
         #expect(throws: ClientSyncPolicyError.changeSequenceOverflow) {
-            try FirestoreClientRemoteDataSource.nextChangeSequence(
-                after: Int64.max
-            )
+            try FirestoreClientRemoteDataSource.nextChangeSequence(after: Int64.max)
         }
     }
 
@@ -191,18 +150,12 @@ struct FirestoreClientRemoteDataSourceTests {
         let delete = ClientPendingOperation.delete(
             ClientPendingDelete(
                 clientID: upsert.clientID,
-                operationID: firestoreUUID(
-                    "57000000-0000-0000-0000-000000000004"
-                ),
+                operationID: firestoreUUID("57000000-0000-0000-0000-000000000004"),
                 predecessorOperationID: nil,
                 base: .versioned(1)
             )
         )
-        let liveRemote = firestoreClientRecord(
-            revision: 1,
-            operationID: upsert.operationID,
-            changeSequence: 1
-        )
+        let liveRemote = firestoreClientRecord(revision: 1, operationID: upsert.operationID, changeSequence: 1)
         let deletePlan = try FirestoreClientRemoteDataSource.transactionPlan(
             for: delete,
             against: liveRemote,
@@ -244,16 +197,10 @@ struct FirestoreClientRemoteDataSourceTests {
         let malformedCounter = Data(#"{"changeSequence":"nine"}"#.utf8)
 
         #expect(throws: DecodingError.self) {
-            _ = try JSONDecoder().decode(
-                FirestoreClientDocumentDTO.self,
-                from: partialClient
-            )
+            _ = try JSONDecoder().decode(FirestoreClientDocumentDTO.self, from: partialClient)
         }
         #expect(throws: DecodingError.self) {
-            _ = try JSONDecoder().decode(
-                FirestoreClientCounterDTO.self,
-                from: malformedCounter
-            )
+            _ = try JSONDecoder().decode(FirestoreClientCounterDTO.self, from: malformedCounter)
         }
     }
 
@@ -282,9 +229,7 @@ struct FirestoreClientRemoteDataSourceTests {
         })
 
         await #expect(throws: ClientSyncPolicyError.invalidChangeSequence) {
-            try await dataSource.fetchChanges(
-                after: ClientSyncCursor(changeSequence: 1)
-            )
+            try await dataSource.fetchChanges(after: ClientSyncCursor(changeSequence: 1))
         }
     }
 
@@ -379,9 +324,7 @@ private func makeFirestoreDataSource(
     fetch: @escaping @Sendable (ClientSyncCursor?) async throws -> [
         (documentID: String, record: ClientRemoteRecord)
     ] = { _ in [] },
-    transact: @escaping @Sendable (
-        ClientPendingOperation
-    ) async throws -> ClientRemoteMutationResult = { operation in
+    transact: @escaping @Sendable (ClientPendingOperation) async throws -> ClientRemoteMutationResult = { operation in
         let content: ClientRemoteContent
         switch operation {
         case .upsert(let upsert): content = .live(upsert.client)
@@ -391,10 +334,7 @@ private func makeFirestoreDataSource(
         return .applied(
             ClientRemoteRecord(
                 content: content,
-                version: .versioned(
-                    revision: 1,
-                    lastOperationID: operation.operationID
-                ),
+                version: .versioned(revision: 1, lastOperationID: operation.operationID),
                 changeSequence: 1
             )
         )
@@ -414,9 +354,7 @@ private func firestorePendingUpsert() -> ClientPendingUpsert {
     )
     return ClientPendingUpsert(
         clientID: firestoreUUID(client.id),
-        operationID: firestoreUUID(
-            "57000000-0000-0000-0000-000000000001"
-        ),
+        operationID: firestoreUUID("57000000-0000-0000-0000-000000000001"),
         predecessorOperationID: nil,
         base: .absent,
         client: client
@@ -430,18 +368,11 @@ private func firestoreClientRecord(
 ) -> ClientRemoteRecord {
     let version: ClientRemoteVersion
     if let revision, let operationID {
-        version = .versioned(
-            revision: revision,
-            lastOperationID: operationID
-        )
+        version = .versioned(revision: revision, lastOperationID: operationID)
     } else {
         version = .legacy
     }
-    return ClientRemoteRecord(
-        client: firestorePendingUpsert().client,
-        version: version,
-        changeSequence: changeSequence
-    )
+    return ClientRemoteRecord(client: firestorePendingUpsert().client, version: version, changeSequence: changeSequence)
 }
 
 private func firestoreUUID(_ value: String) -> UUID {

@@ -5,10 +5,7 @@ import Testing
 struct TelemetryPrivacyTests {
     @Test("Analytics uses a closed allowlist with technical values")
     func analyticsUsesClosedAllowlist() {
-        #expect(AnalyticsEvent.appOpened.payload == AnalyticsPayload(
-            name: "app_opened",
-            parameters: [:]
-        ))
+        #expect(AnalyticsEvent.appOpened.payload == AnalyticsPayload(name: "app_opened", parameters: [:]))
         #expect(AnalyticsEvent.screenViewed(.bootstrap).payload == AnalyticsPayload(
             name: "screen_viewed",
             parameters: ["screen": "bootstrap"]
@@ -19,10 +16,7 @@ struct TelemetryPrivacyTests {
     func telemetryIsDeniedByDefault() async {
         let analytics = AnalyticsDataSourceSpy()
         let crash = CrashDataSourceSpy()
-        let reporter = TelemetryReporter(
-            analyticsDataSource: analytics,
-            crashDataSource: crash
-        )
+        let reporter = TelemetryReporter(analyticsDataSource: analytics, crashDataSource: crash)
 
         await reporter.track(.appOpened)
         await reporter.record(.controlledValidation)
@@ -35,10 +29,7 @@ struct TelemetryPrivacyTests {
     func consentEnablesAllowlistCompatibleDataSources() async {
         let analytics = AnalyticsDataSourceSpy()
         let crash = CrashDataSourceSpy()
-        let reporter = TelemetryReporter(
-            analyticsDataSource: analytics,
-            crashDataSource: crash
-        )
+        let reporter = TelemetryReporter(analyticsDataSource: analytics, crashDataSource: crash)
 
         await reporter.updateConsent(.granted)
         await reporter.track(.screenViewed(.bootstrap))
@@ -54,10 +45,7 @@ struct TelemetryPrivacyTests {
     func unavailableAnalyticsDoesNotBlockCrashReporting() async {
         let analytics = AnalyticsDataSourceSpy(shouldFail: true)
         let crash = CrashDataSourceSpy()
-        let reporter = TelemetryReporter(
-            analyticsDataSource: analytics,
-            crashDataSource: crash
-        )
+        let reporter = TelemetryReporter(analyticsDataSource: analytics, crashDataSource: crash)
 
         await reporter.updateConsent(.granted)
         await reporter.record(.controlledValidation)
@@ -71,10 +59,7 @@ struct TelemetryPrivacyTests {
     func revokingConsentDisablesAndSuppressesTelemetry() async {
         let analytics = AnalyticsDataSourceSpy()
         let crash = CrashDataSourceSpy()
-        let reporter = TelemetryReporter(
-            analyticsDataSource: analytics,
-            crashDataSource: crash
-        )
+        let reporter = TelemetryReporter(analyticsDataSource: analytics, crashDataSource: crash)
 
         await reporter.updateConsent(.granted)
         await reporter.updateConsent(.denied)
@@ -91,10 +76,7 @@ struct TelemetryPrivacyTests {
     func telemetryFailuresNeverEscape() async {
         let analytics = AnalyticsDataSourceSpy(shouldFail: true)
         let crash = CrashDataSourceSpy(shouldFail: true)
-        let reporter = TelemetryReporter(
-            analyticsDataSource: analytics,
-            crashDataSource: crash
-        )
+        let reporter = TelemetryReporter(analyticsDataSource: analytics, crashDataSource: crash)
 
         await reporter.updateConsent(.granted)
         await reporter.track(.appOpened)
@@ -110,10 +92,7 @@ struct TelemetryPrivacyTests {
     func latestConsentWinsWhenUpdatesOverlap() async {
         let analytics = AnalyticsDataSourceSpy()
         let crash = SuspendingCrashDataSource()
-        let reporter = TelemetryReporter(
-            analyticsDataSource: analytics,
-            crashDataSource: crash
-        )
+        let reporter = TelemetryReporter(analyticsDataSource: analytics, crashDataSource: crash)
 
         async let granting: Void = reporter.updateConsent(.granted)
         await crash.waitUntilEnableIsSuspended()

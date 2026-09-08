@@ -21,10 +21,7 @@ actor DevelopAuthenticationDataSource: AuthenticationDataSource {
 
     var activeObservationCount: Int { observers.count }
 
-    init(
-        initialState: InitialState,
-        observationBehavior: ObservationBehavior = .continuous
-    ) {
+    init(initialState: InitialState, observationBehavior: ObservationBehavior = .continuous) {
         currentSession = switch initialState {
         case .signedOut:
             nil
@@ -34,10 +31,7 @@ actor DevelopAuthenticationDataSource: AuthenticationDataSource {
         shouldEndNextObservation = observationBehavior == .firstObservationEndsThenRecovers
     }
 
-    func signIn(
-        email: String,
-        password: String
-    ) async throws -> AuthenticationSession {
+    func signIn(email: String, password: String) async throws -> AuthenticationSession {
         try Task.checkCancellation()
         guard email == DevelopAuthenticationFixture.email,
               password == DevelopAuthenticationFixture.password
@@ -45,9 +39,7 @@ actor DevelopAuthenticationDataSource: AuthenticationDataSource {
             throw AuthenticationDataSourceError.credentialsRejected
         }
 
-        let session = AuthenticationSession(
-            id: DevelopAuthenticationFixture.principalID
-        )
+        let session = AuthenticationSession(id: DevelopAuthenticationFixture.principalID)
         currentSession = session
         publish(session)
         return session
@@ -68,9 +60,7 @@ actor DevelopAuthenticationDataSource: AuthenticationDataSource {
         }
 
         let observerID = UUID()
-        let pair = AsyncStream<AuthenticationSession?>.makeStream(
-            bufferingPolicy: .unbounded
-        )
+        let pair = AsyncStream<AuthenticationSession?>.makeStream(bufferingPolicy: .unbounded)
         observers[observerID] = pair.continuation
         pair.continuation.onTermination = { [weak self] _ in
             Task {

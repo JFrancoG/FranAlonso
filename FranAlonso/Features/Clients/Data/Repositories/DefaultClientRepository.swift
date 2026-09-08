@@ -11,16 +11,12 @@ struct DefaultClientRepository: ClientRepository {
 
     func observeClients() async -> AsyncThrowingStream<[Client], any Error> {
         let changes = await observationSignal.stream()
-        let pair = AsyncThrowingStream<[Client], any Error>.makeStream(
-            bufferingPolicy: .bufferingNewest(1)
-        )
+        let pair = AsyncThrowingStream<[Client], any Error>.makeStream(bufferingPolicy: .bufferingNewest(1))
         let observationTask = Task {
             do {
                 for await _ in changes {
                     try Task.checkCancellation()
-                    pair.continuation.yield(
-                        try await persistenceActor.fetchAll()
-                    )
+                    pair.continuation.yield(try await persistenceActor.fetchAll())
                 }
                 pair.continuation.finish()
             } catch {
@@ -34,10 +30,7 @@ struct DefaultClientRepository: ClientRepository {
     }
 
     func saveClient(_ client: Client) async throws {
-        try await persistenceActor.persistPendingUpsert(
-            client,
-            operationID: makeOperationID()
-        )
+        try await persistenceActor.persistPendingUpsert(client, operationID: makeOperationID())
         await observationSignal.publishChange()
     }
 }

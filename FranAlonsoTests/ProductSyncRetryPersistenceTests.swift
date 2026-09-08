@@ -27,41 +27,23 @@ struct ProductSyncRetryPersistenceTests {
 
         let restartedActor = ProductPersistenceActor(modelContainer: container)
         #expect(try await restartedActor.retryState(for: .pull) == second)
-        #expect(
-            try ModelContext(container).fetchCount(
-                FetchDescriptor<ProductSyncRetryModel>()
-            ) == 1
-        )
+        #expect(try ModelContext(container).fetchCount(FetchDescriptor<ProductSyncRetryModel>()) == 1)
     }
 
     @Test("Operation scopes retain independent retry rows")
     func operationScopesRetainIndependentRows() async throws {
         let container = try retryPersistenceContainer()
-        let firstID = retryPersistenceUUID(
-            "71000000-0000-0000-0000-000000000001"
-        )
-        let secondID = retryPersistenceUUID(
-            "71000000-0000-0000-0000-000000000002"
-        )
+        let firstID = retryPersistenceUUID("71000000-0000-0000-0000-000000000001")
+        let secondID = retryPersistenceUUID("71000000-0000-0000-0000-000000000002")
         let actor = ProductPersistenceActor(modelContainer: container)
-        let first = try retryPersistenceState(
-            scope: .operation(firstID),
-            step: 1
-        )
-        let second = try retryPersistenceState(
-            scope: .operation(secondID),
-            step: 2
-        )
+        let first = try retryPersistenceState(scope: .operation(firstID), step: 1)
+        let second = try retryPersistenceState(scope: .operation(secondID), step: 2)
 
         try await actor.saveRetryState(first)
         try await actor.saveRetryState(second)
 
-        #expect(
-            try await actor.retryState(for: .operation(firstID)) == first
-        )
-        #expect(
-            try await actor.retryState(for: .operation(secondID)) == second
-        )
+        #expect(try await actor.retryState(for: .operation(firstID)) == first)
+        #expect(try await actor.retryState(for: .operation(secondID)) == second)
     }
 
     @Test("Malformed durable retry state fails closed")
@@ -79,9 +61,7 @@ struct ProductSyncRetryPersistenceTests {
         try context.save()
         let actor = ProductPersistenceActor(modelContainer: container)
 
-        await #expect(
-            throws: SyncRetryPolicyError.invalidBackoffStep(0)
-        ) {
+        await #expect(throws: SyncRetryPolicyError.invalidBackoffStep(0)) {
             _ = try await actor.retryState(for: .pull)
         }
     }
@@ -90,15 +70,10 @@ struct ProductSyncRetryPersistenceTests {
     func committedPullClearsRetryWithCursor() async throws {
         let container = try retryPersistenceContainer()
         let actor = ProductPersistenceActor(modelContainer: container)
-        try await actor.saveRetryState(
-            try retryPersistenceState(scope: .pull, step: 2)
-        )
+        try await actor.saveRetryState(try retryPersistenceState(scope: .pull, step: 2))
 
         try await actor.reconcileRemoteBatch(
-            ProductRemoteChangeBatch(
-                records: [],
-                nextCursor: ProductSyncCursor(changeSequence: 0)
-            ),
+            ProductRemoteChangeBatch(records: [], nextCursor: ProductSyncCursor(changeSequence: 0)),
             policy: ProductSyncPolicy(),
             clearingRetryFor: .pull
         )
@@ -116,10 +91,7 @@ struct ProductSyncRetryPersistenceTests {
 
         await #expect(throws: ProductSyncPersistenceError.invalidCursor) {
             try await actor.reconcileRemoteBatch(
-                ProductRemoteChangeBatch(
-                    records: [],
-                    nextCursor: ProductSyncCursor(changeSequence: 1)
-                ),
+                ProductRemoteChangeBatch(records: [], nextCursor: ProductSyncCursor(changeSequence: 1)),
                 policy: ProductSyncPolicy(),
                 clearingRetryFor: .pull
             )
@@ -133,45 +105,22 @@ struct ProductSyncRetryPersistenceTests {
         let container = try retryPersistenceContainer()
         let actor = ProductPersistenceActor(modelContainer: container)
         let product = Product.testSnapshot(
-            id: ProductID(
-                rawValue: retryPersistenceUUID(
-                    "71000000-0000-0000-0000-000000000003"
-                )
-            ),
+            id: ProductID(rawValue: retryPersistenceUUID("71000000-0000-0000-0000-000000000003")),
             name: "Retry acknowledgement"
         )
-        let operationID = retryPersistenceUUID(
-            "71000000-0000-0000-0000-000000000004"
-        )
-        try await actor.persistPendingUpsert(
-            product,
-            operationID: operationID
-        )
-        try await actor.saveRetryState(
-            try retryPersistenceState(
-                scope: .operation(operationID),
-                step: 2
-            )
-        )
+        let operationID = retryPersistenceUUID("71000000-0000-0000-0000-000000000004")
+        try await actor.persistPendingUpsert(product, operationID: operationID)
+        try await actor.saveRetryState(try retryPersistenceState(scope: .operation(operationID), step: 2))
         let record = ProductRemoteRecord(
             product: ProductDTO(product),
-            version: .versioned(
-                revision: 1,
-                lastOperationID: operationID
-            ),
+            version: .versioned(revision: 1, lastOperationID: operationID),
             changeSequence: 1
         )
 
-        try await actor.acknowledge(
-            operationID: operationID,
-            record: record,
-            clearingRetryFor: .operation(operationID)
-        )
+        try await actor.acknowledge(operationID: operationID, record: record, clearingRetryFor: .operation(operationID))
 
         #expect(try await actor.pendingOperations().isEmpty)
-        #expect(
-            try await actor.retryState(for: .operation(operationID)) == nil
-        )
+        #expect(try await actor.retryState(for: .operation(operationID)) == nil)
     }
 
     @Test("A pulled acknowledgement clears the acknowledged operation retry")
@@ -179,36 +128,19 @@ struct ProductSyncRetryPersistenceTests {
         let container = try retryPersistenceContainer()
         let actor = ProductPersistenceActor(modelContainer: container)
         let product = Product.testSnapshot(
-            id: ProductID(
-                rawValue: retryPersistenceUUID(
-                    "71000000-0000-0000-0000-000000000005"
-                )
-            ),
+            id: ProductID(rawValue: retryPersistenceUUID("71000000-0000-0000-0000-000000000005")),
             name: "Pulled acknowledgement"
         )
-        let operationID = retryPersistenceUUID(
-            "71000000-0000-0000-0000-000000000006"
-        )
-        try await actor.persistPendingUpsert(
-            product,
-            operationID: operationID
-        )
-        try await actor.saveRetryState(
-            try retryPersistenceState(
-                scope: .operation(operationID),
-                step: 2
-            )
-        )
+        let operationID = retryPersistenceUUID("71000000-0000-0000-0000-000000000006")
+        try await actor.persistPendingUpsert(product, operationID: operationID)
+        try await actor.saveRetryState(try retryPersistenceState(scope: .operation(operationID), step: 2))
 
         try await actor.reconcileRemoteBatch(
             ProductRemoteChangeBatch(
                 records: [
                     ProductRemoteRecord(
                         product: ProductDTO(product),
-                        version: .versioned(
-                            revision: 1,
-                            lastOperationID: operationID
-                        ),
+                        version: .versioned(revision: 1, lastOperationID: operationID),
                         changeSequence: 1
                     )
                 ],
@@ -219,41 +151,19 @@ struct ProductSyncRetryPersistenceTests {
         )
 
         #expect(try await actor.pendingOperations().isEmpty)
-        #expect(
-            try await actor.retryState(for: .operation(operationID)) == nil
-        )
+        #expect(try await actor.retryState(for: .operation(operationID)) == nil)
     }
 
     @Test("A pulled conflict clears the blocked operation retry")
     func pulledConflictClearsOperationRetry() async throws {
         let container = try retryPersistenceContainer()
         let actor = ProductPersistenceActor(modelContainer: container)
-        let productID = ProductID(
-            rawValue: retryPersistenceUUID(
-                "71000000-0000-0000-0000-000000000007"
-            )
-        )
-        let product = Product.testSnapshot(
-            id: productID,
-            name: "Local conflict"
-        )
-        let operationID = retryPersistenceUUID(
-            "71000000-0000-0000-0000-000000000008"
-        )
-        try await actor.persistPendingUpsert(
-            product,
-            operationID: operationID
-        )
-        try await actor.saveRetryState(
-            try retryPersistenceState(
-                scope: .operation(operationID),
-                step: 2
-            )
-        )
-        let remoteProduct = Product.testSnapshot(
-            id: productID,
-            name: "Remote conflict"
-        )
+        let productID = ProductID(rawValue: retryPersistenceUUID("71000000-0000-0000-0000-000000000007"))
+        let product = Product.testSnapshot(id: productID, name: "Local conflict")
+        let operationID = retryPersistenceUUID("71000000-0000-0000-0000-000000000008")
+        try await actor.persistPendingUpsert(product, operationID: operationID)
+        try await actor.saveRetryState(try retryPersistenceState(scope: .operation(operationID), step: 2))
+        let remoteProduct = Product.testSnapshot(id: productID, name: "Remote conflict")
 
         try await actor.reconcileRemoteBatch(
             ProductRemoteChangeBatch(
@@ -262,9 +172,7 @@ struct ProductSyncRetryPersistenceTests {
                         product: ProductDTO(remoteProduct),
                         version: .versioned(
                             revision: 1,
-                            lastOperationID: retryPersistenceUUID(
-                                "71000000-0000-0000-0000-000000000009"
-                            )
+                            lastOperationID: retryPersistenceUUID("71000000-0000-0000-0000-000000000009")
                         ),
                         changeSequence: 1
                     )
@@ -275,14 +183,8 @@ struct ProductSyncRetryPersistenceTests {
             clearingRetryFor: .pull
         )
 
-        #expect(
-            try ModelContext(container).fetchCount(
-                FetchDescriptor<ProductSyncConflictModel>()
-            ) == 1
-        )
-        #expect(
-            try await actor.retryState(for: .operation(operationID)) == nil
-        )
+        #expect(try ModelContext(container).fetchCount(FetchDescriptor<ProductSyncConflictModel>()) == 1)
+        #expect(try await actor.retryState(for: .operation(operationID)) == nil)
     }
 }
 

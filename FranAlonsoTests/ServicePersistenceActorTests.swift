@@ -8,22 +8,11 @@ struct ServicePersistenceActorTests {
     @Test("Concurrent upserts serialize and return detached Domain snapshots")
     func concurrentUpsertsSerializeAndReturnDetachedDomainSnapshots() async throws {
         let container = try makeServicePersistenceContainer()
-        let persistenceActor = ServicePersistenceActor(
-            modelContainer: container
-        )
+        let persistenceActor = ServicePersistenceActor(modelContainer: container)
         let services = [
-            try persistenceService(
-                id: "52000000-0000-0000-0000-000000000001",
-                name: "Tratamiento"
-            ),
-            try persistenceService(
-                id: "52000000-0000-0000-0000-000000000002",
-                name: "Corte"
-            ),
-            try persistenceService(
-                id: "52000000-0000-0000-0000-000000000003",
-                name: "Peinado"
-            )
+            try persistenceService(id: "52000000-0000-0000-0000-000000000001", name: "Tratamiento"),
+            try persistenceService(id: "52000000-0000-0000-0000-000000000002", name: "Corte"),
+            try persistenceService(id: "52000000-0000-0000-0000-000000000003", name: "Peinado")
         ]
 
         try await withThrowingTaskGroup(of: Void.self) { group in
@@ -43,12 +32,8 @@ struct ServicePersistenceActorTests {
     @Test("An actor save is visible from an independently owned context")
     func actorSaveIsVisibleFromAnIndependentlyOwnedContext() async throws {
         let container = try makeServicePersistenceContainer()
-        let persistenceActor = ServicePersistenceActor(
-            modelContainer: container
-        )
-        let linkedProductID = try persistenceUUID(
-            "52100000-0000-0000-0000-000000000004"
-        )
+        let persistenceActor = ServicePersistenceActor(modelContainer: container)
+        let linkedProductID = try persistenceUUID("52100000-0000-0000-0000-000000000004")
         let service = try persistenceService(
             id: "52000000-0000-0000-0000-000000000004",
             name: "Producto aplicado",
@@ -61,31 +46,20 @@ struct ServicePersistenceActorTests {
 
         try await persistenceActor.upsert(service)
 
-        let persistedServices = try ServiceLocalDataSource().fetchAll(
-            in: ModelContext(container)
-        )
+        let persistedServices = try ServiceLocalDataSource().fetchAll(in: ModelContext(container))
         #expect(persistedServices == [service])
     }
 
     @Test("Delete removes a stable Service identity through the actor boundary")
     func deleteRemovesAStableServiceIdentityThroughTheActorBoundary() async throws {
         let container = try makeServicePersistenceContainer()
-        let persistenceActor = ServicePersistenceActor(
-            modelContainer: container
-        )
-        let service = try persistenceService(
-            id: "52000000-0000-0000-0000-000000000005",
-            name: "Service to delete"
-        )
+        let persistenceActor = ServicePersistenceActor(modelContainer: container)
+        let service = try persistenceService(id: "52000000-0000-0000-0000-000000000005", name: "Service to delete")
         try await persistenceActor.upsert(service)
 
         try await persistenceActor.delete(service.id)
 
-        #expect(
-            try ServiceLocalDataSource().fetchAll(
-                in: ModelContext(container)
-            ).isEmpty
-        )
+        #expect(try ServiceLocalDataSource().fetchAll(in: ModelContext(container)).isEmpty)
     }
 }
 

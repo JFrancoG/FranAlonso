@@ -48,11 +48,7 @@ actor ServiceSyncEngine {
             try await remoteDataSource.fetchChanges(after: currentCursor)
         }
         try Task.checkCancellation()
-        try await persistenceActor.reconcileRemoteBatch(
-            batch,
-            policy: syncPolicy,
-            clearingRetryFor: .pull
-        )
+        try await persistenceActor.reconcileRemoteBatch(batch, policy: syncPolicy, clearingRetryFor: .pull)
         await observationSignal.publishChange()
 
         let operations = try await persistenceActor
@@ -64,18 +60,12 @@ actor ServiceSyncEngine {
                 continue
             }
             try Task.checkCancellation()
-            let retryScope = SyncRetryScope.operation(
-                operation.operationID
-            )
+            let retryScope = SyncRetryScope.operation(operation.operationID)
             let result = try await performWithRetry(scope: retryScope) {
                 try await remoteDataSource.apply(operation)
             }
             try Task.checkCancellation()
-            try await reconcilePushed(
-                operation,
-                result: result,
-                clearingRetryFor: retryScope
-            )
+            try await reconcilePushed(operation, result: result, clearingRetryFor: retryScope)
             if case .conflict = result {
                 conflictedServiceIDs.insert(operation.serviceID)
             }

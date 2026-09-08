@@ -31,27 +31,13 @@ actor ServicePersistenceActor {
     ///   - service: The detached Domain value to persist.
     ///   - operationID: The identifier assigned if the pending payload changes.
     /// - Throws: A mapping, encoding, SwiftData fetch or SwiftData save error.
-    func persistPendingUpsert(
-        _ service: Service,
-        operationID: UUID
-    ) throws {
-        try dataSource.persistPendingUpsert(
-            service,
-            operationID: operationID,
-            in: modelContext
-        )
+    func persistPendingUpsert(_ service: Service, operationID: UUID) throws {
+        try dataSource.persistPendingUpsert(service, operationID: operationID, in: modelContext)
     }
 
     /// Removes the active service and commits one durable deletion operation.
-    func persistPendingDelete(
-        _ id: ServiceID,
-        operationID: UUID
-    ) throws {
-        try dataSource.persistPendingDelete(
-            id,
-            operationID: operationID,
-            in: modelContext
-        )
+    func persistPendingDelete(_ id: ServiceID, operationID: UUID) throws {
+        try dataSource.persistPendingDelete(id, operationID: operationID, in: modelContext)
     }
 
     /// Returns the combined causal upsert and delete chain.
@@ -80,9 +66,7 @@ actor ServicePersistenceActor {
     }
 
     /// Returns the durable backoff schedule for one pull or pending operation.
-    func retryState(
-        for scope: SyncRetryScope
-    ) throws -> SyncRetryState? {
+    func retryState(for scope: SyncRetryScope) throws -> SyncRetryState? {
         try dataSource.retryState(for: scope, in: modelContext)
     }
 

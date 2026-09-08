@@ -43,10 +43,7 @@ struct BillingDocumentTests {
 
         for (offset, testCase) in cases.enumerated() {
             let requestID = BillingDocumentRequestID(rawValue: billingUUID(offset: offset + 10))
-            let number = try BillingDocumentNumber(
-                series: testCase.1,
-                value: 1
-            )
+            let number = try BillingDocumentNumber(series: testCase.1, value: 1)
             let document = try BillingDocument.numbered(
                 id: BillingDocumentID(rawValue: billingUUID(offset: offset + 20)),
                 saleID: SaleID(rawValue: billingUUID(offset: offset + 30)),
@@ -67,12 +64,7 @@ struct BillingDocumentTests {
     func rejectsANumberFromAnotherDocumentSeries() throws {
         let invoiceNumber = try BillingDocumentNumber(series: .invoice, value: 1)
 
-        #expect(
-            throws: BillingDocumentError.incompatibleSeries(
-                expected: .ticket,
-                actual: .invoice
-            )
-        ) {
+        #expect(throws: BillingDocumentError.incompatibleSeries(expected: .ticket, actual: .invoice)) {
             try BillingDocument.numbered(
                 id: billingDocumentID("20000000-0000-0000-0000-000000000001"),
                 saleID: billingSaleID("20000000-0000-0000-0000-000000000002"),
@@ -118,10 +110,7 @@ struct BillingDocumentTests {
         let payload = BillingDocumentNumberPayload(series: .ticket, value: 0)
 
         #expect(throws: BillingDocumentNumberError.nonPositiveValue) {
-            try JSONDecoder().decode(
-                BillingDocumentNumber.self,
-                from: JSONEncoder().encode(payload)
-            )
+            try JSONDecoder().decode(BillingDocumentNumber.self, from: JSONEncoder().encode(payload))
         }
     }
 
@@ -138,16 +127,8 @@ struct BillingDocumentTests {
             )
         )
 
-        #expect(
-            throws: BillingDocumentError.incompatibleSeries(
-                expected: .ticket,
-                actual: .invoice
-            )
-        ) {
-            try JSONDecoder().decode(
-                BillingDocument.self,
-                from: JSONEncoder().encode(payload)
-            )
+        #expect(throws: BillingDocumentError.incompatibleSeries(expected: .ticket, actual: .invoice)) {
+            try JSONDecoder().decode(BillingDocument.self, from: JSONEncoder().encode(payload))
         }
     }
 }
@@ -165,10 +146,7 @@ private struct BillingDocumentPayload: Codable {
 }
 
 private func billingRoundTrip(_ document: BillingDocument) throws -> BillingDocument {
-    try JSONDecoder().decode(
-        BillingDocument.self,
-        from: JSONEncoder().encode(document)
-    )
+    try JSONDecoder().decode(BillingDocument.self, from: JSONEncoder().encode(document))
 }
 
 private func billingDocumentID(_ value: String) -> BillingDocumentID {

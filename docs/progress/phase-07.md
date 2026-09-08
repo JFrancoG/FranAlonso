@@ -20,6 +20,56 @@ La base aprobada al iniciar 07.2 fue `main == origin/main == 074ce5e`, con workt
 [PR #4](https://github.com/JFrancoG/FranAlonso/pull/4) quedó integrada por rebase en `main`: `24802e6` contiene la
 implementación y `e8eca5a` el handoff. El cierre documental `fda767b` es la baseline limpia de 07.3.
 
+## Limpieza Swift previa al cierre de fase
+
+- El propietario autoriza el 2026-09-08 la limpieza identificada por la auditoría estática, sin avanzar de fase.
+  Base limpia `2b68d00`; rama local `codex/swift-hygiene`. La propuesta independiente pasa antes de editar y su
+  digest de 417 archivos coincide antes/después: `37072ba250319d59df8712895483f4f90a7e4bc61a5346015d6610be8d7c9353`.
+- Inventario completo: 180 archivos de producción y 92 de tests. Se modifican 201 Swift, retirando exactamente
+  9 conformidades inferibles `Sendable` (7 producción y 2 fixtures) y 10 atributos `@MainActor` de tipos UI
+  (9 Views y un representable de preview). Se preservan los 16 protocolos `Sendable`, los 62 atributos `@Sendable`,
+  ViewModels, closures aisladas y propiedades `nonisolated` justificadas de los actores-reloj de tests.
+- La normalización sigue `docs/standards/swift-code-policy.md`: llamadas, firmas, variables y salidas simples de
+  `guard` horizontales cuando son legibles dentro de 120 columnas; firmas complejas, closures y listas de cuatro
+  o más argumentos permanecen verticales. No se usa un formatter global. La segunda revisión encuentra y corrige
+  siete variables, dos parámetros genéricos y dieciséis `if` compactos históricos. La comparación léxica de los
+  272 archivos conserva literales, comentarios y orden de tokens, salvo las retiradas de anotaciones y su puntuación.
+  Los 46 candidatos residuales del recall se conservan por closures, tipos función, requisito `where` o `EdgeInsets`
+  anidado con cuatro argumentos; no son infracciones pendientes ni una exclusión por categoría de archivo.
+- RED y tests nuevos: `N/A`, no cambia comportamiento ni contrato efectivo. Xcode MCP `windowtab1` confirma
+  FranAlonso. El primer build detecta dos `:` sobrantes al retirar conformidades; corregidos antes del build
+  Develop/iPhoneOS correcto en 8,214 s. Cero diagnósticos Swift/Clang; persiste el aviso conocido de tooling
+  `Metadata extraction skipped. No AppIntents.framework dependency found.`; no se declara cero warnings globales.
+  Tras las correcciones finales de formato, Develop/iPhone 17e Simulator vuelve a compilar en 13,689 s.
+- La suite completa Develop/iPhone 17e Simulator 26.5 registra 815 resultados: 814 pasan, 1 falla y 0 quedan sin
+  ejecutar. El fallo es `BuildEnvironmentConfigurationTests/developFixtureLaunchArgumentsAreDisabledByDefault()`:
+  la preparación temporal del host activa signed-out en el mismo scheme fuente cuya configuración por defecto
+  verifica el test. La fixture se comprueba en el editor y en TestAction antes de ejecutar; no se activa Firebase live.
+  Tras desbloquear el Mac, se restaura el scheme original byte a byte contra `HEAD` y se verifica en el editor que
+  sus cinco argumentos están desactivados. Se duplica temporalmente como scheme local no compartido
+  `FranAlonso-Hygiene-Validation`, con Debug-Develop, herencia de argumentos en TestAction y solo signed-out activo.
+  Xcode MCP confirma scheme/destino y la repetición focal pasa 1/1, sin fallos ni pruebas sin ejecutar
+  (RunSomeTests `74E740A1-8242-4DB6-B5D2-4426F141C1A1`, 2026-09-08 11:31 CEST).
+  La evidencia final es 814/815 en la ejecución inicial y 1/1 en la repetición focal; no una nueva suite completa 815/815.
+  Se verifica la selección original Develop/iPhone 11, los schemes canónicos conservan sus bytes originales y el
+  scheme temporal queda archivado fuera del proyecto en `/tmp/franalonso-hygiene-20260908/completed-validation.xcscheme`.
+- La revisión UI independiente pasa sobre el delta: 16 archivos UI/soporte comparados léxicamente, 12 Views y un
+  representable, una conformidad por archivo y 50 previews con trait compartido. Previews renderizados, Inspector
+  y runtime de accesibilidad son `N/A` proporcional para este delta de whitespace/aislamiento heredado; no se
+  atribuye nueva evidencia VoiceOver, Voice Control, Switch Control, teclado, foco o anuncios. La revisión iOS
+  verifica tokens y detecta únicamente los P3 de formato corregidos arriba; la repetición focal pasa sin hallazgos
+  de código/documentación. La repetición focal de tests descrita arriba cierra la validación pendiente.
+  Ambas revisiones conservan el digest de 417 archivos
+  `323c13a3662f25fe5ea90a1d5a8ebeb548081d9a709897c02a57d06d183eac2c` antes/después, previo a esas correcciones.
+  La revisión focal conserva los 417 archivos y el digest
+  `fe9b2ea1ec92fdb3ab56c9abcce01d38e721185d2e3876a5ef998b58dfd78647` antes/después de la revisión.
+- Tras autorizar explícitamente commit, push, PR, merge, cierre de issue y rama, se crea
+  [PLU-33](https://linear.app/plusprojects/issue/PLU-33/deliver-approved-swift-concurrency-and-formatting-cleanup)
+  para la entrega actual, hijo de PLU-25. No existía issue para esta limpieza local; no se inventa planificación
+  retrospectiva ni se reabre PLU-24, una entrega histórica, o PLU-18, cuyo alcance son los existenciales.
+  PLU-33 está `In Progress`, con implementación y validación completas y entrega Git en curso desde
+  `codex/swift-hygiene`. PLU-25 continúa `In Progress`; su cierre de fase y 08.1 conservan puertas independientes.
+
 ## 07.7 — entregada
 
 - Base limpia verificada: `main == origin/main == 601517dd86680fc1876160ffc55dbad1c2e070a1`.

@@ -6,24 +6,16 @@ struct DefaultAuthenticationRepositoryTests {
     @Test("Sign in delegates credentials and returns the DataSource session")
     func signInDelegatesCredentialsAndReturnsSession() async throws {
         let expectedSession = AuthenticationSession(id: "principal-101")
-        let dataSource = AuthenticationDataSourceFake(
-            signInBehavior: .succeeds(expectedSession)
-        )
+        let dataSource = AuthenticationDataSourceFake(signInBehavior: .succeeds(expectedSession))
         let repository = DefaultAuthenticationRepository(dataSource: dataSource)
 
-        let session = try await repository.signIn(
-            email: "owner@example.com",
-            password: "valid-password"
-        )
+        let session = try await repository.signIn(email: "owner@example.com", password: "valid-password")
 
         #expect(session == expectedSession)
         #expect(
             await dataSource.signInRequests()
                 == [
-                    AuthenticationDataSourceSignInRequest(
-                        email: "owner@example.com",
-                        password: "valid-password"
-                    )
+                    AuthenticationDataSourceSignInRequest(email: "owner@example.com", password: "valid-password")
                 ]
         )
     }
@@ -31,81 +23,45 @@ struct DefaultAuthenticationRepositoryTests {
     @Test(
         "Sign in maps provider-neutral infrastructure failures",
         arguments: [
-            (
-                AuthenticationDataSourceError.credentialsRejected,
-                AuthenticationError.invalidCredentials
-            ),
-            (
-                AuthenticationDataSourceError.accountDisabled,
-                AuthenticationError.accountDisabled
-            ),
-            (
-                AuthenticationDataSourceError.networkUnavailable,
-                AuthenticationError.temporarilyUnavailable
-            ),
-            (
-                AuthenticationDataSourceError.rateLimited,
-                AuthenticationError.temporarilyUnavailable
-            ),
-            (
-                AuthenticationDataSourceError.misconfigured,
-                AuthenticationError.configuration
-            ),
-            (
-                AuthenticationDataSourceError.secureStorageUnavailable,
-                AuthenticationError.secureStorageUnavailable
-            ),
-            (
-                AuthenticationDataSourceError.unexpected,
-                AuthenticationError.unexpected
-            )
+            (AuthenticationDataSourceError.credentialsRejected, AuthenticationError.invalidCredentials),
+            (AuthenticationDataSourceError.accountDisabled, AuthenticationError.accountDisabled),
+            (AuthenticationDataSourceError.networkUnavailable, AuthenticationError.temporarilyUnavailable),
+            (AuthenticationDataSourceError.rateLimited, AuthenticationError.temporarilyUnavailable),
+            (AuthenticationDataSourceError.misconfigured, AuthenticationError.configuration),
+            (AuthenticationDataSourceError.secureStorageUnavailable, AuthenticationError.secureStorageUnavailable),
+            (AuthenticationDataSourceError.unexpected, AuthenticationError.unexpected)
         ]
     )
     func signInMapsInfrastructureFailures(
         _ infrastructureError: AuthenticationDataSourceError,
         to expectedError: AuthenticationError
     ) async {
-        let dataSource = AuthenticationDataSourceFake(
-            signInBehavior: .fails(infrastructureError)
-        )
+        let dataSource = AuthenticationDataSourceFake(signInBehavior: .fails(infrastructureError))
         let repository = DefaultAuthenticationRepository(dataSource: dataSource)
 
         await #expect(throws: expectedError) {
-            try await repository.signIn(
-                email: "owner@example.com",
-                password: "invalid-password"
-            )
+            try await repository.signIn(email: "owner@example.com", password: "invalid-password")
         }
         #expect(await dataSource.signInRequests().count == 1)
     }
 
     @Test("Sign in maps an undeclared failure to unexpected")
     func signInMapsUndeclaredFailureToUnexpected() async {
-        let dataSource = AuthenticationDataSourceFake(
-            signInBehavior: .failsWithUndeclaredError
-        )
+        let dataSource = AuthenticationDataSourceFake(signInBehavior: .failsWithUndeclaredError)
         let repository = DefaultAuthenticationRepository(dataSource: dataSource)
 
         await #expect(throws: AuthenticationError.unexpected) {
-            try await repository.signIn(
-                email: "owner@example.com",
-                password: "valid-password"
-            )
+            try await repository.signIn(email: "owner@example.com", password: "valid-password")
         }
     }
 
     @Test("Sign in preserves DataSource cancellation")
     func signInPreservesDataSourceCancellation() async {
-        let dataSource = AuthenticationDataSourceFake(
-            signInBehavior: .cancels
-        )
+        let dataSource = AuthenticationDataSourceFake(signInBehavior: .cancels)
         let repository = DefaultAuthenticationRepository(dataSource: dataSource)
 
         await #expect(throws: CancellationError.self) {
-            try await repository.signIn(
-                email: "owner@example.com",
-                password: "valid-password"
-            )
+            try await repository.signIn(email: "owner@example.com", password: "valid-password")
         }
     }
 
@@ -122,43 +78,20 @@ struct DefaultAuthenticationRepositoryTests {
     @Test(
         "Sign out maps provider-neutral infrastructure failures",
         arguments: [
-            (
-                AuthenticationDataSourceError.credentialsRejected,
-                AuthenticationError.invalidCredentials
-            ),
-            (
-                AuthenticationDataSourceError.accountDisabled,
-                AuthenticationError.accountDisabled
-            ),
-            (
-                AuthenticationDataSourceError.networkUnavailable,
-                AuthenticationError.temporarilyUnavailable
-            ),
-            (
-                AuthenticationDataSourceError.rateLimited,
-                AuthenticationError.temporarilyUnavailable
-            ),
-            (
-                AuthenticationDataSourceError.misconfigured,
-                AuthenticationError.configuration
-            ),
-            (
-                AuthenticationDataSourceError.secureStorageUnavailable,
-                AuthenticationError.secureStorageUnavailable
-            ),
-            (
-                AuthenticationDataSourceError.unexpected,
-                AuthenticationError.unexpected
-            )
+            (AuthenticationDataSourceError.credentialsRejected, AuthenticationError.invalidCredentials),
+            (AuthenticationDataSourceError.accountDisabled, AuthenticationError.accountDisabled),
+            (AuthenticationDataSourceError.networkUnavailable, AuthenticationError.temporarilyUnavailable),
+            (AuthenticationDataSourceError.rateLimited, AuthenticationError.temporarilyUnavailable),
+            (AuthenticationDataSourceError.misconfigured, AuthenticationError.configuration),
+            (AuthenticationDataSourceError.secureStorageUnavailable, AuthenticationError.secureStorageUnavailable),
+            (AuthenticationDataSourceError.unexpected, AuthenticationError.unexpected)
         ]
     )
     func signOutMapsInfrastructureFailures(
         _ infrastructureError: AuthenticationDataSourceError,
         to expectedError: AuthenticationError
     ) async {
-        let dataSource = AuthenticationDataSourceFake(
-            signOutBehavior: .fails(infrastructureError)
-        )
+        let dataSource = AuthenticationDataSourceFake(signOutBehavior: .fails(infrastructureError))
         let repository = DefaultAuthenticationRepository(dataSource: dataSource)
 
         await #expect(throws: expectedError) {
@@ -169,9 +102,7 @@ struct DefaultAuthenticationRepositoryTests {
 
     @Test("Sign out maps an undeclared failure to unexpected")
     func signOutMapsUndeclaredFailureToUnexpected() async {
-        let dataSource = AuthenticationDataSourceFake(
-            signOutBehavior: .failsWithUndeclaredError
-        )
+        let dataSource = AuthenticationDataSourceFake(signOutBehavior: .failsWithUndeclaredError)
         let repository = DefaultAuthenticationRepository(dataSource: dataSource)
 
         await #expect(throws: AuthenticationError.unexpected) {
@@ -182,9 +113,7 @@ struct DefaultAuthenticationRepositoryTests {
 
     @Test("Sign out preserves DataSource cancellation")
     func signOutPreservesDataSourceCancellation() async {
-        let dataSource = AuthenticationDataSourceFake(
-            signOutBehavior: .cancels
-        )
+        let dataSource = AuthenticationDataSourceFake(signOutBehavior: .cancels)
         let repository = DefaultAuthenticationRepository(dataSource: dataSource)
 
         await #expect(throws: CancellationError.self) {
@@ -196,30 +125,20 @@ struct DefaultAuthenticationRepositoryTests {
     @Test("Observation preserves prebuffered signed-out then signed-in order")
     func observationPreservesPrebufferedOrder() async {
         let session = AuthenticationSession(id: "principal-102")
-        let dataSource = AuthenticationDataSourceFake(
-            sessionStream: authenticationSessionStream([nil, session])
-        )
+        let dataSource = AuthenticationDataSourceFake(sessionStream: authenticationSessionStream([nil, session]))
         let repository = DefaultAuthenticationRepository(dataSource: dataSource)
 
         let stream = await repository.observeSession()
         var iterator = stream.makeAsyncIterator()
 
-        #expect(
-            await iterator.next()
-                == Optional<AuthenticationSession?>.some(nil)
-        )
-        #expect(
-            await iterator.next()
-                == Optional<AuthenticationSession?>.some(session)
-        )
+        #expect(await iterator.next() == Optional<AuthenticationSession?>.some(nil))
+        #expect(await iterator.next() == Optional<AuthenticationSession?>.some(session))
         #expect(await dataSource.observationCallCount() == 1)
     }
 
     @Test("Natural upstream finish ends repository observation")
     func naturalUpstreamFinishEndsObservation() async {
-        let dataSource = AuthenticationDataSourceFake(
-            sessionStream: authenticationSessionStream([])
-        )
+        let dataSource = AuthenticationDataSourceFake(sessionStream: authenticationSessionStream([]))
         let repository = DefaultAuthenticationRepository(dataSource: dataSource)
 
         let stream = await repository.observeSession()
@@ -230,21 +149,14 @@ struct DefaultAuthenticationRepositoryTests {
 
     @Test("Consumer cancellation terminates upstream exactly once")
     func consumerCancellationTerminatesUpstreamExactlyOnce() async {
-        await confirmation(
-            "The upstream stream terminates once",
-            expectedCount: 1
-        ) { upstreamTerminated in
+        await confirmation("The upstream stream terminates once", expectedCount: 1) { upstreamTerminated in
             let upstream = AsyncStream<AuthenticationSession?> { continuation in
                 continuation.onTermination = { _ in
                     upstreamTerminated()
                 }
             }
-            let dataSource = AuthenticationDataSourceFake(
-                sessionStream: upstream
-            )
-            let repository = DefaultAuthenticationRepository(
-                dataSource: dataSource
-            )
+            let dataSource = AuthenticationDataSourceFake(sessionStream: upstream)
+            let repository = DefaultAuthenticationRepository(dataSource: dataSource)
             let started = AsyncStream.makeStream(of: Void.self)
             let pendingIteration = Task {
                 let stream = await repository.observeSession()
@@ -276,10 +188,7 @@ struct DefaultAuthenticationRepositoryTests {
         let stream = await repository.observeSession()
         var iterator = stream.makeAsyncIterator()
 
-        #expect(
-            await iterator.next()
-                == Optional<AuthenticationSession?>.some(nil)
-        )
+        #expect(await iterator.next() == Optional<AuthenticationSession?>.some(nil))
         #expect(await iterator.next() == nil)
     }
 
@@ -325,12 +234,7 @@ private actor AuthenticationDataSourceFake: AuthenticationDataSource {
     }
 
     func signIn(email: String, password: String) async throws -> AuthenticationSession {
-        recordedSignInRequests.append(
-            AuthenticationDataSourceSignInRequest(
-                email: email,
-                password: password
-            )
-        )
+        recordedSignInRequests.append(AuthenticationDataSourceSignInRequest(email: email, password: password))
 
         switch signInBehavior {
         case let .succeeds(session):

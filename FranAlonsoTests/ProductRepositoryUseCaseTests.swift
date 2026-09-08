@@ -66,11 +66,7 @@ private actor ProductRepositoryFake: ProductRepository {
 
 private func repositoryProduct() -> Product {
     Product(
-        id: ProductID(
-            rawValue: UUID(
-                uuidString: "10000000-1000-1000-1000-100000000001"
-            )!
-        ),
+        id: ProductID(rawValue: UUID(uuidString: "10000000-1000-1000-1000-100000000001")!),
         name: "Coloración",
         status: .active
     )

@@ -51,11 +51,7 @@ struct ClientRemoteRecord: Identifiable, Codable, Equatable {
 extension ClientRemoteRecord {
     /// Creates a live remote record while preserving the compact 05.7 call-site meaning.
     init(client: ClientDTO, version: ClientRemoteVersion, changeSequence: Int64? = nil) {
-        self.init(
-            content: .live(client),
-            version: version,
-            changeSequence: changeSequence
-        )
+        self.init(content: .live(client), version: version, changeSequence: changeSequence)
     }
 
     /// Returns the stable client identity carried by live content or a tombstone.
@@ -83,28 +79,16 @@ extension ClientRemoteRecord {
     init(from decoder: any Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let decodedContent: ClientRemoteContent
-        if let legacyClient = try container.decodeIfPresent(
-            ClientDTO.self,
-            forKey: .client
-        ) {
+        if let legacyClient = try container.decodeIfPresent(ClientDTO.self, forKey: .client) {
             decodedContent = .live(legacyClient)
         } else {
-            decodedContent = try container.decode(
-                ClientRemoteContent.self,
-                forKey: .content
-            )
+            decodedContent = try container.decode(ClientRemoteContent.self, forKey: .content)
         }
 
         self.init(
             content: decodedContent,
-            version: try container.decode(
-                ClientRemoteVersion.self,
-                forKey: .version
-            ),
-            changeSequence: try container.decodeIfPresent(
-                Int64.self,
-                forKey: .changeSequence
-            )
+            version: try container.decode(ClientRemoteVersion.self, forKey: .version),
+            changeSequence: try container.decodeIfPresent(Int64.self, forKey: .changeSequence)
         )
     }
 
@@ -112,10 +96,7 @@ extension ClientRemoteRecord {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(content, forKey: .content)
         try container.encode(version, forKey: .version)
-        try container.encodeIfPresent(
-            changeSequence,
-            forKey: .changeSequence
-        )
+        try container.encodeIfPresent(changeSequence, forKey: .changeSequence)
     }
 }
 

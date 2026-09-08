@@ -8,10 +8,7 @@ struct PhaseFiveSchemaMigrationPlanTests {
     @Test("The plan starts at the persisted 05.10c baseline")
     func planStartsAtPersistedBaseline() {
         #expect(PhaseFiveSchemaMigrationPlan.schemas.count == 1)
-        #expect(
-            PhaseFiveBaselineSchema.versionIdentifier
-                == Schema.Version(1, 0, 0)
-        )
+        #expect(PhaseFiveBaselineSchema.versionIdentifier == Schema.Version(1, 0, 0))
         #expect(PhaseFiveBaselineSchema.models.count == 28)
         #expect(PhaseFiveSchemaMigrationPlan.stages.isEmpty)
         #expect(rawCurrentSchema.version == Schema.Version(1, 0, 0))
@@ -32,17 +29,11 @@ struct PhaseFiveSchemaMigrationPlanTests {
 
             do {
                 let container = try migratedCurrentContainer(at: storeURL)
-                try verifyRepresentativeRows(
-                    in: ModelContext(container),
-                    fixture: fixture
-                )
+                try verifyRepresentativeRows(in: ModelContext(container), fixture: fixture)
             }
 
             let reopened = try migratedCurrentContainer(at: storeURL)
-            try verifyRepresentativeRows(
-                in: ModelContext(reopened),
-                fixture: fixture
-            )
+            try verifyRepresentativeRows(in: ModelContext(reopened), fixture: fixture)
         }
     }
 }
@@ -125,10 +116,7 @@ private func rawContainer(at storeURL: URL) throws -> ModelContainer {
         allowsSave: true,
         cloudKitDatabase: .none
     )
-    return try ModelContainer(
-        for: rawCurrentSchema,
-        configurations: [configuration]
-    )
+    return try ModelContainer(for: rawCurrentSchema, configurations: [configuration])
 }
 
 private func migratedCurrentContainer(at storeURL: URL) throws -> ModelContainer {
@@ -153,10 +141,7 @@ private func withPhaseFiveMigrationStore(
         path: "FranAlonso-05.11-\(UUID())",
         directoryHint: .isDirectory
     )
-    try FileManager.default.createDirectory(
-        at: directory,
-        withIntermediateDirectories: true
-    )
+    try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
     defer { try? FileManager.default.removeItem(at: directory) }
     try operation(directory.appending(path: "Migration.store"))
 }
@@ -172,17 +157,11 @@ private func insertRepresentativeRows(in context: ModelContext) throws -> PhaseF
 
 private func insertClientRows(in context: ModelContext) throws -> ClientMigrationFixture {
     let client = Client.draft(
-        id: ClientID(
-            rawValue: phaseFiveMigrationUUID(
-                "81000000-0000-0000-0000-000000000001"
-            )
-        ),
+        id: ClientID(rawValue: phaseFiveMigrationUUID("81000000-0000-0000-0000-000000000001")),
         displayName: "Baseline client"
     )
     let payload = ClientDTO(client)
-    let upsertOperationID = phaseFiveMigrationUUID(
-        "81000000-0000-0000-0000-000000000002"
-    )
+    let upsertOperationID = phaseFiveMigrationUUID("81000000-0000-0000-0000-000000000002")
     let upsert = ClientPendingUpsert(
         clientID: client.id.rawValue,
         operationID: upsertOperationID,
@@ -192,18 +171,13 @@ private func insertClientRows(in context: ModelContext) throws -> ClientMigratio
     )
     let deletion = ClientPendingDelete(
         clientID: client.id.rawValue,
-        operationID: phaseFiveMigrationUUID(
-            "81000000-0000-0000-0000-000000000003"
-        ),
+        operationID: phaseFiveMigrationUUID("81000000-0000-0000-0000-000000000003"),
         predecessorOperationID: upsertOperationID,
         base: .versioned(11)
     )
     let record = ClientRemoteRecord(
         client: payload,
-        version: .versioned(
-            revision: 11,
-            lastOperationID: upsertOperationID
-        ),
+        version: .versioned(revision: 11, lastOperationID: upsertOperationID),
         changeSequence: 12
     )
     let retry = try SyncRetryState(
@@ -231,19 +205,8 @@ private func insertClientRows(in context: ModelContext) throws -> ClientMigratio
         )
     )
     context.insert(try ClientRemoteStateModel(record: record))
-    context.insert(
-        try ClientSyncConflictModel(
-            operation: upsert,
-            reason: .baseChanged,
-            remoteRecord: record
-        )
-    )
-    context.insert(
-        ClientSyncCursorModel(
-            feedID: "clients",
-            changeSequence: 12
-        )
-    )
+    context.insert(try ClientSyncConflictModel(operation: upsert, reason: .baseChanged, remoteRecord: record))
+    context.insert(ClientSyncCursorModel(feedID: "clients", changeSequence: 12))
     context.insert(ClientSyncRetryModel(retry))
 
     return ClientMigrationFixture(
@@ -257,17 +220,11 @@ private func insertClientRows(in context: ModelContext) throws -> ClientMigratio
 
 private func insertProductRows(in context: ModelContext) throws -> ProductMigrationFixture {
     let product = Product.testSnapshot(
-        id: ProductID(
-            rawValue: phaseFiveMigrationUUID(
-                "82000000-0000-0000-0000-000000000001"
-            )
-        ),
+        id: ProductID(rawValue: phaseFiveMigrationUUID("82000000-0000-0000-0000-000000000001")),
         name: "Baseline product"
     )
     let payload = ProductDTO(product)
-    let upsertOperationID = phaseFiveMigrationUUID(
-        "82000000-0000-0000-0000-000000000002"
-    )
+    let upsertOperationID = phaseFiveMigrationUUID("82000000-0000-0000-0000-000000000002")
     let upsert = ProductPendingUpsert(
         productID: product.id.rawValue,
         operationID: upsertOperationID,
@@ -277,18 +234,13 @@ private func insertProductRows(in context: ModelContext) throws -> ProductMigrat
     )
     let deletion = ProductPendingDelete(
         productID: product.id.rawValue,
-        operationID: phaseFiveMigrationUUID(
-            "82000000-0000-0000-0000-000000000003"
-        ),
+        operationID: phaseFiveMigrationUUID("82000000-0000-0000-0000-000000000003"),
         predecessorOperationID: upsertOperationID,
         base: .versioned(21)
     )
     let record = ProductRemoteRecord(
         product: payload,
-        version: .versioned(
-            revision: 21,
-            lastOperationID: upsertOperationID
-        ),
+        version: .versioned(revision: 21, lastOperationID: upsertOperationID),
         changeSequence: 22
     )
     let retry = try SyncRetryState(
@@ -316,19 +268,8 @@ private func insertProductRows(in context: ModelContext) throws -> ProductMigrat
         )
     )
     context.insert(try ProductRemoteStateModel(record: record))
-    context.insert(
-        try ProductSyncConflictModel(
-            operation: upsert,
-            reason: .baseChanged,
-            remoteRecord: record
-        )
-    )
-    context.insert(
-        ProductSyncCursorModel(
-            feedID: "products",
-            changeSequence: 22
-        )
-    )
+    context.insert(try ProductSyncConflictModel(operation: upsert, reason: .baseChanged, remoteRecord: record))
+    context.insert(ProductSyncCursorModel(feedID: "products", changeSequence: 22))
     context.insert(ProductSyncRetryModel(retry))
 
     return ProductMigrationFixture(
@@ -342,15 +283,11 @@ private func insertProductRows(in context: ModelContext) throws -> ProductMigrat
 
 private func insertServiceRows(in context: ModelContext) throws -> ServiceMigrationFixture {
     let service = try makeService(
-        id: phaseFiveMigrationUUID(
-            "83000000-0000-0000-0000-000000000001"
-        ),
+        id: phaseFiveMigrationUUID("83000000-0000-0000-0000-000000000001"),
         name: "Baseline service"
     )
     let payload = try ServiceDTO(service)
-    let upsertOperationID = phaseFiveMigrationUUID(
-        "83000000-0000-0000-0000-000000000002"
-    )
+    let upsertOperationID = phaseFiveMigrationUUID("83000000-0000-0000-0000-000000000002")
     let upsert = ServicePendingUpsert(
         serviceID: service.id.rawValue,
         operationID: upsertOperationID,
@@ -360,18 +297,13 @@ private func insertServiceRows(in context: ModelContext) throws -> ServiceMigrat
     )
     let deletion = ServicePendingDelete(
         serviceID: service.id.rawValue,
-        operationID: phaseFiveMigrationUUID(
-            "83000000-0000-0000-0000-000000000003"
-        ),
+        operationID: phaseFiveMigrationUUID("83000000-0000-0000-0000-000000000003"),
         predecessorOperationID: upsertOperationID,
         base: .versioned(31)
     )
     let record = ServiceRemoteRecord(
         service: payload,
-        version: .versioned(
-            revision: 31,
-            lastOperationID: upsertOperationID
-        ),
+        version: .versioned(revision: 31, lastOperationID: upsertOperationID),
         changeSequence: 32
     )
     let retry = try SyncRetryState(
@@ -399,19 +331,8 @@ private func insertServiceRows(in context: ModelContext) throws -> ServiceMigrat
         )
     )
     context.insert(try ServiceRemoteStateModel(record: record))
-    context.insert(
-        try ServiceSyncConflictModel(
-            operation: upsert,
-            reason: .baseChanged,
-            remoteRecord: record
-        )
-    )
-    context.insert(
-        ServiceSyncCursorModel(
-            feedID: "services",
-            changeSequence: 32
-        )
-    )
+    context.insert(try ServiceSyncConflictModel(operation: upsert, reason: .baseChanged, remoteRecord: record))
+    context.insert(ServiceSyncCursorModel(feedID: "services", changeSequence: 32))
     context.insert(ServiceSyncRetryModel(retry))
 
     return ServiceMigrationFixture(
@@ -426,9 +347,7 @@ private func insertServiceRows(in context: ModelContext) throws -> ServiceMigrat
 private func insertSaleRows(in context: ModelContext) throws -> SaleMigrationFixture {
     let sale = try representativeSale()
     let payload = try SaleDTO(sale)
-    let upsertOperationID = phaseFiveMigrationUUID(
-        "84000000-0000-0000-0000-000000000002"
-    )
+    let upsertOperationID = phaseFiveMigrationUUID("84000000-0000-0000-0000-000000000002")
     let upsert = SalePendingUpsert(
         saleID: sale.id.rawValue,
         operationID: upsertOperationID,
@@ -438,18 +357,13 @@ private func insertSaleRows(in context: ModelContext) throws -> SaleMigrationFix
     )
     let discard = SalePendingDiscard(
         saleID: sale.id.rawValue,
-        operationID: phaseFiveMigrationUUID(
-            "84000000-0000-0000-0000-000000000003"
-        ),
+        operationID: phaseFiveMigrationUUID("84000000-0000-0000-0000-000000000003"),
         predecessorOperationID: upsertOperationID,
         base: .versioned(41)
     )
     let record = SaleRemoteRecord(
         sale: payload,
-        version: .versioned(
-            revision: 41,
-            lastOperationID: upsertOperationID
-        ),
+        version: .versioned(revision: 41, lastOperationID: upsertOperationID),
         changeSequence: 42
     )
     let retry = try SyncRetryState(
@@ -477,19 +391,8 @@ private func insertSaleRows(in context: ModelContext) throws -> SaleMigrationFix
         )
     )
     context.insert(try SaleRemoteStateModel(record: record))
-    context.insert(
-        try SaleSyncConflictModel(
-            operation: .upsert(upsert),
-            reason: .baseChanged,
-            remoteRecord: record
-        )
-    )
-    context.insert(
-        SaleSyncCursorModel(
-            feedID: "sales",
-            changeSequence: 42
-        )
-    )
+    context.insert(try SaleSyncConflictModel(operation: .upsert(upsert), reason: .baseChanged, remoteRecord: record))
+    context.insert(SaleSyncCursorModel(feedID: "sales", changeSequence: 42))
     context.insert(SaleSyncRetryModel(retry))
 
     return SaleMigrationFixture(
@@ -509,33 +412,22 @@ private func verifyRepresentativeRows(in context: ModelContext, fixture: PhaseFi
 }
 
 private func verifyClientRows(in context: ModelContext, fixture: ClientMigrationFixture) throws {
-    #expect(
-        try only(ClientModel.self, in: context).toDomain() == fixture.value
-    )
+    #expect(try only(ClientModel.self, in: context).toDomain() == fixture.value)
 
     let upsert = try only(ClientPendingUpsertModel.self, in: context)
     #expect(upsert.clientID == fixture.upsert.clientID)
     #expect(upsert.operationID == fixture.upsert.operationID)
-    #expect(
-        upsert.predecessorOperationID
-            == fixture.upsert.predecessorOperationID
-    )
+    #expect(upsert.predecessorOperationID == fixture.upsert.predecessorOperationID)
     #expect(try upsert.decodeBase() == fixture.upsert.base)
     #expect(try upsert.decodePayload() == fixture.upsert.client)
 
     let deletion = try only(ClientPendingDeleteModel.self, in: context)
     #expect(deletion.clientID == fixture.deletion.clientID)
     #expect(deletion.operationID == fixture.deletion.operationID)
-    #expect(
-        deletion.predecessorOperationID
-            == fixture.deletion.predecessorOperationID
-    )
+    #expect(deletion.predecessorOperationID == fixture.deletion.predecessorOperationID)
     #expect(try deletion.decodeBase() == fixture.deletion.base)
 
-    #expect(
-        try only(ClientRemoteStateModel.self, in: context).decodeRecord()
-            == fixture.record
-    )
+    #expect(try only(ClientRemoteStateModel.self, in: context).decodeRecord() == fixture.record)
 
     let conflict = try only(ClientSyncConflictModel.self, in: context)
     #expect(conflict.clientID == fixture.upsert.clientID)
@@ -548,41 +440,26 @@ private func verifyClientRows(in context: ModelContext, fixture: ClientMigration
     let cursor = try only(ClientSyncCursorModel.self, in: context)
     #expect(cursor.feedID == "clients")
     #expect(cursor.changeSequence == fixture.record.changeSequence)
-    #expect(
-        try only(ClientSyncRetryModel.self, in: context).decodeState(
-            for: fixture.retry.scope
-        ) == fixture.retry
-    )
+    #expect(try only(ClientSyncRetryModel.self, in: context).decodeState(for: fixture.retry.scope) == fixture.retry)
 }
 
 private func verifyProductRows(in context: ModelContext, fixture: ProductMigrationFixture) throws {
-    #expect(
-        try only(ProductModel.self, in: context).toDomain() == fixture.value
-    )
+    #expect(try only(ProductModel.self, in: context).toDomain() == fixture.value)
 
     let upsert = try only(ProductPendingUpsertModel.self, in: context)
     #expect(upsert.productID == fixture.upsert.productID)
     #expect(upsert.operationID == fixture.upsert.operationID)
-    #expect(
-        upsert.predecessorOperationID
-            == fixture.upsert.predecessorOperationID
-    )
+    #expect(upsert.predecessorOperationID == fixture.upsert.predecessorOperationID)
     #expect(try upsert.decodeBase() == fixture.upsert.base)
     #expect(try upsert.decodePayload() == fixture.upsert.product)
 
     let deletion = try only(ProductPendingDeleteModel.self, in: context)
     #expect(deletion.productID == fixture.deletion.productID)
     #expect(deletion.operationID == fixture.deletion.operationID)
-    #expect(
-        deletion.predecessorOperationID
-            == fixture.deletion.predecessorOperationID
-    )
+    #expect(deletion.predecessorOperationID == fixture.deletion.predecessorOperationID)
     #expect(try deletion.decodeBase() == fixture.deletion.base)
 
-    #expect(
-        try only(ProductRemoteStateModel.self, in: context).decodeRecord()
-            == fixture.record
-    )
+    #expect(try only(ProductRemoteStateModel.self, in: context).decodeRecord() == fixture.record)
 
     let conflict = try only(ProductSyncConflictModel.self, in: context)
     #expect(conflict.productID == fixture.upsert.productID)
@@ -595,41 +472,26 @@ private func verifyProductRows(in context: ModelContext, fixture: ProductMigrati
     let cursor = try only(ProductSyncCursorModel.self, in: context)
     #expect(cursor.feedID == "products")
     #expect(cursor.changeSequence == fixture.record.changeSequence)
-    #expect(
-        try only(ProductSyncRetryModel.self, in: context).decodeState(
-            for: fixture.retry.scope
-        ) == fixture.retry
-    )
+    #expect(try only(ProductSyncRetryModel.self, in: context).decodeState(for: fixture.retry.scope) == fixture.retry)
 }
 
 private func verifyServiceRows(in context: ModelContext, fixture: ServiceMigrationFixture) throws {
-    #expect(
-        try only(ServiceModel.self, in: context).toDomain() == fixture.value
-    )
+    #expect(try only(ServiceModel.self, in: context).toDomain() == fixture.value)
 
     let upsert = try only(ServicePendingUpsertModel.self, in: context)
     #expect(upsert.serviceID == fixture.upsert.serviceID)
     #expect(upsert.operationID == fixture.upsert.operationID)
-    #expect(
-        upsert.predecessorOperationID
-            == fixture.upsert.predecessorOperationID
-    )
+    #expect(upsert.predecessorOperationID == fixture.upsert.predecessorOperationID)
     #expect(try upsert.decodeBase() == fixture.upsert.base)
     #expect(try upsert.decodePayload() == fixture.upsert.service)
 
     let deletion = try only(ServicePendingDeleteModel.self, in: context)
     #expect(deletion.serviceID == fixture.deletion.serviceID)
     #expect(deletion.operationID == fixture.deletion.operationID)
-    #expect(
-        deletion.predecessorOperationID
-            == fixture.deletion.predecessorOperationID
-    )
+    #expect(deletion.predecessorOperationID == fixture.deletion.predecessorOperationID)
     #expect(try deletion.decodeBase() == fixture.deletion.base)
 
-    #expect(
-        try only(ServiceRemoteStateModel.self, in: context).decodeRecord()
-            == fixture.record
-    )
+    #expect(try only(ServiceRemoteStateModel.self, in: context).decodeRecord() == fixture.record)
 
     let conflict = try only(ServiceSyncConflictModel.self, in: context)
     #expect(conflict.serviceID == fixture.upsert.serviceID)
@@ -642,41 +504,26 @@ private func verifyServiceRows(in context: ModelContext, fixture: ServiceMigrati
     let cursor = try only(ServiceSyncCursorModel.self, in: context)
     #expect(cursor.feedID == "services")
     #expect(cursor.changeSequence == fixture.record.changeSequence)
-    #expect(
-        try only(ServiceSyncRetryModel.self, in: context).decodeState(
-            for: fixture.retry.scope
-        ) == fixture.retry
-    )
+    #expect(try only(ServiceSyncRetryModel.self, in: context).decodeState(for: fixture.retry.scope) == fixture.retry)
 }
 
 private func verifySaleRows(in context: ModelContext, fixture: SaleMigrationFixture) throws {
-    #expect(
-        try only(SaleModel.self, in: context).toDomain() == fixture.value
-    )
+    #expect(try only(SaleModel.self, in: context).toDomain() == fixture.value)
 
     let upsert = try only(SalePendingUpsertModel.self, in: context)
     #expect(upsert.saleID == fixture.upsert.saleID)
     #expect(upsert.operationID == fixture.upsert.operationID)
-    #expect(
-        upsert.predecessorOperationID
-            == fixture.upsert.predecessorOperationID
-    )
+    #expect(upsert.predecessorOperationID == fixture.upsert.predecessorOperationID)
     #expect(try upsert.decodeBase() == fixture.upsert.base)
     #expect(try upsert.decodePayload() == fixture.upsert.sale)
 
     let discard = try only(SalePendingDiscardModel.self, in: context)
     #expect(discard.saleID == fixture.discard.saleID)
     #expect(discard.operationID == fixture.discard.operationID)
-    #expect(
-        discard.predecessorOperationID
-            == fixture.discard.predecessorOperationID
-    )
+    #expect(discard.predecessorOperationID == fixture.discard.predecessorOperationID)
     #expect(try discard.decodeBase() == fixture.discard.base)
 
-    #expect(
-        try only(SaleRemoteStateModel.self, in: context).decodeRecord()
-            == fixture.record
-    )
+    #expect(try only(SaleRemoteStateModel.self, in: context).decodeRecord() == fixture.record)
 
     let conflict = try only(SaleSyncConflictModel.self, in: context)
     #expect(try conflict.decodeReason() == .baseChanged)
@@ -686,11 +533,7 @@ private func verifySaleRows(in context: ModelContext, fixture: SaleMigrationFixt
     let cursor = try only(SaleSyncCursorModel.self, in: context)
     #expect(cursor.feedID == "sales")
     #expect(cursor.changeSequence == fixture.record.changeSequence)
-    #expect(
-        try only(SaleSyncRetryModel.self, in: context).decodeState(
-            for: fixture.retry.scope
-        ) == fixture.retry
-    )
+    #expect(try only(SaleSyncRetryModel.self, in: context).decodeState(for: fixture.retry.scope) == fixture.retry)
 }
 
 private func only<Model: PersistentModel>(_ type: Model.Type, in context: ModelContext) throws -> Model {
@@ -701,16 +544,8 @@ private func only<Model: PersistentModel>(_ type: Model.Type, in context: ModelC
 
 private func representativeSale() throws -> Sale {
     let line = try SaleLine.upcoming(
-        id: SaleLineID(
-            rawValue: phaseFiveMigrationUUID(
-                "84000000-0000-0000-0000-000000000010"
-            )
-        ),
-        serviceID: ServiceID(
-            rawValue: phaseFiveMigrationUUID(
-                "84000000-0000-0000-0000-000000000011"
-            )
-        ),
+        id: SaleLineID(rawValue: phaseFiveMigrationUUID("84000000-0000-0000-0000-000000000010")),
+        serviceID: ServiceID(rawValue: phaseFiveMigrationUUID("84000000-0000-0000-0000-000000000011")),
         serviceName: "Baseline sale snapshot",
         quantity: 2,
         unitPrice: Money(amount: 29.95, currency: .eur),
@@ -719,19 +554,9 @@ private func representativeSale() throws -> Sale {
         linkedProductID: nil
     )
     return try Sale.draft(
-        id: SaleID(
-            rawValue: phaseFiveMigrationUUID(
-                "84000000-0000-0000-0000-000000000001"
-            )
-        ),
-        clientID: ClientID(
-            rawValue: phaseFiveMigrationUUID(
-                "84000000-0000-0000-0000-000000000012"
-            )
-        ),
-        createdAt: Date(
-            timeIntervalSinceReferenceDate: 0.000_000_123_456_789
-        ),
+        id: SaleID(rawValue: phaseFiveMigrationUUID("84000000-0000-0000-0000-000000000001")),
+        clientID: ClientID(rawValue: phaseFiveMigrationUUID("84000000-0000-0000-0000-000000000012")),
+        createdAt: Date(timeIntervalSinceReferenceDate: 0.000_000_123_456_789),
         lines: [line]
     )
 }

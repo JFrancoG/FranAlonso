@@ -13,10 +13,7 @@ struct SwiftDataStorePristineDataSourceTests {
         #expect(try await dataSource.isPristine())
     }
 
-    @Test(
-        "Any persisted feature metadata makes the store non-pristine",
-        arguments: LocalStoreFeature.allCases
-    )
+    @Test("Any persisted feature metadata makes the store non-pristine", arguments: LocalStoreFeature.allCases)
     fileprivate func anyPersistedFeatureMetadataMakesStoreNonPristine(_ feature: LocalStoreFeature) async throws {
         let container = try ModelContainer.inMemory(for: Schema.franAlonso)
 

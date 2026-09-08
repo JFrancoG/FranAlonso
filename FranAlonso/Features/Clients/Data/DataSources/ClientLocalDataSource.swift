@@ -9,9 +9,7 @@ struct ClientLocalDataSource {}
 extension ClientLocalDataSource {
     /// Fetches and maps the locally persisted client snapshot.
     func fetchAll(in context: ModelContext) throws -> [Client] {
-        let descriptor = FetchDescriptor<ClientModel>(
-            sortBy: [SortDescriptor(\ClientModel.displayName)]
-        )
+        let descriptor = FetchDescriptor<ClientModel>(sortBy: [SortDescriptor(\ClientModel.displayName)])
         return try context.fetch(descriptor).map { try $0.toDomain() }
     }
 
@@ -33,20 +31,12 @@ extension ClientLocalDataSource {
                 throw ClientLocalDataSourceError.syncConflictPending(client.id)
             }
             guard try !hasDeletionState(for: client.id, in: context) else {
-                throw ClientLocalDataSourceError.restoreRequiresExplicitResolution(
-                    client.id
-                )
+                throw ClientLocalDataSourceError.restoreRequiresExplicitResolution(client.id)
             }
 
             let payload = ClientDTO(client)
-            let operations = try pendingOperations(
-                for: client.id,
-                in: context
-            )
-            let head = try pendingHead(
-                from: operations,
-                clientID: client.id
-            )
+            let operations = try pendingOperations(for: client.id, in: context)
+            let head = try pendingHead(from: operations, clientID: client.id)
             let headPayload: ClientDTO?
             if case .upsert(let upsert) = head {
                 headPayload = upsert.client
@@ -55,10 +45,7 @@ extension ClientLocalDataSource {
             }
 
             if headPayload != payload {
-                try ensureOperationIdentityAvailable(
-                    operationID,
-                    in: context
-                )
+                try ensureOperationIdentityAvailable(operationID, in: context)
                 context.insert(
                     try ClientPendingUpsertModel(
                         clientID: client.id.rawValue,
@@ -89,7 +76,9 @@ extension ClientLocalDataSource {
         do {
             let operations = try pendingOperations(for: id, in: context)
             if operations.contains(where: { operation in
-                if case .delete = operation { return true }
+                if case .delete = operation {
+                    return true
+                }
                 return false
             }) {
                 if let model = try model(for: id, in: context) {
@@ -130,9 +119,7 @@ extension ClientLocalDataSource {
 
     /// Returns every immutable pending operation in deterministic causal order.
     func pendingOperations(in context: ModelContext) throws -> [ClientPendingOperation] {
-        let upserts = try context.fetch(
-            FetchDescriptor<ClientPendingUpsertModel>()
-        ).map { model in
+        let upserts = try context.fetch(FetchDescriptor<ClientPendingUpsertModel>()).map { model in
             ClientPendingOperation.upsert(
                 ClientPendingUpsert(
                     clientID: model.clientID,
@@ -143,9 +130,7 @@ extension ClientLocalDataSource {
                 )
             )
         }
-        let deletes = try context.fetch(
-            FetchDescriptor<ClientPendingDeleteModel>()
-        ).map { model in
+        let deletes = try context.fetch(FetchDescriptor<ClientPendingDeleteModel>()).map { model in
             ClientPendingOperation.delete(
                 ClientPendingDelete(
                     clientID: model.clientID,
@@ -168,11 +153,7 @@ extension ClientLocalDataSource {
 
     /// Returns operations eligible for delivery while preserving delete-wins semantics.
     func deliverablePendingOperations(in context: ModelContext) throws -> [ClientPendingOperation] {
-        let conflictedClientIDs = Set(
-            try context.fetch(
-                FetchDescriptor<ClientSyncConflictModel>()
-            ).map(\.clientID)
-        )
+        let conflictedClientIDs = Set(try context.fetch(FetchDescriptor<ClientSyncConflictModel>()).map(\.clientID))
 
         return try pendingOperations(in: context).filter { operation in
             switch operation {
@@ -196,9 +177,7 @@ extension ClientLocalDataSource {
     func cursor(in context: ModelContext) throws -> ClientSyncCursor? {
         try cursorModel(in: context).map { model in
             guard model.changeSequence >= 0 else { throw ClientSyncPersistenceError.invalidCursor }
-            return ClientSyncCursor(
-                changeSequence: model.changeSequence
-            )
+            return ClientSyncCursor(changeSequence: model.changeSequence)
         }
     }
 
@@ -268,10 +247,7 @@ extension ClientLocalDataSource {
                 .compactMap(\.changeSequence)
                 .max()
                 ?? 0
-            let expectedNextSequence = max(
-                currentCursor?.changeSequence ?? 0,
-                receivedMaximum
-            )
+            let expectedNextSequence = max(currentCursor?.changeSequence ?? 0, receivedMaximum)
             guard batch.nextCursor.changeSequence
                     == expectedNextSequence else {
                 throw ClientSyncPersistenceError.invalidCursor
@@ -287,10 +263,7 @@ extension ClientLocalDataSource {
                 if try isStale(record, for: clientID, in: context) {
                     continue
                 }
-                let operation = try pendingOperations(
-                    for: clientID,
-                    in: context
-                ).first
+                let operation = try pendingOperations(for: clientID, in: context).first
                 guard let operation else {
                     try applyRemoteObservation(record, in: context)
                     continue
@@ -300,15 +273,8 @@ extension ClientLocalDataSource {
                 case .apply:
                     try applyRemoteObservation(record, in: context)
                 case .alreadyApplied(let acknowledgedRecord):
-                    try applyAcknowledgement(
-                        operation: operation,
-                        record: acknowledgedRecord,
-                        in: context
-                    )
-                    try deleteRetryState(
-                        for: .operation(operation.operationID),
-                        in: context
-                    )
+                    try applyAcknowledgement(operation: operation, record: acknowledgedRecord, in: context)
+                    try deleteRetryState(for: .operation(operation.operationID), in: context)
                 case .conflict(let reason, let remoteRecord):
                     guard case .upsert(let upsert) = operation else {
                         throw ClientSyncPersistenceError.entityIdentityMismatch
@@ -319,10 +285,7 @@ extension ClientLocalDataSource {
                         remoteRecord: remoteRecord,
                         in: context
                     )
-                    try deleteRetryState(
-                        for: .operation(operation.operationID),
-                        in: context
-                    )
+                    try deleteRetryState(for: .operation(operation.operationID), in: context)
                 case .invalid(let error):
                     throw error
                 }
@@ -349,15 +312,8 @@ extension ClientLocalDataSource {
     ) throws {
         try requireClean(context)
         do {
-            let operation = try requirePendingOperation(
-                operationID: operationID,
-                in: context
-            )
-            try applyAcknowledgement(
-                operation: operation,
-                record: record,
-                in: context
-            )
+            let operation = try requirePendingOperation(operationID: operationID, in: context)
+            try applyAcknowledgement(operation: operation, record: record, in: context)
             if let retryScope {
                 try deleteRetryState(for: retryScope, in: context)
             }
@@ -436,10 +392,7 @@ extension ClientLocalDataSource {
         try persistRemoteState(record, in: context)
         switch operation {
         case .upsert(let upsert):
-            if let model = try pendingUpsertModel(
-                operationID: upsert.operationID,
-                in: context
-            ) {
+            if let model = try pendingUpsertModel(operationID: upsert.operationID, in: context) {
                 context.delete(model)
             }
             let descendantsRemain = try pendingOperations(
@@ -447,28 +400,16 @@ extension ClientLocalDataSource {
                 in: context
             ).contains { $0.operationID != upsert.operationID }
             if !descendantsRemain,
-               try conflict(
-                for: ClientID(rawValue: upsert.clientID),
-                in: context
-               ) == nil,
+               try conflict(for: ClientID(rawValue: upsert.clientID), in: context) == nil,
                let client = record.liveClient {
                 try materialize(try client.toDomain(), in: context)
             }
         case .delete(let delete):
-            try removePendingChain(
-                for: ClientID(rawValue: delete.clientID),
-                in: context
-            )
-            if let conflict = try conflict(
-                for: ClientID(rawValue: delete.clientID),
-                in: context
-            ) {
+            try removePendingChain(for: ClientID(rawValue: delete.clientID), in: context)
+            if let conflict = try conflict(for: ClientID(rawValue: delete.clientID), in: context) {
                 context.delete(conflict)
             }
-            if let model = try model(
-                for: ClientID(rawValue: delete.clientID),
-                in: context
-            ) {
+            if let model = try model(for: ClientID(rawValue: delete.clientID), in: context) {
                 context.delete(model)
             }
         }
@@ -477,10 +418,7 @@ extension ClientLocalDataSource {
     private func applyRemoteObservation(_ record: ClientRemoteRecord, in context: ModelContext) throws {
         let clientID = ClientID(rawValue: try record.stableClientID())
         try persistRemoteState(record, in: context)
-        let hasPending = try !pendingOperations(
-            for: clientID,
-            in: context
-        ).isEmpty
+        let hasPending = try !pendingOperations(for: clientID, in: context).isEmpty
         let hasConflict = try conflict(for: clientID, in: context) != nil
 
         switch record.content {
@@ -507,18 +445,10 @@ extension ClientLocalDataSource {
         }
         let clientID = ClientID(rawValue: operation.clientID)
         if let model = try conflict(for: clientID, in: context) {
-            try model.update(
-                operation: operation,
-                reason: reason,
-                remoteRecord: remoteRecord
-            )
+            try model.update(operation: operation, reason: reason, remoteRecord: remoteRecord)
         } else {
             context.insert(
-                try ClientSyncConflictModel(
-                    operation: operation,
-                    reason: reason,
-                    remoteRecord: remoteRecord
-                )
+                try ClientSyncConflictModel(operation: operation, reason: reason, remoteRecord: remoteRecord)
             )
         }
         if let remoteRecord {
@@ -531,12 +461,12 @@ extension ClientLocalDataSource {
     }
 
     private func isStale(_ record: ClientRemoteRecord, for id: ClientID, in context: ModelContext) throws -> Bool {
-        guard let current = try remoteState(for: id, in: context)?.decodeRecord() else {
-            return false
-        }
+        guard let current = try remoteState(for: id, in: context)?.decodeRecord() else { return false }
         switch (current.changeSequence, record.changeSequence) {
         case (.some(let currentSequence), .some(let incomingSequence)):
-            if incomingSequence < currentSequence { return true }
+            if incomingSequence < currentSequence {
+                return true
+            }
             if incomingSequence == currentSequence, current != record {
                 throw ClientSyncPersistenceError.invalidCursor
             }
@@ -554,12 +484,7 @@ extension ClientLocalDataSource {
         if let model = try cursorModel(in: context) {
             model.advance(to: cursor.changeSequence)
         } else {
-            context.insert(
-                ClientSyncCursorModel(
-                    feedID: clientSyncFeedID,
-                    changeSequence: cursor.changeSequence
-                )
-            )
+            context.insert(ClientSyncCursorModel(feedID: clientSyncFeedID, changeSequence: cursor.changeSequence))
         }
     }
 
@@ -652,10 +577,7 @@ extension ClientLocalDataSource {
     }
 
     private func requirePendingOperation(operationID: UUID, in context: ModelContext) throws -> ClientPendingOperation {
-        if let model = try pendingUpsertModel(
-            operationID: operationID,
-            in: context
-        ) {
+        if let model = try pendingUpsertModel(operationID: operationID, in: context) {
             return .upsert(
                 ClientPendingUpsert(
                     clientID: model.clientID,
@@ -666,10 +588,7 @@ extension ClientLocalDataSource {
                 )
             )
         }
-        if let model = try pendingDeleteModel(
-            operationID: operationID,
-            in: context
-        ) {
+        if let model = try pendingDeleteModel(operationID: operationID, in: context) {
             return .delete(
                 ClientPendingDelete(
                     clientID: model.clientID,
@@ -683,17 +602,9 @@ extension ClientLocalDataSource {
     }
 
     private func ensureOperationIdentityAvailable(_ operationID: UUID, in context: ModelContext) throws {
-        guard try pendingUpsertModel(
-            operationID: operationID,
-            in: context
-        ) == nil,
-        try pendingDeleteModel(
-            operationID: operationID,
-            in: context
-        ) == nil else {
-            throw ClientSyncPersistenceError.duplicateOperationIdentity(
-                operationID
-            )
+        guard try pendingUpsertModel(operationID: operationID, in: context) == nil,
+        try pendingDeleteModel(operationID: operationID, in: context) == nil else {
+            throw ClientSyncPersistenceError.duplicateOperationIdentity(operationID)
         }
     }
 
@@ -701,15 +612,11 @@ extension ClientLocalDataSource {
         from operations: [ClientPendingOperation],
         clientID: ClientID
     ) throws -> ClientPendingOperation? {
-        let predecessorIDs = Set(
-            operations.compactMap(\.predecessorOperationID)
-        )
+        let predecessorIDs = Set(operations.compactMap(\.predecessorOperationID))
         let heads = operations.filter {
             !predecessorIDs.contains($0.operationID)
         }
-        guard heads.count <= 1 else {
-            throw ClientSyncPersistenceError.ambiguousPendingLineage(clientID)
-        }
+        guard heads.count <= 1 else { throw ClientSyncPersistenceError.ambiguousPendingLineage(clientID) }
         return heads.first
     }
 
@@ -725,9 +632,7 @@ extension ClientLocalDataSource {
     }
 
     private func remoteBase(for id: ClientID, in context: ModelContext) throws -> ClientRemoteBase {
-        guard let record = try remoteState(for: id, in: context)?.decodeRecord() else {
-            return .absent
-        }
+        guard let record = try remoteState(for: id, in: context)?.decodeRecord() else { return .absent }
         switch (record.version, record.content) {
         case (.legacy, .live(let client)):
             return .legacy(client)
@@ -781,9 +686,7 @@ extension ClientLocalDataSource {
         var remaining: [UUID: ClientPendingOperation] = [:]
         for operation in operations {
             guard remaining[operation.operationID] == nil else {
-                throw ClientSyncPersistenceError.duplicateOperationIdentity(
-                    operation.operationID
-                )
+                throw ClientSyncPersistenceError.duplicateOperationIdentity(operation.operationID)
             }
             remaining[operation.operationID] = operation
         }
@@ -801,9 +704,7 @@ extension ClientLocalDataSource {
 
             guard !ready.isEmpty else {
                 guard let remainingOperation = remaining.values.first else { return sorted }
-                throw ClientSyncPersistenceError.cyclicPendingLineage(
-                    ClientID(rawValue: remainingOperation.clientID)
-                )
+                throw ClientSyncPersistenceError.cyclicPendingLineage(ClientID(rawValue: remainingOperation.clientID))
             }
             for operation in ready {
                 sorted.append(operation)

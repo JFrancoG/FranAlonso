@@ -19,9 +19,7 @@ extension FirestoreEnvironment {
     }
 
     /// Returns the change-sequence counter document path for one business collection.
-    func syncMetadataDocumentPath(
-        for collection: FirestoreCollection
-    ) -> String {
+    func syncMetadataDocumentPath(for collection: FirestoreCollection) -> String {
         "\(rawValue)/collections/syncMetadata/\(collection.rawValue)"
     }
 }

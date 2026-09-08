@@ -19,9 +19,7 @@ extension ServiceDTO {
         case .inactive: .inactive
         }
         let discount = try service.discount.map {
-            ServiceDiscountDTO(
-                percentage: try CanonicalDecimalDTO($0.percentage)
-            )
+            ServiceDiscountDTO(percentage: try CanonicalDecimalDTO($0.percentage))
         }
 
         self.init(
@@ -29,13 +27,8 @@ extension ServiceDTO {
             name: service.name,
             type: type,
             linkedProductID: service.linkedProductID?.rawValue.uuidString,
-            price: ServiceMoneyDTO(
-                amount: try CanonicalDecimalDTO(service.price.amount),
-                currency: currency
-            ),
-            taxRate: ServiceTaxRateDTO(
-                percentage: try CanonicalDecimalDTO(service.taxRate.percentage)
-            ),
+            price: ServiceMoneyDTO(amount: try CanonicalDecimalDTO(service.price.amount), currency: currency),
+            taxRate: ServiceTaxRateDTO(percentage: try CanonicalDecimalDTO(service.taxRate.percentage)),
             discount: discount,
             status: status
         )
@@ -48,16 +41,12 @@ extension ServiceDTO {
     ///   normalization would alter the remote snapshot. Domain value and Service
     ///   validation errors are propagated unchanged.
     func toDomain() throws -> Service {
-        guard let identifier = UUID(uuidString: id) else {
-            throw ServiceMappingError.invalidIdentifier(id)
-        }
+        guard let identifier = UUID(uuidString: id) else { throw ServiceMappingError.invalidIdentifier(id) }
 
         let linkedIdentifier: UUID?
         if let linkedProductID {
             guard let parsedIdentifier = UUID(uuidString: linkedProductID) else {
-                throw ServiceMappingError.invalidLinkedProductIdentifier(
-                    linkedProductID
-                )
+                throw ServiceMappingError.invalidLinkedProductIdentifier(linkedProductID)
             }
             linkedIdentifier = parsedIdentifier
         } else {
@@ -68,10 +57,7 @@ extension ServiceDTO {
         case .eur: .eur
         case .usd: .usd
         }
-        let domainPrice = try Money(
-            amount: price.amount.decimal,
-            currency: domainCurrency
-        )
+        let domainPrice = try Money(amount: price.amount.decimal, currency: domainCurrency)
         guard domainPrice.amount == price.amount.decimal else {
             throw ServiceMappingError.moneyNormalizationChanged(
                 original: price.amount.decimal,

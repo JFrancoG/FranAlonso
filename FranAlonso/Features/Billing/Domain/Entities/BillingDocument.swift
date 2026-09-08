@@ -3,10 +3,7 @@ import Foundation
 /// A violation of a billing document's family and numbering state.
 enum BillingDocumentError: Error, Equatable {
     /// A definitive number belongs to a different independent fiscal series.
-    case incompatibleSeries(
-        expected: BillingDocumentSeries,
-        actual: BillingDocumentSeries
-    )
+    case incompatibleSeries(expected: BillingDocumentSeries, actual: BillingDocumentSeries)
 }
 
 /// The numbering state of a billing document request.
@@ -15,11 +12,7 @@ enum BillingDocumentStatus: Codable, Equatable {
     case pendingNumber(requestID: BillingDocumentRequestID)
 
     /// The numbering authority has returned a definitive series value.
-    case numbered(
-        requestID: BillingDocumentRequestID,
-        number: BillingDocumentNumber,
-        issuedAt: Date
-    )
+    case numbered(requestID: BillingDocumentRequestID, number: BillingDocumentNumber, issuedAt: Date)
 
     /// The stable identifier shared by retries of this numbering request.
     var requestID: BillingDocumentRequestID {
@@ -126,11 +119,7 @@ extension BillingDocument {
             id: id,
             saleID: saleID,
             kind: kind,
-            storedStatus: .numbered(
-                requestID: requestID,
-                number: number,
-                issuedAt: issuedAt
-            )
+            storedStatus: .numbered(requestID: requestID, number: number, issuedAt: issuedAt)
         )
     }
 
@@ -160,10 +149,7 @@ extension BillingDocument {
     private static func ensureSeriesIsCompatible(kind: BillingDocumentKind, status: BillingDocumentStatus) throws {
         guard let number = status.number else { return }
         guard number.series == kind.series else {
-            throw BillingDocumentError.incompatibleSeries(
-                expected: kind.series,
-                actual: number.series
-            )
+            throw BillingDocumentError.incompatibleSeries(expected: kind.series, actual: number.series)
         }
     }
 }

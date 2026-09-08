@@ -8,10 +8,7 @@ struct DefaultAuthenticationRepository: AuthenticationRepository {
 
     func signIn(email: String, password: String) async throws -> AuthenticationSession {
         do {
-            return try await authenticationDataSource.signIn(
-                email: email,
-                password: password
-            )
+            return try await authenticationDataSource.signIn(email: email, password: password)
         } catch let error as CancellationError {
             throw error
         } catch let error as AuthenticationDataSourceError {

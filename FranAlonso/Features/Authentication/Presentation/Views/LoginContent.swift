@@ -1,7 +1,6 @@
 import Foundation
 import SwiftUI
 
-@MainActor
 struct LoginContent: View {
     private enum Field: Hashable {
         case email
@@ -22,10 +21,7 @@ struct LoginContent: View {
 
     var body: some View {
         Form {
-            FormFieldSection(
-                .authenticationLoginEmailLabel,
-                systemImage: "envelope"
-            ) {
+            FormFieldSection(.authenticationLoginEmailLabel, systemImage: "envelope") {
                 TextField(
                     .authenticationLoginEmailLabel,
                     text: $email,
@@ -49,10 +45,7 @@ struct LoginContent: View {
             }
             .disabled(interactionDisabled)
 
-            FormFieldSection(
-                .authenticationLoginPasswordLabel,
-                systemImage: "lock"
-            ) {
+            FormFieldSection(.authenticationLoginPasswordLabel, systemImage: "lock") {
                 if dynamicTypeSize.isAccessibilitySize {
                     VStack(alignment: .trailing, spacing: 8) {
                         passwordEntry
@@ -254,22 +247,14 @@ extension LoginViewModel.Failure {
     @Previewable @State var email = ""
     @Previewable @State var password = ""
 
-    LoginContent(
-        email: $email,
-        password: $password,
-        state: .idle
-    ) {}
+    LoginContent(email: $email, password: $password, state: .idle) {}
 }
 
 #Preview("Idle RTL", traits: .modifier(AppPreviewModifier())) {
     @Previewable @State var email = ""
     @Previewable @State var password = ""
 
-    LoginContent(
-        email: $email,
-        password: $password,
-        state: .idle
-    ) {}
+    LoginContent(email: $email, password: $password, state: .idle) {}
     .environment(\.layoutDirection, .rightToLeft)
 }
 
@@ -277,11 +262,7 @@ extension LoginViewModel.Failure {
     @Previewable @State var email = "fran@example.com"
     @Previewable @State var password = "ephemeral"
 
-    LoginContent(
-        email: $email,
-        password: $password,
-        state: .loading
-    ) {}
+    LoginContent(email: $email, password: $password, state: .loading) {}
 }
 
 #Preview("Succeeded", traits: .modifier(AppPreviewModifier())) {
@@ -299,53 +280,33 @@ extension LoginViewModel.Failure {
     @Previewable @State var email = "fran@example.com"
     @Previewable @State var password = "ephemeral"
 
-    LoginContent(
-        email: $email,
-        password: $password,
-        state: .failed(.credentialsRejected)
-    ) {}
+    LoginContent(email: $email, password: $password, state: .failed(.credentialsRejected)) {}
 }
 
 #Preview("Temporarily unavailable", traits: .modifier(AppPreviewModifier())) {
     @Previewable @State var email = "fran@example.com"
     @Previewable @State var password = "ephemeral"
 
-    LoginContent(
-        email: $email,
-        password: $password,
-        state: .failed(.temporarilyUnavailable)
-    ) {}
+    LoginContent(email: $email, password: $password, state: .failed(.temporarilyUnavailable)) {}
 }
 
 #Preview("Configuration error", traits: .modifier(AppPreviewModifier())) {
     @Previewable @State var email = "fran@example.com"
     @Previewable @State var password = "ephemeral"
 
-    LoginContent(
-        email: $email,
-        password: $password,
-        state: .failed(.configuration)
-    ) {}
+    LoginContent(email: $email, password: $password, state: .failed(.configuration)) {}
 }
 
 #Preview("Secure storage unavailable", traits: .modifier(AppPreviewModifier())) {
     @Previewable @State var email = "fran@example.com"
     @Previewable @State var password = "ephemeral"
 
-    LoginContent(
-        email: $email,
-        password: $password,
-        state: .failed(.secureStorageUnavailable)
-    ) {}
+    LoginContent(email: $email, password: $password, state: .failed(.secureStorageUnavailable)) {}
 }
 
 #Preview("Unexpected error", traits: .modifier(AppPreviewModifier())) {
     @Previewable @State var email = "fran@example.com"
     @Previewable @State var password = "ephemeral"
 
-    LoginContent(
-        email: $email,
-        password: $password,
-        state: .failed(.unexpected)
-    ) {}
+    LoginContent(email: $email, password: $password, state: .failed(.unexpected)) {}
 }

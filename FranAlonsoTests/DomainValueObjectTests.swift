@@ -6,10 +6,7 @@ import Testing
 struct MoneyTests {
     @Test("Rounds to the currency minor units")
     func roundsToTheCurrencyMinorUnits() throws {
-        let money = try Money(
-            amount: decimal("10.005"),
-            currency: .eur
-        )
+        let money = try Money(amount: decimal("10.005"), currency: .eur)
         let amount: Decimal = money.amount
 
         #expect(amount == decimal("10.01"))
@@ -39,12 +36,7 @@ struct MoneyTests {
         let euros = try Money(amount: decimal("10"), currency: .eur)
         let dollars = try Money(amount: decimal("10"), currency: .usd)
 
-        #expect(
-            throws: MoneyError.incompatibleCurrencies(
-                expected: .eur,
-                actual: .usd
-            )
-        ) {
+        #expect(throws: MoneyError.incompatibleCurrencies(expected: .eur, actual: .usd)) {
             try euros.adding(dollars)
         }
     }
@@ -69,20 +61,14 @@ struct MoneyTests {
 
 @Suite("Tax rate")
 struct TaxRateTests {
-    @Test(
-        "Accepts percentages inside the closed range",
-        arguments: ["0", "21", "100"]
-    )
+    @Test("Accepts percentages inside the closed range", arguments: ["0", "21", "100"])
     func acceptsPercentagesInsideTheClosedRange(_ rawPercentage: String) throws {
         let percentage = decimal(rawPercentage)
 
         #expect(try TaxRate(percentage: percentage).percentage == percentage)
     }
 
-    @Test(
-        "Rejects percentages outside the closed range",
-        arguments: ["-0.01", "100.01"]
-    )
+    @Test("Rejects percentages outside the closed range", arguments: ["-0.01", "100.01"])
     func rejectsPercentagesOutsideTheClosedRange(_ rawPercentage: String) {
         #expect(throws: TaxRateError.outOfRange) {
             try TaxRate(percentage: decimal(rawPercentage))
@@ -108,20 +94,14 @@ struct TaxRateTests {
 
 @Suite("Discount")
 struct DiscountTests {
-    @Test(
-        "Accepts percentages inside the closed range",
-        arguments: ["0", "15", "100"]
-    )
+    @Test("Accepts percentages inside the closed range", arguments: ["0", "15", "100"])
     func acceptsPercentagesInsideTheClosedRange(_ rawPercentage: String) throws {
         let percentage = decimal(rawPercentage)
 
         #expect(try Discount(percentage: percentage).percentage == percentage)
     }
 
-    @Test(
-        "Rejects percentages outside the closed range",
-        arguments: ["-0.01", "100.01"]
-    )
+    @Test("Rejects percentages outside the closed range", arguments: ["-0.01", "100.01"])
     func rejectsPercentagesOutsideTheClosedRange(_ rawPercentage: String) {
         #expect(throws: DiscountError.outOfRange) {
             try Discount(percentage: decimal(rawPercentage))

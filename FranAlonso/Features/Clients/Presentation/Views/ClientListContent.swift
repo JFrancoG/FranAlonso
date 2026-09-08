@@ -1,7 +1,6 @@
 import Foundation
 import SwiftUI
 
-@MainActor
 struct ClientListContent: View {
     let state: ClientListViewModel.State
 
@@ -39,9 +38,7 @@ struct ClientListContent: View {
 }
 
 #Preview("Content", traits: .modifier(AppPreviewModifier())) {
-    ClientListContent(
-        state: .content(AppPreviewFixtures.standard.clients)
-    )
+    ClientListContent(state: .content(AppPreviewFixtures.standard.clients))
 }
 
 #Preview("Error", traits: .modifier(AppPreviewModifier())) {

@@ -52,18 +52,12 @@ struct AuthenticationPresentationLocalizationTests {
     @Test(
         "Root authorization failures map to stable localized resources",
         arguments: [
-            (
-                AuthenticationRootViewModel.Failure.differentPrincipal,
-                "authentication.root.error.different-principal"
-            ),
+            (AuthenticationRootViewModel.Failure.differentPrincipal, "authentication.root.error.different-principal"),
             (
                 AuthenticationRootViewModel.Failure.localStoreNotPristine,
                 "authentication.root.error.local-store-not-pristine"
             ),
-            (
-                AuthenticationRootViewModel.Failure.secureStorageUnavailable,
-                "authentication.root.error.secure-storage"
-            ),
+            (AuthenticationRootViewModel.Failure.secureStorageUnavailable, "authentication.root.error.secure-storage"),
             (
                 AuthenticationRootViewModel.Failure.localStoreUnavailable,
                 "authentication.root.error.local-store-unavailable"

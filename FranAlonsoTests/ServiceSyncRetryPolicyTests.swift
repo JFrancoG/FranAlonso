@@ -6,18 +6,9 @@ struct ServiceSyncRetryPolicyTests {
     @Test(
         "Transient provider failures are recoverable",
         arguments: [
-            (
-                ServiceRemoteDataSourceError.unavailable,
-                SyncRetryCategory.unavailable
-            ),
-            (
-                ServiceRemoteDataSourceError.deadlineExceeded,
-                SyncRetryCategory.deadlineExceeded
-            ),
-            (
-                ServiceRemoteDataSourceError.aborted,
-                SyncRetryCategory.aborted
-            )
+            (ServiceRemoteDataSourceError.unavailable, SyncRetryCategory.unavailable),
+            (ServiceRemoteDataSourceError.deadlineExceeded, SyncRetryCategory.deadlineExceeded),
+            (ServiceRemoteDataSourceError.aborted, SyncRetryCategory.aborted)
         ]
     )
     func transientProviderFailuresAreRecoverable(error: ServiceRemoteDataSourceError, category: SyncRetryCategory) {

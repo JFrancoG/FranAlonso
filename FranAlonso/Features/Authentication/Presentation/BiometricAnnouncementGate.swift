@@ -56,10 +56,7 @@ struct BiometricAnnouncementGate: Equatable {
     ///
     /// `sceneIsActive` also covers biometric failures that occur before LocalAuthentication presents system UI and a
     /// return whose SwiftUI `scenePhase` change has not reached this reducer yet.
-    mutating func receiveFailure(
-        _ failure: SessionViewModel.ActionFailure,
-        sceneIsActive: Bool
-    ) -> Effect {
+    mutating func receiveFailure(_ failure: SessionViewModel.ActionFailure, sceneIsActive: Bool) -> Effect {
         switch state {
         case .idle:
             return .presentFailureNormally

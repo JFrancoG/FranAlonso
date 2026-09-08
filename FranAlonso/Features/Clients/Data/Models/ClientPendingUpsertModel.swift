@@ -75,11 +75,7 @@ extension ClientPendingUpsertModel {
             return .absent
         }
         guard let baseVersion, let baseData else { throw ClientPendingUpsertPayloadError.incompleteBaseMetadata }
-        guard baseVersion == 1 else {
-            throw ClientPendingUpsertPayloadError.unsupportedBaseVersion(
-                baseVersion
-            )
-        }
+        guard baseVersion == 1 else { throw ClientPendingUpsertPayloadError.unsupportedBaseVersion(baseVersion) }
 
         return try JSONDecoder().decode(ClientRemoteBase.self, from: baseData)
     }
@@ -90,11 +86,7 @@ extension ClientPendingUpsertModel {
     /// - Throws: `ClientPendingUpsertPayloadError` for an unsupported version, or the
     ///   native decoding error for malformed persisted data.
     func decodePayload() throws -> ClientDTO {
-        guard payloadVersion == 1 else {
-            throw ClientPendingUpsertPayloadError.unsupportedVersion(
-                payloadVersion
-            )
-        }
+        guard payloadVersion == 1 else { throw ClientPendingUpsertPayloadError.unsupportedVersion(payloadVersion) }
 
         return try JSONDecoder().decode(ClientDTO.self, from: payloadData)
     }

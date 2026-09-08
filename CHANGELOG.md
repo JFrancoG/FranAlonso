@@ -19,6 +19,7 @@ All notable changes to this project are documented in this file.
 
 ### Changed
 
+- 2026-09-08 | 🔧 chore(swift): remove redundant annotations and wrapping
 - 2026-08-24 | 📦 build(config): limit iPhone to portrait while preserving adaptive iPad orientations
 - 2026-08-24 | ♿ fix(clients): present loading failures without moving accessibility focus
 - 2026-08-23 | ♿ fix(auth): apply semantic status inks for accessible text contrast

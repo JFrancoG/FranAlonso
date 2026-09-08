@@ -8,9 +8,7 @@ struct ClientListViewModelTests {
     @Test("Starts idle before loading clients")
     func startsIdleBeforeLoadingClients() {
         let repository = ClientListRepositoryFake(behavior: .clients([]))
-        let viewModel = ClientListViewModel(
-            observeClients: ObserveClientsUseCase(repository: repository)
-        )
+        let viewModel = ClientListViewModel(observeClients: ObserveClientsUseCase(repository: repository))
 
         #expect(viewModel.state == .idle)
     }
@@ -19,18 +17,12 @@ struct ClientListViewModelTests {
     func showsContentFromTheObservedClientSnapshot() async {
         let expectedClients = [
             Client.draft(
-                id: ClientID(
-                    rawValue: UUID(
-                        uuidString: "AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE"
-                    )!
-                ),
+                id: ClientID(rawValue: UUID(uuidString: "AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE")!),
                 displayName: "Ana Alonso"
             )
         ]
         let repository = ClientListRepositoryFake(behavior: .clients(expectedClients))
-        let viewModel = ClientListViewModel(
-            observeClients: ObserveClientsUseCase(repository: repository)
-        )
+        let viewModel = ClientListViewModel(observeClients: ObserveClientsUseCase(repository: repository))
 
         await viewModel.load()
 
@@ -41,9 +33,7 @@ struct ClientListViewModelTests {
     @Test("Shows an explicit empty state for an empty snapshot")
     func showsAnExplicitEmptyStateForAnEmptySnapshot() async {
         let repository = ClientListRepositoryFake(behavior: .clients([]))
-        let viewModel = ClientListViewModel(
-            observeClients: ObserveClientsUseCase(repository: repository)
-        )
+        let viewModel = ClientListViewModel(observeClients: ObserveClientsUseCase(repository: repository))
 
         await viewModel.load()
 
@@ -53,9 +43,7 @@ struct ClientListViewModelTests {
     @Test("Shows an empty state when observation finishes without a snapshot")
     func showsAnEmptyStateWhenObservationFinishesWithoutASnapshot() async {
         let repository = ClientListRepositoryFake(behavior: .finished)
-        let viewModel = ClientListViewModel(
-            observeClients: ObserveClientsUseCase(repository: repository)
-        )
+        let viewModel = ClientListViewModel(observeClients: ObserveClientsUseCase(repository: repository))
 
         await viewModel.load()
 
@@ -65,9 +53,7 @@ struct ClientListViewModelTests {
     @Test("Shows failure when client observation throws")
     func showsFailureWhenClientObservationThrows() async {
         let repository = ClientListRepositoryFake(behavior: .failure)
-        let viewModel = ClientListViewModel(
-            observeClients: ObserveClientsUseCase(repository: repository)
-        )
+        let viewModel = ClientListViewModel(observeClients: ObserveClientsUseCase(repository: repository))
 
         await viewModel.load()
 
@@ -77,9 +63,7 @@ struct ClientListViewModelTests {
     @Test("Cancellation leaves the screen idle instead of failed")
     func cancellationLeavesTheScreenIdleInsteadOfFailed() async {
         let repository = ClientListRepositoryFake(behavior: .suspended)
-        let viewModel = ClientListViewModel(
-            observeClients: ObserveClientsUseCase(repository: repository)
-        )
+        let viewModel = ClientListViewModel(observeClients: ObserveClientsUseCase(repository: repository))
         let loadingTask = Task {
             await viewModel.load()
         }

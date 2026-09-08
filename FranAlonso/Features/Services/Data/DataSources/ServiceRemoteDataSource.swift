@@ -42,9 +42,7 @@ protocol ServiceRemoteDataSource: Sendable {
     /// - Parameter cursor: Nil for the legacy-inclusive bootstrap, otherwise the last commit.
     /// - Returns: Provider-neutral records and their next durable cursor.
     /// - Throws: A stable transport error or a decoding error with its coding path.
-    func fetchChanges(
-        after cursor: ServiceSyncCursor?
-    ) async throws -> ServiceRemoteChangeBatch
+    func fetchChanges(after cursor: ServiceSyncCursor?) async throws -> ServiceRemoteChangeBatch
 
     /// Applies one immutable Services upsert or deletion under its causal precondition.
     ///
@@ -54,7 +52,5 @@ protocol ServiceRemoteDataSource: Sendable {
     /// - Parameter operation: The durable operation and remote base to evaluate.
     /// - Returns: The applied, idempotent or conflict outcome observed transactionally.
     /// - Throws: A stable transport, decoding or sync-metadata error.
-    func apply(
-        _ operation: ServicePendingOperation
-    ) async throws -> ServiceRemoteMutationResult
+    func apply(_ operation: ServicePendingOperation) async throws -> ServiceRemoteMutationResult
 }

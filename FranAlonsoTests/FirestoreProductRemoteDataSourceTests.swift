@@ -10,18 +10,12 @@ struct FirestoreProductRemoteDataSourceTests {
         arguments: [FirestoreEnvironment.develop, .production]
     )
     func environmentsResolveApprovedPaths(_ environment: FirestoreEnvironment) {
-        #expect(
-            environment.collectionPath(for: .products)
-                == "\(environment.rawValue)/collections/products"
-        )
+        #expect(environment.collectionPath(for: .products) == "\(environment.rawValue)/collections/products")
         #expect(
             environment.syncMetadataDocumentPath(for: .products)
                 == "\(environment.rawValue)/collections/syncMetadata/products"
         )
-        #expect(
-            environment.collectionPath(for: .products)
-                == "\(environment.rawValue)/collections/products"
-        )
+        #expect(environment.collectionPath(for: .products) == "\(environment.rawValue)/collections/products")
         #expect(
             environment.syncMetadataDocumentPath(for: .products)
                 == "\(environment.rawValue)/collections/syncMetadata/products"
@@ -38,30 +32,20 @@ struct FirestoreProductRemoteDataSourceTests {
 
         #expect(
             try await dataSource.fetchChanges(after: nil)
-                == ProductRemoteChangeBatch(
-                    records: [expectedRecord],
-                    nextCursor: ProductSyncCursor(changeSequence: 0)
-                )
+                == ProductRemoteChangeBatch(records: [expectedRecord], nextCursor: ProductSyncCursor(changeSequence: 0))
         )
     }
 
     @Test("Incremental fetch forwards its cursor and advances to the largest sequence")
     func incrementalFetchAdvancesCursor() async throws {
-        let gate = FirestoreFetchGate(
-            record: firestoreProductRecord(changeSequence: 6)
-        )
+        let gate = FirestoreFetchGate(record: firestoreProductRecord(changeSequence: 6))
         let dataSource = makeFirestoreDataSource(fetch: { cursor in
             await gate.fetch(after: cursor)
         })
 
-        let batch = try await dataSource.fetchChanges(
-            after: ProductSyncCursor(changeSequence: 4)
-        )
+        let batch = try await dataSource.fetchChanges(after: ProductSyncCursor(changeSequence: 4))
 
-        #expect(
-            await gate.receivedCursors
-                == [ProductSyncCursor(changeSequence: 4)]
-        )
+        #expect(await gate.receivedCursors == [ProductSyncCursor(changeSequence: 4)])
         #expect(batch.nextCursor == ProductSyncCursor(changeSequence: 6))
     }
 
@@ -72,11 +56,7 @@ struct FirestoreProductRemoteDataSourceTests {
         let dataSource = makeFirestoreDataSource(transact: { operation in
             await gate.transact(operation: operation)
         })
-        let acknowledged = firestoreProductRecord(
-            revision: 1,
-            operationID: operation.operationID,
-            changeSequence: 1
-        )
+        let acknowledged = firestoreProductRecord(revision: 1, operationID: operation.operationID, changeSequence: 1)
 
         async let result = dataSource.apply(operation)
         await gate.waitUntilReceived()
@@ -94,11 +74,7 @@ struct FirestoreProductRemoteDataSourceTests {
             operationID: valid.operationID,
             predecessorOperationID: nil,
             base: .absent,
-            product: ProductDTO(
-                id: "invalid/remote/path",
-                name: valid.product.name,
-                status: .active
-            )
+            product: ProductDTO(id: "invalid/remote/path", name: valid.product.name, status: .active)
         )
 
         await #expect(throws: ProductSyncPolicyError.entityIdentityMismatch) {
@@ -110,14 +86,10 @@ struct FirestoreProductRemoteDataSourceTests {
     func liveWriteContainsBusinessFieldsAndSyncMetadata() throws {
         let record = firestoreProductRecord(
             revision: 2,
-            operationID: firestoreUUID(
-                "57000000-0000-0000-0000-000000000002"
-            ),
+            operationID: firestoreUUID("57000000-0000-0000-0000-000000000002"),
             changeSequence: 9
         )
-        let fields = try Firestore.Encoder().encode(
-            FirestoreProductWriteDTO(record)
-        )
+        let fields = try Firestore.Encoder().encode(FirestoreProductWriteDTO(record))
 
         #expect(fields["_deleted"] as? Bool == false)
         #expect(fields["name"] as? String == "Ana Alonso")
@@ -126,22 +98,13 @@ struct FirestoreProductRemoteDataSourceTests {
 
     @Test("A tombstone write contains no Product business fields")
     func tombstoneWriteContainsNoProductBusinessFields() throws {
-        let operationID = firestoreUUID(
-            "57000000-0000-0000-0000-000000000003"
-        )
+        let operationID = firestoreUUID("57000000-0000-0000-0000-000000000003")
         let record = ProductRemoteRecord(
-            content: .tombstone(
-                productID: firestorePendingUpsert().productID
-            ),
-            version: .versioned(
-                revision: 3,
-                lastOperationID: operationID
-            ),
+            content: .tombstone(productID: firestorePendingUpsert().productID),
+            version: .versioned(revision: 3, lastOperationID: operationID),
             changeSequence: 10
         )
-        let fields = try Firestore.Encoder().encode(
-            FirestoreProductWriteDTO(record)
-        )
+        let fields = try Firestore.Encoder().encode(FirestoreProductWriteDTO(record))
 
         #expect(fields["_deleted"] as? Bool == true)
         #expect(fields["name"] == nil)
@@ -150,21 +113,13 @@ struct FirestoreProductRemoteDataSourceTests {
 
     @Test("Counter progression fails closed for invalid and exhausted values")
     func counterProgressionFailsClosed() throws {
-        #expect(
-            try FirestoreProductRemoteDataSource.nextChangeSequence(after: nil)
-                == 1
-        )
-        #expect(
-            try FirestoreProductRemoteDataSource.nextChangeSequence(after: 8)
-                == 9
-        )
+        #expect(try FirestoreProductRemoteDataSource.nextChangeSequence(after: nil) == 1)
+        #expect(try FirestoreProductRemoteDataSource.nextChangeSequence(after: 8) == 9)
         #expect(throws: ProductSyncPolicyError.invalidChangeSequence) {
             try FirestoreProductRemoteDataSource.nextChangeSequence(after: -1)
         }
         #expect(throws: ProductSyncPolicyError.changeSequenceOverflow) {
-            try FirestoreProductRemoteDataSource.nextChangeSequence(
-                after: Int64.max
-            )
+            try FirestoreProductRemoteDataSource.nextChangeSequence(after: Int64.max)
         }
     }
 
@@ -185,18 +140,12 @@ struct FirestoreProductRemoteDataSourceTests {
         let delete = ProductPendingOperation.delete(
             ProductPendingDelete(
                 productID: upsert.productID,
-                operationID: firestoreUUID(
-                    "57000000-0000-0000-0000-000000000004"
-                ),
+                operationID: firestoreUUID("57000000-0000-0000-0000-000000000004"),
                 predecessorOperationID: nil,
                 base: .versioned(1)
             )
         )
-        let liveRemote = firestoreProductRecord(
-            revision: 1,
-            operationID: upsert.operationID,
-            changeSequence: 1
-        )
+        let liveRemote = firestoreProductRecord(revision: 1, operationID: upsert.operationID, changeSequence: 1)
         let deletePlan = try FirestoreProductRemoteDataSource.transactionPlan(
             for: delete,
             against: liveRemote,
@@ -238,16 +187,10 @@ struct FirestoreProductRemoteDataSourceTests {
         let malformedCounter = Data(#"{"changeSequence":"nine"}"#.utf8)
 
         #expect(throws: DecodingError.self) {
-            _ = try JSONDecoder().decode(
-                FirestoreProductDocumentDTO.self,
-                from: partialProduct
-            )
+            _ = try JSONDecoder().decode(FirestoreProductDocumentDTO.self, from: partialProduct)
         }
         #expect(throws: DecodingError.self) {
-            _ = try JSONDecoder().decode(
-                FirestoreProductCounterDTO.self,
-                from: malformedCounter
-            )
+            _ = try JSONDecoder().decode(FirestoreProductCounterDTO.self, from: malformedCounter)
         }
     }
 
@@ -276,9 +219,7 @@ struct FirestoreProductRemoteDataSourceTests {
         })
 
         await #expect(throws: ProductSyncPolicyError.invalidChangeSequence) {
-            try await dataSource.fetchChanges(
-                after: ProductSyncCursor(changeSequence: 1)
-            )
+            try await dataSource.fetchChanges(after: ProductSyncCursor(changeSequence: 1))
         }
     }
 
@@ -373,9 +314,7 @@ private func makeFirestoreDataSource(
     fetch: @escaping @Sendable (ProductSyncCursor?) async throws -> [
         (documentID: String, record: ProductRemoteRecord)
     ] = { _ in [] },
-    transact: @escaping @Sendable (
-        ProductPendingOperation
-    ) async throws -> ProductRemoteMutationResult = { operation in
+    transact: @escaping @Sendable (ProductPendingOperation) async throws -> ProductRemoteMutationResult = { operation in
         let content: ProductRemoteContent
         switch operation {
         case .upsert(let upsert): content = .live(upsert.product)
@@ -385,10 +324,7 @@ private func makeFirestoreDataSource(
         return .applied(
             ProductRemoteRecord(
                 content: content,
-                version: .versioned(
-                    revision: 1,
-                    lastOperationID: operation.operationID
-                ),
+                version: .versioned(revision: 1, lastOperationID: operation.operationID),
                 changeSequence: 1
             )
         )
@@ -398,16 +334,10 @@ private func makeFirestoreDataSource(
 }
 
 private func firestorePendingUpsert() -> ProductPendingUpsert {
-    let product = ProductDTO(
-        id: "56000000-0000-0000-0000-000000000001",
-        name: "Ana Alonso",
-        status: .active
-    )
+    let product = ProductDTO(id: "56000000-0000-0000-0000-000000000001", name: "Ana Alonso", status: .active)
     return ProductPendingUpsert(
         productID: firestoreUUID(product.id),
-        operationID: firestoreUUID(
-            "57000000-0000-0000-0000-000000000001"
-        ),
+        operationID: firestoreUUID("57000000-0000-0000-0000-000000000001"),
         predecessorOperationID: nil,
         base: .absent,
         product: product
@@ -421,10 +351,7 @@ private func firestoreProductRecord(
 ) -> ProductRemoteRecord {
     let version: ProductRemoteVersion
     if let revision, let operationID {
-        version = .versioned(
-            revision: revision,
-            lastOperationID: operationID
-        )
+        version = .versioned(revision: revision, lastOperationID: operationID)
     } else {
         version = .legacy
     }

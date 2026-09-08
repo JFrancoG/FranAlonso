@@ -15,10 +15,7 @@ struct DocumentTemplateResourceTests {
         )
     }
 
-    @Test(
-        "Every required template loads as one A4 page",
-        arguments: DocumentTemplateResource.allCases
-    )
+    @Test("Every required template loads as one A4 page", arguments: DocumentTemplateResource.allCases)
     func everyRequiredTemplateLoadsAsOneA4Page(resource: DocumentTemplateResource) throws {
         let url = try #require(resource.url(in: .main))
         let document = try #require(PDFDocument(url: url))

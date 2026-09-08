@@ -46,10 +46,7 @@ struct SaleLineDomainTests {
         )
 
         #expect(throws: SaleLineError.invalidQuantity) {
-            try JSONDecoder().decode(
-                SaleLine.self,
-                from: JSONEncoder().encode(payload)
-            )
+            try JSONDecoder().decode(SaleLine.self, from: JSONEncoder().encode(payload))
         }
     }
 
@@ -85,9 +82,7 @@ struct SaleLifecycleTests {
     @Test("Rejects nonfinite lifecycle timestamps before mutating state")
     func rejectsNonfiniteLifecycleTimestampsBeforeMutatingState() throws {
         var awaitingPayment = try makeAwaitingPaymentSale()
-        let paymentID = PaymentID(
-            rawValue: saleUUID("10000000-0000-0000-0000-000000000098")
-        )
+        let paymentID = PaymentID(rawValue: saleUUID("10000000-0000-0000-0000-000000000098"))
 
         #expect(throws: SaleError.invalidTimestamp) {
             try awaitingPayment.registerPayment(
@@ -99,17 +94,11 @@ struct SaleLifecycleTests {
         #expect(awaitingPayment.status == .awaitingPayment)
 
         var awaitingDocument = awaitingPayment
-        try awaitingDocument.registerPayment(
-            id: paymentID,
-            method: .cash,
-            paidAt: saleDate(1)
-        )
+        try awaitingDocument.registerPayment(id: paymentID, method: .cash, paidAt: saleDate(1))
         let statusBeforeInvalidClose = awaitingDocument.status
         #expect(throws: SaleError.invalidTimestamp) {
             try awaitingDocument.close(
-                documentID: BillingDocumentID(
-                    rawValue: saleUUID("10000000-0000-0000-0000-000000000097")
-                ),
+                documentID: BillingDocumentID(rawValue: saleUUID("10000000-0000-0000-0000-000000000097")),
                 closedAt: Date(timeIntervalSinceReferenceDate: -.infinity)
             )
         }
@@ -119,9 +108,7 @@ struct SaleLifecycleTests {
         let statusBeforeInvalidVoid = closed.status
         #expect(throws: SaleError.invalidTimestamp) {
             try closed.void(
-                reversalID: SaleReversalID(
-                    rawValue: saleUUID("10000000-0000-0000-0000-000000000096")
-                ),
+                reversalID: SaleReversalID(rawValue: saleUUID("10000000-0000-0000-0000-000000000096")),
                 voidedAt: Date(timeIntervalSinceReferenceDate: .nan)
             )
         }
@@ -152,10 +139,7 @@ struct SaleLifecycleTests {
         )
 
         #expect(throws: SaleError.invalidTimestamp) {
-            try decoder.decode(
-                Sale.self,
-                from: encoder.encode(creationPayload)
-            )
+            try decoder.decode(Sale.self, from: encoder.encode(creationPayload))
         }
 
         let completedLine = try completedSaleLine()
@@ -165,19 +149,14 @@ struct SaleLifecycleTests {
             createdAt: saleDate(0),
             lines: [completedLine],
             status: .awaitingDocument(
-                paymentID: PaymentID(
-                    rawValue: saleUUID("10000000-0000-0000-0000-000000000093")
-                ),
+                paymentID: PaymentID(rawValue: saleUUID("10000000-0000-0000-0000-000000000093")),
                 method: .card,
                 paidAt: Date(timeIntervalSinceReferenceDate: .infinity)
             )
         )
 
         #expect(throws: SaleError.invalidTimestamp) {
-            try decoder.decode(
-                Sale.self,
-                from: encoder.encode(paidPayload)
-            )
+            try decoder.decode(Sale.self, from: encoder.encode(paidPayload))
         }
     }
 
@@ -226,12 +205,8 @@ struct SaleLifecycleTests {
 
     @Test("Moves to awaiting payment only after every line completes")
     func movesToAwaitingPaymentOnlyAfterEveryLineCompletes() throws {
-        let firstLine = try makeSaleLine(
-            id: SaleLineID(rawValue: saleUUID("20000000-0000-0000-0000-000000000001"))
-        )
-        let secondLine = try makeSaleLine(
-            id: SaleLineID(rawValue: saleUUID("20000000-0000-0000-0000-000000000002"))
-        )
+        let firstLine = try makeSaleLine(id: SaleLineID(rawValue: saleUUID("20000000-0000-0000-0000-000000000001")))
+        let secondLine = try makeSaleLine(id: SaleLineID(rawValue: saleUUID("20000000-0000-0000-0000-000000000002")))
         var sale = try makeDraftSale(lines: [firstLine, secondLine])
 
         try sale.start()
@@ -248,12 +223,8 @@ struct SaleLifecycleTests {
 
     @Test("Rejects payment while a service still requires action")
     func rejectsPaymentWhileAServiceStillRequiresAction() throws {
-        let firstLine = try makeSaleLine(
-            id: SaleLineID(rawValue: saleUUID("30000000-0000-0000-0000-000000000001"))
-        )
-        let secondLine = try makeSaleLine(
-            id: SaleLineID(rawValue: saleUUID("30000000-0000-0000-0000-000000000002"))
-        )
+        let firstLine = try makeSaleLine(id: SaleLineID(rawValue: saleUUID("30000000-0000-0000-0000-000000000001")))
+        let secondLine = try makeSaleLine(id: SaleLineID(rawValue: saleUUID("30000000-0000-0000-0000-000000000002")))
         var sale = try makeDraftSale(lines: [firstLine, secondLine])
         try sale.start()
         try sale.startLine(id: firstLine.id)
@@ -277,11 +248,7 @@ struct SaleLifecycleTests {
 
         try sale.registerPayment(id: paymentID, method: .card, paidAt: paidAt)
 
-        #expect(sale.status == .awaitingDocument(
-            paymentID: paymentID,
-            method: .card,
-            paidAt: paidAt
-        ))
+        #expect(sale.status == .awaitingDocument(paymentID: paymentID, method: .card, paidAt: paidAt))
         #expect(sale.lines == linesAtPayment)
 
         try sale.registerPayment(id: paymentID, method: .card, paidAt: paidAt)
@@ -392,10 +359,7 @@ struct SaleLifecycleTests {
 
         try sale.void(reversalID: reversalID, voidedAt: voidedAt)
         #expect(throws: SaleError.conflictingReversal) {
-            try sale.void(
-                reversalID: reversalID,
-                voidedAt: saleDate(4)
-            )
+            try sale.void(reversalID: reversalID, voidedAt: saleDate(4))
         }
     }
 
@@ -426,10 +390,7 @@ struct SaleLifecycleTests {
         )
 
         #expect(throws: SaleError.invalidPersistedState) {
-            try JSONDecoder().decode(
-                Sale.self,
-                from: JSONEncoder().encode(payload)
-            )
+            try JSONDecoder().decode(Sale.self, from: JSONEncoder().encode(payload))
         }
     }
 
@@ -445,10 +406,7 @@ struct SaleLifecycleTests {
         )
 
         #expect(throws: SaleError.invalidPersistedState) {
-            try JSONDecoder().decode(
-                Sale.self,
-                from: JSONEncoder().encode(payload)
-            )
+            try JSONDecoder().decode(Sale.self, from: JSONEncoder().encode(payload))
         }
     }
 }

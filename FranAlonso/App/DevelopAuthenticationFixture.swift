@@ -20,21 +20,12 @@ struct DevelopAuthenticationFixture {
         let clientsMode: ClientsMode
 
         static func standard(_ authenticationMode: Mode) -> Configuration {
-            Configuration(
-                authenticationMode: authenticationMode,
-                clientsMode: .standard
-            )
+            Configuration(authenticationMode: authenticationMode, clientsMode: .standard)
         }
 
-        static let localAccessDenied = Configuration(
-            authenticationMode: .localAccessDenied,
-            clientsMode: .standard
-        )
+        static let localAccessDenied = Configuration(authenticationMode: .localAccessDenied, clientsMode: .standard)
 
-        static let observationFailed = Configuration(
-            authenticationMode: .observationFailed,
-            clientsMode: .standard
-        )
+        static let observationFailed = Configuration(authenticationMode: .observationFailed, clientsMode: .standard)
 
         static let clientsObservationError = Configuration(
             authenticationMode: .restoredSession,
@@ -128,9 +119,7 @@ struct DevelopAuthenticationFixture {
     /// Authorizes only the fake principal owned by this isolated fixture.
     static func localPrincipalAuthorizer() -> LocalPrincipalAuthorizer {
         LocalPrincipalAuthorizer { session in
-            guard session.id == principalID else {
-                throw LocalPrincipalAuthorizationError.differentPrincipal
-            }
+            guard session.id == principalID else { throw LocalPrincipalAuthorizationError.differentPrincipal }
         }
     }
 }

@@ -46,11 +46,7 @@ extension ProductPendingDeleteModel {
 
     /// Decodes the immutable remote base captured by this deletion.
     func decodeBase() throws -> ProductRemoteBase {
-        guard baseVersion == 1 else {
-            throw ProductPendingDeletePayloadError.unsupportedBaseVersion(
-                baseVersion
-            )
-        }
+        guard baseVersion == 1 else { throw ProductPendingDeletePayloadError.unsupportedBaseVersion(baseVersion) }
         return try JSONDecoder().decode(ProductRemoteBase.self, from: baseData)
     }
 }

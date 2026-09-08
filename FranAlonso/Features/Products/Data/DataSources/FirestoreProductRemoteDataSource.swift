@@ -15,36 +15,25 @@ actor FirestoreProductRemoteDataSource: ProductRemoteDataSource {
 
     /// Creates the adapter for the Products collection in an explicitly selected environment.
     init(firestore: Firestore, environment: FirestoreEnvironment) {
-        let collection = firestore.collection(
-            environment.collectionPath(for: .products)
-        )
-        let counterDocument = firestore.document(
-            environment.syncMetadataDocumentPath(for: .products)
-        )
+        let collection = firestore.collection(environment.collectionPath(for: .products))
+        let counterDocument = firestore.document(environment.syncMetadataDocumentPath(for: .products))
         let policy = ProductSyncPolicy()
 
         fetchDocuments = { cursor in
             let query: Query
             if let cursor {
                 query = collection
-                    .whereField(
-                        "_sync.changeSequence",
-                        isGreaterThan: cursor.changeSequence
-                    )
+                    .whereField("_sync.changeSequence", isGreaterThan: cursor.changeSequence)
                     .order(by: "_sync.changeSequence")
             } else {
                 query = collection
             }
             let snapshot = try await query.getDocuments(source: .server)
             return try snapshot.documents.map { document in
-                let payload = try document.data(
-                    as: FirestoreProductDocumentDTO.self
-                )
+                let payload = try document.data(as: FirestoreProductDocumentDTO.self)
                 return (
                     documentID: document.documentID,
-                    record: try payload.toRemoteRecord(
-                        documentID: document.documentID
-                    )
+                    record: try payload.toRemoteRecord(documentID: document.documentID)
                 )
             }
         }
@@ -61,10 +50,7 @@ actor FirestoreProductRemoteDataSource: ProductRemoteDataSource {
 
     /// Creates the live adapter after the default Firebase app has been configured.
     init(environment: FirestoreEnvironment) {
-        self.init(
-            firestore: Firestore.firestore(),
-            environment: environment
-        )
+        self.init(firestore: Firestore.firestore(), environment: environment)
     }
 
     func fetchChanges(after cursor: ProductSyncCursor?) async throws -> ProductRemoteChangeBatch {
@@ -89,9 +75,7 @@ actor FirestoreProductRemoteDataSource: ProductRemoteDataSource {
                 ?? 0
             return ProductRemoteChangeBatch(
                 records: records,
-                nextCursor: ProductSyncCursor(
-                    changeSequence: nextSequence
-                )
+                nextCursor: ProductSyncCursor(changeSequence: nextSequence)
             )
         } catch {
             throw mapFirestoreError(error)
@@ -144,21 +128,14 @@ extension FirestoreProductRemoteDataSource {
                         remoteRecord = nil
                     }
 
-                    let decision = policy.decision(
-                        for: operation,
-                        against: remoteRecord
-                    )
+                    let decision = policy.decision(for: operation, against: remoteRecord)
                     let counterState: FirestoreProductCounterState
                     if case .apply = decision {
-                        let counterSnapshot = try transaction.getDocument(
-                            counterDocument
-                        )
+                        let counterSnapshot = try transaction.getDocument(counterDocument)
                         if counterSnapshot.exists {
                             do {
                                 counterState = .value(
-                                    try counterSnapshot.data(
-                                        as: FirestoreProductCounterDTO.self
-                                    ).changeSequence
+                                    try counterSnapshot.data(as: FirestoreProductCounterDTO.self).changeSequence
                                 )
                             } catch is DecodingError {
                                 counterState = .malformed
@@ -183,11 +160,7 @@ extension FirestoreProductRemoteDataSource {
                             forDocument: document,
                             merge: false
                         )
-                        try transaction.setData(
-                            from: write.counter,
-                            forDocument: counterDocument,
-                            merge: false
-                        )
+                        try transaction.setData(from: write.counter, forDocument: counterDocument, merge: false)
                         outcome = .result(.applied(write.record))
                     case .result(let result):
                         outcome = .result(result)
@@ -201,14 +174,13 @@ extension FirestoreProductRemoteDataSource {
                 }
             } completion: { encodedOutcome, error in
                 do {
-                    if let error { throw error }
+                    if let error {
+                        throw error
+                    }
                     guard let outcomeData = encodedOutcome as? Data else {
                         throw ProductRemoteDataSourceError.unexpected
                     }
-                    switch try JSONDecoder().decode(
-                        FirestoreProductTransactionOutcome.self,
-                        from: outcomeData
-                    ) {
+                    switch try JSONDecoder().decode(FirestoreProductTransactionOutcome.self, from: outcomeData) {
                     case .result(let result):
                         continuation.resume(returning: result)
                     case .invalid(let error):
@@ -243,18 +215,12 @@ extension FirestoreProductRemoteDataSource {
             case .malformed, .unread:
                 throw ProductSyncPolicyError.invalidChangeSequence
             }
-            let nextSequence = try nextChangeSequence(
-                after: currentSequence
-            )
-            let record = recordWithoutSequence.withChangeSequence(
-                nextSequence
-            )
+            let nextSequence = try nextChangeSequence(after: currentSequence)
+            let record = recordWithoutSequence.withChangeSequence(nextSequence)
             return .atomic(
                 FirestoreProductAtomicWrite(
                     record: record,
-                    counter: FirestoreProductCounterDTO(
-                        changeSequence: nextSequence
-                    )
+                    counter: FirestoreProductCounterDTO(changeSequence: nextSequence)
                 )
             )
         case .alreadyApplied(let record):
@@ -365,20 +331,10 @@ struct FirestoreProductDocumentDTO: Decodable {
             )
         }
 
-        guard let name else {
-            throw missingProductField(.name)
-        }
-        guard let status else {
-            throw missingProductField(.status)
-        }
+        guard let name else { throw missingProductField(.name) }
+        guard let status else { throw missingProductField(.status) }
         return ProductRemoteRecord(
-            content: .live(
-                ProductDTO(
-                    id: id,
-                    name: name,
-                    status: status
-                )
-            ),
+            content: .live(ProductDTO(id: id, name: name, status: status)),
             version: version,
             changeSequence: changeSequence
         )
@@ -395,9 +351,7 @@ struct FirestoreProductDocumentDTO: Decodable {
                 description: "A synchronized product revision must be positive."
             )
         }
-        guard let operationID = UUID(
-            uuidString: syncMetadata.lastOperationID
-        ) else {
+        guard let operationID = UUID(uuidString: syncMetadata.lastOperationID) else {
             throw productDocumentDecodingError(
                 codingPath: [
                     ProductDocumentCodingKey.syncMetadata,
@@ -406,10 +360,7 @@ struct FirestoreProductDocumentDTO: Decodable {
                 description: "The synchronized product operation identifier is invalid."
             )
         }
-        return .versioned(
-            revision: syncMetadata.revision,
-            lastOperationID: operationID
-        )
+        return .versioned(revision: syncMetadata.revision, lastOperationID: operationID)
     }
 
     private func validatedChangeSequence() throws -> Int64? {
@@ -427,10 +378,7 @@ struct FirestoreProductDocumentDTO: Decodable {
     }
 
     private func missingProductField(_ key: ProductDocumentCodingKey) -> DecodingError {
-        productDocumentDecodingError(
-            codingPath: [key],
-            description: "A live product requires \(key.stringValue)."
-        )
+        productDocumentDecodingError(codingPath: [key], description: "A live product requires \(key.stringValue).")
     }
 }
 
@@ -484,28 +432,21 @@ private enum ProductDocumentCodingKey: String, CodingKey {
 
 private extension ProductRemoteRecord {
     func withChangeSequence(_ changeSequence: Int64) -> ProductRemoteRecord {
-        ProductRemoteRecord(
-            content: content,
-            version: version,
-            changeSequence: changeSequence
-        )
+        ProductRemoteRecord(content: content, version: version, changeSequence: changeSequence)
     }
 }
 
 private func productDocumentDecodingError(codingPath: [any CodingKey], description: String) -> DecodingError {
-    DecodingError.dataCorrupted(
-        DecodingError.Context(
-            codingPath: codingPath,
-            debugDescription: description
-        )
-    )
+    DecodingError.dataCorrupted(DecodingError.Context(codingPath: codingPath, debugDescription: description))
 }
 
 private func mapFirestoreError(_ error: any Error) -> any Error {
     if error is DecodingError || error is ProductSyncPolicyError {
         return error
     }
-    if error is CancellationError { return CancellationError() }
+    if error is CancellationError {
+        return CancellationError()
+    }
 
     let providerError = error as NSError
     guard providerError.domain == FirestoreErrorDomain else { return ProductRemoteDataSourceError.unexpected }

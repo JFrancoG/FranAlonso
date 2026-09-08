@@ -46,11 +46,7 @@ extension ClientPendingDeleteModel {
 
     /// Decodes the immutable remote base captured by this deletion.
     func decodeBase() throws -> ClientRemoteBase {
-        guard baseVersion == 1 else {
-            throw ClientPendingDeletePayloadError.unsupportedBaseVersion(
-                baseVersion
-            )
-        }
+        guard baseVersion == 1 else { throw ClientPendingDeletePayloadError.unsupportedBaseVersion(baseVersion) }
         return try JSONDecoder().decode(ClientRemoteBase.self, from: baseData)
     }
 }

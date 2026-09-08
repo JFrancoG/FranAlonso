@@ -1,7 +1,6 @@
 import SwiftUI
 
 /// Presents exactly one public or protected application root from authoritative authentication state.
-@MainActor
 struct AuthenticationRootScreen: View {
     let viewModel: AuthenticationRootViewModel
     @State private var signOutRequestID: Int?
@@ -39,17 +38,12 @@ struct AuthenticationRootScreen: View {
     }
 
     @ViewBuilder
-    private func unauthenticatedContent(
-        for state: AuthenticationRootViewModel.State
-    ) -> some View {
+    private func unauthenticatedContent(for state: AuthenticationRootViewModel.State) -> some View {
         switch state {
         case .checkingSession:
             LoadingStateView(label: .authenticationRootCheckingSession)
         case .signedOut:
-            LoginScreen(
-                viewModel: viewModel.loginViewModel,
-                onSignInSucceeded: viewModel.registerRecentSignIn
-            )
+            LoginScreen(viewModel: viewModel.loginViewModel, onSignInSucceeded: viewModel.registerRecentSignIn)
         case .locked:
             SessionScreen(viewModel: viewModel.sessionViewModel)
         case .authorizingLocalAccess:
@@ -117,25 +111,17 @@ extension AuthenticationRootViewModel.Failure {
 }
 
 #Preview("Signed out", traits: .modifier(AppPreviewModifier())) {
-    AuthenticationRootScreen(
-        viewModel: AuthenticationPreviewFixtures.standard.makeSignedOutRootViewModel()
-    )
+    AuthenticationRootScreen(viewModel: AuthenticationPreviewFixtures.standard.makeSignedOutRootViewModel())
 }
 
 #Preview("Local access denied", traits: .modifier(AppPreviewModifier())) {
-    AuthenticationRootScreen(
-        viewModel: AuthenticationPreviewFixtures.standard.makeLocalAccessDeniedRootViewModel()
-    )
+    AuthenticationRootScreen(viewModel: AuthenticationPreviewFixtures.standard.makeLocalAccessDeniedRootViewModel())
 }
 
 #Preview("Observation failed", traits: .modifier(AppPreviewModifier())) {
-    AuthenticationRootScreen(
-        viewModel: AuthenticationPreviewFixtures.standard.makeObservationFailedRootViewModel()
-    )
+    AuthenticationRootScreen(viewModel: AuthenticationPreviewFixtures.standard.makeObservationFailedRootViewModel())
 }
 
 #Preview("Authenticated", traits: .modifier(AppPreviewModifier())) {
-    AuthenticationRootScreen(
-        viewModel: AuthenticationPreviewFixtures.standard.makeAuthenticatedRootViewModel()
-    )
+    AuthenticationRootScreen(viewModel: AuthenticationPreviewFixtures.standard.makeAuthenticatedRootViewModel())
 }

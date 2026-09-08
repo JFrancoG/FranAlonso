@@ -11,16 +11,10 @@ struct ServiceSchemaMigrationTests {
             path: "FranAlonso-05.10b-Service-Migration-\(UUID())",
             directoryHint: .isDirectory
         )
-        try FileManager.default.createDirectory(
-            at: directoryURL,
-            withIntermediateDirectories: true
-        )
+        try FileManager.default.createDirectory(at: directoryURL, withIntermediateDirectories: true)
         defer { try? FileManager.default.removeItem(at: directoryURL) }
 
-        let storeURL = directoryURL.appending(
-            path: "Clients-and-Products.store",
-            directoryHint: .notDirectory
-        )
+        let storeURL = directoryURL.appending(path: "Clients-and-Products.store", directoryHint: .notDirectory)
         let fixture = try writeFourteenModelStore(at: storeURL)
         let configuration = ModelConfiguration(
             "PhaseFiveTenBServices",
@@ -29,10 +23,7 @@ struct ServiceSchemaMigrationTests {
             allowsSave: true,
             cloudKitDatabase: .none
         )
-        let reopened = try ModelContainer(
-            for: Schema.franAlonso,
-            configurations: [configuration]
-        )
+        let reopened = try ModelContainer(for: Schema.franAlonso, configurations: [configuration])
         let context = ModelContext(reopened)
 
         try verifyClientRows(in: context, fixture: fixture.client)
@@ -92,41 +83,25 @@ private func writeFourteenModelStore(at storeURL: URL) throws -> FourteenModelFi
         allowsSave: true,
         cloudKitDatabase: .none
     )
-    let container = try ModelContainer(
-        for: oldSchema,
-        configurations: [configuration]
-    )
+    let container = try ModelContainer(for: oldSchema, configurations: [configuration])
     let context = ModelContext(container)
     let clientFixture = try insertClientRows(in: context)
     let productFixture = try insertProductRows(in: context)
     try context.save()
 
-    return FourteenModelFixture(
-        client: clientFixture,
-        product: productFixture
-    )
+    return FourteenModelFixture(client: clientFixture, product: productFixture)
 }
 
 private func insertClientRows(in context: ModelContext) throws -> ClientMigrationFixture {
     let clientID = migrationUUID("71000000-0000-0000-0000-000000000001")
-    let client = Client.draft(
-        id: ClientID(rawValue: clientID),
-        displayName: "Published Clients snapshot"
-    )
+    let client = Client.draft(id: ClientID(rawValue: clientID), displayName: "Published Clients snapshot")
     let dto = ClientDTO(client)
     let upsertBase = ClientRemoteBase.versioned(10)
     let deleteBase = ClientRemoteBase.versioned(11)
-    let upsertOperationID = migrationUUID(
-        "71000000-0000-0000-0000-000000000002"
-    )
+    let upsertOperationID = migrationUUID("71000000-0000-0000-0000-000000000002")
     let record = ClientRemoteRecord(
         client: dto,
-        version: .versioned(
-            revision: 12,
-            lastOperationID: migrationUUID(
-                "71000000-0000-0000-0000-000000000003"
-            )
-        ),
+        version: .versioned(revision: 12, lastOperationID: migrationUUID("71000000-0000-0000-0000-000000000003")),
         changeSequence: 13
     )
     let conflictReason = ClientSyncConflictReason.baseChanged
@@ -150,9 +125,7 @@ private func insertClientRows(in context: ModelContext) throws -> ClientMigratio
     context.insert(
         try ClientPendingDeleteModel(
             clientID: clientID,
-            operationID: migrationUUID(
-                "71000000-0000-0000-0000-000000000004"
-            ),
+            operationID: migrationUUID("71000000-0000-0000-0000-000000000004"),
             predecessorOperationID: upsertOperationID,
             base: deleteBase
         )
@@ -169,12 +142,7 @@ private func insertClientRows(in context: ModelContext) throws -> ClientMigratio
             remoteRecordData: try JSONEncoder().encode(record)
         )
     )
-    context.insert(
-        ClientSyncCursorModel(
-            feedID: "clients",
-            changeSequence: cursor
-        )
-    )
+    context.insert(ClientSyncCursorModel(feedID: "clients", changeSequence: cursor))
     context.insert(ClientSyncRetryModel(retry))
 
     return ClientMigrationFixture(
@@ -191,24 +159,14 @@ private func insertClientRows(in context: ModelContext) throws -> ClientMigratio
 
 private func insertProductRows(in context: ModelContext) throws -> ProductMigrationFixture {
     let productID = migrationUUID("72000000-0000-0000-0000-000000000001")
-    let product = Product.testSnapshot(
-        id: ProductID(rawValue: productID),
-        name: "Published Products snapshot"
-    )
+    let product = Product.testSnapshot(id: ProductID(rawValue: productID), name: "Published Products snapshot")
     let dto = ProductDTO(product)
     let upsertBase = ProductRemoteBase.versioned(20)
     let deleteBase = ProductRemoteBase.versioned(21)
-    let upsertOperationID = migrationUUID(
-        "72000000-0000-0000-0000-000000000002"
-    )
+    let upsertOperationID = migrationUUID("72000000-0000-0000-0000-000000000002")
     let record = ProductRemoteRecord(
         product: dto,
-        version: .versioned(
-            revision: 22,
-            lastOperationID: migrationUUID(
-                "72000000-0000-0000-0000-000000000003"
-            )
-        ),
+        version: .versioned(revision: 22, lastOperationID: migrationUUID("72000000-0000-0000-0000-000000000003")),
         changeSequence: 23
     )
     let conflictReason = ProductSyncConflictReason.baseChanged
@@ -232,9 +190,7 @@ private func insertProductRows(in context: ModelContext) throws -> ProductMigrat
     context.insert(
         try ProductPendingDeleteModel(
             productID: productID,
-            operationID: migrationUUID(
-                "72000000-0000-0000-0000-000000000004"
-            ),
+            operationID: migrationUUID("72000000-0000-0000-0000-000000000004"),
             predecessorOperationID: upsertOperationID,
             base: deleteBase
         )
@@ -251,12 +207,7 @@ private func insertProductRows(in context: ModelContext) throws -> ProductMigrat
             remoteRecordData: try JSONEncoder().encode(record)
         )
     )
-    context.insert(
-        ProductSyncCursorModel(
-            feedID: "products",
-            changeSequence: cursor
-        )
-    )
+    context.insert(ProductSyncCursorModel(feedID: "products", changeSequence: cursor))
     context.insert(ProductSyncRetryModel(retry))
 
     return ProductMigrationFixture(
@@ -272,26 +223,16 @@ private func insertProductRows(in context: ModelContext) throws -> ProductMigrat
 }
 
 private func verifyClientRows(in context: ModelContext, fixture: ClientMigrationFixture) throws {
-    let model = try #require(
-        context.fetch(FetchDescriptor<ClientModel>()).migrationOnly
-    )
+    let model = try #require(context.fetch(FetchDescriptor<ClientModel>()).migrationOnly)
     #expect(try model.toDomain() == fixture.value)
-    let upsert = try #require(
-        context.fetch(FetchDescriptor<ClientPendingUpsertModel>()).migrationOnly
-    )
+    let upsert = try #require(context.fetch(FetchDescriptor<ClientPendingUpsertModel>()).migrationOnly)
     #expect(try upsert.decodeBase() == fixture.upsertBase)
     #expect(try upsert.decodePayload() == fixture.dto)
-    let deletion = try #require(
-        context.fetch(FetchDescriptor<ClientPendingDeleteModel>()).migrationOnly
-    )
+    let deletion = try #require(context.fetch(FetchDescriptor<ClientPendingDeleteModel>()).migrationOnly)
     #expect(try deletion.decodeBase() == fixture.deleteBase)
-    let remote = try #require(
-        context.fetch(FetchDescriptor<ClientRemoteStateModel>()).migrationOnly
-    )
+    let remote = try #require(context.fetch(FetchDescriptor<ClientRemoteStateModel>()).migrationOnly)
     #expect(try remote.decodeRecord() == fixture.record)
-    let conflict = try #require(
-        context.fetch(FetchDescriptor<ClientSyncConflictModel>()).migrationOnly
-    )
+    let conflict = try #require(context.fetch(FetchDescriptor<ClientSyncConflictModel>()).migrationOnly)
     #expect(try conflict.decodeReason() == fixture.conflictReason)
     #expect(try conflict.decodeBase() == fixture.upsertBase)
     #expect(try conflict.decodeLocalClient() == fixture.dto)
@@ -300,33 +241,21 @@ private func verifyClientRows(in context: ModelContext, fixture: ClientMigration
         try context.fetch(FetchDescriptor<ClientSyncCursorModel>())
             .migrationOnly?.changeSequence == fixture.cursor
     )
-    let retry = try #require(
-        context.fetch(FetchDescriptor<ClientSyncRetryModel>()).migrationOnly
-    )
+    let retry = try #require(context.fetch(FetchDescriptor<ClientSyncRetryModel>()).migrationOnly)
     #expect(try retry.decodeState(for: fixture.retry.scope) == fixture.retry)
 }
 
 private func verifyProductRows(in context: ModelContext, fixture: ProductMigrationFixture) throws {
-    let model = try #require(
-        context.fetch(FetchDescriptor<ProductModel>()).migrationOnly
-    )
+    let model = try #require(context.fetch(FetchDescriptor<ProductModel>()).migrationOnly)
     #expect(try model.toDomain() == fixture.value)
-    let upsert = try #require(
-        context.fetch(FetchDescriptor<ProductPendingUpsertModel>()).migrationOnly
-    )
+    let upsert = try #require(context.fetch(FetchDescriptor<ProductPendingUpsertModel>()).migrationOnly)
     #expect(try upsert.decodeBase() == fixture.upsertBase)
     #expect(try upsert.decodePayload() == fixture.dto)
-    let deletion = try #require(
-        context.fetch(FetchDescriptor<ProductPendingDeleteModel>()).migrationOnly
-    )
+    let deletion = try #require(context.fetch(FetchDescriptor<ProductPendingDeleteModel>()).migrationOnly)
     #expect(try deletion.decodeBase() == fixture.deleteBase)
-    let remote = try #require(
-        context.fetch(FetchDescriptor<ProductRemoteStateModel>()).migrationOnly
-    )
+    let remote = try #require(context.fetch(FetchDescriptor<ProductRemoteStateModel>()).migrationOnly)
     #expect(try remote.decodeRecord() == fixture.record)
-    let conflict = try #require(
-        context.fetch(FetchDescriptor<ProductSyncConflictModel>()).migrationOnly
-    )
+    let conflict = try #require(context.fetch(FetchDescriptor<ProductSyncConflictModel>()).migrationOnly)
     #expect(try conflict.decodeReason() == fixture.conflictReason)
     #expect(try conflict.decodeBase() == fixture.upsertBase)
     #expect(try conflict.decodeLocalProduct() == fixture.dto)
@@ -335,34 +264,18 @@ private func verifyProductRows(in context: ModelContext, fixture: ProductMigrati
         try context.fetch(FetchDescriptor<ProductSyncCursorModel>())
             .migrationOnly?.changeSequence == fixture.cursor
     )
-    let retry = try #require(
-        context.fetch(FetchDescriptor<ProductSyncRetryModel>()).migrationOnly
-    )
-    #expect(
-        try retry.decodeState(for: fixture.retry.scope) == fixture.retry
-    )
+    let retry = try #require(context.fetch(FetchDescriptor<ProductSyncRetryModel>()).migrationOnly)
+    #expect(try retry.decodeState(for: fixture.retry.scope) == fixture.retry)
 }
 
 private func verifyEmptyServiceRows(in context: ModelContext) throws {
     #expect(try context.fetchCount(FetchDescriptor<ServiceModel>()) == 0)
-    #expect(
-        try context.fetchCount(FetchDescriptor<ServicePendingUpsertModel>()) == 0
-    )
-    #expect(
-        try context.fetchCount(FetchDescriptor<ServicePendingDeleteModel>()) == 0
-    )
-    #expect(
-        try context.fetchCount(FetchDescriptor<ServiceRemoteStateModel>()) == 0
-    )
-    #expect(
-        try context.fetchCount(FetchDescriptor<ServiceSyncConflictModel>()) == 0
-    )
-    #expect(
-        try context.fetchCount(FetchDescriptor<ServiceSyncCursorModel>()) == 0
-    )
-    #expect(
-        try context.fetchCount(FetchDescriptor<ServiceSyncRetryModel>()) == 0
-    )
+    #expect(try context.fetchCount(FetchDescriptor<ServicePendingUpsertModel>()) == 0)
+    #expect(try context.fetchCount(FetchDescriptor<ServicePendingDeleteModel>()) == 0)
+    #expect(try context.fetchCount(FetchDescriptor<ServiceRemoteStateModel>()) == 0)
+    #expect(try context.fetchCount(FetchDescriptor<ServiceSyncConflictModel>()) == 0)
+    #expect(try context.fetchCount(FetchDescriptor<ServiceSyncCursorModel>()) == 0)
+    #expect(try context.fetchCount(FetchDescriptor<ServiceSyncRetryModel>()) == 0)
 }
 
 private func migrationUUID(_ value: String) -> UUID {
