@@ -27,41 +27,23 @@ struct ClientSyncRetryPersistenceTests {
 
         let restartedActor = ClientPersistenceActor(modelContainer: container)
         #expect(try await restartedActor.retryState(for: .pull) == second)
-        #expect(
-            try ModelContext(container).fetchCount(
-                FetchDescriptor<ClientSyncRetryModel>()
-            ) == 1
-        )
+        #expect(try ModelContext(container).fetchCount(FetchDescriptor<ClientSyncRetryModel>()) == 1)
     }
 
     @Test("Operation scopes retain independent retry rows")
     func operationScopesRetainIndependentRows() async throws {
         let container = try retryPersistenceContainer()
-        let firstID = retryPersistenceUUID(
-            "71000000-0000-0000-0000-000000000001"
-        )
-        let secondID = retryPersistenceUUID(
-            "71000000-0000-0000-0000-000000000002"
-        )
+        let firstID = retryPersistenceUUID("71000000-0000-0000-0000-000000000001")
+        let secondID = retryPersistenceUUID("71000000-0000-0000-0000-000000000002")
         let actor = ClientPersistenceActor(modelContainer: container)
-        let first = try retryPersistenceState(
-            scope: .operation(firstID),
-            step: 1
-        )
-        let second = try retryPersistenceState(
-            scope: .operation(secondID),
-            step: 2
-        )
+        let first = try retryPersistenceState(scope: .operation(firstID), step: 1)
+        let second = try retryPersistenceState(scope: .operation(secondID), step: 2)
 
         try await actor.saveRetryState(first)
         try await actor.saveRetryState(second)
 
-        #expect(
-            try await actor.retryState(for: .operation(firstID)) == first
-        )
-        #expect(
-            try await actor.retryState(for: .operation(secondID)) == second
-        )
+        #expect(try await actor.retryState(for: .operation(firstID)) == first)
+        #expect(try await actor.retryState(for: .operation(secondID)) == second)
     }
 
     @Test("Malformed durable retry state fails closed")
@@ -79,9 +61,7 @@ struct ClientSyncRetryPersistenceTests {
         try context.save()
         let actor = ClientPersistenceActor(modelContainer: container)
 
-        await #expect(
-            throws: SyncRetryPolicyError.invalidBackoffStep(0)
-        ) {
+        await #expect(throws: SyncRetryPolicyError.invalidBackoffStep(0)) {
             _ = try await actor.retryState(for: .pull)
         }
     }
@@ -90,15 +70,10 @@ struct ClientSyncRetryPersistenceTests {
     func committedPullClearsRetryWithCursor() async throws {
         let container = try retryPersistenceContainer()
         let actor = ClientPersistenceActor(modelContainer: container)
-        try await actor.saveRetryState(
-            try retryPersistenceState(scope: .pull, step: 2)
-        )
+        try await actor.saveRetryState(try retryPersistenceState(scope: .pull, step: 2))
 
         try await actor.reconcileRemoteBatch(
-            ClientRemoteChangeBatch(
-                records: [],
-                nextCursor: ClientSyncCursor(changeSequence: 0)
-            ),
+            ClientRemoteChangeBatch(records: [], nextCursor: ClientSyncCursor(changeSequence: 0)),
             policy: ClientSyncPolicy(),
             clearingRetryFor: .pull
         )
@@ -116,10 +91,7 @@ struct ClientSyncRetryPersistenceTests {
 
         await #expect(throws: ClientSyncPersistenceError.invalidCursor) {
             try await actor.reconcileRemoteBatch(
-                ClientRemoteChangeBatch(
-                    records: [],
-                    nextCursor: ClientSyncCursor(changeSequence: 1)
-                ),
+                ClientRemoteChangeBatch(records: [], nextCursor: ClientSyncCursor(changeSequence: 1)),
                 policy: ClientSyncPolicy(),
                 clearingRetryFor: .pull
             )
@@ -133,45 +105,22 @@ struct ClientSyncRetryPersistenceTests {
         let container = try retryPersistenceContainer()
         let actor = ClientPersistenceActor(modelContainer: container)
         let client = Client.draft(
-            id: ClientID(
-                rawValue: retryPersistenceUUID(
-                    "71000000-0000-0000-0000-000000000003"
-                )
-            ),
+            id: ClientID(rawValue: retryPersistenceUUID("71000000-0000-0000-0000-000000000003")),
             displayName: "Retry acknowledgement"
         )
-        let operationID = retryPersistenceUUID(
-            "71000000-0000-0000-0000-000000000004"
-        )
-        try await actor.persistPendingUpsert(
-            client,
-            operationID: operationID
-        )
-        try await actor.saveRetryState(
-            try retryPersistenceState(
-                scope: .operation(operationID),
-                step: 2
-            )
-        )
+        let operationID = retryPersistenceUUID("71000000-0000-0000-0000-000000000004")
+        try await actor.persistPendingUpsert(client, operationID: operationID)
+        try await actor.saveRetryState(try retryPersistenceState(scope: .operation(operationID), step: 2))
         let record = ClientRemoteRecord(
             client: ClientDTO(client),
-            version: .versioned(
-                revision: 1,
-                lastOperationID: operationID
-            ),
+            version: .versioned(revision: 1, lastOperationID: operationID),
             changeSequence: 1
         )
 
-        try await actor.acknowledge(
-            operationID: operationID,
-            record: record,
-            clearingRetryFor: .operation(operationID)
-        )
+        try await actor.acknowledge(operationID: operationID, record: record, clearingRetryFor: .operation(operationID))
 
         #expect(try await actor.pendingOperations().isEmpty)
-        #expect(
-            try await actor.retryState(for: .operation(operationID)) == nil
-        )
+        #expect(try await actor.retryState(for: .operation(operationID)) == nil)
     }
 
     @Test("A pulled acknowledgement clears the acknowledged operation retry")
@@ -179,36 +128,19 @@ struct ClientSyncRetryPersistenceTests {
         let container = try retryPersistenceContainer()
         let actor = ClientPersistenceActor(modelContainer: container)
         let client = Client.draft(
-            id: ClientID(
-                rawValue: retryPersistenceUUID(
-                    "71000000-0000-0000-0000-000000000005"
-                )
-            ),
+            id: ClientID(rawValue: retryPersistenceUUID("71000000-0000-0000-0000-000000000005")),
             displayName: "Pulled acknowledgement"
         )
-        let operationID = retryPersistenceUUID(
-            "71000000-0000-0000-0000-000000000006"
-        )
-        try await actor.persistPendingUpsert(
-            client,
-            operationID: operationID
-        )
-        try await actor.saveRetryState(
-            try retryPersistenceState(
-                scope: .operation(operationID),
-                step: 2
-            )
-        )
+        let operationID = retryPersistenceUUID("71000000-0000-0000-0000-000000000006")
+        try await actor.persistPendingUpsert(client, operationID: operationID)
+        try await actor.saveRetryState(try retryPersistenceState(scope: .operation(operationID), step: 2))
 
         try await actor.reconcileRemoteBatch(
             ClientRemoteChangeBatch(
                 records: [
                     ClientRemoteRecord(
                         client: ClientDTO(client),
-                        version: .versioned(
-                            revision: 1,
-                            lastOperationID: operationID
-                        ),
+                        version: .versioned(revision: 1, lastOperationID: operationID),
                         changeSequence: 1
                     )
                 ],
@@ -219,41 +151,19 @@ struct ClientSyncRetryPersistenceTests {
         )
 
         #expect(try await actor.pendingOperations().isEmpty)
-        #expect(
-            try await actor.retryState(for: .operation(operationID)) == nil
-        )
+        #expect(try await actor.retryState(for: .operation(operationID)) == nil)
     }
 
     @Test("A pulled conflict clears the blocked operation retry")
     func pulledConflictClearsOperationRetry() async throws {
         let container = try retryPersistenceContainer()
         let actor = ClientPersistenceActor(modelContainer: container)
-        let clientID = ClientID(
-            rawValue: retryPersistenceUUID(
-                "71000000-0000-0000-0000-000000000007"
-            )
-        )
-        let client = Client.draft(
-            id: clientID,
-            displayName: "Local conflict"
-        )
-        let operationID = retryPersistenceUUID(
-            "71000000-0000-0000-0000-000000000008"
-        )
-        try await actor.persistPendingUpsert(
-            client,
-            operationID: operationID
-        )
-        try await actor.saveRetryState(
-            try retryPersistenceState(
-                scope: .operation(operationID),
-                step: 2
-            )
-        )
-        let remoteClient = Client.draft(
-            id: clientID,
-            displayName: "Remote conflict"
-        )
+        let clientID = ClientID(rawValue: retryPersistenceUUID("71000000-0000-0000-0000-000000000007"))
+        let client = Client.draft(id: clientID, displayName: "Local conflict")
+        let operationID = retryPersistenceUUID("71000000-0000-0000-0000-000000000008")
+        try await actor.persistPendingUpsert(client, operationID: operationID)
+        try await actor.saveRetryState(try retryPersistenceState(scope: .operation(operationID), step: 2))
+        let remoteClient = Client.draft(id: clientID, displayName: "Remote conflict")
 
         try await actor.reconcileRemoteBatch(
             ClientRemoteChangeBatch(
@@ -262,9 +172,7 @@ struct ClientSyncRetryPersistenceTests {
                         client: ClientDTO(remoteClient),
                         version: .versioned(
                             revision: 1,
-                            lastOperationID: retryPersistenceUUID(
-                                "71000000-0000-0000-0000-000000000009"
-                            )
+                            lastOperationID: retryPersistenceUUID("71000000-0000-0000-0000-000000000009")
                         ),
                         changeSequence: 1
                     )
@@ -275,14 +183,8 @@ struct ClientSyncRetryPersistenceTests {
             clearingRetryFor: .pull
         )
 
-        #expect(
-            try ModelContext(container).fetchCount(
-                FetchDescriptor<ClientSyncConflictModel>()
-            ) == 1
-        )
-        #expect(
-            try await actor.retryState(for: .operation(operationID)) == nil
-        )
+        #expect(try ModelContext(container).fetchCount(FetchDescriptor<ClientSyncConflictModel>()) == 1)
+        #expect(try await actor.retryState(for: .operation(operationID)) == nil)
     }
 }
 

@@ -150,11 +150,7 @@ struct BiometricAuthenticatorTests {
                 code: LAError.Code.companionNotAvailable.rawValue,
                 expected: .unexpected
             ),
-            BiometricErrorFixture(
-                domain: LAError.errorDomain,
-                code: 199_999,
-                expected: .unexpected
-            ),
+            BiometricErrorFixture(domain: LAError.errorDomain, code: 199_999, expected: .unexpected),
             BiometricErrorFixture(
                 domain: "ExampleBiometricErrorDomain",
                 code: LAError.Code.authenticationFailed.rawValue,
@@ -258,10 +254,7 @@ private func makeLocalAuthenticationAuthenticator(
     BiometricAuthenticator.localAuthentication(
         canEvaluate: canEvaluate,
         makeEvaluation: {
-            BiometricPolicyEvaluation(
-                evaluate: evaluate,
-                invalidate: invalidate
-            )
+            BiometricPolicyEvaluation(evaluate: evaluate, invalidate: invalidate)
         }
     )
 }

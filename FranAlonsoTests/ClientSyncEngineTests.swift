@@ -9,24 +9,14 @@ struct ClientSyncEngineTests {
     func repeatedPushAndPullConvergesWithoutDuplicates() async throws {
         let container = try syncEngineContainer()
         let client = Client.draft(
-            id: try syncEngineClientID(
-                "54000000-0000-0000-0000-000000000001"
-            ),
+            id: try syncEngineClientID("54000000-0000-0000-0000-000000000001"),
             displayName: "Convergent client"
         )
-        let operationID = try syncEngineUUID(
-            "55000000-0000-0000-0000-000000000001"
-        )
-        try ClientLocalDataSource().persistPendingUpsert(
-            client,
-            operationID: operationID,
-            in: ModelContext(container)
-        )
+        let operationID = try syncEngineUUID("55000000-0000-0000-0000-000000000001")
+        try ClientLocalDataSource().persistPendingUpsert(client, operationID: operationID, in: ModelContext(container))
         let remote = ClientSyncRemoteFake()
         let engine = ClientSyncEngine(
-            persistenceActor: ClientPersistenceActor(
-                modelContainer: container
-            ),
+            persistenceActor: ClientPersistenceActor(modelContainer: container),
             remoteDataSource: remote,
             observationSignal: ClientObservationSignal()
         )
@@ -35,59 +25,32 @@ struct ClientSyncEngineTests {
         try await engine.synchronize()
 
         let verificationContext = ModelContext(container)
-        #expect(
-            try ClientLocalDataSource().fetchAll(in: verificationContext)
-                == [client]
-        )
-        #expect(
-            try verificationContext.fetchCount(
-                FetchDescriptor<ClientPendingUpsertModel>()
-            ) == 0
-        )
+        #expect(try ClientLocalDataSource().fetchAll(in: verificationContext) == [client])
+        #expect(try verificationContext.fetchCount(FetchDescriptor<ClientPendingUpsertModel>()) == 0)
         #expect(await remote.recordCount == 1)
         #expect(
             await remote.record(for: client.id.rawValue)?.version
-                == .versioned(
-                    revision: 1,
-                    lastOperationID: operationID
-                )
+                == .versioned(revision: 1, lastOperationID: operationID)
         )
         #expect(await remote.receivedOperationIDs == [operationID])
-        #expect(
-            await remote.requestedCursors == [
-                nil,
-                ClientSyncCursor(changeSequence: 0)
-            ]
-        )
+        #expect(await remote.requestedCursors == [ nil, ClientSyncCursor(changeSequence: 0) ])
     }
 
     @MainActor
     @Test("An edit created while A awaits acknowledgement remains visible and later converges")
     func editDuringAcknowledgementRemainsVisibleAndConverges() async throws {
         let container = try syncEngineContainer()
-        let clientID = try syncEngineClientID(
-            "54000000-0000-0000-0000-000000000002"
-        )
+        let clientID = try syncEngineClientID("54000000-0000-0000-0000-000000000002")
         let ancestor = Client.draft(id: clientID, displayName: "Ancestor A")
         let descendant = Client.draft(id: clientID, displayName: "Descendant B")
-        let ancestorOperationID = try syncEngineUUID(
-            "55000000-0000-0000-0000-000000000002"
-        )
-        let descendantOperationID = try syncEngineUUID(
-            "55000000-0000-0000-0000-000000000003"
-        )
+        let ancestorOperationID = try syncEngineUUID("55000000-0000-0000-0000-000000000002")
+        let descendantOperationID = try syncEngineUUID("55000000-0000-0000-0000-000000000003")
         let localDataSource = ClientLocalDataSource()
-        try localDataSource.persistPendingUpsert(
-            ancestor,
-            operationID: ancestorOperationID,
-            in: container.mainContext
-        )
+        try localDataSource.persistPendingUpsert(ancestor, operationID: ancestorOperationID, in: container.mainContext)
         let acknowledgementGate = ClientSyncAcknowledgementGate()
         let remote = ClientSyncRemoteFake(acknowledgementGate: acknowledgementGate)
         let engine = ClientSyncEngine(
-            persistenceActor: ClientPersistenceActor(
-                modelContainer: container
-            ),
+            persistenceActor: ClientPersistenceActor(modelContainer: container),
             remoteDataSource: remote,
             observationSignal: ClientObservationSignal()
         )
@@ -104,101 +67,60 @@ struct ClientSyncEngineTests {
         try await firstSynchronization
 
         let postAcknowledgementContext = ModelContext(container)
-        #expect(
-            try localDataSource.fetchAll(in: postAcknowledgementContext)
-                == [descendant]
-        )
+        #expect(try localDataSource.fetchAll(in: postAcknowledgementContext) == [descendant])
         let pendingAfterAcknowledgement = try postAcknowledgementContext.fetch(
             FetchDescriptor<ClientPendingUpsertModel>()
         )
-        let descendantOperation = try #require(
-            pendingAfterAcknowledgement.only
-        )
+        let descendantOperation = try #require(pendingAfterAcknowledgement.only)
         #expect(descendantOperation.operationID == descendantOperationID)
-        #expect(
-            descendantOperation.predecessorOperationID
-                == ancestorOperationID
-        )
+        #expect(descendantOperation.predecessorOperationID == ancestorOperationID)
 
         try await engine.synchronize()
 
         let finalContext = ModelContext(container)
         #expect(try localDataSource.fetchAll(in: finalContext) == [descendant])
-        #expect(
-            try finalContext.fetchCount(
-                FetchDescriptor<ClientPendingUpsertModel>()
-            ) == 0
-        )
+        #expect(try finalContext.fetchCount(FetchDescriptor<ClientPendingUpsertModel>()) == 0)
         #expect(
             await remote.record(for: clientID.rawValue)?.version
-                == .versioned(
-                    revision: 2,
-                    lastOperationID: descendantOperationID
-                )
+                == .versioned(revision: 2, lastOperationID: descendantOperationID)
         )
-        #expect(
-            await remote.receivedOperationIDs == [
-                ancestorOperationID,
-                descendantOperationID
-            ]
-        )
+        #expect(await remote.receivedOperationIDs == [ ancestorOperationID, descendantOperationID ])
     }
 
     @Test("A local deletion converges to a remote tombstone and clears its chain")
     func localDeletionConvergesToRemoteTombstone() async throws {
         let container = try syncEngineContainer()
         let client = Client.draft(
-            id: try syncEngineClientID(
-                "54000000-0000-0000-0000-000000000004"
-            ),
+            id: try syncEngineClientID("54000000-0000-0000-0000-000000000004"),
             displayName: "Delete through engine"
         )
-        let remoteSeedOperationID = try syncEngineUUID(
-            "55000000-0000-0000-0000-000000000005"
-        )
+        let remoteSeedOperationID = try syncEngineUUID("55000000-0000-0000-0000-000000000005")
         let remote = ClientSyncRemoteFake(
             records: [
                 ClientRemoteRecord(
                     client: ClientDTO(client),
-                    version: .versioned(
-                        revision: 1,
-                        lastOperationID: remoteSeedOperationID
-                    ),
+                    version: .versioned(revision: 1, lastOperationID: remoteSeedOperationID),
                     changeSequence: 1
                 )
             ]
         )
-        let persistenceActor = ClientPersistenceActor(
-            modelContainer: container
-        )
+        let persistenceActor = ClientPersistenceActor(modelContainer: container)
         let engine = ClientSyncEngine(
             persistenceActor: persistenceActor,
             remoteDataSource: remote,
             observationSignal: ClientObservationSignal()
         )
         try await engine.synchronize()
-        let deleteOperationID = try syncEngineUUID(
-            "55000000-0000-0000-0000-000000000006"
-        )
-        try await persistenceActor.persistPendingDelete(
-            client.id,
-            operationID: deleteOperationID
-        )
+        let deleteOperationID = try syncEngineUUID("55000000-0000-0000-0000-000000000006")
+        try await persistenceActor.persistPendingDelete(client.id, operationID: deleteOperationID)
 
         try await engine.synchronize()
 
         #expect(try await persistenceActor.fetchAll().isEmpty)
         #expect(try await persistenceActor.pendingOperations().isEmpty)
-        let remoteRecord = try #require(
-            await remote.record(for: client.id.rawValue)
-        )
+        let remoteRecord = try #require(await remote.record(for: client.id.rawValue))
         #expect(remoteRecord.isTombstone)
-        #expect(
-            remoteRecord.version == .versioned(
-                revision: 2,
-                lastOperationID: deleteOperationID
-            )
-        )
+        #expect(remoteRecord.version == .versioned(revision: 2, lastOperationID: deleteOperationID))
         #expect(remoteRecord.changeSequence == 2)
     }
 
@@ -206,26 +128,18 @@ struct ClientSyncEngineTests {
     func committedPullIsObservableWhenPushFails() async throws {
         let container = try syncEngineContainer()
         let localClient = Client.draft(
-            id: try syncEngineClientID(
-                "54000000-0000-0000-0000-000000000005"
-            ),
+            id: try syncEngineClientID("54000000-0000-0000-0000-000000000005"),
             displayName: "Pending push"
         )
         let remoteClient = Client.draft(
-            id: try syncEngineClientID(
-                "54000000-0000-0000-0000-000000000006"
-            ),
+            id: try syncEngineClientID("54000000-0000-0000-0000-000000000006"),
             displayName: "Committed pull"
         )
-        let persistenceActor = ClientPersistenceActor(
-            modelContainer: container
-        )
+        let persistenceActor = ClientPersistenceActor(modelContainer: container)
         let observationSignal = ClientObservationSignal()
         try await persistenceActor.persistPendingUpsert(
             localClient,
-            operationID: try syncEngineUUID(
-                "55000000-0000-0000-0000-000000000007"
-            )
+            operationID: try syncEngineUUID("55000000-0000-0000-0000-000000000007")
         )
         let repository = DefaultClientRepository(
             persistenceActor: persistenceActor,
@@ -239,9 +153,7 @@ struct ClientSyncEngineTests {
                 client: ClientDTO(remoteClient),
                 version: .versioned(
                     revision: 1,
-                    lastOperationID: try syncEngineUUID(
-                        "55000000-0000-0000-0000-000000000008"
-                    )
+                    lastOperationID: try syncEngineUUID("55000000-0000-0000-0000-000000000008")
                 ),
                 changeSequence: 1
             )
@@ -257,13 +169,8 @@ struct ClientSyncEngineTests {
             try await engine.synchronize()
         }
 
-        #expect(
-            try await observation.next() == [remoteClient, localClient]
-        )
-        #expect(
-            try await persistenceActor.cursor()
-                == ClientSyncCursor(changeSequence: 1)
-        )
+        #expect(try await observation.next() == [remoteClient, localClient])
+        #expect(try await persistenceActor.cursor() == ClientSyncCursor(changeSequence: 1))
     }
 
     @Test("A committed delete is signalled before a later push fails")
@@ -271,40 +178,27 @@ struct ClientSyncEngineTests {
         let container = try syncEngineContainer()
         let dataSource = ClientLocalDataSource()
         let deletedClient = Client.draft(
-            id: try syncEngineClientID(
-                "54000000-0000-0000-0000-000000000007"
-            ),
+            id: try syncEngineClientID("54000000-0000-0000-0000-000000000007"),
             displayName: "Committed deletion"
         )
         let failingClient = Client.draft(
-            id: try syncEngineClientID(
-                "54000000-0000-0000-0000-000000000008"
-            ),
+            id: try syncEngineClientID("54000000-0000-0000-0000-000000000008"),
             displayName: "Later failure"
         )
-        try dataSource.upsert(
-            deletedClient,
-            in: ModelContext(container)
-        )
+        try dataSource.upsert(deletedClient, in: ModelContext(container))
         try dataSource.persistPendingDelete(
             deletedClient.id,
-            operationID: try syncEngineUUID(
-                "55000000-0000-0000-0000-000000000009"
-            ),
+            operationID: try syncEngineUUID("55000000-0000-0000-0000-000000000009"),
             in: ModelContext(container)
         )
         try dataSource.persistPendingUpsert(
             failingClient,
-            operationID: try syncEngineUUID(
-                "55000000-0000-0000-0000-000000000010"
-            ),
+            operationID: try syncEngineUUID("55000000-0000-0000-0000-000000000010"),
             in: ModelContext(container)
         )
         let signal = ClientSyncChangeSignalSpy()
         let engine = ClientSyncEngine(
-            persistenceActor: ClientPersistenceActor(
-                modelContainer: container
-            ),
+            persistenceActor: ClientPersistenceActor(modelContainer: container),
             remoteDataSource: ClientSyncDeleteThenFailRemote(),
             observationSignal: signal,
             timing: syncEngineImmediateTiming
@@ -315,61 +209,32 @@ struct ClientSyncEngineTests {
         }
 
         #expect(await signal.publishCount == 2)
-        #expect(
-            try dataSource.fetchAll(in: ModelContext(container))
-                == [failingClient]
-        )
+        #expect(try dataSource.fetchAll(in: ModelContext(container)) == [failingClient])
     }
 
     @Test("A push conflict blocks descendants without replacing the root snapshots")
     func pushConflictBlocksDescendantsAndPreservesRoot() async throws {
         let container = try syncEngineContainer()
         let dataSource = ClientLocalDataSource()
-        let clientID = try syncEngineClientID(
-            "54000000-0000-0000-0000-000000000009"
-        )
+        let clientID = try syncEngineClientID("54000000-0000-0000-0000-000000000009")
         let root = Client.draft(id: clientID, displayName: "Root snapshot A")
-        let descendant = Client.draft(
-            id: clientID,
-            displayName: "Descendant snapshot B"
-        )
-        let rootOperationID = try syncEngineUUID(
-            "55000000-0000-0000-0000-000000000011"
-        )
-        let descendantOperationID = try syncEngineUUID(
-            "55000000-0000-0000-0000-000000000012"
-        )
-        try dataSource.persistPendingUpsert(
-            root,
-            operationID: rootOperationID,
-            in: ModelContext(container)
-        )
-        try dataSource.persistPendingUpsert(
-            descendant,
-            operationID: descendantOperationID,
-            in: ModelContext(container)
-        )
+        let descendant = Client.draft(id: clientID, displayName: "Descendant snapshot B")
+        let rootOperationID = try syncEngineUUID("55000000-0000-0000-0000-000000000011")
+        let descendantOperationID = try syncEngineUUID("55000000-0000-0000-0000-000000000012")
+        try dataSource.persistPendingUpsert(root, operationID: rootOperationID, in: ModelContext(container))
+        try dataSource.persistPendingUpsert(descendant, operationID: descendantOperationID, in: ModelContext(container))
         let remote = ClientSyncPushConflictRemote(
             record: ClientRemoteRecord(
-                client: ClientDTO(
-                    Client.draft(
-                        id: clientID,
-                        displayName: "Concurrent remote"
-                    )
-                ),
+                client: ClientDTO(Client.draft(id: clientID, displayName: "Concurrent remote")),
                 version: .versioned(
                     revision: 1,
-                    lastOperationID: try syncEngineUUID(
-                        "55000000-0000-0000-0000-000000000013"
-                    )
+                    lastOperationID: try syncEngineUUID("55000000-0000-0000-0000-000000000013")
                 ),
                 changeSequence: 1
             )
         )
         let engine = ClientSyncEngine(
-            persistenceActor: ClientPersistenceActor(
-                modelContainer: container
-            ),
+            persistenceActor: ClientPersistenceActor(modelContainer: container),
             remoteDataSource: remote,
             observationSignal: ClientObservationSignal()
         )
@@ -377,11 +242,7 @@ struct ClientSyncEngineTests {
         try await engine.synchronize()
 
         #expect(await remote.receivedOperationIDs == [rootOperationID])
-        let conflict = try #require(
-            ModelContext(container).fetch(
-                FetchDescriptor<ClientSyncConflictModel>()
-            ).only
-        )
+        let conflict = try #require(ModelContext(container).fetch(FetchDescriptor<ClientSyncConflictModel>()).only)
         #expect(conflict.operationID == rootOperationID)
         #expect(try conflict.decodeLocalClient() == ClientDTO(root))
     }
@@ -426,10 +287,7 @@ private actor ClientSyncRemoteFake: ClientRemoteDataSource {
             guard let cursor else { return true }
             return (record.changeSequence ?? 0) > cursor.changeSequence
         }.sorted { $0.id > $1.id }
-        return ClientRemoteChangeBatch(
-            records: records,
-            nextCursor: ClientSyncCursor(changeSequence: changeSequence)
-        )
+        return ClientRemoteChangeBatch(records: records, nextCursor: ClientSyncCursor(changeSequence: changeSequence))
     }
 
     func apply(_ operation: ClientPendingOperation) async throws -> ClientRemoteMutationResult {
@@ -470,10 +328,7 @@ private actor ClientSyncFailingPushRemote: ClientRemoteDataSource {
     }
 
     func fetchChanges(after cursor: ClientSyncCursor?) async throws -> ClientRemoteChangeBatch {
-        ClientRemoteChangeBatch(
-            records: cursor == nil ? [record] : [],
-            nextCursor: ClientSyncCursor(changeSequence: 1)
-        )
+        ClientRemoteChangeBatch(records: cursor == nil ? [record] : [], nextCursor: ClientSyncCursor(changeSequence: 1))
     }
 
     func apply(_ operation: ClientPendingOperation) async throws -> ClientRemoteMutationResult {
@@ -486,10 +341,7 @@ private actor ClientSyncDeleteThenFailRemote: ClientRemoteDataSource {
     private var mutationCount = 0
 
     func fetchChanges(after cursor: ClientSyncCursor?) async throws -> ClientRemoteChangeBatch {
-        ClientRemoteChangeBatch(
-            records: [],
-            nextCursor: cursor ?? ClientSyncCursor(changeSequence: 0)
-        )
+        ClientRemoteChangeBatch(records: [], nextCursor: cursor ?? ClientSyncCursor(changeSequence: 0))
     }
 
     func apply(_ operation: ClientPendingOperation) async throws -> ClientRemoteMutationResult {
@@ -502,10 +354,7 @@ private actor ClientSyncDeleteThenFailRemote: ClientRemoteDataSource {
         return .applied(
             ClientRemoteRecord(
                 content: .tombstone(clientID: delete.clientID),
-                version: .versioned(
-                    revision: 1,
-                    lastOperationID: delete.operationID
-                ),
+                version: .versioned(revision: 1, lastOperationID: delete.operationID),
                 changeSequence: changeSequence
             )
         )
@@ -523,10 +372,7 @@ private actor ClientSyncPushConflictRemote: ClientRemoteDataSource {
     var receivedOperationIDs: [UUID] { operationIDs }
 
     func fetchChanges(after cursor: ClientSyncCursor?) async throws -> ClientRemoteChangeBatch {
-        ClientRemoteChangeBatch(
-            records: [],
-            nextCursor: cursor ?? ClientSyncCursor(changeSequence: 0)
-        )
+        ClientRemoteChangeBatch(records: [], nextCursor: cursor ?? ClientSyncCursor(changeSequence: 0))
     }
 
     func apply(_ operation: ClientPendingOperation) async throws -> ClientRemoteMutationResult {

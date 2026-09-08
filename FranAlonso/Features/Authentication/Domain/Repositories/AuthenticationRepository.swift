@@ -35,10 +35,7 @@ protocol AuthenticationRepository: Sendable {
     /// - Returns: The principal reported by the authentication provider.
     /// - Throws: `AuthenticationError` for a stable failure or `CancellationError` when the
     ///   repository can honor cancellation.
-    func signIn(
-        email: String,
-        password: String
-    ) async throws -> AuthenticationSession
+    func signIn(email: String, password: String) async throws -> AuthenticationSession
 
     /// Ends the provider session and clears its secure local authentication state.
     ///

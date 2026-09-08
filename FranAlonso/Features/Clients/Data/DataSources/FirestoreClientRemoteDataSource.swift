@@ -15,36 +15,25 @@ actor FirestoreClientRemoteDataSource: ClientRemoteDataSource {
 
     /// Creates the adapter for the Clients collection in an explicitly selected environment.
     init(firestore: Firestore, environment: FirestoreEnvironment) {
-        let collection = firestore.collection(
-            environment.collectionPath(for: .clients)
-        )
-        let counterDocument = firestore.document(
-            environment.syncMetadataDocumentPath(for: .clients)
-        )
+        let collection = firestore.collection(environment.collectionPath(for: .clients))
+        let counterDocument = firestore.document(environment.syncMetadataDocumentPath(for: .clients))
         let policy = ClientSyncPolicy()
 
         fetchDocuments = { cursor in
             let query: Query
             if let cursor {
                 query = collection
-                    .whereField(
-                        "_sync.changeSequence",
-                        isGreaterThan: cursor.changeSequence
-                    )
+                    .whereField("_sync.changeSequence", isGreaterThan: cursor.changeSequence)
                     .order(by: "_sync.changeSequence")
             } else {
                 query = collection
             }
             let snapshot = try await query.getDocuments(source: .server)
             return try snapshot.documents.map { document in
-                let payload = try document.data(
-                    as: FirestoreClientDocumentDTO.self
-                )
+                let payload = try document.data(as: FirestoreClientDocumentDTO.self)
                 return (
                     documentID: document.documentID,
-                    record: try payload.toRemoteRecord(
-                        documentID: document.documentID
-                    )
+                    record: try payload.toRemoteRecord(documentID: document.documentID)
                 )
             }
         }
@@ -61,10 +50,7 @@ actor FirestoreClientRemoteDataSource: ClientRemoteDataSource {
 
     /// Creates the live adapter after the default Firebase app has been configured.
     init(environment: FirestoreEnvironment) {
-        self.init(
-            firestore: Firestore.firestore(),
-            environment: environment
-        )
+        self.init(firestore: Firestore.firestore(), environment: environment)
     }
 
     func fetchChanges(after cursor: ClientSyncCursor?) async throws -> ClientRemoteChangeBatch {
@@ -87,12 +73,7 @@ actor FirestoreClientRemoteDataSource: ClientRemoteDataSource {
             let nextSequence = records.compactMap(\.changeSequence).max()
                 ?? cursor?.changeSequence
                 ?? 0
-            return ClientRemoteChangeBatch(
-                records: records,
-                nextCursor: ClientSyncCursor(
-                    changeSequence: nextSequence
-                )
-            )
+            return ClientRemoteChangeBatch(records: records, nextCursor: ClientSyncCursor(changeSequence: nextSequence))
         } catch {
             throw mapFirestoreError(error)
         }
@@ -144,21 +125,14 @@ extension FirestoreClientRemoteDataSource {
                         remoteRecord = nil
                     }
 
-                    let decision = policy.decision(
-                        for: operation,
-                        against: remoteRecord
-                    )
+                    let decision = policy.decision(for: operation, against: remoteRecord)
                     let counterState: FirestoreClientCounterState
                     if case .apply = decision {
-                        let counterSnapshot = try transaction.getDocument(
-                            counterDocument
-                        )
+                        let counterSnapshot = try transaction.getDocument(counterDocument)
                         if counterSnapshot.exists {
                             do {
                                 counterState = .value(
-                                    try counterSnapshot.data(
-                                        as: FirestoreClientCounterDTO.self
-                                    ).changeSequence
+                                    try counterSnapshot.data(as: FirestoreClientCounterDTO.self).changeSequence
                                 )
                             } catch is DecodingError {
                                 counterState = .malformed
@@ -183,11 +157,7 @@ extension FirestoreClientRemoteDataSource {
                             forDocument: document,
                             merge: false
                         )
-                        try transaction.setData(
-                            from: write.counter,
-                            forDocument: counterDocument,
-                            merge: false
-                        )
+                        try transaction.setData(from: write.counter, forDocument: counterDocument, merge: false)
                         outcome = .result(.applied(write.record))
                     case .result(let result):
                         outcome = .result(result)
@@ -201,14 +171,13 @@ extension FirestoreClientRemoteDataSource {
                 }
             } completion: { encodedOutcome, error in
                 do {
-                    if let error { throw error }
+                    if let error {
+                        throw error
+                    }
                     guard let outcomeData = encodedOutcome as? Data else {
                         throw ClientRemoteDataSourceError.unexpected
                     }
-                    switch try JSONDecoder().decode(
-                        FirestoreClientTransactionOutcome.self,
-                        from: outcomeData
-                    ) {
+                    switch try JSONDecoder().decode(FirestoreClientTransactionOutcome.self, from: outcomeData) {
                     case .result(let result):
                         continuation.resume(returning: result)
                     case .invalid(let error):
@@ -243,18 +212,12 @@ extension FirestoreClientRemoteDataSource {
             case .malformed, .unread:
                 throw ClientSyncPolicyError.invalidChangeSequence
             }
-            let nextSequence = try nextChangeSequence(
-                after: currentSequence
-            )
-            let record = recordWithoutSequence.withChangeSequence(
-                nextSequence
-            )
+            let nextSequence = try nextChangeSequence(after: currentSequence)
+            let record = recordWithoutSequence.withChangeSequence(nextSequence)
             return .atomic(
                 FirestoreClientAtomicWrite(
                     record: record,
-                    counter: FirestoreClientCounterDTO(
-                        changeSequence: nextSequence
-                    )
+                    counter: FirestoreClientCounterDTO(changeSequence: nextSequence)
                 )
             )
         case .alreadyApplied(let record):
@@ -383,12 +346,8 @@ struct FirestoreClientDocumentDTO: Decodable {
             )
         }
 
-        guard let displayName else {
-            throw missingClientField(.displayName)
-        }
-        guard let status else {
-            throw missingClientField(.status)
-        }
+        guard let displayName else { throw missingClientField(.displayName) }
+        guard let status else { throw missingClientField(.status) }
         return ClientRemoteRecord(
             content: .live(
                 ClientDTO(
@@ -416,9 +375,7 @@ struct FirestoreClientDocumentDTO: Decodable {
                 description: "A synchronized client revision must be positive."
             )
         }
-        guard let operationID = UUID(
-            uuidString: syncMetadata.lastOperationID
-        ) else {
+        guard let operationID = UUID(uuidString: syncMetadata.lastOperationID) else {
             throw clientDocumentDecodingError(
                 codingPath: [
                     ClientDocumentCodingKey.syncMetadata,
@@ -427,10 +384,7 @@ struct FirestoreClientDocumentDTO: Decodable {
                 description: "The synchronized client operation identifier is invalid."
             )
         }
-        return .versioned(
-            revision: syncMetadata.revision,
-            lastOperationID: operationID
-        )
+        return .versioned(revision: syncMetadata.revision, lastOperationID: operationID)
     }
 
     private func validatedChangeSequence() throws -> Int64? {
@@ -448,10 +402,7 @@ struct FirestoreClientDocumentDTO: Decodable {
     }
 
     private func missingClientField(_ key: ClientDocumentCodingKey) -> DecodingError {
-        clientDocumentDecodingError(
-            codingPath: [key],
-            description: "A live client requires \(key.stringValue)."
-        )
+        clientDocumentDecodingError(codingPath: [key], description: "A live client requires \(key.stringValue).")
     }
 }
 
@@ -505,28 +456,21 @@ private enum ClientDocumentCodingKey: String, CodingKey {
 
 private extension ClientRemoteRecord {
     func withChangeSequence(_ changeSequence: Int64) -> ClientRemoteRecord {
-        ClientRemoteRecord(
-            content: content,
-            version: version,
-            changeSequence: changeSequence
-        )
+        ClientRemoteRecord(content: content, version: version, changeSequence: changeSequence)
     }
 }
 
 private func clientDocumentDecodingError(codingPath: [any CodingKey], description: String) -> DecodingError {
-    DecodingError.dataCorrupted(
-        DecodingError.Context(
-            codingPath: codingPath,
-            debugDescription: description
-        )
-    )
+    DecodingError.dataCorrupted(DecodingError.Context(codingPath: codingPath, debugDescription: description))
 }
 
 private func mapFirestoreError(_ error: any Error) -> any Error {
     if error is DecodingError || error is ClientSyncPolicyError {
         return error
     }
-    if error is CancellationError { return CancellationError() }
+    if error is CancellationError {
+        return CancellationError()
+    }
 
     let providerError = error as NSError
     guard providerError.domain == FirestoreErrorDomain else { return ClientRemoteDataSourceError.unexpected }

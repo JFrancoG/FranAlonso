@@ -155,10 +155,7 @@ private actor AppRuntimeRemoteFake: ClientRemoteDataSource {
 
     func fetchChanges(after cursor: ClientSyncCursor?) async throws -> ClientRemoteChangeBatch {
         fetchCalls += 1
-        return ClientRemoteChangeBatch(
-            records: [],
-            nextCursor: cursor ?? ClientSyncCursor(changeSequence: 0)
-        )
+        return ClientRemoteChangeBatch(records: [], nextCursor: cursor ?? ClientSyncCursor(changeSequence: 0))
     }
 
     func apply(_ operation: ClientPendingOperation) async throws -> ClientRemoteMutationResult {
@@ -167,10 +164,7 @@ private actor AppRuntimeRemoteFake: ClientRemoteDataSource {
         return .applied(
             ClientRemoteRecord(
                 client: upsert.client,
-                version: .versioned(
-                    revision: 1,
-                    lastOperationID: upsert.operationID
-                ),
+                version: .versioned(revision: 1, lastOperationID: upsert.operationID),
                 changeSequence: 1
             )
         )
@@ -201,10 +195,7 @@ private actor AppRuntimeProductRemoteFake: ProductRemoteDataSource {
 
     func fetchChanges(after cursor: ProductSyncCursor?) async throws -> ProductRemoteChangeBatch {
         fetchCalls += 1
-        return ProductRemoteChangeBatch(
-            records: [],
-            nextCursor: cursor ?? ProductSyncCursor(changeSequence: 0)
-        )
+        return ProductRemoteChangeBatch(records: [], nextCursor: cursor ?? ProductSyncCursor(changeSequence: 0))
     }
 
     func apply(_ operation: ProductPendingOperation) async throws -> ProductRemoteMutationResult {
@@ -213,10 +204,7 @@ private actor AppRuntimeProductRemoteFake: ProductRemoteDataSource {
         return .applied(
             ProductRemoteRecord(
                 product: upsert.product,
-                version: .versioned(
-                    revision: 1,
-                    lastOperationID: upsert.operationID
-                ),
+                version: .versioned(revision: 1, lastOperationID: upsert.operationID),
                 changeSequence: 1
             )
         )
@@ -247,10 +235,7 @@ private actor AppRuntimeServiceRemoteFake: ServiceRemoteDataSource {
 
     func fetchChanges(after cursor: ServiceSyncCursor?) async throws -> ServiceRemoteChangeBatch {
         fetchCalls += 1
-        return ServiceRemoteChangeBatch(
-            records: [],
-            nextCursor: cursor ?? ServiceSyncCursor(changeSequence: 0)
-        )
+        return ServiceRemoteChangeBatch(records: [], nextCursor: cursor ?? ServiceSyncCursor(changeSequence: 0))
     }
 
     func apply(_ operation: ServicePendingOperation) async throws -> ServiceRemoteMutationResult {
@@ -259,10 +244,7 @@ private actor AppRuntimeServiceRemoteFake: ServiceRemoteDataSource {
         return .applied(
             ServiceRemoteRecord(
                 service: upsert.service,
-                version: .versioned(
-                    revision: 1,
-                    lastOperationID: upsert.operationID
-                ),
+                version: .versioned(revision: 1, lastOperationID: upsert.operationID),
                 changeSequence: 1
             )
         )
@@ -293,10 +275,7 @@ private actor AppRuntimeSaleRemoteFake: SaleRemoteDataSource {
 
     func fetchChanges(after cursor: SaleSyncCursor?) async throws -> SaleRemoteChangeBatch {
         fetchCalls += 1
-        return SaleRemoteChangeBatch(
-            records: [],
-            nextCursor: cursor ?? SaleSyncCursor(changeSequence: 0)
-        )
+        return SaleRemoteChangeBatch(records: [], nextCursor: cursor ?? SaleSyncCursor(changeSequence: 0))
     }
 
     func apply(_ operation: SalePendingOperation) async throws -> SaleRemoteMutationResult {
@@ -305,10 +284,7 @@ private actor AppRuntimeSaleRemoteFake: SaleRemoteDataSource {
         return .applied(
             SaleRemoteRecord(
                 sale: upsert.sale,
-                version: .versioned(
-                    revision: 1,
-                    lastOperationID: upsert.operationID
-                ),
+                version: .versioned(revision: 1, lastOperationID: upsert.operationID),
                 changeSequence: 1
             )
         )

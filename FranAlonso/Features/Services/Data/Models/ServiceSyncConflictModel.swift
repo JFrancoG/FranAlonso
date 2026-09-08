@@ -81,9 +81,7 @@ extension ServiceSyncConflictModel {
     /// Decodes the stable conflict classification retained for resolution.
     func decodeReason() throws -> ServiceSyncConflictReason {
         guard let reason = ServiceSyncConflictReason(rawValue: reasonRawValue) else {
-            throw ServiceSyncPersistenceError.invalidConflictReason(
-                reasonRawValue
-            )
+            throw ServiceSyncPersistenceError.invalidConflictReason(reasonRawValue)
         }
         return reason
     }
@@ -109,11 +107,7 @@ extension ServiceSyncConflictModel {
     }
 
     private func requireSupportedVersion() throws {
-        guard payloadVersion == 1 else {
-            throw ServiceSyncPersistenceError.unsupportedConflictVersion(
-                payloadVersion
-            )
-        }
+        guard payloadVersion == 1 else { throw ServiceSyncPersistenceError.unsupportedConflictVersion(payloadVersion) }
     }
 }
 
@@ -134,9 +128,7 @@ extension ServiceDTO {
     ///
     /// - Throws: `ServiceSyncPersistenceError.entityIdentityMismatch` when `id` is invalid.
     func stableUUID() throws -> UUID {
-        guard let identifier = UUID(uuidString: id) else {
-            throw ServiceSyncPersistenceError.entityIdentityMismatch
-        }
+        guard let identifier = UUID(uuidString: id) else { throw ServiceSyncPersistenceError.entityIdentityMismatch }
         return identifier
     }
 }

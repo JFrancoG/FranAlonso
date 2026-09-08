@@ -9,14 +9,10 @@ struct ServiceSyncEngineTests {
     func repeatedPushAndPullConvergesWithoutDuplicates() async throws {
         let container = try syncEngineContainer()
         let service = try makeService(
-            id: try syncEngineServiceID(
-                "54000000-0000-0000-0000-000000000001"
-            ).rawValue,
+            id: try syncEngineServiceID("54000000-0000-0000-0000-000000000001").rawValue,
             name: "Convergent service"
         )
-        let operationID = try syncEngineUUID(
-            "55000000-0000-0000-0000-000000000001"
-        )
+        let operationID = try syncEngineUUID("55000000-0000-0000-0000-000000000001")
         try ServiceLocalDataSource().persistPendingUpsert(
             service,
             operationID: operationID,
@@ -24,9 +20,7 @@ struct ServiceSyncEngineTests {
         )
         let remote = ServiceSyncRemoteFake()
         let engine = ServiceSyncEngine(
-            persistenceActor: ServicePersistenceActor(
-                modelContainer: container
-            ),
+            persistenceActor: ServicePersistenceActor(modelContainer: container),
             remoteDataSource: remote,
             observationSignal: ServiceObservationSignal()
         )
@@ -35,65 +29,32 @@ struct ServiceSyncEngineTests {
         try await engine.synchronize()
 
         let verificationContext = ModelContext(container)
-        #expect(
-            try ServiceLocalDataSource().fetchAll(in: verificationContext)
-                == [service]
-        )
-        #expect(
-            try verificationContext.fetchCount(
-                FetchDescriptor<ServicePendingUpsertModel>()
-            ) == 0
-        )
+        #expect(try ServiceLocalDataSource().fetchAll(in: verificationContext) == [service])
+        #expect(try verificationContext.fetchCount(FetchDescriptor<ServicePendingUpsertModel>()) == 0)
         #expect(await remote.recordCount == 1)
         #expect(
             await remote.record(for: service.id.rawValue)?.version
-                == .versioned(
-                    revision: 1,
-                    lastOperationID: operationID
-                )
+                == .versioned(revision: 1, lastOperationID: operationID)
         )
         #expect(await remote.receivedOperationIDs == [operationID])
-        #expect(
-            await remote.requestedCursors == [
-                nil,
-                ServiceSyncCursor(changeSequence: 0)
-            ]
-        )
+        #expect(await remote.requestedCursors == [ nil, ServiceSyncCursor(changeSequence: 0) ])
     }
 
     @MainActor
     @Test("An edit created while A awaits acknowledgement remains visible and later converges")
     func editDuringAcknowledgementRemainsVisibleAndConverges() async throws {
         let container = try syncEngineContainer()
-        let serviceID = try syncEngineServiceID(
-            "54000000-0000-0000-0000-000000000002"
-        )
-        let ancestor = try makeService(
-            id: serviceID.rawValue,
-            name: "Ancestor A"
-        )
-        let descendant = try makeService(
-            id: serviceID.rawValue,
-            name: "Descendant B"
-        )
-        let ancestorOperationID = try syncEngineUUID(
-            "55000000-0000-0000-0000-000000000002"
-        )
-        let descendantOperationID = try syncEngineUUID(
-            "55000000-0000-0000-0000-000000000003"
-        )
+        let serviceID = try syncEngineServiceID("54000000-0000-0000-0000-000000000002")
+        let ancestor = try makeService(id: serviceID.rawValue, name: "Ancestor A")
+        let descendant = try makeService(id: serviceID.rawValue, name: "Descendant B")
+        let ancestorOperationID = try syncEngineUUID("55000000-0000-0000-0000-000000000002")
+        let descendantOperationID = try syncEngineUUID("55000000-0000-0000-0000-000000000003")
         let localDataSource = ServiceLocalDataSource()
-        try localDataSource.persistPendingUpsert(
-            ancestor,
-            operationID: ancestorOperationID,
-            in: container.mainContext
-        )
+        try localDataSource.persistPendingUpsert(ancestor, operationID: ancestorOperationID, in: container.mainContext)
         let acknowledgementGate = ServiceSyncAcknowledgementGate()
         let remote = ServiceSyncRemoteFake(acknowledgementGate: acknowledgementGate)
         let engine = ServiceSyncEngine(
-            persistenceActor: ServicePersistenceActor(
-                modelContainer: container
-            ),
+            persistenceActor: ServicePersistenceActor(modelContainer: container),
             remoteDataSource: remote,
             observationSignal: ServiceObservationSignal()
         )
@@ -110,101 +71,60 @@ struct ServiceSyncEngineTests {
         try await firstSynchronization
 
         let postAcknowledgementContext = ModelContext(container)
-        #expect(
-            try localDataSource.fetchAll(in: postAcknowledgementContext)
-                == [descendant]
-        )
+        #expect(try localDataSource.fetchAll(in: postAcknowledgementContext) == [descendant])
         let pendingAfterAcknowledgement = try postAcknowledgementContext.fetch(
             FetchDescriptor<ServicePendingUpsertModel>()
         )
-        let descendantOperation = try #require(
-            pendingAfterAcknowledgement.only
-        )
+        let descendantOperation = try #require(pendingAfterAcknowledgement.only)
         #expect(descendantOperation.operationID == descendantOperationID)
-        #expect(
-            descendantOperation.predecessorOperationID
-                == ancestorOperationID
-        )
+        #expect(descendantOperation.predecessorOperationID == ancestorOperationID)
 
         try await engine.synchronize()
 
         let finalContext = ModelContext(container)
         #expect(try localDataSource.fetchAll(in: finalContext) == [descendant])
-        #expect(
-            try finalContext.fetchCount(
-                FetchDescriptor<ServicePendingUpsertModel>()
-            ) == 0
-        )
+        #expect(try finalContext.fetchCount(FetchDescriptor<ServicePendingUpsertModel>()) == 0)
         #expect(
             await remote.record(for: serviceID.rawValue)?.version
-                == .versioned(
-                    revision: 2,
-                    lastOperationID: descendantOperationID
-                )
+                == .versioned(revision: 2, lastOperationID: descendantOperationID)
         )
-        #expect(
-            await remote.receivedOperationIDs == [
-                ancestorOperationID,
-                descendantOperationID
-            ]
-        )
+        #expect(await remote.receivedOperationIDs == [ ancestorOperationID, descendantOperationID ])
     }
 
     @Test("A local deletion converges to a remote tombstone and clears its chain")
     func localDeletionConvergesToRemoteTombstone() async throws {
         let container = try syncEngineContainer()
         let service = try makeService(
-            id: try syncEngineServiceID(
-                "54000000-0000-0000-0000-000000000004"
-            ).rawValue,
+            id: try syncEngineServiceID("54000000-0000-0000-0000-000000000004").rawValue,
             name: "Delete through engine"
         )
-        let remoteSeedOperationID = try syncEngineUUID(
-            "55000000-0000-0000-0000-000000000005"
-        )
+        let remoteSeedOperationID = try syncEngineUUID("55000000-0000-0000-0000-000000000005")
         let remote = ServiceSyncRemoteFake(
             records: [
                 ServiceRemoteRecord(
                     service: try ServiceDTO(service),
-                    version: .versioned(
-                        revision: 1,
-                        lastOperationID: remoteSeedOperationID
-                    ),
+                    version: .versioned(revision: 1, lastOperationID: remoteSeedOperationID),
                     changeSequence: 1
                 )
             ]
         )
-        let persistenceActor = ServicePersistenceActor(
-            modelContainer: container
-        )
+        let persistenceActor = ServicePersistenceActor(modelContainer: container)
         let engine = ServiceSyncEngine(
             persistenceActor: persistenceActor,
             remoteDataSource: remote,
             observationSignal: ServiceObservationSignal()
         )
         try await engine.synchronize()
-        let deleteOperationID = try syncEngineUUID(
-            "55000000-0000-0000-0000-000000000006"
-        )
-        try await persistenceActor.persistPendingDelete(
-            service.id,
-            operationID: deleteOperationID
-        )
+        let deleteOperationID = try syncEngineUUID("55000000-0000-0000-0000-000000000006")
+        try await persistenceActor.persistPendingDelete(service.id, operationID: deleteOperationID)
 
         try await engine.synchronize()
 
         #expect(try await persistenceActor.fetchAll().isEmpty)
         #expect(try await persistenceActor.pendingOperations().isEmpty)
-        let remoteRecord = try #require(
-            await remote.record(for: service.id.rawValue)
-        )
+        let remoteRecord = try #require(await remote.record(for: service.id.rawValue))
         #expect(remoteRecord.isTombstone)
-        #expect(
-            remoteRecord.version == .versioned(
-                revision: 2,
-                lastOperationID: deleteOperationID
-            )
-        )
+        #expect(remoteRecord.version == .versioned(revision: 2, lastOperationID: deleteOperationID))
         #expect(remoteRecord.changeSequence == 2)
     }
 
@@ -212,26 +132,18 @@ struct ServiceSyncEngineTests {
     func committedPullIsObservableWhenPushFails() async throws {
         let container = try syncEngineContainer()
         let localService = try makeService(
-            id: try syncEngineServiceID(
-                "54000000-0000-0000-0000-000000000005"
-            ).rawValue,
+            id: try syncEngineServiceID("54000000-0000-0000-0000-000000000005").rawValue,
             name: "Pending push"
         )
         let remoteService = try makeService(
-            id: try syncEngineServiceID(
-                "54000000-0000-0000-0000-000000000006"
-            ).rawValue,
+            id: try syncEngineServiceID("54000000-0000-0000-0000-000000000006").rawValue,
             name: "Committed pull"
         )
-        let persistenceActor = ServicePersistenceActor(
-            modelContainer: container
-        )
+        let persistenceActor = ServicePersistenceActor(modelContainer: container)
         let observationSignal = ServiceObservationSignal()
         try await persistenceActor.persistPendingUpsert(
             localService,
-            operationID: try syncEngineUUID(
-                "55000000-0000-0000-0000-000000000007"
-            )
+            operationID: try syncEngineUUID("55000000-0000-0000-0000-000000000007")
         )
         let repository = DefaultServiceRepository(
             persistenceActor: persistenceActor,
@@ -245,9 +157,7 @@ struct ServiceSyncEngineTests {
                 service: try ServiceDTO(remoteService),
                 version: .versioned(
                     revision: 1,
-                    lastOperationID: try syncEngineUUID(
-                        "55000000-0000-0000-0000-000000000008"
-                    )
+                    lastOperationID: try syncEngineUUID("55000000-0000-0000-0000-000000000008")
                 ),
                 changeSequence: 1
             )
@@ -263,13 +173,8 @@ struct ServiceSyncEngineTests {
             try await engine.synchronize()
         }
 
-        #expect(
-            try await observation.next() == [remoteService, localService]
-        )
-        #expect(
-            try await persistenceActor.cursor()
-                == ServiceSyncCursor(changeSequence: 1)
-        )
+        #expect(try await observation.next() == [remoteService, localService])
+        #expect(try await persistenceActor.cursor() == ServiceSyncCursor(changeSequence: 1))
     }
 
     @Test("A committed delete is signalled before a later push fails")
@@ -277,40 +182,27 @@ struct ServiceSyncEngineTests {
         let container = try syncEngineContainer()
         let dataSource = ServiceLocalDataSource()
         let deletedService = try makeService(
-            id: try syncEngineServiceID(
-                "54000000-0000-0000-0000-000000000007"
-            ).rawValue,
+            id: try syncEngineServiceID("54000000-0000-0000-0000-000000000007").rawValue,
             name: "Committed deletion"
         )
         let failingService = try makeService(
-            id: try syncEngineServiceID(
-                "54000000-0000-0000-0000-000000000008"
-            ).rawValue,
+            id: try syncEngineServiceID("54000000-0000-0000-0000-000000000008").rawValue,
             name: "Later failure"
         )
-        try dataSource.upsert(
-            deletedService,
-            in: ModelContext(container)
-        )
+        try dataSource.upsert(deletedService, in: ModelContext(container))
         try dataSource.persistPendingDelete(
             deletedService.id,
-            operationID: try syncEngineUUID(
-                "55000000-0000-0000-0000-000000000009"
-            ),
+            operationID: try syncEngineUUID("55000000-0000-0000-0000-000000000009"),
             in: ModelContext(container)
         )
         try dataSource.persistPendingUpsert(
             failingService,
-            operationID: try syncEngineUUID(
-                "55000000-0000-0000-0000-000000000010"
-            ),
+            operationID: try syncEngineUUID("55000000-0000-0000-0000-000000000010"),
             in: ModelContext(container)
         )
         let signal = ServiceSyncChangeSignalSpy()
         let engine = ServiceSyncEngine(
-            persistenceActor: ServicePersistenceActor(
-                modelContainer: container
-            ),
+            persistenceActor: ServicePersistenceActor(modelContainer: container),
             remoteDataSource: ServiceSyncDeleteThenFailRemote(),
             observationSignal: signal,
             timing: syncEngineImmediateTiming
@@ -321,63 +213,33 @@ struct ServiceSyncEngineTests {
         }
 
         #expect(await signal.publishCount == 2)
-        #expect(
-            try dataSource.fetchAll(in: ModelContext(container))
-                == [failingService]
-        )
+        #expect(try dataSource.fetchAll(in: ModelContext(container)) == [failingService])
     }
 
     @Test("A push conflict blocks descendants without replacing the root snapshots")
     func pushConflictBlocksDescendantsAndPreservesRoot() async throws {
         let container = try syncEngineContainer()
         let dataSource = ServiceLocalDataSource()
-        let serviceID = try syncEngineServiceID(
-            "54000000-0000-0000-0000-000000000009"
-        )
-        let root = try makeService(
-            id: serviceID.rawValue,
-            name: "Root snapshot A"
-        )
-        let descendant = try makeService(
-            id: serviceID.rawValue,
-            name: "Descendant snapshot B"
-        )
-        let rootOperationID = try syncEngineUUID(
-            "55000000-0000-0000-0000-000000000011"
-        )
-        let descendantOperationID = try syncEngineUUID(
-            "55000000-0000-0000-0000-000000000012"
-        )
-        try dataSource.persistPendingUpsert(
-            root,
-            operationID: rootOperationID,
-            in: ModelContext(container)
-        )
-        try dataSource.persistPendingUpsert(
-            descendant,
-            operationID: descendantOperationID,
-            in: ModelContext(container)
-        )
-        let concurrentRemote = try makeService(
-            id: serviceID.rawValue,
-            name: "Concurrent remote"
-        )
+        let serviceID = try syncEngineServiceID("54000000-0000-0000-0000-000000000009")
+        let root = try makeService(id: serviceID.rawValue, name: "Root snapshot A")
+        let descendant = try makeService(id: serviceID.rawValue, name: "Descendant snapshot B")
+        let rootOperationID = try syncEngineUUID("55000000-0000-0000-0000-000000000011")
+        let descendantOperationID = try syncEngineUUID("55000000-0000-0000-0000-000000000012")
+        try dataSource.persistPendingUpsert(root, operationID: rootOperationID, in: ModelContext(container))
+        try dataSource.persistPendingUpsert(descendant, operationID: descendantOperationID, in: ModelContext(container))
+        let concurrentRemote = try makeService(id: serviceID.rawValue, name: "Concurrent remote")
         let remote = ServiceSyncPushConflictRemote(
             record: ServiceRemoteRecord(
                 service: try ServiceDTO(concurrentRemote),
                 version: .versioned(
                     revision: 1,
-                    lastOperationID: try syncEngineUUID(
-                        "55000000-0000-0000-0000-000000000013"
-                    )
+                    lastOperationID: try syncEngineUUID("55000000-0000-0000-0000-000000000013")
                 ),
                 changeSequence: 1
             )
         )
         let engine = ServiceSyncEngine(
-            persistenceActor: ServicePersistenceActor(
-                modelContainer: container
-            ),
+            persistenceActor: ServicePersistenceActor(modelContainer: container),
             remoteDataSource: remote,
             observationSignal: ServiceObservationSignal()
         )
@@ -385,11 +247,7 @@ struct ServiceSyncEngineTests {
         try await engine.synchronize()
 
         #expect(await remote.receivedOperationIDs == [rootOperationID])
-        let conflict = try #require(
-            ModelContext(container).fetch(
-                FetchDescriptor<ServiceSyncConflictModel>()
-            ).only
-        )
+        let conflict = try #require(ModelContext(container).fetch(FetchDescriptor<ServiceSyncConflictModel>()).only)
         #expect(conflict.operationID == rootOperationID)
         let expectedRoot = try ServiceDTO(root)
         #expect(try conflict.decodeLocalService() == expectedRoot)
@@ -435,10 +293,7 @@ private actor ServiceSyncRemoteFake: ServiceRemoteDataSource {
             guard let cursor else { return true }
             return (record.changeSequence ?? 0) > cursor.changeSequence
         }.sorted { $0.id > $1.id }
-        return ServiceRemoteChangeBatch(
-            records: records,
-            nextCursor: ServiceSyncCursor(changeSequence: changeSequence)
-        )
+        return ServiceRemoteChangeBatch(records: records, nextCursor: ServiceSyncCursor(changeSequence: changeSequence))
     }
 
     func apply(_ operation: ServicePendingOperation) async throws -> ServiceRemoteMutationResult {
@@ -495,10 +350,7 @@ private actor ServiceSyncDeleteThenFailRemote: ServiceRemoteDataSource {
     private var mutationCount = 0
 
     func fetchChanges(after cursor: ServiceSyncCursor?) async throws -> ServiceRemoteChangeBatch {
-        ServiceRemoteChangeBatch(
-            records: [],
-            nextCursor: cursor ?? ServiceSyncCursor(changeSequence: 0)
-        )
+        ServiceRemoteChangeBatch(records: [], nextCursor: cursor ?? ServiceSyncCursor(changeSequence: 0))
     }
 
     func apply(_ operation: ServicePendingOperation) async throws -> ServiceRemoteMutationResult {
@@ -511,10 +363,7 @@ private actor ServiceSyncDeleteThenFailRemote: ServiceRemoteDataSource {
         return .applied(
             ServiceRemoteRecord(
                 content: .tombstone(serviceID: delete.serviceID),
-                version: .versioned(
-                    revision: 1,
-                    lastOperationID: delete.operationID
-                ),
+                version: .versioned(revision: 1, lastOperationID: delete.operationID),
                 changeSequence: changeSequence
             )
         )
@@ -532,10 +381,7 @@ private actor ServiceSyncPushConflictRemote: ServiceRemoteDataSource {
     var receivedOperationIDs: [UUID] { operationIDs }
 
     func fetchChanges(after cursor: ServiceSyncCursor?) async throws -> ServiceRemoteChangeBatch {
-        ServiceRemoteChangeBatch(
-            records: [],
-            nextCursor: cursor ?? ServiceSyncCursor(changeSequence: 0)
-        )
+        ServiceRemoteChangeBatch(records: [], nextCursor: cursor ?? ServiceSyncCursor(changeSequence: 0))
     }
 
     func apply(_ operation: ServicePendingOperation) async throws -> ServiceRemoteMutationResult {

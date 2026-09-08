@@ -10,10 +10,7 @@ struct BiometricAnnouncementGateTests {
 
         gate.beginAttempt()
 
-        #expect(
-            gate.receiveFailure(.biometricUnavailable, sceneIsActive: true)
-                == .announce(.biometricUnavailable)
-        )
+        #expect(gate.receiveFailure(.biometricUnavailable, sceneIsActive: true) == .announce(.biometricUnavailable))
         #expect(gate.sceneBecameActive() == .none)
         #expect(gate.receiveFailure(.biometricUnavailable, sceneIsActive: true) == .none)
     }
@@ -38,10 +35,7 @@ struct BiometricAnnouncementGateTests {
         gate.sceneBecameInactive()
 
         #expect(gate.sceneBecameActive() == .none)
-        #expect(
-            gate.receiveFailure(.biometricCancelled, sceneIsActive: true)
-                == .announce(.biometricCancelled)
-        )
+        #expect(gate.receiveFailure(.biometricCancelled, sceneIsActive: true) == .announce(.biometricCancelled))
         #expect(gate.receiveFailure(.biometricCancelled, sceneIsActive: true) == .none)
     }
 
@@ -52,10 +46,7 @@ struct BiometricAnnouncementGateTests {
         gate.beginAttempt()
         gate.sceneBecameInactive()
 
-        #expect(
-            gate.receiveFailure(.biometricCancelled, sceneIsActive: true)
-                == .announce(.biometricCancelled)
-        )
+        #expect(gate.receiveFailure(.biometricCancelled, sceneIsActive: true) == .announce(.biometricCancelled))
         #expect(gate.sceneBecameActive() == .none)
     }
 
@@ -76,10 +67,7 @@ struct BiometricAnnouncementGateTests {
     func failureOutsideBiometricAttemptUsesNormalPresentation() {
         var gate = BiometricAnnouncementGate()
 
-        #expect(
-            gate.receiveFailure(.secureStorageUnavailable, sceneIsActive: true)
-                == .presentFailureNormally
-        )
+        #expect(gate.receiveFailure(.secureStorageUnavailable, sceneIsActive: true) == .presentFailureNormally)
     }
 
     @Test("Reset suppresses an obsolete attempt")
@@ -94,10 +82,7 @@ struct BiometricAnnouncementGateTests {
 
         #expect(!gate.isCoordinatingAttempt)
         #expect(gate.sceneBecameActive() == .none)
-        #expect(
-            gate.receiveFailure(.biometricCancelled, sceneIsActive: true)
-                == .presentFailureNormally
-        )
+        #expect(gate.receiveFailure(.biometricCancelled, sceneIsActive: true) == .presentFailureNormally)
     }
 
     @Test("Reset after delivery restores normal presentation for a sign-out failure")
@@ -105,17 +90,11 @@ struct BiometricAnnouncementGateTests {
         var gate = BiometricAnnouncementGate()
 
         gate.beginAttempt()
-        #expect(
-            gate.receiveFailure(.biometricCancelled, sceneIsActive: true)
-                == .announce(.biometricCancelled)
-        )
+        #expect(gate.receiveFailure(.biometricCancelled, sceneIsActive: true) == .announce(.biometricCancelled))
 
         gate.reset()
 
-        #expect(
-            gate.receiveFailure(.secureStorageUnavailable, sceneIsActive: true)
-                == .presentFailureNormally
-        )
+        #expect(gate.receiveFailure(.secureStorageUnavailable, sceneIsActive: true) == .presentFailureNormally)
     }
 
     @Test("A second attempt can announce its own failure")

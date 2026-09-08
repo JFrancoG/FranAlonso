@@ -16,9 +16,7 @@ struct DevelopAuthenticationFixtureCompositionTests {
             .clientsObservationError
         ]
     )
-    func fixtureSelectionNeverConstructsLiveRuntime(
-        configuration: DevelopAuthenticationFixture.Configuration
-    ) throws {
+    func fixtureSelectionNeverConstructsLiveRuntime(configuration: DevelopAuthenticationFixture.Configuration) throws {
         let liveFactory = ApplicationCompositionFactorySpy()
         let fixtureFactory = ApplicationCompositionFactorySpy()
 
@@ -47,12 +45,8 @@ struct DevelopAuthenticationFixtureCompositionTests {
     func realFixtureHasNoLiveRuntimeAndStartsPristine(
         configuration: DevelopAuthenticationFixture.Configuration
     ) async throws {
-        let composition = try ApplicationComposition.make(
-            plan: .authenticationFixture(configuration)
-        )
-        let pristineDataSource = SwiftDataStorePristineDataSource(
-            modelContainer: composition.modelContainer
-        )
+        let composition = try ApplicationComposition.make(plan: .authenticationFixture(configuration))
+        let pristineDataSource = SwiftDataStorePristineDataSource(modelContainer: composition.modelContainer)
 
         #expect(composition.runtime == nil)
         #expect(composition.authenticationRootViewModel != nil)
@@ -64,14 +58,10 @@ struct DevelopAuthenticationFixtureCompositionTests {
         let authorizer = DevelopAuthenticationFixture.localPrincipalAuthorizer()
 
         await #expect(throws: Never.self) {
-            try await authorizer.authorize(
-                AuthenticationSession(id: DevelopAuthenticationFixture.principalID)
-            )
+            try await authorizer.authorize(AuthenticationSession(id: DevelopAuthenticationFixture.principalID))
         }
         await #expect(throws: LocalPrincipalAuthorizationError.differentPrincipal) {
-            try await authorizer.authorize(
-                AuthenticationSession(id: "different-fixture-principal")
-            )
+            try await authorizer.authorize(AuthenticationSession(id: "different-fixture-principal"))
         }
     }
 
@@ -119,9 +109,7 @@ struct DevelopAuthenticationFixtureCompositionTests {
 
     @Test("Restored fixture reaches a locked root without invoking sign in")
     func restoredFixtureReachesLockedRootWithoutSignIn() async throws {
-        let composition = try ApplicationComposition.make(
-            plan: .authenticationFixture(.standard(.restoredSession))
-        )
+        let composition = try ApplicationComposition.make(plan: .authenticationFixture(.standard(.restoredSession)))
         let root = try #require(composition.authenticationRootViewModel)
         let observation = Task { @MainActor in
             await root.sessionViewModel.load()
@@ -175,9 +163,7 @@ struct DevelopAuthenticationFixtureCompositionTests {
 
     @Test("Observation-failed fixture recovers through a real replacement observation")
     func observationFailedFixtureRecoversThroughReplacementObservation() async throws {
-        let composition = try ApplicationComposition.make(
-            plan: .authenticationFixture(.observationFailed)
-        )
+        let composition = try ApplicationComposition.make(plan: .authenticationFixture(.observationFailed))
         let root = try #require(composition.authenticationRootViewModel)
         let failedObservation = Task { @MainActor in
             await root.sessionViewModel.load()
@@ -216,12 +202,8 @@ struct DevelopAuthenticationFixtureCompositionTests {
 
     @Test("The real invalid fixture composition is pristine and isolated")
     func realInvalidFixtureCompositionIsPristineAndIsolated() async throws {
-        let composition = try ApplicationComposition.make(
-            plan: .invalidFixtureConfiguration
-        )
-        let pristineDataSource = SwiftDataStorePristineDataSource(
-            modelContainer: composition.modelContainer
-        )
+        let composition = try ApplicationComposition.make(plan: .invalidFixtureConfiguration)
+        let pristineDataSource = SwiftDataStorePristineDataSource(modelContainer: composition.modelContainer)
 
         #expect(composition.runtime == nil)
         #expect(composition.authenticationRootViewModel == nil)
@@ -230,9 +212,7 @@ struct DevelopAuthenticationFixtureCompositionTests {
 
     @Test("Clients error fixture traverses Repository, Use Case and ViewModel")
     func clientsErrorFixtureTraversesRealPresentationChain() async throws {
-        let composition = try ApplicationComposition.make(
-            plan: .authenticationFixture(.clientsObservationError)
-        )
+        let composition = try ApplicationComposition.make(plan: .authenticationFixture(.clientsObservationError))
         let root = try #require(composition.authenticationRootViewModel)
         let rootObservation = Task { @MainActor in
             await root.sessionViewModel.load()
@@ -242,9 +222,7 @@ struct DevelopAuthenticationFixtureCompositionTests {
         root.sessionEventDidChange()
         #expect(root.state == .locked)
 
-        let clients = ClientListViewModel(
-            observeClients: composition.dependencies.observeClients
-        )
+        let clients = ClientListViewModel(observeClients: composition.dependencies.observeClients)
         await clients.load()
         #expect(clients.state == .failed)
 
@@ -254,12 +232,8 @@ struct DevelopAuthenticationFixtureCompositionTests {
 
     @Test("Standard restored fixture keeps the empty Clients state")
     func standardRestoredFixtureKeepsEmptyClientsState() async throws {
-        let composition = try ApplicationComposition.make(
-            plan: .authenticationFixture(.standard(.restoredSession))
-        )
-        let clients = ClientListViewModel(
-            observeClients: composition.dependencies.observeClients
-        )
+        let composition = try ApplicationComposition.make(plan: .authenticationFixture(.standard(.restoredSession)))
+        let clients = ClientListViewModel(observeClients: composition.dependencies.observeClients)
         let observation = Task { @MainActor in
             await clients.load()
         }

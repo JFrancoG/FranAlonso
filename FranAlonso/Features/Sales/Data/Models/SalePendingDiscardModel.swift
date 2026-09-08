@@ -46,11 +46,7 @@ extension SalePendingDiscardModel {
 
     /// Decodes the immutable remote base captured by this discard.
     func decodeBase() throws -> SaleRemoteBase {
-        guard baseVersion == 1 else {
-            throw SalePendingDiscardPayloadError.unsupportedBaseVersion(
-                baseVersion
-            )
-        }
+        guard baseVersion == 1 else { throw SalePendingDiscardPayloadError.unsupportedBaseVersion(baseVersion) }
         return try JSONDecoder().decode(SaleRemoteBase.self, from: baseData)
     }
 }

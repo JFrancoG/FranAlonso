@@ -36,9 +36,7 @@ extension ClientDTO {
     /// - Throws: `ClientMappingError` when identity or consent metadata is inconsistent, or
     ///   `ClientConsentReferenceError` when the supplied consent reference is invalid.
     func toDomain() throws -> Client {
-        guard let identifier = UUID(uuidString: id) else {
-            throw ClientMappingError.invalidIdentifier(id)
-        }
+        guard let identifier = UUID(uuidString: id) else { throw ClientMappingError.invalidIdentifier(id) }
 
         return Client(
             id: ClientID(rawValue: identifier),
@@ -60,16 +58,12 @@ extension ClientDTO {
         case .active:
             guard let consentReference else { throw ClientMappingError.missingConsentReference }
 
-            return .active(
-                consentReference: try ClientConsentReference(rawValue: consentReference)
-            )
+            return .active(consentReference: try ClientConsentReference(rawValue: consentReference))
         }
     }
 
     private func rejectUnexpectedConsentReference() throws {
-        guard consentReference == nil else {
-            throw ClientMappingError.unexpectedConsentReference(status)
-        }
+        guard consentReference == nil else { throw ClientMappingError.unexpectedConsentReference(status) }
     }
 }
 

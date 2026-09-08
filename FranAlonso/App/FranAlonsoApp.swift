@@ -24,21 +24,11 @@ struct FranAlonsoApp: App {
                 .environment(\.appDependencies, dependencies)
                 .task(id: appDelegate.firebaseBootstrapState) {
                     let firebaseIsConfigured = appDelegate.firebaseBootstrapState == .configured
-                    runtime?.activateAuthentication(
-                        firebaseIsConfigured: firebaseIsConfigured
-                    )
-                    runtime?.activateClientSync(
-                        firebaseIsConfigured: firebaseIsConfigured
-                    )
-                    runtime?.activateProductSync(
-                        firebaseIsConfigured: firebaseIsConfigured
-                    )
-                    runtime?.activateServiceSync(
-                        firebaseIsConfigured: firebaseIsConfigured
-                    )
-                    runtime?.activateSaleSync(
-                        firebaseIsConfigured: firebaseIsConfigured
-                    )
+                    runtime?.activateAuthentication(firebaseIsConfigured: firebaseIsConfigured)
+                    runtime?.activateClientSync(firebaseIsConfigured: firebaseIsConfigured)
+                    runtime?.activateProductSync(firebaseIsConfigured: firebaseIsConfigured)
+                    runtime?.activateServiceSync(firebaseIsConfigured: firebaseIsConfigured)
+                    runtime?.activateSaleSync(firebaseIsConfigured: firebaseIsConfigured)
                 }
         }
         .modelContainer(modelContainer)
@@ -86,9 +76,7 @@ private extension FranAlonsoApp {
 extension FranAlonsoApp {
     init() {
         do {
-            let composition = try ApplicationComposition.make(
-                plan: ApplicationLaunchPlan.current
-            )
+            let composition = try ApplicationComposition.make(plan: ApplicationLaunchPlan.current)
             modelContainer = composition.modelContainer
             dependencies = composition.dependencies
             runtime = composition.runtime

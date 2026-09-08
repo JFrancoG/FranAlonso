@@ -21,11 +21,7 @@ extension SaleRemoteStateModel {
     /// - Parameter record: The complete provider-neutral record to retain.
     /// - Throws: An encoding error when the record cannot be serialized.
     convenience init(record: SaleRemoteRecord) throws {
-        self.init(
-            saleID: try record.stableSaleID(),
-            recordVersion: 1,
-            recordData: try JSONEncoder().encode(record)
-        )
+        self.init(saleID: try record.stableSaleID(), recordVersion: 1, recordData: try JSONEncoder().encode(record))
     }
 
     /// Replaces the authoritative snapshot after encoding succeeds.
@@ -33,9 +29,7 @@ extension SaleRemoteStateModel {
     /// - Parameter record: The newer complete provider-neutral record.
     /// - Throws: An encoding error or an identity mismatch.
     func update(record: SaleRemoteRecord) throws {
-        guard try record.stableSaleID() == saleID else {
-            throw SaleSyncPersistenceError.entityIdentityMismatch
-        }
+        guard try record.stableSaleID() == saleID else { throw SaleSyncPersistenceError.entityIdentityMismatch }
         let encodedRecord = try JSONEncoder().encode(record)
         recordVersion = 1
         recordData = encodedRecord
@@ -46,14 +40,7 @@ extension SaleRemoteStateModel {
     /// - Returns: The provider-neutral record last committed locally.
     /// - Throws: A version or native decoding error for invalid persisted data.
     func decodeRecord() throws -> SaleRemoteRecord {
-        guard recordVersion == 1 else {
-            throw SaleSyncPersistenceError.unsupportedRecordVersion(
-                recordVersion
-            )
-        }
-        return try JSONDecoder().decode(
-            SaleRemoteRecord.self,
-            from: recordData
-        )
+        guard recordVersion == 1 else { throw SaleSyncPersistenceError.unsupportedRecordVersion(recordVersion) }
+        return try JSONDecoder().decode(SaleRemoteRecord.self, from: recordData)
     }
 }

@@ -18,10 +18,7 @@ struct SaleTimestampDTOTests {
         let date = Date(timeIntervalSinceReferenceDate: interval)
 
         let dto = try SaleTimestampDTO(date)
-        let roundTrip = try JSONDecoder().decode(
-            SaleTimestampDTO.self,
-            from: JSONEncoder().encode(dto)
-        )
+        let roundTrip = try JSONDecoder().decode(SaleTimestampDTO.self, from: JSONEncoder().encode(dto))
 
         #expect(roundTrip.date.timeIntervalSinceReferenceDate.bitPattern == interval.bitPattern)
         #expect(dto.canonicalString.count == 16)
@@ -54,19 +51,14 @@ struct SaleTimestampDTOTests {
     )
     func invalidBitPatternsFailClosed(_ encoded: String) {
         #expect(throws: DecodingError.self) {
-            _ = try JSONDecoder().decode(
-                SaleTimestampDTO.self,
-                from: Data("\"\(encoded)\"".utf8)
-            )
+            _ = try JSONDecoder().decode(SaleTimestampDTO.self, from: Data("\"\(encoded)\"".utf8))
         }
     }
 
     @Test("Construction rejects nonfinite dates")
     func constructionRejectsNonfiniteDates() {
         #expect(throws: SaleTimestampDTOError.invalidValue) {
-            _ = try SaleTimestampDTO(
-                Date(timeIntervalSinceReferenceDate: .nan)
-            )
+            _ = try SaleTimestampDTO(Date(timeIntervalSinceReferenceDate: .nan))
         }
     }
 }

@@ -121,10 +121,7 @@ extension SaleCalculation {
     ///   IDs, `SaleCalculatorError.incompatibleCurrency` when a projection does
     ///   not use the requested currency, or `MoneyError.invalidAmount` when an
     ///   aggregate cannot be represented as a monetary value.
-    fileprivate init(
-        lineCalculations: [SaleLineCalculation],
-        currency: Currency
-    ) throws {
+    fileprivate init(lineCalculations: [SaleLineCalculation], currency: Currency) throws {
         guard Set(lineCalculations.map(\.id)).count == lineCalculations.count else {
             throw SaleCalculatorError.duplicateLineIdentity
         }
@@ -179,42 +176,27 @@ struct SaleCalculator {
     ///   line IDs repeat, `SaleCalculatorError.inconsistentBreakdown` when
     ///   rounded components do not reconcile, or `MoneyError.invalidAmount` if
     ///   decimal arithmetic cannot be represented as a monetary value.
-    func calculate(
-        lines: [SaleLine],
-        currency: Currency
-    ) throws -> SaleCalculation {
+    func calculate(lines: [SaleLine], currency: Currency) throws -> SaleCalculation {
         var lineCalculations: [SaleLineCalculation] = []
 
         lineCalculations.reserveCapacity(lines.count)
 
         for line in lines {
             guard line.unitPrice.currency == currency else {
-                throw SaleCalculatorError.incompatibleCurrency(
-                    expected: currency,
-                    actual: line.unitPrice.currency
-                )
+                throw SaleCalculatorError.incompatibleCurrency(expected: currency, actual: line.unitPrice.currency)
             }
 
-            let lineSubtotal = try Money(
-                amount: line.unitPrice.amount * Decimal(line.quantity),
-                currency: currency
-            )
+            let lineSubtotal = try Money(amount: line.unitPrice.amount * Decimal(line.quantity), currency: currency)
             let lineDiscount = try Money(
                 amount: lineSubtotal.amount * (line.discount?.percentage ?? .zero) / 100,
                 currency: currency
             )
-            let lineTotal = try Money(
-                amount: lineSubtotal.amount - lineDiscount.amount,
-                currency: currency
-            )
+            let lineTotal = try Money(amount: lineSubtotal.amount - lineDiscount.amount, currency: currency)
             let lineTaxableBase = try Money(
                 amount: lineTotal.amount / (1 + line.taxRate.percentage / 100),
                 currency: currency
             )
-            let lineTax = try Money(
-                amount: lineTotal.amount - lineTaxableBase.amount,
-                currency: currency
-            )
+            let lineTax = try Money(amount: lineTotal.amount - lineTaxableBase.amount, currency: currency)
 
             lineCalculations.append(
                 try SaleLineCalculation(
@@ -228,9 +210,6 @@ struct SaleCalculator {
             )
         }
 
-        return try SaleCalculation(
-            lineCalculations: lineCalculations,
-            currency: currency
-        )
+        return try SaleCalculation(lineCalculations: lineCalculations, currency: currency)
     }
 }

@@ -113,11 +113,7 @@ struct Sale: Identifiable, Codable, Equatable {
 
         switch status {
         case .awaitingPayment:
-            storedStatus = .awaitingDocument(
-                paymentID: paymentID,
-                method: method,
-                paidAt: paidAt
-            )
+            storedStatus = .awaitingDocument(paymentID: paymentID, method: method, paidAt: paidAt)
         case let .awaitingDocument(storedID, storedMethod, storedPaidAt),
              let .closed(storedID, storedMethod, storedPaidAt, _, _),
              let .voided(storedID, storedMethod, storedPaidAt, _, _, _, _):
@@ -249,11 +245,7 @@ extension Sale {
         let status = try container.decode(SaleStatus.self, forKey: .status)
         let createdAt = try container.decode(Date.self, forKey: .createdAt)
 
-        try Self.ensurePersistedStateIsConsistent(
-            createdAt: createdAt,
-            lines: lines,
-            status: status
-        )
+        try Self.ensurePersistedStateIsConsistent(createdAt: createdAt, lines: lines, status: status)
 
         self.init(
             id: try container.decode(SaleID.self, forKey: .id),
@@ -281,9 +273,7 @@ extension Sale {
         try ensureFinite(createdAt)
         try ensureFiniteTimestamps(in: status)
 
-        guard hasUniqueLineIdentifiers(lines) else {
-            throw SaleError.invalidPersistedState
-        }
+        guard hasUniqueLineIdentifiers(lines) else { throw SaleError.invalidPersistedState }
 
         let everyLineIsUpcoming = lines.allSatisfy { $0.status == .upcoming }
         let everyLineIsCompleted = !lines.isEmpty && lines.allSatisfy { $0.status == .completed }

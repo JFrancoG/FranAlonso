@@ -35,10 +35,7 @@ struct SaleRepositoryUseCaseTests {
     @Test("Propagates a local persistence failure")
     func propagatesALocalPersistenceFailure() async throws {
         let sale = try repositorySale()
-        let repository = SaleRepositoryFake(
-            sales: [],
-            saveError: .rejected
-        )
+        let repository = SaleRepositoryFake(sales: [], saveError: .rejected)
         let useCase = SaveSaleUseCase(repository: repository)
 
         await #expect(throws: RepositoryUseCaseTestError.rejected) {
@@ -90,11 +87,7 @@ private actor SaleRepositoryFake: SaleRepository {
 
 private func repositorySale() throws -> Sale {
     try Sale.draft(
-        id: SaleID(
-            rawValue: UUID(
-                uuidString: "30000000-3000-3000-3000-300000000001"
-            )!
-        ),
+        id: SaleID(rawValue: UUID(uuidString: "30000000-3000-3000-3000-300000000001")!),
         clientID: nil,
         createdAt: Date(timeIntervalSince1970: 1_800_000_000),
         lines: []

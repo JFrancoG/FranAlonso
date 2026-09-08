@@ -9,14 +9,10 @@ struct ProductSyncEngineTests {
     func repeatedPushAndPullConvergesWithoutDuplicates() async throws {
         let container = try syncEngineContainer()
         let product = Product.testSnapshot(
-            id: try syncEngineProductID(
-                "54000000-0000-0000-0000-000000000001"
-            ),
+            id: try syncEngineProductID("54000000-0000-0000-0000-000000000001"),
             name: "Convergent product"
         )
-        let operationID = try syncEngineUUID(
-            "55000000-0000-0000-0000-000000000001"
-        )
+        let operationID = try syncEngineUUID("55000000-0000-0000-0000-000000000001")
         try ProductLocalDataSource().persistPendingUpsert(
             product,
             operationID: operationID,
@@ -24,9 +20,7 @@ struct ProductSyncEngineTests {
         )
         let remote = ProductSyncRemoteFake()
         let engine = ProductSyncEngine(
-            persistenceActor: ProductPersistenceActor(
-                modelContainer: container
-            ),
+            persistenceActor: ProductPersistenceActor(modelContainer: container),
             remoteDataSource: remote,
             observationSignal: ProductObservationSignal()
         )
@@ -35,59 +29,32 @@ struct ProductSyncEngineTests {
         try await engine.synchronize()
 
         let verificationContext = ModelContext(container)
-        #expect(
-            try ProductLocalDataSource().fetchAll(in: verificationContext)
-                == [product]
-        )
-        #expect(
-            try verificationContext.fetchCount(
-                FetchDescriptor<ProductPendingUpsertModel>()
-            ) == 0
-        )
+        #expect(try ProductLocalDataSource().fetchAll(in: verificationContext) == [product])
+        #expect(try verificationContext.fetchCount(FetchDescriptor<ProductPendingUpsertModel>()) == 0)
         #expect(await remote.recordCount == 1)
         #expect(
             await remote.record(for: product.id.rawValue)?.version
-                == .versioned(
-                    revision: 1,
-                    lastOperationID: operationID
-                )
+                == .versioned(revision: 1, lastOperationID: operationID)
         )
         #expect(await remote.receivedOperationIDs == [operationID])
-        #expect(
-            await remote.requestedCursors == [
-                nil,
-                ProductSyncCursor(changeSequence: 0)
-            ]
-        )
+        #expect(await remote.requestedCursors == [ nil, ProductSyncCursor(changeSequence: 0) ])
     }
 
     @MainActor
     @Test("An edit created while A awaits acknowledgement remains visible and later converges")
     func editDuringAcknowledgementRemainsVisibleAndConverges() async throws {
         let container = try syncEngineContainer()
-        let productID = try syncEngineProductID(
-            "54000000-0000-0000-0000-000000000002"
-        )
+        let productID = try syncEngineProductID("54000000-0000-0000-0000-000000000002")
         let ancestor = Product.testSnapshot(id: productID, name: "Ancestor A")
         let descendant = Product.testSnapshot(id: productID, name: "Descendant B")
-        let ancestorOperationID = try syncEngineUUID(
-            "55000000-0000-0000-0000-000000000002"
-        )
-        let descendantOperationID = try syncEngineUUID(
-            "55000000-0000-0000-0000-000000000003"
-        )
+        let ancestorOperationID = try syncEngineUUID("55000000-0000-0000-0000-000000000002")
+        let descendantOperationID = try syncEngineUUID("55000000-0000-0000-0000-000000000003")
         let localDataSource = ProductLocalDataSource()
-        try localDataSource.persistPendingUpsert(
-            ancestor,
-            operationID: ancestorOperationID,
-            in: container.mainContext
-        )
+        try localDataSource.persistPendingUpsert(ancestor, operationID: ancestorOperationID, in: container.mainContext)
         let acknowledgementGate = ProductSyncAcknowledgementGate()
         let remote = ProductSyncRemoteFake(acknowledgementGate: acknowledgementGate)
         let engine = ProductSyncEngine(
-            persistenceActor: ProductPersistenceActor(
-                modelContainer: container
-            ),
+            persistenceActor: ProductPersistenceActor(modelContainer: container),
             remoteDataSource: remote,
             observationSignal: ProductObservationSignal()
         )
@@ -104,101 +71,60 @@ struct ProductSyncEngineTests {
         try await firstSynchronization
 
         let postAcknowledgementContext = ModelContext(container)
-        #expect(
-            try localDataSource.fetchAll(in: postAcknowledgementContext)
-                == [descendant]
-        )
+        #expect(try localDataSource.fetchAll(in: postAcknowledgementContext) == [descendant])
         let pendingAfterAcknowledgement = try postAcknowledgementContext.fetch(
             FetchDescriptor<ProductPendingUpsertModel>()
         )
-        let descendantOperation = try #require(
-            pendingAfterAcknowledgement.only
-        )
+        let descendantOperation = try #require(pendingAfterAcknowledgement.only)
         #expect(descendantOperation.operationID == descendantOperationID)
-        #expect(
-            descendantOperation.predecessorOperationID
-                == ancestorOperationID
-        )
+        #expect(descendantOperation.predecessorOperationID == ancestorOperationID)
 
         try await engine.synchronize()
 
         let finalContext = ModelContext(container)
         #expect(try localDataSource.fetchAll(in: finalContext) == [descendant])
-        #expect(
-            try finalContext.fetchCount(
-                FetchDescriptor<ProductPendingUpsertModel>()
-            ) == 0
-        )
+        #expect(try finalContext.fetchCount(FetchDescriptor<ProductPendingUpsertModel>()) == 0)
         #expect(
             await remote.record(for: productID.rawValue)?.version
-                == .versioned(
-                    revision: 2,
-                    lastOperationID: descendantOperationID
-                )
+                == .versioned(revision: 2, lastOperationID: descendantOperationID)
         )
-        #expect(
-            await remote.receivedOperationIDs == [
-                ancestorOperationID,
-                descendantOperationID
-            ]
-        )
+        #expect(await remote.receivedOperationIDs == [ ancestorOperationID, descendantOperationID ])
     }
 
     @Test("A local deletion converges to a remote tombstone and clears its chain")
     func localDeletionConvergesToRemoteTombstone() async throws {
         let container = try syncEngineContainer()
         let product = Product.testSnapshot(
-            id: try syncEngineProductID(
-                "54000000-0000-0000-0000-000000000004"
-            ),
+            id: try syncEngineProductID("54000000-0000-0000-0000-000000000004"),
             name: "Delete through engine"
         )
-        let remoteSeedOperationID = try syncEngineUUID(
-            "55000000-0000-0000-0000-000000000005"
-        )
+        let remoteSeedOperationID = try syncEngineUUID("55000000-0000-0000-0000-000000000005")
         let remote = ProductSyncRemoteFake(
             records: [
                 ProductRemoteRecord(
                     product: ProductDTO(product),
-                    version: .versioned(
-                        revision: 1,
-                        lastOperationID: remoteSeedOperationID
-                    ),
+                    version: .versioned(revision: 1, lastOperationID: remoteSeedOperationID),
                     changeSequence: 1
                 )
             ]
         )
-        let persistenceActor = ProductPersistenceActor(
-            modelContainer: container
-        )
+        let persistenceActor = ProductPersistenceActor(modelContainer: container)
         let engine = ProductSyncEngine(
             persistenceActor: persistenceActor,
             remoteDataSource: remote,
             observationSignal: ProductObservationSignal()
         )
         try await engine.synchronize()
-        let deleteOperationID = try syncEngineUUID(
-            "55000000-0000-0000-0000-000000000006"
-        )
-        try await persistenceActor.persistPendingDelete(
-            product.id,
-            operationID: deleteOperationID
-        )
+        let deleteOperationID = try syncEngineUUID("55000000-0000-0000-0000-000000000006")
+        try await persistenceActor.persistPendingDelete(product.id, operationID: deleteOperationID)
 
         try await engine.synchronize()
 
         #expect(try await persistenceActor.fetchAll().isEmpty)
         #expect(try await persistenceActor.pendingOperations().isEmpty)
-        let remoteRecord = try #require(
-            await remote.record(for: product.id.rawValue)
-        )
+        let remoteRecord = try #require(await remote.record(for: product.id.rawValue))
         #expect(remoteRecord.isTombstone)
-        #expect(
-            remoteRecord.version == .versioned(
-                revision: 2,
-                lastOperationID: deleteOperationID
-            )
-        )
+        #expect(remoteRecord.version == .versioned(revision: 2, lastOperationID: deleteOperationID))
         #expect(remoteRecord.changeSequence == 2)
     }
 
@@ -206,26 +132,18 @@ struct ProductSyncEngineTests {
     func committedPullIsObservableWhenPushFails() async throws {
         let container = try syncEngineContainer()
         let localProduct = Product.testSnapshot(
-            id: try syncEngineProductID(
-                "54000000-0000-0000-0000-000000000005"
-            ),
+            id: try syncEngineProductID("54000000-0000-0000-0000-000000000005"),
             name: "Pending push"
         )
         let remoteProduct = Product.testSnapshot(
-            id: try syncEngineProductID(
-                "54000000-0000-0000-0000-000000000006"
-            ),
+            id: try syncEngineProductID("54000000-0000-0000-0000-000000000006"),
             name: "Committed pull"
         )
-        let persistenceActor = ProductPersistenceActor(
-            modelContainer: container
-        )
+        let persistenceActor = ProductPersistenceActor(modelContainer: container)
         let observationSignal = ProductObservationSignal()
         try await persistenceActor.persistPendingUpsert(
             localProduct,
-            operationID: try syncEngineUUID(
-                "55000000-0000-0000-0000-000000000007"
-            )
+            operationID: try syncEngineUUID("55000000-0000-0000-0000-000000000007")
         )
         let repository = DefaultProductRepository(
             persistenceActor: persistenceActor,
@@ -239,9 +157,7 @@ struct ProductSyncEngineTests {
                 product: ProductDTO(remoteProduct),
                 version: .versioned(
                     revision: 1,
-                    lastOperationID: try syncEngineUUID(
-                        "55000000-0000-0000-0000-000000000008"
-                    )
+                    lastOperationID: try syncEngineUUID("55000000-0000-0000-0000-000000000008")
                 ),
                 changeSequence: 1
             )
@@ -257,13 +173,8 @@ struct ProductSyncEngineTests {
             try await engine.synchronize()
         }
 
-        #expect(
-            try await observation.next() == [remoteProduct, localProduct]
-        )
-        #expect(
-            try await persistenceActor.cursor()
-                == ProductSyncCursor(changeSequence: 1)
-        )
+        #expect(try await observation.next() == [remoteProduct, localProduct])
+        #expect(try await persistenceActor.cursor() == ProductSyncCursor(changeSequence: 1))
     }
 
     @Test("A committed delete is signalled before a later push fails")
@@ -271,40 +182,27 @@ struct ProductSyncEngineTests {
         let container = try syncEngineContainer()
         let dataSource = ProductLocalDataSource()
         let deletedProduct = Product.testSnapshot(
-            id: try syncEngineProductID(
-                "54000000-0000-0000-0000-000000000007"
-            ),
+            id: try syncEngineProductID("54000000-0000-0000-0000-000000000007"),
             name: "Committed deletion"
         )
         let failingProduct = Product.testSnapshot(
-            id: try syncEngineProductID(
-                "54000000-0000-0000-0000-000000000008"
-            ),
+            id: try syncEngineProductID("54000000-0000-0000-0000-000000000008"),
             name: "Later failure"
         )
-        try dataSource.upsert(
-            deletedProduct,
-            in: ModelContext(container)
-        )
+        try dataSource.upsert(deletedProduct, in: ModelContext(container))
         try dataSource.persistPendingDelete(
             deletedProduct.id,
-            operationID: try syncEngineUUID(
-                "55000000-0000-0000-0000-000000000009"
-            ),
+            operationID: try syncEngineUUID("55000000-0000-0000-0000-000000000009"),
             in: ModelContext(container)
         )
         try dataSource.persistPendingUpsert(
             failingProduct,
-            operationID: try syncEngineUUID(
-                "55000000-0000-0000-0000-000000000010"
-            ),
+            operationID: try syncEngineUUID("55000000-0000-0000-0000-000000000010"),
             in: ModelContext(container)
         )
         let signal = ProductSyncChangeSignalSpy()
         let engine = ProductSyncEngine(
-            persistenceActor: ProductPersistenceActor(
-                modelContainer: container
-            ),
+            persistenceActor: ProductPersistenceActor(modelContainer: container),
             remoteDataSource: ProductSyncDeleteThenFailRemote(),
             observationSignal: signal,
             timing: syncEngineImmediateTiming
@@ -315,61 +213,32 @@ struct ProductSyncEngineTests {
         }
 
         #expect(await signal.publishCount == 2)
-        #expect(
-            try dataSource.fetchAll(in: ModelContext(container))
-                == [failingProduct]
-        )
+        #expect(try dataSource.fetchAll(in: ModelContext(container)) == [failingProduct])
     }
 
     @Test("A push conflict blocks descendants without replacing the root snapshots")
     func pushConflictBlocksDescendantsAndPreservesRoot() async throws {
         let container = try syncEngineContainer()
         let dataSource = ProductLocalDataSource()
-        let productID = try syncEngineProductID(
-            "54000000-0000-0000-0000-000000000009"
-        )
+        let productID = try syncEngineProductID("54000000-0000-0000-0000-000000000009")
         let root = Product.testSnapshot(id: productID, name: "Root snapshot A")
-        let descendant = Product.testSnapshot(
-            id: productID,
-            name: "Descendant snapshot B"
-        )
-        let rootOperationID = try syncEngineUUID(
-            "55000000-0000-0000-0000-000000000011"
-        )
-        let descendantOperationID = try syncEngineUUID(
-            "55000000-0000-0000-0000-000000000012"
-        )
-        try dataSource.persistPendingUpsert(
-            root,
-            operationID: rootOperationID,
-            in: ModelContext(container)
-        )
-        try dataSource.persistPendingUpsert(
-            descendant,
-            operationID: descendantOperationID,
-            in: ModelContext(container)
-        )
+        let descendant = Product.testSnapshot(id: productID, name: "Descendant snapshot B")
+        let rootOperationID = try syncEngineUUID("55000000-0000-0000-0000-000000000011")
+        let descendantOperationID = try syncEngineUUID("55000000-0000-0000-0000-000000000012")
+        try dataSource.persistPendingUpsert(root, operationID: rootOperationID, in: ModelContext(container))
+        try dataSource.persistPendingUpsert(descendant, operationID: descendantOperationID, in: ModelContext(container))
         let remote = ProductSyncPushConflictRemote(
             record: ProductRemoteRecord(
-                product: ProductDTO(
-                    Product.testSnapshot(
-                        id: productID,
-                        name: "Concurrent remote"
-                    )
-                ),
+                product: ProductDTO(Product.testSnapshot(id: productID, name: "Concurrent remote")),
                 version: .versioned(
                     revision: 1,
-                    lastOperationID: try syncEngineUUID(
-                        "55000000-0000-0000-0000-000000000013"
-                    )
+                    lastOperationID: try syncEngineUUID("55000000-0000-0000-0000-000000000013")
                 ),
                 changeSequence: 1
             )
         )
         let engine = ProductSyncEngine(
-            persistenceActor: ProductPersistenceActor(
-                modelContainer: container
-            ),
+            persistenceActor: ProductPersistenceActor(modelContainer: container),
             remoteDataSource: remote,
             observationSignal: ProductObservationSignal()
         )
@@ -377,11 +246,7 @@ struct ProductSyncEngineTests {
         try await engine.synchronize()
 
         #expect(await remote.receivedOperationIDs == [rootOperationID])
-        let conflict = try #require(
-            ModelContext(container).fetch(
-                FetchDescriptor<ProductSyncConflictModel>()
-            ).only
-        )
+        let conflict = try #require(ModelContext(container).fetch(FetchDescriptor<ProductSyncConflictModel>()).only)
         #expect(conflict.operationID == rootOperationID)
         #expect(try conflict.decodeLocalProduct() == ProductDTO(root))
     }
@@ -426,10 +291,7 @@ private actor ProductSyncRemoteFake: ProductRemoteDataSource {
             guard let cursor else { return true }
             return (record.changeSequence ?? 0) > cursor.changeSequence
         }.sorted { $0.id > $1.id }
-        return ProductRemoteChangeBatch(
-            records: records,
-            nextCursor: ProductSyncCursor(changeSequence: changeSequence)
-        )
+        return ProductRemoteChangeBatch(records: records, nextCursor: ProductSyncCursor(changeSequence: changeSequence))
     }
 
     func apply(_ operation: ProductPendingOperation) async throws -> ProductRemoteMutationResult {
@@ -486,10 +348,7 @@ private actor ProductSyncDeleteThenFailRemote: ProductRemoteDataSource {
     private var mutationCount = 0
 
     func fetchChanges(after cursor: ProductSyncCursor?) async throws -> ProductRemoteChangeBatch {
-        ProductRemoteChangeBatch(
-            records: [],
-            nextCursor: cursor ?? ProductSyncCursor(changeSequence: 0)
-        )
+        ProductRemoteChangeBatch(records: [], nextCursor: cursor ?? ProductSyncCursor(changeSequence: 0))
     }
 
     func apply(_ operation: ProductPendingOperation) async throws -> ProductRemoteMutationResult {
@@ -502,10 +361,7 @@ private actor ProductSyncDeleteThenFailRemote: ProductRemoteDataSource {
         return .applied(
             ProductRemoteRecord(
                 content: .tombstone(productID: delete.productID),
-                version: .versioned(
-                    revision: 1,
-                    lastOperationID: delete.operationID
-                ),
+                version: .versioned(revision: 1, lastOperationID: delete.operationID),
                 changeSequence: changeSequence
             )
         )
@@ -523,10 +379,7 @@ private actor ProductSyncPushConflictRemote: ProductRemoteDataSource {
     var receivedOperationIDs: [UUID] { operationIDs }
 
     func fetchChanges(after cursor: ProductSyncCursor?) async throws -> ProductRemoteChangeBatch {
-        ProductRemoteChangeBatch(
-            records: [],
-            nextCursor: cursor ?? ProductSyncCursor(changeSequence: 0)
-        )
+        ProductRemoteChangeBatch(records: [], nextCursor: cursor ?? ProductSyncCursor(changeSequence: 0))
     }
 
     func apply(_ operation: ProductPendingOperation) async throws -> ProductRemoteMutationResult {

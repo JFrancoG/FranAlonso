@@ -4,6 +4,7 @@
 
 ## Puerta actual
 
+- [PLU-33: limpieza Swift validada](progress/phase-07.md#limpieza-swift-previa-al-cierre-de-fase); entrega autorizada.
 - Fases 01–06 cerradas. 07.3 está integrada en `main` mediante la
   [PR #5](https://github.com/JFrancoG/FranAlonso/pull/5).
 - PLU-25 está `In Progress`; PLU-26, PLU-27, PLU-28, PLU-29, PLU-30 y PLU-31 están `Done`.

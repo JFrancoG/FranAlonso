@@ -15,24 +15,15 @@ struct ClientSyncPolicy {
         for operation: ClientPendingOperation,
         against remoteRecord: ClientRemoteRecord?
     ) -> ClientRemoteMutationDecision {
-        guard identifiersMatch(operation, remoteRecord: remoteRecord) else {
-            return .invalid(.entityIdentityMismatch)
-        }
+        guard identifiersMatch(operation, remoteRecord: remoteRecord) else { return .invalid(.entityIdentityMismatch) }
 
         if case .versioned(let revision, let lastOperationID) = remoteRecord?.version {
-            guard revision > 0 else {
-                return .invalid(.invalidRemoteRevision)
-            }
+            guard revision > 0 else { return .invalid(.invalidRemoteRevision) }
 
             if lastOperationID == operation.operationID {
-                guard let remoteRecord else {
-                    return .invalid(.entityIdentityMismatch)
-                }
+                guard let remoteRecord else { return .invalid(.entityIdentityMismatch) }
                 guard remoteRecord.content == desiredContent(for: operation) else {
-                    return .conflict(
-                        .operationIdentityMismatch,
-                        remoteRecord
-                    )
+                    return .conflict(.operationIdentityMismatch, remoteRecord)
                 }
                 return .alreadyApplied(remoteRecord)
             }
@@ -46,10 +37,7 @@ struct ClientSyncPolicy {
             return nextRecord(for: operation, after: remoteRecord)
         case .upsert:
             if let remoteRecord, remoteRecord.isTombstone {
-                return .conflict(
-                    .tombstoneRequiresExplicitRestore,
-                    remoteRecord
-                )
+                return .conflict(.tombstoneRequiresExplicitRestore, remoteRecord)
             }
         }
 
@@ -114,22 +102,15 @@ struct ClientSyncPolicy {
         case nil, .legacy:
             currentRevision = 0
         case .versioned(let revision, _):
-            guard revision > 0 else {
-                return .invalid(.invalidRemoteRevision)
-            }
-            guard revision < Int64.max else {
-                return .invalid(.remoteRevisionOverflow)
-            }
+            guard revision > 0 else { return .invalid(.invalidRemoteRevision) }
+            guard revision < Int64.max else { return .invalid(.remoteRevisionOverflow) }
             currentRevision = revision
         }
 
         return .apply(
             ClientRemoteRecord(
                 content: desiredContent(for: operation),
-                version: .versioned(
-                    revision: currentRevision + 1,
-                    lastOperationID: operation.operationID
-                ),
+                version: .versioned(revision: currentRevision + 1, lastOperationID: operation.operationID),
                 changeSequence: nil
             )
         )

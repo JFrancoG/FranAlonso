@@ -28,9 +28,7 @@ struct FirebaseBootstrapStateTests {
         var configurationCalls = 0
 
         delegate.completeApplicationBootstrap(
-            for: .authenticationFixture(
-                .standard(.signedOut)
-            ),
+            for: .authenticationFixture(.standard(.signedOut)),
             configureFirebase: {
                 configurationCalls += 1
                 return true

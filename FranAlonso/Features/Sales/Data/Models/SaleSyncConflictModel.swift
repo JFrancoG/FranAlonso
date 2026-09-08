@@ -95,9 +95,7 @@ extension SaleSyncConflictModel {
     /// Decodes the stable conflict classification retained for resolution.
     func decodeReason() throws -> SaleSyncConflictReason {
         guard let reason = SaleSyncConflictReason(rawValue: reasonRawValue) else {
-            throw SaleSyncPersistenceError.invalidConflictReason(
-                reasonRawValue
-            )
+            throw SaleSyncPersistenceError.invalidConflictReason(reasonRawValue)
         }
         return reason
     }
@@ -121,9 +119,7 @@ extension SaleSyncConflictModel {
         let base = try decodeBase()
         switch operationKindRawValue {
         case "upsert":
-            guard let sale = try decodeLocalSale() else {
-                throw SaleSyncPersistenceError.invalidConflictOperation
-            }
+            guard let sale = try decodeLocalSale() else { throw SaleSyncPersistenceError.invalidConflictOperation }
             return .upsert(
                 SalePendingUpsert(
                     saleID: saleID,
@@ -157,11 +153,7 @@ extension SaleSyncConflictModel {
     }
 
     private func requireSupportedVersion() throws {
-        guard payloadVersion == 1 else {
-            throw SaleSyncPersistenceError.unsupportedConflictVersion(
-                payloadVersion
-            )
-        }
+        guard payloadVersion == 1 else { throw SaleSyncPersistenceError.unsupportedConflictVersion(payloadVersion) }
     }
 }
 
@@ -197,9 +189,7 @@ extension SaleDTO {
     ///
     /// - Throws: `SaleSyncPersistenceError.entityIdentityMismatch` when `id` is invalid.
     func stableUUID() throws -> UUID {
-        guard let identifier = UUID(uuidString: id) else {
-            throw SaleSyncPersistenceError.entityIdentityMismatch
-        }
+        guard let identifier = UUID(uuidString: id) else { throw SaleSyncPersistenceError.entityIdentityMismatch }
         return identifier
     }
 }

@@ -1,6 +1,5 @@
 import SwiftUI
 
-@MainActor
 struct ClientRow: View {
     let client: Client
 

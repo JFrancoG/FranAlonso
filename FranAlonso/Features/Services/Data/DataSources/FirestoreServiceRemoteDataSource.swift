@@ -16,36 +16,25 @@ actor FirestoreServiceRemoteDataSource: ServiceRemoteDataSource {
 
     /// Creates the adapter for the Services collection in an explicitly selected environment.
     init(firestore: Firestore, environment: FirestoreEnvironment) {
-        let collection = firestore.collection(
-            environment.collectionPath(for: .services)
-        )
-        let counterDocument = firestore.document(
-            environment.syncMetadataDocumentPath(for: .services)
-        )
+        let collection = firestore.collection(environment.collectionPath(for: .services))
+        let counterDocument = firestore.document(environment.syncMetadataDocumentPath(for: .services))
         let policy = ServiceSyncPolicy()
 
         fetchDocuments = { cursor in
             let query: Query
             if let cursor {
                 query = collection
-                    .whereField(
-                        "_sync.changeSequence",
-                        isGreaterThan: cursor.changeSequence
-                    )
+                    .whereField("_sync.changeSequence", isGreaterThan: cursor.changeSequence)
                     .order(by: "_sync.changeSequence")
             } else {
                 query = collection
             }
             let snapshot = try await query.getDocuments(source: .server)
             return try snapshot.documents.map { document in
-                let payload = try document.data(
-                    as: FirestoreServiceDocumentDTO.self
-                )
+                let payload = try document.data(as: FirestoreServiceDocumentDTO.self)
                 return (
                     documentID: document.documentID,
-                    record: try payload.toRemoteRecord(
-                        documentID: document.documentID
-                    )
+                    record: try payload.toRemoteRecord(documentID: document.documentID)
                 )
             }
         }
@@ -62,10 +51,7 @@ actor FirestoreServiceRemoteDataSource: ServiceRemoteDataSource {
 
     /// Creates the live adapter after the default Firebase app has been configured.
     init(environment: FirestoreEnvironment) {
-        self.init(
-            firestore: Firestore.firestore(),
-            environment: environment
-        )
+        self.init(firestore: Firestore.firestore(), environment: environment)
     }
 
     func fetchChanges(after cursor: ServiceSyncCursor?) async throws -> ServiceRemoteChangeBatch {
@@ -90,9 +76,7 @@ actor FirestoreServiceRemoteDataSource: ServiceRemoteDataSource {
                 ?? 0
             return ServiceRemoteChangeBatch(
                 records: records,
-                nextCursor: ServiceSyncCursor(
-                    changeSequence: nextSequence
-                )
+                nextCursor: ServiceSyncCursor(changeSequence: nextSequence)
             )
         } catch {
             throw mapFirestoreServiceError(error)
@@ -145,21 +129,14 @@ extension FirestoreServiceRemoteDataSource {
                         remoteRecord = nil
                     }
 
-                    let decision = policy.decision(
-                        for: operation,
-                        against: remoteRecord
-                    )
+                    let decision = policy.decision(for: operation, against: remoteRecord)
                     let counterState: FirestoreServiceCounterState
                     if case .apply = decision {
-                        let counterSnapshot = try transaction.getDocument(
-                            counterDocument
-                        )
+                        let counterSnapshot = try transaction.getDocument(counterDocument)
                         if counterSnapshot.exists {
                             do {
                                 counterState = .value(
-                                    try counterSnapshot.data(
-                                        as: FirestoreServiceCounterDTO.self
-                                    ).changeSequence
+                                    try counterSnapshot.data(as: FirestoreServiceCounterDTO.self).changeSequence
                                 )
                             } catch is DecodingError {
                                 counterState = .malformed
@@ -184,11 +161,7 @@ extension FirestoreServiceRemoteDataSource {
                             forDocument: document,
                             merge: false
                         )
-                        try transaction.setData(
-                            from: write.counter,
-                            forDocument: counterDocument,
-                            merge: false
-                        )
+                        try transaction.setData(from: write.counter, forDocument: counterDocument, merge: false)
                         outcome = .result(.applied(write.record))
                     case .result(let result):
                         outcome = .result(result)
@@ -202,14 +175,13 @@ extension FirestoreServiceRemoteDataSource {
                 }
             } completion: { encodedOutcome, error in
                 do {
-                    if let error { throw error }
+                    if let error {
+                        throw error
+                    }
                     guard let outcomeData = encodedOutcome as? Data else {
                         throw ServiceRemoteDataSourceError.unexpected
                     }
-                    switch try JSONDecoder().decode(
-                        FirestoreServiceTransactionOutcome.self,
-                        from: outcomeData
-                    ) {
+                    switch try JSONDecoder().decode(FirestoreServiceTransactionOutcome.self, from: outcomeData) {
                     case .result(let result):
                         continuation.resume(returning: result)
                     case .invalid(let error):
@@ -244,18 +216,12 @@ extension FirestoreServiceRemoteDataSource {
             case .malformed, .unread:
                 throw ServiceSyncPolicyError.invalidChangeSequence
             }
-            let nextSequence = try nextChangeSequence(
-                after: currentSequence
-            )
-            let record = recordWithoutSequence.withChangeSequence(
-                nextSequence
-            )
+            let nextSequence = try nextChangeSequence(after: currentSequence)
+            let record = recordWithoutSequence.withChangeSequence(nextSequence)
             return .atomic(
                 FirestoreServiceAtomicWrite(
                     record: record,
-                    counter: FirestoreServiceCounterDTO(
-                        changeSequence: nextSequence
-                    )
+                    counter: FirestoreServiceCounterDTO(changeSequence: nextSequence)
                 )
             )
         case .alreadyApplied(let record):
@@ -395,29 +361,15 @@ struct FirestoreServiceDocumentDTO: Decodable {
         }
 
         let service = try validatedLiveService()
-        return ServiceRemoteRecord(
-            content: .live(service),
-            version: version,
-            changeSequence: changeSequence
-        )
+        return ServiceRemoteRecord(content: .live(service), version: version, changeSequence: changeSequence)
     }
 
     private func validatedLiveService() throws -> ServiceDTO {
-        guard let name else {
-            throw missingServiceField(.name)
-        }
-        guard let type else {
-            throw missingServiceField(.type)
-        }
-        guard let price else {
-            throw missingServiceField(.price)
-        }
-        guard let taxRate else {
-            throw missingServiceField(.taxRate)
-        }
-        guard let status else {
-            throw missingServiceField(.status)
-        }
+        guard let name else { throw missingServiceField(.name) }
+        guard let type else { throw missingServiceField(.type) }
+        guard let price else { throw missingServiceField(.price) }
+        guard let taxRate else { throw missingServiceField(.taxRate) }
+        guard let status else { throw missingServiceField(.status) }
         let service = ServiceDTO(
             id: id,
             name: name,
@@ -447,9 +399,7 @@ struct FirestoreServiceDocumentDTO: Decodable {
                 description: "A synchronized service revision must be positive."
             )
         }
-        guard let operationID = UUID(
-            uuidString: syncMetadata.lastOperationID
-        ) else {
+        guard let operationID = UUID(uuidString: syncMetadata.lastOperationID) else {
             throw serviceDocumentDecodingError(
                 codingPath: [
                     ServiceDocumentCodingKey.syncMetadata,
@@ -458,10 +408,7 @@ struct FirestoreServiceDocumentDTO: Decodable {
                 description: "The synchronized service operation identifier is invalid."
             )
         }
-        return .versioned(
-            revision: syncMetadata.revision,
-            lastOperationID: operationID
-        )
+        return .versioned(revision: syncMetadata.revision, lastOperationID: operationID)
     }
 
     private func validatedChangeSequence() throws -> Int64? {
@@ -479,10 +426,7 @@ struct FirestoreServiceDocumentDTO: Decodable {
     }
 
     private func missingServiceField(_ key: ServiceDocumentCodingKey) -> DecodingError {
-        serviceDocumentDecodingError(
-            codingPath: [key],
-            description: "A live service requires \(key.stringValue)."
-        )
+        serviceDocumentDecodingError(codingPath: [key], description: "A live service requires \(key.stringValue).")
     }
 }
 
@@ -543,21 +487,12 @@ private enum ServiceDocumentCodingKey: String, CodingKey {
 
 private extension ServiceRemoteRecord {
     func withChangeSequence(_ changeSequence: Int64) -> ServiceRemoteRecord {
-        ServiceRemoteRecord(
-            content: content,
-            version: version,
-            changeSequence: changeSequence
-        )
+        ServiceRemoteRecord(content: content, version: version, changeSequence: changeSequence)
     }
 }
 
 private func serviceDocumentDecodingError(codingPath: [any CodingKey], description: String) -> DecodingError {
-    DecodingError.dataCorrupted(
-        DecodingError.Context(
-            codingPath: codingPath,
-            debugDescription: description
-        )
-    )
+    DecodingError.dataCorrupted(DecodingError.Context(codingPath: codingPath, debugDescription: description))
 }
 
 private func serviceBusinessDecodingError(_ error: any Error) -> DecodingError {
@@ -598,7 +533,9 @@ private func mapFirestoreServiceError(_ error: any Error) -> any Error {
     if error is DecodingError || error is ServiceSyncPolicyError {
         return error
     }
-    if error is CancellationError { return CancellationError() }
+    if error is CancellationError {
+        return CancellationError()
+    }
 
     let providerError = error as NSError
     guard providerError.domain == FirestoreErrorDomain else { return ServiceRemoteDataSourceError.unexpected }

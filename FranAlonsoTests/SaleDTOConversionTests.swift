@@ -31,10 +31,7 @@ struct SaleDTOConversionTests {
     )
     func invalidStatusShapesFailClosed(_ payload: String) {
         #expect(throws: DecodingError.self) {
-            _ = try JSONDecoder().decode(
-                SaleStatusDTO.self,
-                from: Data(payload.utf8)
-            )
+            _ = try JSONDecoder().decode(SaleStatusDTO.self, from: Data(payload.utf8))
         }
     }
 
@@ -43,10 +40,7 @@ struct SaleDTOConversionTests {
         let payload = #"{"id":"00000000-0000-0000-0000-000000000010","serviceID":"00000000-0000-0000-0000-000000000011","serviceName":"Snapshot","quantity":1,"unitPrice":{"amount":"29.95","currency":"EUR"},"taxRate":{"percentage":"21"},"status":"upcoming","unexpected":true}"#
 
         #expect(throws: DecodingError.self) {
-            _ = try JSONDecoder().decode(
-                SaleLineDTO.self,
-                from: Data(payload.utf8)
-            )
+            _ = try JSONDecoder().decode(SaleLineDTO.self, from: Data(payload.utf8))
         }
     }
 
@@ -99,12 +93,7 @@ struct SaleDTOConversionTests {
             status: .draft
         )
 
-        #expect(
-            throws: SaleMappingError.invalidIdentifier(
-                "not-a-uuid",
-                location: .sale
-            )
-        ) {
+        #expect(throws: SaleMappingError.invalidIdentifier("not-a-uuid", location: .sale)) {
             _ = try invalidID.toDomain()
         }
         #expect(throws: SaleMappingError.invalidLifecycle) {
@@ -132,21 +121,9 @@ struct SaleDTOConversionTests {
             lines: draft.lines,
             status: draft.status
         )
-        let invalidLine = replacingSaleLineIdentifier(
-            in: draft,
-            at: 1,
-            id: invalid
-        )
-        let invalidService = replacingSaleLineIdentifier(
-            in: draft,
-            at: 0,
-            serviceID: invalid
-        )
-        let invalidLinkedProduct = replacingSaleLineIdentifier(
-            in: draft,
-            at: 1,
-            linkedProductID: invalid
-        )
+        let invalidLine = replacingSaleLineIdentifier(in: draft, at: 1, id: invalid)
+        let invalidService = replacingSaleLineIdentifier(in: draft, at: 0, serviceID: invalid)
+        let invalidLinkedProduct = replacingSaleLineIdentifier(in: draft, at: 1, linkedProductID: invalid)
 
         let awaitingDocument = try SaleDTO(saleDTOAwaitingDocument())
         guard case .awaitingDocument(let payment) = awaitingDocument.status else {
@@ -156,11 +133,7 @@ struct SaleDTOConversionTests {
         let invalidPayment = replacingSaleStatus(
             in: awaitingDocument,
             with: .awaitingDocument(
-                payment: SalePaymentDTO(
-                    id: invalid,
-                    method: payment.method,
-                    paidAt: payment.paidAt
-                )
+                payment: SalePaymentDTO(id: invalid, method: payment.method, paidAt: payment.paidAt)
             )
         )
 
@@ -171,13 +144,7 @@ struct SaleDTOConversionTests {
         }
         let invalidDocument = replacingSaleStatus(
             in: closed,
-            with: .closed(
-                payment: closedPayment,
-                document: SaleDocumentDTO(
-                    id: invalid,
-                    closedAt: document.closedAt
-                )
-            )
+            with: .closed(payment: closedPayment, document: SaleDocumentDTO(id: invalid, closedAt: document.closedAt))
         )
 
         let voided = try SaleDTO(saleDTOVoided())
@@ -191,10 +158,7 @@ struct SaleDTOConversionTests {
             with: .voided(
                 payment: voidedPayment,
                 document: voidedDocument,
-                reversal: SaleReversalDTO(
-                    id: invalid,
-                    voidedAt: reversal.voidedAt
-                )
+                reversal: SaleReversalDTO(id: invalid, voidedAt: reversal.voidedAt)
             )
         )
 
@@ -209,12 +173,7 @@ struct SaleDTOConversionTests {
             (invalidReversal, .reversal)
         ]
         for (dto, location) in cases {
-            #expect(
-                throws: SaleMappingError.invalidIdentifier(
-                    invalid,
-                    location: location
-                )
-            ) {
+            #expect(throws: SaleMappingError.invalidIdentifier(invalid, location: location)) {
                 _ = try dto.toDomain()
             }
         }
@@ -253,9 +212,7 @@ private func saleDTOAwaitingDocument() throws -> Sale {
 private func saleDTOClosed() throws -> Sale {
     var sale = try saleDTOAwaitingDocument()
     try sale.close(
-        documentID: BillingDocumentID(
-            rawValue: saleDTOUUID("00000000-0000-0000-0000-000000000604")
-        ),
+        documentID: BillingDocumentID(rawValue: saleDTOUUID("00000000-0000-0000-0000-000000000604")),
         closedAt: Date(timeIntervalSinceReferenceDate: -259_200)
     )
     return sale
@@ -264,9 +221,7 @@ private func saleDTOClosed() throws -> Sale {
 private func saleDTOVoided() throws -> Sale {
     var sale = try saleDTOClosed()
     try sale.void(
-        reversalID: SaleReversalID(
-            rawValue: saleDTOUUID("00000000-0000-0000-0000-000000000605")
-        ),
+        reversalID: SaleReversalID(rawValue: saleDTOUUID("00000000-0000-0000-0000-000000000605")),
         voidedAt: Date(timeIntervalSinceReferenceDate: -302_400)
     )
     return sale
@@ -275,22 +230,14 @@ private func saleDTOVoided() throws -> Sale {
 private func saleDTOBaseSale() throws -> Sale {
     try Sale.draft(
         id: SaleID(rawValue: saleDTOUUID("00000000-0000-0000-0000-000000000600")),
-        clientID: ClientID(
-            rawValue: saleDTOUUID("00000000-0000-0000-0000-000000000601")
-        ),
+        clientID: ClientID(rawValue: saleDTOUUID("00000000-0000-0000-0000-000000000601")),
         createdAt: Date(timeIntervalSinceReferenceDate: 0.000_000_123_456_789),
         lines: [
-            try saleDTOLine(
-                id: "00000000-0000-0000-0000-000000000610",
-                quantity: 1,
-                linkedProductID: nil
-            ),
+            try saleDTOLine(id: "00000000-0000-0000-0000-000000000610", quantity: 1, linkedProductID: nil),
             try saleDTOLine(
                 id: "00000000-0000-0000-0000-000000000611",
                 quantity: 2,
-                linkedProductID: ProductID(
-                    rawValue: saleDTOUUID("00000000-0000-0000-0000-000000000612")
-                )
+                linkedProductID: ProductID(rawValue: saleDTOUUID("00000000-0000-0000-0000-000000000612"))
             )
         ]
     )
@@ -299,9 +246,7 @@ private func saleDTOBaseSale() throws -> Sale {
 private func saleDTOLine(id: String, quantity: Int, linkedProductID: ProductID?) throws -> SaleLine {
     try SaleLine.upcoming(
         id: SaleLineID(rawValue: saleDTOUUID(id)),
-        serviceID: ServiceID(
-            rawValue: saleDTOUUID("00000000-0000-0000-0000-000000000602")
-        ),
+        serviceID: ServiceID(rawValue: saleDTOUUID("00000000-0000-0000-0000-000000000602")),
         serviceName: "Corte histórico",
         quantity: quantity,
         unitPrice: Money(amount: saleDTODecimal("29.95"), currency: .eur),

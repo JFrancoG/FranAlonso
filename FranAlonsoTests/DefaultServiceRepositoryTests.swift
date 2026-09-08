@@ -9,30 +9,16 @@ struct DefaultServiceRepositoryTests {
     func pendingUpsertPersistsServiceAndOperationSnapshotTogether() throws {
         let container = try makeServiceRepositoryContainer()
         let context = ModelContext(container)
-        let service = try repositoryService(
-            id: "53000000-0000-0000-0000-000000000001",
-            name: "Corte y peinado"
-        )
-        let operationID = try repositoryUUID(
-            "53100000-0000-0000-0000-000000000001"
-        )
+        let service = try repositoryService(id: "53000000-0000-0000-0000-000000000001", name: "Corte y peinado")
+        let operationID = try repositoryUUID("53100000-0000-0000-0000-000000000001")
 
-        try ServiceLocalDataSource().persistPendingUpsert(
-            service,
-            operationID: operationID,
-            in: context
-        )
+        try ServiceLocalDataSource().persistPendingUpsert(service, operationID: operationID, in: context)
 
         let verificationContext = ModelContext(container)
         let operation = try #require(
-            verificationContext.fetch(
-                FetchDescriptor<ServicePendingUpsertModel>()
-            ).onlyServiceElement
+            verificationContext.fetch(FetchDescriptor<ServicePendingUpsertModel>()).onlyServiceElement
         )
-        #expect(
-            try ServiceLocalDataSource().fetchAll(in: verificationContext)
-                == [service]
-        )
+        #expect(try ServiceLocalDataSource().fetchAll(in: verificationContext) == [service])
         #expect(operation.serviceID == service.id.rawValue)
         #expect(operation.operationID == operationID)
         #expect(operation.predecessorOperationID == nil)
@@ -44,34 +30,17 @@ struct DefaultServiceRepositoryTests {
     func pendingDeleteRemovesServiceAndAppendsDurableTombstone() throws {
         let container = try makeServiceRepositoryContainer()
         let dataSource = ServiceLocalDataSource()
-        let service = try repositoryService(
-            id: "53000000-0000-0000-0000-000000000002",
-            name: "Service to delete"
-        )
-        let upsertOperationID = try repositoryUUID(
-            "53100000-0000-0000-0000-000000000002"
-        )
-        let deleteOperationID = try repositoryUUID(
-            "53100000-0000-0000-0000-000000000003"
-        )
-        try dataSource.persistPendingUpsert(
-            service,
-            operationID: upsertOperationID,
-            in: ModelContext(container)
-        )
+        let service = try repositoryService(id: "53000000-0000-0000-0000-000000000002", name: "Service to delete")
+        let upsertOperationID = try repositoryUUID("53100000-0000-0000-0000-000000000002")
+        let deleteOperationID = try repositoryUUID("53100000-0000-0000-0000-000000000003")
+        try dataSource.persistPendingUpsert(service, operationID: upsertOperationID, in: ModelContext(container))
 
-        try dataSource.persistPendingDelete(
-            service.id,
-            operationID: deleteOperationID,
-            in: ModelContext(container)
-        )
+        try dataSource.persistPendingDelete(service.id, operationID: deleteOperationID, in: ModelContext(container))
 
         let verificationContext = ModelContext(container)
         #expect(try dataSource.fetchAll(in: verificationContext).isEmpty)
         let deletion = try #require(
-            verificationContext.fetch(
-                FetchDescriptor<ServicePendingDeleteModel>()
-            ).onlyServiceElement
+            verificationContext.fetch(FetchDescriptor<ServicePendingDeleteModel>()).onlyServiceElement
         )
         #expect(deletion.serviceID == service.id.rawValue)
         #expect(deletion.operationID == deleteOperationID)
@@ -84,16 +53,12 @@ struct DefaultServiceRepositoryTests {
 
         try dataSource.persistPendingDelete(
             service.id,
-            operationID: try repositoryUUID(
-                "53100000-0000-0000-0000-000000000004"
-            ),
+            operationID: try repositoryUUID("53100000-0000-0000-0000-000000000004"),
             in: ModelContext(container)
         )
 
         let repeatedVerificationContext = ModelContext(container)
-        let repeatedDeletions = try repeatedVerificationContext.fetch(
-            FetchDescriptor<ServicePendingDeleteModel>()
-        )
+        let repeatedDeletions = try repeatedVerificationContext.fetch(FetchDescriptor<ServicePendingDeleteModel>())
         #expect(repeatedDeletions.map(\.operationID) == [deleteOperationID])
     }
 
@@ -104,17 +69,11 @@ struct DefaultServiceRepositoryTests {
             path: "FranAlonso-Service-ReadOnly-\(UUID())",
             directoryHint: .isDirectory
         )
-        try FileManager.default.createDirectory(
-            at: directoryURL,
-            withIntermediateDirectories: true
-        )
+        try FileManager.default.createDirectory(at: directoryURL, withIntermediateDirectories: true)
         defer {
             try? FileManager.default.removeItem(at: directoryURL)
         }
-        let storeURL = directoryURL.appending(
-            path: "Services.store",
-            directoryHint: .notDirectory
-        )
+        let storeURL = directoryURL.appending(path: "Services.store", directoryHint: .notDirectory)
         let writableConfiguration = ModelConfiguration(
             "WritableServices",
             schema: schema,
@@ -122,10 +81,7 @@ struct DefaultServiceRepositoryTests {
             allowsSave: true,
             cloudKitDatabase: .none
         )
-        _ = try ModelContainer(
-            for: schema,
-            configurations: [writableConfiguration]
-        )
+        _ = try ModelContainer(for: schema, configurations: [writableConfiguration])
         let readOnlyConfiguration = ModelConfiguration(
             "ReadOnlyServices",
             schema: schema,
@@ -133,23 +89,15 @@ struct DefaultServiceRepositoryTests {
             allowsSave: false,
             cloudKitDatabase: .none
         )
-        let container = try ModelContainer(
-            for: schema,
-            configurations: [readOnlyConfiguration]
-        )
+        let container = try ModelContainer(for: schema, configurations: [readOnlyConfiguration])
         let context = ModelContext(container)
         context.autosaveEnabled = false
-        let service = try repositoryService(
-            id: "53000000-0000-0000-0000-000000000003",
-            name: "Rejected write"
-        )
+        let service = try repositoryService(id: "53000000-0000-0000-0000-000000000003", name: "Rejected write")
 
         do {
             try ServiceLocalDataSource().persistPendingUpsert(
                 service,
-                operationID: try repositoryUUID(
-                    "53100000-0000-0000-0000-000000000005"
-                ),
+                operationID: try repositoryUUID("53100000-0000-0000-0000-000000000005"),
                 in: context
             )
             Issue.record("A read-only container unexpectedly accepted a save")
@@ -157,16 +105,8 @@ struct DefaultServiceRepositoryTests {
 
         #expect(!context.hasChanges)
         let verificationContext = ModelContext(container)
-        #expect(
-            try verificationContext.fetchCount(
-                FetchDescriptor<ServiceModel>()
-            ) == 0
-        )
-        #expect(
-            try verificationContext.fetchCount(
-                FetchDescriptor<ServicePendingUpsertModel>()
-            ) == 0
-        )
+        #expect(try verificationContext.fetchCount(FetchDescriptor<ServiceModel>()) == 0)
+        #expect(try verificationContext.fetchCount(FetchDescriptor<ServicePendingUpsertModel>()) == 0)
     }
 
     @Test("A mapping failure rolls back a new local-first write")
@@ -187,28 +127,18 @@ struct DefaultServiceRepositoryTests {
         )
         let repository = makeServiceRepository(
             container: container,
-            operationID: try repositoryUUID(
-                "53100000-0000-0000-0000-000000000006"
-            )
+            operationID: try repositoryUUID("53100000-0000-0000-0000-000000000006")
         )
 
-        await #expect(
-            throws: ServiceMappingError.invalidPersistedStatus("suspended")
-        ) {
+        await #expect(throws: ServiceMappingError.invalidPersistedStatus("suspended")) {
             try await repository.saveService(attemptedService)
         }
 
         let verificationContext = ModelContext(container)
         #expect(
-            try verificationContext.fetch(
-                FetchDescriptor<ServiceModel>()
-            ).map(\.id) == [corruptService.id.rawValue]
+            try verificationContext.fetch(FetchDescriptor<ServiceModel>()).map(\.id) == [corruptService.id.rawValue]
         )
-        #expect(
-            try verificationContext.fetchCount(
-                FetchDescriptor<ServicePendingUpsertModel>()
-            ) == 0
-        )
+        #expect(try verificationContext.fetchCount(FetchDescriptor<ServicePendingUpsertModel>()) == 0)
     }
 
     @Test("Repository observation publishes its committed local Service write")
@@ -216,14 +146,9 @@ struct DefaultServiceRepositoryTests {
         let container = try makeServiceRepositoryContainer()
         let repository = makeServiceRepository(
             container: container,
-            operationID: try repositoryUUID(
-                "53100000-0000-0000-0000-000000000007"
-            )
+            operationID: try repositoryUUID("53100000-0000-0000-0000-000000000007")
         )
-        let service = try repositoryService(
-            id: "53000000-0000-0000-0000-000000000006",
-            name: "Repository route"
-        )
+        let service = try repositoryService(id: "53000000-0000-0000-0000-000000000006", name: "Repository route")
         let stream = await repository.observeServices()
         var observation = stream.makeAsyncIterator()
 
@@ -236,30 +161,20 @@ struct DefaultServiceRepositoryTests {
     @Test("A delayed change signal reloads the current SwiftData Service snapshot")
     func delayedChangeSignalReloadsCurrentServiceSnapshot() async throws {
         let container = try makeServiceRepositoryContainer()
-        let persistenceActor = ServicePersistenceActor(
-            modelContainer: container
-        )
+        let persistenceActor = ServicePersistenceActor(modelContainer: container)
         let observationSignal = ServiceObservationSignal()
-        let operationID = try repositoryUUID(
-            "53100000-0000-0000-0000-000000000008"
-        )
+        let operationID = try repositoryUUID("53100000-0000-0000-0000-000000000008")
         let repository = DefaultServiceRepository(
             persistenceActor: persistenceActor,
             observationSignal: observationSignal,
             operationID: { operationID }
         )
-        let service = try repositoryService(
-            id: "53000000-0000-0000-0000-000000000007",
-            name: "Newest durable snapshot"
-        )
+        let service = try repositoryService(id: "53000000-0000-0000-0000-000000000007", name: "Newest durable snapshot")
         let stream = await repository.observeServices()
         var observation = stream.makeAsyncIterator()
         #expect(try await observation.next() == [])
 
-        try await persistenceActor.persistPendingUpsert(
-            service,
-            operationID: operationID
-        )
+        try await persistenceActor.persistPendingUpsert(service, operationID: operationID)
         await observationSignal.publishChange()
 
         #expect(try await observation.next() == [service])
@@ -270,22 +185,16 @@ struct DefaultServiceRepositoryTests {
     func contextualRouteMatchesRepositoryAndUpdatesObservation() async throws {
         let repositoryContainer = try makeServiceRepositoryContainer()
         let contextualContainer = try makeServiceRepositoryContainer()
-        let operationID = try repositoryUUID(
-            "53100000-0000-0000-0000-000000000009"
-        )
+        let operationID = try repositoryUUID("53100000-0000-0000-0000-000000000009")
         let repositorySignal = ServiceObservationSignal()
         let contextualSignal = ServiceObservationSignal()
         let repository = DefaultServiceRepository(
-            persistenceActor: ServicePersistenceActor(
-                modelContainer: repositoryContainer
-            ),
+            persistenceActor: ServicePersistenceActor(modelContainer: repositoryContainer),
             observationSignal: repositorySignal,
             operationID: { operationID }
         )
         let contextualRepository = DefaultServiceRepository(
-            persistenceActor: ServicePersistenceActor(
-                modelContainer: contextualContainer
-            ),
+            persistenceActor: ServicePersistenceActor(modelContainer: contextualContainer),
             observationSignal: contextualSignal,
             operationID: { operationID }
         )
@@ -293,9 +202,7 @@ struct DefaultServiceRepositoryTests {
             observationSignal: contextualSignal,
             operationID: { operationID }
         )
-        let linkedProductID = try repositoryUUID(
-            "53200000-0000-0000-0000-000000000008"
-        )
+        let linkedProductID = try repositoryUUID("53200000-0000-0000-0000-000000000008")
         let service = try repositoryService(
             id: "53000000-0000-0000-0000-000000000008",
             name: "Both routes",
@@ -312,16 +219,10 @@ struct DefaultServiceRepositoryTests {
         #expect(try await contextualObservation.next() == [])
 
         try await repository.saveService(service)
-        try await adapter.save(
-            service,
-            in: contextualContainer.mainContext
-        )
+        try await adapter.save(service, in: contextualContainer.mainContext)
 
         #expect(try await contextualObservation.next() == [service])
-        #expect(
-            try persistedServiceState(in: repositoryContainer)
-                == persistedServiceState(in: contextualContainer)
-        )
+        #expect(try persistedServiceState(in: repositoryContainer) == persistedServiceState(in: contextualContainer))
     }
 }
 
@@ -357,11 +258,7 @@ private func makeServiceRepositoryContainer() throws -> ModelContainer {
 
 private func persistedServiceState(in container: ModelContainer) throws -> PersistedServiceState {
     let context = ModelContext(container)
-    let operation = try #require(
-        context.fetch(
-            FetchDescriptor<ServicePendingUpsertModel>()
-        ).onlyServiceElement
-    )
+    let operation = try #require(context.fetch(FetchDescriptor<ServicePendingUpsertModel>()).onlyServiceElement)
 
     return PersistedServiceState(
         services: try ServiceLocalDataSource().fetchAll(in: context),

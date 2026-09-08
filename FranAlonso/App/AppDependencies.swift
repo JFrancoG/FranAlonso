@@ -21,21 +21,13 @@ struct AppDependencies {
         let serviceObservationSignal = ServiceObservationSignal()
         let saleObservationSignal = SaleObservationSignal()
         return .live(
-            persistenceActor: ClientPersistenceActor(
-                modelContainer: modelContainer
-            ),
+            persistenceActor: ClientPersistenceActor(modelContainer: modelContainer),
             observationSignal: observationSignal,
-            productPersistenceActor: ProductPersistenceActor(
-                modelContainer: modelContainer
-            ),
+            productPersistenceActor: ProductPersistenceActor(modelContainer: modelContainer),
             productObservationSignal: productObservationSignal,
-            servicePersistenceActor: ServicePersistenceActor(
-                modelContainer: modelContainer
-            ),
+            servicePersistenceActor: ServicePersistenceActor(modelContainer: modelContainer),
             serviceObservationSignal: serviceObservationSignal,
-            salePersistenceActor: SalePersistenceActor(
-                modelContainer: modelContainer
-            ),
+            salePersistenceActor: SalePersistenceActor(modelContainer: modelContainer),
             saleObservationSignal: saleObservationSignal
         )
     }
@@ -53,21 +45,13 @@ struct AppDependencies {
         let serviceObservationSignal = ServiceObservationSignal()
         let saleObservationSignal = SaleObservationSignal()
         return .fixtureComposed(
-            persistenceActor: ClientPersistenceActor(
-                modelContainer: modelContainer
-            ),
+            persistenceActor: ClientPersistenceActor(modelContainer: modelContainer),
             observationSignal: observationSignal,
-            productPersistenceActor: ProductPersistenceActor(
-                modelContainer: modelContainer
-            ),
+            productPersistenceActor: ProductPersistenceActor(modelContainer: modelContainer),
             productObservationSignal: productObservationSignal,
-            servicePersistenceActor: ServicePersistenceActor(
-                modelContainer: modelContainer
-            ),
+            servicePersistenceActor: ServicePersistenceActor(modelContainer: modelContainer),
             serviceObservationSignal: serviceObservationSignal,
-            salePersistenceActor: SalePersistenceActor(
-                modelContainer: modelContainer
-            ),
+            salePersistenceActor: SalePersistenceActor(modelContainer: modelContainer),
             saleObservationSignal: saleObservationSignal,
             analyticsDataSource: analyticsDataSource,
             crashDataSource: crashDataSource,

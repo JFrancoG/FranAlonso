@@ -36,20 +36,12 @@ extension SaleLocalDataSource {
                 throw SaleLocalDataSourceError.syncConflictPending(sale.id)
             }
             guard try !hasDeletionState(for: sale.id, in: context) else {
-                throw SaleLocalDataSourceError.restoreRequiresExplicitResolution(
-                    sale.id
-                )
+                throw SaleLocalDataSourceError.restoreRequiresExplicitResolution(sale.id)
             }
 
             let payload = try SaleDTO(sale)
-            let operations = try pendingOperations(
-                for: sale.id,
-                in: context
-            )
-            let head = try pendingHead(
-                from: operations,
-                saleID: sale.id
-            )
+            let operations = try pendingOperations(for: sale.id, in: context)
+            let head = try pendingHead(from: operations, saleID: sale.id)
             let headPayload: SaleDTO?
             if case .upsert(let upsert) = head {
                 headPayload = upsert.sale
@@ -58,10 +50,7 @@ extension SaleLocalDataSource {
             }
 
             if headPayload != payload {
-                try ensureOperationIdentityAvailable(
-                    operationID,
-                    in: context
-                )
+                try ensureOperationIdentityAvailable(operationID, in: context)
                 context.insert(
                     try SalePendingUpsertModel(
                         saleID: sale.id.rawValue,
@@ -92,7 +81,9 @@ extension SaleLocalDataSource {
         do {
             let operations = try pendingOperations(for: id, in: context)
             if operations.contains(where: { operation in
-                if case .discard = operation { return true }
+                if case .discard = operation {
+                    return true
+                }
                 return false
             }) {
                 if let model = try model(for: id, in: context) {
@@ -117,9 +108,7 @@ extension SaleLocalDataSource {
             let currentSale = try localModel?.toDomain()
                 ?? pendingSales.first
                 ?? remoteRecord?.liveSale?.toDomain()
-            guard currentSale?.status == .draft else {
-                throw SaleLocalDataSourceError.discardRequiresDraft(id)
-            }
+            guard currentSale?.status == .draft else { throw SaleLocalDataSourceError.discardRequiresDraft(id) }
 
             try ensureOperationIdentityAvailable(operationID, in: context)
             let head = try pendingHead(from: operations, saleID: id)
@@ -144,9 +133,7 @@ extension SaleLocalDataSource {
 
     /// Returns every immutable pending operation in deterministic causal order.
     func pendingOperations(in context: ModelContext) throws -> [SalePendingOperation] {
-        let upserts = try context.fetch(
-            FetchDescriptor<SalePendingUpsertModel>()
-        ).map { model in
+        let upserts = try context.fetch(FetchDescriptor<SalePendingUpsertModel>()).map { model in
             SalePendingOperation.upsert(
                 SalePendingUpsert(
                     saleID: model.saleID,
@@ -157,9 +144,7 @@ extension SaleLocalDataSource {
                 )
             )
         }
-        let discards = try context.fetch(
-            FetchDescriptor<SalePendingDiscardModel>()
-        ).map { model in
+        let discards = try context.fetch(FetchDescriptor<SalePendingDiscardModel>()).map { model in
             SalePendingOperation.discard(
                 SalePendingDiscard(
                     saleID: model.saleID,
@@ -182,11 +167,7 @@ extension SaleLocalDataSource {
 
     /// Returns operations eligible for delivery while preserving explicit conflicts.
     func deliverablePendingOperations(in context: ModelContext) throws -> [SalePendingOperation] {
-        let conflictedSaleIDs = Set(
-            try context.fetch(
-                FetchDescriptor<SaleSyncConflictModel>()
-            ).map(\.saleID)
-        )
+        let conflictedSaleIDs = Set(try context.fetch(FetchDescriptor<SaleSyncConflictModel>()).map(\.saleID))
 
         return try pendingOperations(in: context).filter { operation in
             !conflictedSaleIDs.contains(operation.saleID)
@@ -205,9 +186,7 @@ extension SaleLocalDataSource {
     func cursor(in context: ModelContext) throws -> SaleSyncCursor? {
         try cursorModel(in: context).map { model in
             guard model.changeSequence >= 0 else { throw SaleSyncPersistenceError.invalidCursor }
-            return SaleSyncCursor(
-                changeSequence: model.changeSequence
-            )
+            return SaleSyncCursor(changeSequence: model.changeSequence)
         }
     }
 
@@ -277,10 +256,7 @@ extension SaleLocalDataSource {
                 .compactMap(\.changeSequence)
                 .max()
                 ?? 0
-            let expectedNextSequence = max(
-                currentCursor?.changeSequence ?? 0,
-                receivedMaximum
-            )
+            let expectedNextSequence = max(currentCursor?.changeSequence ?? 0, receivedMaximum)
             guard batch.nextCursor.changeSequence
                     == expectedNextSequence else {
                 throw SaleSyncPersistenceError.invalidCursor
@@ -296,10 +272,7 @@ extension SaleLocalDataSource {
                 if try isStale(record, for: saleID, in: context) {
                     continue
                 }
-                let operation = try pendingOperations(
-                    for: saleID,
-                    in: context
-                ).first
+                let operation = try pendingOperations(for: saleID, in: context).first
                 guard let operation else {
                     try applyRemoteObservation(record, in: context)
                     continue
@@ -309,15 +282,8 @@ extension SaleLocalDataSource {
                 case .apply:
                     try applyRemoteObservation(record, in: context)
                 case .alreadyApplied(let acknowledgedRecord):
-                    try applyAcknowledgement(
-                        operation: operation,
-                        record: acknowledgedRecord,
-                        in: context
-                    )
-                    try deleteRetryState(
-                        for: .operation(operation.operationID),
-                        in: context
-                    )
+                    try applyAcknowledgement(operation: operation, record: acknowledgedRecord, in: context)
+                    try deleteRetryState(for: .operation(operation.operationID), in: context)
                 case .conflict(let reason, let remoteRecord):
                     try applyConflict(
                         operation: operation,
@@ -325,10 +291,7 @@ extension SaleLocalDataSource {
                         remoteRecord: remoteRecord,
                         in: context
                     )
-                    try deleteRetryState(
-                        for: .operation(operation.operationID),
-                        in: context
-                    )
+                    try deleteRetryState(for: .operation(operation.operationID), in: context)
                 case .invalid(let error):
                     throw error
                 }
@@ -355,15 +318,8 @@ extension SaleLocalDataSource {
     ) throws {
         try requireClean(context)
         do {
-            let operation = try requirePendingOperation(
-                operationID: operationID,
-                in: context
-            )
-            try applyAcknowledgement(
-                operation: operation,
-                record: record,
-                in: context
-            )
+            let operation = try requirePendingOperation(operationID: operationID, in: context)
+            try applyAcknowledgement(operation: operation, record: record, in: context)
             if let retryScope {
                 try deleteRetryState(for: retryScope, in: context)
             }
@@ -435,10 +391,7 @@ extension SaleLocalDataSource {
         try persistRemoteState(record, in: context)
         switch operation {
         case .upsert(let upsert):
-            if let model = try pendingUpsertModel(
-                operationID: upsert.operationID,
-                in: context
-            ) {
+            if let model = try pendingUpsertModel(operationID: upsert.operationID, in: context) {
                 context.delete(model)
             }
             let descendantsRemain = try pendingOperations(
@@ -446,28 +399,16 @@ extension SaleLocalDataSource {
                 in: context
             ).contains { $0.operationID != upsert.operationID }
             if !descendantsRemain,
-               try conflict(
-                for: SaleID(rawValue: upsert.saleID),
-                in: context
-               ) == nil,
+               try conflict(for: SaleID(rawValue: upsert.saleID), in: context) == nil,
                let sale = record.liveSale {
                 try materialize(try sale.toDomain(), in: context)
             }
         case .discard(let discard):
-            try removePendingChain(
-                for: SaleID(rawValue: discard.saleID),
-                in: context
-            )
-            if let conflict = try conflict(
-                for: SaleID(rawValue: discard.saleID),
-                in: context
-            ) {
+            try removePendingChain(for: SaleID(rawValue: discard.saleID), in: context)
+            if let conflict = try conflict(for: SaleID(rawValue: discard.saleID), in: context) {
                 context.delete(conflict)
             }
-            if let model = try model(
-                for: SaleID(rawValue: discard.saleID),
-                in: context
-            ) {
+            if let model = try model(for: SaleID(rawValue: discard.saleID), in: context) {
                 context.delete(model)
             }
         }
@@ -476,10 +417,7 @@ extension SaleLocalDataSource {
     private func applyRemoteObservation(_ record: SaleRemoteRecord, in context: ModelContext) throws {
         let saleID = SaleID(rawValue: try record.stableSaleID())
         try persistRemoteState(record, in: context)
-        let hasPending = try !pendingOperations(
-            for: saleID,
-            in: context
-        ).isEmpty
+        let hasPending = try !pendingOperations(for: saleID, in: context).isEmpty
         let hasConflict = try conflict(for: saleID, in: context) != nil
 
         switch record.content {
@@ -506,19 +444,9 @@ extension SaleLocalDataSource {
         }
         let saleID = SaleID(rawValue: operation.saleID)
         if let model = try conflict(for: saleID, in: context) {
-            try model.update(
-                operation: operation,
-                reason: reason,
-                remoteRecord: remoteRecord
-            )
+            try model.update(operation: operation, reason: reason, remoteRecord: remoteRecord)
         } else {
-            context.insert(
-                try SaleSyncConflictModel(
-                    operation: operation,
-                    reason: reason,
-                    remoteRecord: remoteRecord
-                )
-            )
+            context.insert(try SaleSyncConflictModel(operation: operation, reason: reason, remoteRecord: remoteRecord))
         }
         if let remoteRecord {
             try persistRemoteState(remoteRecord, in: context)
@@ -530,12 +458,12 @@ extension SaleLocalDataSource {
     }
 
     private func isStale(_ record: SaleRemoteRecord, for id: SaleID, in context: ModelContext) throws -> Bool {
-        guard let current = try remoteState(for: id, in: context)?.decodeRecord() else {
-            return false
-        }
+        guard let current = try remoteState(for: id, in: context)?.decodeRecord() else { return false }
         switch (current.changeSequence, record.changeSequence) {
         case (.some(let currentSequence), .some(let incomingSequence)):
-            if incomingSequence < currentSequence { return true }
+            if incomingSequence < currentSequence {
+                return true
+            }
             if incomingSequence == currentSequence, current != record {
                 throw SaleSyncPersistenceError.invalidCursor
             }
@@ -553,12 +481,7 @@ extension SaleLocalDataSource {
         if let model = try cursorModel(in: context) {
             model.advance(to: cursor.changeSequence)
         } else {
-            context.insert(
-                SaleSyncCursorModel(
-                    feedID: saleSyncFeedID,
-                    changeSequence: cursor.changeSequence
-                )
-            )
+            context.insert(SaleSyncCursorModel(feedID: saleSyncFeedID, changeSequence: cursor.changeSequence))
         }
     }
 
@@ -651,10 +574,7 @@ extension SaleLocalDataSource {
     }
 
     private func requirePendingOperation(operationID: UUID, in context: ModelContext) throws -> SalePendingOperation {
-        if let model = try pendingUpsertModel(
-            operationID: operationID,
-            in: context
-        ) {
+        if let model = try pendingUpsertModel(operationID: operationID, in: context) {
             return .upsert(
                 SalePendingUpsert(
                     saleID: model.saleID,
@@ -665,10 +585,7 @@ extension SaleLocalDataSource {
                 )
             )
         }
-        if let model = try pendingDiscardModel(
-            operationID: operationID,
-            in: context
-        ) {
+        if let model = try pendingDiscardModel(operationID: operationID, in: context) {
             return .discard(
                 SalePendingDiscard(
                     saleID: model.saleID,
@@ -682,30 +599,18 @@ extension SaleLocalDataSource {
     }
 
     private func ensureOperationIdentityAvailable(_ operationID: UUID, in context: ModelContext) throws {
-        guard try pendingUpsertModel(
-            operationID: operationID,
-            in: context
-        ) == nil,
-        try pendingDiscardModel(
-            operationID: operationID,
-            in: context
-        ) == nil else {
-            throw SaleSyncPersistenceError.duplicateOperationIdentity(
-                operationID
-            )
+        guard try pendingUpsertModel(operationID: operationID, in: context) == nil,
+        try pendingDiscardModel(operationID: operationID, in: context) == nil else {
+            throw SaleSyncPersistenceError.duplicateOperationIdentity(operationID)
         }
     }
 
     private func pendingHead(from operations: [SalePendingOperation], saleID: SaleID) throws -> SalePendingOperation? {
-        let predecessorIDs = Set(
-            operations.compactMap(\.predecessorOperationID)
-        )
+        let predecessorIDs = Set(operations.compactMap(\.predecessorOperationID))
         let heads = operations.filter {
             !predecessorIDs.contains($0.operationID)
         }
-        guard heads.count <= 1 else {
-            throw SaleSyncPersistenceError.ambiguousPendingLineage(saleID)
-        }
+        guard heads.count <= 1 else { throw SaleSyncPersistenceError.ambiguousPendingLineage(saleID) }
         return heads.first
     }
 
@@ -721,9 +626,7 @@ extension SaleLocalDataSource {
     }
 
     private func remoteBase(for id: SaleID, in context: ModelContext) throws -> SaleRemoteBase {
-        guard let record = try remoteState(for: id, in: context)?.decodeRecord() else {
-            return .absent
-        }
+        guard let record = try remoteState(for: id, in: context)?.decodeRecord() else { return .absent }
         switch (record.version, record.content) {
         case (.legacy, .live(let sale)):
             return .legacy(sale)
@@ -777,9 +680,7 @@ extension SaleLocalDataSource {
         var remaining: [UUID: SalePendingOperation] = [:]
         for operation in operations {
             guard remaining[operation.operationID] == nil else {
-                throw SaleSyncPersistenceError.duplicateOperationIdentity(
-                    operation.operationID
-                )
+                throw SaleSyncPersistenceError.duplicateOperationIdentity(operation.operationID)
             }
             remaining[operation.operationID] = operation
         }
@@ -797,9 +698,7 @@ extension SaleLocalDataSource {
 
             guard !ready.isEmpty else {
                 guard let remainingOperation = remaining.values.first else { return sorted }
-                throw SaleSyncPersistenceError.cyclicPendingLineage(
-                    SaleID(rawValue: remainingOperation.saleID)
-                )
+                throw SaleSyncPersistenceError.cyclicPendingLineage(SaleID(rawValue: remainingOperation.saleID))
             }
             for operation in ready {
                 sorted.append(operation)

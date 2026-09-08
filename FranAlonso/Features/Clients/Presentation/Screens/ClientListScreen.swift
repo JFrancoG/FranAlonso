@@ -1,7 +1,6 @@
 import Accessibility
 import SwiftUI
 
-@MainActor
 struct ClientListScreen: View {
     @State private var hasNotifiedFailureLayout = false
     @State private var viewModel: ClientListViewModel
@@ -26,18 +25,14 @@ struct ClientListScreen: View {
 
 extension ClientListScreen {
     init(observeClients: ObserveClientsUseCase) {
-        _viewModel = State(
-            initialValue: ClientListViewModel(observeClients: observeClients)
-        )
+        _viewModel = State(initialValue: ClientListViewModel(observeClients: observeClients))
     }
 }
 
 #Preview(traits: .modifier(AppPreviewModifier())) {
     NavigationStack {
         ClientListScreen(
-            observeClients: AppDependencies.preview(
-                clients: AppPreviewFixtures.standard.clients
-            ).observeClients
+            observeClients: AppDependencies.preview(clients: AppPreviewFixtures.standard.clients).observeClients
         )
     }
 }

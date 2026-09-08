@@ -51,11 +51,7 @@ struct ServiceRemoteRecord: Identifiable, Codable, Equatable {
 extension ServiceRemoteRecord {
     /// Creates a live remote record from its transport snapshot and metadata.
     init(service: ServiceDTO, version: ServiceRemoteVersion, changeSequence: Int64? = nil) {
-        self.init(
-            content: .live(service),
-            version: version,
-            changeSequence: changeSequence
-        )
+        self.init(content: .live(service), version: version, changeSequence: changeSequence)
     }
 
     /// Returns the stable service identity carried by live content or a tombstone.
@@ -83,28 +79,16 @@ extension ServiceRemoteRecord {
     init(from decoder: any Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let decodedContent: ServiceRemoteContent
-        if let legacyService = try container.decodeIfPresent(
-            ServiceDTO.self,
-            forKey: .service
-        ) {
+        if let legacyService = try container.decodeIfPresent(ServiceDTO.self, forKey: .service) {
             decodedContent = .live(legacyService)
         } else {
-            decodedContent = try container.decode(
-                ServiceRemoteContent.self,
-                forKey: .content
-            )
+            decodedContent = try container.decode(ServiceRemoteContent.self, forKey: .content)
         }
 
         self.init(
             content: decodedContent,
-            version: try container.decode(
-                ServiceRemoteVersion.self,
-                forKey: .version
-            ),
-            changeSequence: try container.decodeIfPresent(
-                Int64.self,
-                forKey: .changeSequence
-            )
+            version: try container.decode(ServiceRemoteVersion.self, forKey: .version),
+            changeSequence: try container.decodeIfPresent(Int64.self, forKey: .changeSequence)
         )
     }
 
@@ -112,10 +96,7 @@ extension ServiceRemoteRecord {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(content, forKey: .content)
         try container.encode(version, forKey: .version)
-        try container.encodeIfPresent(
-            changeSequence,
-            forKey: .changeSequence
-        )
+        try container.encodeIfPresent(changeSequence, forKey: .changeSequence)
     }
 }
 

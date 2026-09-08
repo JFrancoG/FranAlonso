@@ -7,14 +7,8 @@ struct DevelopAuthenticationDataSourceTests {
     @Test(
         "The first observation reflects the selected deterministic mode",
         arguments: [
-            (
-                DevelopAuthenticationDataSource.InitialState.signedOut,
-                Optional<AuthenticationSession>.none
-            ),
-            (
-                .restoredSession,
-                AuthenticationSession(id: DevelopAuthenticationFixture.principalID)
-            )
+            (DevelopAuthenticationDataSource.InitialState.signedOut, Optional<AuthenticationSession>.none),
+            (.restoredSession, AuthenticationSession(id: DevelopAuthenticationFixture.principalID))
         ]
     )
     func initialObservationReflectsMode(
@@ -85,10 +79,7 @@ struct DevelopAuthenticationDataSourceTests {
         let dataSource = DevelopAuthenticationDataSource(initialState: .signedOut)
 
         await #expect(throws: AuthenticationDataSourceError.credentialsRejected) {
-            try await dataSource.signIn(
-                email: DevelopAuthenticationFixture.email,
-                password: "not-the-fixture-password"
-            )
+            try await dataSource.signIn(email: DevelopAuthenticationFixture.email, password: "not-the-fixture-password")
         }
 
         let stream = await dataSource.observeSession()
@@ -170,9 +161,7 @@ struct DevelopAuthenticationDataSourceTests {
     }
 }
 
-private func consumeFirstValueAndStop(
-    _ stream: AsyncStream<AuthenticationSession?>
-) async {
+private func consumeFirstValueAndStop(_ stream: AsyncStream<AuthenticationSession?>) async {
     for await _ in stream {
         break
     }

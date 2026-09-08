@@ -9,9 +9,7 @@ struct AppPreviewModifier: PreviewModifier {
     }
 
     static func makeSharedContext() throws -> Context {
-        let modelContainer = try ModelContainer.inMemory(
-            for: Schema.franAlonso
-        )
+        let modelContainer = try ModelContainer.inMemory(for: Schema.franAlonso)
         try AppPreviewFixtures.standard.seed(in: modelContainer.mainContext)
 
         return Context(

@@ -46,11 +46,7 @@ extension ServicePendingDeleteModel {
 
     /// Decodes the immutable remote base captured by this deletion.
     func decodeBase() throws -> ServiceRemoteBase {
-        guard baseVersion == 1 else {
-            throw ServicePendingDeletePayloadError.unsupportedBaseVersion(
-                baseVersion
-            )
-        }
+        guard baseVersion == 1 else { throw ServicePendingDeletePayloadError.unsupportedBaseVersion(baseVersion) }
         return try JSONDecoder().decode(ServiceRemoteBase.self, from: baseData)
     }
 }

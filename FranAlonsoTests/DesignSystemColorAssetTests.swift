@@ -82,10 +82,7 @@ struct DesignSystemColorAssetTests {
                     let background = try #require(Self.approvedTokens[backgroundName]?[appearance])
                     let ratio = try Self.contrastRatio(accent, background)
 
-                    #expect(
-                        ratio >= 3.0,
-                        "\(accentName) on \(backgroundName) is \(ratio):1 in \(appearance.rawValue)"
-                    )
+                    #expect(ratio >= 3.0, "\(accentName) on \(backgroundName) is \(ratio):1 in \(appearance.rawValue)")
                 }
             }
         }

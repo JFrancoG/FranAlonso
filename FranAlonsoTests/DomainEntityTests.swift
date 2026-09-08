@@ -6,10 +6,7 @@ import Testing
 struct ClientDomainTests {
     @Test("Creates a draft client through the named factory")
     func createsADraftClientThroughTheNamedFactory() {
-        let client = Client.draft(
-            id: ClientID(rawValue: fixedUUID()),
-            displayName: "Ana Alonso"
-        )
+        let client = Client.draft(id: ClientID(rawValue: fixedUUID()), displayName: "Ana Alonso")
 
         #expect(client.status == .draft)
         #expect(client.taxIdentifier == nil)
@@ -46,10 +43,7 @@ struct ServiceDomainTests {
     @Test("Creates a product service with its required product link")
     func createsAProductServiceWithItsRequiredProductLink() throws {
         let productID = ProductID(rawValue: fixedUUID())
-        let service = try makeService(
-            type: .product,
-            linkedProductID: productID
-        )
+        let service = try makeService(type: .product, linkedProductID: productID)
 
         #expect(service.linkedProductID == productID)
         #expect(try domainRoundTrip(service) == service)
@@ -65,10 +59,7 @@ struct ServiceDomainTests {
     @Test("Rejects a professional service with a product link")
     func rejectsAProfessionalServiceWithAProductLink() {
         #expect(throws: ServiceError.linkedProductNotAllowed) {
-            try makeService(
-                type: .professional,
-                linkedProductID: ProductID(rawValue: fixedUUID())
-            )
+            try makeService(type: .professional, linkedProductID: ProductID(rawValue: fixedUUID()))
         }
     }
 

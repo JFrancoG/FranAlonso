@@ -13,10 +13,7 @@ struct ServiceRemoteDataSourceTests {
 
         #expect(
             try await dataSource.fetchChanges(after: nil)
-                == ServiceRemoteChangeBatch(
-                    records: expectedRecords,
-                    nextCursor: ServiceSyncCursor(changeSequence: 0)
-                )
+                == ServiceRemoteChangeBatch(records: expectedRecords, nextCursor: ServiceSyncCursor(changeSequence: 0))
         )
     }
 
@@ -32,10 +29,7 @@ struct ServiceRemoteDataSourceTests {
             result == .applied(
                 ServiceRemoteRecord(
                     service: operation.service,
-                    version: .versioned(
-                        revision: 1,
-                        lastOperationID: operation.operationID
-                    ),
+                    version: .versioned(revision: 1, lastOperationID: operation.operationID),
                     changeSequence: 1
                 )
             )
@@ -44,9 +38,7 @@ struct ServiceRemoteDataSourceTests {
 
     @Test("Fetch propagates a permission denial without provider types")
     func fetchPropagatesPermissionDenialWithoutProviderTypes() async {
-        let dataSource = ServiceRemoteDataSourceFake(
-            fetchError: ServiceRemoteDataSourceError.permissionDenied
-        )
+        let dataSource = ServiceRemoteDataSourceFake(fetchError: ServiceRemoteDataSourceError.permissionDenied)
 
         await #expect(throws: ServiceRemoteDataSourceError.permissionDenied) {
             try await dataSource.fetchChanges(after: nil)
@@ -55,9 +47,7 @@ struct ServiceRemoteDataSourceTests {
 
     @Test("Offline server fetch propagates unavailable")
     func offlineServerFetchPropagatesUnavailable() async {
-        let dataSource = ServiceRemoteDataSourceFake(
-            fetchError: ServiceRemoteDataSourceError.unavailable
-        )
+        let dataSource = ServiceRemoteDataSourceFake(fetchError: ServiceRemoteDataSourceError.unavailable)
 
         await #expect(throws: ServiceRemoteDataSourceError.unavailable) {
             try await dataSource.fetchChanges(after: nil)
@@ -69,10 +59,7 @@ struct ServiceRemoteDataSourceTests {
         let decodingError: DecodingError
 
         do {
-            _ = try JSONDecoder().decode(
-                ServiceDTO.self,
-                from: invalidRemoteServicePayload()
-            )
+            _ = try JSONDecoder().decode(ServiceDTO.self, from: invalidRemoteServicePayload())
             Issue.record("Expected an invalid Service status payload")
             return
         } catch let error as DecodingError {
@@ -109,10 +96,7 @@ private actor ServiceRemoteDataSourceFake: ServiceRemoteDataSource {
         if let fetchError {
             throw fetchError
         }
-        return ServiceRemoteChangeBatch(
-            records: records,
-            nextCursor: cursor ?? ServiceSyncCursor(changeSequence: 0)
-        )
+        return ServiceRemoteChangeBatch(records: records, nextCursor: cursor ?? ServiceSyncCursor(changeSequence: 0))
     }
 
     func apply(_ operation: ServicePendingOperation) async throws -> ServiceRemoteMutationResult {
@@ -121,10 +105,7 @@ private actor ServiceRemoteDataSourceFake: ServiceRemoteDataSource {
         return .applied(
             ServiceRemoteRecord(
                 service: upsert.service,
-                version: .versioned(
-                    revision: 1,
-                    lastOperationID: upsert.operationID
-                ),
+                version: .versioned(revision: 1, lastOperationID: upsert.operationID),
                 changeSequence: 1
             )
         )
@@ -138,9 +119,7 @@ private func remotePendingUpsert() throws -> ServicePendingUpsert {
 
     return ServicePendingUpsert(
         serviceID: UUID(uuidString: service.id)!,
-        operationID: UUID(
-            uuidString: "AB000000-0000-0000-0000-000000000001"
-        )!,
+        operationID: UUID(uuidString: "AB000000-0000-0000-0000-000000000001")!,
         predecessorOperationID: nil,
         base: .absent,
         service: service

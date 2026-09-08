@@ -2,7 +2,6 @@ import Accessibility
 import Foundation
 import SwiftUI
 
-@MainActor
 struct LoginScreen: View {
     let viewModel: LoginViewModel
     let onSignInSucceeded: @MainActor (AuthenticationSession) -> Void
@@ -12,11 +11,7 @@ struct LoginScreen: View {
     var body: some View {
         @Bindable var viewModel = viewModel
 
-        LoginContent(
-            email: $viewModel.email,
-            password: $viewModel.password,
-            state: viewModel.state
-        ) {
+        LoginContent(email: $viewModel.email, password: $viewModel.password, state: viewModel.state) {
             signInRequestID = UUID()
         }
         .navigationTitle(Text(.authenticationLoginTitle))
@@ -44,9 +39,7 @@ struct LoginScreen: View {
 #Preview(traits: .modifier(AppPreviewModifier())) {
     NavigationStack {
         LoginScreen(
-            viewModel: LoginViewModel(
-                signIn: AuthenticationPreviewFixtures.standard.makeSignInUseCase()
-            ),
+            viewModel: LoginViewModel(signIn: AuthenticationPreviewFixtures.standard.makeSignInUseCase()),
             onSignInSucceeded: { _ in }
         )
     }

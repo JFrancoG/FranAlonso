@@ -2,7 +2,6 @@
 import PDFKit
 import SwiftUI
 
-@MainActor
 private struct DocumentTemplatePDFPreview: UIViewRepresentable {
     let resource: DocumentTemplateResource
 

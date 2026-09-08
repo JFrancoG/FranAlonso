@@ -8,11 +8,7 @@ struct ObserveClientsUseCaseTests {
     func delegatesClientObservationToTheRepository() async throws {
         let expectedClients = [
             Client.draft(
-                id: ClientID(
-                    rawValue: UUID(
-                        uuidString: "AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE"
-                    )!
-                ),
+                id: ClientID(rawValue: UUID(uuidString: "AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE")!),
                 displayName: "Ana Alonso"
             )
         ]
@@ -30,11 +26,7 @@ struct ObserveClientsUseCaseTests {
     @Test("Delegates local client persistence to the repository")
     func delegatesLocalClientPersistenceToTheRepository() async throws {
         let client = Client.draft(
-            id: ClientID(
-                rawValue: UUID(
-                    uuidString: "BBBBBBBB-CCCC-DDDD-EEEE-FFFFFFFFFFFF"
-                )!
-            ),
+            id: ClientID(rawValue: UUID(uuidString: "BBBBBBBB-CCCC-DDDD-EEEE-FFFFFFFFFFFF")!),
             displayName: "Bea Alonso"
         )
         let repository = ClientRepositoryFake(clients: [])
@@ -50,11 +42,7 @@ struct ObserveClientsUseCaseTests {
     @Test("In-memory saves appear in later observations")
     func inMemorySavesAppearInLaterObservations() async throws {
         let client = Client.draft(
-            id: ClientID(
-                rawValue: UUID(
-                    uuidString: "CCCCCCCC-DDDD-EEEE-FFFF-AAAAAAAAAAAA"
-                )!
-            ),
+            id: ClientID(rawValue: UUID(uuidString: "CCCCCCCC-DDDD-EEEE-FFFF-AAAAAAAAAAAA")!),
             displayName: "Carla Alonso"
         )
         let repository = InMemoryClientRepository()
@@ -71,11 +59,7 @@ struct ObserveClientsUseCaseTests {
 
     @Test("In-memory saves replace matching client identity")
     func inMemorySavesReplaceMatchingClientIdentity() async throws {
-        let id = ClientID(
-            rawValue: UUID(
-                uuidString: "DDDDDDDD-EEEE-FFFF-AAAA-BBBBBBBBBBBB"
-            )!
-        )
+        let id = ClientID(rawValue: UUID(uuidString: "DDDDDDDD-EEEE-FFFF-AAAA-BBBBBBBBBBBB")!)
         let original = Client.draft(id: id, displayName: "Diana")
         let updated = Client.draft(id: id, displayName: "Diana Alonso")
         let repository = InMemoryClientRepository(clients: [original])

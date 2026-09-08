@@ -9,34 +9,23 @@ struct ApplicationLaunchPlanTests {
         arguments: [
             (
                 DevelopAuthenticationFixture.signedOutLaunchArgument,
-                ApplicationLaunchPlan.authenticationFixture(
-                    .standard(.signedOut)
-                )
+                ApplicationLaunchPlan.authenticationFixture(.standard(.signedOut))
             ),
             (
                 DevelopAuthenticationFixture.restoredSessionLaunchArgument,
-                ApplicationLaunchPlan.authenticationFixture(
-                    .standard(.restoredSession)
-                )
+                ApplicationLaunchPlan.authenticationFixture(.standard(.restoredSession))
             ),
             (
                 DevelopAuthenticationFixture.localAccessDeniedLaunchArgument,
-                ApplicationLaunchPlan.authenticationFixture(
-                    .localAccessDenied
-                )
+                ApplicationLaunchPlan.authenticationFixture(.localAccessDenied)
             ),
             (
                 DevelopAuthenticationFixture.observationFailedLaunchArgument,
-                ApplicationLaunchPlan.authenticationFixture(
-                    .observationFailed
-                )
+                ApplicationLaunchPlan.authenticationFixture(.observationFailed)
             )
         ]
     )
-    func exactDevelopGateResolvesFixture(
-        argument: String,
-        expectedPlan: ApplicationLaunchPlan
-    ) {
+    func exactDevelopGateResolvesFixture(argument: String, expectedPlan: ApplicationLaunchPlan) {
         let plan = ApplicationLaunchPlan.resolve(
             appEnvironment: "develop",
             bundleIdentifier: "com.plusprojects.FranAlonso.develop",
@@ -58,11 +47,7 @@ struct ApplicationLaunchPlanTests {
             ]
         )
 
-        #expect(
-            plan == .authenticationFixture(
-                .clientsObservationError
-            )
-        )
+        #expect(plan == .authenticationFixture(.clientsObservationError))
     }
 
     @Test(

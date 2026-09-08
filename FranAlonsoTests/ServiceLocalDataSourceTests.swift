@@ -10,32 +10,22 @@ struct ServiceLocalDataSourceTests {
     @Test("Explicit save makes an inserted Service visible from another context")
     func explicitSaveMakesAnInsertedServiceVisibleFromAnotherContext() throws {
         let container = try makeServiceLocalContainer()
-        let service = try localService(
-            id: "51000000-0000-0000-0000-000000000001",
-            name: "Corte y peinado"
-        )
+        let service = try localService(id: "51000000-0000-0000-0000-000000000001", name: "Corte y peinado")
         let insertionContext = ModelContext(container)
         insertionContext.autosaveEnabled = false
 
         try dataSource.upsert(service, in: insertionContext)
 
         #expect(!insertionContext.hasChanges)
-        #expect(
-            try dataSource.fetchAll(in: ModelContext(container)) == [service]
-        )
+        #expect(try dataSource.fetchAll(in: ModelContext(container)) == [service])
     }
 
     @Test("Upsert replaces every Service field under the same stable identity")
     func upsertReplacesEveryFieldUnderTheSameStableIdentity() throws {
         let container = try makeServiceLocalContainer()
         let identifier = "51000000-0000-0000-0000-000000000002"
-        let initialService = try localService(
-            id: identifier,
-            name: "Initial service"
-        )
-        let linkedProductID = try localUUID(
-            "51100000-0000-0000-0000-000000000002"
-        )
+        let initialService = try localService(id: identifier, name: "Initial service")
+        let linkedProductID = try localUUID("51100000-0000-0000-0000-000000000002")
         let updatedService = try localService(
             id: identifier,
             name: "Updated product service",
@@ -52,24 +42,15 @@ struct ServiceLocalDataSourceTests {
         try dataSource.upsert(updatedService, in: ModelContext(container))
 
         let verificationContext = ModelContext(container)
-        #expect(
-            try verificationContext.fetchCount(
-                FetchDescriptor<ServiceModel>()
-            ) == 1
-        )
-        #expect(
-            try dataSource.fetchAll(in: verificationContext) == [updatedService]
-        )
+        #expect(try verificationContext.fetchCount(FetchDescriptor<ServiceModel>()) == 1)
+        #expect(try dataSource.fetchAll(in: verificationContext) == [updatedService])
     }
 
     @Test("The model schema enforces unique Service identifiers")
     func modelSchemaEnforcesUniqueServiceIdentifiers() throws {
         let container = try makeServiceLocalContainer()
         let identifier = "51000000-0000-0000-0000-000000000003"
-        let firstService = try localService(
-            id: identifier,
-            name: "First value"
-        )
+        let firstService = try localService(id: identifier, name: "First value")
         let replacementService = try localService(
             id: identifier,
             name: "Replacement value",
@@ -86,30 +67,18 @@ struct ServiceLocalDataSourceTests {
         try replacementContext.save()
 
         let verificationContext = ModelContext(container)
-        #expect(
-            try verificationContext.fetchCount(
-                FetchDescriptor<ServiceModel>()
-            ) == 1
-        )
-        #expect(
-            try dataSource.fetchAll(in: verificationContext)
-                == [replacementService]
-        )
+        #expect(try verificationContext.fetchCount(FetchDescriptor<ServiceModel>()) == 1)
+        #expect(try dataSource.fetchAll(in: verificationContext) == [replacementService])
     }
 
     @Test("Delete removes an existing Service and remains idempotent")
     func deleteRemovesAnExistingServiceAndRemainsIdempotent() throws {
         let container = try makeServiceLocalContainer()
-        let service = try localService(
-            id: "51000000-0000-0000-0000-000000000004",
-            name: "Service to delete"
-        )
+        let service = try localService(id: "51000000-0000-0000-0000-000000000004", name: "Service to delete")
         try dataSource.upsert(service, in: ModelContext(container))
 
         try dataSource.delete(service.id, in: ModelContext(container))
-        #expect(
-            try dataSource.fetchAll(in: ModelContext(container)).isEmpty
-        )
+        #expect(try dataSource.fetchAll(in: ModelContext(container)).isEmpty)
 
         let repeatedDeletionContext = ModelContext(container)
         repeatedDeletionContext.autosaveEnabled = false
@@ -119,34 +88,20 @@ struct ServiceLocalDataSourceTests {
 
     @Test("Model conversion rejects an unknown persisted Service status")
     func modelConversionRejectsAnUnknownPersistedServiceStatus() throws {
-        let model = try ServiceModel(
-            localService(
-                id: "51000000-0000-0000-0000-000000000005",
-                name: "Invalid status"
-            )
-        )
+        let model = try ServiceModel(localService(id: "51000000-0000-0000-0000-000000000005", name: "Invalid status"))
         model.statusRawValue = "suspended"
 
-        #expect(
-            throws: ServiceMappingError.invalidPersistedStatus("suspended")
-        ) {
+        #expect(throws: ServiceMappingError.invalidPersistedStatus("suspended")) {
             _ = try model.toDomain()
         }
     }
 
     @Test("Model conversion rejects an unknown persisted Service type")
     func modelConversionRejectsAnUnknownPersistedServiceType() throws {
-        let model = try ServiceModel(
-            localService(
-                id: "51000000-0000-0000-0000-000000000006",
-                name: "Invalid type"
-            )
-        )
+        let model = try ServiceModel(localService(id: "51000000-0000-0000-0000-000000000006", name: "Invalid type"))
         model.typeRawValue = "subscription"
 
-        #expect(
-            throws: ServiceMappingError.invalidPersistedType("subscription")
-        ) {
+        #expect(throws: ServiceMappingError.invalidPersistedType("subscription")) {
             _ = try model.toDomain()
         }
     }
@@ -154,10 +109,7 @@ struct ServiceLocalDataSourceTests {
     @Test("Model reconstruction revalidates both Service type-link rules")
     func modelReconstructionRevalidatesBothTypeLinkRules() throws {
         let productWithoutLink = try ServiceModel(
-            localService(
-                id: "51000000-0000-0000-0000-000000000007",
-                name: "Missing Product"
-            )
+            localService(id: "51000000-0000-0000-0000-000000000007", name: "Missing Product")
         )
         productWithoutLink.typeRawValue = ServiceType.product.rawValue
 
@@ -166,9 +118,7 @@ struct ServiceLocalDataSourceTests {
                 id: "51000000-0000-0000-0000-000000000008",
                 name: "Unexpected Product",
                 type: .product,
-                linkedProductID: try localUUID(
-                    "51100000-0000-0000-0000-000000000008"
-                )
+                linkedProductID: try localUUID("51100000-0000-0000-0000-000000000008")
             )
         )
         professionalWithLink.typeRawValue = ServiceType.professional.rawValue

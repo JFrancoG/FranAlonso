@@ -22,9 +22,7 @@ actor ProductObservationSignal: ProductChangeSignaling {
     /// - Returns: A stream that emits once initially and after every known local commit.
     func stream() -> AsyncStream<Void> {
         let subscriptionID = UUID()
-        let pair = AsyncStream<Void>.makeStream(
-            bufferingPolicy: .bufferingNewest(1)
-        )
+        let pair = AsyncStream<Void>.makeStream(bufferingPolicy: .bufferingNewest(1))
 
         pair.continuation.onTermination = { [weak self] _ in
             Task {

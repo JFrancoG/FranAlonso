@@ -8,9 +8,7 @@ struct AppointmentTests {
     func createsAScheduledAppointmentWithOrderedReferences() throws {
         let firstServiceID = appointmentServiceID("10000000-0000-0000-0000-000000000001")
         let secondServiceID = appointmentServiceID("10000000-0000-0000-0000-000000000002")
-        let appointment = try scheduledAppointment(
-            serviceIDs: [firstServiceID, secondServiceID]
-        )
+        let appointment = try scheduledAppointment(serviceIDs: [firstServiceID, secondServiceID])
 
         #expect(appointment.id == appointmentID("10000000-0000-0000-0000-000000000003"))
         #expect(appointment.clientID == appointmentClientID("10000000-0000-0000-0000-000000000004"))
@@ -21,10 +19,7 @@ struct AppointmentTests {
         requireAppointmentSendable(appointment)
     }
 
-    @Test(
-        "Rejects a non-positive appointment duration",
-        arguments: [(0.0, 0.0), (1.0, 0.0)]
-    )
+    @Test("Rejects a non-positive appointment duration", arguments: [(0.0, 0.0), (1.0, 0.0)])
     func rejectsANonPositiveAppointmentDuration(startsOffset: TimeInterval, endsOffset: TimeInterval) {
         #expect(throws: AppointmentError.invalidSchedule) {
             try Appointment.scheduled(
@@ -113,10 +108,7 @@ struct AppointmentTests {
         )
 
         #expect(throws: AppointmentError.invalidSchedule) {
-            try JSONDecoder().decode(
-                Appointment.self,
-                from: JSONEncoder().encode(payload)
-            )
+            try JSONDecoder().decode(Appointment.self, from: JSONEncoder().encode(payload))
         }
     }
 
@@ -135,10 +127,7 @@ struct AppointmentTests {
         )
 
         #expect(throws: invalidReferences.expectedError) {
-            try JSONDecoder().decode(
-                Appointment.self,
-                from: JSONEncoder().encode(payload)
-            )
+            try JSONDecoder().decode(Appointment.self, from: JSONEncoder().encode(payload))
         }
     }
 }
@@ -191,10 +180,7 @@ private func scheduledAppointment(
 }
 
 private func appointmentRoundTrip(_ appointment: Appointment) throws -> Appointment {
-    try JSONDecoder().decode(
-        Appointment.self,
-        from: JSONEncoder().encode(appointment)
-    )
+    try JSONDecoder().decode(Appointment.self, from: JSONEncoder().encode(appointment))
 }
 
 private func appointmentID(_ value: String) -> AppointmentID {

@@ -13,10 +13,7 @@ struct ClientRemoteDataSourceTests {
 
         #expect(
             try await dataSource.fetchChanges(after: nil)
-                == ClientRemoteChangeBatch(
-                    records: expectedRecords,
-                    nextCursor: ClientSyncCursor(changeSequence: 0)
-                )
+                == ClientRemoteChangeBatch(records: expectedRecords, nextCursor: ClientSyncCursor(changeSequence: 0))
         )
     }
 
@@ -32,10 +29,7 @@ struct ClientRemoteDataSourceTests {
             result == .applied(
                 ClientRemoteRecord(
                     client: operation.client,
-                    version: .versioned(
-                        revision: 1,
-                        lastOperationID: operation.operationID
-                    ),
+                    version: .versioned(revision: 1, lastOperationID: operation.operationID),
                     changeSequence: 1
                 )
             )
@@ -44,9 +38,7 @@ struct ClientRemoteDataSourceTests {
 
     @Test("Fetch propagates a permission denial without provider types")
     func fetchPropagatesPermissionDenialWithoutProviderTypes() async {
-        let dataSource = ClientRemoteDataSourceFake(
-            fetchError: ClientRemoteDataSourceError.permissionDenied
-        )
+        let dataSource = ClientRemoteDataSourceFake(fetchError: ClientRemoteDataSourceError.permissionDenied)
 
         await #expect(throws: ClientRemoteDataSourceError.permissionDenied) {
             try await dataSource.fetchChanges(after: nil)
@@ -55,9 +47,7 @@ struct ClientRemoteDataSourceTests {
 
     @Test("Offline server fetch propagates unavailable")
     func offlineServerFetchPropagatesUnavailable() async {
-        let dataSource = ClientRemoteDataSourceFake(
-            fetchError: ClientRemoteDataSourceError.unavailable
-        )
+        let dataSource = ClientRemoteDataSourceFake(fetchError: ClientRemoteDataSourceError.unavailable)
 
         await #expect(throws: ClientRemoteDataSourceError.unavailable) {
             try await dataSource.fetchChanges(after: nil)
@@ -69,10 +59,7 @@ struct ClientRemoteDataSourceTests {
         let decodingError: DecodingError
 
         do {
-            _ = try JSONDecoder().decode(
-                ClientDTO.self,
-                from: invalidRemoteClientPayload()
-            )
+            _ = try JSONDecoder().decode(ClientDTO.self, from: invalidRemoteClientPayload())
             Issue.record("Expected an invalid postalCode payload")
             return
         } catch let error as DecodingError {
@@ -88,12 +75,7 @@ struct ClientRemoteDataSourceTests {
             _ = try await dataSource.fetchChanges(after: nil)
             Issue.record("Expected the configured decoding error")
         } catch DecodingError.typeMismatch(_, let context) {
-            #expect(
-                context.codingPath.map(\.stringValue) == [
-                    "billingAddress",
-                    "postalCode"
-                ]
-            )
+            #expect(context.codingPath.map(\.stringValue) == [ "billingAddress", "postalCode" ])
         } catch {
             Issue.record("Unexpected fetch error: \(error)")
         }
@@ -114,10 +96,7 @@ private actor ClientRemoteDataSourceFake: ClientRemoteDataSource {
         if let fetchError {
             throw fetchError
         }
-        return ClientRemoteChangeBatch(
-            records: records,
-            nextCursor: cursor ?? ClientSyncCursor(changeSequence: 0)
-        )
+        return ClientRemoteChangeBatch(records: records, nextCursor: cursor ?? ClientSyncCursor(changeSequence: 0))
     }
 
     func apply(_ operation: ClientPendingOperation) async throws -> ClientRemoteMutationResult {
@@ -126,10 +105,7 @@ private actor ClientRemoteDataSourceFake: ClientRemoteDataSource {
         return .applied(
             ClientRemoteRecord(
                 client: upsert.client,
-                version: .versioned(
-                    revision: 1,
-                    lastOperationID: upsert.operationID
-                ),
+                version: .versioned(revision: 1, lastOperationID: upsert.operationID),
                 changeSequence: 1
             )
         )
@@ -141,9 +117,7 @@ private actor ClientRemoteDataSourceFake: ClientRemoteDataSource {
 private func remotePendingUpsert() -> ClientPendingUpsert {
     ClientPendingUpsert(
         clientID: UUID(uuidString: remoteClientDTO().id)!,
-        operationID: UUID(
-            uuidString: "AB000000-0000-0000-0000-000000000001"
-        )!,
+        operationID: UUID(uuidString: "AB000000-0000-0000-0000-000000000001")!,
         predecessorOperationID: nil,
         base: .absent,
         client: remoteClientDTO()

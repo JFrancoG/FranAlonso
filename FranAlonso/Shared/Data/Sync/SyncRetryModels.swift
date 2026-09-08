@@ -56,9 +56,7 @@ extension SyncRetryState {
         notBefore: Date,
         lastRecoverableCategory: SyncRetryCategory
     ) throws {
-        guard (1...6).contains(backoffStep) else {
-            throw SyncRetryPolicyError.invalidBackoffStep(backoffStep)
-        }
+        guard (1...6).contains(backoffStep) else { throw SyncRetryPolicyError.invalidBackoffStep(backoffStep) }
         guard notBefore.timeIntervalSinceReferenceDate.isFinite else { throw SyncRetryPolicyError.invalidDeadline }
 
         storedScope = scope
@@ -81,10 +79,7 @@ extension SyncTiming {
         SyncTiming(
             now: { Date.now },
             sleep: { duration in
-                try await Task.sleep(
-                    for: duration,
-                    clock: .continuous
-                )
+                try await Task.sleep(for: duration, clock: .continuous)
             },
             jitterFactor: { Double.random(in: 1...2) }
         )

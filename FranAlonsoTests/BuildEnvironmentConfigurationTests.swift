@@ -6,13 +6,9 @@ import UIKit
 struct BuildEnvironmentConfigurationTests {
     @Test("The hosted application identifies an approved environment and bundle")
     func hostedApplicationIdentifiesAnApprovedEnvironmentAndBundle() throws {
-        let environment = try #require(
-            Bundle.main.object(forInfoDictionaryKey: "AppEnvironment") as? String
-        )
+        let environment = try #require(Bundle.main.object(forInfoDictionaryKey: "AppEnvironment") as? String)
         let bundleIdentifier = try #require(Bundle.main.bundleIdentifier)
-        let displayName = try #require(
-            Bundle.main.object(forInfoDictionaryKey: "CFBundleDisplayName") as? String
-        )
+        let displayName = try #require(Bundle.main.object(forInfoDictionaryKey: "CFBundleDisplayName") as? String)
 
         switch environment {
         case "develop":
@@ -28,12 +24,7 @@ struct BuildEnvironmentConfigurationTests {
 
     @Test("The bundled Firebase configuration belongs to the hosted application")
     func bundledFirebaseConfigurationBelongsToHostedApplication() throws {
-        let configurationURL = try #require(
-            Bundle.main.url(
-                forResource: "GoogleService-Info",
-                withExtension: "plist"
-            )
-        )
+        let configurationURL = try #require(Bundle.main.url(forResource: "GoogleService-Info", withExtension: "plist"))
         let configuration = try PropertyListDecoder().decode(
             FirebaseServiceConfiguration.self,
             from: Data(contentsOf: configurationURL)
@@ -47,9 +38,7 @@ struct BuildEnvironmentConfigurationTests {
     @MainActor
     func hostedApplicationUsesDeviceSpecificOrientationPolicy() throws {
         let orientations = try #require(
-            Bundle.main.object(
-                forInfoDictionaryKey: "UISupportedInterfaceOrientations"
-            ) as? [String]
+            Bundle.main.object(forInfoDictionaryKey: "UISupportedInterfaceOrientations") as? [String]
         )
         let expectedOrientations: Set<String> = if UIDevice.current.userInterfaceIdiom == .pad {
             [
@@ -67,23 +56,15 @@ struct BuildEnvironmentConfigurationTests {
 
     @Test("The build phase rejects Firebase configuration from another project")
     func buildPhaseRejectsFirebaseConfigurationFromAnotherProject() throws {
-        let project = try repositoryFile(
-            at: "FranAlonso.xcodeproj/project.pbxproj"
-        )
+        let project = try repositoryFile(at: "FranAlonso.xcodeproj/project.pbxproj")
 
         #expect(project.contains("configured_project_identifier"))
-        #expect(
-            project.contains(
-                "\\\"${configured_project_identifier}\\\" != \\\"${FIREBASE_PROJECT_ID}\\\""
-            )
-        )
+        #expect(project.contains("\\\"${configured_project_identifier}\\\" != \\\"${FIREBASE_PROJECT_ID}\\\""))
     }
 
     @Test("The project defines the complete environment configuration matrix")
     func projectDefinesTheCompleteEnvironmentConfigurationMatrix() throws {
-        let project = try repositoryFile(
-            at: "FranAlonso.xcodeproj/project.pbxproj"
-        )
+        let project = try repositoryFile(at: "FranAlonso.xcodeproj/project.pbxproj")
 
         for configuration in [
             "Debug-Develop",
@@ -91,12 +72,7 @@ struct BuildEnvironmentConfigurationTests {
             "Debug-Production",
             "Release-Production"
         ] {
-            #expect(
-                occurrenceCount(
-                    of: "name = \"\(configuration)\";",
-                    in: project
-                ) == 3
-            )
+            #expect(occurrenceCount(of: "name = \"\(configuration)\";", in: project) == 3)
         }
 
         #expect(!project.contains("name = Debug;"))
@@ -114,29 +90,20 @@ struct BuildEnvironmentConfigurationTests {
             ) == 2
         )
 
-        #expect(
-            occurrenceCount(
-                of: "defaultConfigurationName = \"Release-Production\";",
-                in: project
-            ) == 3
-        )
+        #expect(occurrenceCount(of: "defaultConfigurationName = \"Release-Production\";", in: project) == 3)
     }
 
     @Test("Every app configuration keeps iPhone portrait-only and iPad adaptive")
     func projectDefinesDeviceSpecificOrientationPolicy() throws {
-        let project = try repositoryFile(
-            at: "FranAlonso.xcodeproj/project.pbxproj"
-        )
+        let project = try repositoryFile(at: "FranAlonso.xcodeproj/project.pbxproj")
         let appConfigurationIDs = [
             "E08BC64D2FDB2B72008EECFF",
             "E08BC64E2FDB2B72008EECFF",
             "E0C0D012300F000100000001",
             "E0C0D013300F000100000001"
         ]
-        let iPhoneOrientations =
-            "INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;"
-        let iPhoneOrientationKey =
-            "INFOPLIST_KEY_UISupportedInterfaceOrientations = "
+        let iPhoneOrientations = "INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;"
+        let iPhoneOrientationKey = "INFOPLIST_KEY_UISupportedInterfaceOrientations = "
         let iPadOrientationValues = [
             "UIInterfaceOrientationLandscapeLeft",
             "UIInterfaceOrientationLandscapeRight",
@@ -147,16 +114,10 @@ struct BuildEnvironmentConfigurationTests {
             "INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "
             + String(reflecting: iPadOrientationValues)
             + ";"
-        let iPadOrientationKey =
-            "INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "
+        let iPadOrientationKey = "INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "
 
         for configurationID in appConfigurationIDs {
-            let settings = String(
-                buildSettings(
-                    configurationID: configurationID,
-                    in: project
-                )
-            )
+            let settings = String(buildSettings(configurationID: configurationID, in: project))
 
             #expect(!settings.isEmpty)
             #expect(occurrenceCount(of: iPhoneOrientations, in: settings) == 1)
@@ -187,24 +148,12 @@ struct BuildEnvironmentConfigurationTests {
 
     @Test("Environment xcconfig files select distinct bundles and Firebase plists")
     func environmentConfigurationsSelectDistinctBundlesAndFirebasePlists() throws {
-        let develop = try repositoryFile(
-            at: "Configuration/BuildSettings/Develop.xcconfig"
-        )
-        let production = try repositoryFile(
-            at: "Configuration/BuildSettings/Production.xcconfig"
-        )
+        let develop = try repositoryFile(at: "Configuration/BuildSettings/Develop.xcconfig")
+        let production = try repositoryFile(at: "Configuration/BuildSettings/Production.xcconfig")
 
         #expect(develop.contains("APP_ENVIRONMENT = develop"))
-        #expect(
-            develop.contains(
-                "FIREBASE_PROJECT_ID = agendapeluqueria-3155f"
-            )
-        )
-        #expect(
-            develop.contains(
-                "PRODUCT_BUNDLE_IDENTIFIER = com.plusprojects.FranAlonso.develop"
-            )
-        )
+        #expect(develop.contains("FIREBASE_PROJECT_ID = agendapeluqueria-3155f"))
+        #expect(develop.contains("PRODUCT_BUNDLE_IDENTIFIER = com.plusprojects.FranAlonso.develop"))
         #expect(
             develop.contains(
                 "FIREBASE_CONFIG_PATH = $(PROJECT_DIR)/Configuration/Firebase/Develop/GoogleService-Info.plist"
@@ -212,16 +161,8 @@ struct BuildEnvironmentConfigurationTests {
         )
 
         #expect(production.contains("APP_ENVIRONMENT = production"))
-        #expect(
-            production.contains(
-                "FIREBASE_PROJECT_ID = agendapeluqueria-3155f"
-            )
-        )
-        #expect(
-            production.contains(
-                "PRODUCT_BUNDLE_IDENTIFIER = com.plusprojects.FranAlonso"
-            )
-        )
+        #expect(production.contains("FIREBASE_PROJECT_ID = agendapeluqueria-3155f"))
+        #expect(production.contains("PRODUCT_BUNDLE_IDENTIFIER = com.plusprojects.FranAlonso"))
         #expect(
             production.contains(
                 "FIREBASE_CONFIG_PATH = $(PROJECT_DIR)/Configuration/Firebase/Production/GoogleService-Info.plist"
@@ -231,38 +172,18 @@ struct BuildEnvironmentConfigurationTests {
 
     @Test("Environment configurations select distinct primary app icons")
     func environmentConfigurationsSelectDistinctPrimaryAppIcons() throws {
-        let develop = try repositoryFile(
-            at: "Configuration/BuildSettings/Develop.xcconfig"
-        )
-        let production = try repositoryFile(
-            at: "Configuration/BuildSettings/Production.xcconfig"
-        )
-        let project = try repositoryFile(
-            at: "FranAlonso.xcodeproj/project.pbxproj"
-        )
+        let develop = try repositoryFile(at: "Configuration/BuildSettings/Develop.xcconfig")
+        let production = try repositoryFile(at: "Configuration/BuildSettings/Production.xcconfig")
+        let project = try repositoryFile(at: "FranAlonso.xcodeproj/project.pbxproj")
 
-        #expect(
-            develop.contains(
-                "ASSETCATALOG_COMPILER_APPICON_NAME = franalonso-develop"
-            )
-        )
-        #expect(
-            production.contains(
-                "ASSETCATALOG_COMPILER_APPICON_NAME = franalonso"
-            )
-        )
+        #expect(develop.contains("ASSETCATALOG_COMPILER_APPICON_NAME = franalonso-develop"))
+        #expect(production.contains("ASSETCATALOG_COMPILER_APPICON_NAME = franalonso"))
         #expect(!project.contains("ASSETCATALOG_COMPILER_APPICON_NAME"))
 
-        let productionFill =
-            "extended-srgb:0.00000,0.53333,1.00000,1.00000"
-        let developFill =
-            "extended-srgb:0.30196,0.72157,0.96078,1.00000"
-        let productionIcon = try repositoryFile(
-            at: "FranAlonso/Resources/franalonso.icon/icon.json"
-        )
-        let developIcon = try repositoryFile(
-            at: "FranAlonso/Resources/franalonso-develop.icon/icon.json"
-        )
+        let productionFill = "extended-srgb:0.00000,0.53333,1.00000,1.00000"
+        let developFill = "extended-srgb:0.30196,0.72157,0.96078,1.00000"
+        let productionIcon = try repositoryFile(at: "FranAlonso/Resources/franalonso.icon/icon.json")
+        let developIcon = try repositoryFile(at: "FranAlonso/Resources/franalonso-develop.icon/icon.json")
 
         #expect(productionIcon.contains(productionFill))
         #expect(developIcon.contains(developFill))
@@ -275,9 +196,7 @@ struct BuildEnvironmentConfigurationTests {
         )
 
         for assetName in ["FranAlonsoIconBack.png", "FranAlonsoIconFront.png"] {
-            let productionAsset = try repositoryData(
-                at: "FranAlonso/Resources/franalonso.icon/Assets/\(assetName)"
-            )
+            let productionAsset = try repositoryData(at: "FranAlonso/Resources/franalonso.icon/Assets/\(assetName)")
             let developAsset = try repositoryData(
                 at: "FranAlonso/Resources/franalonso-develop.icon/Assets/\(assetName)"
             )
@@ -288,9 +207,7 @@ struct BuildEnvironmentConfigurationTests {
 
     @Test("The authentication fixture compiles only in app and test Debug-Develop targets")
     func authenticationFixtureCompilesOnlyInDebugDevelopTargets() throws {
-        let project = try repositoryFile(
-            at: "FranAlonso.xcodeproj/project.pbxproj"
-        )
+        let project = try repositoryFile(at: "FranAlonso.xcodeproj/project.pbxproj")
         let fixtureCondition = "FRANALONSO_AUTH_FIXTURE"
         let expectedConfigurations = [
             "E08BC64A2FDB2B72008EECFF": false,
@@ -308,16 +225,10 @@ struct BuildEnvironmentConfigurationTests {
         ]
 
         #expect(expectedConfigurations.count == 12)
-        #expect(
-            buildConfigurationIDs(in: project)
-                == Set(expectedConfigurations.keys)
-        )
+        #expect(buildConfigurationIDs(in: project) == Set(expectedConfigurations.keys))
 
         for (configurationID, expectsFixture) in expectedConfigurations {
-            let settings = buildSettings(
-                configurationID: configurationID,
-                in: project
-            )
+            let settings = buildSettings(configurationID: configurationID, in: project)
             #expect(!settings.isEmpty)
             #expect(settings.contains(fixtureCondition) == expectsFixture)
         }
@@ -347,11 +258,7 @@ struct BuildEnvironmentConfigurationTests {
             "--franalonso-auth-fixture-observation-failed",
             "--franalonso-clients-fixture-observation-error"
         ] {
-            #expect(
-                developScheme.contains(
-                    "argument = \"\(argument)\"\n            isEnabled = \"NO\""
-                )
-            )
+            #expect(developScheme.contains("argument = \"\(argument)\"\n            isEnabled = \"NO\""))
             #expect(occurrenceCount(of: argument, in: developScheme) == 1)
             #expect(!productionScheme.contains(argument))
         }
@@ -379,30 +286,15 @@ struct BuildEnvironmentConfigurationTests {
                 "FranAlonso/App/ApplicationLaunchPlan.swift",
                 "case authenticationFixture(DevelopAuthenticationFixture.Configuration)"
             ),
-            (
-                "FranAlonso/App/ApplicationLaunchPlan.swift",
-                "case invalidFixtureConfiguration"
-            ),
+            ("FranAlonso/App/ApplicationLaunchPlan.swift", "case invalidFixtureConfiguration"),
             (
                 "FranAlonso/App/ApplicationComposition.swift",
                 "let authenticationRootViewModel: AuthenticationRootViewModel?"
             ),
-            (
-                "FranAlonso/App/AppDelegate.swift",
-                "case fixtureReady"
-            ),
-            (
-                "FranAlonso/App/AppDelegate.swift",
-                "case fixtureConfigurationFailed"
-            ),
-            (
-                "FranAlonso/App/AppDependencies.swift",
-                "static func local("
-            ),
-            (
-                "FranAlonso/App/AppDependencies.swift",
-                "clientRepository injectedClientRepository"
-            ),
+            ("FranAlonso/App/AppDelegate.swift", "case fixtureReady"),
+            ("FranAlonso/App/AppDelegate.swift", "case fixtureConfigurationFailed"),
+            ("FranAlonso/App/AppDependencies.swift", "static func local("),
+            ("FranAlonso/App/AppDependencies.swift", "clientRepository injectedClientRepository"),
             (
                 "FranAlonso/App/FranAlonsoApp.swift",
                 "private let authenticationRootViewModel: AuthenticationRootViewModel?"
@@ -430,27 +322,17 @@ private struct FirebaseServiceConfiguration: Decodable {
 }
 
 private func verifyScheme(named schemeName: String, debugConfiguration: String, releaseConfiguration: String) throws {
-    let scheme = try repositoryFile(
-        at: "FranAlonso.xcodeproj/xcshareddata/xcschemes/\(schemeName).xcscheme"
-    )
+    let scheme = try repositoryFile(at: "FranAlonso.xcodeproj/xcshareddata/xcschemes/\(schemeName).xcscheme")
     let normalizedScheme = scheme
         .split(whereSeparator: \.isWhitespace)
         .joined(separator: " ")
 
     for action in ["TestAction", "LaunchAction", "AnalyzeAction"] {
-        #expect(
-            normalizedScheme.contains(
-                "<\(action) buildConfiguration = \"\(debugConfiguration)\""
-            )
-        )
+        #expect(normalizedScheme.contains("<\(action) buildConfiguration = \"\(debugConfiguration)\""))
     }
 
     for action in ["ProfileAction", "ArchiveAction"] {
-        #expect(
-            normalizedScheme.contains(
-                "<\(action) buildConfiguration = \"\(releaseConfiguration)\""
-            )
-        )
+        #expect(normalizedScheme.contains("<\(action) buildConfiguration = \"\(releaseConfiguration)\""))
     }
 }
 

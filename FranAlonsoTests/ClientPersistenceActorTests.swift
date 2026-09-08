@@ -51,9 +51,7 @@ struct ClientPersistenceActorTests {
         try await persistenceActor.upsert(client)
 
         let verificationContext = ModelContext(container)
-        let persistedClients = try ClientLocalDataSource().fetchAll(
-            in: verificationContext
-        )
+        let persistedClients = try ClientLocalDataSource().fetchAll(in: verificationContext)
         #expect(persistedClients == [client])
     }
 
@@ -70,9 +68,7 @@ struct ClientPersistenceActorTests {
         try await persistenceActor.delete(client.id)
 
         let verificationContext = ModelContext(container)
-        #expect(
-            try ClientLocalDataSource().fetchAll(in: verificationContext).isEmpty
-        )
+        #expect(try ClientLocalDataSource().fetchAll(in: verificationContext).isEmpty)
     }
 }
 

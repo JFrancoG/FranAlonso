@@ -6,18 +6,9 @@ struct ProductSyncRetryPolicyTests {
     @Test(
         "Transient provider failures are recoverable",
         arguments: [
-            (
-                ProductRemoteDataSourceError.unavailable,
-                SyncRetryCategory.unavailable
-            ),
-            (
-                ProductRemoteDataSourceError.deadlineExceeded,
-                SyncRetryCategory.deadlineExceeded
-            ),
-            (
-                ProductRemoteDataSourceError.aborted,
-                SyncRetryCategory.aborted
-            )
+            (ProductRemoteDataSourceError.unavailable, SyncRetryCategory.unavailable),
+            (ProductRemoteDataSourceError.deadlineExceeded, SyncRetryCategory.deadlineExceeded),
+            (ProductRemoteDataSourceError.aborted, SyncRetryCategory.aborted)
         ]
     )
     func transientProviderFailuresAreRecoverable(error: ProductRemoteDataSourceError, category: SyncRetryCategory) {

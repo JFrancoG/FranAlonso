@@ -47,16 +47,10 @@ struct SaleLocalPersistenceTests {
 
     @Test("Negative-zero creation dates persist in their canonical positive form")
     func negativeZeroCreationDatePersistsCanonically() throws {
-        let sale = try persistentSale(
-            status: .draft,
-            createdAt: Date(timeIntervalSinceReferenceDate: -0.0)
-        )
+        let sale = try persistentSale(status: .draft, createdAt: Date(timeIntervalSinceReferenceDate: -0.0))
         let model = try SaleModel(sale)
 
-        #expect(
-            model.createdAt.timeIntervalSinceReferenceDate.bitPattern
-                == 0.0.bitPattern
-        )
+        #expect(model.createdAt.timeIntervalSinceReferenceDate.bitPattern == 0.0.bitPattern)
         #expect(model.createdAtCanonical == "0000000000000000")
         #expect(try model.toDomain() == sale)
 
@@ -65,19 +59,12 @@ struct SaleLocalPersistenceTests {
         let source = SaleLocalDataSource()
         try source.persistPendingUpsert(
             sale,
-            operationID: salePersistenceUUID(
-                "10000000-0000-0000-0000-000000000005"
-            ),
+            operationID: salePersistenceUUID("10000000-0000-0000-0000-000000000005"),
             in: context
         )
 
-        let persisted = try #require(
-            context.fetch(FetchDescriptor<SaleModel>()).first
-        )
-        #expect(
-            persisted.createdAt.timeIntervalSinceReferenceDate.bitPattern
-                == 0.0.bitPattern
-        )
+        let persisted = try #require(context.fetch(FetchDescriptor<SaleModel>()).first)
+        #expect(persisted.createdAt.timeIntervalSinceReferenceDate.bitPattern == 0.0.bitPattern)
         #expect(try source.fetchAll(in: context) == [sale])
     }
 
@@ -88,17 +75,13 @@ struct SaleLocalPersistenceTests {
         let encodedAbsent = try JSONEncoder().encode(SaleRemoteBase.absent)
         let complete = try SalePendingUpsertModel(
             saleID: sale.id.rawValue,
-            operationID: salePersistenceUUID(
-                "10000000-0000-0000-0000-000000000006"
-            ),
+            operationID: salePersistenceUUID("10000000-0000-0000-0000-000000000006"),
             base: .absent,
             payload: SaleDTO(sale)
         )
         let missing = SalePendingUpsertModel(
             saleID: sale.id.rawValue,
-            operationID: salePersistenceUUID(
-                "10000000-0000-0000-0000-000000000007"
-            ),
+            operationID: salePersistenceUUID("10000000-0000-0000-0000-000000000007"),
             predecessorOperationID: nil,
             baseVersion: nil,
             baseData: nil,
@@ -107,9 +90,7 @@ struct SaleLocalPersistenceTests {
         )
         let partial = SalePendingUpsertModel(
             saleID: sale.id.rawValue,
-            operationID: salePersistenceUUID(
-                "10000000-0000-0000-0000-000000000008"
-            ),
+            operationID: salePersistenceUUID("10000000-0000-0000-0000-000000000008"),
             predecessorOperationID: nil,
             baseVersion: 1,
             baseData: nil,
@@ -118,9 +99,7 @@ struct SaleLocalPersistenceTests {
         )
         let unsupported = SalePendingUpsertModel(
             saleID: sale.id.rawValue,
-            operationID: salePersistenceUUID(
-                "10000000-0000-0000-0000-000000000009"
-            ),
+            operationID: salePersistenceUUID("10000000-0000-0000-0000-000000000009"),
             predecessorOperationID: nil,
             baseVersion: 2,
             baseData: encodedAbsent,
@@ -160,26 +139,14 @@ struct SaleLocalPersistenceTests {
         let secondOperationID = salePersistenceUUID("10000000-0000-0000-0000-000000000002")
         let discardOperationID = salePersistenceUUID("10000000-0000-0000-0000-000000000003")
 
-        try source.persistPendingUpsert(
-            first,
-            operationID: firstOperationID,
-            in: ModelContext(container)
-        )
-        try source.persistPendingUpsert(
-            second,
-            operationID: secondOperationID,
-            in: ModelContext(container)
-        )
+        try source.persistPendingUpsert(first, operationID: firstOperationID, in: ModelContext(container))
+        try source.persistPendingUpsert(second, operationID: secondOperationID, in: ModelContext(container))
 
         let operations = try source.pendingOperations(in: ModelContext(container))
         #expect(operations.map(\.operationID) == [firstOperationID, secondOperationID])
         #expect(operations[1].predecessorOperationID == firstOperationID)
 
-        try source.persistPendingDiscard(
-            second.id,
-            operationID: discardOperationID,
-            in: ModelContext(container)
-        )
+        try source.persistPendingDiscard(second.id, operationID: discardOperationID, in: ModelContext(container))
         let discarded = try source.pendingOperations(in: ModelContext(container))
         #expect(discarded.map(\.operationID) == [
             firstOperationID,
@@ -194,9 +161,7 @@ struct SaleLocalPersistenceTests {
         #expect(throws: SaleLocalDataSourceError.discardRequiresDraft(progressed.id)) {
             try source.persistPendingDiscard(
                 progressed.id,
-                operationID: salePersistenceUUID(
-                    "10000000-0000-0000-0000-000000000004"
-                ),
+                operationID: salePersistenceUUID("10000000-0000-0000-0000-000000000004"),
                 in: ModelContext(progressedContainer)
             )
         }
@@ -223,12 +188,8 @@ struct SaleLocalPersistenceTests {
         let context = ModelContext(container)
         let source = SaleLocalDataSource()
         let sharedDate = Date(timeIntervalSinceReferenceDate: 50)
-        let firstID = salePersistenceUUID(
-            "20000000-0000-0000-0000-000000000101"
-        )
-        let secondID = salePersistenceUUID(
-            "20000000-0000-0000-0000-000000000102"
-        )
+        let firstID = salePersistenceUUID("20000000-0000-0000-0000-000000000101")
+        let secondID = salePersistenceUUID("20000000-0000-0000-0000-000000000102")
         let second = try persistentSale(
             status: .draft,
             serviceName: "Second",
@@ -255,16 +216,10 @@ struct SaleLocalPersistenceTests {
         let source = SaleLocalDataSource()
         let draft = try persistentSale(status: .draft)
         let operationID = salePersistenceUUID("10000000-0000-0000-0000-000000000050")
-        let remoteOperationID = salePersistenceUUID(
-            "10000000-0000-0000-0000-000000000051"
-        )
+        let remoteOperationID = salePersistenceUUID("10000000-0000-0000-0000-000000000051")
 
         try source.upsert(draft, in: context)
-        try source.persistPendingDiscard(
-            draft.id,
-            operationID: operationID,
-            in: context
-        )
+        try source.persistPendingDiscard(draft.id, operationID: operationID, in: context)
         let operation = try #require(source.pendingOperations(in: context).last)
         let remoteRecord = SaleRemoteRecord(
             sale: try SaleDTO(persistentSale(status: .inProgress)),
@@ -279,9 +234,7 @@ struct SaleLocalPersistenceTests {
             in: context
         )
 
-        let conflict = try #require(
-            context.fetch(FetchDescriptor<SaleSyncConflictModel>()).first
-        )
+        let conflict = try #require(context.fetch(FetchDescriptor<SaleSyncConflictModel>()).first)
         #expect(try conflict.decodeOperation() == operation)
         #expect(try conflict.decodeLocalSale() == nil)
         #expect(try conflict.decodeRemoteRecord() == remoteRecord)
@@ -311,11 +264,7 @@ struct SaleLocalPersistenceTests {
         try await adapter.save(sale, in: container.mainContext)
 
         #expect(try await observation.next() == [sale])
-        #expect(
-            try ModelContext(container).fetchCount(
-                FetchDescriptor<SalePendingUpsertModel>()
-            ) == 1
-        )
+        #expect(try ModelContext(container).fetchCount(FetchDescriptor<SalePendingUpsertModel>()) == 1)
     }
 }
 
@@ -349,9 +298,7 @@ private func persistentSale(
         unitPrice: Money(amount: 10, currency: .usd),
         taxRate: TaxRate(percentage: 8.5),
         discount: nil,
-        linkedProductID: ProductID(
-            rawValue: salePersistenceUUID("20000000-0000-0000-0000-000000000005")
-        )
+        linkedProductID: ProductID(rawValue: salePersistenceUUID("20000000-0000-0000-0000-000000000005"))
     )
     var sale = try Sale.draft(
         id: SaleID(rawValue: id),
@@ -374,15 +321,11 @@ private func persistentSale(
         paidAt: Date(timeIntervalSinceReferenceDate: 0.000_000_223_456_789)
     )
     try sale.close(
-        documentID: BillingDocumentID(
-            rawValue: salePersistenceUUID("20000000-0000-0000-0000-000000000009")
-        ),
+        documentID: BillingDocumentID(rawValue: salePersistenceUUID("20000000-0000-0000-0000-000000000009")),
         closedAt: Date(timeIntervalSinceReferenceDate: 0.000_000_323_456_789)
     )
     try sale.void(
-        reversalID: SaleReversalID(
-            rawValue: salePersistenceUUID("20000000-0000-0000-0000-000000000010")
-        ),
+        reversalID: SaleReversalID(rawValue: salePersistenceUUID("20000000-0000-0000-0000-000000000010")),
         voidedAt: Date(timeIntervalSinceReferenceDate: 0.000_000_423_456_789)
     )
     return sale

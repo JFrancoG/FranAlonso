@@ -115,10 +115,7 @@ final class SessionViewModel {
 
         guard isCurrentObservation(revision) else { return }
 
-        finishObservation(
-            revision,
-            with: Task.isCancelled ? .idle : .failed(.observationEnded)
-        )
+        finishObservation(revision, with: Task.isCancelled ? .idle : .failed(.observationEnded))
     }
 
     /// Attempts biometric unlocking for the currently locked principal.
@@ -245,11 +242,7 @@ final class SessionViewModel {
 
     private func beginAction(_ kind: ActionKind, principalID: String) -> ActionAttempt {
         actionRevision += 1
-        let attempt = ActionAttempt(
-            revision: actionRevision,
-            kind: kind,
-            principalID: principalID
-        )
+        let attempt = ActionAttempt(revision: actionRevision, kind: kind, principalID: principalID)
         activeAction = attempt
         actionState = kind == .unlock ? .unlocking : .signingOut
         return attempt

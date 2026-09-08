@@ -1,5 +1,5 @@
 /// Exposes locally materialized client snapshots to presentation consumers.
-struct ObserveClientsUseCase: Sendable {
+struct ObserveClientsUseCase {
     private let clientRepository: any ClientRepository
 
     /// Starts observing the current local client collection.

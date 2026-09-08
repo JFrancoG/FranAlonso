@@ -32,10 +32,7 @@ protocol AuthenticationDataSource: Sendable {
     /// - Returns: The provider-neutral identity reported by the provider.
     /// - Throws: `AuthenticationDataSourceError` for a stable infrastructure failure, or
     ///   `CancellationError` when cancellation can be honored.
-    func signIn(
-        email: String,
-        password: String
-    ) async throws -> AuthenticationSession
+    func signIn(email: String, password: String) async throws -> AuthenticationSession
 
     /// Ends the provider session and clears its secure local authentication state.
     ///

@@ -66,11 +66,7 @@ private actor ServiceRepositoryFake: ServiceRepository {
 
 private func repositoryService() throws -> Service {
     try Service(
-        id: ServiceID(
-            rawValue: UUID(
-                uuidString: "20000000-2000-2000-2000-200000000001"
-            )!
-        ),
+        id: ServiceID(rawValue: UUID(uuidString: "20000000-2000-2000-2000-200000000001")!),
         name: "Corte",
         type: .professional,
         price: Money(amount: 25, currency: .eur),

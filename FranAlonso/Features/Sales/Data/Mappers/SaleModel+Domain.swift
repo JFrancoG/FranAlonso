@@ -38,13 +38,9 @@ extension SaleModel {
     /// - Returns: The Sale represented by the flattened root and ordered line snapshot.
     /// - Throws: `SaleModelPayloadError` for unsupported or incoherent persisted metadata.
     func toDomain() throws -> Sale {
-        guard linesPayloadVersion == 1 else {
-            throw SaleModelPayloadError.unsupportedLinesVersion(linesPayloadVersion)
-        }
+        guard linesPayloadVersion == 1 else { throw SaleModelPayloadError.unsupportedLinesVersion(linesPayloadVersion) }
         let lines = try JSONDecoder().decode([SaleLineDTO].self, from: linesData)
-        let canonicalCreatedAt = try SaleTimestampDTO(
-            canonicalString: createdAtCanonical
-        )
+        let canonicalCreatedAt = try SaleTimestampDTO(canonicalString: createdAtCanonical)
         guard createdAt.timeIntervalSinceReferenceDate.bitPattern
                 == canonicalCreatedAt.date.timeIntervalSinceReferenceDate.bitPattern else {
             throw SaleModelPayloadError.invalidLifecycleMetadata
@@ -99,11 +95,7 @@ extension SaleModel {
             try requireReversalAbsent()
             return .closed(payment: try paymentDTO(), document: try documentDTO())
         case "voided":
-            return .voided(
-                payment: try paymentDTO(),
-                document: try documentDTO(),
-                reversal: try reversalDTO()
-            )
+            return .voided(payment: try paymentDTO(), document: try documentDTO(), reversal: try reversalDTO())
         default:
             throw SaleModelPayloadError.invalidStatus(statusKindRawValue)
         }

@@ -18,10 +18,7 @@ struct SignInUseCase {
 
         guard !email.isEmpty, !password.isEmpty else { throw AuthenticationError.invalidCredentials }
 
-        return try await authenticationRepository.signIn(
-            email: email,
-            password: password
-        )
+        return try await authenticationRepository.signIn(email: email, password: password)
     }
 }
 

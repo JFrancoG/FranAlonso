@@ -40,10 +40,7 @@ extension CanonicalDecimalDTO {
     /// - Throws: `CanonicalDecimalDTOError.invalidValue` when the representation is
     ///   malformed or would be normalized to a different byte sequence.
     init(canonicalString: String) throws {
-        guard let decimal = Decimal(
-            string: canonicalString,
-            locale: Locale(identifier: "en_US_POSIX")
-        ), !decimal.isNaN,
+        guard let decimal = Decimal(string: canonicalString, locale: Locale(identifier: "en_US_POSIX")), !decimal.isNaN,
         Self.canonicalString(for: decimal) == canonicalString else {
             throw CanonicalDecimalDTOError.invalidValue
         }

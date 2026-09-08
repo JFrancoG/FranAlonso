@@ -18,10 +18,7 @@ struct ClientSyncPolicyTests {
             policy.decision(for: operation, against: nil) == .apply(
                 ClientRemoteRecord(
                     client: operation.client,
-                    version: .versioned(
-                        revision: 1,
-                        lastOperationID: operation.operationID
-                    )
+                    version: .versioned(revision: 1, lastOperationID: operation.operationID)
                 )
             )
         )
@@ -38,18 +35,10 @@ struct ClientSyncPolicyTests {
         )
         let remote = ClientRemoteRecord(
             client: syncClient(name: "Unrelated remote"),
-            version: .versioned(
-                revision: 4,
-                lastOperationID: syncUUID(
-                    "51000000-0000-0000-0000-000000000004"
-                )
-            )
+            version: .versioned(revision: 4, lastOperationID: syncUUID("51000000-0000-0000-0000-000000000004"))
         )
 
-        #expect(
-            policy.decision(for: operation, against: remote)
-                == .conflict(.causalPredecessorMissing, remote)
-        )
+        #expect(policy.decision(for: operation, against: remote) == .conflict(.causalPredecessorMissing, remote))
     }
 
     @Test("A successor advances only after its predecessor")
@@ -63,20 +52,14 @@ struct ClientSyncPolicyTests {
         )
         let remote = ClientRemoteRecord(
             client: syncClient(name: "Predecessor"),
-            version: .versioned(
-                revision: 8,
-                lastOperationID: predecessorID
-            )
+            version: .versioned(revision: 8, lastOperationID: predecessorID)
         )
 
         #expect(
             policy.decision(for: operation, against: remote) == .apply(
                 ClientRemoteRecord(
                     client: operation.client,
-                    version: .versioned(
-                        revision: 9,
-                        lastOperationID: operation.operationID
-                    )
+                    version: .versioned(revision: 9, lastOperationID: operation.operationID)
                 )
             )
         )
@@ -91,16 +74,10 @@ struct ClientSyncPolicyTests {
         )
         let remote = ClientRemoteRecord(
             client: operation.client,
-            version: .versioned(
-                revision: 3,
-                lastOperationID: operation.operationID
-            )
+            version: .versioned(revision: 3, lastOperationID: operation.operationID)
         )
 
-        #expect(
-            policy.decision(for: operation, against: remote)
-                == .alreadyApplied(remote)
-        )
+        #expect(policy.decision(for: operation, against: remote) == .alreadyApplied(remote))
     }
 
     @Test("The same operation with another payload is an identity conflict")
@@ -112,16 +89,10 @@ struct ClientSyncPolicyTests {
         )
         let remote = ClientRemoteRecord(
             client: syncClient(name: "Different payload"),
-            version: .versioned(
-                revision: 3,
-                lastOperationID: operation.operationID
-            )
+            version: .versioned(revision: 3, lastOperationID: operation.operationID)
         )
 
-        #expect(
-            policy.decision(for: operation, against: remote)
-                == .conflict(.operationIdentityMismatch, remote)
-        )
+        #expect(policy.decision(for: operation, against: remote) == .conflict(.operationIdentityMismatch, remote))
     }
 
     @Test("A legacy base must still match its exact business snapshot")
@@ -132,29 +103,17 @@ struct ClientSyncPolicyTests {
             client: syncClient(name: "Local edit"),
             base: .legacy(baseClient)
         )
-        let changedLegacy = ClientRemoteRecord(
-            client: syncClient(name: "Changed by a legacy writer"),
-            version: .legacy
-        )
+        let changedLegacy = ClientRemoteRecord(client: syncClient(name: "Changed by a legacy writer"), version: .legacy)
 
-        #expect(
-            policy.decision(for: operation, against: changedLegacy)
-                == .conflict(.baseChanged, changedLegacy)
-        )
+        #expect(policy.decision(for: operation, against: changedLegacy) == .conflict(.baseChanged, changedLegacy))
         #expect(
             policy.decision(
                 for: operation,
-                against: ClientRemoteRecord(
-                    client: baseClient,
-                    version: .legacy
-                )
+                against: ClientRemoteRecord(client: baseClient, version: .legacy)
             ) == .apply(
                 ClientRemoteRecord(
                     client: operation.client,
-                    version: .versioned(
-                        revision: 1,
-                        lastOperationID: operation.operationID
-                    )
+                    version: .versioned(revision: 1, lastOperationID: operation.operationID)
                 )
             )
         )
@@ -169,34 +128,18 @@ struct ClientSyncPolicyTests {
         )
         let remote = ClientRemoteRecord(
             client: syncClient(name: "Remote maximum"),
-            version: .versioned(
-                revision: Int64.max,
-                lastOperationID: syncUUID(
-                    "51000000-0000-0000-0000-000000000011"
-                )
-            )
+            version: .versioned(revision: Int64.max, lastOperationID: syncUUID("51000000-0000-0000-0000-000000000011"))
         )
 
-        #expect(
-            policy.decision(for: operation, against: remote)
-                == .invalid(.remoteRevisionOverflow)
-        )
+        #expect(policy.decision(for: operation, against: remote) == .invalid(.remoteRevisionOverflow))
     }
 
     @Test("A pending delete wins over a concurrent remote edit")
     func pendingDeleteWinsOverConcurrentRemoteEdit() {
-        let delete = syncDeleteOperation(
-            id: "51000000-0000-0000-0000-000000000012",
-            base: .versioned(3)
-        )
+        let delete = syncDeleteOperation(id: "51000000-0000-0000-0000-000000000012", base: .versioned(3))
         let remote = ClientRemoteRecord(
             client: syncClient(name: "Concurrent remote edit"),
-            version: .versioned(
-                revision: 4,
-                lastOperationID: syncUUID(
-                    "51000000-0000-0000-0000-000000000013"
-                )
-            ),
+            version: .versioned(revision: 4, lastOperationID: syncUUID("51000000-0000-0000-0000-000000000013")),
             changeSequence: 6
         )
 
@@ -205,10 +148,7 @@ struct ClientSyncPolicyTests {
                 == .apply(
                     ClientRemoteRecord(
                         content: .tombstone(clientID: delete.clientID),
-                        version: .versioned(
-                            revision: 5,
-                            lastOperationID: delete.operationID
-                        ),
+                        version: .versioned(revision: 5, lastOperationID: delete.operationID),
                         changeSequence: nil
                     )
                 )
@@ -224,45 +164,26 @@ struct ClientSyncPolicyTests {
         )
         let tombstone = ClientRemoteRecord(
             content: .tombstone(clientID: operation.clientID),
-            version: .versioned(
-                revision: 3,
-                lastOperationID: syncUUID(
-                    "51000000-0000-0000-0000-000000000015"
-                )
-            ),
+            version: .versioned(revision: 3, lastOperationID: syncUUID("51000000-0000-0000-0000-000000000015")),
             changeSequence: 7
         )
 
         #expect(
             policy.decision(for: operation, against: tombstone)
-                == .conflict(
-                    .tombstoneRequiresExplicitRestore,
-                    tombstone
-                )
+                == .conflict(.tombstoneRequiresExplicitRestore, tombstone)
         )
     }
 
     @Test("A remote tombstone makes a repeated deletion converged")
     func remoteTombstoneMakesRepeatedDeleteConverged() {
-        let delete = syncDeleteOperation(
-            id: "51000000-0000-0000-0000-000000000016",
-            base: .absent
-        )
+        let delete = syncDeleteOperation(id: "51000000-0000-0000-0000-000000000016", base: .absent)
         let tombstone = ClientRemoteRecord(
             content: .tombstone(clientID: delete.clientID),
-            version: .versioned(
-                revision: 8,
-                lastOperationID: syncUUID(
-                    "51000000-0000-0000-0000-000000000017"
-                )
-            ),
+            version: .versioned(revision: 8, lastOperationID: syncUUID("51000000-0000-0000-0000-000000000017")),
             changeSequence: 9
         )
 
-        #expect(
-            policy.decision(for: .delete(delete), against: tombstone)
-                == .alreadyApplied(tombstone)
-        )
+        #expect(policy.decision(for: .delete(delete), against: tombstone) == .alreadyApplied(tombstone))
     }
 }
 
@@ -283,9 +204,7 @@ private func syncOperation(
 
 private func syncDeleteOperation(id: String, base: ClientRemoteBase) -> ClientPendingDelete {
     ClientPendingDelete(
-        clientID: UUID(
-            uuidString: "50000000-0000-0000-0000-000000000001"
-        )!,
+        clientID: UUID(uuidString: "50000000-0000-0000-0000-000000000001")!,
         operationID: syncUUID(id),
         predecessorOperationID: nil,
         base: base

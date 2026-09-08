@@ -42,10 +42,6 @@ extension ModelContainer {
             cloudKitDatabase: .none
         )
 
-        return try ModelContainer(
-            for: schema,
-            migrationPlan: migrationPlan,
-            configurations: [configuration]
-        )
+        return try ModelContainer(for: schema, migrationPlan: migrationPlan, configurations: [configuration])
     }
 }

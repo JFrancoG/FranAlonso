@@ -65,17 +65,10 @@ extension ServiceModel {
             name: name,
             type: type,
             linkedProductID: linkedProductID?.uuidString,
-            price: ServiceMoneyDTO(
-                amount: try persistedDecimal(priceAmountCanonical),
-                currency: currency
-            ),
-            taxRate: ServiceTaxRateDTO(
-                percentage: try persistedDecimal(taxPercentageCanonical)
-            ),
+            price: ServiceMoneyDTO(amount: try persistedDecimal(priceAmountCanonical), currency: currency),
+            taxRate: ServiceTaxRateDTO(percentage: try persistedDecimal(taxPercentageCanonical)),
             discount: try discountPercentageCanonical.map { canonical in
-                ServiceDiscountDTO(
-                    percentage: try persistedDecimal(canonical)
-                )
+                ServiceDiscountDTO(percentage: try persistedDecimal(canonical))
             },
             status: status
         )

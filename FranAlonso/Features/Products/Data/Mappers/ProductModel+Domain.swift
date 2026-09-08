@@ -5,11 +5,7 @@ extension ProductModel {
     convenience init(_ product: Product) {
         let dto = ProductDTO(product)
 
-        self.init(
-            id: product.id.rawValue,
-            name: dto.name,
-            statusRawValue: dto.status.rawValue
-        )
+        self.init(id: product.id.rawValue, name: dto.name, statusRawValue: dto.status.rawValue)
     }
 
     /// Reconstructs a validated Domain value detached from this context-confined model.
@@ -20,11 +16,7 @@ extension ProductModel {
             throw ProductMappingError.invalidPersistedStatus(statusRawValue)
         }
 
-        return try ProductDTO(
-            id: id.uuidString,
-            name: name,
-            status: status
-        ).toDomain()
+        return try ProductDTO(id: id.uuidString, name: name, status: status).toDomain()
     }
 
     /// Replaces this context-owned model's persisted fields with a Domain snapshot.

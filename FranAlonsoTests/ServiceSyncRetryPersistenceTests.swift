@@ -27,41 +27,23 @@ struct ServiceSyncRetryPersistenceTests {
 
         let restartedActor = ServicePersistenceActor(modelContainer: container)
         #expect(try await restartedActor.retryState(for: .pull) == second)
-        #expect(
-            try ModelContext(container).fetchCount(
-                FetchDescriptor<ServiceSyncRetryModel>()
-            ) == 1
-        )
+        #expect(try ModelContext(container).fetchCount(FetchDescriptor<ServiceSyncRetryModel>()) == 1)
     }
 
     @Test("Operation scopes retain independent retry rows")
     func operationScopesRetainIndependentRows() async throws {
         let container = try retryPersistenceContainer()
-        let firstID = retryPersistenceUUID(
-            "71000000-0000-0000-0000-000000000001"
-        )
-        let secondID = retryPersistenceUUID(
-            "71000000-0000-0000-0000-000000000002"
-        )
+        let firstID = retryPersistenceUUID("71000000-0000-0000-0000-000000000001")
+        let secondID = retryPersistenceUUID("71000000-0000-0000-0000-000000000002")
         let actor = ServicePersistenceActor(modelContainer: container)
-        let first = try retryPersistenceState(
-            scope: .operation(firstID),
-            step: 1
-        )
-        let second = try retryPersistenceState(
-            scope: .operation(secondID),
-            step: 2
-        )
+        let first = try retryPersistenceState(scope: .operation(firstID), step: 1)
+        let second = try retryPersistenceState(scope: .operation(secondID), step: 2)
 
         try await actor.saveRetryState(first)
         try await actor.saveRetryState(second)
 
-        #expect(
-            try await actor.retryState(for: .operation(firstID)) == first
-        )
-        #expect(
-            try await actor.retryState(for: .operation(secondID)) == second
-        )
+        #expect(try await actor.retryState(for: .operation(firstID)) == first)
+        #expect(try await actor.retryState(for: .operation(secondID)) == second)
     }
 
     @Test("Malformed durable retry state fails closed")
@@ -79,9 +61,7 @@ struct ServiceSyncRetryPersistenceTests {
         try context.save()
         let actor = ServicePersistenceActor(modelContainer: container)
 
-        await #expect(
-            throws: SyncRetryPolicyError.invalidBackoffStep(0)
-        ) {
+        await #expect(throws: SyncRetryPolicyError.invalidBackoffStep(0)) {
             _ = try await actor.retryState(for: .pull)
         }
     }
@@ -90,15 +70,10 @@ struct ServiceSyncRetryPersistenceTests {
     func committedPullClearsRetryWithCursor() async throws {
         let container = try retryPersistenceContainer()
         let actor = ServicePersistenceActor(modelContainer: container)
-        try await actor.saveRetryState(
-            try retryPersistenceState(scope: .pull, step: 2)
-        )
+        try await actor.saveRetryState(try retryPersistenceState(scope: .pull, step: 2))
 
         try await actor.reconcileRemoteBatch(
-            ServiceRemoteChangeBatch(
-                records: [],
-                nextCursor: ServiceSyncCursor(changeSequence: 0)
-            ),
+            ServiceRemoteChangeBatch(records: [], nextCursor: ServiceSyncCursor(changeSequence: 0)),
             policy: ServiceSyncPolicy(),
             clearingRetryFor: .pull
         )
@@ -116,10 +91,7 @@ struct ServiceSyncRetryPersistenceTests {
 
         await #expect(throws: ServiceSyncPersistenceError.invalidCursor) {
             try await actor.reconcileRemoteBatch(
-                ServiceRemoteChangeBatch(
-                    records: [],
-                    nextCursor: ServiceSyncCursor(changeSequence: 1)
-                ),
+                ServiceRemoteChangeBatch(records: [], nextCursor: ServiceSyncCursor(changeSequence: 1)),
                 policy: ServiceSyncPolicy(),
                 clearingRetryFor: .pull
             )
@@ -133,43 +105,22 @@ struct ServiceSyncRetryPersistenceTests {
         let container = try retryPersistenceContainer()
         let actor = ServicePersistenceActor(modelContainer: container)
         let service = try makeService(
-            id: retryPersistenceUUID(
-                "71000000-0000-0000-0000-000000000003"
-            ),
+            id: retryPersistenceUUID("71000000-0000-0000-0000-000000000003"),
             name: "Retry acknowledgement"
         )
-        let operationID = retryPersistenceUUID(
-            "71000000-0000-0000-0000-000000000004"
-        )
-        try await actor.persistPendingUpsert(
-            service,
-            operationID: operationID
-        )
-        try await actor.saveRetryState(
-            try retryPersistenceState(
-                scope: .operation(operationID),
-                step: 2
-            )
-        )
+        let operationID = retryPersistenceUUID("71000000-0000-0000-0000-000000000004")
+        try await actor.persistPendingUpsert(service, operationID: operationID)
+        try await actor.saveRetryState(try retryPersistenceState(scope: .operation(operationID), step: 2))
         let record = ServiceRemoteRecord(
             service: try ServiceDTO(service),
-            version: .versioned(
-                revision: 1,
-                lastOperationID: operationID
-            ),
+            version: .versioned(revision: 1, lastOperationID: operationID),
             changeSequence: 1
         )
 
-        try await actor.acknowledge(
-            operationID: operationID,
-            record: record,
-            clearingRetryFor: .operation(operationID)
-        )
+        try await actor.acknowledge(operationID: operationID, record: record, clearingRetryFor: .operation(operationID))
 
         #expect(try await actor.pendingOperations().isEmpty)
-        #expect(
-            try await actor.retryState(for: .operation(operationID)) == nil
-        )
+        #expect(try await actor.retryState(for: .operation(operationID)) == nil)
     }
 
     @Test("A pulled acknowledgement clears the acknowledged operation retry")
@@ -177,34 +128,19 @@ struct ServiceSyncRetryPersistenceTests {
         let container = try retryPersistenceContainer()
         let actor = ServicePersistenceActor(modelContainer: container)
         let service = try makeService(
-            id: retryPersistenceUUID(
-                "71000000-0000-0000-0000-000000000005"
-            ),
+            id: retryPersistenceUUID("71000000-0000-0000-0000-000000000005"),
             name: "Pulled acknowledgement"
         )
-        let operationID = retryPersistenceUUID(
-            "71000000-0000-0000-0000-000000000006"
-        )
-        try await actor.persistPendingUpsert(
-            service,
-            operationID: operationID
-        )
-        try await actor.saveRetryState(
-            try retryPersistenceState(
-                scope: .operation(operationID),
-                step: 2
-            )
-        )
+        let operationID = retryPersistenceUUID("71000000-0000-0000-0000-000000000006")
+        try await actor.persistPendingUpsert(service, operationID: operationID)
+        try await actor.saveRetryState(try retryPersistenceState(scope: .operation(operationID), step: 2))
 
         try await actor.reconcileRemoteBatch(
             ServiceRemoteChangeBatch(
                 records: [
                     ServiceRemoteRecord(
                         service: try ServiceDTO(service),
-                        version: .versioned(
-                            revision: 1,
-                            lastOperationID: operationID
-                        ),
+                        version: .versioned(revision: 1, lastOperationID: operationID),
                         changeSequence: 1
                     )
                 ],
@@ -215,41 +151,19 @@ struct ServiceSyncRetryPersistenceTests {
         )
 
         #expect(try await actor.pendingOperations().isEmpty)
-        #expect(
-            try await actor.retryState(for: .operation(operationID)) == nil
-        )
+        #expect(try await actor.retryState(for: .operation(operationID)) == nil)
     }
 
     @Test("A pulled conflict clears the blocked operation retry")
     func pulledConflictClearsOperationRetry() async throws {
         let container = try retryPersistenceContainer()
         let actor = ServicePersistenceActor(modelContainer: container)
-        let serviceID = ServiceID(
-            rawValue: retryPersistenceUUID(
-                "71000000-0000-0000-0000-000000000007"
-            )
-        )
-        let service = try makeService(
-            id: serviceID.rawValue,
-            name: "Local conflict"
-        )
-        let operationID = retryPersistenceUUID(
-            "71000000-0000-0000-0000-000000000008"
-        )
-        try await actor.persistPendingUpsert(
-            service,
-            operationID: operationID
-        )
-        try await actor.saveRetryState(
-            try retryPersistenceState(
-                scope: .operation(operationID),
-                step: 2
-            )
-        )
-        let remoteService = try makeService(
-            id: serviceID.rawValue,
-            name: "Remote conflict"
-        )
+        let serviceID = ServiceID(rawValue: retryPersistenceUUID("71000000-0000-0000-0000-000000000007"))
+        let service = try makeService(id: serviceID.rawValue, name: "Local conflict")
+        let operationID = retryPersistenceUUID("71000000-0000-0000-0000-000000000008")
+        try await actor.persistPendingUpsert(service, operationID: operationID)
+        try await actor.saveRetryState(try retryPersistenceState(scope: .operation(operationID), step: 2))
+        let remoteService = try makeService(id: serviceID.rawValue, name: "Remote conflict")
 
         try await actor.reconcileRemoteBatch(
             ServiceRemoteChangeBatch(
@@ -258,9 +172,7 @@ struct ServiceSyncRetryPersistenceTests {
                         service: try ServiceDTO(remoteService),
                         version: .versioned(
                             revision: 1,
-                            lastOperationID: retryPersistenceUUID(
-                                "71000000-0000-0000-0000-000000000009"
-                            )
+                            lastOperationID: retryPersistenceUUID("71000000-0000-0000-0000-000000000009")
                         ),
                         changeSequence: 1
                     )
@@ -271,14 +183,8 @@ struct ServiceSyncRetryPersistenceTests {
             clearingRetryFor: .pull
         )
 
-        #expect(
-            try ModelContext(container).fetchCount(
-                FetchDescriptor<ServiceSyncConflictModel>()
-            ) == 1
-        )
-        #expect(
-            try await actor.retryState(for: .operation(operationID)) == nil
-        )
+        #expect(try ModelContext(container).fetchCount(FetchDescriptor<ServiceSyncConflictModel>()) == 1)
+        #expect(try await actor.retryState(for: .operation(operationID)) == nil)
     }
 }
 

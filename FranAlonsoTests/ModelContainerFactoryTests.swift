@@ -17,17 +17,10 @@ struct ModelContainerFactoryTests {
         #expect(configuration.groupAppContainerIdentifier == nil)
         #expect(configuration.cloudKitContainerIdentifier == nil)
 
-        let identifier = try #require(
-            UUID(uuidString: "DAA42E70-6D86-4C54-A916-C4FD845BC012")
-        )
+        let identifier = try #require(UUID(uuidString: "DAA42E70-6D86-4C54-A916-C4FD845BC012"))
         let creationContext = ModelContext(container)
         creationContext.autosaveEnabled = false
-        creationContext.insert(
-            PersistenceFixtureModel(
-                identifier: identifier,
-                value: "created"
-            )
-        )
+        creationContext.insert(PersistenceFixtureModel(identifier: identifier, value: "created"))
 
         #expect(creationContext.hasChanges)
         let beforeSaveContext = ModelContext(container)
@@ -37,9 +30,7 @@ struct ModelContainerFactoryTests {
         #expect(!creationContext.hasChanges)
 
         let updateContext = ModelContext(container)
-        let createdModel = try #require(
-            try updateContext.fetch(FetchDescriptor<PersistenceFixtureModel>()).first
-        )
+        let createdModel = try #require(try updateContext.fetch(FetchDescriptor<PersistenceFixtureModel>()).first)
         #expect(createdModel.identifier == identifier)
         #expect(createdModel.value == "created")
 
@@ -48,9 +39,7 @@ struct ModelContainerFactoryTests {
         try updateContext.save()
 
         let deletionContext = ModelContext(container)
-        let updatedModel = try #require(
-            try deletionContext.fetch(FetchDescriptor<PersistenceFixtureModel>()).first
-        )
+        let updatedModel = try #require(try deletionContext.fetch(FetchDescriptor<PersistenceFixtureModel>()).first)
         #expect(updatedModel.value == "updated")
 
         deletionContext.delete(updatedModel)

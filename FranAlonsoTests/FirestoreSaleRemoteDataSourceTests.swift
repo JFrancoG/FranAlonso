@@ -5,15 +5,9 @@ import Testing
 
 @Suite("Firestore Sale remote data source")
 struct FirestoreSaleRemoteDataSourceTests {
-    @Test(
-        "Environments resolve Sales and sync metadata paths",
-        arguments: [FirestoreEnvironment.develop, .production]
-    )
+    @Test("Environments resolve Sales and sync metadata paths", arguments: [FirestoreEnvironment.develop, .production])
     func environmentsResolveApprovedPaths(_ environment: FirestoreEnvironment) {
-        #expect(
-            environment.collectionPath(for: .sales)
-                == "\(environment.rawValue)/collections/sales"
-        )
+        #expect(environment.collectionPath(for: .sales) == "\(environment.rawValue)/collections/sales")
         #expect(
             environment.syncMetadataDocumentPath(for: .sales)
                 == "\(environment.rawValue)/collections/syncMetadata/sales"
@@ -153,18 +147,13 @@ struct FirestoreSaleRemoteDataSourceTests {
             counter: .unread,
             policy: SaleSyncPolicy()
         )
-        #expect(
-            progressedPlan
-                == .result(.conflict(.discardRequiresDraft, progressedRemote))
-        )
+        #expect(progressedPlan == .result(.conflict(.discardRequiresDraft, progressedRemote)))
         #expect(progressedPlan.atomicWrite == nil)
 
         let staleRoot = SalePendingOperation.discard(
             SalePendingDiscard(
                 saleID: firestoreSaleID,
-                operationID: firestoreSaleUUID(
-                    "40000000-0000-0000-0000-000000000100"
-                ),
+                operationID: firestoreSaleUUID("40000000-0000-0000-0000-000000000100"),
                 predecessorOperationID: nil,
                 base: .versioned(1)
             )
@@ -181,12 +170,8 @@ struct FirestoreSaleRemoteDataSourceTests {
         let divergentDescendant = SalePendingOperation.discard(
             SalePendingDiscard(
                 saleID: firestoreSaleID,
-                operationID: firestoreSaleUUID(
-                    "40000000-0000-0000-0000-000000000101"
-                ),
-                predecessorOperationID: firestoreSaleUUID(
-                    "40000000-0000-0000-0000-000000000102"
-                ),
+                operationID: firestoreSaleUUID("40000000-0000-0000-0000-000000000101"),
+                predecessorOperationID: firestoreSaleUUID("40000000-0000-0000-0000-000000000102"),
                 base: .versioned(1)
             )
         )
@@ -196,10 +181,7 @@ struct FirestoreSaleRemoteDataSourceTests {
             counter: .unread,
             policy: SaleSyncPolicy()
         )
-        #expect(
-            divergentPlan
-                == .result(.conflict(.causalPredecessorMissing, draftRemote))
-        )
+        #expect(divergentPlan == .result(.conflict(.causalPredecessorMissing, draftRemote)))
         #expect(divergentPlan.atomicWrite == nil)
     }
 
@@ -237,10 +219,7 @@ struct FirestoreSaleRemoteDataSourceTests {
 
         for fixture in [live, tombstone] {
             #expect(throws: DecodingError.self) {
-                _ = try JSONDecoder().decode(
-                    FirestoreSaleDocumentDTO.self,
-                    from: JSONEncoder().encode(fixture)
-                )
+                _ = try JSONDecoder().decode(FirestoreSaleDocumentDTO.self, from: JSONEncoder().encode(fixture))
             }
         }
     }
@@ -276,20 +255,11 @@ struct FirestoreSaleRemoteDataSourceTests {
             unexpected: nil
         )
 
-        let modernDocument = try JSONDecoder().decode(
-            FirestoreSaleDocumentDTO.self,
-            from: JSONEncoder().encode(modern)
-        )
-        let legacyDocument = try JSONDecoder().decode(
-            FirestoreSaleDocumentDTO.self,
-            from: JSONEncoder().encode(legacy)
-        )
+        let modernDocument = try JSONDecoder().decode(FirestoreSaleDocumentDTO.self, from: JSONEncoder().encode(modern))
+        let legacyDocument = try JSONDecoder().decode(FirestoreSaleDocumentDTO.self, from: JSONEncoder().encode(legacy))
 
         #expect(try modernDocument.toRemoteRecord(documentID: sale.id) == expected)
-        #expect(
-            try legacyDocument.toRemoteRecord(documentID: sale.id).version
-                == .legacy
-        )
+        #expect(try legacyDocument.toRemoteRecord(documentID: sale.id).version == .legacy)
     }
 
     @Test("Invalid Sale identifiers retain their exact Firestore coding path")
@@ -310,10 +280,7 @@ struct FirestoreSaleRemoteDataSourceTests {
                 _ = try document.toRemoteRecord(documentID: testCase.documentID)
                 Issue.record("Expected invalid identifier at \(testCase.expectedPath)")
             } catch DecodingError.dataCorrupted(let context) {
-                #expect(
-                    firestoreCodingPath(context.codingPath)
-                        == testCase.expectedPath
-                )
+                #expect(firestoreCodingPath(context.codingPath) == testCase.expectedPath)
             } catch {
                 Issue.record("Unexpected error: \(error)")
             }
@@ -329,9 +296,7 @@ struct FirestoreSaleRemoteDataSourceTests {
             transact: { _ in throw SaleRemoteDataSourceError.unexpected }
         )
 
-        let batch = try await source.fetchChanges(
-            after: SaleSyncCursor(changeSequence: 3)
-        )
+        let batch = try await source.fetchChanges(after: SaleSyncCursor(changeSequence: 3))
 
         #expect(await gate.received == [SaleSyncCursor(changeSequence: 3)])
         #expect(batch.records == [record])
@@ -385,20 +350,12 @@ private struct InvalidFirestoreSaleIdentifierCase {
 
 private func invalidFirestoreSaleIdentifierCases() throws -> [InvalidFirestoreSaleIdentifierCase] {
     let invalid = "not-a-uuid"
-    let draft = try #require(
-        firestoreSaleRecord(progressed: false, sequence: 1).liveSale
-    )
+    let draft = try #require(firestoreSaleRecord(progressed: false, sequence: 1).liveSale)
     let validID = draft.id
     let invalidSale = firestoreSaleDTO(draft, id: invalid)
     let invalidClient = firestoreSaleDTO(draft, clientID: invalid)
-    let invalidLine = firestoreSaleDTO(
-        draft,
-        lines: [firestoreSaleLineDTO(draft.lines[0], id: invalid)]
-    )
-    let invalidService = firestoreSaleDTO(
-        draft,
-        lines: [firestoreSaleLineDTO(draft.lines[0], serviceID: invalid)]
-    )
+    let invalidLine = firestoreSaleDTO(draft, lines: [firestoreSaleLineDTO(draft.lines[0], id: invalid)])
+    let invalidService = firestoreSaleDTO(draft, lines: [firestoreSaleLineDTO(draft.lines[0], serviceID: invalid)])
     let invalidLinkedProduct = firestoreSaleDTO(
         draft,
         lines: [firestoreSaleLineDTO(draft.lines[0], linkedProductID: invalid)]
@@ -417,9 +374,7 @@ private func invalidFirestoreSaleIdentifierCases() throws -> [InvalidFirestoreSa
             status: .completed
         )
     }
-    let timestamp = try SaleTimestampDTO(
-        Date(timeIntervalSinceReferenceDate: 2)
-    )
+    let timestamp = try SaleTimestampDTO(Date(timeIntervalSinceReferenceDate: 2))
     let payment = SalePaymentDTO(
         id: firestoreSaleUUID("40000000-0000-0000-0000-000000000110").uuidString,
         method: .card,
@@ -432,24 +387,12 @@ private func invalidFirestoreSaleIdentifierCases() throws -> [InvalidFirestoreSa
     let invalidPayment = firestoreSaleDTO(
         draft,
         lines: completedLines,
-        status: .awaitingDocument(
-            payment: SalePaymentDTO(
-                id: invalid,
-                method: payment.method,
-                paidAt: payment.paidAt
-            )
-        )
+        status: .awaitingDocument(payment: SalePaymentDTO(id: invalid, method: payment.method, paidAt: payment.paidAt))
     )
     let invalidDocument = firestoreSaleDTO(
         draft,
         lines: completedLines,
-        status: .closed(
-            payment: payment,
-            document: SaleDocumentDTO(
-                id: invalid,
-                closedAt: document.closedAt
-            )
-        )
+        status: .closed(payment: payment, document: SaleDocumentDTO(id: invalid, closedAt: document.closedAt))
     )
     let invalidReversal = firestoreSaleDTO(
         draft,
@@ -462,16 +405,8 @@ private func invalidFirestoreSaleIdentifierCases() throws -> [InvalidFirestoreSa
     )
 
     return [
-        InvalidFirestoreSaleIdentifierCase(
-            payload: invalidSale,
-            documentID: invalid,
-            expectedPath: ["id"]
-        ),
-        InvalidFirestoreSaleIdentifierCase(
-            payload: invalidClient,
-            documentID: validID,
-            expectedPath: ["clientID"]
-        ),
+        InvalidFirestoreSaleIdentifierCase(payload: invalidSale, documentID: invalid, expectedPath: ["id"]),
+        InvalidFirestoreSaleIdentifierCase(payload: invalidClient, documentID: validID, expectedPath: ["clientID"]),
         InvalidFirestoreSaleIdentifierCase(
             payload: invalidLine,
             documentID: validID,
@@ -550,12 +485,8 @@ private func firestoreCodingPath(_ codingPath: [any CodingKey]) -> [String] {
     }
 }
 
-private let firestoreSaleID = firestoreSaleUUID(
-    "40000000-0000-0000-0000-000000000001"
-)
-private let firestoreSaleOperationID = firestoreSaleUUID(
-    "40000000-0000-0000-0000-000000000002"
-)
+private let firestoreSaleID = firestoreSaleUUID("40000000-0000-0000-0000-000000000001")
+private let firestoreSaleOperationID = firestoreSaleUUID("40000000-0000-0000-0000-000000000002")
 
 private func firestoreSaleRecord(progressed: Bool, sequence: Int64) throws -> SaleRemoteRecord {
     SaleRemoteRecord(

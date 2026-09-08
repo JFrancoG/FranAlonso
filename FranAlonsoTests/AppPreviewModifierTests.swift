@@ -11,9 +11,7 @@ struct AppPreviewModifierTests {
     @Test("Shared context provides the same navigable clients to SwiftData and dependencies")
     func sharedContextProvidesTheSameNavigableClientsToSwiftDataAndDependencies() async throws {
         let context = try AppPreviewModifier.makeSharedContext()
-        let persistedClients = try dataSource.fetchAll(
-            in: ModelContext(context.modelContainer)
-        )
+        let persistedClients = try dataSource.fetchAll(in: ModelContext(context.modelContainer))
         let stream = await context.dependencies.observeClients()
         var iterator = stream.makeAsyncIterator()
 
@@ -34,10 +32,7 @@ struct AppPreviewModifierTests {
             try verificationContext.fetchCount(FetchDescriptor<ClientModel>())
                 == AppPreviewFixtures.standard.clients.count
         )
-        #expect(
-            try dataSource.fetchAll(in: verificationContext)
-                == AppPreviewFixtures.standard.clients
-        )
+        #expect(try dataSource.fetchAll(in: verificationContext) == AppPreviewFixtures.standard.clients)
     }
 }
 #endif

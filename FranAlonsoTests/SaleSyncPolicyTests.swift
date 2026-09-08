@@ -46,10 +46,7 @@ struct SaleSyncPolicyTests {
             version: .versioned(revision: 1, lastOperationID: operationID)
         )
 
-        #expect(
-            policy.decision(for: operation, against: remote)
-                == .conflict(.operationIdentityMismatch, remote)
-        )
+        #expect(policy.decision(for: operation, against: remote) == .conflict(.operationIdentityMismatch, remote))
     }
 
     @Test("A concurrent whole-snapshot branch is retained as a conflict")
@@ -68,16 +65,10 @@ struct SaleSyncPolicyTests {
         )
         let remote = SaleRemoteRecord(
             sale: try SaleDTO(remoteSale),
-            version: .versioned(
-                revision: 2,
-                lastOperationID: syncPolicyUUID("30000000-0000-0000-0000-000000000005")
-            )
+            version: .versioned(revision: 2, lastOperationID: syncPolicyUUID("30000000-0000-0000-0000-000000000005"))
         )
 
-        #expect(
-            policy.decision(for: operation, against: remote)
-                == .conflict(.causalPredecessorMissing, remote)
-        )
+        #expect(policy.decision(for: operation, against: remote) == .conflict(.causalPredecessorMissing, remote))
     }
 
     @Test("Discard applies only while the authoritative Sale remains a draft")
@@ -94,20 +85,11 @@ struct SaleSyncPolicyTests {
         )
         let draftRemote = SaleRemoteRecord(
             sale: try SaleDTO(draft),
-            version: .versioned(
-                revision: 1,
-                lastOperationID: syncPolicyUUID("30000000-0000-0000-0000-000000000007")
-            )
+            version: .versioned(revision: 1, lastOperationID: syncPolicyUUID("30000000-0000-0000-0000-000000000007"))
         )
-        let progressedRemote = SaleRemoteRecord(
-            sale: try SaleDTO(progressed),
-            version: draftRemote.version
-        )
+        let progressedRemote = SaleRemoteRecord(sale: try SaleDTO(progressed), version: draftRemote.version)
 
-        guard case .apply(let tombstone) = policy.decision(
-            for: operation,
-            against: draftRemote
-        ) else {
+        guard case .apply(let tombstone) = policy.decision(for: operation, against: draftRemote) else {
             Issue.record("Expected draft discard to apply")
             return
         }
@@ -121,22 +103,15 @@ struct SaleSyncPolicyTests {
     @Test("Draft discard still requires its captured base and causal predecessor")
     func draftDiscardRequiresBaseAndPredecessor() throws {
         let draft = try syncPolicySale(progressed: false)
-        let remoteOperationID = syncPolicyUUID(
-            "30000000-0000-0000-0000-000000000008"
-        )
+        let remoteOperationID = syncPolicyUUID("30000000-0000-0000-0000-000000000008")
         let concurrentDraft = SaleRemoteRecord(
             sale: try SaleDTO(draft),
-            version: .versioned(
-                revision: 2,
-                lastOperationID: remoteOperationID
-            )
+            version: .versioned(revision: 2, lastOperationID: remoteOperationID)
         )
         let staleRoot = SalePendingOperation.discard(
             SalePendingDiscard(
                 saleID: draft.id.rawValue,
-                operationID: syncPolicyUUID(
-                    "30000000-0000-0000-0000-000000000009"
-                ),
+                operationID: syncPolicyUUID("30000000-0000-0000-0000-000000000009"),
                 predecessorOperationID: nil,
                 base: .versioned(1)
             )
@@ -144,38 +119,26 @@ struct SaleSyncPolicyTests {
         let divergentDescendant = SalePendingOperation.discard(
             SalePendingDiscard(
                 saleID: draft.id.rawValue,
-                operationID: syncPolicyUUID(
-                    "30000000-0000-0000-0000-000000000010"
-                ),
-                predecessorOperationID: syncPolicyUUID(
-                    "30000000-0000-0000-0000-000000000011"
-                ),
+                operationID: syncPolicyUUID("30000000-0000-0000-0000-000000000010"),
+                predecessorOperationID: syncPolicyUUID("30000000-0000-0000-0000-000000000011"),
                 base: .versioned(1)
             )
         )
         let matchingDescendant = SalePendingOperation.discard(
             SalePendingDiscard(
                 saleID: draft.id.rawValue,
-                operationID: syncPolicyUUID(
-                    "30000000-0000-0000-0000-000000000012"
-                ),
+                operationID: syncPolicyUUID("30000000-0000-0000-0000-000000000012"),
                 predecessorOperationID: remoteOperationID,
                 base: .versioned(1)
             )
         )
 
-        #expect(
-            policy.decision(for: staleRoot, against: concurrentDraft)
-                == .conflict(.baseChanged, concurrentDraft)
-        )
+        #expect(policy.decision(for: staleRoot, against: concurrentDraft) == .conflict(.baseChanged, concurrentDraft))
         #expect(
             policy.decision(for: divergentDescendant, against: concurrentDraft)
                 == .conflict(.causalPredecessorMissing, concurrentDraft)
         )
-        guard case .apply(let tombstone) = policy.decision(
-            for: matchingDescendant,
-            against: concurrentDraft
-        ) else {
+        guard case .apply(let tombstone) = policy.decision(for: matchingDescendant, against: concurrentDraft) else {
             Issue.record("Expected a causally matching draft discard to apply")
             return
         }

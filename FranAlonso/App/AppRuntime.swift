@@ -34,24 +34,16 @@ final class AppRuntime {
     init(
         modelContainer: ModelContainer,
         environment: FirestoreEnvironment,
-        makeClientRemoteDataSource: @escaping (
-            FirestoreEnvironment
-        ) -> any ClientRemoteDataSource = {
+        makeClientRemoteDataSource: @escaping (FirestoreEnvironment) -> any ClientRemoteDataSource = {
             FirestoreClientRemoteDataSource(environment: $0)
         },
-        makeProductRemoteDataSource: @escaping (
-            FirestoreEnvironment
-        ) -> any ProductRemoteDataSource = {
+        makeProductRemoteDataSource: @escaping (FirestoreEnvironment) -> any ProductRemoteDataSource = {
             FirestoreProductRemoteDataSource(environment: $0)
         },
-        makeServiceRemoteDataSource: @escaping (
-            FirestoreEnvironment
-        ) -> any ServiceRemoteDataSource = {
+        makeServiceRemoteDataSource: @escaping (FirestoreEnvironment) -> any ServiceRemoteDataSource = {
             FirestoreServiceRemoteDataSource(environment: $0)
         },
-        makeSaleRemoteDataSource: @escaping (
-            FirestoreEnvironment
-        ) -> any SaleRemoteDataSource = {
+        makeSaleRemoteDataSource: @escaping (FirestoreEnvironment) -> any SaleRemoteDataSource = {
             FirestoreSaleRemoteDataSource(environment: $0)
         },
         makeAuthenticationRootViewModel: @escaping @MainActor (
@@ -73,21 +65,13 @@ final class AppRuntime {
             )
         }
     ) {
-        let persistenceActor = ClientPersistenceActor(
-            modelContainer: modelContainer
-        )
+        let persistenceActor = ClientPersistenceActor(modelContainer: modelContainer)
         let observationSignal = ClientObservationSignal()
-        let productPersistenceActor = ProductPersistenceActor(
-            modelContainer: modelContainer
-        )
+        let productPersistenceActor = ProductPersistenceActor(modelContainer: modelContainer)
         let productObservationSignal = ProductObservationSignal()
-        let servicePersistenceActor = ServicePersistenceActor(
-            modelContainer: modelContainer
-        )
+        let servicePersistenceActor = ServicePersistenceActor(modelContainer: modelContainer)
         let serviceObservationSignal = ServiceObservationSignal()
-        let salePersistenceActor = SalePersistenceActor(
-            modelContainer: modelContainer
-        )
+        let salePersistenceActor = SalePersistenceActor(modelContainer: modelContainer)
         let saleObservationSignal = SaleObservationSignal()
 
         self.modelContainer = modelContainer

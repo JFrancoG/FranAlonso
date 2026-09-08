@@ -75,11 +75,7 @@ extension ServicePendingUpsertModel {
             return .absent
         }
         guard let baseVersion, let baseData else { throw ServicePendingUpsertPayloadError.incompleteBaseMetadata }
-        guard baseVersion == 1 else {
-            throw ServicePendingUpsertPayloadError.unsupportedBaseVersion(
-                baseVersion
-            )
-        }
+        guard baseVersion == 1 else { throw ServicePendingUpsertPayloadError.unsupportedBaseVersion(baseVersion) }
 
         return try JSONDecoder().decode(ServiceRemoteBase.self, from: baseData)
     }
@@ -90,11 +86,7 @@ extension ServicePendingUpsertModel {
     /// - Throws: `ServicePendingUpsertPayloadError` for an unsupported version, or the
     ///   native decoding error for malformed persisted data.
     func decodePayload() throws -> ServiceDTO {
-        guard payloadVersion == 1 else {
-            throw ServicePendingUpsertPayloadError.unsupportedVersion(
-                payloadVersion
-            )
-        }
+        guard payloadVersion == 1 else { throw ServicePendingUpsertPayloadError.unsupportedVersion(payloadVersion) }
 
         return try JSONDecoder().decode(ServiceDTO.self, from: payloadData)
     }

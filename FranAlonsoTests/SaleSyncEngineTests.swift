@@ -9,24 +9,14 @@ struct SaleSyncEngineTests {
     func repeatedPushAndPullConvergesWithoutDuplicates() async throws {
         let container = try syncEngineContainer()
         let sale = try makeSale(
-            id: try syncEngineSaleID(
-                "54000000-0000-0000-0000-000000000001"
-            ).rawValue,
+            id: try syncEngineSaleID("54000000-0000-0000-0000-000000000001").rawValue,
             name: "Convergent sale"
         )
-        let operationID = try syncEngineUUID(
-            "55000000-0000-0000-0000-000000000001"
-        )
-        try SaleLocalDataSource().persistPendingUpsert(
-            sale,
-            operationID: operationID,
-            in: ModelContext(container)
-        )
+        let operationID = try syncEngineUUID("55000000-0000-0000-0000-000000000001")
+        try SaleLocalDataSource().persistPendingUpsert(sale, operationID: operationID, in: ModelContext(container))
         let remote = SaleSyncRemoteFake()
         let engine = SaleSyncEngine(
-            persistenceActor: SalePersistenceActor(
-                modelContainer: container
-            ),
+            persistenceActor: SalePersistenceActor(modelContainer: container),
             remoteDataSource: remote,
             observationSignal: SaleObservationSignal()
         )
@@ -35,65 +25,32 @@ struct SaleSyncEngineTests {
         try await engine.synchronize()
 
         let verificationContext = ModelContext(container)
-        #expect(
-            try SaleLocalDataSource().fetchAll(in: verificationContext)
-                == [sale]
-        )
-        #expect(
-            try verificationContext.fetchCount(
-                FetchDescriptor<SalePendingUpsertModel>()
-            ) == 0
-        )
+        #expect(try SaleLocalDataSource().fetchAll(in: verificationContext) == [sale])
+        #expect(try verificationContext.fetchCount(FetchDescriptor<SalePendingUpsertModel>()) == 0)
         #expect(await remote.recordCount == 1)
         #expect(
             await remote.record(for: sale.id.rawValue)?.version
-                == .versioned(
-                    revision: 1,
-                    lastOperationID: operationID
-                )
+                == .versioned(revision: 1, lastOperationID: operationID)
         )
         #expect(await remote.receivedOperationIDs == [operationID])
-        #expect(
-            await remote.requestedCursors == [
-                nil,
-                SaleSyncCursor(changeSequence: 0)
-            ]
-        )
+        #expect(await remote.requestedCursors == [ nil, SaleSyncCursor(changeSequence: 0) ])
     }
 
     @MainActor
     @Test("An edit created while A awaits acknowledgement remains visible and later converges")
     func editDuringAcknowledgementRemainsVisibleAndConverges() async throws {
         let container = try syncEngineContainer()
-        let saleID = try syncEngineSaleID(
-            "54000000-0000-0000-0000-000000000002"
-        )
-        let ancestor = try makeSale(
-            id: saleID.rawValue,
-            name: "Ancestor A"
-        )
-        let descendant = try makeSale(
-            id: saleID.rawValue,
-            name: "Descendant B"
-        )
-        let ancestorOperationID = try syncEngineUUID(
-            "55000000-0000-0000-0000-000000000002"
-        )
-        let descendantOperationID = try syncEngineUUID(
-            "55000000-0000-0000-0000-000000000003"
-        )
+        let saleID = try syncEngineSaleID("54000000-0000-0000-0000-000000000002")
+        let ancestor = try makeSale(id: saleID.rawValue, name: "Ancestor A")
+        let descendant = try makeSale(id: saleID.rawValue, name: "Descendant B")
+        let ancestorOperationID = try syncEngineUUID("55000000-0000-0000-0000-000000000002")
+        let descendantOperationID = try syncEngineUUID("55000000-0000-0000-0000-000000000003")
         let localDataSource = SaleLocalDataSource()
-        try localDataSource.persistPendingUpsert(
-            ancestor,
-            operationID: ancestorOperationID,
-            in: container.mainContext
-        )
+        try localDataSource.persistPendingUpsert(ancestor, operationID: ancestorOperationID, in: container.mainContext)
         let acknowledgementGate = SaleSyncAcknowledgementGate()
         let remote = SaleSyncRemoteFake(acknowledgementGate: acknowledgementGate)
         let engine = SaleSyncEngine(
-            persistenceActor: SalePersistenceActor(
-                modelContainer: container
-            ),
+            persistenceActor: SalePersistenceActor(modelContainer: container),
             remoteDataSource: remote,
             observationSignal: SaleObservationSignal()
         )
@@ -110,101 +67,60 @@ struct SaleSyncEngineTests {
         try await firstSynchronization
 
         let postAcknowledgementContext = ModelContext(container)
-        #expect(
-            try localDataSource.fetchAll(in: postAcknowledgementContext)
-                == [descendant]
-        )
+        #expect(try localDataSource.fetchAll(in: postAcknowledgementContext) == [descendant])
         let pendingAfterAcknowledgement = try postAcknowledgementContext.fetch(
             FetchDescriptor<SalePendingUpsertModel>()
         )
-        let descendantOperation = try #require(
-            pendingAfterAcknowledgement.only
-        )
+        let descendantOperation = try #require(pendingAfterAcknowledgement.only)
         #expect(descendantOperation.operationID == descendantOperationID)
-        #expect(
-            descendantOperation.predecessorOperationID
-                == ancestorOperationID
-        )
+        #expect(descendantOperation.predecessorOperationID == ancestorOperationID)
 
         try await engine.synchronize()
 
         let finalContext = ModelContext(container)
         #expect(try localDataSource.fetchAll(in: finalContext) == [descendant])
-        #expect(
-            try finalContext.fetchCount(
-                FetchDescriptor<SalePendingUpsertModel>()
-            ) == 0
-        )
+        #expect(try finalContext.fetchCount(FetchDescriptor<SalePendingUpsertModel>()) == 0)
         #expect(
             await remote.record(for: saleID.rawValue)?.version
-                == .versioned(
-                    revision: 2,
-                    lastOperationID: descendantOperationID
-                )
+                == .versioned(revision: 2, lastOperationID: descendantOperationID)
         )
-        #expect(
-            await remote.receivedOperationIDs == [
-                ancestorOperationID,
-                descendantOperationID
-            ]
-        )
+        #expect(await remote.receivedOperationIDs == [ ancestorOperationID, descendantOperationID ])
     }
 
     @Test("A local deletion converges to a remote tombstone and clears its chain")
     func localDeletionConvergesToRemoteTombstone() async throws {
         let container = try syncEngineContainer()
         let sale = try makeSale(
-            id: try syncEngineSaleID(
-                "54000000-0000-0000-0000-000000000004"
-            ).rawValue,
+            id: try syncEngineSaleID("54000000-0000-0000-0000-000000000004").rawValue,
             name: "Delete through engine"
         )
-        let remoteSeedOperationID = try syncEngineUUID(
-            "55000000-0000-0000-0000-000000000005"
-        )
+        let remoteSeedOperationID = try syncEngineUUID("55000000-0000-0000-0000-000000000005")
         let remote = SaleSyncRemoteFake(
             records: [
                 SaleRemoteRecord(
                     sale: try SaleDTO(sale),
-                    version: .versioned(
-                        revision: 1,
-                        lastOperationID: remoteSeedOperationID
-                    ),
+                    version: .versioned(revision: 1, lastOperationID: remoteSeedOperationID),
                     changeSequence: 1
                 )
             ]
         )
-        let persistenceActor = SalePersistenceActor(
-            modelContainer: container
-        )
+        let persistenceActor = SalePersistenceActor(modelContainer: container)
         let engine = SaleSyncEngine(
             persistenceActor: persistenceActor,
             remoteDataSource: remote,
             observationSignal: SaleObservationSignal()
         )
         try await engine.synchronize()
-        let deleteOperationID = try syncEngineUUID(
-            "55000000-0000-0000-0000-000000000006"
-        )
-        try await persistenceActor.persistPendingDiscard(
-            sale.id,
-            operationID: deleteOperationID
-        )
+        let deleteOperationID = try syncEngineUUID("55000000-0000-0000-0000-000000000006")
+        try await persistenceActor.persistPendingDiscard(sale.id, operationID: deleteOperationID)
 
         try await engine.synchronize()
 
         #expect(try await persistenceActor.fetchAll().isEmpty)
         #expect(try await persistenceActor.pendingOperations().isEmpty)
-        let remoteRecord = try #require(
-            await remote.record(for: sale.id.rawValue)
-        )
+        let remoteRecord = try #require(await remote.record(for: sale.id.rawValue))
         #expect(remoteRecord.isTombstone)
-        #expect(
-            remoteRecord.version == .versioned(
-                revision: 2,
-                lastOperationID: deleteOperationID
-            )
-        )
+        #expect(remoteRecord.version == .versioned(revision: 2, lastOperationID: deleteOperationID))
         #expect(remoteRecord.changeSequence == 2)
     }
 
@@ -212,31 +128,20 @@ struct SaleSyncEngineTests {
     func committedPullIsObservableWhenPushFails() async throws {
         let container = try syncEngineContainer()
         let localSale = try makeSale(
-            id: try syncEngineSaleID(
-                "54000000-0000-0000-0000-000000000005"
-            ).rawValue,
+            id: try syncEngineSaleID("54000000-0000-0000-0000-000000000005").rawValue,
             name: "Pending push"
         )
         let remoteSale = try makeSale(
-            id: try syncEngineSaleID(
-                "54000000-0000-0000-0000-000000000006"
-            ).rawValue,
+            id: try syncEngineSaleID("54000000-0000-0000-0000-000000000006").rawValue,
             name: "Committed pull"
         )
-        let persistenceActor = SalePersistenceActor(
-            modelContainer: container
-        )
+        let persistenceActor = SalePersistenceActor(modelContainer: container)
         let observationSignal = SaleObservationSignal()
         try await persistenceActor.persistPendingUpsert(
             localSale,
-            operationID: try syncEngineUUID(
-                "55000000-0000-0000-0000-000000000007"
-            )
+            operationID: try syncEngineUUID("55000000-0000-0000-0000-000000000007")
         )
-        let repository = DefaultSaleRepository(
-            persistenceActor: persistenceActor,
-            observationSignal: observationSignal
-        )
+        let repository = DefaultSaleRepository(persistenceActor: persistenceActor, observationSignal: observationSignal)
         let stream = await repository.observeSales()
         var observation = stream.makeAsyncIterator()
         #expect(try await observation.next() == [localSale])
@@ -245,9 +150,7 @@ struct SaleSyncEngineTests {
                 sale: try SaleDTO(remoteSale),
                 version: .versioned(
                     revision: 1,
-                    lastOperationID: try syncEngineUUID(
-                        "55000000-0000-0000-0000-000000000008"
-                    )
+                    lastOperationID: try syncEngineUUID("55000000-0000-0000-0000-000000000008")
                 ),
                 changeSequence: 1
             )
@@ -263,13 +166,8 @@ struct SaleSyncEngineTests {
             try await engine.synchronize()
         }
 
-        #expect(
-            try await observation.next() == [remoteSale, localSale]
-        )
-        #expect(
-            try await persistenceActor.cursor()
-                == SaleSyncCursor(changeSequence: 1)
-        )
+        #expect(try await observation.next() == [remoteSale, localSale])
+        #expect(try await persistenceActor.cursor() == SaleSyncCursor(changeSequence: 1))
     }
 
     @Test("A committed delete is signalled before a later push fails")
@@ -277,40 +175,27 @@ struct SaleSyncEngineTests {
         let container = try syncEngineContainer()
         let dataSource = SaleLocalDataSource()
         let deletedSale = try makeSale(
-            id: try syncEngineSaleID(
-                "54000000-0000-0000-0000-000000000007"
-            ).rawValue,
+            id: try syncEngineSaleID("54000000-0000-0000-0000-000000000007").rawValue,
             name: "Committed deletion"
         )
         let failingSale = try makeSale(
-            id: try syncEngineSaleID(
-                "54000000-0000-0000-0000-000000000008"
-            ).rawValue,
+            id: try syncEngineSaleID("54000000-0000-0000-0000-000000000008").rawValue,
             name: "Later failure"
         )
-        try dataSource.upsert(
-            deletedSale,
-            in: ModelContext(container)
-        )
+        try dataSource.upsert(deletedSale, in: ModelContext(container))
         try dataSource.persistPendingDiscard(
             deletedSale.id,
-            operationID: try syncEngineUUID(
-                "55000000-0000-0000-0000-000000000009"
-            ),
+            operationID: try syncEngineUUID("55000000-0000-0000-0000-000000000009"),
             in: ModelContext(container)
         )
         try dataSource.persistPendingUpsert(
             failingSale,
-            operationID: try syncEngineUUID(
-                "55000000-0000-0000-0000-000000000010"
-            ),
+            operationID: try syncEngineUUID("55000000-0000-0000-0000-000000000010"),
             in: ModelContext(container)
         )
         let signal = SaleSyncChangeSignalSpy()
         let engine = SaleSyncEngine(
-            persistenceActor: SalePersistenceActor(
-                modelContainer: container
-            ),
+            persistenceActor: SalePersistenceActor(modelContainer: container),
             remoteDataSource: SaleSyncDeleteThenFailRemote(),
             observationSignal: signal,
             timing: syncEngineImmediateTiming
@@ -321,63 +206,33 @@ struct SaleSyncEngineTests {
         }
 
         #expect(await signal.publishCount == 2)
-        #expect(
-            try dataSource.fetchAll(in: ModelContext(container))
-                == [failingSale]
-        )
+        #expect(try dataSource.fetchAll(in: ModelContext(container)) == [failingSale])
     }
 
     @Test("A push conflict blocks descendants without replacing the root snapshots")
     func pushConflictBlocksDescendantsAndPreservesRoot() async throws {
         let container = try syncEngineContainer()
         let dataSource = SaleLocalDataSource()
-        let saleID = try syncEngineSaleID(
-            "54000000-0000-0000-0000-000000000009"
-        )
-        let root = try makeSale(
-            id: saleID.rawValue,
-            name: "Root snapshot A"
-        )
-        let descendant = try makeSale(
-            id: saleID.rawValue,
-            name: "Descendant snapshot B"
-        )
-        let rootOperationID = try syncEngineUUID(
-            "55000000-0000-0000-0000-000000000011"
-        )
-        let descendantOperationID = try syncEngineUUID(
-            "55000000-0000-0000-0000-000000000012"
-        )
-        try dataSource.persistPendingUpsert(
-            root,
-            operationID: rootOperationID,
-            in: ModelContext(container)
-        )
-        try dataSource.persistPendingUpsert(
-            descendant,
-            operationID: descendantOperationID,
-            in: ModelContext(container)
-        )
-        let concurrentRemote = try makeSale(
-            id: saleID.rawValue,
-            name: "Concurrent remote"
-        )
+        let saleID = try syncEngineSaleID("54000000-0000-0000-0000-000000000009")
+        let root = try makeSale(id: saleID.rawValue, name: "Root snapshot A")
+        let descendant = try makeSale(id: saleID.rawValue, name: "Descendant snapshot B")
+        let rootOperationID = try syncEngineUUID("55000000-0000-0000-0000-000000000011")
+        let descendantOperationID = try syncEngineUUID("55000000-0000-0000-0000-000000000012")
+        try dataSource.persistPendingUpsert(root, operationID: rootOperationID, in: ModelContext(container))
+        try dataSource.persistPendingUpsert(descendant, operationID: descendantOperationID, in: ModelContext(container))
+        let concurrentRemote = try makeSale(id: saleID.rawValue, name: "Concurrent remote")
         let remote = SaleSyncPushConflictRemote(
             record: SaleRemoteRecord(
                 sale: try SaleDTO(concurrentRemote),
                 version: .versioned(
                     revision: 1,
-                    lastOperationID: try syncEngineUUID(
-                        "55000000-0000-0000-0000-000000000013"
-                    )
+                    lastOperationID: try syncEngineUUID("55000000-0000-0000-0000-000000000013")
                 ),
                 changeSequence: 1
             )
         )
         let engine = SaleSyncEngine(
-            persistenceActor: SalePersistenceActor(
-                modelContainer: container
-            ),
+            persistenceActor: SalePersistenceActor(modelContainer: container),
             remoteDataSource: remote,
             observationSignal: SaleObservationSignal()
         )
@@ -385,11 +240,7 @@ struct SaleSyncEngineTests {
         try await engine.synchronize()
 
         #expect(await remote.receivedOperationIDs == [rootOperationID])
-        let conflict = try #require(
-            ModelContext(container).fetch(
-                FetchDescriptor<SaleSyncConflictModel>()
-            ).only
-        )
+        let conflict = try #require(ModelContext(container).fetch(FetchDescriptor<SaleSyncConflictModel>()).only)
         #expect(conflict.operationID == rootOperationID)
         let expectedRoot = try SaleDTO(root)
         #expect(try conflict.decodeLocalSale() == expectedRoot)
@@ -435,10 +286,7 @@ private actor SaleSyncRemoteFake: SaleRemoteDataSource {
             guard let cursor else { return true }
             return (record.changeSequence ?? 0) > cursor.changeSequence
         }.sorted { $0.id > $1.id }
-        return SaleRemoteChangeBatch(
-            records: records,
-            nextCursor: SaleSyncCursor(changeSequence: changeSequence)
-        )
+        return SaleRemoteChangeBatch(records: records, nextCursor: SaleSyncCursor(changeSequence: changeSequence))
     }
 
     func apply(_ operation: SalePendingOperation) async throws -> SaleRemoteMutationResult {
@@ -479,10 +327,7 @@ private actor SaleSyncFailingPushRemote: SaleRemoteDataSource {
     }
 
     func fetchChanges(after cursor: SaleSyncCursor?) async throws -> SaleRemoteChangeBatch {
-        SaleRemoteChangeBatch(
-            records: cursor == nil ? [record] : [],
-            nextCursor: SaleSyncCursor(changeSequence: 1)
-        )
+        SaleRemoteChangeBatch(records: cursor == nil ? [record] : [], nextCursor: SaleSyncCursor(changeSequence: 1))
     }
 
     func apply(_ operation: SalePendingOperation) async throws -> SaleRemoteMutationResult {
@@ -495,10 +340,7 @@ private actor SaleSyncDeleteThenFailRemote: SaleRemoteDataSource {
     private var mutationCount = 0
 
     func fetchChanges(after cursor: SaleSyncCursor?) async throws -> SaleRemoteChangeBatch {
-        SaleRemoteChangeBatch(
-            records: [],
-            nextCursor: cursor ?? SaleSyncCursor(changeSequence: 0)
-        )
+        SaleRemoteChangeBatch(records: [], nextCursor: cursor ?? SaleSyncCursor(changeSequence: 0))
     }
 
     func apply(_ operation: SalePendingOperation) async throws -> SaleRemoteMutationResult {
@@ -511,10 +353,7 @@ private actor SaleSyncDeleteThenFailRemote: SaleRemoteDataSource {
         return .applied(
             SaleRemoteRecord(
                 content: .tombstone(saleID: delete.saleID),
-                version: .versioned(
-                    revision: 1,
-                    lastOperationID: delete.operationID
-                ),
+                version: .versioned(revision: 1, lastOperationID: delete.operationID),
                 changeSequence: changeSequence
             )
         )
@@ -532,10 +371,7 @@ private actor SaleSyncPushConflictRemote: SaleRemoteDataSource {
     var receivedOperationIDs: [UUID] { operationIDs }
 
     func fetchChanges(after cursor: SaleSyncCursor?) async throws -> SaleRemoteChangeBatch {
-        SaleRemoteChangeBatch(
-            records: [],
-            nextCursor: cursor ?? SaleSyncCursor(changeSequence: 0)
-        )
+        SaleRemoteChangeBatch(records: [], nextCursor: cursor ?? SaleSyncCursor(changeSequence: 0))
     }
 
     func apply(_ operation: SalePendingOperation) async throws -> SaleRemoteMutationResult {
@@ -594,12 +430,8 @@ private let syncEngineImmediateTiming = SyncTiming(
 
 private func makeSale(id: UUID, name: String) throws -> Sale {
     let line = try SaleLine.upcoming(
-        id: SaleLineID(
-            rawValue: UUID(uuidString: "56000000-0000-0000-0000-000000000001")!
-        ),
-        serviceID: ServiceID(
-            rawValue: UUID(uuidString: "56000000-0000-0000-0000-000000000002")!
-        ),
+        id: SaleLineID(rawValue: UUID(uuidString: "56000000-0000-0000-0000-000000000001")!),
+        serviceID: ServiceID(rawValue: UUID(uuidString: "56000000-0000-0000-0000-000000000002")!),
         serviceName: name,
         quantity: 1,
         unitPrice: Money(amount: 10, currency: .eur),

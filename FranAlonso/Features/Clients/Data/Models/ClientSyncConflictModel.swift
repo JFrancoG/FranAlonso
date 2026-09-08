@@ -81,9 +81,7 @@ extension ClientSyncConflictModel {
     /// Decodes the stable conflict classification retained for resolution.
     func decodeReason() throws -> ClientSyncConflictReason {
         guard let reason = ClientSyncConflictReason(rawValue: reasonRawValue) else {
-            throw ClientSyncPersistenceError.invalidConflictReason(
-                reasonRawValue
-            )
+            throw ClientSyncPersistenceError.invalidConflictReason(reasonRawValue)
         }
         return reason
     }
@@ -109,11 +107,7 @@ extension ClientSyncConflictModel {
     }
 
     private func requireSupportedVersion() throws {
-        guard payloadVersion == 1 else {
-            throw ClientSyncPersistenceError.unsupportedConflictVersion(
-                payloadVersion
-            )
-        }
+        guard payloadVersion == 1 else { throw ClientSyncPersistenceError.unsupportedConflictVersion(payloadVersion) }
     }
 }
 
@@ -134,9 +128,7 @@ extension ClientDTO {
     ///
     /// - Throws: `ClientSyncPersistenceError.entityIdentityMismatch` when `id` is invalid.
     func stableUUID() throws -> UUID {
-        guard let identifier = UUID(uuidString: id) else {
-            throw ClientSyncPersistenceError.entityIdentityMismatch
-        }
+        guard let identifier = UUID(uuidString: id) else { throw ClientSyncPersistenceError.entityIdentityMismatch }
         return identifier
     }
 }

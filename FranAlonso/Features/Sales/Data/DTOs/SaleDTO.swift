@@ -115,9 +115,7 @@ extension SaleTaxRateDTO {
             description: "Sale tax payload does not match v1."
         )
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.init(
-            percentage: try container.decode(CanonicalDecimalDTO.self, forKey: .percentage)
-        )
+        self.init(percentage: try container.decode(CanonicalDecimalDTO.self, forKey: .percentage))
     }
 }
 
@@ -133,9 +131,7 @@ extension SaleDiscountDTO {
             description: "Sale discount payload does not match v1."
         )
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.init(
-            percentage: try container.decode(CanonicalDecimalDTO.self, forKey: .percentage)
-        )
+        self.init(percentage: try container.decode(CanonicalDecimalDTO.self, forKey: .percentage))
     }
 }
 
@@ -246,11 +242,7 @@ enum SaleStatusDTO: Equatable {
     case awaitingPayment
     case awaitingDocument(payment: SalePaymentDTO)
     case closed(payment: SalePaymentDTO, document: SaleDocumentDTO)
-    case voided(
-        payment: SalePaymentDTO,
-        document: SaleDocumentDTO,
-        reversal: SaleReversalDTO
-    )
+    case voided(payment: SalePaymentDTO, document: SaleDocumentDTO, reversal: SaleReversalDTO)
 }
 
 extension SaleDTO {
@@ -268,10 +260,7 @@ extension SaleDTO {
         let allowedKeys = Set(CodingKeys.allCases.map(\.rawValue))
         guard Set(strictContainer.allKeys.map(\.stringValue)).isSubset(of: allowedKeys) else {
             throw DecodingError.dataCorrupted(
-                .init(
-                    codingPath: decoder.codingPath,
-                    debugDescription: "Unexpected Sale payload key."
-                )
+                .init(codingPath: decoder.codingPath, debugDescription: "Unexpected Sale payload key.")
             )
         }
 
@@ -321,9 +310,7 @@ extension SaleStatusDTO: Codable {
             self = .awaitingPayment
         case .awaitingDocument:
             try Self.requireKeys([.kind, .payment], in: strictContainer, decoder: decoder)
-            self = .awaitingDocument(
-                payment: try container.decode(SalePaymentDTO.self, forKey: .payment)
-            )
+            self = .awaitingDocument(payment: try container.decode(SalePaymentDTO.self, forKey: .payment))
         case .closed:
             try Self.requireKeys([.kind, .payment, .document], in: strictContainer, decoder: decoder)
             self = .closed(
@@ -331,11 +318,7 @@ extension SaleStatusDTO: Codable {
                 document: try container.decode(SaleDocumentDTO.self, forKey: .document)
             )
         case .voided:
-            try Self.requireKeys(
-                [.kind, .payment, .document, .reversal],
-                in: strictContainer,
-                decoder: decoder
-            )
+            try Self.requireKeys([.kind, .payment, .document, .reversal], in: strictContainer, decoder: decoder)
             self = .voided(
                 payment: try container.decode(SalePaymentDTO.self, forKey: .payment),
                 document: try container.decode(SaleDocumentDTO.self, forKey: .document),
@@ -375,10 +358,7 @@ extension SaleStatusDTO: Codable {
     ) throws {
         guard Set(container.allKeys.map(\.stringValue)) == Set(expected.map(\.rawValue)) else {
             throw DecodingError.dataCorrupted(
-                .init(
-                    codingPath: decoder.codingPath,
-                    debugDescription: "Sale status payload does not match its kind."
-                )
+                .init(codingPath: decoder.codingPath, debugDescription: "Sale status payload does not match its kind.")
             )
         }
     }
@@ -402,12 +382,7 @@ private struct SaleDynamicCodingKey: CodingKey, Hashable {
 private func requireExactSalePayloadKeys(_ expected: [String], decoder: any Decoder, description: String) throws {
     let container = try decoder.container(keyedBy: SaleDynamicCodingKey.self)
     guard Set(container.allKeys.map(\.stringValue)) == Set(expected) else {
-        throw DecodingError.dataCorrupted(
-            .init(
-                codingPath: decoder.codingPath,
-                debugDescription: description
-            )
-        )
+        throw DecodingError.dataCorrupted(.init(codingPath: decoder.codingPath, debugDescription: description))
     }
 }
 
@@ -420,11 +395,6 @@ private func requireSalePayloadKeys(
     let container = try decoder.container(keyedBy: SaleDynamicCodingKey.self)
     let actual = Set(container.allKeys.map(\.stringValue))
     guard actual.isSuperset(of: required), actual.isSubset(of: allowed) else {
-        throw DecodingError.dataCorrupted(
-            .init(
-                codingPath: decoder.codingPath,
-                debugDescription: description
-            )
-        )
+        throw DecodingError.dataCorrupted(.init(codingPath: decoder.codingPath, debugDescription: description))
     }
 }

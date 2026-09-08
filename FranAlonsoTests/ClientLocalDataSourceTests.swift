@@ -10,10 +10,7 @@ struct ClientLocalDataSourceTests {
     @Test("Explicit save makes an inserted client visible from another context")
     func explicitSaveMakesAnInsertedClientVisibleFromAnotherContext() throws {
         let container = try makeClientContainer()
-        let client = try completeClient(
-            id: "10000000-0000-0000-0000-000000000001",
-            displayName: "Ana Alonso"
-        )
+        let client = try completeClient(id: "10000000-0000-0000-0000-000000000001", displayName: "Ana Alonso")
         let insertionContext = ModelContext(container)
         insertionContext.autosaveEnabled = false
 
@@ -28,14 +25,8 @@ struct ClientLocalDataSourceTests {
     func upsertUpdatesTheClientWithTheSameStableIdentifier() throws {
         let container = try makeClientContainer()
         let identifier = "10000000-0000-0000-0000-000000000002"
-        let initialClient = Client.draft(
-            id: try clientID(identifier),
-            displayName: "Initial name"
-        )
-        let updatedClient = try completeClient(
-            id: identifier,
-            displayName: "Updated name"
-        )
+        let initialClient = Client.draft(id: try clientID(identifier), displayName: "Initial name")
+        let updatedClient = try completeClient(id: identifier, displayName: "Updated name")
 
         try dataSource.upsert(initialClient, in: ModelContext(container))
         try dataSource.upsert(updatedClient, in: ModelContext(container))
@@ -49,14 +40,8 @@ struct ClientLocalDataSourceTests {
     func modelSchemaEnforcesUniqueClientIdentifiers() throws {
         let container = try makeClientContainer()
         let identifier = "10000000-0000-0000-0000-000000000003"
-        let firstClient = Client.draft(
-            id: try clientID(identifier),
-            displayName: "First value"
-        )
-        let replacementClient = Client.draft(
-            id: try clientID(identifier),
-            displayName: "Replacement value"
-        )
+        let firstClient = Client.draft(id: try clientID(identifier), displayName: "First value")
+        let replacementClient = Client.draft(id: try clientID(identifier), displayName: "Replacement value")
         let firstContext = ModelContext(container)
         firstContext.insert(ClientModel(firstClient))
         try firstContext.save()
@@ -67,9 +52,7 @@ struct ClientLocalDataSourceTests {
 
         let verificationContext = ModelContext(container)
         #expect(try verificationContext.fetchCount(FetchDescriptor<ClientModel>()) == 1)
-        #expect(
-            try dataSource.fetchAll(in: verificationContext) == [replacementClient]
-        )
+        #expect(try dataSource.fetchAll(in: verificationContext) == [replacementClient])
     }
 
     @Test("Delete removes an existing client and is idempotent when repeated")
@@ -146,11 +129,7 @@ private func completeClient(id: String, displayName: String) throws -> Client {
             city: "Sevilla",
             province: "Sevilla"
         ),
-        status: .active(
-            consentReference: try ClientConsentReference(
-                rawValue: "consents/client/signed.pdf"
-            )
-        )
+        status: .active(consentReference: try ClientConsentReference(rawValue: "consents/client/signed.pdf"))
     )
 }
 

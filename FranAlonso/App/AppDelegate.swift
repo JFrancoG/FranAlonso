@@ -21,10 +21,7 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
     ) -> Bool {
-        completeApplicationBootstrap(
-            for: ApplicationLaunchPlan.current,
-            configureFirebase: configureFirebase
-        )
+        completeApplicationBootstrap(for: ApplicationLaunchPlan.current, configureFirebase: configureFirebase)
         return true
     }
 
@@ -36,18 +33,14 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
 #if FRANALONSO_AUTH_FIXTURE
         switch plan {
         case .live:
-            completeFirebaseBootstrap(
-                configurationSucceeded: configureFirebase()
-            )
+            completeFirebaseBootstrap(configurationSucceeded: configureFirebase())
         case .authenticationFixture:
             firebaseBootstrapState = .fixtureReady
         case .invalidFixtureConfiguration:
             firebaseBootstrapState = .fixtureConfigurationFailed
         }
 #else
-        completeFirebaseBootstrap(
-            configurationSucceeded: configureFirebase()
-        )
+        completeFirebaseBootstrap(configurationSucceeded: configureFirebase())
 #endif
     }
 

@@ -42,9 +42,7 @@ protocol ProductRemoteDataSource: Sendable {
     /// - Parameter cursor: Nil for the legacy-inclusive bootstrap, otherwise the last commit.
     /// - Returns: Provider-neutral records and their next durable cursor.
     /// - Throws: A stable transport error or a decoding error with its coding path.
-    func fetchChanges(
-        after cursor: ProductSyncCursor?
-    ) async throws -> ProductRemoteChangeBatch
+    func fetchChanges(after cursor: ProductSyncCursor?) async throws -> ProductRemoteChangeBatch
 
     /// Applies one immutable Products upsert or deletion under its causal precondition.
     ///
@@ -54,7 +52,5 @@ protocol ProductRemoteDataSource: Sendable {
     /// - Parameter operation: The durable operation and remote base to evaluate.
     /// - Returns: The applied, idempotent or conflict outcome observed transactionally.
     /// - Throws: A stable transport, decoding or sync-metadata error.
-    func apply(
-        _ operation: ProductPendingOperation
-    ) async throws -> ProductRemoteMutationResult
+    func apply(_ operation: ProductPendingOperation) async throws -> ProductRemoteMutationResult
 }

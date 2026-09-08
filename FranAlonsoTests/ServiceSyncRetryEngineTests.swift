@@ -8,61 +8,33 @@ struct ServiceSyncRetryEngineTests {
     @Test("A recoverable pull retries with deterministic exponential delays")
     func recoverablePullRetriesWithDeterministicDelays() async throws {
         let container = try retryEngineContainer()
-        let timing = RetryManualTiming(
-            now: Date(timeIntervalSinceReferenceDate: 1_000)
-        )
+        let timing = RetryManualTiming(now: Date(timeIntervalSinceReferenceDate: 1_000))
         let remote = RetryPullRemote(failuresBeforeSuccess: 2)
-        let engine = retryEngine(
-            container: container,
-            remote: remote,
-            timing: timing.dependency
-        )
+        let engine = retryEngine(container: container, remote: remote, timing: timing.dependency)
 
         try await engine.synchronize()
 
         #expect(await remote.fetchCount == 3)
         #expect(await timing.recordedSleeps == [.seconds(1), .seconds(2)])
-        #expect(
-            try await ServicePersistenceActor(modelContainer: container)
-                .retryState(for: .pull) == nil
-        )
+        #expect(try await ServicePersistenceActor(modelContainer: container) .retryState(for: .pull) == nil)
     }
 
     @Test("Each pending operation owns an independent three-attempt budget")
     func eachPendingOperationOwnsIndependentAttemptBudget() async throws {
         let container = try retryEngineContainer()
-        let firstService = try retryEngineService(
-            id: "72000000-0000-0000-0000-000000000001",
-            name: "First retry scope"
-        )
+        let firstService = try retryEngineService(id: "72000000-0000-0000-0000-000000000001", name: "First retry scope")
         let secondService = try retryEngineService(
             id: "72000000-0000-0000-0000-000000000002",
             name: "Second retry scope"
         )
-        let firstOperationID = retryEngineUUID(
-            "73000000-0000-0000-0000-000000000001"
-        )
-        let secondOperationID = retryEngineUUID(
-            "73000000-0000-0000-0000-000000000002"
-        )
+        let firstOperationID = retryEngineUUID("73000000-0000-0000-0000-000000000001")
+        let secondOperationID = retryEngineUUID("73000000-0000-0000-0000-000000000002")
         let actor = ServicePersistenceActor(modelContainer: container)
-        try await actor.persistPendingUpsert(
-            firstService,
-            operationID: firstOperationID
-        )
-        try await actor.persistPendingUpsert(
-            secondService,
-            operationID: secondOperationID
-        )
-        let timing = RetryManualTiming(
-            now: Date(timeIntervalSinceReferenceDate: 2_000)
-        )
+        try await actor.persistPendingUpsert(firstService, operationID: firstOperationID)
+        try await actor.persistPendingUpsert(secondService, operationID: secondOperationID)
+        let timing = RetryManualTiming(now: Date(timeIntervalSinceReferenceDate: 2_000))
         let remote = RetryOperationsRemote(failuresBeforeSuccess: 2)
-        let engine = retryEngine(
-            container: container,
-            remote: remote,
-            timing: timing.dependency
-        )
+        let engine = retryEngine(container: container, remote: remote, timing: timing.dependency)
 
         try await engine.synchronize()
 
@@ -70,10 +42,7 @@ struct ServiceSyncRetryEngineTests {
         #expect(receivedOperationIDs.filter { $0 == firstOperationID }.count == 3)
         #expect(receivedOperationIDs.filter { $0 == secondOperationID }.count == 3)
         #expect(receivedOperationIDs.count == 6)
-        #expect(
-            await timing.recordedSleeps
-                == [.seconds(1), .seconds(2), .seconds(1), .seconds(2)]
-        )
+        #expect(await timing.recordedSleeps == [.seconds(1), .seconds(2), .seconds(1), .seconds(2)])
         #expect(try await actor.pendingOperations().isEmpty)
     }
 
@@ -83,37 +52,24 @@ struct ServiceSyncRetryEngineTests {
         let start = Date(timeIntervalSinceReferenceDate: 3_000)
         let timing = RetryManualTiming(now: start)
         let failingRemote = RetryPullRemote(failuresBeforeSuccess: .max)
-        let firstEngine = retryEngine(
-            container: container,
-            remote: failingRemote,
-            timing: timing.dependency
-        )
+        let firstEngine = retryEngine(container: container, remote: failingRemote, timing: timing.dependency)
 
         await #expect(throws: ServiceRemoteDataSourceError.unavailable) {
             try await firstEngine.synchronize()
         }
 
         let actor = ServicePersistenceActor(modelContainer: container)
-        let persisted = try #require(
-            try await actor.retryState(for: .pull)
-        )
+        let persisted = try #require(try await actor.retryState(for: .pull))
         #expect(persisted.backoffStep == 3)
         #expect(persisted.notBefore == start.addingTimeInterval(7))
         #expect(await timing.recordedSleeps == [.seconds(1), .seconds(2)])
 
         let recoveredRemote = RetryPullRemote(failuresBeforeSuccess: 0)
-        let restartedEngine = retryEngine(
-            container: container,
-            remote: recoveredRemote,
-            timing: timing.dependency
-        )
+        let restartedEngine = retryEngine(container: container, remote: recoveredRemote, timing: timing.dependency)
 
         try await restartedEngine.synchronize()
 
-        #expect(
-            await timing.recordedSleeps
-                == [.seconds(1), .seconds(2), .seconds(4)]
-        )
+        #expect(await timing.recordedSleeps == [.seconds(1), .seconds(2), .seconds(4)])
         #expect(try await actor.retryState(for: .pull) == nil)
     }
 
@@ -129,15 +85,9 @@ struct ServiceSyncRetryEngineTests {
                 lastRecoverableCategory: .unavailable
             )
         )
-        let timing = RetryManualTiming(
-            now: Date(timeIntervalSinceReferenceDate: 4_000)
-        )
+        let timing = RetryManualTiming(now: Date(timeIntervalSinceReferenceDate: 4_000))
         let remote = RetryDefinitivePullRemote()
-        let engine = retryEngine(
-            container: container,
-            remote: remote,
-            timing: timing.dependency
-        )
+        let engine = retryEngine(container: container, remote: remote, timing: timing.dependency)
 
         await #expect(throws: ServiceRemoteDataSourceError.permissionDenied) {
             try await engine.synchronize()
@@ -153,11 +103,7 @@ struct ServiceSyncRetryEngineTests {
         let container = try retryEngineContainer()
         let gate = RetryRemoteGate()
         let remote = RetryGatedPullRemote(gate: gate, outcome: .success)
-        let engine = retryEngine(
-            container: container,
-            remote: remote,
-            timing: RetryManualTiming(now: .now).dependency
-        )
+        let engine = retryEngine(container: container, remote: remote, timing: RetryManualTiming(now: .now).dependency)
         let first = Task { try await engine.synchronize() }
         await gate.waitUntilBlocked()
 
@@ -184,11 +130,7 @@ struct ServiceSyncRetryEngineTests {
             jitterFactor: { 1 }
         )
         let remote = RetryPullRemote(failuresBeforeSuccess: .max)
-        let engine = retryEngine(
-            container: container,
-            remote: remote,
-            timing: timing
-        )
+        let engine = retryEngine(container: container, remote: remote, timing: timing)
         let task = Task { try await engine.synchronize() }
         await sleeping.waitUntilStarted()
 
@@ -198,10 +140,7 @@ struct ServiceSyncRetryEngineTests {
             try await task.value
         }
         #expect(await sleeping.duration == .seconds(1))
-        #expect(
-            try await ServicePersistenceActor(modelContainer: container)
-                .retryState(for: .pull)?.backoffStep == 1
-        )
+        #expect(try await ServicePersistenceActor(modelContainer: container) .retryState(for: .pull)?.backoffStep == 1)
     }
 
     @Test("Cancellation wins when non-cancelable remote I/O later throws")
@@ -210,11 +149,7 @@ struct ServiceSyncRetryEngineTests {
         let gate = RetryRemoteGate()
         let remote = RetryGatedPullRemote(gate: gate, outcome: .unavailable)
         let timing = RetryManualTiming(now: .now)
-        let engine = retryEngine(
-            container: container,
-            remote: remote,
-            timing: timing.dependency
-        )
+        let engine = retryEngine(container: container, remote: remote, timing: timing.dependency)
         let task = Task { try await engine.synchronize() }
         await gate.waitUntilBlocked()
 
@@ -225,10 +160,7 @@ struct ServiceSyncRetryEngineTests {
             try await task.value
         }
         #expect(await timing.recordedSleeps.isEmpty)
-        #expect(
-            try await ServicePersistenceActor(modelContainer: container)
-                .retryState(for: .pull) == nil
-        )
+        #expect(try await ServicePersistenceActor(modelContainer: container) .retryState(for: .pull) == nil)
     }
 
     @Test("Cancellation during jitter prevents a new durable retry write")
@@ -258,10 +190,7 @@ struct ServiceSyncRetryEngineTests {
         await #expect(throws: CancellationError.self) {
             try await task.value
         }
-        #expect(
-            try await ServicePersistenceActor(modelContainer: container)
-                .retryState(for: .pull) == nil
-        )
+        #expect(try await ServicePersistenceActor(modelContainer: container) .retryState(for: .pull) == nil)
     }
 
     @Test("A remote commit returned after cancellation converges on the next pass")
@@ -271,21 +200,12 @@ struct ServiceSyncRetryEngineTests {
             id: "72000000-0000-0000-0000-000000000003",
             name: "Committed while cancelled"
         )
-        let operationID = retryEngineUUID(
-            "73000000-0000-0000-0000-000000000003"
-        )
+        let operationID = retryEngineUUID("73000000-0000-0000-0000-000000000003")
         let actor = ServicePersistenceActor(modelContainer: container)
-        try await actor.persistPendingUpsert(
-            service,
-            operationID: operationID
-        )
+        try await actor.persistPendingUpsert(service, operationID: operationID)
         let gate = RetryRemoteGate()
         let remote = RetryCommittedMutationRemote(gate: gate)
-        let engine = retryEngine(
-            container: container,
-            remote: remote,
-            timing: RetryManualTiming(now: .now).dependency
-        )
+        let engine = retryEngine(container: container, remote: remote, timing: RetryManualTiming(now: .now).dependency)
         let cancelledPass = Task { try await engine.synchronize() }
         await gate.waitUntilBlocked()
 
@@ -348,10 +268,7 @@ private actor RetryPullRemote: ServiceRemoteDataSource {
         if calls <= failuresBeforeSuccess {
             throw ServiceRemoteDataSourceError.unavailable
         }
-        return ServiceRemoteChangeBatch(
-            records: [],
-            nextCursor: cursor ?? ServiceSyncCursor(changeSequence: 0)
-        )
+        return ServiceRemoteChangeBatch(records: [], nextCursor: cursor ?? ServiceSyncCursor(changeSequence: 0))
     }
 
     func apply(_ operation: ServicePendingOperation) async throws -> ServiceRemoteMutationResult {
@@ -372,10 +289,7 @@ private actor RetryOperationsRemote: ServiceRemoteDataSource {
     var receivedOperationIDs: [UUID] { received }
 
     func fetchChanges(after cursor: ServiceSyncCursor?) async throws -> ServiceRemoteChangeBatch {
-        ServiceRemoteChangeBatch(
-            records: [],
-            nextCursor: cursor ?? ServiceSyncCursor(changeSequence: 0)
-        )
+        ServiceRemoteChangeBatch(records: [], nextCursor: cursor ?? ServiceSyncCursor(changeSequence: 0))
     }
 
     func apply(_ operation: ServicePendingOperation) async throws -> ServiceRemoteMutationResult {
@@ -389,10 +303,7 @@ private actor RetryOperationsRemote: ServiceRemoteDataSource {
         return .applied(
             ServiceRemoteRecord(
                 content: retryDesiredContent(for: operation),
-                version: .versioned(
-                    revision: 1,
-                    lastOperationID: operation.operationID
-                ),
+                version: .versioned(revision: 1, lastOperationID: operation.operationID),
                 changeSequence: sequence
             )
         )
@@ -436,10 +347,7 @@ private actor RetryGatedPullRemote: ServiceRemoteDataSource {
         await gate.block()
         switch outcome {
         case .success:
-            return ServiceRemoteChangeBatch(
-                records: [],
-                nextCursor: cursor ?? ServiceSyncCursor(changeSequence: 0)
-            )
+            return ServiceRemoteChangeBatch(records: [], nextCursor: cursor ?? ServiceSyncCursor(changeSequence: 0))
         case .unavailable:
             throw ServiceRemoteDataSourceError.unavailable
         }
@@ -471,9 +379,7 @@ private actor RetryCommittedMutationRemote: ServiceRemoteDataSource {
         }
         return ServiceRemoteChangeBatch(
             records: records,
-            nextCursor: ServiceSyncCursor(
-                changeSequence: record?.changeSequence ?? 0
-            )
+            nextCursor: ServiceSyncCursor(changeSequence: record?.changeSequence ?? 0)
         )
     }
 
@@ -481,10 +387,7 @@ private actor RetryCommittedMutationRemote: ServiceRemoteDataSource {
         applies += 1
         let committed = ServiceRemoteRecord(
             content: retryDesiredContent(for: operation),
-            version: .versioned(
-                revision: 1,
-                lastOperationID: operation.operationID
-            ),
+            version: .versioned(revision: 1, lastOperationID: operation.operationID),
             changeSequence: 1
         )
         record = committed
@@ -559,11 +462,7 @@ private func retryEngineContainer() throws -> ModelContainer {
 }
 
 private func retryEngineService(id: String, name: String) throws -> Service {
-    try makeService(
-        id: retryEngineUUID(id),
-        name: name,
-        discountPercentage: nil
-    )
+    try makeService(id: retryEngineUUID(id), name: name, discountPercentage: nil)
 }
 
 private func retryEngineUUID(_ value: String) -> UUID {

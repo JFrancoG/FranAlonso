@@ -76,11 +76,7 @@ struct AppDependenciesTests {
     func swiftUIEnvironmentResolvesClientsThroughTheInjectedRepository() async throws {
         let expectedClients = [
             Client.draft(
-                id: ClientID(
-                    rawValue: UUID(
-                        uuidString: "AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE"
-                    )!
-                ),
+                id: ClientID(rawValue: UUID(uuidString: "AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE")!),
                 displayName: "Ana Alonso"
             )
         ]
@@ -107,11 +103,7 @@ struct AppDependenciesTests {
     func previewDependenciesExposeTheirSeededClients() async throws {
         let expectedClients = [
             Client.draft(
-                id: ClientID(
-                    rawValue: UUID(
-                        uuidString: "AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE"
-                    )!
-                ),
+                id: ClientID(rawValue: UUID(uuidString: "AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE")!),
                 displayName: "Ana Alonso"
             )
         ]
@@ -127,9 +119,7 @@ struct AppDependenciesTests {
     @Test("Application dependencies resolve Products through the injected repository")
     func dependenciesResolveProductsThroughTheInjectedRepository() async throws {
         let expectedProducts = [compositionProduct()]
-        let repository = CompositionProductRepositoryFake(
-            products: expectedProducts
-        )
+        let repository = CompositionProductRepositoryFake(products: expectedProducts)
         let dependencies = AppDependencies(
             clientRepository: CompositionClientRepositoryFake(clients: []),
             productRepository: repository,
@@ -161,9 +151,7 @@ struct AppDependenciesTests {
     @Test("Application dependencies resolve Services through the injected repository")
     func dependenciesResolveServicesThroughTheInjectedRepository() async throws {
         let expectedServices = [try compositionService()]
-        let repository = CompositionServiceRepositoryFake(
-            services: expectedServices
-        )
+        let repository = CompositionServiceRepositoryFake(services: expectedServices)
         let dependencies = AppDependencies(
             clientRepository: CompositionClientRepositoryFake(clients: []),
             productRepository: CompositionProductRepositoryFake(products: []),
@@ -331,20 +319,14 @@ private actor CompositionSaleRepositoryFake: SaleRepository {
 
 private func compositionProduct() -> Product {
     Product.testSnapshot(
-        id: ProductID(
-            rawValue: UUID(
-                uuidString: "BBBBBBBB-CCCC-DDDD-EEEE-FFFFFFFFFFFF"
-            )!
-        ),
+        id: ProductID(rawValue: UUID(uuidString: "BBBBBBBB-CCCC-DDDD-EEEE-FFFFFFFFFFFF")!),
         name: "Champú"
     )
 }
 
 private func compositionService() throws -> Service {
     try makeService(
-        id: UUID(
-            uuidString: "CCCCCCCC-DDDD-EEEE-FFFF-AAAAAAAAAAAA"
-        )!,
+        id: UUID(uuidString: "CCCCCCCC-DDDD-EEEE-FFFF-AAAAAAAAAAAA")!,
         name: "Corte y peinado",
         discountPercentage: nil
     )
@@ -352,12 +334,8 @@ private func compositionService() throws -> Service {
 
 private func compositionSale() throws -> Sale {
     let line = try SaleLine.upcoming(
-        id: SaleLineID(
-            rawValue: UUID(uuidString: "DDDDDDDD-EEEE-FFFF-AAAA-BBBBBBBBBBBB")!
-        ),
-        serviceID: ServiceID(
-            rawValue: UUID(uuidString: "EEEEEEEE-FFFF-AAAA-BBBB-CCCCCCCCCCCC")!
-        ),
+        id: SaleLineID(rawValue: UUID(uuidString: "DDDDDDDD-EEEE-FFFF-AAAA-BBBBBBBBBBBB")!),
+        serviceID: ServiceID(rawValue: UUID(uuidString: "EEEEEEEE-FFFF-AAAA-BBBB-CCCCCCCCCCCC")!),
         serviceName: "Snapshot",
         quantity: 1,
         unitPrice: Money(amount: 10, currency: .eur),
@@ -366,9 +344,7 @@ private func compositionSale() throws -> Sale {
         linkedProductID: nil
     )
     return try Sale.draft(
-        id: SaleID(
-            rawValue: UUID(uuidString: "FFFFFFFF-AAAA-BBBB-CCCC-DDDDDDDDDDDD")!
-        ),
+        id: SaleID(rawValue: UUID(uuidString: "FFFFFFFF-AAAA-BBBB-CCCC-DDDDDDDDDDDD")!),
         clientID: nil,
         createdAt: Date(timeIntervalSinceReferenceDate: 1),
         lines: [line]

@@ -9,10 +9,7 @@ extension BiometricAuthenticator {
     static func localAuthentication() -> Self {
         localAuthentication(
             canEvaluate: {
-                LAContext().canEvaluatePolicy(
-                    .deviceOwnerAuthenticationWithBiometrics,
-                    error: nil
-                )
+                LAContext().canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: nil)
             },
             makeEvaluation: {
                 let context = LocalAuthenticationEvaluationContext()
@@ -103,10 +100,7 @@ private actor LocalAuthenticationEvaluationContext {
 
     func evaluate(localizedReason: String) async throws -> Bool {
         var evaluationError: NSError?
-        guard context.canEvaluatePolicy(
-            .deviceOwnerAuthenticationWithBiometrics,
-            error: &evaluationError
-        ) else {
+        guard context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &evaluationError) else {
             throw evaluationError ?? BiometricAuthenticationError.unavailable
         }
 

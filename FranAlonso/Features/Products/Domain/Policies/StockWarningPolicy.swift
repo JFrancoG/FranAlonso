@@ -52,11 +52,7 @@ extension StockImpact {
         let (projectedQuantity, overflow) = availableQuantity
             .subtractingReportingOverflow(line.quantity)
 
-        guard !overflow else {
-            throw StockWarningPolicyError.quantityOverflow(
-                productID: productID
-            )
-        }
+        guard !overflow else { throw StockWarningPolicyError.quantityOverflow(productID: productID) }
 
         self.init(
             id: line.id,
@@ -86,9 +82,7 @@ struct StockWarningPolicy {
     ///   linked product has no input stock, or
     ///   `StockWarningPolicyError.quantityOverflow` when subtraction overflows.
     func analyze(lines: [SaleLine], availableQuantities: [ProductID: Int]) throws -> [StockImpact] {
-        guard Set(lines.map(\.id)).count == lines.count else {
-            throw StockWarningPolicyError.duplicateLineIdentity
-        }
+        guard Set(lines.map(\.id)).count == lines.count else { throw StockWarningPolicyError.duplicateLineIdentity }
 
         var remainingQuantities = availableQuantities
         var impacts: [StockImpact] = []
@@ -99,16 +93,10 @@ struct StockWarningPolicy {
             guard let productID = line.linkedProductID else { continue }
 
             guard let availableQuantity = remainingQuantities[productID] else {
-                throw StockWarningPolicyError.missingAvailableQuantity(
-                    productID: productID
-                )
+                throw StockWarningPolicyError.missingAvailableQuantity(productID: productID)
             }
 
-            let impact = try StockImpact(
-                line: line,
-                productID: productID,
-                availableQuantity: availableQuantity
-            )
+            let impact = try StockImpact(line: line, productID: productID, availableQuantity: availableQuantity)
 
             impacts.append(impact)
             remainingQuantities[productID] = impact.projectedQuantity

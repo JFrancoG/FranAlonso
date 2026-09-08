@@ -18,10 +18,7 @@ struct CanonicalDecimalDTOTests {
     func canonicalDecimalStringsRoundTrip(_ canonicalValue: String) throws {
         let encoded = Data("\"\(canonicalValue)\"".utf8)
 
-        let value = try JSONDecoder().decode(
-            CanonicalDecimalDTO.self,
-            from: encoded
-        )
+        let value = try JSONDecoder().decode(CanonicalDecimalDTO.self, from: encoded)
 
         #expect(try JSONEncoder().encode(value) == encoded)
     }
@@ -56,26 +53,17 @@ struct CanonicalDecimalDTOTests {
         let encoded = Data("\"\(value)\"".utf8)
 
         #expect(throws: DecodingError.self) {
-            _ = try JSONDecoder().decode(
-                CanonicalDecimalDTO.self,
-                from: encoded
-            )
+            _ = try JSONDecoder().decode(CanonicalDecimalDTO.self, from: encoded)
         }
     }
 
     @Test("The wire representation must be a string")
     func wireRepresentationMustBeAString() {
         #expect(throws: DecodingError.self) {
-            _ = try JSONDecoder().decode(
-                CanonicalDecimalDTO.self,
-                from: Data("10.5".utf8)
-            )
+            _ = try JSONDecoder().decode(CanonicalDecimalDTO.self, from: Data("10.5".utf8))
         }
         #expect(throws: DecodingError.self) {
-            _ = try JSONDecoder().decode(
-                CanonicalDecimalDTO.self,
-                from: Data("null".utf8)
-            )
+            _ = try JSONDecoder().decode(CanonicalDecimalDTO.self, from: Data("null".utf8))
         }
     }
 

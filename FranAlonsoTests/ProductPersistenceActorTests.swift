@@ -51,9 +51,7 @@ struct ProductPersistenceActorTests {
         try await persistenceActor.upsert(product)
 
         let verificationContext = ModelContext(container)
-        let persistedProducts = try ProductLocalDataSource().fetchAll(
-            in: verificationContext
-        )
+        let persistedProducts = try ProductLocalDataSource().fetchAll(in: verificationContext)
         #expect(persistedProducts == [product])
     }
 
@@ -70,9 +68,7 @@ struct ProductPersistenceActorTests {
         try await persistenceActor.delete(product.id)
 
         let verificationContext = ModelContext(container)
-        #expect(
-            try ProductLocalDataSource().fetchAll(in: verificationContext).isEmpty
-        )
+        #expect(try ProductLocalDataSource().fetchAll(in: verificationContext).isEmpty)
     }
 }
 

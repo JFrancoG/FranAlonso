@@ -8,15 +8,10 @@ struct SyncBackoffPolicyTests {
 
     @Test("Retry scopes preserve their published storage identity")
     func retryScopesPreservePublishedStorageIdentity() {
-        let operationID = UUID(
-            uuidString: "00000000-0000-0000-0000-000000000151"
-        )!
+        let operationID = UUID(uuidString: "00000000-0000-0000-0000-000000000151")!
 
         #expect(SyncRetryScope.pull.storageID == "pull")
-        #expect(
-            SyncRetryScope.operation(operationID).storageID
-                == "operation/00000000-0000-0000-0000-000000000151"
-        )
+        #expect(SyncRetryScope.operation(operationID).storageID == "operation/00000000-0000-0000-0000-000000000151")
     }
 
     @Test(
@@ -53,10 +48,7 @@ struct SyncBackoffPolicyTests {
         #expect(first.notBefore == failedAt.addingTimeInterval(1))
         #expect(first.lastRecoverableCategory == .unavailable)
         #expect(second.backoffStep == 2)
-        #expect(
-            second.notBefore
-                == first.notBefore.addingTimeInterval(4)
-        )
+        #expect(second.notBefore == first.notBefore.addingTimeInterval(4))
         #expect(second.lastRecoverableCategory == .deadlineExceeded)
     }
 
@@ -108,9 +100,7 @@ struct SyncBackoffPolicyTests {
 
     @Test("A previous state from another scope fails closed")
     func previousStateFromAnotherScopeFailsClosed() throws {
-        let operationID = UUID(
-            uuidString: "00000000-0000-0000-0000-000000000152"
-        )!
+        let operationID = UUID(uuidString: "00000000-0000-0000-0000-000000000152")!
         let previous = try SyncRetryState(
             scope: .operation(operationID),
             backoffStep: 1,
@@ -129,10 +119,7 @@ struct SyncBackoffPolicyTests {
         }
     }
 
-    @Test(
-        "Jitter outside the closed one-to-two range fails closed",
-        arguments: [0.99, 2.01, .infinity, .nan]
-    )
+    @Test("Jitter outside the closed one-to-two range fails closed", arguments: [0.99, 2.01, .infinity, .nan])
     func invalidJitterFailsClosed(_ jitterFactor: Double) {
         #expect(throws: SyncRetryPolicyError.invalidJitterFactor) {
             _ = try policy.nextState(
