@@ -745,18 +745,6 @@
         }
       }
     },
-    "bootstrap.welcome.title" : {
-      "comment" : "Título temporal de bienvenida mostrado en la pantalla inicial durante el bootstrap.",
-      "extractionState" : "manual",
-      "localizations" : {
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Bienvenido a Fran Alonso"
-          }
-        }
-      }
-    },
     "clients.list.empty.message" : {
       "comment" : "Descripción mostrada en la pantalla de clientes cuando la lista está vacía.",
       "extractionState" : "manual",

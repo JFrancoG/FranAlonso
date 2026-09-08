@@ -1,12 +1,14 @@
 # Project Progress
 
-Última actualización: 2026-08-30
+Última actualización: 2026-09-08
 
 ## Puerta actual
 
 - Fases 01–06 cerradas. 07.3 está integrada en `main` mediante la
   [PR #5](https://github.com/JFrancoG/FranAlonso/pull/5).
 - PLU-25 está `In Progress`; PLU-26, PLU-27, PLU-28, PLU-29, PLU-30 y PLU-31 están `Done`.
+- PLU-32 / 07.7 está `In Progress`: propuesta revisada y aprobada; Linear reconectado y paridad verificada.
+  Gate técnico aprobado; commit/push autorizados en su rama. Integración y cierre operativo pendientes.
 - 07.1 y sus fixtures Develop no-live están entregadas en `074ce5e`. Los motores live continúan inactivos.
 - 07.2 está entregada por la [PR #4](https://github.com/JFrancoG/FranAlonso/pull/4): implementación `24802e6`,
   handoff `e8eca5a` y cierre documental `fda767b`.
@@ -21,6 +23,19 @@
 - El gate corregido de propuesta 07.6 pasa sin P0–P3 y el owner autoriza su alcance exacto. La
   [PR #7](https://github.com/JFrancoG/FranAlonso/pull/7) integra PLU-31 por rebase en `bc23bb9`; las auditorías y
   ADR 0022 pasan tras reconciliar su evidencia.
+
+## 07.7 — checkpoint en rama
+
+- Se retira solo `bootstrap.welcome.title`; las 68 entradas consumidas conservan valores y metadatos exactos.
+- Xcode MCP: Develop/Production compilan y la suite focal de localización pasa 18/18 en Develop,
+  con fixture signed-out verificada antes del host. El scheme recupera sus bytes originales y cinco argumentos NO.
+- Los tres bundles compilados coinciden 68/68 con el catálogo; mantienen Fran DEV/Fran Alonso. La inspección es
+  offline: no acredita resolución Foundation nueva de cada cadena ni ejecuta Production.
+- [La evidencia 07.7](accessibility/evidence/07-7-localization.md) conserva inventario y límites de 07.2/07.3/07.6.
+  Repetir previews/AT es `N/A: sin alcance SwiftUI`; no se declara una nueva pasada manual.
+- AX sin hallazgos; iOS cierra P2/P3 documentales. El aviso App Intents ya constaba como tooling en 07.1 entregada;
+  la revisión focal final pasa sin P0–P3. Hay cero diagnósticos Swift/Clang, no cero warnings globales.
+- Selección Develop/iPhone 11 restaurada y verificada tras desbloquear el Mac; scheme idéntico al original.
 
 ## 07.6 — entregada
 
@@ -42,7 +57,7 @@
 - Las auditorías iOS y accesibilidad pasan tras corregir únicamente imprecisiones documentales; no quedan P0–P3 ni
   pruebas manuales adicionales para el shell actual.
 - No hubo Firebase/Keychain live, persistencia durable, dependencia, ruta ficticia ni cambio de target. PLU-31 queda
-  integrado y `Done`; 07.7 no está iniciada.
+  integrado y `Done`; el inicio posterior de 07.7 se registra en PLU-32.
 
 ## 07.5 — entregada
 
@@ -81,7 +96,8 @@
 
 ## Siguiente acción
 
-1. Mantener PLU-25 `In Progress`; iniciar el gate de 07.7 solo tras autorización explícita.
+1. Commit/push de PLU-32 autorizados en `codex/plu-32-077-spanish-localization`; PR/merge y cierre quedan separados.
+2. Siguiente propuesta: 08.1, contratos y casos de uso CRUD/búsqueda de Clientes. Fase 07 sigue `In Progress`.
 
 ## Bloqueos
 
