@@ -1,6 +1,6 @@
 # FranAlonso
 
-Aplicación iOS reconstruida con SwiftUI mediante Spec Driven Development y TDD. La constitución, el bootstrap y la primera vertical de arquitectura están completos; el modelo de dominio está en curso.
+Aplicación iOS reconstruida con SwiftUI mediante Spec Driven Development y TDD.
 
 ## Fuentes de verdad
 
@@ -19,4 +19,10 @@ Los builds, tests, previews y diagnósticos se realizan exclusivamente mediante 
 
 ## Estado
 
-Las fases 01–03 y las subfases 04.1–04.3 están completas. La puerta actual es 04.4, el cálculo determinista de ventas. El MVP incorpora en la fase 16 un asistente de voz local con Foundation Models; la fase 19 prepara GPT-5.6 Luna como proveedor textual opcional después de entregar el MVP. GPT Realtime queda como alternativa no planificada.
+Las fases 01–06 están cerradas. Las entregas de la fase 07 y la limpieza Swift PLU-33 están integradas; 07.4 queda diferida a 12.3–12.4. La puerta actual es el cierre independiente de fase 07 / PLU-25. La siguiente propuesta es 08.1, contratos y casos de uso CRUD/búsqueda de Clientes, todavía sin iniciar.
+
+El [progreso actual](docs/Progress.md) y el [detalle de fase 07](docs/progress/phase-07.md) mantienen la evidencia y los pendientes. El [índice de especificaciones](docs/specs/00_index.md) fija el orden del roadmap.
+
+## Obsidian
+
+La raíz de este repositorio es el vault `FranAlonso`. Obsidian consulta y edita directamente los documentos versionados, incluidos progreso, specs y ADR. El índice del vault personal enlaza a estos archivos; su diario de desarrollo permanece como histórico. La configuración local `.obsidian/` queda excluida de Git.
