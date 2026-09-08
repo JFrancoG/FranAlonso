@@ -1,6 +1,6 @@
 # Phase 07 Progress
 
-Última actualización: 2026-08-30
+Última actualización: 2026-09-08
 
 ## Estado
 
@@ -13,11 +13,63 @@
 | 07.4 — confirmación y alerta de stock | Sin issue | `N/A`/diferida | Consumidor real asignado a 12.3–12.4 |
 | 07.5 — selección tipada del shell | PLU-30 | `Done` | [PR #6](https://github.com/JFrancoG/FranAlonso/pull/6); rebase merge `a220a3d` |
 | 07.6 — shell autenticado adaptable | PLU-31 | `Done` | [PR #7](https://github.com/JFrancoG/FranAlonso/pull/7); rebase merge `bc23bb9` |
-| Fase 07 | PLU-25 | `In Progress` | 07.6 entregada; 07.7 no iniciada |
+| 07.7 — catálogo español existente | PLU-32 | `In Progress` | Gate técnico pasa; commit/push autorizados, integración pendiente |
+| Fase 07 | PLU-25 | `In Progress` | 07.6 entregada; 07.7 en curso |
 
 La base aprobada al iniciar 07.2 fue `main == origin/main == 074ce5e`, con worktree limpio. La
 [PR #4](https://github.com/JFrancoG/FranAlonso/pull/4) quedó integrada por rebase en `main`: `24802e6` contiene la
 implementación y `e8eca5a` el handoff. El cierre documental `fda767b` es la baseline limpia de 07.3.
+
+## 07.7 — implementación y validación autorizadas
+
+- Base limpia verificada: `main == origin/main == 601517dd86680fc1876160ffc55dbad1c2e070a1`.
+  Tras la propuesta independiente, su corrección P1 sobre aislamiento del host y la aprobación explícita del owner,
+  se recupera Linear, se contrasta el proyecto completo y se crea
+  [PLU-32](https://linear.app/plusprojects/issue/PLU-32/077-complete-the-existing-spanish-localization-catalog),
+  hijo de PLU-25, y la rama `codex/plu-32-077-spanish-localization`.
+- El único cambio de producto elimina `bootstrap.welcome.title`, bienvenida temporal sin consumidor. Las restantes
+  68 entradas conservan íntegros valores españoles, comentarios y metadatos; no cambia Swift, UI ni configuración.
+  La [evidencia de localización](../accessibility/evidence/07-7-localization.md) documenta todos los consumidores,
+  placeholders de los campos y ausencia de interpolación/plurales/formatos aplicables.
+- Xcode MCP valida Debug-Develop/iPhoneOS en 13,309 s y Debug-Production/iPhoneOS en 31,459 s, sin diagnósticos
+  Swift/Clang ni incidencias en Issue Navigator. Ambos logs completos contienen el aviso de extracción de metadatos
+  App Intents omitida por ausencia del framework; no se declara un log absolutamente libre de warnings. No se
+  cambia configuración fuera de alcance. Los bundles Develop dispositivo/simulador y Production dispositivo contienen exactamente
+  las 68 claves y valores fuente; sus nombres siguen Fran DEV/Fran Alonso y solo Face ID se emite en InfoPlist.strings.
+- La suite existente `AuthenticationPresentationLocalizationTests` pasa 18/18 en Develop/iPhone 17e Simulator 26.5.
+  Antes del host se verifica la selección efectiva, TestAction Debug-Develop, FRANALONSO_AUTH_FIXTURE y la herencia
+  de Run con solo signed-out activo. La configuración se establece en el editor de Xcode, dado que este conservaba
+  valores anteriores al cambio externo. Tras los tests, los cinco argumentos vuelven a NO y `cmp` confirma el scheme
+  original byte a byte. No se ejecuta app, tests ni snippet Production.
+- Se aplica la alternativa offline aprobada, sin atribuir una resolución Foundation runtime de cada cadena. No se
+  añaden tests ni se repite la suite completa: RED/GREEN nuevo y diagnóstico Swift focal son N/A razonados para la
+  retirada de una clave sin uso. Los builds compilan codegen y consumidores existentes.
+- La UI y todo el copy consumido coinciden con la base; la repetición de previews/Inspector/AT para el delta es
+  `N/A: sin alcance SwiftUI`. Se reutiliza únicamente la evidencia exacta de 07.2/07.3/07.6. Se mantienen los límites
+  de loading, AutoFill, foco y fallback corto, la ausencia de VoiceOver iPad y la excepción 1.3.4 de ADR 0026.
+- AX final devuelve Sin hallazgos P0–P3 y N/A para el delta. iOS detecta P2 sobre la falsa ausencia de warnings y P3
+  sobre el identificador de Xcode: se corrige a 17F113 y se precisa el aviso real. La repetición focal cierra P2/P3
+  sin hallazgos nuevos; pasa la revisión documental, sin atribuir cero warnings globales.
+  Ambas revisiones son independientes y operan sin escribir ni publicar; el orquestador acredita la misma huella
+  pre/post de 417 archivos: `959f54e522dfd4244f1e2fa1586fd78bdd813acd62b118349236c2752b7eb29d`.
+  La repetición iOS conserva 417 archivos y huella pre/post
+  `ae1b2ce51c87c6eac51bc9f882bd1b66d5452377c5beb99a5825c4f82f4dd6ad`, previa a registrar este resultado.
+- Gobernanza, enlaces locales y diff check pasan. Tras desbloquear el Mac, se restaura y verifica en Xcode la selección
+  original FranAlonso-Develop / iPhone 11; `cmp` confirma otra vez el scheme original y sus cinco argumentos NO.
+  No se ejecuta la app.
+- El diagnóstico del aviso demuestra preexistencia: mismo texto en el xcactivitylog de 2026-08-30 12:32:20.019.
+  La puerta 07.1 entregada en `074ce5e` ya lo clasifica como tooling de Xcode; el histórico 06.1–06.3 también lo
+  registra. No hay consumidores App Intents ni cambio en ese pipeline. Se conserva configuración y no se añaden
+  dependencias ni se silencian warnings. La evidencia 07.7 enlaza esas fuentes; la revisión iOS focal final devuelve
+  Sin hallazgos P0–P3 y gate técnico pasa para 07.7, sin convertir la clasificación en una excepción general.
+  El orquestador acredita 417 archivos y huellas pre/post idénticas de esa revisión:
+  `4a0676efdcfb75e4ca75ffc0b515182f8f362045d57bf63ae3a6232b037bb97e`, antes de registrar su resultado.
+- El owner autoriza commit/push de 07.7 en `codex/plu-32-077-spanish-localization`. Se reutilizan builds, 18/18
+  focales y auditorías de esta sesión porque no cambia producto ni configuración después de esa evidencia;
+  el checkpoint solo ajusta documentación de entrega y su entrada de changelog.
+- PLU-25 y PLU-32 permanecen `In Progress`; PR, merge y Done no forman parte de esa autorización. 07 termina
+  en 07.7: la siguiente propuesta es 08.1, contratos y casos de uso CRUD/búsqueda de Clientes. Su preparación
+  read-only puede comenzar, pero la implementación necesita su gate de inicio y aprobación de alcance propios.
 
 ## Decisiones vigentes
 

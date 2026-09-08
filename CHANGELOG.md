@@ -115,6 +115,7 @@ All notable changes to this project are documented in this file.
 
 ### Maintenance
 
+- 2026-09-08 | 🔧 chore(localization): remove unused welcome key
 - 2026-07-24 | 📦 build(config): add develop app variant
 - 2026-07-22 | 📦 build(bootstrap): complete project foundations
 - 2026-07-15 | 📦 build(bootstrap): add localization and Firebase
