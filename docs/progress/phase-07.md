@@ -67,8 +67,12 @@ implementación y `e8eca5a` el handoff. El cierre documental `fda767b` es la bas
   [PLU-33](https://linear.app/plusprojects/issue/PLU-33/deliver-approved-swift-concurrency-and-formatting-cleanup)
   para la entrega actual, hijo de PLU-25. No existía issue para esta limpieza local; no se inventa planificación
   retrospectiva ni se reabre PLU-24, una entrega histórica, o PLU-18, cuyo alcance son los existenciales.
-  PLU-33 está `In Progress`, con implementación y validación completas y entrega Git en curso desde
-  `codex/swift-hygiene`. PLU-25 continúa `In Progress`; su cierre de fase y 08.1 conservan puertas independientes.
+  La [PR #9](https://github.com/JFrancoG/FranAlonso/pull/9) integra por rebase el commit revisado `4bc116c` en
+  `c8bb283`; el árbol integrado coincide exactamente con el revisado. GitHub informa `CLEAN`/`MERGEABLE` y no
+  tiene checks remotos configurados para esta PR. PLU-33 queda `Done`; `codex/swift-hygiene` se elimina local y
+  remotamente tras comprobar la integración. PLU-25 continúa `In Progress`; su cierre de fase y 08.1 conservan
+  puertas independientes. La documentación de cierre no cambia Swift ni configuración: validación Xcode nueva
+  `N/A`, se reutiliza la evidencia anterior y se comprueban gobernanza y diff.
 
 ## 07.7 — entregada
 
