@@ -4,20 +4,22 @@
 
 ## Puerta actual
 
-- Fase 08 iniciada por autorización del propietario. Padre [PLU-34](https://linear.app/plusprojects/issue/PLU-34) y
-  [PLU-35 / 08.1](https://linear.app/plusprojects/issue/PLU-35) en `In Progress`.
-- Rama `codex/plu-35-phase-08-1-client-crud-search`, desde `main` limpio en `c24f6e5`.
-- 08.1 implementa contratos/casos de uso de alta, lectura, edición, desactivación y búsqueda local. Crear fuerza
-  `draft`; editar conserva consentimiento/estado; desactivar retiene el último perfil local y lo excluye de CRUD.
-- La propuesta independiente pasa después de retirar una garantía CAS entre contextos que el diseño no ofrecía.
-  No cambia esquema, protocolo remoto, Presentation ni configuración permanente. Los motores live siguen inactivos.
-- Xcode MCP: regresión por 22 suites completas, **168/168**; build `FranAlonso-Develop` correcto en 3,580 s;
-  resumen MCP/Navigator y cuatro diagnósticos focales en cero. El log completo conserva el aviso conocido de
-  extracción AppIntents; no se declara cero warnings globales. Fixture temporal signed-out restaurada byte a byte;
-  no se ha ejecutado una nueva validación Production ni la suite global.
-- Auditoría final iOS/estilo PASS. P2 de evidencia de warnings corregido y cerrado por reauditoría documental;
-  sin hallazgos abiertos. Previews y accesibilidad `N/A`: sin cambios de UI, recursos o semántica accesible.
-- Alcance, TDD, rutas de evidencia y límites: [fase 08](progress/phase-08.md).
+- Fase 08 activa: padre [PLU-34](https://linear.app/plusprojects/issue/PLU-34) en `In Progress`.
+- [PLU-35 / 08.1](https://linear.app/plusprojects/issue/PLU-35) publicada por commit/push autorizados en `1164c62`,
+  remoto `codex/plu-35-phase-08-1-client-crud-search` verificado. Sin PR/merge/cierre; continúa `In Progress`.
+- [PLU-36 / 08.2](https://linear.app/plusprojects/issue/PLU-36) implementada localmente, en `In Progress`.
+  Rama local `codex/plu-36-phase-08-2-client-view-models` sobre `1164c62`, dependiente de 08.1 aún no integrada.
+  Propuesta independiente PASS y aprobación del propietario registradas. Listado con búsqueda/identidad de sesión;
+  formulario con validación, guardado contextual, desactivación confirmada y protección frente a respuestas obsoletas.
+- La preparación Domain normaliza opcionales; App compone sobre actor y señal existentes. No se duplican escrituras
+  ni se retiene ModelContext; tampoco se promete CAS. Las Views quedan en 08.3 y los motores live siguen inactivos.
+- Xcode MCP: **26 suites / 208 resultados pasados**, incluidos 40 casos nuevos. Build Develop correcto en 3,958 s;
+  resumen MCP/Navigator y seis diagnósticos de producción en cero. El log completo conserva el aviso conocido de
+  extracción AppIntents; no se declara cero warnings globales. Fixture temporal restaurada byte a byte.
+- Estilo: diez Swift revisados, ajustes de tests corregidos y reauditoría focal limpia. Auditoría final iOS PASS,
+  sin hallazgos P0–P3, sandbox read-only y huellas pre/post idénticas de 438 archivos.
+  Gobernanza y diff-check pasan. Previews/accesibilidad `N/A`: no cambia ninguna superficie visual o semántica accesible.
+- Sin nueva validación Production, suite global o live. Alcance, TDD, artefactos y límites: [fase 08](progress/phase-08.md).
 
 ## Entregas anteriores
 
@@ -29,6 +31,6 @@
 
 ## Siguiente acción y límites
 
-El propietario autoriza commit/push de 08.1 e inicio de 08.2 el 2026-09-08; ejecución y verificación en curso.
-PR, merge y cierre de issues conservan autorización independiente. El histórico retenido es local: no se recupera
-un perfil que un dispositivo nunca tuvo.
+El propietario autoriza commit/push de 08.2 e inicio de 08.3 el 2026-09-08; ejecución y verificación en curso.
+Firma/consentimiento/activación/foto se mantienen en sus subfases. PR, merge y cierre de issues conservan
+autorización independiente. La retención de consentimiento de 08.1 sigue siendo local.
