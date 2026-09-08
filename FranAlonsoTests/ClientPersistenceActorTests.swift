@@ -73,7 +73,9 @@ struct ClientPersistenceActorTests {
 }
 
 private func makeClientPersistenceContainer() throws -> ModelContainer {
-    try ModelContainer.inMemory(for: Schema([ClientModel.self]))
+    try ModelContainer.inMemory(
+        for: Schema([ClientModel.self, ClientPendingDeleteModel.self, ClientRemoteStateModel.self])
+    )
 }
 
 private func persistenceClientID(_ value: String) throws -> ClientID {

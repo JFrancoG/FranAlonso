@@ -7,10 +7,80 @@ private let clientSyncFeedID = "clients"
 struct ClientLocalDataSource {}
 
 extension ClientLocalDataSource {
-    /// Fetches and maps the locally persisted client snapshot.
+    /// Fetches visible local profiles, excluding retained history marked by a tombstone.
     func fetchAll(in context: ModelContext) throws -> [Client] {
+        let deletedIDs = try deletedClientIDs(in: context)
         let descriptor = FetchDescriptor<ClientModel>(sortBy: [SortDescriptor(\ClientModel.displayName)])
-        return try context.fetch(descriptor).map { try $0.toDomain() }
+        return try context.fetch(descriptor).filter { !deletedIDs.contains($0.id) }.map { try $0.toDomain() }
+    }
+
+    /// Reads only visible profiles; retained deactivated history remains outside CRUD lookup.
+    func client(id: ClientID, in context: ModelContext) throws -> Client? {
+        try performClientOperation {
+            guard try !hasDeletionState(for: id, in: context) else { return nil }
+            return try model(for: id, in: context)?.toDomain()
+        }
+    }
+
+    /// Accepts a new draft and its causal operation in one save, without replacing an existing identity.
+    func createClient(
+        id: ClientID,
+        profile: ClientProfile,
+        operationID: UUID,
+        in context: ModelContext
+    ) throws -> Client {
+        try performClientOperation {
+            try requireClean(context)
+            guard try !hasDeletionState(for: id, in: context) else { throw ClientError.alreadyExists }
+            guard try model(for: id, in: context) == nil,
+                  try pendingOperations(for: id, in: context).isEmpty,
+                  try remoteState(for: id, in: context) == nil else {
+                throw ClientError.alreadyExists
+            }
+            let client = Client(
+                id: id,
+                displayName: profile.displayName,
+                taxIdentifier: profile.taxIdentifier,
+                billingAddress: profile.billingAddress,
+                status: .draft
+            )
+            try persistPendingUpsert(client, operationID: operationID, in: context)
+            return client
+        }
+    }
+
+    /// Edits fields on the profile in this context, retaining its consent and activation state.
+    /// Profile and queue share one save; separate caller contexts are not a compare-and-swap boundary.
+    func updateClient(
+        id: ClientID,
+        profile: ClientProfile,
+        operationID: UUID,
+        in context: ModelContext
+    ) throws -> Client {
+        try performClientOperation {
+            try requireClean(context)
+            guard try !hasDeletionState(for: id, in: context) else { throw ClientError.deactivated }
+            guard let existing = try model(for: id, in: context)?.toDomain() else { throw ClientError.notFound }
+            let client = Client(
+                id: id,
+                displayName: profile.displayName,
+                taxIdentifier: profile.taxIdentifier,
+                billingAddress: profile.billingAddress,
+                status: existing.status
+            )
+            try persistPendingUpsert(client, operationID: operationID, in: context)
+            return client
+        }
+    }
+
+    /// Accepts an idempotent deactivation while distinguishing a never-known identity.
+    func deactivateClient(_ id: ClientID, operationID: UUID, in context: ModelContext) throws {
+        try performClientOperation {
+            try requireClean(context)
+            guard try !hasDeletionState(for: id, in: context) else { return }
+            guard try model(for: id, in: context) != nil else { throw ClientError.notFound }
+            try persistPendingDelete(id, operationID: operationID, in: context)
+        }
     }
 
     /// Materializes a client without creating a pending local mutation.
@@ -66,7 +136,7 @@ extension ClientLocalDataSource {
         }
     }
 
-    /// Removes the active client and commits a durable tombstone operation atomically.
+    /// Hides the client and commits a durable tombstone, retaining its last local profile and consent.
     ///
     /// An already deleted client is a no-op only when no live remote state or pending chain
     /// remains. A repeated delete keeps the existing pending operation identity.
@@ -81,15 +151,12 @@ extension ClientLocalDataSource {
                 }
                 return false
             }) {
-                if let model = try model(for: id, in: context) {
-                    context.delete(model)
-                    try saveChanges(in: context)
-                }
                 return
             }
 
             let localModel = try model(for: id, in: context)
             let remoteRecord = try remoteState(for: id, in: context)?.decodeRecord()
+            guard remoteRecord?.isTombstone != true else { return }
             guard localModel != nil
                     || !operations.isEmpty
                     || remoteRecord?.isLive == true else {
@@ -106,9 +173,6 @@ extension ClientLocalDataSource {
                     base: try remoteBase(for: id, in: context)
                 )
             )
-            if let localModel {
-                context.delete(localModel)
-            }
             _ = try fetchAll(in: context)
             try saveChanges(in: context)
         } catch {
@@ -409,9 +473,6 @@ extension ClientLocalDataSource {
             if let conflict = try conflict(for: ClientID(rawValue: delete.clientID), in: context) {
                 context.delete(conflict)
             }
-            if let model = try model(for: ClientID(rawValue: delete.clientID), in: context) {
-                context.delete(model)
-            }
         }
     }
 
@@ -427,9 +488,7 @@ extension ClientLocalDataSource {
                 try materialize(try client.toDomain(), in: context)
             }
         case .tombstone:
-            if let model = try model(for: clientID, in: context) {
-                context.delete(model)
-            }
+            break
         }
     }
 
@@ -453,10 +512,6 @@ extension ClientLocalDataSource {
         }
         if let remoteRecord {
             try persistRemoteState(remoteRecord, in: context)
-            if remoteRecord.isTombstone,
-               let localModel = try model(for: clientID, in: context) {
-                context.delete(localModel)
-            }
         }
     }
 
@@ -517,6 +572,23 @@ extension ClientLocalDataSource {
 
     private func requireClean(_ context: ModelContext) throws {
         guard !context.hasChanges else { throw ClientLocalDataSourceError.contextHasUncommittedChanges }
+    }
+
+    private func performClientOperation<Value>(
+        _ operation: () throws -> Value
+    ) throws -> Value {
+        try Task.checkCancellation()
+        do {
+            return try operation()
+        } catch let error as ClientError {
+            throw error
+        } catch ClientLocalDataSourceError.syncConflictPending {
+            throw ClientError.conflict
+        } catch ClientLocalDataSourceError.restoreRequiresExplicitResolution {
+            throw ClientError.deactivated
+        } catch {
+            throw ClientError.persistenceUnavailable
+        }
     }
 
     private func model(for id: ClientID, in context: ModelContext) throws -> ClientModel? {
@@ -651,6 +723,16 @@ extension ClientLocalDataSource {
         }
         return try remoteState(for: id, in: context)?.decodeRecord().isTombstone
             == true
+    }
+
+    private func deletedClientIDs(in context: ModelContext) throws -> Set<UUID> {
+        var identifiers = Set(try context.fetch(FetchDescriptor<ClientPendingDeleteModel>()).map(\.clientID))
+        for state in try context.fetch(FetchDescriptor<ClientRemoteStateModel>()) {
+            if try state.decodeRecord().isTombstone {
+                identifiers.insert(state.clientID)
+            }
+        }
+        return identifiers
     }
 
     private func persistRemoteState(_ record: ClientRemoteRecord, in context: ModelContext) throws {

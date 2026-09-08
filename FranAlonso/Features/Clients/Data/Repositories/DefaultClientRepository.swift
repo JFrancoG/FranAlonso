@@ -33,6 +33,27 @@ struct DefaultClientRepository: ClientRepository {
         try await persistenceActor.persistPendingUpsert(client, operationID: makeOperationID())
         await observationSignal.publishChange()
     }
+
+    func client(id: ClientID) async throws -> Client? {
+        try await persistenceActor.client(id: id)
+    }
+
+    func createClient(id: ClientID, profile: ClientProfile) async throws -> Client {
+        let client = try await persistenceActor.createClient(id: id, profile: profile, operationID: makeOperationID())
+        await observationSignal.publishChange()
+        return client
+    }
+
+    func updateClient(id: ClientID, profile: ClientProfile) async throws -> Client {
+        let client = try await persistenceActor.updateClient(id: id, profile: profile, operationID: makeOperationID())
+        await observationSignal.publishChange()
+        return client
+    }
+
+    func deactivateClient(_ id: ClientID) async throws {
+        try await persistenceActor.deactivateClient(id, operationID: makeOperationID())
+        await observationSignal.publishChange()
+    }
 }
 
 extension DefaultClientRepository {

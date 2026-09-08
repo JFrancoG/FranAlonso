@@ -76,6 +76,19 @@ struct ObserveClientsUseCaseTests {
 }
 
 private actor ClientRepositoryFake: ClientRepository {
+
+    func client(id: ClientID) async throws -> Client? { throw ClientError.persistenceUnavailable }
+
+    func createClient(id: ClientID, profile: ClientProfile) async throws -> Client {
+        throw ClientError.persistenceUnavailable
+    }
+
+    func updateClient(id: ClientID, profile: ClientProfile) async throws -> Client {
+        throw ClientError.persistenceUnavailable
+    }
+
+    func deactivateClient(_ id: ClientID) async throws { throw ClientError.persistenceUnavailable }
+
     private var clients: [Client]
     private var observationCalls = 0
     private var saveCalls = 0

@@ -115,7 +115,9 @@ struct ClientLocalDataSourceTests {
 }
 
 private func makeClientContainer() throws -> ModelContainer {
-    try ModelContainer.inMemory(for: Schema([ClientModel.self]))
+    try ModelContainer.inMemory(
+        for: Schema([ClientModel.self, ClientPendingDeleteModel.self, ClientRemoteStateModel.self])
+    )
 }
 
 private func completeClient(id: String, displayName: String) throws -> Client {

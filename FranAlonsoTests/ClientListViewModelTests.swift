@@ -83,6 +83,19 @@ private enum ClientListRepositoryFakeFailure: Error {
 }
 
 private actor ClientListRepositoryFake: ClientRepository {
+
+    func client(id: ClientID) async throws -> Client? { throw ClientError.persistenceUnavailable }
+
+    func createClient(id: ClientID, profile: ClientProfile) async throws -> Client {
+        throw ClientError.persistenceUnavailable
+    }
+
+    func updateClient(id: ClientID, profile: ClientProfile) async throws -> Client {
+        throw ClientError.persistenceUnavailable
+    }
+
+    func deactivateClient(_ id: ClientID) async throws { throw ClientError.persistenceUnavailable }
+
     enum Behavior {
         case clients([Client])
         case finished
