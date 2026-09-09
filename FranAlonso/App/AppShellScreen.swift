@@ -19,7 +19,10 @@ struct AppShellScreen: View {
 
             Tab(.appShellTabClients, systemImage: "person.2", value: AppSection.clients) {
                 NavigationStack {
-                    ClientListScreen(observeClients: dependencies.observeClients)
+                    ClientListScreen(
+                        observeClients: dependencies.observeClients,
+                        makeClientForm: dependencies.makeClientForm
+                    )
                         .toolbar {
                             signOutToolbar
                         }

@@ -1,7 +1,10 @@
 import SwiftData
 
 struct AppDependencies {
+    typealias ClientFormFactory = @MainActor @Sendable (ClientFormDestination) -> ClientFormViewModel
+
     let observeClients: ObserveClientsUseCase
+    let makeClientForm: ClientFormFactory
     let observeProducts: ObserveProductsUseCase
     let observeServices: ObserveServicesUseCase
     let observeSales: ObserveSalesUseCase
@@ -126,6 +129,7 @@ struct AppDependencies {
 
         return AppDependencies(
             clientRepository: clientRepository,
+            makeClientForm: clientFormFactory(persistenceActor: persistenceActor, observationSignal: observationSignal),
             productRepository: productRepository,
             serviceRepository: serviceRepository,
             saleRepository: saleRepository,
@@ -167,6 +171,8 @@ struct AppDependencies {
 
         return AppDependencies(
             clientRepository: clientRepository,
+            makeClientForm: injectedClientRepository.map { readOnlyClientFormFactory(repository: $0) }
+                ?? clientFormFactory(persistenceActor: persistenceActor, observationSignal: observationSignal),
             productRepository: productRepository,
             serviceRepository: serviceRepository,
             saleRepository: saleRepository,
@@ -176,14 +182,36 @@ struct AppDependencies {
     }
 #endif
 
+    /// Creates an interactive preview over the same in-memory container supplied to SwiftUI.
+    /// Clients reads, observation and contextual mutations share their existing actor and signal.
+    /// Telemetry is inert; no remote data source or synchronization engine is composed.
+    static func preview(modelContainer: ModelContainer) -> AppDependencies {
+        .composed(
+            persistenceActor: ClientPersistenceActor(modelContainer: modelContainer),
+            observationSignal: ClientObservationSignal(),
+            productPersistenceActor: ProductPersistenceActor(modelContainer: modelContainer),
+            productObservationSignal: ProductObservationSignal(),
+            servicePersistenceActor: ServicePersistenceActor(modelContainer: modelContainer),
+            serviceObservationSignal: ServiceObservationSignal(),
+            salePersistenceActor: SalePersistenceActor(modelContainer: modelContainer),
+            saleObservationSignal: SaleObservationSignal(),
+            analyticsDataSource: PreviewAnalyticsDataSource(),
+            crashDataSource: PreviewCrashDataSource()
+        )
+    }
+
+    /// Creates finite snapshot dependencies; Clients form mutations are explicitly unavailable.
+    /// Use `preview(modelContainer:)` when a preview needs interactive local persistence.
     static func preview(
         clients: [Client] = [],
         products: [Product] = [],
         services: [Service] = [],
         sales: [Sale] = []
     ) -> AppDependencies {
-        AppDependencies(
-            clientRepository: InMemoryClientRepository(clients: clients),
+        let clientRepository = InMemoryClientRepository(clients: clients)
+        return AppDependencies(
+            clientRepository: clientRepository,
+            makeClientForm: readOnlyClientFormFactory(repository: clientRepository),
             productRepository: InMemoryProductRepository(products: products),
             serviceRepository: InMemoryServiceRepository(services: services),
             saleRepository: InMemorySaleRepository(sales: sales),
@@ -196,6 +224,7 @@ struct AppDependencies {
 extension AppDependencies {
     init(
         clientRepository: any ClientRepository,
+        makeClientForm: @escaping ClientFormFactory,
         productRepository: any ProductRepository,
         serviceRepository: any ServiceRepository,
         saleRepository: any SaleRepository,
@@ -204,6 +233,7 @@ extension AppDependencies {
     ) {
         self.init(
             observeClients: ObserveClientsUseCase(repository: clientRepository),
+            makeClientForm: makeClientForm,
             observeProducts: ObserveProductsUseCase(repository: productRepository),
             observeServices: ObserveServicesUseCase(repository: serviceRepository),
             observeSales: ObserveSalesUseCase(repository: saleRepository),

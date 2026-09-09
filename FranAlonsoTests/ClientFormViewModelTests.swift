@@ -14,6 +14,7 @@ struct ClientFormViewModelTests {
         await model.load()
         #expect(model.state == .failed(.load, .notFound))
         model.fields.displayName = "Cannot overwrite an unknown client"
+        #expect(model.state == .failed(.load, .notFound))
         await model.save(in: container.mainContext)
         await model.deactivate(in: container.mainContext)
         #expect(probe.profiles.isEmpty)
@@ -31,6 +32,9 @@ struct ClientFormViewModelTests {
         #expect(probe.profiles.isEmpty)
 
         model.fields.displayName = "  Valid name  "
+        #expect(model.state == .editing)
+        #expect(model.fields.displayName == "  Valid name  ")
+        #expect(probe.profiles.isEmpty)
         await model.save(in: container.mainContext)
         #expect(probe.profiles.map(\.displayName) == ["Valid name"])
         guard case .saved(let client) = model.state else {
@@ -38,6 +42,25 @@ struct ClientFormViewModelTests {
             return
         }
         #expect(client.status == .draft)
+    }
+
+    @Test(arguments: ["", " \n\t"])
+    func `name validation remains until the name is valid`(invalidName: String) async throws {
+        let container = try ModelContainer.inMemory(for: .franAlonso)
+        let probe = FormWriteProbe()
+        let model = makeModel(probe: probe)
+        model.fields.displayName = " "
+        await model.save(in: container.mainContext)
+
+        model.fields.city = "Sevilla"
+        #expect(model.state == .failed(.save, .invalidDisplayName))
+        model.fields.displayName = invalidName
+        #expect(model.state == .failed(.save, .invalidDisplayName))
+        #expect(probe.profiles.isEmpty)
+
+        model.close()
+        model.fields.displayName = "Valid after closing"
+        #expect(model.state == .closed)
     }
 
     @Test
@@ -53,6 +76,8 @@ struct ClientFormViewModelTests {
         #expect(model.state == .failed(.save, .persistenceUnavailable))
         #expect(model.fields == originalFields)
 
+        model.fields.displayName = "Revised draft"
+        #expect(model.state == .failed(.save, .persistenceUnavailable))
         probe.failure = nil
         await model.save(in: container.mainContext)
         #expect(probe.identities == [model.destination.clientID, model.destination.clientID])
@@ -75,6 +100,7 @@ struct ClientFormViewModelTests {
         await probe.waitUntilStarted()
         #expect(model.state == .saving)
         model.fields.displayName = "Later typing"
+        #expect(model.state == .saving)
         await model.save(in: container.mainContext)
         #expect(probe.profiles.map(\.displayName) == ["Accepted draft"])
         probe.release()

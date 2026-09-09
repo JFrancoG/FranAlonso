@@ -29,7 +29,17 @@ final class ClientFormViewModel {
     }
 
     let destination: ClientFormDestination
-    var fields = ClientFormFields()
+
+    /// Clears only a rejected name's validation error when editing makes that name valid, without saving.
+    var fields = ClientFormFields() {
+        didSet {
+            guard fields.displayName != oldValue.displayName,
+                  state == .failed(.save, .invalidDisplayName),
+                  (try? ClientProfile(displayName: fields.displayName)) != nil else { return }
+            state = .editing
+        }
+    }
+
     private(set) var state: State
 
     private let getClient: GetClientUseCase

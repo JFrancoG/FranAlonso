@@ -41,8 +41,10 @@ struct AppDependenciesTests {
     func injectedTelemetryDataSourcesComposeTheSharedReporter() async {
         let analytics = CompositionAnalyticsDataSourceSpy()
         let crash = CompositionCrashDataSourceSpy()
+        let clientRepository = CompositionClientRepositoryFake(clients: [])
         let dependencies = AppDependencies(
-            clientRepository: CompositionClientRepositoryFake(clients: []),
+            clientRepository: clientRepository,
+            makeClientForm: AppDependencies.readOnlyClientFormFactory(repository: clientRepository),
             productRepository: CompositionProductRepositoryFake(products: []),
             serviceRepository: CompositionServiceRepositoryFake(services: []),
             saleRepository: InMemorySaleRepository(),
@@ -83,6 +85,7 @@ struct AppDependenciesTests {
         let repository = CompositionClientRepositoryFake(clients: expectedClients)
         let dependencies = AppDependencies(
             clientRepository: repository,
+            makeClientForm: AppDependencies.readOnlyClientFormFactory(repository: repository),
             productRepository: CompositionProductRepositoryFake(products: []),
             serviceRepository: CompositionServiceRepositoryFake(services: []),
             saleRepository: InMemorySaleRepository(),
@@ -120,8 +123,10 @@ struct AppDependenciesTests {
     func dependenciesResolveProductsThroughTheInjectedRepository() async throws {
         let expectedProducts = [compositionProduct()]
         let repository = CompositionProductRepositoryFake(products: expectedProducts)
+        let clientRepository = CompositionClientRepositoryFake(clients: [])
         let dependencies = AppDependencies(
-            clientRepository: CompositionClientRepositoryFake(clients: []),
+            clientRepository: clientRepository,
+            makeClientForm: AppDependencies.readOnlyClientFormFactory(repository: clientRepository),
             productRepository: repository,
             serviceRepository: CompositionServiceRepositoryFake(services: []),
             saleRepository: InMemorySaleRepository(),
@@ -152,8 +157,10 @@ struct AppDependenciesTests {
     func dependenciesResolveServicesThroughTheInjectedRepository() async throws {
         let expectedServices = [try compositionService()]
         let repository = CompositionServiceRepositoryFake(services: expectedServices)
+        let clientRepository = CompositionClientRepositoryFake(clients: [])
         let dependencies = AppDependencies(
-            clientRepository: CompositionClientRepositoryFake(clients: []),
+            clientRepository: clientRepository,
+            makeClientForm: AppDependencies.readOnlyClientFormFactory(repository: clientRepository),
             productRepository: CompositionProductRepositoryFake(products: []),
             serviceRepository: repository,
             saleRepository: InMemorySaleRepository(),
@@ -184,8 +191,10 @@ struct AppDependenciesTests {
     func dependenciesExposeSeededSales() async throws {
         let expectedSales = [try compositionSale()]
         let repository = CompositionSaleRepositoryFake(sales: expectedSales)
+        let clientRepository = CompositionClientRepositoryFake(clients: [])
         let dependencies = AppDependencies(
-            clientRepository: CompositionClientRepositoryFake(clients: []),
+            clientRepository: clientRepository,
+            makeClientForm: AppDependencies.readOnlyClientFormFactory(repository: clientRepository),
             productRepository: CompositionProductRepositoryFake(products: []),
             serviceRepository: CompositionServiceRepositoryFake(services: []),
             saleRepository: repository,

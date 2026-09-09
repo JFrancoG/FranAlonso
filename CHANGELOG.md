@@ -38,6 +38,7 @@ All notable changes to this project are documented in this file.
 
 ### Added
 
+- 2026-09-08 | ✨ feat(clients): implement phase 08.3 list, search and client form screens; accessibility validation remains partial
 - 2026-09-08 | ✨ feat(clients): coordinate client list and form state
 - 2026-09-08 | ✨ feat(clients): add client CRUD and local search
 - 2026-08-29 | ✨ feat(navigation): add adaptive authenticated app shell
