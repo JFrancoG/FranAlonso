@@ -7,7 +7,7 @@
 - Fase 08 activa: [PLU-34](https://linear.app/plusprojects/issue/PLU-34), In Progress.
 - 08.1 publicada en `1164c62`; 08.2 en `6473658`. Sin PR/merge/cierre operativo de esas subfases.
 - [08.3 / PLU-37](https://linear.app/plusprojects/issue/PLU-37): listado, búsqueda y formulario implementados
-  en `codex/plu-37-phase-08-3-client-screens`. Commit/push autorizados tras reconciliación y revisión.
+  en `codex/plu-37-phase-08-3-client-screens`. Implementación publicada en `5533948`; rama remota verificada.
   La publicación no equivale a cierre de subfase: ADR 0022 mantiene límites de evidencia aplicable.
 - Composición y ViewModels validados con Xcode MCP: RED/GREEN 20/20, regresión 32 suites/259 resultados;
   corrección del error de nombre RED y GREEN 32/32. Último build PASS 9,115 s, log `20260909-191906`;
@@ -23,14 +23,14 @@
   con evidencia independiente. No se declara informe limpio ni contraste global aprobado.
 - Pendientes reales: R09 de carga/fallos asíncronos/reintento con AT y mediciones completas de contraste
   no textual/objetivos. ADR 0026 conserva la excepción de orientación iPhone. Subfase In Progress.
-- Revisiones finales independientes sin nuevos defectos ejecutables; reconciliación documental en curso
-  de verificación. Preparación de fixture signed-out permanece local y fuera de la entrega Git.
+- Revisiones finales independientes sin nuevos defectos ejecutables; reconciliación documental verificada. Preparación de fixture signed-out permanece local y fuera de la entrega Git.
 
 ## Evidencia y siguiente paso
 
 Detalle y artefactos en [fase 08](progress/phase-08.md) y
 [registro accesible 08.3](accessibility/evidence/08-3-client-screens.md).
-Publicar el commit/push autorizado tras verificar documentación y staged diff. PR, merge, cierre de issues,
+Commit/push de implementación completados; 24 archivos, fixture temporal excluida y remoto verificado.
+PR, merge, cierre de issues,
 activación live y comienzo de 08.4 requieren autorización independiente.
 
 ## Entregas anteriores

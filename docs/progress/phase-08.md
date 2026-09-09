@@ -848,5 +848,9 @@ cierre Linear y siguiente subfase no están autorizados.
 
 Completar la evidencia accesible pendiente de 08.3. Implementación, auditorías y regresión focalizada
 disponibles; subfase abierta según ADR 0022. Commit/push de 08.2 ya completados; entrega de 08.3 y subfases posteriores
-separadas. Commit/push de 08.3 autorizados tras reconciliación y revisión; pendientes de ejecución.
+separadas. Commit/push de implementación 08.3 completados en `553394833376c565ee0a259e35b931e283e59948`;
+remoto `codex/plu-37-phase-08-3-client-screens` verificado idéntico. 24 archivos publicados; fixture local excluida.
 PR, merge, cierre y live no autorizados.
+
+Reauditorías documentales finales PASS; huella de 446 archivos idéntica pre/post:
+`cf1610776435e4981e72eed52e47366073664c9f645f30c18baa52a1876a5e4d`. Gobernanza y staged diff-check PASS.

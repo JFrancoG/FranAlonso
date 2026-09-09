@@ -129,3 +129,7 @@ All notable changes to this project are documented in this file.
 - 2026-07-15 | 📦 build(bootstrap): complete baseline gates
 - 2026-07-14 | 📦 build(bootstrap): configure Firebase setup
 - 2026-07-13 | 🔧 chore(repository): bootstrap project
+
+### Delivery evidence
+
+- 2026-09-09 | 📝 docs(clients): record phase 08.3 publication
