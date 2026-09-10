@@ -1,6 +1,15 @@
 # Fase 08 — Clientes, consentimiento y foto
 
 
+## Cierre vigente de08.3 — 2026-09-10
+
+PR#10 integrada en main: merge1377cc446eb0cdb377c1f360bff011ce008ac414. Incluye08.1/08.2,
+base08.3 y correcciones hasta c743e7a. PLU-37 Done. Rama08.3 eliminada local/remota.
+GitHub MERGEABLE/CLEAN antes del merge, sin checks remotos configurados; validación local y
+revisiones registradas más abajo. Gobernanza y diff-check PASS. Fase08 abierta;08.4 no iniciada.
+Este cierre sustituye los pendientes de publicación y cierre de las entradas históricas siguientes.
+No cambia el alcance de las evidencias ni la excepción ADR0026. Registro documental, build/tests N/A.
+
 ## Estado vigente reconciliado — 2026-09-10
 
 Este resumen sustituye los pendientes históricos de las sesiones fechadas inferiores. Detalle por

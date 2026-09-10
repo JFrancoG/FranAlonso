@@ -1,12 +1,19 @@
 # Evidencia de accesibilidad — 08.3 listado, búsqueda y formulario de clientes
 
-Fecha del registro inicial: 2026-09-08. Estado actual: **muestreo representativo completado, con límites y excepción ADR0026; cierre operativo pendiente**.
+Fecha del registro inicial: 2026-09-08. Estado actual: **muestreo representativo completado, con límites y excepción ADR0026; cierre operativo completado por PR#10**.
 
 Alcance: [PLU-37](https://linear.app/plusprojects/issue/PLU-37), subfase 08.3. Este documento aplica
 [ADR 0022](../../ADRs/0022-native-ios-wcag22-accessibility.md) y la
 [matriz WCAG 2.2 A/AA para iOS](../WCAG22_AA_IOS.md) a las dos pantallas modificadas y al recorrido que las cruza.
 Es un objetivo interno basado en WCAG2ICT y convenciones Apple, no una certificación ni una declaración legal de
 conformidad. La evidencia previa de componentes o del shell no acredita automáticamente sus nuevas composiciones.
+
+## Cierre de entrega — 2026-09-10
+
+PR#10 integrada en main (1377cc4), PLU-37 Done. Cierre autorizado tras completar el muestreo
+representativo y las revisiones. Se conservan los límites documentados y la excepción ADR0026;
+el cierre no equivale a conformidad global. Los pendientes operativos de las entradas siguientes
+son históricos. Sin nuevas pruebas manuales pendientes del alcance acordado.
 
 ## Estado reconciliado — 2026-09-10
 
