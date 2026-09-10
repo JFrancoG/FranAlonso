@@ -29,8 +29,11 @@
   completos Cancelar y Desactivar. Sin nuevas pruebas manuales pendientes dentro del alcance acordado.
 - ADR0026 conserva la excepción aceptada de orientación iPhone. Se mantienen los límites de muestreo
   ADR0022; no se declara conformidad global. El cierre operativo sigue pendiente.
-- Configuración local separada de la entrega: scheme signed-out y traslado de DisplayName/FaceID
-  entre plist y pbxproj. Se preservan; no se atribuye autoría. ToolbarSpacer del propietario conservado.
+- Correcciones08.3 publicadas en `69acaa4`, remoto verificado. El propietario autoriza también publicar
+  el traslado de DisplayName/FaceID del plist a los ajustes del target; scheme ya coincide con Git.
+  Revisión independiente PASS; build MCP `141420` PASS4,129s. Plist generado Develop/Simulator
+  conserva Fran DEV, texto FaceID y Analytics desactivado. Persiste aviso previo AppIntents.
+  ToolbarSpacer conservado. Sin más cambios locales previstos tras esta entrega.
 
 ## Evidencia y siguiente paso
 

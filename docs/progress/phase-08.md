@@ -20,8 +20,10 @@ criterio y técnica en [evidencia08.3](../accessibility/evidence/08-3-client-scr
   acredita que al desplazar ambos botones aparecen completos. El propietario confirma apariencia correcta.
   No se infiere pulsación ni locución de las capturas; Cancelar/VoiceOver ya tienen evidencia anterior.
   Sin nuevas pruebas manuales pendientes en el muestreo acordado; ADR0026 sigue como excepción aceptada.
-- Config local plist/pbxproj/scheme se preserva separada del alcance. Commit/push autorizados tras
-  completar la comprobación visual; PR/merge/cierre/activaciónlive/08.4 siguen fuera del alcance.
+- Correcciones publicadas en69acaa4. Posteriormente el propietario autoriza publicar también
+  plist/pbxproj para dejar el árbol limpio; scheme ya coincide con Git. Revisión estática independiente
+  PASS, build MCP141420 PASS4,129s y valores efectivos del plist generado verificados.
+  PR/merge/cierre/activaciónlive/08.4 siguen fuera de esta entrega.
 - Reauditorías documentales focales de estándares iOS y accesibilidad PASS, sin hallazgos abiertos
   en esta reconciliación. Gobernanza y diff-check PASS; build/tests N/A por cambio documental.
 - Se reclasifican34 enlaces a artefactos eliminados como rutas históricas no disponibles, conservando
@@ -1102,3 +1104,17 @@ plist/pbxproj/scheme excluida; harness fuera del diff. Se conservan build125405,
 auditorías focales y evidencia manual ya obtenidos: no hay código nuevo desde esas validaciones.
 Gobernanza y diff-check se repiten para la entrega. Hash y remoto se verifican tras publicar en Linear;
 este registro queda identificado por su propio commit. Sin PR, merge ni cierre de PLU-37.
+
+## Entrega de configuración autorizada — 2026-09-10
+
+Tras publicar69acaa4, el propietario solicita commit/push de la configuración pendiente para dejar
+el árbol limpio. Solo quedan plist y pbxproj; el scheme ya coincide con HEAD, sin intervención en
+esta entrega. Se conserva el traslado de CFBundleDisplayName y NSFaceIDUsageDescription a las cuatro
+configuraciones del target; valores idénticos, sin nuevos permisos ni cambios de privacidad.
+
+Revisión independiente read-only de estándares PASS: equivalencia estática de las cuatro
+configuraciones y plist. Build oficial Xcode MCP141420 PASS4,129s, Develop/Simulator. Lectura del
+plist generado: nombre Fran DEV, descripción FaceID original y flags Analytics false/true conservados.
+El log incluye el aviso previo de extracción AppIntents; no se afirma cero warnings ni build de
+Production. Sin cambio lógico: tests y nueva auditoría UI N/A. Gobernanza y staged diff comprobados
+antes del commit. Commit/push autorizados; PR/merge/cierre e inicio08.4 no forman parte de esta entrega.

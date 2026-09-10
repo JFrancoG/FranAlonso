@@ -4,12 +4,10 @@
 <dict>
 	<key>AppEnvironment</key>
 	<string>$(APP_ENVIRONMENT)</string>
-	<key>CFBundleDisplayName</key>
-	<string>$(APP_DISPLAY_NAME)</string>
-	<key>FIREBASE_ANALYTICS_COLLECTION_ENABLED</key>
-	<false/>
 	<key>FIREBASE_ANALYTICS_COLLECTION_DEACTIVATED</key>
 	<true/>
+	<key>FIREBASE_ANALYTICS_COLLECTION_ENABLED</key>
+	<false/>
 	<key>FirebaseAppDelegateProxyEnabled</key>
 	<false/>
 	<key>FirebaseAutomaticScreenReportingEnabled</key>
@@ -18,7 +16,5 @@
 	<false/>
 	<key>GOOGLE_ANALYTICS_IDFV_COLLECTION_ENABLED</key>
 	<false/>
-	<key>NSFaceIDUsageDescription</key>
-	<string>Face ID desbloquea el acceso a la sesión ya iniciada en este dispositivo.</string>
 </dict>
 </plist>

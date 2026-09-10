@@ -4,6 +4,10 @@ All notable changes to this project are documented in this file.
 
 ## [Unreleased]
 
+### Maintenance
+
+- 2026-09-10 | 📦 build(config): move app metadata to build settings
+
 ### Fixed
 
 - 2026-09-10 | 🐛 fix(clients): improve confirmation and retry controls
