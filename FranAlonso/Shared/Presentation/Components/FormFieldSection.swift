@@ -25,10 +25,12 @@ struct FormFieldSection<Content: View>: View {
                 Image(systemName: systemImage)
                     .foregroundStyle(.textSecondary)
                 Text(label)
+                    .fixedSize(horizontal: false, vertical: true)
             }
         } else {
             Label {
                 Text(label)
+                    .fixedSize(horizontal: false, vertical: true)
             } icon: {
                 Image(systemName: systemImage)
                     .foregroundStyle(.textSecondary)

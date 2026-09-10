@@ -17,6 +17,36 @@ actor ClientPersistenceActor {
         try dataSource.fetchAll(in: modelContext)
     }
 
+    /// Reads a visible profile without exposing live persistent models across the actor boundary.
+    func client(id: ClientID) throws -> Client? {
+        try dataSource.client(id: id, in: modelContext)
+    }
+
+    /// Creates a draft and its pending operation through the shared local acceptance boundary.
+    func createClient(id: ClientID, profile: ClientProfile, operationID: UUID) throws -> Client {
+        try dataSource.createClient(
+            id: id,
+            profile: profile,
+            operationID: operationID,
+            in: modelContext
+        )
+    }
+
+    /// Edits only profile fields on this actor's context, preserving consent and activation.
+    func updateClient(id: ClientID, profile: ClientProfile, operationID: UUID) throws -> Client {
+        try dataSource.updateClient(
+            id: id,
+            profile: profile,
+            operationID: operationID,
+            in: modelContext
+        )
+    }
+
+    /// Hides a known profile while retaining its last local consent and a durable tombstone.
+    func deactivateClient(_ id: ClientID, operationID: UUID) throws {
+        try dataSource.deactivateClient(id, operationID: operationID, in: modelContext)
+    }
+
     /// Inserts or replaces a client by stable identity and saves the actor's context.
     ///
     /// - Parameter client: The detached Domain value to persist.
@@ -35,7 +65,7 @@ actor ClientPersistenceActor {
         try dataSource.persistPendingUpsert(client, operationID: operationID, in: modelContext)
     }
 
-    /// Removes the active client and commits one durable deletion operation.
+    /// Hides the client and commits a durable deletion while retaining its local profile and consent.
     func persistPendingDelete(_ id: ClientID, operationID: UUID) throws {
         try dataSource.persistPendingDelete(id, operationID: operationID, in: modelContext)
     }

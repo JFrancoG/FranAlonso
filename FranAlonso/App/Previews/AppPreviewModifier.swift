@@ -12,10 +12,7 @@ struct AppPreviewModifier: PreviewModifier {
         let modelContainer = try ModelContainer.inMemory(for: Schema.franAlonso)
         try AppPreviewFixtures.standard.seed(in: modelContainer.mainContext)
 
-        return Context(
-            modelContainer: modelContainer,
-            dependencies: .preview(clients: AppPreviewFixtures.standard.clients)
-        )
+        return Context(modelContainer: modelContainer, dependencies: .preview(modelContainer: modelContainer))
     }
 
     func body(content: Content, context: Context) -> some View {

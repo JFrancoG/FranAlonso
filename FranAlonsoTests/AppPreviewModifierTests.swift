@@ -3,7 +3,7 @@ import SwiftData
 import Testing
 @testable import FranAlonso
 
-@Suite("Shared application preview modifier")
+@Suite("Shared application preview modifier", .timeLimit(.minutes(1)))
 @MainActor
 struct AppPreviewModifierTests {
     private let dataSource = ClientLocalDataSource()
@@ -17,7 +17,6 @@ struct AppPreviewModifierTests {
 
         #expect(persistedClients == AppPreviewFixtures.standard.clients)
         #expect(try await iterator.next() == AppPreviewFixtures.standard.clients)
-        #expect(try await iterator.next() == nil)
     }
 
     @Test("Seeding the cached preview context repeatedly does not duplicate clients")

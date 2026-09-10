@@ -4,6 +4,14 @@ All notable changes to this project are documented in this file.
 
 ## [Unreleased]
 
+### Maintenance
+
+- 2026-09-10 | 📦 build(config): move app metadata to build settings
+
+### Fixed
+
+- 2026-09-10 | 🐛 fix(clients): improve confirmation and retry controls
+
 ### Documentation
 
 - 2026-09-08 | 📝 docs(delivery): close PLU-33 after merge
@@ -38,6 +46,9 @@ All notable changes to this project are documented in this file.
 
 ### Added
 
+- 2026-09-08 | ✨ feat(clients): implement phase 08.3 list, search and client form screens; accessibility validation remains partial
+- 2026-09-08 | ✨ feat(clients): coordinate client list and form state
+- 2026-09-08 | ✨ feat(clients): add client CRUD and local search
 - 2026-08-29 | ✨ feat(navigation): add adaptive authenticated app shell
 - 2026-08-29 | ✨ feat(navigation): add typed app-shell selection state
 - 2026-08-24 | ✨ feat(auth): add develop-only root error fixtures
@@ -126,3 +137,7 @@ All notable changes to this project are documented in this file.
 - 2026-07-15 | 📦 build(bootstrap): complete baseline gates
 - 2026-07-14 | 📦 build(bootstrap): configure Firebase setup
 - 2026-07-13 | 🔧 chore(repository): bootstrap project
+
+### Delivery evidence
+
+- 2026-09-09 | 📝 docs(clients): record phase 08.3 publication

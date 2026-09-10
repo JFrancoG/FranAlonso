@@ -1,109 +1,51 @@
 # Project Progress
 
-Última actualización: 2026-09-08
+Última actualización: 2026-09-10
 
-## Puerta actual
+## Estado actual
 
-- [PLU-33: limpieza Swift entregada](progress/phase-07.md#limpieza-swift-previa-al-cierre-de-fase); PR #9, `c8bb283`.
-- Fases 01–06 cerradas. 07.3 está integrada en `main` mediante la
-  [PR #5](https://github.com/JFrancoG/FranAlonso/pull/5).
-- PLU-25 está `In Progress`; PLU-26, PLU-27, PLU-28, PLU-29, PLU-30 y PLU-31 están `Done`.
-- PLU-32 / 07.7 está `Done`, integrada por [PR #8](https://github.com/JFrancoG/FranAlonso/pull/8) en `e4fe70d`.
-  Rama eliminada local y remotamente; PLU-25 mantiene el cierre de fase como puerta independiente.
-- 07.1 y sus fixtures Develop no-live están entregadas en `074ce5e`. Los motores live continúan inactivos.
-- 07.2 está entregada por la [PR #4](https://github.com/JFrancoG/FranAlonso/pull/4): implementación `24802e6`,
-  handoff `e8eca5a` y cierre documental `fda767b`.
-- La PR #5 quedó integrada por rebase: implementación `56133a2` y handoff `266489a`. El gate independiente de 07.3
-  pasó sin P0–P3.
-- ADR 0025 añade dos errores raíz y hace fail-closed toda fixture inválida. El owner amplía PLU-29 y acepta ADR 0026:
-  iPhone queda portrait-only, iPad adaptativo y 1.3.4 se registra `A/No pasa — excepción de producto aceptada`.
-- El gate de propuesta 07.4 pasa sin P0–P3 y queda `N/A`/diferido a 12.3–12.4: no existe todavía pantalla de venta,
-  estado de Presentation ni consumidor real. No creó issue propio, rama, componente, copy ni test ceremonial.
-- El gate de propuesta 07.5 pasa sin P0–P3. La [PR #6](https://github.com/JFrancoG/FranAlonso/pull/6) integra PLU-30
-  por rebase en `a220a3d`.
-- El gate corregido de propuesta 07.6 pasa sin P0–P3 y el owner autoriza su alcance exacto. La
-  [PR #7](https://github.com/JFrancoG/FranAlonso/pull/7) integra PLU-31 por rebase en `bc23bb9`; las auditorías y
-  ADR 0022 pasan tras reconciliar su evidencia.
+- Fase08 [PLU-34](https://linear.app/plusprojects/issue/PLU-34) y subfase08.3
+  [PLU-37](https://linear.app/plusprojects/issue/PLU-37) siguen In Progress.
+- Rama `codex/plu-37-phase-08-3-client-screens`: base previa verificada en `4527b03`.
+  Publicados: 08.1 `1164c62`, 08.2 `6473658`, base funcional08.3 `5533948` y registro `4527b03`.
+- **Correcciones incluidas en la entrega autorizada:** nueva sheet de confirmación (altura ajustada, título centrado,
+  botones delimitados y contraste), integración en ClientFormScreen, estilo visible de Reintentar y docs.
+- Validación lógica histórica: 259/259 resultados en32suites; error de nombre RED/GREEN32/32.
+  Último build MCP27 `125405` PASS8,46s y RunProject `125546` PASS8,152s en iPhone14/iOS26.6.1.
+  Persiste aviso previo AppIntents; no se afirma cero warnings globales ni ReleaseGate/Production.
+- Muestreo manual completado: CRUD, búsqueda, VoiceOver, Control por voz, Control por botón, teclado
+  en Simulator, texto máximo, preferencias combinadas e iPad para listado/formulario original.
+  RTL sintético inspeccionado. No repetir esas pruebas.
+- Nueva sheet: VoiceOver recorre desde el tirador, Cancelar devuelve foco a Desactivar cliente y
+  confirmar anuncia Cliente desactivado completo y retorna al listado vacío. Locución parcial previa
+  durante transición registrada como observación no bloqueante; causa no determinada.
+- **R09 completado:** reintentos de guardado y lectura, datos conservados/cargados y retorno a la fila.
+  Ambos harness retirados. AppDependencies+ClientForm.swift coincide byte a byte con HEAD.
+  Reintentar usa estilo primario; preview posterior inspeccionada, sin cambio de acción/etiqueta.
+- Contraste y foco tienen muestras explícitas en el registro. No se declara Inspector limpio ni
+  cobertura total desde las previews. Artefactos locales eliminados están marcados como no disponibles.
+- **Comprobación representativa completada:** capturas del propietario de las13:40–13:41 muestran
+  listado, formulario y nueva sheet en iPad/ventana estrecha con texto ampliado; al desplazar aparecen
+  completos Cancelar y Desactivar. Sin nuevas pruebas manuales pendientes dentro del alcance acordado.
+- ADR0026 conserva la excepción aceptada de orientación iPhone. Se mantienen los límites de muestreo
+  ADR0022; no se declara conformidad global. El cierre operativo sigue pendiente.
+- Correcciones08.3 publicadas en `69acaa4`, remoto verificado. El propietario autoriza también publicar
+  el traslado de DisplayName/FaceID del plist a los ajustes del target; scheme ya coincide con Git.
+  Revisión independiente PASS; build MCP `141420` PASS4,129s. Plist generado Develop/Simulator
+  conserva Fran DEV, texto FaceID y Analytics desactivado. Persiste aviso previo AppIntents.
+  ToolbarSpacer conservado. Sin más cambios locales previstos tras esta entrega.
 
-## 07.7 — entregada
+## Evidencia y siguiente paso
 
-- Se retira solo `bootstrap.welcome.title`; las 68 entradas consumidas conservan valores y metadatos exactos.
-- Xcode MCP: Develop/Production compilan y la suite focal de localización pasa 18/18 en Develop,
-  con fixture signed-out verificada antes del host. El scheme recupera sus bytes originales y cinco argumentos NO.
-- Los tres bundles compilados coinciden 68/68 con el catálogo; mantienen Fran DEV/Fran Alonso. La inspección es
-  offline: no acredita resolución Foundation nueva de cada cadena ni ejecuta Production.
-- [La evidencia 07.7](accessibility/evidence/07-7-localization.md) conserva inventario y límites de 07.2/07.3/07.6.
-  Repetir previews/AT es `N/A: sin alcance SwiftUI`; no se declara una nueva pasada manual.
-- AX sin hallazgos; iOS cierra P2/P3 documentales. El aviso App Intents ya constaba como tooling en 07.1 entregada;
-  la revisión focal final pasa sin P0–P3. Hay cero diagnósticos Swift/Clang, no cero warnings globales.
-- Selección Develop/iPhone 11 restaurada y verificada tras desbloquear el Mac; scheme idéntico al original.
+Estado y límites reconciliados en [fase08](progress/phase-08.md) y
+[registro accesible08.3](accessibility/evidence/08-3-client-screens.md). Revisiones documentales focales
+independientes; sin nuevas pruebas lógicas por esta actualización documental.
+Commit y push de las correcciones autorizados por el propietario el2026-09-10. El commit que contiene
+este registro incluye tres archivos Swift, esta documentación y CHANGELOG; la verificación del remoto
+se registra en Linear tras publicar. PR, merge, cierre operativo, live y08.4 quedan fuera del alcance.
 
-## 07.6 — entregada
+## Entregas anteriores
 
-- `AppShellScreen` compone las cinco secciones en `TabView(selection:)` con `.sidebarAdaptable`; cada sección posee su
-  `NavigationStack`, Jornada continúa siendo inicial y Clientes reutiliza su pantalla real. Las otras cuatro raíces
-  muestran el estado inerte localizado ya aprobado, sin anticipar features.
-- `AuthenticationRootScreen` conserva un único `NavigationStack` para todos los estados no autenticados y extrae solo
-  el shell protegido; `.id(session.id)` y la intención de logout permanecen en la frontera Authentication.
-- La inspección de preview detectó que labels genéricos de `Tab` expulsaban barra y safe areas en iPhone con
-  `XXX Large`/`AX 5`. Usar el inicializador semántico nativo de `Tab` cerró el hallazgo; iPhone y iPad pasan los
-  rerenders trazados: `Large`/`XXX Large`/`AX 5` en iPhone y `AX 5` en iPad portrait/landscape, además de las
-  apariencias, el contraste y el RTL sintético registrados.
-- Xcode MCP final: Develop 815/815 y 22/22 focales; Production 787 pasados, 0 fallos y 6 no ejecutados de 793. Builds
-  Develop/Production correctos, cero diagnósticos en los dos Swift afectados y cero warnings en log/Issue Navigator.
-- ADR 0022 queda en 29 `Pasa`, 0 `Limitado`, 0 `Pendiente`, 25 `N/A` y la excepción 1.3.4 aceptada por ADR 0026.
-  Inspector, VoiceOver, Voice Control, Switch Control, teclado, Touch, foco/rotor, cinco logout, Dynamic Type,
-  preferencias, cuatro orientaciones iPad y multitarea mínima están acreditados. Los controles nativos no introducen
-  geometría ni color custom; la ausencia de puntero físico no limita 2.5.8.
-- Las auditorías iOS y accesibilidad pasan tras corregir únicamente imprecisiones documentales; no quedan P0–P3 ni
-  pruebas manuales adicionales para el shell actual.
-- No hubo Firebase/Keychain live, persistencia durable, dependencia, ruta ficticia ni cambio de target. PLU-31 queda
-  integrado y `Done`; el inicio posterior de 07.7 se registra en PLU-32.
-
-## 07.5 — entregada
-
-- `AppSection` modela exactamente Jornada, Histórico, Clientes, Catálogo e Informes; `AppShellViewModel` posee solo
-  `selectedSection` y comienza en `.workday`.
-- No se añaden rutas locales sin un segundo destino real, Store, router global, `NavigationPath`, deep links ni
-  dependencias. El `TabView`, `.sidebarAdaptable`, cada `NavigationStack` y la integración visual pertenecen a 07.6.
-- TDD RED/GREEN con Swift Testing: el focal falló primero por los símbolos ausentes y después pasó 1/1. Se conserva
-  solo la expectativa independiente de selección inicial; una asignación seguida de lectura sería tautológica.
-- Xcode MCP sobre `FranAlonso-Production` registra 793 tests: 761 pasan, ninguno falla y 32 quedan sin ejecutar por
-  `FRANALONSO_AUTH_FIXTURE`. El build final pasa en 8,596 s; build log e Issue Navigator quedan a cero warnings.
-- Preview, localización y ADR 0022 son `N/A`: 07.5 no crea ni modifica Views, copy o superficies interactivas. No
-  existe actividad Firebase live ni cambio de configuración.
-- La auditoría iOS cerró su único P2 al reconciliar la descripción de PLU-25; la repetición afectada pasó sin P0–P3.
-  Gobernanza y `git diff --check` pasan; la auditoría de accesibilidad es `N/A` por ausencia de UI.
-
-## 07.3 — entregada
-
-- `LoadingStateView` y `UnavailableStateView` conservan primitivas SwiftUI nativas y acciones caller-owned; sustituyen
-  únicamente estados full-content equivalentes de Clientes y la raíz autenticada.
-- Las fixtures Develop de acceso local denegado y fallo de observación permanecen desactivadas por defecto, fallan
-  cerradas y no alcanzan Firebase live.
-- El gate final entregado mantiene 860/860, builds Develop/Production y cero warnings. Su detalle reproducible se
-  conserva en [`progress/phase-07.md`](progress/phase-07.md).
-- La evidencia ADR 0022 está en
-  [`07-3-state-views.md`](accessibility/evidence/07-3-state-views.md): loading queda `A/L` y 1.3.4 `A/No pasa` mediante
-  la excepción de producto aceptada en ADR 0026.
-- Las auditorías finales iOS y accesibilidad pasaron sin hallazgos P0–P3; PLU-29 está integrado y `Done`.
-
-## 07.2 — entregada
-
-- Los controles compartidos, la coordinación accesible de Login/Session y sus limitaciones nativas aceptadas están
-  cerrados en [`07-2-reusable-controls.md`](accessibility/evidence/07-2-reusable-controls.md).
-- Las dos `Section` de Login deben seguir separadas para Switch Control. `PrimaryActionStyle` debe conservar
-  enabled/disabled y contraste; 07.3 no modifica ninguno de esos riesgos.
-
-## Siguiente acción
-
-1. Cierre independiente de fase 07 / PLU-25; 07.7 está integrada y PLU-32 `Done`.
-2. Siguiente propuesta: 08.1, contratos y casos de uso CRUD/búsqueda de Clientes; implementación aún no iniciada.
-
-## Bloqueos
-
-Sin blocker de código, auditoría, accesibilidad o entrega en 07.6. La excepción 1.3.4 está aceptada y no se presenta
-como conformidad. Loading conserva su limitación aceptada de 07.3.
-
-El histórico de fases 01–06 se conserva en [`progress/phases-00-06.md`](progress/phases-00-06.md), y el detalle de
-fase 07 en [`progress/phase-07.md`](progress/phase-07.md).
+- Fases01–06: [histórico](progress/phases-00-06.md).
+- Fase07: [evidencia](progress/phase-07.md); PLU-26–PLU-33 Done. PLU-25 conserva cierre administrativo
+  pendiente. Última entrega Swift PR#9 `c8bb283`, cierre documental `99709d1`.

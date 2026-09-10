@@ -745,6 +745,414 @@
         }
       }
     },
+    "clients.form.cancel" : {
+      "comment" : "Cierra el formulario sin guardar sus cambios pendientes.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancelar"
+          }
+        }
+      }
+    },
+    "clients.form.city.label" : {
+      "comment" : "Etiqueta de la localidad de la dirección.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Localidad (opcional)"
+          }
+        }
+      }
+    },
+    "clients.form.create.title" : {
+      "comment" : "Título del formulario de alta de cliente.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nuevo cliente"
+          }
+        }
+      }
+    },
+    "clients.form.deactivate" : {
+      "comment" : "Abre la confirmación de desactivación del cliente existente.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Desactivar cliente"
+          }
+        }
+      }
+    },
+    "clients.form.deactivate.confirm" : {
+      "comment" : "Confirma explícitamente la desactivación del cliente.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Desactivar"
+          }
+        }
+      }
+    },
+    "clients.form.deactivate.message" : {
+      "comment" : "Consecuencia local de desactivar, sin promesa de borrado remoto.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dejará de aparecer en el listado de clientes. Sus datos anteriores se conservarán."
+          }
+        }
+      }
+    },
+    "clients.form.deactivate.title" : {
+      "comment" : "Título de la confirmación destructiva.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¿Desactivar este cliente?"
+          }
+        }
+      }
+    },
+    "clients.form.deactivated" : {
+      "comment" : "Anuncio accesible tras aceptar la desactivación local.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cliente desactivado."
+          }
+        }
+      }
+    },
+    "clients.form.deactivating" : {
+      "comment" : "Estado de desactivación local en curso.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Desactivando cliente…"
+          }
+        }
+      }
+    },
+    "clients.form.draft.message" : {
+      "comment" : "Explica el estado del alta antes del consentimiento.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El cliente se guardará como borrador."
+          }
+        }
+      }
+    },
+    "clients.form.edit.title" : {
+      "comment" : "Título del formulario de edición de cliente.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Editar cliente"
+          }
+        }
+      }
+    },
+    "clients.form.error.conflict" : {
+      "comment" : "Conflicto semántico que necesita volver a leer el cliente.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Los datos del cliente han cambiado. Cierra el formulario y vuelve a abrirlo antes de guardar."
+          }
+        }
+      }
+    },
+    "clients.form.error.deactivated" : {
+      "comment" : "Error que impide editar un cliente desactivado.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Este cliente está desactivado. Vuelve al listado."
+          }
+        }
+      }
+    },
+    "clients.form.error.exists" : {
+      "comment" : "Error de identidad duplicada, sin sugerir unicidad por nombre.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se ha podido crear el cliente. Cierra el formulario y vuelve a intentarlo."
+          }
+        }
+      }
+    },
+    "clients.form.error.missing" : {
+      "comment" : "Error al intentar acceder a un cliente ausente.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Este cliente ya no está disponible. Vuelve al listado."
+          }
+        }
+      }
+    },
+    "clients.form.error.name" : {
+      "comment" : "Identifica el nombre obligatorio vacío y explica su corrección.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Escribe el nombre del cliente para poder guardarlo."
+          }
+        }
+      }
+    },
+    "clients.form.error.title" : {
+      "comment" : "Título de un error semántico del formulario.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se ha podido completar la operación"
+          }
+        }
+      }
+    },
+    "clients.form.error.unavailable" : {
+      "comment" : "Fallo local sin detalles del proveedor o de los datos.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se ha podido completar la operación. Inténtalo de nuevo."
+          }
+        }
+      }
+    },
+    "clients.form.loading" : {
+      "comment" : "Estado de carga del formulario de edición.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cargando cliente…"
+          }
+        }
+      }
+    },
+    "clients.form.name.label" : {
+      "comment" : "Etiqueta persistente y accesible del nombre del cliente.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nombre (obligatorio)"
+          }
+        }
+      }
+    },
+    "clients.form.postal.label" : {
+      "comment" : "Etiqueta del código postal sin restricciones de formato adicionales.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Código postal (opcional)"
+          }
+        }
+      }
+    },
+    "clients.form.province.label" : {
+      "comment" : "Etiqueta de la provincia de la dirección.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Provincia (opcional)"
+          }
+        }
+      }
+    },
+    "clients.form.retry" : {
+      "comment" : "Vuelve a cargar el cliente tras un fallo de lectura.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reintentar"
+          }
+        }
+      }
+    },
+    "clients.form.save" : {
+      "comment" : "Confirma el guardado local del formulario.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Guardar"
+          }
+        }
+      }
+    },
+    "clients.form.saved" : {
+      "comment" : "Anuncio accesible tras aceptar el guardado local.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cliente guardado."
+          }
+        }
+      }
+    },
+    "clients.form.saving" : {
+      "comment" : "Estado de guardado local en curso.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Guardando cliente…"
+          }
+        }
+      }
+    },
+    "clients.form.street.label" : {
+      "comment" : "Etiqueta del primer campo de dirección.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Calle y número (opcional)"
+          }
+        }
+      }
+    },
+    "clients.form.tax.label" : {
+      "comment" : "Etiqueta del identificador fiscal opcional.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Identificador fiscal (opcional)"
+          }
+        }
+      }
+    },
+    "clients.list.add" : {
+      "comment" : "Acción para abrir un formulario de alta.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Añadir cliente"
+          }
+        }
+      }
+    },
+    "clients.list.edit.hint" : {
+      "comment" : "Pista accesible de la fila que abre la edición.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abre el formulario de este cliente."
+          }
+        }
+      }
+    },
+    "clients.list.retry" : {
+      "comment" : "Acción para reintentar la observación del listado.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reintentar"
+          }
+        }
+      }
+    },
+    "clients.list.search.empty.message" : {
+      "comment" : "Ayuda para corregir una búsqueda sin resultados.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prueba con otro nombre o identificador fiscal."
+          }
+        }
+      }
+    },
+    "clients.list.search.empty.title" : {
+      "comment" : "Título cuando la búsqueda no encuentra clientes.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sin coincidencias"
+          }
+        }
+      }
+    },
+    "clients.list.search.prompt" : {
+      "comment" : "Buscador local por nombre o identificador fiscal.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Buscar clientes"
+          }
+        }
+      }
+    },
     "clients.list.empty.message" : {
       "comment" : "Descripción mostrada en la pantalla de clientes cuando la lista está vacía.",
       "extractionState" : "manual",

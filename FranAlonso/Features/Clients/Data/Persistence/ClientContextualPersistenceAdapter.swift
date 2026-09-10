@@ -21,6 +21,36 @@ struct ClientContextualPersistenceAdapter {
         try dataSource.persistPendingUpsert(client, operationID: makeOperationID(), in: context)
         await observationSignal.publishChange()
     }
+
+    /// Creates a draft using the caller's ephemeral context and publishes only after durable acceptance.
+    func create(id: ClientID, profile: ClientProfile, in context: ModelContext) async throws -> Client {
+        let client = try dataSource.createClient(
+            id: id,
+            profile: profile,
+            operationID: makeOperationID(),
+            in: context
+        )
+        await observationSignal.publishChange()
+        return client
+    }
+
+    /// Updates editable fields while preserving the profile's current consent and activation state.
+    func update(id: ClientID, profile: ClientProfile, in context: ModelContext) async throws -> Client {
+        let client = try dataSource.updateClient(
+            id: id,
+            profile: profile,
+            operationID: makeOperationID(),
+            in: context
+        )
+        await observationSignal.publishChange()
+        return client
+    }
+
+    /// Hides a known profile through the same tombstone primitive used by the repository.
+    func deactivate(_ id: ClientID, in context: ModelContext) async throws {
+        try dataSource.deactivateClient(id, operationID: makeOperationID(), in: context)
+        await observationSignal.publishChange()
+    }
 }
 
 extension ClientContextualPersistenceAdapter {
