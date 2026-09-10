@@ -24,6 +24,7 @@ struct ClientFormContent: View {
                     Text(.clientsFormRetry)
                         .frame(minHeight: 44)
                 }
+                .primaryActionStyle()
                 .disabled(isRequestPending)
             }
         default:

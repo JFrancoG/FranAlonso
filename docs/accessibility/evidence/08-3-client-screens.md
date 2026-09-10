@@ -1,12 +1,54 @@
 # Evidencia de accesibilidad — 08.3 listado, búsqueda y formulario de clientes
 
-Fecha del registro inicial: 2026-09-08. Estado: **evidencia parcial; puerta ADR 0022 abierta**.
+Fecha del registro inicial: 2026-09-08. Estado actual: **muestreo representativo completado, con límites y excepción ADR0026; cierre operativo pendiente**.
 
 Alcance: [PLU-37](https://linear.app/plusprojects/issue/PLU-37), subfase 08.3. Este documento aplica
 [ADR 0022](../../ADRs/0022-native-ios-wcag22-accessibility.md) y la
 [matriz WCAG 2.2 A/AA para iOS](../WCAG22_AA_IOS.md) a las dos pantallas modificadas y al recorrido que las cruza.
 Es un objetivo interno basado en WCAG2ICT y convenciones Apple, no una certificación ni una declaración legal de
 conformidad. La evidencia previa de componentes o del shell no acredita automáticamente sus nuevas composiciones.
+
+## Estado reconciliado — 2026-09-10
+
+Este bloque y las tablas R/ADR actualizadas describen el estado vigente. Las secciones fechadas
+posteriores conservan el historial de cada sesión; sus pendientes se consideran sustituidos cuando
+hay confirmación posterior explícita. A/L expresa el límite del muestreo, no una orden de repetir
+cada recorrido o todas las combinaciones.
+
+- R09 completado por reporte: reintentos de guardado y lectura, conservación/carga de datos y retorno.
+  Harness retirados; AppDependencies+ClientForm.swift coincide byte a byte con HEAD.
+- Nueva confirmación: presentación ajustada al contenido, título centrado, botones delimitados;
+  VoiceOver recorre, cancela con retorno y confirma con resultado final completo. Reintentar ahora
+  usa el estilo primario. Build125405 y RunProject125546 PASS con AppIntents previo.
+- **Comprobación acotada completada:** capturas del propietario de las13:40–13:41 de iPad en ventana
+  estrecha con texto ampliado. La nueva sheet muestra ambos botones completos tras desplazar; el
+  propietario confirma apariencia correcta. No quedan nuevas pruebas manuales pendientes del muestreo
+  acordado. Las imágenes no acreditan pulsaciones, locuciones ni la categoría exacta de Dynamic Type.
+- ADR0026 mantiene la excepción aceptada de orientación iPhone; no se declara conformidad completa.
+- Artefactos históricos eliminados: sus rutas se conservan como texto marcado no disponible.
+  No se recrean capturas ni se presenta su inspección histórica como verificación actual. Los
+  reportes del propietario y resultados textuales se conservan con sus límites; no se pide repetirlos.
+- La base está publicada en5533948/4527b03; las correcciones actuales se incluyen en la entrega
+  commit/push autorizada el2026-09-10. Sin cierre de subfase, PR/merge, live ni avance a08.4.
+
+## Comprobación visual final — 2026-09-10, 13:40–13:41
+
+El propietario aporta seis capturas y confirma «yo lo veo todo bien». Se inspeccionan listado,
+formulario y nueva confirmación en una ventana estrecha de iPad con texto ampliado. La confirmación
+conserva título centrado y texto multilínea; la secuencia final muestra desplazamiento vertical hasta
+Cancelar y Desactivar completos, delimitados y sin solaparse. El contenido que sale por el borde
+superior al desplazar no representa truncamiento horizontal. Queda resuelta la comprobación visual
+pendiente de la nueva presentación. No se atribuye a estas imágenes una activación de los botones;
+el retorno al cancelar y VoiceOver conservan su evidencia previa.
+
+Capturas originales locales, aportadas por el propietario:
+
+- [13.40.20](</Users/jesusf/Desktop/Captura de pantalla 2026-09-10 a las 13.40.20.png>)
+- [13.40.38](</Users/jesusf/Desktop/Captura de pantalla 2026-09-10 a las 13.40.38.png>)
+- [13.41.01](</Users/jesusf/Desktop/Captura de pantalla 2026-09-10 a las 13.41.01.png>)
+- [13.41.20](</Users/jesusf/Desktop/Captura de pantalla 2026-09-10 a las 13.41.20.png>)
+- [13.41.46](</Users/jesusf/Desktop/Captura de pantalla 2026-09-10 a las 13.41.46.png>)
+- [13.41.57](</Users/jesusf/Desktop/Captura de pantalla 2026-09-10 a las 13.41.57.png>)
 
 ## Autoridad y superficies evaluadas
 
@@ -57,8 +99,7 @@ demuestra por sí solo las dimensiones completas ni la superficie realmente oper
 
 El nombre inválido tiene mensaje textual, hint condicional y solicitudes de foco de teclado/accesible. El código emite
 notificaciones para cambios y resultados importantes. Estas declaraciones no acreditan que el anuncio se oiga una sola
-vez, que no se interrumpa al cerrar la sheet ni que el foco termine en un elemento correcto. Todo ello queda pendiente
-de operación real con cada tecnología pertinente.
+vez, que no se interrumpa al cerrar la sheet ni que el foco termine en un elemento correcto. Las comprobaciones efectivas y sus límites se recogen en R03–R09; no se amplían desde la inspección.
 
 ## Evidencia de compilación y lógica
 
@@ -94,8 +135,8 @@ Evidencia comunicada por el orquestador, Xcode MCP, `FranAlonso-Develop`, 2026-0
 
 ## Manifiesto de previews y runtime
 
-El [manifiesto local de 19 capturas](/tmp/franalonso-083-preview-manifest.json) conserva las rutas devueltas por
-RenderPreview. La tabla distingue las capturas anteriores a las correcciones de las que las verifican. Todas las
+El manifiesto local de 19 capturas — `/tmp/franalonso-083-preview-manifest.json` (artefacto local no disponible) identificaba las rutas devueltas por
+RenderPreview; su archivo temporal ya no está disponible. La tabla distingue las capturas anteriores a las correcciones de las que las verifican. Todas las
 observaciones visuales que siguen fueron comunicadas por el orquestador; el agente documental no las presenta como
 una operación propia con tecnologías de asistencia.
 
@@ -107,25 +148,25 @@ acreditan su viewport visible. No existe todavía cobertura completa de todas la
 
 | ID | Superficie y variante solicitada | Artefacto inspeccionado | Resultado visual y límite |
 |---|---|---|---|
-| P01 | Pantalla alta; Large / Light solicitados; contraste efectivo no registrado | [RenderPreview_result_2026-09-08T135406Z@3x.png](/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RenderPreview/RenderPreview_result_2026-09-08T135406Z@3x.png) | Alta y campos visibles. La captura no demuestra el recorrido completo ni AT. |
-| P02 | Pantalla edición; AX 5 / Dark / contraste incrementado | [RenderPreview_result_2026-09-08T135813Z@3x.png](/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RenderPreview/RenderPreview_result_2026-09-08T135813Z@3x.png) | Solo capturó carga. Título inline «Editar clien…» truncado; pendiente verificar la pantalla cargada a AX 5. No acredita campos. |
-| P03a | Listado vacío; Large / Light / contraste normal | [RenderPreview_result_2026-09-08T135855Z@3x.png](/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RenderPreview/RenderPreview_result_2026-09-08T135855Z@3x.png) | Estado vacío visible. |
-| P03b | Listado con nombre largo; XXX Large / Dark / contraste normal | [RenderPreview_result_2026-09-08T135901Z@3x.png](/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RenderPreview/RenderPreview_result_2026-09-08T135901Z@3x.png) | Nombre largo con crecimiento vertical. Solo viewport visible. |
-| P03c | Listado de 80 clientes; AX 5 / Light / contraste incrementado | [RenderPreview_result_2026-09-08T135907Z@3x.png](/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RenderPreview/RenderPreview_result_2026-09-08T135907Z@3x.png) | Filas multilínea visibles. No acredita desplazamiento u operación de las 80 filas. |
-| P03d | Sin coincidencias; Large / Light / contraste normal | [RenderPreview_result_2026-09-08T135913Z@3x.png](/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RenderPreview/RenderPreview_result_2026-09-08T135913Z@3x.png) | Estado vacío por búsqueda visible. Anuncio no escuchado. |
-| P03e | Error de listado; AX 5 / Dark / contraste incrementado | [RenderPreview_result_2026-09-08T140004Z@3x.png](/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RenderPreview/RenderPreview_result_2026-09-08T140004Z@3x.png) | Título, mensaje y Reintentar visibles. No se operó el reintento en esta captura. |
-| P03f | Carga de listado; Large / Light / contraste normal | [RenderPreview_result_2026-09-08T140010Z@3x.png](/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RenderPreview/RenderPreview_result_2026-09-08T140010Z@3x.png) | Indicador y texto visibles. No acredita duración, transición ni anuncio. |
-| P04a-antes | Contenido edición larga; AX 5 / Dark / contraste incrementado | [RenderPreview_result_2026-09-08T140023Z@3x.png](/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RenderPreview/RenderPreview_result_2026-09-08T140023Z@3x.png) | Obsoleta para evaluar el código corregido: label de nombre recortado, hallazgo que motivó el ajuste compartido. |
-| P04b | Validación de nombre; XXX Large / Light / contraste incrementado | [RenderPreview_result_2026-09-08T140024Z@3x.png](/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RenderPreview/RenderPreview_result_2026-09-08T140024Z@3x.png) | Mensaje completo junto al campo. No acredita hint oído ni foco accesible. |
-| P04c | Fallo inicial del formulario; Large / Dark / contraste normal | [RenderPreview_result_2026-09-08T140108Z@3x.png](/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RenderPreview/RenderPreview_result_2026-09-08T140108Z@3x.png) | Mensaje y Reintentar visibles; recuperación runtime pendiente. |
-| P04d-antes | Fallo de guardado; Large / Light / contraste incrementado | [RenderPreview_result_2026-09-08T140110Z@3x.png](/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RenderPreview/RenderPreview_result_2026-09-08T140110Z@3x.png) | Obsoleta: el error quedaba fuera del primer viewport. Sustituida por P04d tras adelantar la sección de error. |
-| P04e-antes | Guardando; Large / Light / contraste normal | [RenderPreview_result_2026-09-08T140111Z@3x.png](/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RenderPreview/RenderPreview_result_2026-09-08T140111Z@3x.png) | Obsoleta: el progreso quedaba fuera del primer viewport. Sustituida por P04e tras adelantar esa sección. |
-| P04f | Contenido alta; XXX Large / Light / contraste normal | [RenderPreview_result_2026-09-08T140113Z@3x.png](/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RenderPreview/RenderPreview_result_2026-09-08T140113Z@3x.png) | Aviso de borrador y campos visibles. Solo acredita el viewport. |
-| P04a-caché | Contenido edición larga; AX 5 / Dark / contraste incrementado | [RenderPreview_result_2026-09-08T140146Z@3x.png](/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RenderPreview/RenderPreview_result_2026-09-08T140146Z@3x.png) | Obsoleta: render anterior a recompilar, todavía recortado. No se usa como evidencia de la corrección. |
-| P04a | Contenido edición larga; AX 5 / Dark / contraste incrementado | [RenderPreview_result_2026-09-08T140258Z@3x.png](/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RenderPreview/RenderPreview_result_2026-09-08T140258Z@3x.png) | Después del build: label obligatorio completo gracias a crecimiento vertical. No acredita campos inferiores ni toolbar de Screen. |
-| P04d | Fallo de guardado; Large / Light / contraste incrementado | [RenderPreview_result_2026-09-08T140902Z@3x.png](/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RenderPreview/RenderPreview_result_2026-09-08T140902Z@3x.png) | Error visible en la primera sección del formulario. No acredita anuncio ni recuperación. |
-| P04e | Guardando; Large / Light / contraste normal | [RenderPreview_result_2026-09-08T140904Z@3x.png](/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RenderPreview/RenderPreview_result_2026-09-08T140904Z@3x.png) | Progreso visible en la primera sección del formulario. No acredita el estado transitorio con AT. |
-| P04g | FormFieldSection compartido; AX 5 / Light / contraste normal | [RenderPreview_result_2026-09-08T140925Z@3x.png](/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RenderPreview/RenderPreview_result_2026-09-08T140925Z@3x.png) | Label completo; valor de correo de una sola línea conserva el recorte nativo. No acredita todas las pantallas consumidoras. |
+| P01 | Pantalla alta; Large / Light solicitados; contraste efectivo no registrado | RenderPreview_result_2026-09-08T135406Z@3x.png — `/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RenderPreview/RenderPreview_result_2026-09-08T135406Z@3x.png` (artefacto local no disponible) | Alta y campos visibles. La captura no demuestra el recorrido completo ni AT. |
+| P02 | Pantalla edición; AX 5 / Dark / contraste incrementado | RenderPreview_result_2026-09-08T135813Z@3x.png — `/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RenderPreview/RenderPreview_result_2026-09-08T135813Z@3x.png` (artefacto local no disponible) | Solo capturó carga. Título inline «Editar clien…» truncado; pendiente verificar la pantalla cargada a AX 5. No acredita campos. |
+| P03a | Listado vacío; Large / Light / contraste normal | RenderPreview_result_2026-09-08T135855Z@3x.png — `/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RenderPreview/RenderPreview_result_2026-09-08T135855Z@3x.png` (artefacto local no disponible) | Estado vacío visible. |
+| P03b | Listado con nombre largo; XXX Large / Dark / contraste normal | RenderPreview_result_2026-09-08T135901Z@3x.png — `/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RenderPreview/RenderPreview_result_2026-09-08T135901Z@3x.png` (artefacto local no disponible) | Nombre largo con crecimiento vertical. Solo viewport visible. |
+| P03c | Listado de 80 clientes; AX 5 / Light / contraste incrementado | RenderPreview_result_2026-09-08T135907Z@3x.png — `/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RenderPreview/RenderPreview_result_2026-09-08T135907Z@3x.png` (artefacto local no disponible) | Filas multilínea visibles. No acredita desplazamiento u operación de las 80 filas. |
+| P03d | Sin coincidencias; Large / Light / contraste normal | RenderPreview_result_2026-09-08T135913Z@3x.png — `/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RenderPreview/RenderPreview_result_2026-09-08T135913Z@3x.png` (artefacto local no disponible) | Estado vacío por búsqueda visible. Anuncio no escuchado. |
+| P03e | Error de listado; AX 5 / Dark / contraste incrementado | RenderPreview_result_2026-09-08T140004Z@3x.png — `/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RenderPreview/RenderPreview_result_2026-09-08T140004Z@3x.png` (artefacto local no disponible) | Título, mensaje y Reintentar visibles. No se operó el reintento en esta captura. |
+| P03f | Carga de listado; Large / Light / contraste normal | RenderPreview_result_2026-09-08T140010Z@3x.png — `/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RenderPreview/RenderPreview_result_2026-09-08T140010Z@3x.png` (artefacto local no disponible) | Indicador y texto visibles. No acredita duración, transición ni anuncio. |
+| P04a-antes | Contenido edición larga; AX 5 / Dark / contraste incrementado | RenderPreview_result_2026-09-08T140023Z@3x.png — `/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RenderPreview/RenderPreview_result_2026-09-08T140023Z@3x.png` (artefacto local no disponible) | Obsoleta para evaluar el código corregido: label de nombre recortado, hallazgo que motivó el ajuste compartido. |
+| P04b | Validación de nombre; XXX Large / Light / contraste incrementado | RenderPreview_result_2026-09-08T140024Z@3x.png — `/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RenderPreview/RenderPreview_result_2026-09-08T140024Z@3x.png` (artefacto local no disponible) | Mensaje completo junto al campo. No acredita hint oído ni foco accesible. |
+| P04c | Fallo inicial del formulario; Large / Dark / contraste normal | RenderPreview_result_2026-09-08T140108Z@3x.png — `/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RenderPreview/RenderPreview_result_2026-09-08T140108Z@3x.png` (artefacto local no disponible) | Mensaje y Reintentar visibles; recuperación runtime pendiente. |
+| P04d-antes | Fallo de guardado; Large / Light / contraste incrementado | RenderPreview_result_2026-09-08T140110Z@3x.png — `/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RenderPreview/RenderPreview_result_2026-09-08T140110Z@3x.png` (artefacto local no disponible) | Obsoleta: el error quedaba fuera del primer viewport. Sustituida por P04d tras adelantar la sección de error. |
+| P04e-antes | Guardando; Large / Light / contraste normal | RenderPreview_result_2026-09-08T140111Z@3x.png — `/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RenderPreview/RenderPreview_result_2026-09-08T140111Z@3x.png` (artefacto local no disponible) | Obsoleta: el progreso quedaba fuera del primer viewport. Sustituida por P04e tras adelantar esa sección. |
+| P04f | Contenido alta; XXX Large / Light / contraste normal | RenderPreview_result_2026-09-08T140113Z@3x.png — `/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RenderPreview/RenderPreview_result_2026-09-08T140113Z@3x.png` (artefacto local no disponible) | Aviso de borrador y campos visibles. Solo acredita el viewport. |
+| P04a-caché | Contenido edición larga; AX 5 / Dark / contraste incrementado | RenderPreview_result_2026-09-08T140146Z@3x.png — `/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RenderPreview/RenderPreview_result_2026-09-08T140146Z@3x.png` (artefacto local no disponible) | Obsoleta: render anterior a recompilar, todavía recortado. No se usa como evidencia de la corrección. |
+| P04a | Contenido edición larga; AX 5 / Dark / contraste incrementado | RenderPreview_result_2026-09-08T140258Z@3x.png — `/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RenderPreview/RenderPreview_result_2026-09-08T140258Z@3x.png` (artefacto local no disponible) | Después del build: label obligatorio completo gracias a crecimiento vertical. No acredita campos inferiores ni toolbar de Screen. |
+| P04d | Fallo de guardado; Large / Light / contraste incrementado | RenderPreview_result_2026-09-08T140902Z@3x.png — `/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RenderPreview/RenderPreview_result_2026-09-08T140902Z@3x.png` (artefacto local no disponible) | Error visible en la primera sección del formulario. No acredita anuncio ni recuperación. |
+| P04e | Guardando; Large / Light / contraste normal | RenderPreview_result_2026-09-08T140904Z@3x.png — `/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RenderPreview/RenderPreview_result_2026-09-08T140904Z@3x.png` (artefacto local no disponible) | Progreso visible en la primera sección del formulario. No acredita el estado transitorio con AT. |
+| P04g | FormFieldSection compartido; AX 5 / Light / contraste normal | RenderPreview_result_2026-09-08T140925Z@3x.png — `/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RenderPreview/RenderPreview_result_2026-09-08T140925Z@3x.png` (artefacto local no disponible) | Label completo; valor de correo de una sola línea conserva el recorte nativo. No acredita todas las pantallas consumidoras. |
 
 ### Correcciones de auditoría y renders posteriores
 
@@ -137,23 +178,23 @@ GetBuildLog warning sin entradas (`875B3B13-AF51-496F-A54B-2DDDCF449D0C.txt`); e
 en línea 10917. Los dos ajustes son visuales; no se repiten los tests lógicos 259/259, y se comprueban build y renders.
 
 Se añaden **7 capturas**, **26 en total**, en el
-[manifiesto correctivo local](/tmp/franalonso-083-corrective-preview-manifest-final.json). P02 queda sustituida para
+manifiesto correctivo local — `/tmp/franalonso-083-corrective-preview-manifest-final.json` (artefacto local no disponible). P02 queda sustituida para
 evaluar el título, y P04e para el contraste del texto. Sus límites históricos permanecen documentados.
 
 | ID | Variante solicitada | Artefacto inspeccionado | Resultado y límite |
 |---|---|---|---|
-| C01 | Screen edición, AX 5 / Dark / contraste incrementado | [143801](/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RenderPreview/RenderPreview_result_2026-09-08T143801Z@3x.png) | Título «Editar cliente» completo. Captura carga; no acredita formulario cargado ni navegación/scroll con AT. |
-| C02 | Screen edición, Large / Light / contraste normal | [143803](/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RenderPreview/RenderPreview_result_2026-09-08T143803Z@3x.png) | Título completo, Cancelar/Guardar y campos precargados visibles; provincia comienza al pie del viewport. |
-| C03 | Guardando, Large / Light / contraste normal | [143816](/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RenderPreview/RenderPreview_result_2026-09-08T143816Z@3x.png) | Texto de progreso visible y oscuro sobre blanco. |
-| C04 | Guardando, Large / Light / contraste incrementado | [143818](/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RenderPreview/RenderPreview_result_2026-09-08T143818Z@3x.png) | Texto de progreso negro sobre blanco. |
-| C05 | Guardando, Large / Dark / contraste normal | [143819](/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RenderPreview/RenderPreview_result_2026-09-08T143819Z@3x.png) | Texto de progreso blanco sobre superficie oscura. |
-| C06 | Guardando, Large / Dark / contraste incrementado | [143821](/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RenderPreview/RenderPreview_result_2026-09-08T143821Z@3x.png) | Texto de progreso blanco sobre superficie oscura. |
-| C07 | Consumidor compartido LoginContent, AX 5 / Light / contraste normal | [144034](/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RenderPreview/RenderPreview_result_2026-09-08T144034Z@3x.png) | Labels Email y Contraseña completos. No se atribuye a Login una nueva pasada funcional ni AT. |
+| C01 | Screen edición, AX 5 / Dark / contraste incrementado | 143801 — `/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RenderPreview/RenderPreview_result_2026-09-08T143801Z@3x.png` (artefacto local no disponible) | Título «Editar cliente» completo. Captura carga; no acredita formulario cargado ni navegación/scroll con AT. |
+| C02 | Screen edición, Large / Light / contraste normal | 143803 — `/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RenderPreview/RenderPreview_result_2026-09-08T143803Z@3x.png` (artefacto local no disponible) | Título completo, Cancelar/Guardar y campos precargados visibles; provincia comienza al pie del viewport. |
+| C03 | Guardando, Large / Light / contraste normal | 143816 — `/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RenderPreview/RenderPreview_result_2026-09-08T143816Z@3x.png` (artefacto local no disponible) | Texto de progreso visible y oscuro sobre blanco. |
+| C04 | Guardando, Large / Light / contraste incrementado | 143818 — `/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RenderPreview/RenderPreview_result_2026-09-08T143818Z@3x.png` (artefacto local no disponible) | Texto de progreso negro sobre blanco. |
+| C05 | Guardando, Large / Dark / contraste normal | 143819 — `/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RenderPreview/RenderPreview_result_2026-09-08T143819Z@3x.png` (artefacto local no disponible) | Texto de progreso blanco sobre superficie oscura. |
+| C06 | Guardando, Large / Dark / contraste incrementado | 143821 — `/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RenderPreview/RenderPreview_result_2026-09-08T143821Z@3x.png` (artefacto local no disponible) | Texto de progreso blanco sobre superficie oscura. |
+| C07 | Consumidor compartido LoginContent, AX 5 / Light / contraste normal | 144034 — `/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RenderPreview/RenderPreview_result_2026-09-08T144034Z@3x.png` (artefacto local no disponible) | Labels Email y Contraseña completos. No se atribuye a Login una nueva pasada funcional ni AT. |
 
 Muestreo raster de C03–C06: PNG RGB sin ICC interpretado como sRGB, región del texto `(51,238)–(344,273)` en
 capturas 689×1500, color de fondo modal y color de texto frecuente. Ratios aproximados **18,71 / 21,00 / 17,01 /
 15,49:1**, respectivamente; el antialiasing no se interpreta como color de diseño. Registro reproducible de valores
-y rutas: [muestra de contraste](/tmp/franalonso-083-progress-contrast.json). Es evidencia de esas capturas, **no
+y rutas: muestra de contraste — `/tmp/franalonso-083-progress-contrast.json` (artefacto local no disponible). Es evidencia de esas capturas, **no
 Inspector ni medición completa de todos los textos/controles del formulario**. La reauditoría focal confirma la corrección de ambos P2.
 
 **P05 — Matriz visual:** Large / XXX Large / AX 5 y Light / Dark con contraste normal / incrementado tienen muestras
@@ -163,15 +204,15 @@ una localización RTL.
 
 | ID | Técnica o recorrido requerido | Evidencia actual | Resultado y límite |
 |---|---|---|---|
-| R01 | Entrada y activación por CUA: alta, buscar, editar, cancelar, validar, guardar, confirmar/cancelar desactivación | Registro runtime del orquestador, iPhone 17e / iOS 26.5, portrait, fixture signed-out activada en la UI de Xcode | Parcial: login sintético → Clientes vacío → alta → Guardar con nombre vacío muestra error → introducir nombre sintético y guardar actualiza la lista → buscar `08.3` conserva la fila → editar fiscal y Cancelar descarta el cambio al reabrir → editar, Guardar y reabrir conserva el dato; consulta conservada tras regresar. No acredita Touch en dispositivo físico, cancelación al levantar fuera ni AT. Desactivación/confirmación pendientes: los intentos de scroll/drag de CUA no movieron el viewport; no se atribuye a un defecto de la app sin demostrarlo. |
-| R02 | Accessibility Inspector: listado, campos, toolbar, errores y confirmación | Informes Audit 1 y Audit 2 aportados el 09-09; detalle en registro inferior. Inspection obtiene nombre, rol, acción y jerarquía de Desactivar cliente | Parcial: nueve avisos acumulados en dos informes; pendiente atribución y contraste real. No equivalen a nueve defectos confirmados ni a cero incidencias. |
-| R03 | VoiceOver: recorrido completo, rotor, foco, anuncios y restauración | Reportes del propietario el 09-09, iPhone 14 / iOS 26.6.1 | Parcial. Nombres/roles de Añadir, buscador y fila; apertura y recorrido del formulario con etiquetas/valores confirmados. Guardar vacío enfoca el nombre y anuncia la corrección; error desaparece al escribir. Anuncio «Cliente guardado» completo confirmado. Tras los ajustes, alta guardada enfoca la fila recién creada; abrirla y Cancelar restaura esa misma fila. Retornos contextuales válidos en esos recorridos. Guardar edición anuncia el éxito completo, devuelve foco a la misma fila y conserva el cambio al reabrir, confirmado por el propietario. Diálogo de desactivación anuncia alerta, título, contenido y botón Desactivar; cancelarlo devuelve foco a Desactivar cliente del formulario. Desactivación anuncia éxito completo y retorna al mensaje de lista vacía. Cancelar alta vacía vuelve a No hay clientes; Añadir se alcanza con tres deslizamientos a la izquierda y puede reabrirse. Búsqueda parcial permite alcanzar/abrir la coincidencia; consulta sin resultados anuncia Sin coincidencias y borrar restaura el cliente. Rotor por encabezamientos encuentra y anuncia Editar cliente; otros modos no probados. Sin audio ni Inspector. |
+| R01 | Entrada y activación por CUA: alta, buscar, editar, cancelar, validar, guardar, confirmar/cancelar desactivación | Registro runtime del orquestador, iPhone 17e / iOS 26.5, portrait, fixture signed-out activada en la UI de Xcode | Recorrido CUA histórico completado con reportes físicos posteriores: alta, búsqueda, edición, guardado, descarte y desactivación operados. Los intentos iniciales de scroll no acreditaban desactivación, pero no son un pendiente actual; R03/R07/R09 contienen evidencia posterior. No se extrapola a tecnologías no operadas. |
+| R02 | Accessibility Inspector: listado, campos, toolbar, errores y confirmación | Informes Audit 1 y Audit 2 aportados el 09-09; detalle en registro inferior. Inspection obtiene nombre, rol, acción y jerarquía de Desactivar cliente | Informes históricos triados; nueva sesión: formulario con 1 contraste bajo toolbar, 2 detecciones de fondo y 2 Dynamic Type; listado expuesto con 6 Dynamic Type, sin avisos Contrast/Hit Region/Element Detection. Véase reconciliación final; no equivale a informe limpio. |
+| R03 | VoiceOver: recorrido completo, rotor, foco, anuncios y restauración | Reportes del propietario el 09-09, iPhone 14 / iOS 26.6.1 | Muestreo VoiceOver confirmado por propietario 09–10/09: etiquetas/valores, validación, guardado completo, retorno contextual a fila, búsqueda y rotor por encabezamientos. La sheet actual empieza por tirador nativo; recorre título/mensaje/acciones, Cancelar devuelve foco a Desactivar cliente y confirmar termina con Cliente desactivado completo y No hay clientes. Locución parcial durante transición: observación no bloqueante sin causa atribuida. La antigua alerta queda solo en histórico. R09 confirma recuperación de lectura y retorno. Sin audio/Inspector ni extrapolación a otros modos del rotor. |
 | R04 | Voice Control: activación por nombre y entrada/edición de campos | Iniciado por el propietario el 09-09, iPhone 14 / iOS 26.6.1 | Parcial. Mostrar nombres identifica Añadir, buscador, fila, botones y campos con obligatorio/opcional. Alta por voz confirmada: abrir Añadir, activar Nombre, dictar y Guardar; cliente aparece en listado. Edición de Localidad y descarte al cancelar/reabrir confirmados. Desactivación por voz incluida confirmación y desaparición de fila, a la primera. Muestreo representativo completado; búsqueda por voz no ejecutada. Sin audio/Inspector. |
 | R05 | Switch Control: escaneo, entrada, confirmación, cancelación y retorno | Reporte del propietario, 09-09, iPhone 14 / iOS 26.6.1, configuración guiada pantalla completa/seleccionar ítem y exploración automática | Muestreo representativo: dos grupos (acciones/buscador y pestañas); selecciona Añadir, abre formulario, recorre controles y Cancelar, vuelve al listado. Sin bloqueo reportado. Entrada de texto y confirmación destructiva no ejecutadas; sin Inspector. |
 | R06 | Full Keyboard Access: recorrido, edición, foco visible y salida | Reporte guiado del propietario, 09-09; se indicó iPhone 17e / iOS 26.5 Simulator, teclado del Mac y Acceso total mediante teclado | Muestreo representativo completado: Tab/cursores muestran primer foco, cursores recorren todas las acciones; abre Añadir, escribe, cancela y continúa navegando en listado sin bloqueo. Ajustes no inspeccionados directamente. No acredita dispositivo físico, todos los recorridos, confirmación destructiva ni estados de fallo. No repetir CRUD completo. |
-| R07 | Runtime Large / XXX Large / AX 5; iPhone portrait e iPad orientaciones/ventanas | R01 más reportes físicos del propietario en iPhone 14 / iOS 26.6.1 con texto máximo | Parcial. Tras correcciones confirma recorrido de campos, título completo tras scroll, entrada de nombre y Localidad/Provincia con teclado abierto, guardado y descarte mediante acciones compactas. iPad: propietario confirma orientaciones y ventana mínima; CUA posterior identifica iPad Air 11-inch (M4)/iOS 26.5 y muestra formulario estrecho sin solapamientos visibles. No repetir esos recorridos. RTL y otras variantes sin evidencia siguen pendientes. |
+| R07 | Runtime Large / XXX Large / AX 5; iPhone portrait e iPad orientaciones/ventanas | R01 más reportes físicos del propietario en iPhone 14 / iOS 26.6.1 con texto máximo | Formulario/listado a texto máximo y con teclado, orientaciones y ventana mínima iPad confirmados por propietario; iPad Air11-inch(M4)/26.5 identificado por CUA. RTL sintético de ambas pantallas inspeccionado, sin localización RTL. Nueva sheet: preview AX5 inspeccionada y comprobación representativa del propietario en iPad estrecho con texto ampliado completada mediante las capturas13:41:46 y13:41:57: tras desplazar, Cancelar y Desactivar aparecen completos. Las imágenes no identifican la categoría exacta de Dynamic Type ni acreditan pulsaciones. Véase registro13:40–13:41. |
 | R08 | Increase Contrast, Reduce Motion, Reduce Transparency y Differentiate Without Color | Reporte del propietario, 09-09, iPhone 14 / iOS 26.6.1, las cuatro opciones indicadas juntas | Muestreo combinado confirmado: listado y apertura/cancelación del formulario legibles y operables, transiciones sin problemas. Sin medición de ratios ni inspección directa de ajustes; no se atribuyen todas las combinaciones. Restauración de preferencias habituales indicada, no confirmada. |
-| R09 | Carga sostenida, fallos de lectura/escritura y reintentos del formulario con AT | Solo renders P04c/P04d/P04e | Pendiente. No existe fixture runtime aprobada para fallos/latencia del formulario; los previews no sustituyen esta evidencia. |
+| R09 | Carga sostenida, fallos de lectura/escritura y reintentos del formulario con AT | P04c/P04d/P04e y fallo de guardado inyectado temporalmente, autorizado y retirado | Fallo de guardado: anuncio, conservación del nombre y reintento exitoso confirmados. Fallo inicial de lectura: acceso a Reintentar, datos cargados/recorribles con VoiceOver y Cancelar→fila de origen confirmados 10/09. Locución inicial exacta no transcrita; no inventarla. Ambos harness retirados; último build/run125405/125546 PASS. Reintentar delimitado con estilo primario y preview posterior. Carga sostenida solo tiene evidencia visual/estática; no invalida los recorridos de recuperación comprobados. |
 
 La fixture Develop estándar aprobada compone datos locales in-memory. R01 comenzó después de comprobar el argumento
 signed-out activo en **Edit Scheme → Run → Arguments**, con los otros cuatro argumentos de fixtures desactivados,
@@ -201,7 +242,7 @@ continúa pendiente, aunque C01 sí acredita el título corregido.
 
 La tabla contiene las **55 filas** de la matriz vigente y tres evaluaciones separadas por fila: **L** listado,
 **F** formulario y **X** flujo transversal. La evidencia compartida solo se atribuye a las superficies expresamente
-indicadas. Fecha común: **2026-09-08**. Configuración de inspección: fuentes actuales de 08.3 y catálogo español;
+indicadas. Reconciliación vigente: **2026-09-10**; cada evidencia conserva su fecha y método originales. Configuración de inspección: fuentes actuales de 08.3 y catálogo español;
 configuración runtime: **R01/R06/R07**, con sus límites expresos. Autor del registro: agente documental a partir de
 los resultados comunicados por el orquestador; auditoría y reauditoría focal independientes completadas, con **dos P2 cerrados**. Estas condiciones se aplican a cada fila mientras no exista una referencia P/R más específica.
 
@@ -221,21 +262,21 @@ Leyenda de las celdas:
 | 1.2.3 | N/A | N/A | N/A | No hay vídeo pregrabado que requiera alternativa o audiodescripción. |
 | 1.2.4 | N/A | N/A | N/A | No hay contenido audiovisual sincronizado en directo. |
 | 1.2.5 | N/A | N/A | N/A | No hay vídeo pregrabado que requiera audiodescripción sincronizada. |
-| 1.3.1 | A/L | A/L | A/L | Form y etiquetas persistentes inspeccionados; R03 confirma encabezado y etiquetas/valores sin duplicados reportados. No extrapola a R09. |
+| 1.3.1 | A/L | A/L | A/L | Form y etiquetas persistentes inspeccionados; R03 confirma encabezados y etiquetas/valores. R09 confirma acceso a Reintentar y campos cargados recorribles con VoiceOver. Muestreo representativo. |
 | 1.3.2 | A/L | A/L | A/L | R03 confirma secuencia de listado, formulario y confirmación; R05/R06 recorrido representativo y salida. No repetir CRUD por cada tecnología. |
 | 1.3.3 | A/Pasa | A/Pasa | A/Pasa | Inspección del copy: buscar, reintentar, nombre obligatorio, guardar/cancelar y desactivar se explican mediante texto. Ninguna instrucción exige reconocer solo posición, forma, color o sonido. |
 | 1.3.4 | A/No pasa | A/No pasa | A/No pasa | ADR 0026: iPhone solo portrait sin necesidad esencial. Excepción de producto aceptada, no normativa. R07 acredita por reporte orientaciones y ventana mínima en iPad; no compensa la restricción de iPhone. |
-| 1.3.5 | N/A | A/L | A/L | L: el buscador no solicita datos personales para completar un perfil. F/X: nombre y dirección declaran textContentType compatible; fiscal conserva label sin propósito de autofill inventado. Entrada/autofill real pendiente en R01/R03/R06. |
-| 1.4.1 | A/L | A/L | A/L | Copy y rol destructivo no dependen solo de color; R08 confirma preferencias combinadas. Estados asíncronos conservan límite R09. |
+| 1.3.5 | N/A | A/L | A/L | L: el buscador no solicita datos personales para completar un perfil. F/X: nombre y dirección declaran textContentType compatible; fiscal conserva label sin propósito de autofill inventado. Propietario confirma inserción mediante sugerencia del teclado. Menú Contacto abre ficha sin insertar; vía no acreditada, causa desconocida. |
+| 1.4.1 | A/L | A/L | A/L | Copy/roles y contornos de botones no dependen solo del color; R08 confirma preferencias combinadas. R09 confirma recuperación de fallos por texto/acción. No extrapolar a carga sostenida. |
 | 1.4.2 | N/A | N/A | N/A | No se reproduce audio automático; las locuciones de la tecnología de asistencia no son audio de contenido impuesto por la app. |
-| 1.4.3 | A/Pend | A/L | A/L | C03–C06 y el muestreo raster apoyan el contraste del label de progreso corregido en cuatro apariencias; no son Inspector. Faltan mediciones del resto del texto normal, secundario, error y controles en sus fondos finales; R02/R08. |
+| 1.4.3 | A/L | A/L | A/L | Muestreo listado: buscador6,97:1. Formulario: error5:1, postal/Desactivar en cuatro apariencias. Diálogo antiguo4,113:1 a16pt confirmado defectuoso y sustituido. Nueva sheet ErrorInk/Surface5,244/5,001/7,367/8,411; Reintentar OnBrandPrimary/BrandPrimary4,945/9,812/10,554/12,280 (assets). Previews inspeccionadas; no se declara informe Inspector limpio ni medición completa de estados. |
 | 1.4.4 | A/L | A/L | A/L | Previews Large/XXX Large/AX 5 y retest físico a texto máximo confirman etiquetas, título tras scroll, entrada con teclado y Guardar/Cancelar. Límites puntuales de render generado constan en histórico; no se exige repetir todos los valores por campo. |
 | 1.4.5 | A/Pasa | A/Pasa | A/Pasa | Inspección: todo el copy significativo se representa mediante texto real; los SF Symbols no contienen texto que deba sustituirlo. |
 | 1.4.10 | A/L | A/L | A/L | R07 confirma teclado, campos finales, texto máximo, orientaciones iPad y ventana mínima. RTL sintético de lista y formulario inspeccionado en Cierre de evidencia; no acredita localización RTL. |
-| 1.4.11 | A/Pend | A/Pend | A/Pend | Pendientes contraste no textual y distinción de búsqueda, objetivos, foco, estados deshabilitados y acción destructiva en sus fondos reales; R02/R08. El rol nativo no es una medición. |
+| 1.4.11 | A/L | A/L | A/L | Icono postal en cuatro apariencias, toolbar15,88:1; foco real Añadir3,577:1 exterior/4,271:1 interior. Bordes nueva sheet contra Surface: Cancelar4,555/5,206/10,042/11,183 y Desactivar5,244/5,001/7,367/8,411 (assets). R02/R08 delimitan muestreo; no inventario exhaustivo. |
 | 1.4.12 | N/A | N/A | N/A | SwiftUI nativo; no existe UI mediante markup con override de espaciado de texto accesible al usuario, según la aplicabilidad de la matriz del proyecto. |
 | 1.4.13 | N/A | N/A | N/A | No se añade contenido al hover o al recibir foco. La confirmación requiere una activación explícita y se evalúa como superficie modal en los criterios de foco, teclado y prevención de errores. |
-| 2.1.1 | A/L | A/L | A/L | R06 confirma foco y acceso a acciones, alta, entrada y cancelación con teclado del Mac en Simulator; R05 aporta exploración y salida por Control por botón. Muestreo representativo, R09 no ejecutado. |
+| 2.1.1 | A/L | A/L | A/L | R05/R06 confirman recorrido representativo y salida con teclado/Control por botón en formulario/listado anteriores al nuevo modal. R09 operado con VoiceOver para lectura y guardado. No atribuir teclado a nueva sheet ni exigir repetir CRUD. |
 | 2.1.2 | A/L | A/L | A/L | R05/R06 confirman entrada, recorrido y cancelación sin bloqueo. No se atribuye operación de estados asíncronos R09. |
 | 2.1.4 | N/A | N/A | N/A | No hay atajos propios activados por una sola letra, número o signo sin modificador. Las teclas del teclado de entrada son edición nativa. |
 | 2.2.1 | N/A | N/A | N/A | No se exige completar búsqueda, edición o confirmación en un tiempo límite ni se descartan campos por timeout de UI. La tarea asíncrona no impone un plazo de interacción. |
@@ -243,33 +284,33 @@ Leyenda de las celdas:
 | 2.3.1 | A/L | A/L | A/L | Inspección: no se añaden medios intermitentes ni animaciones propias. R08 confirma transiciones con preferencias combinadas; progreso asíncrono mantiene límite R09. |
 | 2.4.1 | A/L | A/L | A/L | Inspección: títulos nativos y acceso directo mediante buscador/lista; formulario usa secciones. R03 confirma encabezamiento Editar cliente mediante rotor y acceso al formulario/listado; no acredita todos los modos del rotor. |
 | 2.4.2 | A/L | A/L | A/L | R03 confirma Editar cliente como encabezamiento, expandido y colapsado; R07 confirma título completo a texto máximo tras corrección. |
-| 2.4.3 | A/L | A/L | A/L | R03 confirma foco de validación, retorno a fila tras editar, fila nueva tras alta y estado vacío tras desactivar. R05/R06 confirman salida sin bloqueo. No extrapolar a R09. |
-| 2.4.4 | A/L | A/L | A/L | R03/R04 confirman nombres y activación de acciones del flujo habitual. Reintentos asíncronos mantienen límite R09. |
+| 2.4.3 | A/L | A/L | A/L | R03 confirma retornos contextuales del flujo y nueva sheet; Cancelar confirmación→botón origen, desactivar→lista vacía. R09 confirma Cancelar tras recuperar lectura→fila. R05/R06 conservan alcance histórico. |
+| 2.4.4 | A/L | A/L | A/L | Nombres/activación del flujo habitual confirmados R03/R04; Reintentar de lectura y guardado operados por VoiceOver en R09. |
 | 2.4.5 | A/L | N/A | A/L | Listado ofrece lista y búsqueda; R03 confirma coincidencia accesible, apertura, Sin coincidencias y restauración al borrar. Formulario aislado no es colección de destinos. |
 | 2.4.6 | A/L | A/L | A/L | R03 confirma etiquetas obligatorio/opcional y valores; rotor encuentra Editar cliente. R04 identifica controles por sus nombres. No es auditoría de todos los modos del rotor. |
 | 2.4.7 | A/L | A/L | A/L | R06 confirma foco visible y recorrido con cursores por acciones, alta y salida. No se inspeccionaron directamente ajustes ni todos los estados. |
 | 2.4.11 | A/L | A/L | A/L | R06/R07 confirman navegación, teclado abierto y campos finales, texto máximo y ventana mínima. No se acredita combinación exhaustiva ni estados R09. |
 | 2.5.1 | N/A | N/A | N/A | No se exige gesto multipunto ni trayectoria precisa; las acciones propias son Button y entrada nativa. El desplazamiento ordinario de lista/formulario no incorpora un gesto custom de trayectoria. |
-| 2.5.2 | A/Pend | A/Pend | A/Pend | Pendiente Touch real: apoyar, salir del objetivo y levantar debe cancelar cuando corresponda, sin alta/guardado/desactivación accidental; R01. Button nativo es base de implementación, no una prueba ejecutada. |
+| 2.5.2 | A/L | A/L | A/L | Propietario confirma apoyar Añadir, salir y levantar sin activación; toque normal posterior abre. Muestreo físico de Añadir completado; no extrapolar a todas las acciones. |
 | 2.5.3 | A/L | A/L | A/L | R04 confirma nombres de listado/formulario y alta, edición/cancelación y desactivación por voz; coincide con copy localizado. Muestreo representativo completado. |
 | 2.5.4 | N/A | N/A | N/A | No se activa funcionalidad mediante agitar, inclinar o mover el dispositivo. |
 | 2.5.7 | N/A | N/A | N/A | No hay reordenación ni operación propia que exija arrastrar. Cancelar ofrece salida explícita de la sheet; el scroll nativo no se trata como una acción de negocio por arrastre. |
-| 2.5.8 | A/L | A/L | A/L | Inspección: filas/campos y varias acciones declaran minHeight 44; toolbar y confirmación son nativas. Falta medir la superficie operable completa, anchura, separación y activación de cada objetivo; R01/R02. La política 44×44 pt se evalúa separada de 24 CSS px y sus excepciones. |
+| 2.5.8 | A/L | A/L | A/L | Listado/formulario: minHeight44, Inspector sin Hit Region en viewports muestreados y toolbar visible44pt. Los48pt de confirmación medidos corresponden al diálogo antiguo, no a la sheet actual. Esta declara52pt con contentShape y bordes; Reintentar conserva minHeight44 y estilo nativo grande. Operación VO confirmada, sin medición AX completa de nuevos targets. Política44×44pt separada de24CSSpx. |
 | 3.1.1 | A/L | A/L | A/L | Catálogo español y locuciones de R03 confirmadas por propietario. No hay localización RTL; el override sintético solo comprueba layout. |
 | 3.1.2 | N/A | N/A | N/A | El copy controlado de estas pantallas está solo en español, sin segmentos de otro idioma. Nombres e identificadores introducidos por la persona no añaden una localización ni una política de detección de idioma. |
 | 3.2.1 | A/L | A/L | A/L | R03/R05/R06 recorren foco y acciones sin activación involuntaria reportada. Guardar y desactivar requieren intención explícita. |
 | 3.2.2 | A/L | A/L | A/L | R01/R03 confirman filtrado local, Sin coincidencias/restauración y edición sin guardado implícito. Guardar/desactivar explícitos. |
 | 3.2.3 | A/L | A/L | A/L | R03 confirma recorrido y retornos contextuales de alta/edición/cancelación/desactivación; búsqueda conservada según R01. Sin regresiones reportadas. |
-| 3.2.4 | A/L | A/L | A/L | R03/R04 confirman identificación de acciones y campos del flujo habitual; Inspection confirma nombre/rol de Desactivar. R09 no observado. |
+| 3.2.4 | A/L | A/L | A/L | R03/R04 identifican controles; nueva sheet y Reintentar confirmados por VoiceOver R03/R09. Estilo visible de Reintentar corregido posteriormente sin cambio de nombre/acción. |
 | 3.2.6 | N/A | N/A | N/A | No se introduce un mecanismo de ayuda repetido entre estas pantallas. Labels, instrucciones y errores se evalúan en sus criterios específicos. |
-| 3.3.1 | A/L | A/L | A/L | R03 confirma nombre inválido, foco, instrucción y recuperación al escribir; errores asíncronos/reintentos pendientes R09. |
+| 3.3.1 | A/L | A/L | A/L | R03 confirma error de nombre y corrección al escribir. R09 confirma fallo de guardado y recuperación, y recuperación de lectura inicial; la locución inicial exacta de esta última no se transcribió. |
 | 3.3.2 | A/L | A/L | A/L | R03/R04 confirman buscador, etiquetas obligatorio/opcional y valores. Prompts redundantes eliminados; etiquetas persistentes conservadas. |
-| 3.3.3 | N/A | A/L | A/L | R03 confirma instrucción de corrección del nombre y guardado posterior. Errores de persistencia conservan límite R09; query siempre válida. |
+| 3.3.3 | N/A | A/L | A/L | R03 confirma instrucción de nombre y guardado posterior. R09 confirma reintentos de guardado y lectura inicial; la consulta siempre es válida. |
 | 3.3.4 | N/A | A/L | A/L | Propietario confirma descarte de edición, confirmación destructiva, cancelación exterior/escape y desactivación por VoiceOver/voz. No repetir en todas las tecnologías. |
-| 3.3.7 | N/A | A/L | A/L | R01 y propietario confirman precarga, descarte, conservación al guardar y consulta. Tests de fallos no sustituyen R09 con AT. |
+| 3.3.7 | N/A | A/L | A/L | R01 y propietario confirman precarga, descarte, conservación al guardar y consulta. R09 confirma conservación del nombre tras fallo de guardado y recuperación con VoiceOver. |
 | 3.3.8 | N/A | N/A | N/A | Esta subfase no incorpora prueba cognitiva ni modifica autenticación, recuperación o biometría. La evidencia previa de Login no se presenta como una prueba nueva. |
-| 4.1.2 | A/L | A/L | A/L | R03/R04 confirman nombres, roles y valores del flujo habitual; Inspection confirma Desactivar. R09 y medición completa de objetivos quedan limitados. |
-| 4.1.3 | A/L | A/L | A/L | R03 confirma anuncios completos de guardado/desactivación, error de nombre y Sin coincidencias. Carga/fallos asíncronos mantienen límite R09. |
+| 4.1.2 | A/L | A/L | A/L | R03/R04 confirman nombres, roles y valores habituales; nueva sheet y Reintentar/campos R09 recorribles con VoiceOver. No extrapolar informe Inspector previo a controles nuevos. |
+| 4.1.3 | A/L | A/L | A/L | R03 confirma anuncios completos de guardado/desactivación, nombre inválido y Sin coincidencias. R09 confirma fallo de guardado/reintento; recuperación de lectura operada, sin transcripción exacta de anuncio inicial. Locución transitoria cortada antes de éxito final de desactivación: observación no bloqueante. |
 
 ## Sesión guiada del propietario — iPhone 14
 
@@ -317,10 +358,10 @@ Capturas del propietario, iPhone 14 / iOS 26.6.1, oscuro, tamaño máximo solici
 
 | Captura original | Hallazgo visible |
 |---|---|
-| [IMG_1245.PNG](/Users/jesusf/Downloads/IMG_1245.PNG) | Nombre con placeholder truncado; fiscal con placeholder menor; Nuevo cliente colapsado truncado. |
-| [IMG_1246.PNG](/Users/jesusf/Downloads/IMG_1246.PNG) | Calle truncada, postal menor; labels persistentes completos. |
-| [IMG_1247.PNG](/Users/jesusf/Downloads/IMG_1247.PNG) | Localidad/provincia con placeholders truncados; labels completos. |
-| [IMG_1249.PNG](/Users/jesusf/Downloads/IMG_1249.PNG) | Edición alcanza Desactivar cliente; título colapsado truncado y provincia recortada en placeholder. |
+| IMG_1245.PNG — `/Users/jesusf/Downloads/IMG_1245.PNG` (artefacto local no disponible) | Nombre con placeholder truncado; fiscal con placeholder menor; Nuevo cliente colapsado truncado. |
+| IMG_1246.PNG — `/Users/jesusf/Downloads/IMG_1246.PNG` (artefacto local no disponible) | Calle truncada, postal menor; labels persistentes completos. |
+| IMG_1247.PNG — `/Users/jesusf/Downloads/IMG_1247.PNG` (artefacto local no disponible) | Localidad/provincia con placeholders truncados; labels completos. |
+| IMG_1249.PNG — `/Users/jesusf/Downloads/IMG_1249.PNG` (artefacto local no disponible) | Edición alcanza Desactivar cliente; título colapsado truncado y provincia recortada en placeholder. |
 
 El arreglo anterior C01/C02 no acreditaba el título tras scroll. Se retiran prompts que solo duplicaban la
 etiqueta existente, manteniendo título semántico y accessibilityLabel explícito en los seis TextField.
@@ -330,7 +371,7 @@ No cambian ejes de entrada ni se reduce el tamaño de letra. Fiscal/postal con v
 Fuentes: [TextField con prompt separado](https://developer.apple.com/documentation/swiftui/textfield/init(_:text:prompt:axis:)),
 [large content viewer](https://developer.apple.com/documentation/swiftui/view/accessibilityshowslargecontentviewer(_:)).
 Build PASS y método en [fase 08](../../progress/phase-08.md#corrección-visual-tras-capturas-ax-5--2026-09-09).
-Manifiesto de renders: [/tmp/franalonso-083-ax5-preview-manifest.json](/tmp/franalonso-083-ax5-preview-manifest.json).
+Manifiesto de renders: /tmp/franalonso-083-ax5-preview-manifest.json — `/tmp/franalonso-083-ax5-preview-manifest.json` (artefacto local no disponible).
 
 - A01 alta AX 5 oscuro: título expandido, símbolos y nombre obligatorio completos, campo vacío sin prompt repetido.
 - A02/A03 alta XXX Large/Large claro: títulos y acciones textuales completos; campos visibles sin duplicación.
@@ -588,9 +629,9 @@ Manifiesto de renders: [/tmp/franalonso-083-ax5-preview-manifest.json](/tmp/fran
   focal completado; no se repite la acción destructiva. No acredita nueva auditoría Inspector
   ni cierra los restantes avisos o la puerta general ADR 0022. Build/tests N/A documental.
 
-## Cierre de evidencia para commit/push — 2026-09-09
+## Cierre histórico de evidencia para commit/push — 2026-09-09
 
-Este resumen sustituye los pendientes históricos anteriores. La entrega Git publica la implementación;
+Resumen al publicar la implementación; la reconciliación final inferior lo actualiza. La entrega Git publica la implementación;
 no declara la subfase terminada ni cierra ADR 0022, Linear o la fase 08.
 
 - R03–R08: muestreo representativo completado de VoiceOver, Control por voz, Control por botón,
@@ -619,3 +660,304 @@ no declara la subfase terminada ni cierra ADR 0022, Linear o la fase 08.
   estilo; UI sin defectos ejecutables adicionales confirmados. Hallazgos P2 de documentación y preparación
   de entrega corregidos: snapshot reducido, matriz reconciliada y fixture temporal excluida del staging.
   Huella pre/post de 446 archivos idéntica: `da8d69ef75a69414034f8db18df2cde9ca03f17848f4b9088c51f673aa590f14`.
+
+## Comprobaciones focales posteriores a publicación — 2026-09-09
+
+- Cancelación táctil: propietario confirma mantener Añadir, desplazar fuera y levantar no abre el
+  formulario; toque normal posterior sí lo abre. Muestreo del botón Añadir, no de todos los controles.
+- Autorrelleno: propietario confirma sugerencias y menú Autorrellenar → Contacto disponibles. Seleccionar
+  contacto abre su ficha, pero tocar el dato no lo inserta; pulsación larga permite copiar. Inserción
+  automática no acreditada. Código inspeccionado: name, streetAddressLine1, postalCode, addressCity y
+  addressState declarados; sin selector de contactos propio ni lógica que rechace el texto insertado.
+  No se atribuye aún causa a SwiftUI, iOS o configuración. Sin código modificado ni nuevas pruebas Xcode.
+
+- Autorrelleno, confirmación posterior: tocar una sugerencia del teclado sí inserta el dato, según el
+  propietario. Vía de sugerencias validada representativamente; no se atribuye edición posterior ni todos
+  los campos. El selector Contactos conserva la incidencia de no inserción, sin causa determinada.
+
+Preparación temporal autorizada de fallo de guardado (09-09): únicamente factoryComposed dentro de
+FRANALONSO_AUTH_FIXTURE; primer guardado por formulario espera 3s cancelables y falla antes de escritura,
+segundo usa adaptador original. No cambios live/Views/Domain. Backup byte a byte en
+`/tmp/fa083-before-save-failure-AppDependencies.swift`, restaurar después de sesión; NO publicar harness.
+Propuesta y revisión independiente final PASS; huellas pre/post verificadas. Build MCP PASS8,958s,
+log200846, aviso AppIntents10912. Snippet de verificación: primer intento no compila por importFoundation
+omitido; segundo con imports corregidos agota timeout60s. No acredita conteos/resultado runtime.
+Pendiente prueba guiada VoiceOver de guardado/fallo/reintento. No cubre fallo de carga inicial.
+
+Retest VoiceOver del fallo de guardado: propietario escucha «No se ha podido completar la operación.
+Inténtalo de nuevo». Confirma nombre conservado y segundo Guardar exitoso, anuncio Cliente guardado,
+retorno al listado con una sola fila. Guardado fallido y recuperación acreditados por reporte manual;
+no se extrapola a fallo de lectura inicial, desactivación ni conteos internos de la cola.
+Harness temporal retirado: AppDependencies.swift restaurado byte a byte al backup y HEAD.
+La app ya instalada mantiene el harness hasta la siguiente ejecución de la versión restaurada.
+
+## Medición directa en Simulator — 2026-09-09 20:24–20:26
+
+iPad Air 11-inch (M4), iOS26.5, app restaurada relanzada por propietario, formulario editando y
+viewport final. Capturas mediante Save Screen de Simulator: 2360×1640, Display P3 convertido a sRGB
+con perfil ICC antes de calcular luminancia WCAG. Capturas locales Desktop/Simulator Screenshot -
+iPad Air 11-inch (M4) - 2026-09-09 at 20.24.33.png, 20.25.41.png, 20.25.53.png y 20.26.04.png.
+Muestreo de píxeles interiores frecuentes de texto y fondo uniforme, sin usar el oscurecimiento Inspector.
+
+| Apariencia | Desactivar cliente | Etiqueta postal | Icono postal |
+|---|---|---|---|
+| Dark normal | #FF6B63/#2C2C2E: 5,001:1 | blanco/#2C2C2E: 13,937:1 | #9E9E9F/#2C2C2E: 5,206:1 |
+| Light normal | #B42419/blanco: 6,548:1 | negro/blanco: 21:1 | #66666B/blanco: 5,710:1 |
+| Light incrementado | #8B1E1D/blanco: 9,125:1 | negro/blanco: 21:1 | #333438/blanco: 12,433:1 |
+| Dark incrementado | #FF9B96/#363638: 5,960:1 | blanco/#363638: 12,058:1 | #D1D1D6/#363638: 7,925:1 |
+
+Ratios suficientes en el muestreo; no equivalen a medir buscador/foco/errores/todos los controles.
+Apariencia y contraste restablecidos mediante el mismo par de toggles del menú Features; la selección
+inicial normal es consistente con el color ErrorInk medido. No cambios de código ni datos.
+
+Inspector pide descartar resultados anteriores al cambiar proceso; aceptado porque informes previos
+están registrados. Nuevo Audit1: 1 contraste, 2 Dynamic Type, 2 Element Detection. Options verificadas:
+Hit Region, Contrast, Element Description/Detection, Clipped Text, Traits y Dynamic Type activadas.
+Sin avisos Hit Region en este viewport: evidencia automatizada del muestreo de objetivos, no medición
+exhaustiva de todos los targets ni sustitución de la política propia44pt. El contraste1,09 compara
+#222225/#29292B bajo toolbar, no texto plenamente expuesto. Primer aviso DynamicType inspecciona
+Provincia(opcional), nodo SwiftUI; mantiene contradicción con escalado validado en código/previews y
+reporte físico a texto máximo, sin causa demostrada. No se declara auditoría limpia. Inspection por
+puntero no captura propiedades; no se inventan dimensiones AX. Activación de Desactivar abre diálogo;
+se cancela sin ejecutar desactivación.
+
+
+## Reconciliación histórica — 2026-09-09, posterior a las pruebas focales
+
+Esta sección y R09 actualizan los pendientes históricos. No queda código temporal de inyección de fallos.
+La versión restaurada fue compilada mediante MCP (PASS 8,527 s, log 20260909-201909) y relanzada.
+No se repiten los recorridos de tecnologías de asistencia ya confirmados por el propietario.
+
+- Completado: cancelación táctil representativa de Añadir, inserción por sugerencia del teclado y
+  fallo de guardado/reintento con VoiceOver, preservando el nombre y retornando con una fila.
+- Contrastado: Desactivar, etiqueta e icono postal en cuatro apariencias, según tabla anterior.
+- Inspector formulario: las dos detecciones muestran Jornada y el icono de Catálogo detrás del modal.
+  No son contenido que deba exponerse a AT mientras el modal está abierto. El aviso de contraste toma
+  texto bajo toolbar; no demuestra contraste insuficiente de texto plenamente visible.
+- Dynamic Type del formulario identifica Provincia y Desactivar. Fuente adaptable y prueba física a
+  tamaño máximo aportan evidencia contraria al aviso. Se aumentó un paso y se restauró un paso en
+  Simulator; esta maniobra no se presenta como medición geométrica de esos dos controles.
+- Inspector listado, modal cancelado sin guardar: Audit 2 emite seis avisos Dynamic Type, ninguno de
+  Contrast, Hit Region ni Element Detection con las mismas opciones activas. Atribución individual completada: Histórico, Catálogo, fila de cliente, Informes, Clientes y Jornada.
+  Son cinco etiquetas de sidebar y una fila; Histórico inspeccionado como UILabel y fila como botón
+  SwiftUI con label/hint correctos. Queda contraste de escalado por esas dos clases de control. No se declara informe limpio.
+
+Pendientes acotados para cerrar evidencia:
+1. Lectura inicial fallida del formulario y activación de Reintentar con VoiceOver: es un estado distinto
+   al guardado fallido ya validado. Requiere fixture temporal autorizada antes de provocar ese estado.
+2. Contrastar escalado de sidebar/fila y completar muestras de contraste de buscador/error/
+   foco y geometría de toolbar/confirmación. Atribución de los seis avisos ya completada. Trabajo del agente; no requiere repetir pruebas generales.
+3. Revisión independiente focal completada: sin defecto ejecutable nuevo confirmado; mantiene los dos
+   bloques anteriores. Reutilizar estilos/fondos equivalentes; no repetir CRUD, guardado ni cuatro
+   apariencias de ErrorInk. Correcciones P3: fecha del último build y atribución actualizadas.
+   Huella pre/post de 446 archivos idéntica: bc2d4bf052799f630ccd72d9a5004ac24987831682516e705c1a690f8a696dc4.
+
+ADR 0026 conserva excepción de orientación iPhone. Subfase In Progress; ningún PR/merge/cierre/live.
+
+
+## Bloque 1: comprobaciones del agente — 2026-09-09 23:50–23:58
+
+Simulator iPad Air 11-inch (M4), iOS 26.5. Sin cambios ejecutables, sin guardar/desactivar datos.
+Capturas Save Screen 2360×1640, escala del iPad 2 píxeles/punto; conversión ICC Display P3→sRGB.
+Archivos locales en Desktop, prefijo `Simulator Screenshot - iPad Air 11-inch (M4) - 2026-09-09 at `:
+
+- `23.50.34.png` / `23.51.02.png`: preferencia inicial y dos incrementos de texto. Tinta de fila
+  crece de 180×28 a 209×34 px; Histórico de 126×24 a 145×29 px (umbral RGB mínimo >180,
+  cajas nativas fila 635,310–875,395 e Histórico 150,280–360,380). Confirma escalado en las dos
+  clases de los seis avisos; no seis pruebas repetidas. Dos decrementos restauran la preferencia.
+- `23.53.52.png`: listado sin resaltados Inspector. Buscador #A3A3A3 sobre #191919 =6,970:1;
+  icono toolbar #F4F3F4 sobre #191919 =15,885:1. Superficie circular visible de Cerrar sesión y
+  Añadir: 88×88 px =44×44 pt, con separación visible. Son dimensiones renderizadas, no bounds AX
+  ni una prueba de activar Cerrar sesión. Se combinan con Hit Region sin avisos y prueba táctil previa.
+- `23.53.37.png`: error obligatorio plenamente expuesto, #FF6B63/#2C2C2E =5,001:1. Mismo estilo
+  ErrorInk/fondo del formulario ya medido en cuatro apariencias; no repetir cuatro series equivalentes.
+- `23.55.32.png`: confirmación nativa. Acción visible aproximadamente 512×96 px =256×48 pt;
+  Cancelar/Guardar del formulario tienen aproximadamente 88 px/44 pt de alto y ancho superior.
+  Cancelación por región externa confirmada nuevamente; no se ejecuta Desactivar.
+
+Hallazgo de contraste adicional al medir el diálogo: texto nativo Desactivar #FF4246 frente al fondo
+muestreado #292C2A =4,113:1. No usa ErrorInk del botón del formulario. No se declara Pasa para texto
+normal; falta verificar tamaño/peso efectivo o disposición del control nativo antes de clasificar/corregir.
+Captura y source `.confirmationDialog` con `Button(role: .destructive)` permiten reproducirlo.
+
+Foco: Tab/cursor con CUA no produjo un indicador de navegación medible; sí se observó caret en búsqueda
+ y nombre inválido. No se usa el resaltado verde/naranja del Inspector como foco de la app. Se conserva
+la prueba funcional de teclado del propietario; contraste del indicador sigue sin captura válida.
+Ajustes del Simulator consultados sin modificar: apartado motor no muestra Acceso total con teclado.
+Capture Keyboard probado temporalmente y restaurado a 0. Inspector cerrado para quitar overlays;
+app restaurada al listado, cliente conservado. No se declara bloque 1 completamente aprobado.
+
+Revisión focal independiente del bloque 1: escalado dispuesto con evidencia contraria al aviso;
+geometría visible + Hit Region + pruebas previas se consideran muestreo proporcionado. Potencial P2
+abierto en contraste de confirmación: obtener tipografía efectiva; si no se acredita texto grande,
+proponer corrección para 4,5:1. No hay excepción automática por ser nativo. Única ayuda solicitada para
+foco: captura normal de Añadir enfocado con la configuración de teclado ya usada, sin Inspector y sin
+activar nada. Huella pre/post revisión, 446 archivos, idéntica:
+`db33843f7d9ccd0dd9849b8a9fc0ab9f3a7f4a58afc140ed47148fcf6af69fe8`.
+Fuente/tamaño del diálogo no expuestos por CUA ni herramienta de depuración Xcode disponible;
+no se altera código para afirmar un resultado no observado. Governanza y diff-check PASS.
+
+
+## Foco aportado por propietario — 2026-09-10 00:32–00:36
+
+Capturas normales del propietario, apariencia clara. La primera es la muestra solicitada: Añadir
+con indicador de teclado visible; no es un overlay de Inspector. Archivos locales:
+- `/Users/jesusf/Desktop/Captura de pantalla 2026-09-10 a las 0.32.50.png` (796×916).
+- `/Users/jesusf/Desktop/Captura de pantalla 2026-09-10 a las 0.33.14.png` (formulario).
+- `/Users/jesusf/Desktop/Captura de pantalla 2026-09-10 a las 0.36.06.png` (confirmación).
+
+Primera captura, ICC convertido a sRGB: banda de foco #C243A4 frente a fondo exterior muestreado
+#E4E4E9 =3,577:1, frente al interior #F8F8F9 =4,271:1. Banda oscura #6B1557 frente al exterior
+=8,862:1. Muestreo suficiente del indicador solicitado, unido al recorrido funcional previo; se retira
+la petición de captura de foco. No extrapola a toda apariencia ni mide targets a partir de este recorte.
+Las otras capturas muestran contexto de foco en formulario/confirmación; no demuestran la tipografía
+efectiva del diálogo ni resuelven su ratio oscuro4,113:1. No solicitar nuevas capturas del mismo foco.
+Pendientes: disposición de contraste del diálogo por el agente y lectura inicial fallida/Reintentar
+con VoiceOver. Sin cambios ejecutables; validación documental N/A build/tests.
+
+
+## Corrección de contraste de confirmación — 2026-09-10 00:54
+
+Xcode Debug View Hierarchy expuso el UILabel de Desactivar: .SFUI-Medium 16 pt, systemRedColor.
+El ratio oscuro previo 4,113:1 no alcanza 4,5:1; queda confirmado el defecto y sustituida la
+incertidumbre tipográfica anterior. Una prueba mínima de foregroundStyle en confirmationDialog
+fue ignorada por el sistema y retirada antes de implementar la alternativa revisada.
+
+ClientFormScreen presenta ahora ClientDeactivationConfirmationView en popover nativo, con adaptación
+vertical a sheet, Cancelar explícito, rol destructivo y colores opacos ErrorInk/Surface. Reutiliza
+recursos, estado y operación existentes. Foco inicial limitado a VoiceOver, título encabezamiento,
+labels pulsables de altura mínima 44 pt más padding y contenido desplazable cuando falta altura.
+Propuesta y revisión estática final independientes por close083_accessibility: PASS. El revisor
+no escribió archivos ni operó UI; no se aporta digest pre/post completo para esta segunda revisión.
+
+Build Xcode MCP PASS 13,683 s, log BuildProject-Log-20260910-005002.txt; único warning encontrado:
+AppIntents metadata extraction skipped, ya existente. No se afirma cero warnings globales.
+Previews renderizadas e inspeccionadas: Large Light, AX 5 Dark, XXX Large Light Increased Contrast,
+Large Dark Increased Contrast; texto sin truncamiento. Artefactos RenderPreview_result_2026-09-09T
+225036Z, 225045Z, 225143Z y 225144Z (@3x.png), directorio ActionArtifacts/default/RenderPreview.
+Ratios calculados de los assets opacos ErrorInk/Surface: Light 5,244; Dark 5,001; Light High 7,367;
+Dark High 8,411. Estas medidas de recursos y previews no son auditoría Inspector del nuevo popover.
+
+Runtime iPhone 17e/iOS 26.5, sesión sintética: encabezamiento, mensaje y ambos botones expuestos;
+Cancelar conserva formulario y datos; reabrir y confirmar cierra formulario y vuelve a No hay clientes.
+Captura nativa: /Users/jesusf/Desktop/Simulator Screenshot - iPhone 17e - 2026-09-10 at 00.53.40.png.
+Pendiente VoiceOver focal del nuevo modal (entrada, Cancelar/retorno y confirmación/anuncio), además
+R09 lectura inicial fallida/Reintentar. No repetir CRUD completo ni el fallo de guardado ya validado.
+Fixture signed-out del scheme permanece local. Sin PR, merge, cierre ni avance de subfase.
+
+
+## Corrección de posición tras IMG_1250 — 2026-09-10
+
+El propietario rechaza la disposición del popover: arriba a la izquierda, sobre la barra del formulario.
+La comprobación anterior de contraste/semántica no acreditaba una presentación visual adecuada.
+Sustituido por sheet nativa con detents medium/large y large para tamaños de accesibilidad, ancho
+flexible y alineación superior. Mantiene colores, roles, Cancelar, escape y operación existente.
+Propuesta independiente focal PASS. Build MCP PASS 8,469 s, BuildProject-Log-20260910-082837.txt;
+único warning encontrado AppIntents metadata ya existente. Previews de presentación real inspeccionadas
+062920/062928: hoja inferior estándar y hoja grande AX5; en AX5 contenido desplazable para acciones.
+No se acreditan todavía presentación iPad, cierre interactivo ni retorno/anuncios VoiceOver de la sheet.
+IMG_1250 muestra foco en encabezamiento del popover anterior; no extrapolar ese foco a esta versión.
+Siguiente paso: confirmar apariencia corregida y retest VO focal; R09 lectura/reintento sigue pendiente.
+
+
+## Jerarquía, botones y altura tras IMG_1251 — 2026-09-10
+
+El propietario rechaza título poco destacado, botones sin delimitación y vacío inferior de la sheet.
+Corregido en ClientDeactivationConfirmationView: título title2 bold, botones headline delimitados
+por contornos redondeados y área mínima de 52 pt. Cancelar usa borde TextSecondary y Desactivar
+ErrorInk sobre Surface. Ratios calculados contra Surface (Light/Dark/Light High/Dark High):
+borde Cancelar 4,555/5,206/10,042/11,183; borde Desactivar 5,244/5,001/7,367/8,411.
+
+La prueba de form.fitted aislado no redujo la altura de iPhone. Se usa onGeometryChange sobre
+contenido intrínseco con padding para detent height, estado exclusivamente visual redondeado;
+AX conserva large y ScrollView. No se añade lógica de negocio ni tests unitarios de geometría.
+Fuente Apple consultada: https://developer.apple.com/documentation/swiftui/view/presentationsizing(_:).
+Build MCP085713 PASS7,232 s; único warning encontrado AppIntents metadata previo. Preview normal
+Dark065745 inspeccionada: hoja compacta, título jerárquico y botones delimitados. Los overrides
+sobre una sheet no acreditan AX5 si la captura conserva el tamaño normal; no inferir por el nombre.
+Propuesta y revisión estática final independientes PASS. Huellas pre/post del alcance Swift idénticas:
+View07691027ff52aac0c265b166625bbe5345dad9ea37aec5acf201f92cddcb409d;
+Screen29a65239af2a59a7b815a3b21f77a9fd2514f1fd9d9d183a37a2032ada216c55.
+Pendientes aceptación visual física, adaptación iPad y VoiceOver focal/R09; sin cierre ni entrega.
+
+Preview AX5 explícita065911 inspeccionada: título y contenido grandes sin truncamiento horizontal;
+Desactivar queda parcialmente fuera del viewport inicial, con ScrollView declarado. Alcance por
+desplazamiento y VoiceOver pendiente de runtime; no se afirma desde esta imagen.
+
+
+### Ajuste final solicitado: título centrado — 2026-09-10
+
+Propietario acepta la disposición con ajuste de centrado del título. Añadidos exclusivamente
+multilineTextAlignment(.center) y frame(maxWidth: .infinity) al título; conserva semántica/foco.
+Propuesta focal independiente PASS; build Xcode MCP092935 PASS8,092 s, aviso AppIntents previo.
+No repetir pruebas funcionales por alineación. VoiceOver focal/R09 siguen pendientes.
+
+
+### VoiceOver de confirmación actual — reporte del propietario 2026-09-10
+
+Recorre todos los elementos de la sheet correctamente. Empieza por «Tirador de la hoja, media
+pantalla, botón, toca dos veces para cerrar la hoja»; restantes elementos correctos según reporte.
+El componente declara presentationDragIndicator(.visible): el tirador pertenece a la presentación
+nativa. No se acredita foco inicial en título aunque exista AccessibilityFocusState. El recorrido
+por el tirador no bloquea el contenido. No se infiere todavía ejecución del cierre, retorno de foco
+ni confirmación/anuncio de la versión actual. Próximo paso focal: Cancelar y retorno al formulario.
+
+
+VoiceOver, propietario 2026-09-10: Cancelar en la sheet actual cierra únicamente la confirmación
+y devuelve el foco a Desactivar cliente del formulario. Confirmado por reporte manual; no acredita
+aún confirmar/desactivar y anuncio de esta versión. Siguiente paso focal: confirmar una vez.
+
+
+### Confirmación efectiva con VoiceOver — propietario, 2026-09-10
+
+Al cerrar la confirmación comienza una locución «cliente desa…» que se interrumpe; después se
+cierra el formulario y en el listado escucha «Cliente desactivado» completo y «No hay clientes».
+Resultado final, desactivación y retorno contextual confirmados por reporte. Se registra la
+interrupción transitoria como observación no bloqueante, sin atribuir causa ni duplicado de éxito.
+Inspección actual: una única emisión explícita de éxito en ClientListScreen.restoreFormFocus/onDismiss.
+Revisión independiente focal read-only: no defecto adicional demostrado; no modificar sincronización
+ni repetir el recorrido cuando el resultado final completo y el destino están confirmados.
+R09 lectura inicial fallida/reintento sigue pendiente. Solo documentación; build/tests N/A.
+
+
+### R09 preparado para prueba guiada — 2026-09-10 12:43
+
+Autorización «preparala entonces». Harness TEMPORAL en App/AppDependencies+ClientForm.swift:
+InitialReadFailureRepository privado, aislado por actor, falla primer client(id:) por formulario
+con persistenceUnavailable y luego delega. Task.checkCancellation precede al consumo del fallo.
+Gates FRANALONSO_AUTH_FIXTURE + ApplicationLaunchPlan.authenticationFixture. Lista y adapter
+mutador intactos; alta normal, abrir edición produce error y Reintentar carga perfil existente.
+No valida VoiceOver por sí mismo. Propuesta independiente PASS; prueba manual pendiente.
+
+Xcode MCP27: Develop, iPhone14 de Jesús/iOS26.6.1, SDK27, argumento signed-out activo.
+Build124238 PASS8,429s, único warning encontrado AppIntents metadata previo. RunProject124255
+PASS3,577s, app lanzada PID15053. No se modifican plist/pbxproj locales ajenos ni scheme.
+
+Restaurar únicamente AppDependencies+ClientForm.swift tras la prueba y recompilar:
+original /tmp/franalonso-r09-clientform-original.swift
+SHA256 25763a3b9599762d05b243946f3af8a0d8d82b07a97f2162dffdcbcc60708182.
+Harness preparado SHA256 7890ff55aab238baf41afbf4ba123606a50fceff42b6e75df081bbe70531ad28.
+Excluir este archivo temporal de cualquier entrega; comprobar que no hay cambios posteriores ajenos
+antes de restaurar. No commit/push/PR/cierre/live.
+
+Revisión final del harness PASS read-only; SHA preparado idéntico pre/post. Gobernanza detecta
+enlaces históricos a artefactos temporales/capturas que ya no existen localmente; no se declara PASS.
+Reconciliación de esos enlaces pendiente antes de entrega; diff-check pasa.
+
+
+### R09 confirmado y harness retirado — 2026-09-10 12:55
+
+Propietario confirma Reintentar → campos cargados con datos y recorribles por VoiceOver; Cancelar
+→ listado con foco en el cliente abierto. Recorrido R09 de lectura fallida/reintento/retorno confirmado
+por reporte manual, sin atribuir anuncio inicial exacto no transcrito. No repetir prueba.
+
+Harness restaurado byte a byte desde copia verificada: AppDependencies+ClientForm.swift SHA original
+25763a3b9599762d05b243946f3af8a0d8d82b07a97f2162dffdcbcc60708182, diff contra HEAD vacío.
+Mejora visual prometida tras IMG1252: Reintentar usa primaryActionStyle existente (cápsula rellena),
+conserva texto, minHeight44, acción y disabled. Ratios de assets OnBrandPrimary/BrandPrimary
+4,945/9,812/10,554/12,280. Propuesta y revisión final focal read-only PASS.
+Build MCP125405 PASS8,46s, warning AppIntents previo. Preview Load failure12:55:29 inspeccionada,
+iPhone18Pro/iOS27, control visiblemente delimitado; primer render agotó tiempo y reintento pasó.
+RunProject125546 PASS8,152s en iPhone14: app relanzada sin inyección del error.
+Solo resta reconciliar evidencia/límites y entrega autorizada; no se declara subfase cerrada.
+Los enlaces históricos a artefactos eliminados siguen pendientes de reconciliación documental.

@@ -4,6 +4,10 @@ All notable changes to this project are documented in this file.
 
 ## [Unreleased]
 
+### Fixed
+
+- 2026-09-10 | 🐛 fix(clients): improve confirmation and retry controls
+
 ### Documentation
 
 - 2026-09-08 | 📝 docs(delivery): close PLU-33 after merge

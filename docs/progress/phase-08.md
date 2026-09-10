@@ -1,5 +1,36 @@
 # Fase 08 — Clientes, consentimiento y foto
 
+
+## Estado vigente reconciliado — 2026-09-10
+
+Este resumen sustituye los pendientes históricos de las sesiones fechadas inferiores. Detalle por
+criterio y técnica en [evidencia08.3](../accessibility/evidence/08-3-client-screens.md).
+
+- Base08.3 publicada5533948 y documentación4527b03; HEAD/remoto4527b03 verificados. La nueva
+  confirmación, ClientFormScreen, estilo de Reintentar en ClientFormContent y documentación siguen
+  incluidas en el commit de correcciones autorizado el2026-09-10. La publicación previa no incluía estas correcciones.
+- R09 lectura/reintento/campos/Cancelar→fila confirmado por propietario; fallo de guardado ya validado.
+  Harness retirados, AppDependencies+ClientForm.swift restaurado byteexactoHEAD. Build125405 PASS8,46s,
+  RunProject125546 PASS8,152s, Develop/iPhone14/26.6.1 mediante MCP27. Aviso previo AppIntents persiste.
+- Nueva sheet validada por propietario en apariencia habitual y VoiceOver: lectura, Cancelar/retorno,
+  confirmación con anuncio final completo. Locución parcial transitoria no bloqueante, sin causa atribuida.
+  Reintentar con cápsula visible y preview12:55:29 inspeccionada.
+- Comprobación acotada completada: seis capturas del propietario de las13:40–13:41 muestran listado,
+  formulario y nueva sheet en iPad/ventana estrecha con texto ampliado. La secuencia13:41:46→13:41:57
+  acredita que al desplazar ambos botones aparecen completos. El propietario confirma apariencia correcta.
+  No se infiere pulsación ni locución de las capturas; Cancelar/VoiceOver ya tienen evidencia anterior.
+  Sin nuevas pruebas manuales pendientes en el muestreo acordado; ADR0026 sigue como excepción aceptada.
+- Config local plist/pbxproj/scheme se preserva separada del alcance. Commit/push autorizados tras
+  completar la comprobación visual; PR/merge/cierre/activaciónlive/08.4 siguen fuera del alcance.
+- Reauditorías documentales focales de estándares iOS y accesibilidad PASS, sin hallazgos abiertos
+  en esta reconciliación. Gobernanza y diff-check PASS; build/tests N/A por cambio documental.
+- Se reclasifican34 enlaces a artefactos eliminados como rutas históricas no disponibles, conservando
+  su identidad y resultado comunicado. No se recrea evidencia ni se exige repetir pruebas por perder
+  un archivo temporal. Se retiran de la matriz los pendientes ya resueltos, sin declarar cobertura global.
+
+Las secciones siguientes son el registro cronológico: las limitaciones se leen con su fecha y no
+sustituyen este estado vigente ni las tablas R/ADR reconciliadas.
+
 ## Inicio — 2026-09-08
 
 - El propietario autoriza comenzar fase 08, abrir issue/rama e implementar 8.01, equivalente a 08.1 de la spec.
@@ -854,3 +885,220 @@ PR, merge, cierre y live no autorizados.
 
 Reauditorías documentales finales PASS; huella de 446 archivos idéntica pre/post:
 `cf1610776435e4981e72eed52e47366073664c9f645f30c18baa52a1876a5e4d`. Gobernanza y staged diff-check PASS.
+
+Pruebas focales posteriores: cancelación táctil de Añadir confirmada por propietario. Autorrelleno
+ofrece sugerencias/menú, pero selección en ficha de Contactos no inserta; causa no determinada.
+Propósitos semánticos de campos inspeccionados y coherentes; inserción automática aún pendiente.
+
+Autorrelleno: propietario confirma inserción al tocar la sugerencia del teclado. Vía nativa de
+sugerencias operativa; incidencia del selector Contactos separada, sin causa atribuida.
+
+Preparación temporal autorizada de fallo de guardado (09-09): únicamente factoryComposed dentro de
+FRANALONSO_AUTH_FIXTURE; primer guardado por formulario espera 3s cancelables y falla antes de escritura,
+segundo usa adaptador original. No cambios live/Views/Domain. Backup byte a byte en
+`/tmp/fa083-before-save-failure-AppDependencies.swift`, restaurar después de sesión; NO publicar harness.
+Propuesta y revisión independiente final PASS; huellas pre/post verificadas. Build MCP PASS8,958s,
+log200846, aviso AppIntents10912. Snippet de verificación: primer intento no compila por importFoundation
+omitido; segundo con imports corregidos agota timeout60s. No acredita conteos/resultado runtime.
+Pendiente prueba guiada VoiceOver de guardado/fallo/reintento. No cubre fallo de carga inicial.
+
+Retest VoiceOver del fallo de guardado: propietario escucha «No se ha podido completar la operación.
+Inténtalo de nuevo». Confirma nombre conservado y segundo Guardar exitoso, anuncio Cliente guardado,
+retorno al listado con una sola fila. Guardado fallido y recuperación acreditados por reporte manual;
+no se extrapola a fallo de lectura inicial, desactivación ni conteos internos de la cola.
+Harness temporal retirado: AppDependencies.swift restaurado byte a byte al backup y HEAD.
+La app ya instalada mantiene el harness hasta la siguiente ejecución de la versión restaurada.
+
+Medición runtime iPad20:24–20:26: cuatro apariencias, Desactivar5,001/6,548/9,125/5,960:1,
+etiquetas≥12,058:1 e iconos≥5,206:1 en muestreo ICC. HitRegion activado sin avisos en viewport final.
+Informe aún con1contraste bajo toolbar,2DT y2detección; no conformidad global. Apariencia restaurada.
+Detalle y límites en registro accesible, sin cambio ejecutable.
+
+
+### Reconciliación posterior a pruebas focales — 2026-09-09
+
+Cancelación táctil de Añadir, inserción por sugerencia y fallo de guardado/reintento con VoiceOver
+completados. Harness retirado y versión restaurada relanzada. Matriz R09 actualizada: lectura inicial
+fallida/Reintentar sigue sin evidencia runtime. Contraste Desactivar/etiqueta/icono postal suficiente
+en cuatro apariencias. Inspector: detecciones del formulario corresponden a Jornada/Catálogo bajo
+modal; listado sin Contrast/Hit Region/Element Detection, seis Dynamic Type por atribuir. Pendientes
+concretos y revisión independiente en la reconciliación vigente del registro 08.3; no repetir recorridos
+manuales completados. No cambios ejecutables ni nueva autorización de PR/merge/cierre.
+
+Atribución del listado completada: cinco etiquetas de sidebar y fila cliente. Revisión focal independiente
+sin nuevo defecto ejecutable; huella de 446 archivos estable. Pendientes: lectura inicial fallida/Reintentar
+con VoiceOver y comprobaciones del agente de escalado sidebar/fila, buscador/foco y geometría toolbar/
+confirmación. Reutilizar estilos equivalentes. No repetir las pruebas manuales ya acreditadas.
+
+
+### Bloque 1 — 2026-09-09 23:50–23:58
+
+Escalado sidebar/fila confirmado mediante dos incrementos y restaurado. Buscador6,97:1, icono15,88:1,
+error5:1; superficies visibles toolbar44pt/confirmación48pt. Capturas/mediciones en registro08.3.
+Nuevo dato por disponer: rojo nativo del diálogo4,11:1; falta verificar tipografía/clasificación antes
+de corregir. Foco de teclado sin captura válida con CUA; no confundir overlaysInspector. No cambios
+ejecutables ni datos; app en listado, preferencias restauradas. Bloque1 aún no globalmente aprobado.
+
+Revisión focal independiente confirma muestreo de escalado/geometría suficiente y conserva potencial
+P2 contraste nativo4,11:1 hasta acreditar tipografía grande o corregir. Foco: solicitar únicamente
+captura de Añadir enfocado sin Inspector; no repetir navegación. Huella446 idéntica, gobernanza PASS.
+
+
+### Foco de teclado — 2026-09-10
+
+Propietario aporta tres capturas; primera acredita foco Añadir solicitado. Medición ICC→sRGB: banda
+3,577:1 exterior/4,271:1 interior; banda oscura8,862:1 exterior. Petición de captura resuelta, sin
+repetir recorrido. Las otras dos aportan contexto, no resuelven tipografía/contraste oscuro del diálogo.
+Pendientes: disposición de contraste nativo y prueba VO de lectura inicial/Reintentar.
+
+
+## Corrección de contraste de confirmación — 2026-09-10 00:54
+
+Xcode Debug View Hierarchy expuso el UILabel de Desactivar: .SFUI-Medium 16 pt, systemRedColor.
+El ratio oscuro previo 4,113:1 no alcanza 4,5:1; queda confirmado el defecto y sustituida la
+incertidumbre tipográfica anterior. Una prueba mínima de foregroundStyle en confirmationDialog
+fue ignorada por el sistema y retirada antes de implementar la alternativa revisada.
+
+ClientFormScreen presenta ahora ClientDeactivationConfirmationView en popover nativo, con adaptación
+vertical a sheet, Cancelar explícito, rol destructivo y colores opacos ErrorInk/Surface. Reutiliza
+recursos, estado y operación existentes. Foco inicial limitado a VoiceOver, título encabezamiento,
+labels pulsables de altura mínima 44 pt más padding y contenido desplazable cuando falta altura.
+Propuesta y revisión estática final independientes por close083_accessibility: PASS. El revisor
+no escribió archivos ni operó UI; no se aporta digest pre/post completo para esta segunda revisión.
+
+Build Xcode MCP PASS 13,683 s, log BuildProject-Log-20260910-005002.txt; único warning encontrado:
+AppIntents metadata extraction skipped, ya existente. No se afirma cero warnings globales.
+Previews renderizadas e inspeccionadas: Large Light, AX 5 Dark, XXX Large Light Increased Contrast,
+Large Dark Increased Contrast; texto sin truncamiento. Artefactos RenderPreview_result_2026-09-09T
+225036Z, 225045Z, 225143Z y 225144Z (@3x.png), directorio ActionArtifacts/default/RenderPreview.
+Ratios calculados de los assets opacos ErrorInk/Surface: Light 5,244; Dark 5,001; Light High 7,367;
+Dark High 8,411. Estas medidas de recursos y previews no son auditoría Inspector del nuevo popover.
+
+Runtime iPhone 17e/iOS 26.5, sesión sintética: encabezamiento, mensaje y ambos botones expuestos;
+Cancelar conserva formulario y datos; reabrir y confirmar cierra formulario y vuelve a No hay clientes.
+Captura nativa: /Users/jesusf/Desktop/Simulator Screenshot - iPhone 17e - 2026-09-10 at 00.53.40.png.
+Pendiente VoiceOver focal del nuevo modal (entrada, Cancelar/retorno y confirmación/anuncio), además
+R09 lectura inicial fallida/Reintentar. No repetir CRUD completo ni el fallo de guardado ya validado.
+Fixture signed-out del scheme permanece local. Sin PR, merge, cierre ni avance de subfase.
+
+
+## Corrección de posición tras IMG_1250 — 2026-09-10
+
+El propietario rechaza la disposición del popover: arriba a la izquierda, sobre la barra del formulario.
+La comprobación anterior de contraste/semántica no acreditaba una presentación visual adecuada.
+Sustituido por sheet nativa con detents medium/large y large para tamaños de accesibilidad, ancho
+flexible y alineación superior. Mantiene colores, roles, Cancelar, escape y operación existente.
+Propuesta independiente focal PASS. Build MCP PASS 8,469 s, BuildProject-Log-20260910-082837.txt;
+único warning encontrado AppIntents metadata ya existente. Previews de presentación real inspeccionadas
+062920/062928: hoja inferior estándar y hoja grande AX5; en AX5 contenido desplazable para acciones.
+No se acreditan todavía presentación iPad, cierre interactivo ni retorno/anuncios VoiceOver de la sheet.
+IMG_1250 muestra foco en encabezamiento del popover anterior; no extrapolar ese foco a esta versión.
+Siguiente paso: confirmar apariencia corregida y retest VO focal; R09 lectura/reintento sigue pendiente.
+
+
+## Jerarquía, botones y altura tras IMG_1251 — 2026-09-10
+
+El propietario rechaza título poco destacado, botones sin delimitación y vacío inferior de la sheet.
+Corregido en ClientDeactivationConfirmationView: título title2 bold, botones headline delimitados
+por contornos redondeados y área mínima de 52 pt. Cancelar usa borde TextSecondary y Desactivar
+ErrorInk sobre Surface. Ratios calculados contra Surface (Light/Dark/Light High/Dark High):
+borde Cancelar 4,555/5,206/10,042/11,183; borde Desactivar 5,244/5,001/7,367/8,411.
+
+La prueba de form.fitted aislado no redujo la altura de iPhone. Se usa onGeometryChange sobre
+contenido intrínseco con padding para detent height, estado exclusivamente visual redondeado;
+AX conserva large y ScrollView. No se añade lógica de negocio ni tests unitarios de geometría.
+Fuente Apple consultada: https://developer.apple.com/documentation/swiftui/view/presentationsizing(_:).
+Build MCP085713 PASS7,232 s; único warning encontrado AppIntents metadata previo. Preview normal
+Dark065745 inspeccionada: hoja compacta, título jerárquico y botones delimitados. Los overrides
+sobre una sheet no acreditan AX5 si la captura conserva el tamaño normal; no inferir por el nombre.
+Propuesta y revisión estática final independientes PASS. Huellas pre/post del alcance Swift idénticas:
+View07691027ff52aac0c265b166625bbe5345dad9ea37aec5acf201f92cddcb409d;
+Screen29a65239af2a59a7b815a3b21f77a9fd2514f1fd9d9d183a37a2032ada216c55.
+Pendientes aceptación visual física, adaptación iPad y VoiceOver focal/R09; sin cierre ni entrega.
+
+Preview AX5 explícita065911 inspeccionada: título y contenido grandes sin truncamiento horizontal;
+Desactivar queda parcialmente fuera del viewport inicial, con ScrollView declarado. Alcance por
+desplazamiento y VoiceOver pendiente de runtime; no se afirma desde esta imagen.
+
+
+### Ajuste final solicitado: título centrado — 2026-09-10
+
+Propietario acepta la disposición con ajuste de centrado del título. Añadidos exclusivamente
+multilineTextAlignment(.center) y frame(maxWidth: .infinity) al título; conserva semántica/foco.
+Propuesta focal independiente PASS; build Xcode MCP092935 PASS8,092 s, aviso AppIntents previo.
+No repetir pruebas funcionales por alineación. VoiceOver focal/R09 siguen pendientes.
+
+
+### VoiceOver de confirmación actual — reporte del propietario 2026-09-10
+
+Recorre todos los elementos de la sheet correctamente. Empieza por «Tirador de la hoja, media
+pantalla, botón, toca dos veces para cerrar la hoja»; restantes elementos correctos según reporte.
+El componente declara presentationDragIndicator(.visible): el tirador pertenece a la presentación
+nativa. No se acredita foco inicial en título aunque exista AccessibilityFocusState. El recorrido
+por el tirador no bloquea el contenido. No se infiere todavía ejecución del cierre, retorno de foco
+ni confirmación/anuncio de la versión actual. Próximo paso focal: Cancelar y retorno al formulario.
+
+
+VoiceOver, propietario 2026-09-10: Cancelar en la sheet actual cierra únicamente la confirmación
+y devuelve el foco a Desactivar cliente del formulario. Confirmado por reporte manual; no acredita
+aún confirmar/desactivar y anuncio de esta versión. Siguiente paso focal: confirmar una vez.
+
+
+### Confirmación efectiva con VoiceOver — propietario, 2026-09-10
+
+Al cerrar la confirmación comienza una locución «cliente desa…» que se interrumpe; después se
+cierra el formulario y en el listado escucha «Cliente desactivado» completo y «No hay clientes».
+Resultado final, desactivación y retorno contextual confirmados por reporte. Se registra la
+interrupción transitoria como observación no bloqueante, sin atribuir causa ni duplicado de éxito.
+Inspección actual: una única emisión explícita de éxito en ClientListScreen.restoreFormFocus/onDismiss.
+Revisión independiente focal read-only: no defecto adicional demostrado; no modificar sincronización
+ni repetir el recorrido cuando el resultado final completo y el destino están confirmados.
+R09 lectura inicial fallida/reintento sigue pendiente. Solo documentación; build/tests N/A.
+
+
+### R09 preparado para prueba guiada — 2026-09-10 12:43
+
+Autorización «preparala entonces». Harness TEMPORAL en App/AppDependencies+ClientForm.swift:
+InitialReadFailureRepository privado, aislado por actor, falla primer client(id:) por formulario
+con persistenceUnavailable y luego delega. Task.checkCancellation precede al consumo del fallo.
+Gates FRANALONSO_AUTH_FIXTURE + ApplicationLaunchPlan.authenticationFixture. Lista y adapter
+mutador intactos; alta normal, abrir edición produce error y Reintentar carga perfil existente.
+No valida VoiceOver por sí mismo. Propuesta independiente PASS; prueba manual pendiente.
+
+Xcode MCP27: Develop, iPhone14 de Jesús/iOS26.6.1, SDK27, argumento signed-out activo.
+Build124238 PASS8,429s, único warning encontrado AppIntents metadata previo. RunProject124255
+PASS3,577s, app lanzada PID15053. No se modifican plist/pbxproj locales ajenos ni scheme.
+
+Restaurar únicamente AppDependencies+ClientForm.swift tras la prueba y recompilar:
+original /tmp/franalonso-r09-clientform-original.swift
+SHA256 25763a3b9599762d05b243946f3af8a0d8d82b07a97f2162dffdcbcc60708182.
+Harness preparado SHA256 7890ff55aab238baf41afbf4ba123606a50fceff42b6e75df081bbe70531ad28.
+Excluir este archivo temporal de cualquier entrega; comprobar que no hay cambios posteriores ajenos
+antes de restaurar. No commit/push/PR/cierre/live.
+
+
+### R09 confirmado y harness retirado — 2026-09-10 12:55
+
+Propietario confirma Reintentar → campos cargados con datos y recorribles por VoiceOver; Cancelar
+→ listado con foco en el cliente abierto. Recorrido R09 de lectura fallida/reintento/retorno confirmado
+por reporte manual, sin atribuir anuncio inicial exacto no transcrito. No repetir prueba.
+
+Harness restaurado byte a byte desde copia verificada: AppDependencies+ClientForm.swift SHA original
+25763a3b9599762d05b243946f3af8a0d8d82b07a97f2162dffdcbcc60708182, diff contra HEAD vacío.
+Mejora visual prometida tras IMG1252: Reintentar usa primaryActionStyle existente (cápsula rellena),
+conserva texto, minHeight44, acción y disabled. Ratios de assets OnBrandPrimary/BrandPrimary
+4,945/9,812/10,554/12,280. Propuesta y revisión final focal read-only PASS.
+Build MCP125405 PASS8,46s, warning AppIntents previo. Preview Load failure12:55:29 inspeccionada,
+iPhone18Pro/iOS27, control visiblemente delimitado; primer render agotó tiempo y reintento pasó.
+RunProject125546 PASS8,152s en iPhone14: app relanzada sin inyección del error.
+Solo resta reconciliar evidencia/límites y entrega autorizada; no se declara subfase cerrada.
+Los enlaces históricos a artefactos eliminados siguen pendientes de reconciliación documental.
+
+## Entrega de correcciones autorizada — 2026-09-10
+
+El propietario autoriza revisar el diff, commit y push. Alcance: ClientFormScreen, ClientFormContent,
+ClientDeactivationConfirmationView, tres registros documentales y CHANGELOG. Configuración local
+plist/pbxproj/scheme excluida; harness fuera del diff. Se conservan build125405, ejecución125546,
+auditorías focales y evidencia manual ya obtenidos: no hay código nuevo desde esas validaciones.
+Gobernanza y diff-check se repiten para la entrega. Hash y remoto se verifican tras publicar en Linear;
+este registro queda identificado por su propio commit. Sin PR, merge ni cierre de PLU-37.

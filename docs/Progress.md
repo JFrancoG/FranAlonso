@@ -1,40 +1,48 @@
 # Project Progress
 
-Última actualización: 2026-09-09
+Última actualización: 2026-09-10
 
 ## Estado actual
 
-- Fase 08 activa: [PLU-34](https://linear.app/plusprojects/issue/PLU-34), In Progress.
-- 08.1 publicada en `1164c62`; 08.2 en `6473658`. Sin PR/merge/cierre operativo de esas subfases.
-- [08.3 / PLU-37](https://linear.app/plusprojects/issue/PLU-37): listado, búsqueda y formulario implementados
-  en `codex/plu-37-phase-08-3-client-screens`. Implementación publicada en `5533948`; rama remota verificada.
-  La publicación no equivale a cierre de subfase: ADR 0022 mantiene límites de evidencia aplicable.
-- Composición y ViewModels validados con Xcode MCP: RED/GREEN 20/20, regresión 32 suites/259 resultados;
-  corrección del error de nombre RED y GREEN 32/32. Último build PASS 9,115 s, log `20260909-191906`;
-  persiste el aviso previo AppIntents de extracción de metadatos. No se afirma cero warnings globales.
-- Correcciones validadas: error de nombre al escribir, placeholders/título a texto máximo, anuncios completos
-  y retorno contextual del foco, contraste de Desactivar cliente. Se conserva ToolbarSpacer del propietario.
-- Evidencia manual representativa: CRUD/búsqueda, VoiceOver, Control por voz, Control por botón, teclado
-  en Simulator, texto máximo, preferencias combinadas, orientaciones y ventana mínima iPad.
-  iPhone 14/iOS 26.6.1; iPad Air 11-inch (M4)/iOS 26.5. No repetir los recorridos ya confirmados.
-- RTL sintético de lista y formulario renderizado e inspeccionado; overrides temporales restaurados.
-- Inspector: nueve avisos en dos informes, triados individualmente. Fondo bajo modal y texto bajo barra
-  no representan controles plenamente expuestos; primer informe tiene atribución incierta. Rojo corregido
-  con evidencia independiente. No se declara informe limpio ni contraste global aprobado.
-- Pendientes reales: R09 de carga/fallos asíncronos/reintento con AT y mediciones completas de contraste
-  no textual/objetivos. ADR 0026 conserva la excepción de orientación iPhone. Subfase In Progress.
-- Revisiones finales independientes sin nuevos defectos ejecutables; reconciliación documental verificada. Preparación de fixture signed-out permanece local y fuera de la entrega Git.
+- Fase08 [PLU-34](https://linear.app/plusprojects/issue/PLU-34) y subfase08.3
+  [PLU-37](https://linear.app/plusprojects/issue/PLU-37) siguen In Progress.
+- Rama `codex/plu-37-phase-08-3-client-screens`: base previa verificada en `4527b03`.
+  Publicados: 08.1 `1164c62`, 08.2 `6473658`, base funcional08.3 `5533948` y registro `4527b03`.
+- **Correcciones incluidas en la entrega autorizada:** nueva sheet de confirmación (altura ajustada, título centrado,
+  botones delimitados y contraste), integración en ClientFormScreen, estilo visible de Reintentar y docs.
+- Validación lógica histórica: 259/259 resultados en32suites; error de nombre RED/GREEN32/32.
+  Último build MCP27 `125405` PASS8,46s y RunProject `125546` PASS8,152s en iPhone14/iOS26.6.1.
+  Persiste aviso previo AppIntents; no se afirma cero warnings globales ni ReleaseGate/Production.
+- Muestreo manual completado: CRUD, búsqueda, VoiceOver, Control por voz, Control por botón, teclado
+  en Simulator, texto máximo, preferencias combinadas e iPad para listado/formulario original.
+  RTL sintético inspeccionado. No repetir esas pruebas.
+- Nueva sheet: VoiceOver recorre desde el tirador, Cancelar devuelve foco a Desactivar cliente y
+  confirmar anuncia Cliente desactivado completo y retorna al listado vacío. Locución parcial previa
+  durante transición registrada como observación no bloqueante; causa no determinada.
+- **R09 completado:** reintentos de guardado y lectura, datos conservados/cargados y retorno a la fila.
+  Ambos harness retirados. AppDependencies+ClientForm.swift coincide byte a byte con HEAD.
+  Reintentar usa estilo primario; preview posterior inspeccionada, sin cambio de acción/etiqueta.
+- Contraste y foco tienen muestras explícitas en el registro. No se declara Inspector limpio ni
+  cobertura total desde las previews. Artefactos locales eliminados están marcados como no disponibles.
+- **Comprobación representativa completada:** capturas del propietario de las13:40–13:41 muestran
+  listado, formulario y nueva sheet en iPad/ventana estrecha con texto ampliado; al desplazar aparecen
+  completos Cancelar y Desactivar. Sin nuevas pruebas manuales pendientes dentro del alcance acordado.
+- ADR0026 conserva la excepción aceptada de orientación iPhone. Se mantienen los límites de muestreo
+  ADR0022; no se declara conformidad global. El cierre operativo sigue pendiente.
+- Configuración local separada de la entrega: scheme signed-out y traslado de DisplayName/FaceID
+  entre plist y pbxproj. Se preservan; no se atribuye autoría. ToolbarSpacer del propietario conservado.
 
 ## Evidencia y siguiente paso
 
-Detalle y artefactos en [fase 08](progress/phase-08.md) y
-[registro accesible 08.3](accessibility/evidence/08-3-client-screens.md).
-Commit/push de implementación completados; 24 archivos, fixture temporal excluida y remoto verificado.
-PR, merge, cierre de issues,
-activación live y comienzo de 08.4 requieren autorización independiente.
+Estado y límites reconciliados en [fase08](progress/phase-08.md) y
+[registro accesible08.3](accessibility/evidence/08-3-client-screens.md). Revisiones documentales focales
+independientes; sin nuevas pruebas lógicas por esta actualización documental.
+Commit y push de las correcciones autorizados por el propietario el2026-09-10. El commit que contiene
+este registro incluye tres archivos Swift, esta documentación y CHANGELOG; la verificación del remoto
+se registra en Linear tras publicar. PR, merge, cierre operativo, live y08.4 quedan fuera del alcance.
 
 ## Entregas anteriores
 
-- Fases 01–06: [histórico](progress/phases-00-06.md).
-- Fase 07: [evidencia](progress/phase-07.md); PLU-26–PLU-33 Done. PLU-25 conserva cierre administrativo
-  pendiente. Última entrega Swift PR #9 `c8bb283`, cierre documental `99709d1`.
+- Fases01–06: [histórico](progress/phases-00-06.md).
+- Fase07: [evidencia](progress/phase-07.md); PLU-26–PLU-33 Done. PLU-25 conserva cierre administrativo
+  pendiente. Última entrega Swift PR#9 `c8bb283`, cierre documental `99709d1`.

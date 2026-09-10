@@ -86,21 +86,10 @@ struct ClientFormScreen: View {
             }
         }
         .interactiveDismissDisabled()
-        .confirmationDialog(
-            Text(.clientsFormDeactivateTitle),
-            isPresented: $showsDeactivationConfirmation,
-            titleVisibility: .visible
-        ) {
-            Button(role: .destructive) {
+        .sheet(isPresented: $showsDeactivationConfirmation) {
+            ClientDeactivationConfirmationView {
                 requestOperation(.deactivate)
-            } label: {
-                Text(.clientsFormDeactivateConfirm)
             }
-            Button(role: .cancel) {} label: {
-                Text(.clientsFormCancel)
-            }
-        } message: {
-            Text(.clientsFormDeactivateMessage)
         }
         .task {
             guard !Task.isCancelled else { return }
