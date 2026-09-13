@@ -1,5 +1,141 @@
 # Fase 08 — Clientes, consentimiento y foto
 
+## Entrega completa de 08.6 autorizada — 2026-09-13
+
+El propietario solicita commit, push, PR, merge, cierre de PLU-40 y eliminación de la rama. Se prepara la entrega
+sobre la implementación revisada, sin cambios Swift posteriores al build final de 20:40:07. Se reutilizan los
+1.020 resultados verdes, build PASS 6,993 s y auditorías independientes completas, incluido el P2 corregido.
+Auditoría lexical de entrega: 28 Swift, siete candidatos verticales justificados y ningún hallazgo nuevo.
+Changelog y registros de progreso actualizados. Diff y archivos sensibles revisados; gobernanza conserva únicamente
+seis enlaces históricos de 08.3. La autorización sustituye las puertas de entrega pendientes de los registros inferiores.
+La integración se verificará antes del cierre; PLU-34 y los pendientes propios de PLU-38 permanecen abiertos.
+Sin inicio de 08.7 ni activación live.
+
+## Implementación de 08.6 autorizada — 2026-09-13
+
+El propietario aprueba la propuesta revisada con «Si, adelante». Implementación en la rama local
+`codex/plu-40-phase-08-6-document-persistence`; PLU-40 continúa In Progress. Este registro sustituye la aprobación
+pendiente y la ausencia de código descritas en el inicio inferior. Sin commit, push, PR, merge, cierre ni live.
+
+- `ClientDocumentDraft` conserva ficha, snapshot, firma vinculada y fecha fijada antes del render. Su revisión impide
+  ediciones y renders obsoletos; el envelope conserva IDs documentales invalidados incluso al borrar y reabrir.
+- `ClientDocumentPersistenceActor` guarda ficha, trabajo causal y borrador en un único contexto/save, reutilizando
+  la primitiva existente de clientes. Conserva un solo artefacto definitivo y su estado de envío; igualdad completa
+  es idempotente y payload distinto produce conflicto sin sustituir PDF ni recibo previo.
+- `ClientDocumentsSchema` 2.0.0 añade dos tablas a los 28 modelos de baseline 1.0.0 intacta. La migración lightweight
+  conserva las 28 familias, sus 29 payloads/versiones binarios y la referencia antigua, con segunda reapertura.
+  Origen desconocido falla cerrado; ninguna referencia previa se transforma en un documento inventado.
+- Repositorio autorizado por sesión/revisión y binding existente de Keychain; nuevas tablas incluidas en el detector
+  de store vacío. Recuperación por clientID, render con fecha conservada y envío desde bytes ya aceptados.
+- Storage neutral con fake actor y remoto compartido entre instancias: compare-and-create, recibo estable, pérdida
+  de respuesta, permisos y cancelación. Recibo local durable antes del éxito; fallo al guardarlo deja trabajo pendiente.
+  Ni envío ni reintento activan clientes o cambian su referencia inicial. No hay adaptador Firebase live.
+
+La composición futura debe compartir un propietario documental por container y proporcionar un validador de revisión
+que revoque también logout/login del mismo principal. 08.6 entrega capacidades inyectables; su integración en pantalla,
+ClientConsentStore y composición contextual corresponde a 08.7. No cambia Presentation, recursos visuales ni xcstrings:
+previews, auditoría UI/accesibilidad y nuevas pruebas físicas N/A. Se conservan los pendientes propios de PLU-38.
+
+### Evidencia TDD y validación local
+
+Xcode MCP oficial de Xcode-RC 27.0, proyecto verificado FranAlonso, scheme Develop, iPad Air 11-inch (M4)/iOS 26.5.
+MCP registrado sin transporte disponible; nueva conexión al puente oficial dirigida al PID verificado, sin modificar
+configuración global y sin xcodebuild. Todos los artefactos nativos siguientes están en
+`/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RunSomeTests/`.
+
+- RED inicial `Test-FranAlonso-Develop-2026.09.13_20-03-21-+0200.xcresult`: 32 resultados, 30 fallos por capacidades
+  ausentes y 2 pasan. GREEN inicial por MCP: 25 resultados, cero fallos; export nativo incompleto, sin atribuir
+  cobertura adicional de parámetros. La migración se demuestra antes de cambiar Schema.franAlonso a 2.0.0.
+- RED de identidad `Test-FranAlonso-Develop-2026.09.13_20-12-43-+0200.xcresult`: 3 fallos y 2 controles verdes.
+  Detecta reutilizar ID retirado tras borrar/reabrir, constructor que elude la transición y cancelación tras commit.
+- RED del recorrido completo `Test-FranAlonso-Develop-2026.09.13_20-19-40-+0200.xcresult`, cerrado y releído:
+  32 declaraciones / 38 resultados; 17 fallos de pipeline provisional y 21 resultados base/identidad verdes.
+  Incluye PDF largo real de 80 secciones conservado byte a byte al reabrir; PDFs sintéticos previos entre 20.015 y
+  44.610 bytes. Esta evidencia respalda Data dentro del store para estos fixtures, sin promesa de escala ilimitada.
+- GREEN focal `Test-FranAlonso-Develop-2026.09.13_20-22-35-+0200.xcresult`, cerrado y releído:
+  63 declaraciones / 81 resultados, cero fallos/omitidos. RunSomeTests seleccionó solo parte de los casos de algunos
+  tests parametrizados previamente ejecutados; no se atribuye su cobertura completa antes de RunAllTests.
+
+- RED adicional `Test-FranAlonso-Develop-2026.09.13_20-24-47-+0200.xcresult`: 1 fallo de pertenencia y 2 controles
+  verdes (recibo cacheado sin red y conflicto que conserva recibo/PDF tras reinicio). La reutilización pasa ahora por
+  la misma aceptación que verifica draftID; GREEN incluido en la suite global final.
+- Primera suite global: 1.017/1.018 resultados verdes. El fallo de un test CRUD anterior se reproduce aislado y con
+  schema 1.0.0: tras save rechazado, el fetch directo devuelve una fila mientras el listado Domain, lookup y conteos
+  durables permanecen vacíos. Diagnóstico acotado no establece una causa interna de SwiftData. Procesar cambios antes
+  o después de rollback no lo corrige; ambas hipótesis se retiran. Revisión independiente `rollback086` aprueba usar
+  el listado Domain real como primera lectura y oráculo de producto, conservando hasChanges, lookup y todos los conteos
+  del contexto actual y otro nuevo. Solo cambia esa aserción de `ClientCRUDPersistenceTests`; schema actual restaurado,
+  sin prints ni workaround de producción. Tests-de-verdad aplicado; no se elimina la validación de filas corruptas.
+- Suite global final por RunAllTests, bundle cerrado y releído con xcresulttool:
+  `/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RunAllTests/Test-FranAlonso-Develop-2026.09.13_20-31-40-+0200.xcresult`.
+  **769 declaraciones de 113 suites / 1.018 resultados PASS**, cero fallos/omitidos. Incluye todos los parámetros:
+  recuperación 20, Storage 18, persistencia 16, identidad 5, migración documental 2, baseline 2 y detector pristine 8.
+  Resumen completo `RunAllTests/13F28AC6-F470-401E-8624-68BA909EBE06.txt` bajo el mismo directorio ActionArtifacts/default.
+- BuildProject **PASS 11,231 s**, log completo leído (1.565 líneas):
+  `/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/BuildProject/BuildProject-Log-20260913-203214.txt`.
+  Único warning encontrado: `Metadata extraction skipped, no AppIntents.framework dependency found`, conocido.
+  Sin errores ni warnings Swift nuevos; no se declara cero warnings globales, Production, CI o backend validado.
+
+Auditoría de estilo sobre los 28 Swift nuevos/tocados: ninguna línea supera 120 columnas. El recall produce siete
+candidatos, revisados: closures/function types, genéricos y macros justifican formato vertical; no se reformatea historia.
+Diff-check limpio y gobernanza conserva únicamente los seis enlaces históricos rotos de 08.3. No se incorporan payloads,
+PDF, secretos, configuración de Xcode, esquemas temporales ni cambios de UI al diff.
+
+POST independiente por agente nuevo `post086_standards`: un P2 válido en `recordUploadFailure`; el filtro de intento
+obsoleto descartaba también conflicto remoto aunque el nuevo intento solo siguiera pendiente o fallara por conexión.
+Sin otros hallazgos en las 31 rutas/28 Swift. Modo read-only operacional; root verifica 498 rutas tracked/untracked
+no ignoradas idénticas antes/después (path+NUL y SHA256 binario por archivo, MISSING si falta):
+`3f0199bf38cf92560637c2b9b9beeff6090bc69ecbc62abb7254652a389fce86`.
+P2 reproducido por dos casos RED (último intento pending/unavailable), bundle
+`RunSomeTests/Test-FranAlonso-Develop-2026.09.13_20-38-32-+0200.xcresult`. Corrección mínima: un conflicto de un intento
+anterior hace terminal el envío sin confirmar; errores transitorios mantienen filtro de intento, y uploaded/conflict
+existentes permanecen intactos. DocC del contrato actualizado; PDF, recibo y contador conservados.
+
+Validación final tras P2, Xcode MCP en el mismo destino y bundle cerrado releído:
+`/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RunAllTests/Test-FranAlonso-Develop-2026.09.13_20-39-26-+0200.xcresult`.
+**770 declaraciones / 113 suites / 1.020 resultados PASS**, cero fallos/omitidos, incluidos los 22 de recuperación.
+Resumen completo `RunAllTests/8CB8A9C7-D88B-4AD4-A100-E95C9CBAD2CF.txt` en ActionArtifacts/default.
+Build final **PASS 6,993 s**, log completo leído (1.524 líneas):
+`/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/BuildProject/BuildProject-Log-20260913-204007.txt`.
+Conserva únicamente el warning AppIntents conocido; sin errores ni warnings Swift nuevos.
+Reauditoría focal por `post086_standards`: **PASS, sin hallazgos**. Verifica comportamiento, RED/GREEN, DocC y estilo;
+no repite ámbitos intactos. Root comprueba nuevamente 498 rutas pre/post idénticas:
+`dcf6c26b10edfd63707659fdffffb0aca5d498605ded07ad05304e63205add0c`.
+Sin escrituras/publicaciones/ejecuciones Xcode durante las auditorías. UI/accesibilidad N/A por ausencia de cambios.
+
+PLU-40 y PLU-34 actualizadas y verificadas In Progress con esta evidencia. **08.6 implementada y validada localmente**;
+la entrega Git y el cierre de PLU-40 siguen pendientes de autorización. No se ha hecho commit/push/PR/merge, ni iniciado
+08.7 o activado live. PLU-38 conserva sus dos pendientes propios. Diff-check/estilo limpios; gobernanza solo conserva
+los seis enlaces históricos de 08.3. Escaneo acotado sin secretos ni diagnósticos temporales; ninguna configuración
+local ajena, PDF ni payload de cliente incorporado. Reconciliación final exclusivamente documental tras el build:
+no requiere repetir tests. Se mantienen límites de Production, CI, backend y evidencia física ya descritos.
+
+## Inicio de08.6 — 2026-09-13
+
+El propietario solicita issue, rama e inicio de08.6. PLU-40 existente se reutiliza y pasa a In Progress;
+PLU-39 verificada Done y su dependencia de entrega satisfecha. Rama local
+`codex/plu-40-phase-08-6-document-persistence` desde main/origin/main coincidentes en
+`36f5efa88a97a7c223ac58c8eca1f4bac2b6ae72`, sin cambios locales al inicio.
+
+[Propuesta concreta](08-6-document-persistence-proposal.md): dos modelos aditivos, schema2.0.0 desde baseline1.0.0
+intacta, recuperación antes/después del render, artefacto estable, recibo durable, conflicto ID/payload y Storage fake.
+Incluye aceptación conjunta con ficha/cola y actualización del detector de store vacío conforme ADR0021.
+Sin UI/Store/activación/foto real/live; PLU-38 y PLU-34 permanecen abiertas.
+
+PRE independiente por agente nuevo `proposal086_pre`: PASS técnico sin hallazgos. Root verifica477 rutas
+tracked+untracked no ignoradas con huella pre/post idéntica:
+`796c6f3db687fdf9fe0b1cd23b6e53acc89172469af658f2b9eaa0054f060e29`.
+Revisión operacional sin escrituras/publicaciones/build/tests/previews. Diff-check limpio; gobernanza conserva
+únicamente los seis enlaces históricos08.3. Propuesta lista para aprobación de implementación, sin código08.6.
+
+MCP registrado apunta a Xcode/Reguerta. Nueva sesión del puente oficial Xcode-RC27.0 dirigida al proceso verificado
+confirma FranAlonso/windowtab-QTPhkgjxly, Develop, iPad Air11M4/26.5 y Navigator sin issues.53 herramientas descubiertas;
+no se modifica configuración global. Se relee xcresult08.5:23 tests declarados,43 resultados parametrizados por destino,
+cero fallos/omitidos. Build141942 conserva único aviso AppIntents conocido. Baseline43/43, catálogo8/8 y12,132s
+conservados; no se ejecutan tests/build nuevos por preparación documental. Sin commit/push/PR ni implementación08.6.
+
+Los registros inferiores que indican que08.6 no se ha iniciado son históricos y quedan sustituidos por este inicio.
+
 ## Cierre de08.5 completado — 2026-09-13
 
 [PR#12](https://github.com/JFrancoG/FranAlonso/pull/12) integrada con merge commit

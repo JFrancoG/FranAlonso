@@ -43,10 +43,10 @@ enum PhaseFiveBaselineSchema: VersionedSchema {
 /// The ordered migration contract starting at the first supported phase-five store.
 enum PhaseFiveSchemaMigrationPlan: SchemaMigrationPlan {
     static var schemas: [any VersionedSchema.Type] {
-        [PhaseFiveBaselineSchema.self]
+        [PhaseFiveBaselineSchema.self, ClientDocumentsSchema.self]
     }
 
     static var stages: [MigrationStage] {
-        []
+        [.lightweight(fromVersion: PhaseFiveBaselineSchema.self, toVersion: ClientDocumentsSchema.self)]
     }
 }

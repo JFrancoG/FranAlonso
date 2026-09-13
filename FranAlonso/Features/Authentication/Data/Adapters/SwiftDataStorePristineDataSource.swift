@@ -9,6 +9,8 @@ actor SwiftDataStorePristineDataSource {
     /// Returns whether the current store contains no persisted row in any schema model.
     func isPristine() throws -> Bool {
         guard try !contains(ClientModel.self) else { return false }
+        guard try !contains(ClientDocumentDraftModel.self) else { return false }
+        guard try !contains(ClientSignedDocumentModel.self) else { return false }
         guard try !contains(ClientPendingUpsertModel.self) else { return false }
         guard try !contains(ClientPendingDeleteModel.self) else { return false }
         guard try !contains(ClientRemoteStateModel.self) else { return false }
