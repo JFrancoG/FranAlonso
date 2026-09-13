@@ -45,8 +45,9 @@ ADR 0028 precisa el significado del documento inicial y la autorización posteri
 1. Información disponible durante el formulario; al terminar se revisa la variante aplicable antes de capturar firma.
    Sin foto no se muestran referencias a imágenes. Con foto se ofrece una autorización interna explícita y opcional.
    Rechazar o retirar la selección permite seguir con el documento sin foto.
-2. Texto común y sección condicional proceden de una fuente versionada. 08.5 define la distribución a la app del
-   catálogo legal, hoy fuera del bundle; no se lee el contenido mediante OCR ni se mantienen dos copias manuales.
+2. Texto común y sección condicional proceden de una fuente versionada. Desde 08.5, el catálogo legal se distribuye
+   en el bundle desde `FranAlonso/Resources/Legal` y alimenta también el generador de borradores; no se lee el contenido
+   mediante OCR ni se mantienen dos copias manuales.
 3. El documento firmado fija ID, cliente, variante/finalidad, versión/idioma, contenido y datos presentados, decisiones,
    fecha, firma y artefacto. Cambiar un dato incluido, el texto o las decisiones invalida la firma pendiente.
 4. Lectura nativa y revisión accesibles según ADR 0022. Consultar el texto sigue siendo posible al revisar la firma;

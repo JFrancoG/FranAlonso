@@ -1,5 +1,27 @@
 # Fase 08 — Clientes, consentimiento y foto
 
+## PR y revisión nueva de08.5 completadas — 2026-09-13
+
+El propietario autoriza abrir PR, completar la revisión pendiente, merge, cierre de PLU-39 y eliminación de su rama.
+[PR#12](https://github.com/JFrancoG/FranAlonso/pull/12) abierta en borrador contra main; integración pendiente.
+GitHub confirma MERGEABLE y no presenta checks remotos; su ausencia no acredita CI.
+
+POST por dos agentes nuevos e independientes: `pr085_fresh_standards` y `pr085_fresh_accessibility`.
+Estándares revisa el delta completo, incluidos14 Swift, Domain/Data, invariantes, concurrencia, tests y evidencia nativa.
+Único hallazgo P3: spec08 aún decía catálogo fuera del bundle. Corregido a Resources/Legal y releído: PASS sin pendientes.
+Recursos/localización/PDF: PASS sin hallazgos;67 claves previas conservadas, ocho nuevas, cuatro artefactos sintéticos
+idénticos a adjuntos del xcresult, A4 y2/2/2/12 páginas. Seis páginas normales, contacto largo y última página inspeccionados.
+Sin delta SwiftUI: previews, Inspector y AT N/A. PDF sin etiquetado; no certifica PDF-UA ni validez jurídica.
+
+Revisiones read-only operacionales sin cambios de archivos, build/tests ni publicaciones. Root verifica476 rutas
+tracked+untracked no ignoradas, ordenadas, path+NUL y digest SHA256 binario de cada archivo, antes/después:
+`bcf7099a373a1fdec72084e333f170335d76d3da2af1dcae08e1ef161aab9203` para POST completo;
+`4cf1e490ecb75e1947545c7277562a20defcd7e33175a5816706296d8b70a096` para corrección documental.
+La puerta de agentes nuevos queda cumplida; sustituye su bloqueo histórico inferior. No se repiten validaciones
+nativas porque solo cambia documentación tras build12,132s y43/43 más catálogo8/8. Diff sin incidencias.
+Gobernanza conserva seis enlaces históricos rotos08.3. PLU-38 mantiene evidencia propia pendiente.
+
+
 ## Publicación de08.5 completada — 2026-09-13
 
 Commit funcional `bce8859ee0b0f3598b56813f6f4bafac06ed7cc1` publicado en
