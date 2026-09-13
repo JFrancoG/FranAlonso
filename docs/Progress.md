@@ -8,15 +8,15 @@
 - **08.4 / [PLU-38](https://linear.app/plusprojects/issue/PLU-38): integrada mediante [PR#11](https://github.com/JFrancoG/FranAlonso/pull/11); DoD pendiente**.
   Merge autorizado y completado el13/09: `c4d7b00989a58783f953752bdc8f29dca90c6715`. Rama anterior conservada.
   Linear cerró automáticamente la issue al integrar; restaurada a In Progress para mantener su evidencia pendiente.
-- **08.5 / [PLU-39](https://linear.app/plusprojects/issue/PLU-39): implementada, validada y revisada; integración autorizada**.
-  [PR#12](https://github.com/JFrancoG/FranAlonso/pull/12), rama `codex/plu-39-phase-08-5-signed-documents`.
+- **08.5 / [PLU-39](https://linear.app/plusprojects/issue/PLU-39): completada y Done**.
+  [PR#12](https://github.com/JFrancoG/FranAlonso/pull/12) integrada el13/09 mediante
+  `943cd84f93883c019206b0df6b5cc721dea3395d`; rama local y remota de08.5 eliminadas.
   Catálogo único en Resources/Legal, snapshot/firma inmutables y PDF con texto real mediante actor Data.
   TDD preparación6 RED→6 GREEN y render6 RED→6 GREEN; regresión43/43, catálogo ampliado8/8 y build PASS12,132s
   por Xcode MCP Develop/iPadAir11M4/26.5. PDF sintéticos inspeccionados; borradores anteriores conservados.
   Dos agentes nuevos independientes completan POST de estándares y recursos/localización/PDF sin hallazgos pendientes.
   P3 documental de la spec corregido y releído; huellas pre/post verificadas. Sin cambios ejecutables posteriores.
-  Commit funcional `bce8859` publicado. Pendientes únicamente merge, cierre de PLU-39 y retirada de su rama,
-  autorizados expresamente por el propietario. Sin UI integrada, guardado, upload ni activación live.
+  GitHub sin checks remotos, no equivale a CI. Sin UI integrada, guardado, upload ni activación live.
 - Captura efímera con valor inmutable Codable, ViewModel, lienzo, deshacer/borrar/confirmar/cancelar. No se integra
   todavía en formulario, persistencia, PDF firmado, Storage ni activación. ADR0027 limita la excepción de dibujo libre.
 - Botones de edición en fila, Confirmar con forma accesible rectangular y resultados Deshacer/Borrar con prioridad alta.
@@ -50,7 +50,7 @@ La consolidación actual sustituye pendientes ya resueltos de las anotaciones hi
 
 ADR0028 y spec08 aprobados distinguen información inicial firmada y autorización fotográfica opcional. Dos borradores
 PDF en Resources, catálogo y generador ajustados; continúan pendientes de revisión jurídica antes del uso real.
-08.5 revisada y pendiente de integración; 08.6–08.9 / PLU-40–PLU-43 permanecen en Backlog, sin implementar.
+08.5 completada; 08.6–08.9 / PLU-40–PLU-43 permanecen en Backlog, sin implementar.
 El vault Obsidian es este repositorio. Sin activación live ni cierre administrativo de08.4.
 
 ## Entregas anteriores

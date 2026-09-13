@@ -1,5 +1,23 @@
 # Fase 08 — Clientes, consentimiento y foto
 
+## Cierre de08.5 completado — 2026-09-13
+
+[PR#12](https://github.com/JFrancoG/FranAlonso/pull/12) integrada con merge commit
+`943cd84f93883c019206b0df6b5cc721dea3395d`, sobre head revisado `69ecc2fd701d8ec03a89935c155641d8d6ca9687`.
+GitHub confirma MERGED; main actualizado por fast-forward. PLU-39 actualizado y verificado Done.
+Rama `codex/plu-39-phase-08-5-signed-documents` eliminada en origin y local tras comprobar que está integrada.
+Cierre y acciones Git autorizados expresamente por el propietario. Los estados pendientes inferiores son históricos.
+
+La revisión nueva de estándares y recursos/localización/PDF queda completa según evidencia inferior; ningún hallazgo
+abierto de08.5. Este registro final es exclusivamente documental: build/tests N/A, conserva Xcode MCP43/43,
+catálogo8/8 y build12,132s, sin cambios ejecutables posteriores. Diff-check limpio; gobernanza sigue señalando
+únicamente seis enlaces históricos08.3 rotos. No hay checks remotos en la PR ni se acredita CI.
+
+PLU-38 sigue In Progress con evidencia propia pendiente y su rama conservada; PLU-34 permanece abierta.
+No se inicia08.6, no se implementan persistencia/lector/Store/Storage/foto real y no se activa live.
+PDF no etiquetado y borradores pendientes de revisión jurídica antes del uso real.
+
+
 ## PR y revisión nueva de08.5 completadas — 2026-09-13
 
 El propietario autoriza abrir PR, completar la revisión pendiente, merge, cierre de PLU-39 y eliminación de su rama.
