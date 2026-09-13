@@ -98,5 +98,8 @@
     "optionalConsents": [],
     "signatureNoticeKey": "data_information.signature_notice",
     "documentVersion": "2026-09-10-draft"
-  }
+  },
+  "supportedLanguages": [
+    "es"
+  ]
 }

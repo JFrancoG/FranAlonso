@@ -6,6 +6,7 @@ All notable changes to this project are documented in this file.
 
 ### Added
 
+- 2026-09-13 | ✨ feat(clients): add versioned signed documents
 - 2026-09-13 | ✨ feat(clients): add ephemeral signature capture
 
 ### Maintenance
@@ -18,6 +19,9 @@ All notable changes to this project are documented in this file.
 
 ### Documentation
 
+- 2026-09-13 | 📝 docs(delivery): record PLU-39 reviews
+
+- 2026-09-13 | 📝 docs(delivery): record PLU-39 push
 - 2026-09-13 | 📝 docs(delivery): record PLU-38 draft PR
 
 - 2026-09-10 | 📝 docs(delivery): close PLU-37 after merge

@@ -26,8 +26,8 @@ from reportlab.platypus import (
 
 
 ROOT = Path(__file__).resolve().parents[1]
-DEFAULT_CONTENT = ROOT / "docs/legal/document-template-content.json"
-DEFAULT_STRINGS = ROOT / "docs/legal/DocumentTemplates.xcstrings"
+DEFAULT_CONTENT = ROOT / "FranAlonso/Resources/Legal/document-template-content.json"
+DEFAULT_STRINGS = ROOT / "FranAlonso/Resources/Legal/DocumentTemplates.xcstrings"
 DEFAULT_OUTPUT = ROOT / "FranAlonso/Resources/DocumentTemplates"
 
 INK = colors.HexColor("#1C1C1E")
