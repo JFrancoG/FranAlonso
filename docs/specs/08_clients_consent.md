@@ -64,8 +64,9 @@ ADR 0028 precisa el significado del documento inicial y la autorización posteri
 - 08.5 define el contexto de foto y autorización que 08.7 consumirá. 08.7 valida ambas variantes con fixtures;
   el selector/subida de foto reales y el recorrido completo con foto se integran en 08.9. Así no depende del código
   futuro de 08.9 para cerrar su alcance ni se declara antes una integración fotográfica inexistente.
-- 08.4 / PLU-38 continúa abierta en su rama actual. Conserva regresión y evidencia manual acreditadas; no hay que
-  repetirlas por este cambio documental ni esperar a implementar 08.9 para cerrar la captura.
+- 08.4 / PLU-38 integrada mediante PR#11 el13/09/2026 por autorización expresa; continúa abierta por evidencia propia.
+  El propietario autoriza preparar issue/rama de08.5 desde ese merge. Se conserva regresión y evidencia manual;
+  este inicio no acredita los pendientes de08.4 ni requiere repetir las pruebas aceptadas.
 - Antes de cerrar 08.4: completar solo evidencia aplicable pendiente (incluidos interrupción/redimensionado y técnicas
   de asistencia), obtener revisión UI final por agente nuevo y retirar el acceso/esquema temporal de validación.
   Validar por Xcode MCP la composición resultante de esa retirada. La lectura y persistencia futuras no son su DoD.

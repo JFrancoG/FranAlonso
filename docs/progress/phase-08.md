@@ -1,5 +1,106 @@
 # Fase 08 — Clientes, consentimiento y foto
 
+## Commit y push de08.5 autorizados — 2026-09-13
+
+El propietario solicita commit y push y pregunta por el siguiente paso. Se prepara la publicación de la rama
+`codex/plu-39-phase-08-5-signed-documents`, conservando validaciones y límites ya registrados.
+No hay cambios ejecutables desde el build validado. La PR y el cierre no se interpretan como autorizados por la pregunta;
+primero queda la revisión por agente nuevo, después revisión de PR, merge autorizado y cierre documental/operativo.
+No se hace ninguna activación live ni se inicia08.6.
+
+## Implementación08.5 autorizada y validación local — 2026-09-13
+
+El propietario autoriza «adelante con la subfase 8.05» sobre la propuesta PRE favorable. Implementación en
+`codex/plu-39-phase-08-5-signed-documents`, sin commit/push/PR ni cierre de issue autorizado para esta subfase.
+PLU-38 conserva sus dos pendientes de evidencia; no se alteran ni repiten sus recorridos aceptados.
+
+Domain incorpora contenido semántico resuelto, contexto/finalidad/decisión, snapshot inmutable, firma ligada al snapshot
+y documento firmado con bytes definitivos. Invariantes se validan también al decodificar; una foto indecisa no puede
+firmarse. Cambio de identidad, cliente, nombre, finalidad, decisión, versión, idioma, texto o variante rechaza tinta
+anterior antes de llamar al render. Autorización posterior conserva finalidad independiente, sin modificar clientes.
+
+Data resuelve idioma/versión explícitos del bundle y falla ante catálogo/idioma/clave ausente. Fuentes únicas trasladadas
+a `FranAlonso/Resources/Legal`: String Catalog compilado para app y JSON estructural, consumidos también por el
+generador de borradores. Sus claves/textos anteriores y estructura original conservados; ocho etiquetas documentales
+nuevas y lista de idiomas soportados. Los cuatro PDF de Resources/DocumentTemplates permanecen byte a byte en HEAD.
+No hay una copia editable en docs/legal; README/guía apuntan a la nueva fuente.
+
+Actor CoreGraphics/CoreText genera A4, texto real, firma vectorial3:1 y páginas adicionales sin truncado, usando solo
+snapshot/fecha/firma. No conoce catálogo vigente ni SDK en Domain. Errores y cancelación no emiten documento parcial.
+Fecha e ID inyectables; los bytes generados se conservan en el valor Codable. El motor Quartz incorpora metadatos de
+creación propios: no se promete determinismo binario entre renders/sistemas. La estabilidad histórica se consigue
+reteniendo el artefacto, sin regenerarlo. El framing validado al decodificar no es validación criptográfica del PDF.
+
+### Evidencia ejecutada
+
+- Preparación: RED6/6 por `.unavailableCatalog` con adaptador aún sin implementar, resultado14:06:40;
+  GREEN6/6 con catálogo real del bundle14:08:51.
+- Render: RED6/6 por `.renderingFailed` con export aún sin implementar, resultado14:11:02;
+  GREEN6/6 con PDF real14:13:10. Se comprueba rechazo de firma desactualizada y texto completo.
+- Regresión14:16:27:43/43, cero fallidos/omitidos/no ejecutados:17 fronteras de documento,6 pipelinePDF,
+  6 preparación,10 invariantes de tinta y4 recursos previos. Resultado nativo:
+  `/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RunSomeTests/Test-FranAlonso-Develop-2026.09.13_14-16-27-+0200.xcresult`.
+- Catálogo ampliado14:18:45:8/8, añade manifest ausente y localización incompleta con bundles aislados. No sumar
+  esta repetición como ocho casos distintos de los seis anteriores.
+- Build oficial Develop/iPadAir11M4/26.5 PASS12,132s, log `BuildProject-Log-20260913-141942.txt`.
+  GetBuildLog sin incidencias estructuradas; log completo conserva solo aviso AppIntents conocido, sin Swift/Clang nuevos.
+- Generador Python de producción carga las fuentes trasladadas; comparación con HEAD confirma textos/estructura
+  originales sin alteración. No se regeneran ni modifican los PDF de borrador, ni se añade dependencia runtime.
+- Revisión visual con skill PDF: ambos documentos iniciales y autorización posterior (dos páginas cada uno), y
+  hoja de contacto completa del fixture de80 párrafos/12 páginas. Firma colocada bajo su etiqueta tras corregir
+  separación excesiva del primer render; texto/tinta sin superposición ni recorte observado.
+
+Artefactos sintéticos extraídos del xcresult en
+`/Users/jesusf/Documents/Codex/2026-09-13/franalonso-08-5/`:
+`informacion-firmada-sintetica.pdf`, `informacion-con-foto-firmada-sintetica.pdf`,
+`autorizacion-posterior-sintetica.pdf` y `paginacion-unicode-sintetica.pdf`.
+No contienen datos de clientes reales ni se incluyen en Git. Los PDF conservan la marca de borrador jurídico;
+no están etiquetados para accesibilidad. Texto extraíble no acredita conformidad WCAG/PDF-UA.
+
+### Límites y revisión final
+
+Sin alcance SwiftUI: previews, Inspector y técnicas de asistencia N/A para08.5. La lectura nativa y su evidencia
+corresponden a08.7; persistencia08.6, Store08.7, activación08.8 y foto real08.9 permanecen sin implementar.
+No se añade composición App sin consumidor ni una pantalla temporal; se prueban las dependencias concretas inyectadas.
+Gobernanza conserva solo seis enlaces históricos08.3 rotos; diff-check sin problemas. No activación live ni entrega Git nueva.
+
+POST: intento de crear revisor nuevo devuelve `agent thread limit reached`. Se reutilizan dos agentes independientes
+que nunca implementaron08.5: `proposal085_pre` para estándares/estilo y `delivery084_final_accessibility` para
+recursos/localización/PDF. Ambos encuentran únicamente P3 en LOCALIZATION_GUIDE, cuyo párrafo aún describía la
+distribución como futura. Corregido y releído por ambos: sin hallazgos técnicos pendientes.
+Revisión de14 Swift, script de estilo0 candidatos y pasada manual favorable. PDF2/2/2/12 páginas, texto extraíble,
+sin etiquetado estructural; N/A SwiftUI. No se declara revisión por agente nuevo ni cierre completo de la puerta.
+
+Huellas operacionales de479 rutas tracked+untracked no ignoradas, ordenadas, path+NUL seguido de SHA256 de bytes
+(literal MISSING para tracked eliminado), verificadas por el orquestador antes/después:
+`60178dbff01d72de75cce0cf17e9a522fd603fcc5054e83830e7715ad7d68dcd` para POST completo y
+`4ab4085e1214a1b3c020e112934ff90409bcef3784a7bd9d0ac85c12d3f1481b` para corrección documental.
+Ningún cambio ejecutable posterior a build12,132s; retest N/A del último delta exclusivamente documental.
+Pendientes de cierre: cumplir puerta de revisión por agente nuevo y obtener autorización de entrega Git.
+No hace falta repetir pruebas físicas de firma ni modificar el alcance08.6–08.9.
+
+## Integración de08.4 e inicio de preparación de08.5 — 2026-09-13
+
+El propietario solicita expresamente merge e issue/rama para08.5. PR#11 pasa de borrador a lista y se integra
+con merge commit `c4d7b00989a58783f953752bdc8f29dca90c6715`, verificado MERGED en GitHub.
+Main actualizado por fast-forward; rama nueva `codex/plu-39-phase-08-5-signed-documents` creada desde ese commit.
+Se conserva la rama08.4. Sin nuevos cambios ejecutables ni activación live.
+
+Linear cerró automáticamente PLU-38 al integrar. Restaurada a In Progress: permanecen evidencia runtime de
+resize durante gesto y medición/atribución del contraste nativo final. No se infiere DoD ni se repiten pruebas aceptadas.
+PLU-39 ya existía; reutilizada y puesta In Progress para preparación. Su dependencia de entrega de38 está integrada;
+se cambia a relación de seguimiento sin cerrar la evidencia. PLU-40–43 conservan Backlog y su secuencia.
+
+[Propuesta08.5](08-5-signed-document-proposal.md): contenido versionado común y dos variantes, snapshot firmado y
+render PDF con texto real fuera de MainActor. Sin persistencia, Store, UI de lectura/firma integrada ni foto real.
+Baseline técnico anterior conservado, build/tests N/A para este cambio exclusivamente documental.
+Las entradas de entrega draft inferiores son históricas y no describen el estado actual de GitHub.
+
+PRE `proposal085_pre` por agente nuevo: sin hallazgos, PASS de preparación. Huella462 archivos pre/post idéntica
+`e47ff50cfc5e3d3a0edd91597ca8458f37a62fb65389ca08d096a43106cb26a8`, verificada por el orquestador.
+Diff-check limpio; gobernanza conserva solo los seis enlaces históricos08.3 rotos. Preparación documental local,
+sin commit/push de08.5 ni implementación. La petición de issue/rama queda completada.
+
 ## Entrega parcial publicada — 2026-09-13
 
 Commit funcional `7aab140` y push de `codex/plu-38-phase-08-4-signature-capture` completados.

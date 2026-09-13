@@ -5,9 +5,18 @@
 ## Estado actual
 
 - Fase08 / [PLU-34](https://linear.app/plusprojects/issue/PLU-34) abierta.
-- **08.4 / [PLU-38](https://linear.app/plusprojects/issue/PLU-38): publicada en [PR#11](https://github.com/JFrancoG/FranAlonso/pull/11) como borrador; DoD pendiente**.
-  Rama `codex/plu-38-phase-08-4-signature-capture`, base `9ffce6a`. El propietario autoriza commit, push y PR el13/09.
-  Sin autorización de merge, cierre de issue, activación live ni comienzo de08.5.
+- **08.4 / [PLU-38](https://linear.app/plusprojects/issue/PLU-38): integrada mediante [PR#11](https://github.com/JFrancoG/FranAlonso/pull/11); DoD pendiente**.
+  Merge autorizado y completado el13/09: `c4d7b00989a58783f953752bdc8f29dca90c6715`. Rama anterior conservada.
+  Linear cerró automáticamente la issue al integrar; restaurada a In Progress para mantener su evidencia pendiente.
+- **08.5 / [PLU-39](https://linear.app/plusprojects/issue/PLU-39): implementada y validada localmente; puerta de revisor nuevo pendiente**.
+  Rama `codex/plu-39-phase-08-5-signed-documents`; implementación autorizada tras la
+  [propuesta revisada](progress/08-5-signed-document-proposal.md). Catálogo único en Resources/Legal, snapshot y firma
+  inmutables, autorización opcional y PDF con texto real mediante actor Data. Sin UI integrada, guardado ni upload.
+  TDD: preparación6 RED→6 GREEN; render6 RED→6 GREEN. Regresión43/43 y catálogo ampliado8/8; build PASS12,132s
+  por Xcode MCP Develop/iPadAir11M4/26.5. PDF sintéticos inspeccionados; sin cambios en los cuatro borradores PDF.
+  Dos revisiones independientes reutilizadas favorables tras corregir un P3 documental; el límite de agentes impidió
+  crear revisores nuevos. Commit y push autorizados el13/09; preparación de publicación en curso.
+  La PR, el merge y el cierre de issue siguen pendientes, incluida la revisión por agente nuevo.
 - Captura efímera con valor inmutable Codable, ViewModel, lienzo, deshacer/borrar/confirmar/cancelar. No se integra
   todavía en formulario, persistencia, PDF firmado, Storage ni activación. ADR0027 limita la excepción de dibujo libre.
 - Botones de edición en fila, Confirmar con forma accesible rectangular y resultados Deshacer/Borrar con prioridad alta.
@@ -29,8 +38,8 @@
   evidencia parcial; no se convierte en PASS la limitación de probarlo con un solo ratón.
 - Medición/atribución del contraste del render nativo final de Cancelar/Confirmar/foco. Ratios de assets propios
   recalculados y comprobación visual High Light/Dark favorables; no son una medición del estilo nativo compuesto.
-- PR#11 abierta en borrador, commit funcional `7aab140` publicado y Linear reconciliado In Progress.
-  Composición restaurada validada3/3 y auditorías favorables para revisión parcial; sin merge ni cierre.
+- PR#11 integrada por autorización expresa. Composición restaurada validada3/3 y auditorías previas conservadas;
+  integración no equivale a cierre de la evidencia pendiente. PLU-38 sigue In Progress y relacionada con PLU-39.
 - Gobernanza heredada: seis enlaces históricos a capturas08.3 eliminadas siguen rotos; no se alteran en esta entrega.
 
 ## Plan y fuentes
@@ -41,7 +50,8 @@ La consolidación actual sustituye pendientes ya resueltos de las anotaciones hi
 
 ADR0028 y spec08 aprobados distinguen información inicial firmada y autorización fotográfica opcional. Dos borradores
 PDF en Resources, catálogo y generador ajustados; continúan pendientes de revisión jurídica antes del uso real.
-08.5–08.9 / PLU-39–PLU-43 permanecen planificadas en Backlog, sin implementar. El vault Obsidian es este repositorio.
+08.5 en validación local; 08.6–08.9 / PLU-40–PLU-43 permanecen en Backlog, sin implementar.
+El vault Obsidian es este repositorio. Sin activación live ni cierre administrativo de08.4.
 
 ## Entregas anteriores
 

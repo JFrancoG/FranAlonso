@@ -1,0 +1,906 @@
+{
+  "sourceLanguage": "es",
+  "strings": {
+    "business.tax_identifier.label": {
+      "comment": "Etiqueta fiscal situada antes del identificador tributario del negocio en la cabecera de ticket y factura.",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "NIF"
+          }
+        }
+      }
+    },
+    "consent.details.additional.heading": {
+      "comment": "Encabezado de información adicional pendiente de concretar antes de uso real.",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Información adicional pendiente de completar"
+          }
+        }
+      }
+    },
+    "consent.details.additional.text": {
+      "comment": "Información adicional y nota editorial de revisión de transferencias del borrador de consentimiento.",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Los datos proceden del cliente. No se toman decisiones exclusivamente automatizadas con efectos jurídicos o similares sobre él. [Antes de utilizar este texto: completar la información sobre transferencias internacionales y garantías con los proveedores y servicios realmente configurados; no afirmar su ausencia sin verificarla.]"
+          }
+        }
+      }
+    },
+    "consent.details.provenance.heading": {
+      "comment": "Encabezado sobre procedencia y categorías de datos del consentimiento.",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Qué datos recogemos"
+          }
+        }
+      }
+    },
+    "consent.details.provenance.text": {
+      "comment": "Detalle de procedencia y categorías de datos del consentimiento.",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Los facilitas tú: datos de identificación y contacto y la información necesaria sobre citas, servicios y facturación. Solo te pediremos los datos necesarios para cada finalidad. El email para recibir el ticket o la factura y la fotografía son opcionales; puedes recibir el servicio sin autorizar una fotografía."
+          }
+        }
+      }
+    },
+    "consent.details.recipients.heading": {
+      "comment": "Encabezado sobre destinatarios y transferencias del consentimiento.",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quién puede acceder"
+          }
+        }
+      }
+    },
+    "consent.details.recipients.text": {
+      "comment": "Detalle sobre destinatarios y transferencias del consentimiento.",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "El responsable y las personas autorizadas para atenderte, así como proveedores que presten servicios por cuenta del negocio con las garantías correspondientes. Podremos comunicar datos a las administraciones cuando exista una obligación legal. No publicaremos tu fotografía ni la utilizaremos con fines publicitarios."
+          }
+        }
+      }
+    },
+    "consent.details.retention.heading": {
+      "comment": "Encabezado sobre conservación de datos del consentimiento.",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Durante cuánto tiempo"
+          }
+        }
+      }
+    },
+    "consent.details.retention.text": {
+      "comment": "Detalle sobre conservación de datos del consentimiento.",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Conservaremos los datos mientras sean necesarios para las finalidades indicadas y, posteriormente, los que debamos mantener por obligaciones legales o para atender posibles responsabilidades. La fotografía se conservará mientras resulte necesaria para la finalidad autorizada y no retires el consentimiento."
+          }
+        }
+      }
+    },
+    "consent.details.rights.heading": {
+      "comment": "Encabezado sobre derechos y reclamaciones del consentimiento.",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tus derechos"
+          }
+        }
+      }
+    },
+    "consent.details.rights.text": {
+      "comment": "Detalle sobre el ejercicio de derechos y reclamaciones del consentimiento.",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Puedes solicitar acceso, rectificación o supresión de tus datos, así como ejercer los demás derechos que correspondan, incluidos limitación, oposición y portabilidad, a través de los datos de contacto anteriores. Puedes retirar la autorización de la fotografía en cualquier momento por esos mismos medios, sin afectar al servicio. La retirada no afecta a la licitud de su uso anterior. Puedes reclamar ante la Agencia Española de Protección de Datos (www.aepd.es)."
+          }
+        }
+      }
+    },
+    "consent.field.client_name": {
+      "comment": "Etiqueta de nombre completo del cliente en el consentimiento.",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nombre y apellidos"
+          }
+        }
+      }
+    },
+    "consent.field.client_signature": {
+      "comment": "Etiqueta del espacio para la firma del cliente.",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Firma del cliente"
+          }
+        }
+      }
+    },
+    "consent.introduction": {
+      "comment": "Introducción normativa del consentimiento de clientes.",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Información sobre el uso de tus datos en Fran Alonso Peluqueros y autorización opcional para conservar una fotografía en tu ficha interna."
+          }
+        }
+      }
+    },
+    "consent.optional.photo": {
+      "comment": "Consentimiento opcional para conservar una fotografía en la ficha interna.",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Autorizo a conservar una fotografía en mi ficha interna para gestionar y realizar el seguimiento de los servicios que solicito. Esta autorización no incluye su publicación ni su uso publicitario."
+          }
+        }
+      }
+    },
+    "consent.section.additional": {
+      "comment": "Título de la segunda capa de información del consentimiento.",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Información adicional"
+          }
+        }
+      }
+    },
+    "consent.section.basic": {
+      "comment": "Título de la primera capa de información del consentimiento.",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Información básica"
+          }
+        }
+      }
+    },
+    "consent.section.optional_consents": {
+      "comment": "Título de los consentimientos opcionales.",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fotografía opcional para tu ficha"
+          }
+        }
+      }
+    },
+    "consent.signature.notice": {
+      "comment": "Explica foto no autorizada por defecto y constancia de recepción mediante firma.",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No marcar esta opción significa que no autorizas la fotografía. Puedes continuar sin marcarla. Con mi firma dejo constancia de haber recibido esta información. La autorización para conservar una fotografía se limita a la opción anterior y solo se concede si la he marcado."
+          }
+        }
+      }
+    },
+    "consent.summary.controller.label": {
+      "comment": "Etiqueta de responsable en la primera capa del consentimiento.",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Responsable"
+          }
+        }
+      }
+    },
+    "consent.summary.controller.text": {
+      "comment": "Identidad resumida del responsable en el consentimiento.",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Francisco Alonso Domínguez (Fran Alonso Peluqueros), NIF 48.815.877-X. Contacto: info@franalonsopeluqueros.com. Dirección: c/ Bailén, 33-35. Local Bajo. 41001. Sevilla (España)."
+          }
+        }
+      }
+    },
+    "consent.summary.lawful_basis.label": {
+      "comment": "Etiqueta de legitimación en la primera capa del consentimiento.",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Por qué podemos tratarlos"
+          }
+        }
+      }
+    },
+    "consent.summary.lawful_basis.text": {
+      "comment": "Resumen de bases jurídicas del tratamiento.",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Los datos necesarios para prestar el servicio se tratan para gestionar esa relación; los exigidos por la normativa, para cumplir las obligaciones legales correspondientes. La fotografía de la ficha es opcional y solo se conservará si la autorizas mediante la opción que aparece al final."
+          }
+        }
+      }
+    },
+    "consent.summary.purposes.label": {
+      "comment": "Etiqueta de finalidades en la primera capa del consentimiento.",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Para qué utilizamos tus datos"
+          }
+        }
+      }
+    },
+    "consent.summary.purposes.text": {
+      "comment": "Resumen de finalidades del tratamiento.",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Para gestionar tu ficha, las citas y los datos necesarios para prestar y realizar el seguimiento de los servicios que solicitas; emitir los documentos de facturación y cumplir las obligaciones legales. Si nos pides recibir el ticket o la factura por correo electrónico, utilizaremos la dirección que facilites para ese envío. No utilizaremos tus datos para enviarte publicidad ni comunicaciones comerciales."
+          }
+        }
+      }
+    },
+    "consent.title": {
+      "comment": "Título principal de la hoja de información y consentimientos de clientes.",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Información sobre datos y fotografía opcional"
+          }
+        }
+      }
+    },
+    "data_information.introduction": {
+      "comment": "Introducción del documento informativo de ficha y facturación.",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Te explicamos cómo utilizamos tus datos para atenderte, gestionar tu ficha y emitir tus documentos de facturación."
+          }
+        }
+      }
+    },
+    "data_information.lawful_basis": {
+      "comment": "Bases del tratamiento necesario para servicio y obligaciones legales.",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Los datos necesarios para prestar el servicio se tratan para gestionar esa relación; los exigidos por la normativa, para cumplir las obligaciones legales correspondientes."
+          }
+        }
+      }
+    },
+    "data_information.provenance": {
+      "comment": "Categorías de datos y carácter opcional del email para documentos solicitados.",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Los facilitas tú: datos de identificación y contacto y la información necesaria sobre citas, servicios y facturación. Solo te pediremos los datos necesarios para cada finalidad. El email es opcional y se utiliza para enviarte el ticket o la factura cuando lo solicitas."
+          }
+        }
+      }
+    },
+    "data_information.recipients": {
+      "comment": "Destinatarios de los datos necesarios para prestar el servicio.",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "El responsable y las personas autorizadas para atenderte, así como proveedores que presten servicios por cuenta del negocio con las garantías correspondientes. Podremos comunicar datos a las administraciones cuando exista una obligación legal."
+          }
+        }
+      }
+    },
+    "data_information.retention": {
+      "comment": "Criterios de conservación del documento informativo sin autorización de fotografía.",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Conservaremos los datos mientras sean necesarios para las finalidades indicadas y, posteriormente, los que debamos mantener por obligaciones legales o para atender posibles responsabilidades."
+          }
+        }
+      }
+    },
+    "data_information.rights": {
+      "comment": "Derechos y reclamación del documento informativo de ficha y facturación.",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Puedes solicitar acceso, rectificación o supresión de tus datos, así como ejercer los demás derechos que correspondan, incluidos limitación, oposición y portabilidad, a través de los datos de contacto anteriores. Puedes reclamar ante la Agencia Española de Protección de Datos (www.aepd.es)."
+          }
+        }
+      }
+    },
+    "data_information.signature_notice": {
+      "comment": "La firma deja constancia de recepción de información; no solicita un consentimiento genérico.",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Con mi firma dejo constancia de haber recibido la información anterior sobre el tratamiento de mis datos personales."
+          }
+        }
+      }
+    },
+    "data_information.title": {
+      "comment": "Título del borrador informativo para una ficha sin fotografía.",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Información sobre tus datos personales"
+          }
+        }
+      }
+    },
+    "document.field.date": {
+      "comment": "Etiqueta de fecha común a documentos de facturación y consentimiento.",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fecha"
+          }
+        }
+      }
+    },
+    "document.page.label": {
+      "comment": "Palabra que precede al número de página en documentos PDF.",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Página"
+          }
+        }
+      }
+    },
+    "document.review.status": {
+      "comment": "Aviso visible que impide confundir las plantillas con documentos jurídicamente aprobados.",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "BORRADOR PENDIENTE DE REVISIÓN JURÍDICA"
+          }
+        }
+      }
+    },
+    "document.signature.optional": {
+      "comment": "Etiqueta del área opcional donde el renderer puede colocar la firma y el sello del negocio.",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Firma y sello (opcional)"
+          }
+        }
+      }
+    },
+    "document.template.provisional_badge": {
+      "comment": "Aviso visible en las plantillas provisionales de ticket y factura.",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "PLANTILLA PROVISIONAL"
+          }
+        }
+      }
+    },
+    "document.total.taxable_base": {
+      "comment": "Etiqueta del total de base imponible.",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Base imponible"
+          }
+        }
+      }
+    },
+    "document.total.total": {
+      "comment": "Etiqueta del importe total del documento.",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "TOTAL"
+          }
+        }
+      }
+    },
+    "document.total.vat": {
+      "comment": "Etiqueta del total de IVA.",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "IVA"
+          }
+        }
+      }
+    },
+    "invoice.client.address": {
+      "comment": "Etiqueta de dirección del cliente en la factura.",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dirección"
+          }
+        }
+      }
+    },
+    "invoice.client.name": {
+      "comment": "Etiqueta de nombre o razón social del cliente en la factura.",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nombre o razón social"
+          }
+        }
+      }
+    },
+    "invoice.client.postal_city": {
+      "comment": "Etiqueta de código postal y población del cliente en la factura.",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Código postal y población"
+          }
+        }
+      }
+    },
+    "invoice.client.province_country": {
+      "comment": "Etiqueta de provincia y país del cliente en la factura.",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Provincia / país"
+          }
+        }
+      }
+    },
+    "invoice.client.section": {
+      "comment": "Título de la sección de datos fiscales del cliente en la factura.",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "DATOS DEL CLIENTE"
+          }
+        }
+      }
+    },
+    "invoice.client.tax_identifier": {
+      "comment": "Etiqueta de identificación fiscal del cliente en la factura.",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "NIF/NIE/CIF"
+          }
+        }
+      }
+    },
+    "invoice.field.number": {
+      "comment": "Etiqueta del número de factura.",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "N.º factura"
+          }
+        }
+      }
+    },
+    "invoice.footer.currency": {
+      "comment": "Nota de formato y moneda al pie de la factura.",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Documento A4 · Importe en euros"
+          }
+        }
+      }
+    },
+    "invoice.metadata.title": {
+      "comment": "Título de metadatos del PDF de factura.",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Plantilla A4 de factura"
+          }
+        }
+      }
+    },
+    "invoice.table.description": {
+      "comment": "Cabecera de descripción en la tabla de la factura.",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Descripción"
+          }
+        }
+      }
+    },
+    "invoice.table.discount": {
+      "comment": "Cabecera abreviada de descuento en la tabla de la factura.",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Desc."
+          }
+        }
+      }
+    },
+    "invoice.table.quantity": {
+      "comment": "Cabecera abreviada de cantidad en la tabla de la factura.",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cant."
+          }
+        }
+      }
+    },
+    "invoice.table.unit_price": {
+      "comment": "Cabecera abreviada de precio unitario en la tabla de la factura.",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "P. unit."
+          }
+        }
+      }
+    },
+    "invoice.title": {
+      "comment": "Título principal de la factura.",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "FACTURA"
+          }
+        }
+      }
+    },
+    "invoice.total.discount": {
+      "comment": "Etiqueta del descuento total de la factura.",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Descuento"
+          }
+        }
+      }
+    },
+    "table.amount": {
+      "comment": "Cabecera de importe común a ticket y factura.",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Importe"
+          }
+        }
+      }
+    },
+    "table.vat": {
+      "comment": "Cabecera de IVA común a ticket y factura.",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "IVA"
+          }
+        }
+      }
+    },
+    "ticket.field.client": {
+      "comment": "Etiqueta de cliente en el ticket.",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cliente"
+          }
+        }
+      }
+    },
+    "ticket.field.number": {
+      "comment": "Etiqueta del número de ticket.",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "N.º ticket"
+          }
+        }
+      }
+    },
+    "ticket.field.tax_identifier": {
+      "comment": "Etiqueta del identificador fiscal del cliente en el ticket.",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "NIF/NIE"
+          }
+        }
+      }
+    },
+    "ticket.footer.tax_included": {
+      "comment": "Nota de formato, moneda e IVA al pie del ticket.",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Documento A4 · Importe en euros · IVA incluido salvo indicación"
+          }
+        }
+      }
+    },
+    "ticket.metadata.title": {
+      "comment": "Título de metadatos del PDF de ticket.",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Plantilla A4 de ticket"
+          }
+        }
+      }
+    },
+    "ticket.table.concept": {
+      "comment": "Cabecera de servicio o concepto en la tabla del ticket.",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Servicio / concepto"
+          }
+        }
+      }
+    },
+    "ticket.table.quantity": {
+      "comment": "Cabecera abreviada de cantidad en la tabla del ticket.",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cant."
+          }
+        }
+      }
+    },
+    "ticket.title": {
+      "comment": "Título principal del ticket.",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "TICKET"
+          }
+        }
+      }
+    },
+    "document.field.client_id": {
+      "comment": "Etiqueta de metadatos del documento firmado; no modifica el texto jurídico.",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Identificador de cliente"
+          }
+        }
+      }
+    },
+    "document.field.document_id": {
+      "comment": "Etiqueta de metadatos del documento firmado; no modifica el texto jurídico.",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Identificador del documento"
+          }
+        }
+      }
+    },
+    "document.field.version": {
+      "comment": "Etiqueta de metadatos del documento firmado; no modifica el texto jurídico.",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Versión"
+          }
+        }
+      }
+    },
+    "document.field.language": {
+      "comment": "Etiqueta de metadatos del documento firmado; no modifica el texto jurídico.",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Idioma"
+          }
+        }
+      }
+    },
+    "document.field.purpose": {
+      "comment": "Etiqueta de metadatos del documento firmado; no modifica el texto jurídico.",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Finalidad del documento"
+          }
+        }
+      }
+    },
+    "document.purpose.initial": {
+      "comment": "Etiqueta de metadatos del documento firmado; no modifica el texto jurídico.",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Información inicial firmada"
+          }
+        }
+      }
+    },
+    "document.purpose.subsequent": {
+      "comment": "Etiqueta de metadatos del documento firmado; no modifica el texto jurídico.",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Autorización fotográfica posterior"
+          }
+        }
+      }
+    },
+    "document.photo.authorized": {
+      "comment": "Etiqueta de metadatos del documento firmado; no modifica el texto jurídico.",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Autorización concedida"
+          }
+        }
+      }
+    }
+  },
+  "version": "1.0"
+}

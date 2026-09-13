@@ -4,9 +4,9 @@ Las plantillas informativa, de consentimiento, ticket A4 y factura A4 se generan
 fuentes complementarias mediante
 [`scripts/generate_document_templates.py`](../../scripts/generate_document_templates.py):
 
-- [`DocumentTemplates.xcstrings`](DocumentTemplates.xcstrings) contiene todo el
+- [`DocumentTemplates.xcstrings`](../../FranAlonso/Resources/Legal/DocumentTemplates.xcstrings) contiene todo el
   copy localizable, con claves semánticas, español de origen y contexto.
-- [`document-template-content.json`](document-template-content.json) contiene
+- [`document-template-content.json`](../../FranAlonso/Resources/Legal/document-template-content.json) contiene
   solo estructura, versión y datos del negocio que no se traducen.
 Los nombres incluidos en la aplicación son estables para que una revisión de
 texto o logotipo no obligue a cambiar el código:
@@ -20,7 +20,7 @@ texto o logotipo no obligue a cambiar el código:
 
 [ADR 0028](../ADRs/0028-client-signed-information-and-photo-authorization.md) y [spec 08](../specs/08_clients_consent.md)
 sitúan contenido/versionado y render en 08.5, persistencia en 08.6, lector y firma en 08.7, activación en 08.8 y foto
-real inicial/posterior en 08.9. El catálogo sigue fuera del bundle hasta implementar su distribución compartida.
+real inicial/posterior en 08.9. 08.5 traslada ambas fuentes a Resources/Legal: el catálogo se compila para la app y el generador consume la misma fuente.
 Los PDF conservan su condición de borradores y sus límites de accesibilidad/revisión jurídica. Las notas inferiores
 registran el estado de cada generación, no un bloqueo vigente de planificación.
 

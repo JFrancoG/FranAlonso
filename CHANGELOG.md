@@ -6,6 +6,7 @@ All notable changes to this project are documented in this file.
 
 ### Added
 
+- 2026-09-13 | ✨ feat(clients): add versioned signed documents
 - 2026-09-13 | ✨ feat(clients): add ephemeral signature capture
 
 ### Maintenance
