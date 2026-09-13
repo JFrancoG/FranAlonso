@@ -5,7 +5,7 @@
 ## Estado actual
 
 - Fase08 / [PLU-34](https://linear.app/plusprojects/issue/PLU-34) abierta.
-- **08.4 / [PLU-38](https://linear.app/plusprojects/issue/PLU-38): implementación preparada para PR borrador; DoD pendiente**.
+- **08.4 / [PLU-38](https://linear.app/plusprojects/issue/PLU-38): publicada en [PR#11](https://github.com/JFrancoG/FranAlonso/pull/11) como borrador; DoD pendiente**.
   Rama `codex/plu-38-phase-08-4-signature-capture`, base `9ffce6a`. El propietario autoriza commit, push y PR el13/09.
   Sin autorización de merge, cierre de issue, activación live ni comienzo de08.5.
 - Captura efímera con valor inmutable Codable, ViewModel, lienzo, deshacer/borrar/confirmar/cancelar. No se integra
@@ -29,7 +29,8 @@
   evidencia parcial; no se convierte en PASS la limitación de probarlo con un solo ratón.
 - Medición/atribución del contraste del render nativo final de Cancelar/Confirmar/foco. Ratios de assets propios
   recalculados y comprobación visual High Light/Dark favorables; no son una medición del estilo nativo compuesto.
-- Publicar la entrega draft autorizada; composición restaurada validada3/3 y auditorías favorables, mantener PLU-38 In Progress.
+- PR#11 abierta en borrador, commit funcional `7aab140` publicado y Linear reconciliado In Progress.
+  Composición restaurada validada3/3 y auditorías favorables para revisión parcial; sin merge ni cierre.
 - Gobernanza heredada: seis enlaces históricos a capturas08.3 eliminadas siguen rotos; no se alteran en esta entrega.
 
 ## Plan y fuentes

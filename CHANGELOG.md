@@ -18,6 +18,8 @@ All notable changes to this project are documented in this file.
 
 ### Documentation
 
+- 2026-09-13 | 📝 docs(delivery): record PLU-38 draft PR
+
 - 2026-09-10 | 📝 docs(delivery): close PLU-37 after merge
 
 - 2026-09-08 | 📝 docs(delivery): close PLU-33 after merge

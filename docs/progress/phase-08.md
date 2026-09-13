@@ -1,5 +1,17 @@
 # Fase 08 — Clientes, consentimiento y foto
 
+## Entrega parcial publicada — 2026-09-13
+
+Commit funcional `7aab140` y push de `codex/plu-38-phase-08-4-signature-capture` completados.
+[PR#11](https://github.com/JFrancoG/FranAlonso/pull/11) abierta como borrador contra main, verificada OPEN/draft.
+GitHub devolvió errores internos en los primeros intentos; se verificó ausencia de PR entre reintentos y el POST final
+respondió201 con PR#11. No se creó una PR duplicada. El readback no muestra checks remotos configurados; no es un PASS de CI.
+
+PLU-38 actualizado con enlace, evidencia y los dos límites; readback confirma In Progress y attachment de PR#11.
+No merge, cierre de issue, eliminación de rama, activación live ni inicio de08.5.
+Este registro de entrega solo cambia documentación; build/tests N/A. Conserva los resultados técnicos y auditorías
+anteriores, y los seis enlaces históricos08.3 rotos permanecen declarados. Los estados de preparación inferiores son históricos.
+
 ## Preparación de entrega draft — 2026-09-13
 
 El propietario autoriza commit, push y PR. Se prepara PR borrador porque quedan evidencia de resize durante gesto activo
