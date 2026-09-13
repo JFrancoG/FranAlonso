@@ -184,7 +184,7 @@ struct ClientCRUDPersistenceTests {
         }
 
         #expect(!context.hasChanges)
-        #expect(try context.fetch(FetchDescriptor<ClientModel>()).isEmpty)
+        #expect(try ClientLocalDataSource().fetchAll(in: context).isEmpty)
         #expect(try ClientLocalDataSource().client(id: id, in: context) == nil)
         #expect(try context.fetchCount(FetchDescriptor<ClientModel>()) == 0)
         #expect(try context.fetchCount(FetchDescriptor<ClientPendingUpsertModel>()) == 0)

@@ -97,43 +97,46 @@ extension ClientLocalDataSource {
         try requireClean(context)
 
         do {
-            guard try conflict(for: client.id, in: context) == nil else {
-                throw ClientLocalDataSourceError.syncConflictPending(client.id)
-            }
-            guard try !hasDeletionState(for: client.id, in: context) else {
-                throw ClientLocalDataSourceError.restoreRequiresExplicitResolution(client.id)
-            }
-
-            let payload = ClientDTO(client)
-            let operations = try pendingOperations(for: client.id, in: context)
-            let head = try pendingHead(from: operations, clientID: client.id)
-            let headPayload: ClientDTO?
-            if case .upsert(let upsert) = head {
-                headPayload = upsert.client
-            } else {
-                headPayload = nil
-            }
-
-            if headPayload != payload {
-                try ensureOperationIdentityAvailable(operationID, in: context)
-                context.insert(
-                    try ClientPendingUpsertModel(
-                        clientID: client.id.rawValue,
-                        operationID: operationID,
-                        predecessorOperationID: head?.operationID,
-                        base: try remoteBase(for: client.id, in: context),
-                        payload: payload
-                    )
-                )
-            }
-
-            try materialize(client, in: context)
-            _ = try fetchAll(in: context)
+            try stagePendingUpsert(client, operationID: operationID, in: context)
             try saveChanges(in: context)
         } catch {
             context.rollback()
             throw error
         }
+    }
+
+    /// Stages the same client/causal-operation policy without saving, for a larger atomic local acceptance.
+    /// The caller owns a clean context, the final save and rollback; no suspension may split this operation.
+    func stagePendingUpsert(_ client: Client, operationID: UUID, in context: ModelContext) throws {
+        guard try conflict(for: client.id, in: context) == nil else {
+            throw ClientLocalDataSourceError.syncConflictPending(client.id)
+        }
+        guard try !hasDeletionState(for: client.id, in: context) else {
+            throw ClientLocalDataSourceError.restoreRequiresExplicitResolution(client.id)
+        }
+        let payload = ClientDTO(client)
+        let operations = try pendingOperations(for: client.id, in: context)
+        let head = try pendingHead(from: operations, clientID: client.id)
+        let headPayload: ClientDTO?
+        if case .upsert(let upsert) = head {
+            headPayload = upsert.client
+        } else {
+            headPayload = nil
+        }
+        if headPayload != payload {
+            try ensureOperationIdentityAvailable(operationID, in: context)
+            context.insert(
+                try ClientPendingUpsertModel(
+                    clientID: client.id.rawValue,
+                    operationID: operationID,
+                    predecessorOperationID: head?.operationID,
+                    base: try remoteBase(for: client.id, in: context),
+                    payload: payload
+                )
+            )
+        }
+        try materialize(client, in: context)
+        _ = try fetchAll(in: context)
     }
 
     /// Hides the client and commits a durable tombstone, retaining its last local profile and consent.

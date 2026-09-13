@@ -7,12 +7,12 @@ import Testing
 struct PhaseFiveSchemaMigrationPlanTests {
     @Test("The plan starts at the persisted 05.10c baseline")
     func planStartsAtPersistedBaseline() {
-        #expect(PhaseFiveSchemaMigrationPlan.schemas.count == 1)
+        #expect(PhaseFiveSchemaMigrationPlan.schemas.count == 2)
         #expect(PhaseFiveBaselineSchema.versionIdentifier == Schema.Version(1, 0, 0))
         #expect(PhaseFiveBaselineSchema.models.count == 28)
-        #expect(PhaseFiveSchemaMigrationPlan.stages.isEmpty)
+        #expect(PhaseFiveSchemaMigrationPlan.stages.count == 1)
         #expect(rawCurrentSchema.version == Schema.Version(1, 0, 0))
-        #expect(Schema.franAlonso.version == Schema.Version(1, 0, 0))
+        #expect(Schema.franAlonso.version == Schema.Version(2, 0, 0))
     }
 
     @Test("A raw 05.10c store adopts the plan with all 28 rows intact")
@@ -21,31 +21,31 @@ struct PhaseFiveSchemaMigrationPlanTests {
             let fixture: PhaseFiveMigrationFixture
 
             do {
-                let container = try rawContainer(at: storeURL)
+                let container = try rawPhaseFiveMigrationContainer(at: storeURL)
                 let context = ModelContext(container)
-                fixture = try insertRepresentativeRows(in: context)
+                fixture = try insertPhaseFiveMigrationRows(in: context)
                 try context.save()
             }
 
             do {
                 let container = try migratedCurrentContainer(at: storeURL)
-                try verifyRepresentativeRows(in: ModelContext(container), fixture: fixture)
+                try verifyPhaseFiveMigrationRows(in: ModelContext(container), fixture: fixture)
             }
 
             let reopened = try migratedCurrentContainer(at: storeURL)
-            try verifyRepresentativeRows(in: ModelContext(reopened), fixture: fixture)
+            try verifyPhaseFiveMigrationRows(in: ModelContext(reopened), fixture: fixture)
         }
     }
 }
 
-private struct PhaseFiveMigrationFixture {
-    let client: ClientMigrationFixture
-    let product: ProductMigrationFixture
-    let service: ServiceMigrationFixture
-    let sale: SaleMigrationFixture
+struct PhaseFiveMigrationFixture {
+    let client: PhaseFiveBaselineClientMigrationFixture
+    let product: PhaseFiveBaselineProductMigrationFixture
+    let service: PhaseFiveBaselineServiceMigrationFixture
+    let sale: PhaseFiveBaselineSaleMigrationFixture
 }
 
-private struct ClientMigrationFixture {
+struct PhaseFiveBaselineClientMigrationFixture {
     let value: Client
     let upsert: ClientPendingUpsert
     let deletion: ClientPendingDelete
@@ -53,7 +53,7 @@ private struct ClientMigrationFixture {
     let retry: SyncRetryState
 }
 
-private struct ProductMigrationFixture {
+struct PhaseFiveBaselineProductMigrationFixture {
     let value: Product
     let upsert: ProductPendingUpsert
     let deletion: ProductPendingDelete
@@ -61,7 +61,7 @@ private struct ProductMigrationFixture {
     let retry: SyncRetryState
 }
 
-private struct ServiceMigrationFixture {
+struct PhaseFiveBaselineServiceMigrationFixture {
     let value: Service
     let upsert: ServicePendingUpsert
     let deletion: ServicePendingDelete
@@ -69,7 +69,7 @@ private struct ServiceMigrationFixture {
     let retry: SyncRetryState
 }
 
-private struct SaleMigrationFixture {
+struct PhaseFiveBaselineSaleMigrationFixture {
     let value: Sale
     let upsert: SalePendingUpsert
     let discard: SalePendingDiscard
@@ -108,7 +108,7 @@ private let rawCurrentSchema = Schema([
     SaleSyncRetryModel.self
 ])
 
-private func rawContainer(at storeURL: URL) throws -> ModelContainer {
+func rawPhaseFiveMigrationContainer(at storeURL: URL) throws -> ModelContainer {
     let configuration = ModelConfiguration(
         "RawPhaseFiveTenC",
         schema: rawCurrentSchema,
@@ -134,7 +134,7 @@ private func migratedCurrentContainer(at storeURL: URL) throws -> ModelContainer
     )
 }
 
-private func withPhaseFiveMigrationStore(
+func withPhaseFiveMigrationStore(
     _ operation: (URL) throws -> Void
 ) throws {
     let directory = FileManager.default.temporaryDirectory.appending(
@@ -146,19 +146,28 @@ private func withPhaseFiveMigrationStore(
     try operation(directory.appending(path: "Migration.store"))
 }
 
-private func insertRepresentativeRows(in context: ModelContext) throws -> PhaseFiveMigrationFixture {
+func insertPhaseFiveMigrationRows(
+    in context: ModelContext,
+    clientStatus: ClientStatus = .draft
+) throws -> PhaseFiveMigrationFixture {
     PhaseFiveMigrationFixture(
-        client: try insertClientRows(in: context),
+        client: try insertClientRows(in: context, status: clientStatus),
         product: try insertProductRows(in: context),
         service: try insertServiceRows(in: context),
         sale: try insertSaleRows(in: context)
     )
 }
 
-private func insertClientRows(in context: ModelContext) throws -> ClientMigrationFixture {
-    let client = Client.draft(
+private func insertClientRows(
+    in context: ModelContext,
+    status: ClientStatus
+) throws -> PhaseFiveBaselineClientMigrationFixture {
+    let client = Client(
         id: ClientID(rawValue: phaseFiveMigrationUUID("81000000-0000-0000-0000-000000000001")),
-        displayName: "Baseline client"
+        displayName: "Baseline client",
+        taxIdentifier: nil,
+        billingAddress: nil,
+        status: status
     )
     let payload = ClientDTO(client)
     let upsertOperationID = phaseFiveMigrationUUID("81000000-0000-0000-0000-000000000002")
@@ -209,7 +218,7 @@ private func insertClientRows(in context: ModelContext) throws -> ClientMigratio
     context.insert(ClientSyncCursorModel(feedID: "clients", changeSequence: 12))
     context.insert(ClientSyncRetryModel(retry))
 
-    return ClientMigrationFixture(
+    return PhaseFiveBaselineClientMigrationFixture(
         value: client,
         upsert: upsert,
         deletion: deletion,
@@ -218,7 +227,7 @@ private func insertClientRows(in context: ModelContext) throws -> ClientMigratio
     )
 }
 
-private func insertProductRows(in context: ModelContext) throws -> ProductMigrationFixture {
+private func insertProductRows(in context: ModelContext) throws -> PhaseFiveBaselineProductMigrationFixture {
     let product = Product.testSnapshot(
         id: ProductID(rawValue: phaseFiveMigrationUUID("82000000-0000-0000-0000-000000000001")),
         name: "Baseline product"
@@ -272,7 +281,7 @@ private func insertProductRows(in context: ModelContext) throws -> ProductMigrat
     context.insert(ProductSyncCursorModel(feedID: "products", changeSequence: 22))
     context.insert(ProductSyncRetryModel(retry))
 
-    return ProductMigrationFixture(
+    return PhaseFiveBaselineProductMigrationFixture(
         value: product,
         upsert: upsert,
         deletion: deletion,
@@ -281,7 +290,7 @@ private func insertProductRows(in context: ModelContext) throws -> ProductMigrat
     )
 }
 
-private func insertServiceRows(in context: ModelContext) throws -> ServiceMigrationFixture {
+private func insertServiceRows(in context: ModelContext) throws -> PhaseFiveBaselineServiceMigrationFixture {
     let service = try makeService(
         id: phaseFiveMigrationUUID("83000000-0000-0000-0000-000000000001"),
         name: "Baseline service"
@@ -335,7 +344,7 @@ private func insertServiceRows(in context: ModelContext) throws -> ServiceMigrat
     context.insert(ServiceSyncCursorModel(feedID: "services", changeSequence: 32))
     context.insert(ServiceSyncRetryModel(retry))
 
-    return ServiceMigrationFixture(
+    return PhaseFiveBaselineServiceMigrationFixture(
         value: service,
         upsert: upsert,
         deletion: deletion,
@@ -344,7 +353,7 @@ private func insertServiceRows(in context: ModelContext) throws -> ServiceMigrat
     )
 }
 
-private func insertSaleRows(in context: ModelContext) throws -> SaleMigrationFixture {
+private func insertSaleRows(in context: ModelContext) throws -> PhaseFiveBaselineSaleMigrationFixture {
     let sale = try representativeSale()
     let payload = try SaleDTO(sale)
     let upsertOperationID = phaseFiveMigrationUUID("84000000-0000-0000-0000-000000000002")
@@ -395,7 +404,7 @@ private func insertSaleRows(in context: ModelContext) throws -> SaleMigrationFix
     context.insert(SaleSyncCursorModel(feedID: "sales", changeSequence: 42))
     context.insert(SaleSyncRetryModel(retry))
 
-    return SaleMigrationFixture(
+    return PhaseFiveBaselineSaleMigrationFixture(
         value: sale,
         upsert: upsert,
         discard: discard,
@@ -404,14 +413,14 @@ private func insertSaleRows(in context: ModelContext) throws -> SaleMigrationFix
     )
 }
 
-private func verifyRepresentativeRows(in context: ModelContext, fixture: PhaseFiveMigrationFixture) throws {
+func verifyPhaseFiveMigrationRows(in context: ModelContext, fixture: PhaseFiveMigrationFixture) throws {
     try verifyClientRows(in: context, fixture: fixture.client)
     try verifyProductRows(in: context, fixture: fixture.product)
     try verifyServiceRows(in: context, fixture: fixture.service)
     try verifySaleRows(in: context, fixture: fixture.sale)
 }
 
-private func verifyClientRows(in context: ModelContext, fixture: ClientMigrationFixture) throws {
+private func verifyClientRows(in context: ModelContext, fixture: PhaseFiveBaselineClientMigrationFixture) throws {
     #expect(try only(ClientModel.self, in: context).toDomain() == fixture.value)
 
     let upsert = try only(ClientPendingUpsertModel.self, in: context)
@@ -443,7 +452,7 @@ private func verifyClientRows(in context: ModelContext, fixture: ClientMigration
     #expect(try only(ClientSyncRetryModel.self, in: context).decodeState(for: fixture.retry.scope) == fixture.retry)
 }
 
-private func verifyProductRows(in context: ModelContext, fixture: ProductMigrationFixture) throws {
+private func verifyProductRows(in context: ModelContext, fixture: PhaseFiveBaselineProductMigrationFixture) throws {
     #expect(try only(ProductModel.self, in: context).toDomain() == fixture.value)
 
     let upsert = try only(ProductPendingUpsertModel.self, in: context)
@@ -475,7 +484,7 @@ private func verifyProductRows(in context: ModelContext, fixture: ProductMigrati
     #expect(try only(ProductSyncRetryModel.self, in: context).decodeState(for: fixture.retry.scope) == fixture.retry)
 }
 
-private func verifyServiceRows(in context: ModelContext, fixture: ServiceMigrationFixture) throws {
+private func verifyServiceRows(in context: ModelContext, fixture: PhaseFiveBaselineServiceMigrationFixture) throws {
     #expect(try only(ServiceModel.self, in: context).toDomain() == fixture.value)
 
     let upsert = try only(ServicePendingUpsertModel.self, in: context)
@@ -507,7 +516,7 @@ private func verifyServiceRows(in context: ModelContext, fixture: ServiceMigrati
     #expect(try only(ServiceSyncRetryModel.self, in: context).decodeState(for: fixture.retry.scope) == fixture.retry)
 }
 
-private func verifySaleRows(in context: ModelContext, fixture: SaleMigrationFixture) throws {
+private func verifySaleRows(in context: ModelContext, fixture: PhaseFiveBaselineSaleMigrationFixture) throws {
     #expect(try only(SaleModel.self, in: context).toDomain() == fixture.value)
 
     let upsert = try only(SalePendingUpsertModel.self, in: context)
