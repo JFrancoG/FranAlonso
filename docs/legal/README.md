@@ -1,6 +1,6 @@
 # Plantillas documentales provisionales
 
-Las plantillas de consentimiento, ticket A4 y factura A4 se generan desde dos
+Las plantillas informativa, de consentimiento, ticket A4 y factura A4 se generan desde dos
 fuentes complementarias mediante
 [`scripts/generate_document_templates.py`](../../scripts/generate_document_templates.py):
 
@@ -11,9 +11,41 @@ fuentes complementarias mediante
 Los nombres incluidos en la aplicación son estables para que una revisión de
 texto o logotipo no obligue a cambiar el código:
 
-- `client-consent-template.pdf`
+- `client-data-information-template.pdf` (información de ficha sin referencias a imágenes)
+- `client-consent-template.pdf` (incluye autorización de fotografía interna)
 - `billing-ticket-a4-template.pdf`
 - `billing-invoice-a4-template.pdf`
+
+## Plan de integración aprobado — 2026-09-11
+
+[ADR 0028](../ADRs/0028-client-signed-information-and-photo-authorization.md) y [spec 08](../specs/08_clients_consent.md)
+sitúan contenido/versionado y render en 08.5, persistencia en 08.6, lector y firma en 08.7, activación en 08.8 y foto
+real inicial/posterior en 08.9. El catálogo sigue fuera del bundle hasta implementar su distribución compartida.
+Los PDF conservan su condición de borradores y sus límites de accesibilidad/revisión jurídica. Las notas inferiores
+registran el estado de cada generación, no un bloqueo vigente de planificación.
+
+## Variante informativa sin imágenes — 2026-09-10
+
+Petición expresa del propietario: añadir un borrador sencillo para la ficha sin fotografía, conservando el documento
+con foto. El JSON `dataInformation` reutiliza las secciones comunes y referencia ocho textos específicos del catálogo.
+La lista de autorizaciones queda vacía: el generador omite ese apartado y presenta la firma como constancia de recepción.
+Las cuatro plantillas se generan con la misma herramienta. Los tres PDF anteriores mantienen sus bytes.
+El nuevo PDF es un recurso documental adicional; todavía no se añade a DocumentTemplateResource ni se conecta al flujo.
+
+La implementación se planeará más adelante tras revisar ADR/specs, Progress del vault del proyecto y Linear/historia
+correspondiente. Esta petición no autoriza implementar el recorrido, cerrar 08.4 ni iniciar otra subfase.
+
+## Revisión del consentimiento — 2026-09-10
+
+El propietario autoriza sustituir el borrador por el texto ajustado a ficha de clientes, foto interna opcional
+(y ninguna finalidad publicitaria) y envío de ticket/factura por email bajo solicitud. Se conserva la marca de borrador
+y la nota editorial pendiente sobre transferencias internacionales. El consentimiento usa `consent.documentVersion`
+(`2026-09-10-draft`); ticket y factura conservan `documentVersion` y sus PDFs originales byte a byte.
+Nombre, fecha y firma sustituyen las tres columnas anteriores: no se pide DNI/NIE sistemático en este documento.
+Texto canónico en el catálogo; propuesta de discusión archivada en `docs/progress/08-4-consent-text-proposal.md`.
+
+Regeneración de esta revisión: CPython 3.12.14/zlib1.2.12 y requirements fijados; dos pasadas idénticas.
+Ticket/factura reproducen los hashes previos. Esta comprobación no extiende la reproducibilidad a otros entornos.
 
 ## Estado de revisión
 
@@ -62,5 +94,8 @@ ejecuciones del entorno validado. No se promete identidad byte a byte con otra
 versión de Python, ReportLab, Pillow, charset-normalizer o zlib; en ese caso se
 debe volver a revisar visualmente el resultado antes de aceptar el nuevo hash.
 
-Después de cualquier cambio se deben renderizar los tres PDF, revisarlos
+Después de cualquier cambio se deben renderizar los PDF afectados, revisarlos
 visualmente y ejecutar `DocumentTemplateResourceTests` mediante Xcode MCP.
+
+Los tests actuales cubren los tres recursos originales. Para el borrador informativo adicional, comprobar
+texto, A4, render, reproducibilidad e inclusión en el bundle hasta que se planifique su integración Swift.

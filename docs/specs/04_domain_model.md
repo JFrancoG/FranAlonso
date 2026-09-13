@@ -23,7 +23,8 @@ Definir entidades, value objects, políticas, contratos y casos de uso puros, si
   cerrado `0...100`; rechazan valores fuera del rango y no numéricos.
 - `Client.draft(id:displayName:)` expresa la creación inicial; `consentPendingUpload` representa el consentimiento
   aún no persistido remotamente y `active` contiene una referencia de
-  consentimiento no vacía, conforme a ADR 0009.
+  documento inicial firmado no vacía, conforme a ADR 0009 y ADR 0028. Los nombres existentes se conservan;
+  la autorización fotográfica posterior tiene su propio registro y no devuelve una ficha activa al estado pendiente.
 - `Product` representa solo inventario físico y no contiene precio de compra,
   precio de venta ni descuento.
 - `Service` contiene precio, impuesto y descuento comercial. El tipo `product`

@@ -4,6 +4,10 @@ All notable changes to this project are documented in this file.
 
 ## [Unreleased]
 
+### Added
+
+- 2026-09-13 | ✨ feat(clients): add ephemeral signature capture
+
 ### Maintenance
 
 - 2026-09-10 | 📦 build(config): move app metadata to build settings
@@ -13,6 +17,8 @@ All notable changes to this project are documented in this file.
 - 2026-09-10 | 🐛 fix(clients): improve confirmation and retry controls
 
 ### Documentation
+
+- 2026-09-13 | 📝 docs(delivery): record PLU-38 draft PR
 
 - 2026-09-10 | 📝 docs(delivery): close PLU-37 after merge
 

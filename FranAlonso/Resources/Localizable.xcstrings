@@ -1224,6 +1224,198 @@
           }
         }
       }
+    },
+    "clients.signature.announcement.clear" : {
+      "comment" : "Anuncio tras borrar los trazos de la sesión de captura.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Firma borrada."
+          }
+        }
+      }
+    },
+    "clients.signature.announcement.stroke.ended" : {
+      "comment" : "Anuncio tras terminar un trazo válido, sin anunciar cada muestra del gesto.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trazo terminado."
+          }
+        }
+      }
+    },
+    "clients.signature.announcement.undo" : {
+      "comment" : "Anuncio tras deshacer el trazo en curso o el último trazo terminado.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Último trazo deshecho."
+          }
+        }
+      }
+    },
+    "clients.signature.cancel" : {
+      "comment" : "Acción que cancela la sesión y descarta sus trazos.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancelar firma"
+          }
+        }
+      }
+    },
+    "clients.signature.canvas.label" : {
+      "comment" : "Nombre accesible del lienzo vectorial.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Área de firma"
+          }
+        }
+      }
+    },
+    "clients.signature.clear" : {
+      "comment" : "Acción para borrar todos los trazos de la sesión.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Borrar firma"
+          }
+        }
+      }
+    },
+    "clients.signature.confirm" : {
+      "comment" : "Acción para entregar la firma capturada al flujo que presentó la pantalla.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Confirmar firma"
+          }
+        }
+      }
+    },
+    "clients.signature.error.coordinates" : {
+      "comment" : "Error de geometría no válida, sin exponer valores capturados.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se ha podido usar este trazo. Vuelve a dibujarlo."
+          }
+        }
+      }
+    },
+    "clients.signature.error.empty" : {
+      "comment" : "Error cuando no hay tinta válida que confirmar.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Añade al menos un trazo antes de confirmar la firma."
+          }
+        }
+      }
+    },
+    "clients.signature.error.stroke" : {
+      "comment" : "Error cuando un trazo no contiene desplazamiento entre puntos.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El trazo necesita dos puntos en posiciones distintas. Vuelve a dibujarlo."
+          }
+        }
+      }
+    },
+    "clients.signature.instructions" : {
+      "comment" : "Instrucciones de captura y alternativas de corrección.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dibuja tu firma en el área de firma. Puedes deshacer trazos o borrar la firma antes de confirmarla."
+          }
+        }
+      }
+    },
+    "clients.signature.status.drawing" : {
+      "comment" : "Estado del lienzo cuando contiene un trazo sin terminar.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trazo en curso."
+          }
+        }
+      }
+    },
+    "clients.signature.status.empty" : {
+      "comment" : "Estado del lienzo antes de completar un trazo válido.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Todavía no hay firma."
+          }
+        }
+      }
+    },
+    "clients.signature.status.ready" : {
+      "comment" : "Estado del lienzo con tinta válida y sin trazo en curso.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Firma lista para confirmar."
+          }
+        }
+      }
+    },
+    "clients.signature.title" : {
+      "comment" : "Título de la pantalla independiente de captura de firma.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Capturar firma"
+          }
+        }
+      }
+    },
+    "clients.signature.undo" : {
+      "comment" : "Acción para descartar el trazo en curso o deshacer el último trazo terminado.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deshacer trazo"
+          }
+        }
+      }
     }
   },
   "version" : "1.0"

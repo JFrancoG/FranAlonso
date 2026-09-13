@@ -26,24 +26,12 @@
       {
         "labelKey": "consent.summary.lawful_basis.label",
         "textKey": "consent.summary.lawful_basis.text"
-      },
-      {
-        "labelKey": "consent.summary.recipients.label",
-        "textKey": "consent.summary.recipients.text"
-      },
-      {
-        "labelKey": "consent.summary.rights.label",
-        "textKey": "consent.summary.rights.text"
       }
     ],
     "details": [
       {
         "headingKey": "consent.details.provenance.heading",
         "textKey": "consent.details.provenance.text"
-      },
-      {
-        "headingKey": "consent.details.requirement.heading",
-        "textKey": "consent.details.requirement.text"
       },
       {
         "headingKey": "consent.details.retention.heading",
@@ -58,15 +46,57 @@
         "textKey": "consent.details.rights.text"
       },
       {
-        "headingKey": "consent.details.automated_decisions.heading",
-        "textKey": "consent.details.automated_decisions.text"
+        "headingKey": "consent.details.additional.heading",
+        "textKey": "consent.details.additional.text"
       }
     ],
     "optionalConsents": [
-      "consent.optional.photo",
-      "consent.optional.marketing_electronic",
-      "consent.optional.marketing_phone_postal"
+      "consent.optional.photo"
     ],
-    "signatureNoticeKey": "consent.signature.notice"
+    "signatureNoticeKey": "consent.signature.notice",
+    "documentVersion": "2026-09-10-draft"
+  },
+  "dataInformation": {
+    "titleKey": "data_information.title",
+    "introductionKey": "data_information.introduction",
+    "summary": [
+      {
+        "labelKey": "consent.summary.controller.label",
+        "textKey": "consent.summary.controller.text"
+      },
+      {
+        "labelKey": "consent.summary.purposes.label",
+        "textKey": "consent.summary.purposes.text"
+      },
+      {
+        "labelKey": "consent.summary.lawful_basis.label",
+        "textKey": "data_information.lawful_basis"
+      }
+    ],
+    "details": [
+      {
+        "headingKey": "consent.details.provenance.heading",
+        "textKey": "data_information.provenance"
+      },
+      {
+        "headingKey": "consent.details.retention.heading",
+        "textKey": "data_information.retention"
+      },
+      {
+        "headingKey": "consent.details.recipients.heading",
+        "textKey": "data_information.recipients"
+      },
+      {
+        "headingKey": "consent.details.rights.heading",
+        "textKey": "data_information.rights"
+      },
+      {
+        "headingKey": "consent.details.additional.heading",
+        "textKey": "consent.details.additional.text"
+      }
+    ],
+    "optionalConsents": [],
+    "signatureNoticeKey": "data_information.signature_notice",
+    "documentVersion": "2026-09-10-draft"
   }
 }

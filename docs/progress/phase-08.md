@@ -1,5 +1,525 @@
 # Fase 08 — Clientes, consentimiento y foto
 
+## Entrega parcial publicada — 2026-09-13
+
+Commit funcional `7aab140` y push de `codex/plu-38-phase-08-4-signature-capture` completados.
+[PR#11](https://github.com/JFrancoG/FranAlonso/pull/11) abierta como borrador contra main, verificada OPEN/draft.
+GitHub devolvió errores internos en los primeros intentos; se verificó ausencia de PR entre reintentos y el POST final
+respondió201 con PR#11. No se creó una PR duplicada. El readback no muestra checks remotos configurados; no es un PASS de CI.
+
+PLU-38 actualizado con enlace, evidencia y los dos límites; readback confirma In Progress y attachment de PR#11.
+No merge, cierre de issue, eliminación de rama, activación live ni inicio de08.5.
+Este registro de entrega solo cambia documentación; build/tests N/A. Conserva los resultados técnicos y auditorías
+anteriores, y los seis enlaces históricos08.3 rotos permanecen declarados. Los estados de preparación inferiores son históricos.
+
+## Preparación de entrega draft — 2026-09-13
+
+El propietario autoriza commit, push y PR. Se prepara PR borrador porque quedan evidencia de resize durante gesto activo
+y medición/atribución del contraste nativo final; sin merge, cierre de PLU-38, activación live ni código de08.5.
+La matriz se consolida con los reportes ya aceptados; no se repiten pruebas ni se transforman limitaciones en PASS.
+
+Limpieza con PRE independiente `delivery084_cleanup_pre` PASS: App.swift restaurada byte a byte frente a HEAD,
+retirados los dos Swift temporales, solo sus dos claves de catálogo y el esquema local ignorado Signature-Manual.
+Xcode confirma únicamente Develop/Production; Develop queda seleccionado en iPadAir11M4/26.5.
+Se conserva el fixture de previews de firma, independiente del acceso temporal eliminado.
+Huella PRE/triage read-only463 archivos estable: `b8620ab5514a2d6b0da26e1a898b3048fa8ff0ccd3263f5105436f645d086ba4`.
+
+Primer build falla por lista de entradas aún referida a los archivos eliminados. XcodeLS confirma después su ausencia;
+repetición oficial PASS14,159s. Log `BuildProject-Log-20260913-111436.txt`, único warning AppIntents previo.
+Tres tests existentes de composición ejecutados:3/3, cero fallidos/omitidos/no ejecutados:
+`developFixtureLaunchArgumentsAreDisabledByDefault`, `sharedFixtureSeamsRemainInsideCompilationGuard` y
+`signedOutFixtureTraversesFullAuthenticationChain`.
+Resultado nativo: `/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RunSomeTests/Test-FranAlonso-Develop-2026.09.13_11-14-46-+0200.xcresult`.
+La regresión histórica26/26 se conserva, sin presentarla como ejecución nueva. No hay nuevos tests de lógica para una
+restauración exacta; las previews anteriores se conservan porque no cambió la UI de captura desde el delta de voz validado.
+
+Gobernanza: Progress vuelve a cumplir presupuesto8192 bytes. Persisten exclusivamente los seis enlaces históricos rotos
+ de08.3; no se incluyen cambios ajenos para ocultarlos. Diff check limpio. POST finales favorables para draft; publicación autorizada pendiente de completar.
+Esta cabecera sustituye estados de entrega/acceso temporal de entradas históricas inferiores.
+
+POST finales por agentes nuevos `delivery084_final_standards` y `delivery084_final_accessibility`: sin hallazgos nuevos,
+PASS para commit/push/PR borrador, no DoD ni merge. Revisadas7 Swift, catálogo y alcance de planificación;
+revisor UI inspecciona cuatro previews existentes (Large Light, XXXDark, AX5LightHigh y AX5RTL) sin repetir render.
+55/55 criterios,35 aplicables y20 N/A, con excepciones y límites explícitos.
+Huella read-only461 archivos pre/post idéntica verificada por el orquestador:
+`81843677dceba2c254b9e2719b52eb1c49f293ee5aaae6a3457474a4666019a8`.
+Inspección de28 archivos previstos sin patrones de claves privadas/API/JWT ni credenciales en query; JSON válidos.
+Sin cambios de negocio ni nuevos builds tras registrar estos dictámenes.
+
+## iPad: contraste incrementado comprobado en claro/oscuro — 2026-09-13
+
+El propietario confirma texto, firma, borde y botones distinguibles en ambas apariencias con Aumentar contraste.
+Se completa ese muestreo visual; no acredita medición de ratios. Restan resize durante gesto activo, reconciliación
+de evidencia técnica y cierre de 08.4. Se indica restaurar preferencias anteriores sin afirmar que ya se ha realizado.
+Detalle en matriz08.4; build/tests N/A documental.
+
+## iPad: Reducir movimiento confirmado — 2026-09-13
+
+El propietario confirma funcionamiento correcto al abrir captura, dibujar y confirmar con Reducir movimiento activado.
+Se resuelve ese muestreo; se conserva evidencia previa y quedan contraste, resize durante gesto y cierre técnico/documental.
+Se indicó restaurar la preferencia previa, sin confirmación todavía. Registro manual; build/tests N/A.
+
+## iPad: adaptación de ventana confirmada — 2026-09-13
+
+El propietario confirma conservación de dos trazos terminados al reducir/ampliar la ventana y acceso a Deshacer,
+Borrar y Confirmar en tamaño mínimo. Se resuelve ese recorrido, sin inferir resize durante gesto activo.
+Restan ese caso de interrupción, preferencias de accesibilidad y cierre técnico/documental; no repetir ventana mínima.
+Reporte manual sin nueva identificación de modelo/OS/binario; detalle en matriz08.4. Build/tests N/A documental.
+
+## VoiceOver: estados vacío y listo confirmados — 2026-09-13
+
+El propietario confirma «Todavía no hay firma» al enfocar el área vacía y «Firma lista para confirmar» después
+de dibujar. Misma sesión iPhone14 físico/iOS26.7 y binario RunProject001300. Se resuelve el pendiente de valor
+del lienzo; no se repiten estas pruebas ni las de anuncios ya confirmadas. Quedan las comprobaciones de ventana
+y preferencias de iPad y el cierre técnico/documental de 08.4. Build/tests N/A, registro manual.
+
+## VoiceOver: resultados de edición confirmados — 2026-09-13
+
+Retest del propietario sobre el binario nuevo: Deshacer y Borrar anuncian los resultados previstos.
+Se conserva el ajuste de prioridad y se resuelve el P2 de silencio en el recorrido probado. No se infiere de la respuesta
+permanencia del foco ni ausencia de duplicados. La audibilidad deja de ser pendiente; el valor del lienzo y el resto
+de comprobaciones de 08.4 se conservan. Las anotaciones siguientes describen el diagnóstico previo.
+
+El propietario precisa que Deshacer/Borrar ejecutan la acción sin anunciar resultado. P2 abierto en 4.1.3.
+Piloto mínimo revisado independientemente: prioridad alta solo en esos dos anuncios, conservando foco/diseño/textos
+y prioridad de los demás. Causa no demostrada; requiere retest audible. Xcode identifica iPhone14 físico/iOS26.7.
+Build PASS, solo warning AppIntents conocido; POST accesibilidad/estándares favorables con huella estable.
+RunProject confirma lanzamiento en el iPhone14 tras desbloquearlo: PASS11,023s, PID1157.
+Binario nuevo preparado; falta comprobar audibilidad con el propietario.
+Detalle, fuente y huella PRE en la [matriz 08.4](../accessibility/evidence/08-4-signature-capture.md).
+
+## Cancelación por Control por voz confirmada — 2026-09-13
+
+El propietario confirma «Tocar cancelar firma»: vuelve a la pantalla principal y aparece «Captura cancelada».
+También confirma locución correcta de los botones Deshacer trazo y Borrar firma con VoiceOver; no se infieren
+anuncios de resultado ni valor del lienzo. Cancelar por voz deja de ser pendiente; las menciones inferiores son históricas.
+Detalle y límites en la [matriz 08.4](../accessibility/evidence/08-4-signature-capture.md).
+Registro documental, build/tests N/A; sin cierre de subfase ni entrega Git.
+
+## Contorno accesible rectangular: comprobaciones locales completadas — 2026-09-12
+
+Estado final del ajuste: resalte perceptible en Dark/Light, Espacio confirma y vuelve, y VoiceOver
+recorre correctamente los controles vecinos en iPhone14 físico/iOS26.6.1, anunciando atenuado cuando
+están vacíos. Se conserva la solución. Esta conclusión sustituye los pendientes locales históricos
+enumerados debajo; no cierra las restantes comprobaciones de 08.4 ni la medición de contraste.
+
+Light confirmado posteriormente: el propietario percibe el resalte mejor aún que en Dark.
+Mejora visible en ambas apariencias y activación por teclado acreditadas; pendiente VO local del delta.
+
+Activación posterior acreditada: el propietario confirma que Espacio ejecuta Confirmar y vuelve
+a la pantalla anterior. No se infiere retorno del foco. Pendientes Light y orden VoiceOver local.
+
+Resultado manual posterior: el propietario confirma que ahora identifica el foco por las esquinas
+que sobresalen, aunque sigue sutil. Se conserva el cambio. No se infieren ambas apariencias ni
+activación/orden VoiceOver; esas comprobaciones locales siguen pendientes.
+
+Nuevo dato del propietario sobre esquinas visibles en iconos y resalte aparente del texto de Confirmar.
+Se ensaya una línea contentShape accessibility rect sobre el botón completo sin alterar ancho/diseño.
+Xcode RunProject PASS11,431s, tres previews y revisiones read-only sin hallazgos del delta.
+El árbol conserva un único Confirmar548×50,5pt; pulsación vacía inoperable. Pendientes FKA Light/Dark,
+Espacio y orden VoiceOver local. Detalle en [propuesta](08-4-keyboard-focus-proposal.md); 08.4 abierta.
+
+## Piloto del foco interior descartado — 2026-09-12
+
+Capturado el indicador individual FKA de Deshacer y Confirmar dentro del grupo. Ensayo local
+de margen6pt solo en Confirmar compilado, cuatro previews y revisión independiente sin hallazgos
+estáticos. El propietario indica que lo ve igual: no resuelve el objetivo y se retira.
+Código anterior restaurado exactamente y ejecutado en iPadAir11M4/26.5, PASS9,203s con único aviso
+AppIntents previo. No se acredita Espacio del piloto ni cierre de foco/08.4. No se repiten las
+pruebas funcionales anteriores. Detalle y digests en [propuesta](08-4-keyboard-focus-proposal.md).
+
+## Resalte individual dentro del grupo — 2026-09-11
+
+El propietario distingue marco persistente del grupo y resalte transparente muy sutil del control
+seleccionado, especialmente en el botón principal interior. La prueba del botón aislado no valida
+ese comportamiento. Se prioriza diagnosticar el indicador individual antes de trasladar el margen
+al sheet. Sin código ni pruebas nuevas; detalle en matriz08.4.
+
+## Prueba de separación del foco favorable — 2026-09-11
+
+Prototipo limitado a Capturar firma del acceso temporal, margen6pt y colores existentes. Propietario
+distingue aire en Light y Dark (menos evidente en Dark) y confirma activación por Espacio. Xcode MCP
+RunProject PASS9,561s, único aviso AppIntents previo. Tres previews hasta AX5 sin recorte y dos nuevas
+auditorías read-only favorables con digest463 estable. Apariencia restaurada Dark. Detalle en
+[propuesta](08-4-keyboard-focus-proposal.md) y matriz08.4. Pendiente traslado al sheet; no se cierra
+el hallazgo global ni08.4. No nuevos tests decorativos, commit ni entrega.
+
+## Estudio del foco de teclado — 2026-09-11
+
+Estudio autorizado completado: [propuesta](08-4-keyboard-focus-proposal.md), fuentes Apple, medición orientativa
+y revisión independiente read-only con digest462 estable. No se encontró un canal público documentado para
+cambiar únicamente el halo FKA de Button SwiftUI. Recomendado prototipo local de separación neutra y
+alternativa de decoración separada de tint, sin asumir comportamiento hasta probarlo. Sin código ni
+preferencias modificadas. P2 visual continúa abierto; build/tests N/A documental.
+
+## Teclado: recorrido funcional completado y foco por revisar — 2026-09-11
+
+El propietario confirma con teclado del Mac y Acceso total con teclado en iPadAir11M4/26.5 la selección
+y operación de abrir, Deshacer, Borrar, Cancelar y Confirmar, y volver a seleccionar Capturar firma.
+Trazos preparados con el ratón. Tab cambia de grupo; flecha abajo entra en el contenido. El foco rosa
+se confunde con el borde/relleno de los botones y al principio impidió reconocer que había entrado.
+PASS funcional focal; visibilidad del foco pendiente de diagnóstico, sin declarar PASS de contraste.
+Detalle en matriz08.4. Build/tests N/A documental; 08.4 sigue abierta y el acceso temporal se conserva.
+
+## Control por botón completado — 2026-09-11
+
+El propietario confirma en iPhone 14 físico/iOS 26.6.1 el recorrido con botón de pantalla completa y
+exploración automática: Deshacer elimina solo el último de dos trazos; Borrar elimina el restante;
+Cancelar cierra; Capturar firma vuelve a abrir; Confirmar cierra y muestra firma recibida. Tinta preparada
+con la ayuda desactivada. PASS manual focal de selección y operación, sin acreditar dibujo con Control
+por botón ni foco exacto de retorno. Próxima prueba acordada: teclado del Mac en simulador iPad.
+Detalle en matriz08.4. Build/tests N/A documental; se conserva el acceso temporal y 08.4 sigue abierta.
+
+## Inspector manual recibido y clasificado — 2026-09-11
+
+El propietario ejecuta Run Audit y aporta cuatro capturas: resumen de tres avisos y elementos afectados. Contraste1,68
+corresponde a Confirmar deshabilitado (exento1.4.3); las dos advertencias de Dynamic Type afectan a instrucciones y
+Confirmar, cuyo escalado AX5 ya está acreditado y no tienen fuente fija. Sin defectos nuevos confirmados ni cambios
+necesarios de código. Revisión independiente focal favorable con digest462 pre/post verificado; detalle, imágenes y
+fuente W3C en matriz08.4. Resuelta la falta de informe para el estado vacío auditado; no acredita todas las técnicas.
+Build/tests N/A documental. 08.4 conserva los demás pendientes y el acceso temporal, sin entrega Git.
+
+## Validación de cierre retomada — 2026-09-11
+
+Control por voz confirmado por el propietario en iPhone14/iOS26.6.1 para Deshacer, Borrar y Confirmar. Bloqueo durante
+el segundo trazo conserva el primero terminado y descarta el que estaba en curso. Dos revisiones independientes
+read-only sin defectos nuevos; propuesta de retirar harness aprobada por estándares cuando terminen las pruebas.
+Huella de462 archivos pre/post idéntica y verificada: `8107f53d2a29f9d8251706991d64ed383f6e637fe3a54720824ffbb03d5ab7c6`.
+Matriz consolidada para eliminar pendientes ya resueltos, conservando histórico y excepciones ADR26/27.
+Último RunProject iPadAir11M4/26.5, 02:43:29 PASS20,171s, único aviso previoAppIntents; relanzado por diagnóstico de
+interacción. VoiceOver: propietario confirma error y trazo terminado tras corregir. Rotación iPad conserva tinta
+terminada. Inspector no entrega informe y scroll/teclado no verificables; ajustes temporales restaurados.
+AX5 comprobado desde Ajustes nativos: scroll muestra todos los controles y Confirmar cierra. Reducción de transparencia
+comprobada en Dark/Large; ajustes restaurados. Artefactos en matriz.
+Pendientes tras esta sesión histórica (Inspector resuelto en la entrada posterior de cabecera): valores/anuncios de edición, Cancelar por voz, Switch Control/teclado, resize durante
+gesto/ventana mínima, Reduce Motion y limpieza.
+08.4 sigue abierta y sin entrega Git. No se inicia08.5.
+
+## Dispositivo VoiceOver confirmado — 2026-09-11
+
+El propietario identifica iPhone14 físico/iOS26.6.1 para su reporte posterior al cambio de botones. PASS manual focal
+para nombres, anuncio atenuado, acciones y retorno del foco. Resuelve identificación de dispositivo; no acredita una
+instalación física por el agente ni las restantes técnicas de la matriz. Evidencia/Progress actualizados, sin código,
+build ni tests nuevos. 08.4 sigue abierta.
+
+## Reporte VoiceOver posterior a los iconos — 2026-09-11
+
+El propietario confirma nombres iguales a los anteriores, anuncio «atenuado» al deshabilitar, acciones correctas y
+retorno del foco al origen. Falta identificar dispositivo y confirmar la nueva fila de iconos; el último Run del agente
+actualizó el iPad, no el iPhone14. Se conserva el reporte sin atribuirlo a un binario por inferencia. Detalle en matriz;
+sin código ni ejecución adicional. 08.4 sigue abierta y los restantes pendientes no quedan cubiertos por este reporte.
+
+## Botones mostrados y distribución aprobada — 2026-09-11
+
+Conexión Xcode restablecida. RunProject Signature-Manual/iPadAir11M4/26.5 PASS12,791s (02:20:42, PID84938), con aviso
+AppIntents previo en log completo y sin otros warnings/errores encontrados. Usuario ve el resultado y confirma
+«ha quedado bien». Cinco previews MCP inspeccionadas en iPadPro13M5/iOS27; límites AX5/RTL y estado inactivo en matriz.
+RocketSim verifica nombres, frames de iconos44×44 y Confirmar548×50,5pt; trazo/deshacer y trazo/borrar vuelven a vacío.
+Revisión focal visual independiente favorable, huella462pre/post idéntica verificada:
+`20fc242a16fc0de3e30ba34f6ed31b80c5d4bc7ec4007a0f6e3ef4dae2da7bc3`.
+Artefactos y log conservados en Documents/Codex/2026-09-11/franalonso-08-4-buttons, enlazados desde matriz08.4.
+Restaurada selección inicial iPhone14 de Jesús; app iPad abierta en captura vacía para el propietario. Sin ejecución
+física nueva ni retirada de acceso temporal. La reconexión deja de ser bloqueo; Inspector/AT y cierre08.4 pendientes.
+
+## Botones de firma: cambio aplicado, validación Xcode pendiente — 2026-09-11
+
+El propietario autoriza implementar la fila de iconos Deshacer/Borrar bajo Canvas y Confirmar con altura natural.
+Solo cambia ClientSignatureCaptureScreen; se mantienen lógica, nombres accesibles, rol, estados y anuncios.
+Revisión previa por agente nuevo PASS y posterior estática/estilo por otro agente nuevo sin hallazgos. Huellas
+pre/post verificadas de462 archivos: `77915993aafda695f758e1b89a6d97e4e463ba396eaf0d6e3ddafdf46b71fcb7` y
+`bd6bed08494954bbc3fc03455a67cede01d9ccb8838b1fc249dc64879dd04693`. Detalle en la matriz08.4.
+Build/previews/runtime pendientes: XcodeListWindows devuelve Transport closed; Xcode abierto y MCP habilitado no
+acreditan conexión operativa. Usuario avisado para reconectar; no se lanza un binario antiguo como resultado nuevo.
+Sin tests nuevos por cambio de layout sin lógica, diff-check limpio. 08.4 permanece abierta, sin entrega ni08.5.
+
+## Interrupción y propuesta visual de acciones — 2026-09-11
+
+El propietario confirma en iPhone 14 físico conservación de dos trazos terminados al ir a Inicio y volver, y Deshacer
+solo el último. PASS manual limitado a ese recorrido; gesto en curso, redimensionado y terminación de proceso no se
+infieren. Evidencia detallada en la matriz de 08.4; build/tests N/A documental.
+Propone Deshacer/Borrar como iconos en una fila bajo el lienzo y Confirmar separado con menos altura. Revisión de la
+View muestra tres acciones apiladas y un mínimo de 44 pt en el contenido de Confirmar más el estilo nativo large.
+Propuesta pendiente de implementación: acciones secundarias con nombres accesibles y superficies mínimas de 44×44 pt,
+Confirmar con altura natural adaptable. No cambia la lógica de captura ni se inicia 08.5; 08.4 permanece abierta.
+
+## VoiceOver: controles deshabilitados con firma vacía — 2026-09-11
+
+El propietario confirma en iPhone 14 físico que Deshacer trazo, Borrar firma y Confirmar firma se anuncian como
+«atenuado botón» al abrir la captura sin dibujar. PASS manual limitado a esos anuncios de rol/estado; no extrapola
+activación posterior, errores ni otras técnicas. Matriz y Progress actualizados; sin código ni nuevas ejecuciones.
+08.4 / PLU-38 sigue In Progress; build/tests N/A para registrar el resultado aportado.
+
+## VoiceOver: confirmación y retorno de foco — 2026-09-11
+
+Pruebas retomadas tras el ajuste documental. El propietario confirma en iPhone 14 físico: «Confirmar firma botón y
+acaba en el botón Capturar firma botón». PASS manual acotado al anuncio, activación y foco de retorno del montaje
+temporal tras preparar un trazo sin VoiceOver. No acredita dibujo con VoiceOver, errores ni otros pendientes de la
+matriz. Evidencia detallada en 08-4-signature-capture.md; código sin cambios y build/tests N/A para esta anotación.
+08.4 / PLU-38 continúa In Progress, sin cierre ni retirada del acceso temporal.
+
+## Plan aprobado y situación de 08.4 — 2026-09-11
+
+El propietario aprueba la recomendación de revisión: continuar en esta tarea, registrar ADR 0028 y ajustar specs y
+Linear antes de retomar validación. [ADR 0028](../ADRs/0028-client-signed-information-and-photo-authorization.md)
+precisa parcialmente ADR 0009 sin reescribirlo: información inicial firmada como regla de producto, contenido común
+versionado, autorización de fotografía opcional y proceso posterior independiente de la activación inicial.
+Specs 04/05/08 y guía de localización alineadas; contratos ejecutables, esquemas y recursos conservados.
+
+08.4 / PLU-38 sigue In Progress en `codex/plu-38-phase-08-4-signature-capture`. Mantiene sus 26/26 resultados previos,
+R01/R02 finales y VoiceOver básico de iPhone 14 físico. Falta completar la evidencia aplicable indicada en su matriz,
+revisor UI final nuevo y retirada del montaje temporal con validación Xcode MCP de la composición final. La revisión
+documental de este plan no sustituye esa revisión UI. No esperar a implementar 08.9 para cerrar el componente.
+No se reanuda ni ejecuta ahora la app; la siguiente validación será el pendiente del componente, con iPhone 14 o iPad.
+
+Plan operativo creado en Backlog bajo PLU-34; dependencia de entrega encadenada desde PLU-38:
+
+| Subfase | Issue | Alcance de implementación |
+|---|---|---|
+| 08.5 | [PLU-39](https://linear.app/plusprojects/issue/PLU-39) | Contenido/variantes, contrato versionado y render. |
+| 08.6 | [PLU-40](https://linear.app/plusprojects/issue/PLU-40) | Persistencia recuperable, migración y Storage idempotente. |
+| 08.7 | [PLU-41](https://linear.app/plusprojects/issue/PLU-41) | Lectura accesible, revisión y firma; contexto de foto mediante fixtures. |
+| 08.8 | [PLU-42](https://linear.app/plusprojects/issue/PLU-42) | Activación inicial tras upload. |
+| 08.9 | [PLU-43](https://linear.app/plusprojects/issue/PLU-43) | Selector/foto real inicial y posterior, retirada y detalle. |
+
+La dependencia no es circular: 08.5 define el contexto fotográfico, 08.7 consume ambas variantes con fixtures y
+08.9 completa su integración real. Es planificación aprobada, no inicio de nuevas subfases. La spec 08 conserva el
+plan normativo; esta tabla solo vincula trabajo operativo. Obsidian usa estos mismos archivos del repositorio.
+Revisión jurídica de los borradores y verificación de proveedores/transferencias/conservación siguen pendientes antes
+del uso real. Build/tests N/A por cambio exclusivamente documental; sin cierre, entrega Git ni activación live.
+
+Validación del ajuste documental: revisor de estándares nuevo e independiente PASS sin hallazgos, limitado a los
+12 Markdown del turno; no sustituye revisión UI ni gate previo del código futuro. Huella de 462 archivos pre/post
+idéntica, también verificada por el orquestador: `0968f7b62d75d85592214153830db381d41601f60273455f6fd744670d016aae`.
+Diff-check limpio; gobernanza conserva solo los seis enlaces históricos rotos de 08.3. Readback de Linear confirma
+PLU-38 In Progress y PLU-39–PLU-43 Backlog, sus padres y dependencias; Obsidian confirma el Progress actualizado.
+Esta anotación de evidencia se añade después de cerrar la revisión; el resto del contenido revisado se conserva.
+
+Las anotaciones siguientes son históricas; los pendientes de acuerdo de diseño de septiembre 10 quedan sustituidos
+por este plan, conservando su evidencia y los pendientes de validación/implementación.
+
+## Borrador adicional sin imágenes — 2026-09-10
+
+El propietario autoriza generar, entregar y añadir a Resources un borrador simple sin referencias a imágenes.
+Se añade client-data-information-template.pdf; se conservan los tres PDF anteriores byte a byte. Reutiliza estructura,
+estilos y textos comunes; ocho claves específicas y lista vacía de autorizaciones. El generador omite ese apartado
+cuando no hay opciones. Nombre, fecha y firma dejan constancia de recepción; marca jurídica y nota editorial pendientes
+conservadas. Sin Swift, cambios de activación o integración del recurso en DocumentTemplateResource.
+
+Copia: `/Users/jesusf/Documents/Codex/2026-09-10/franalonso-08-4/consent-draft/informacion-datos-personales-borrador-2026-09-10.pdf`.
+SHA-256: `ed788c875ec7af7c49e92440524bea4f91dfdec3dea01afe70c002a42e7eba17`.
+Una página A4, sin AcroForm, 19 claves de contenido verificadas y ninguna referencia a foto/imagen/casilla/autorizo.
+Render completo inspeccionado; consentimiento con foto, ticket y factura mantienen bytes y evidencia visual anteriores.
+Dos regeneraciones idénticas de los cuatro PDF en CPython 3.12.14/zlib 1.2.12 y requirements fijados.
+Copia entregable y recurso incluido en el bundle de la app idénticos al original generado.
+
+Revisión previa independiente PASS; digest de 460 archivos pre/post idéntico:
+`ab2c6d9084113fafc047db4bb96eec95b5c57b6e54c4b513df929994734bc3e4`.
+Xcode MCP Signature-Manual/iPad Air 11-inch (M4)/26.5: DocumentTemplateResourceTests 4/4 a las 23:48:24,
+resumen `046E34A7-FC40-430A-BFFC-F21E60D29689.txt`. Solo regresión de los tres recursos anteriores; no cubre el nuevo.
+Build 23:49:10 PASS en 9,991 s; log `BuildProject-Log-20260910-234910.txt` acredita copia del recurso, sin errores
+ y con el aviso AppIntents previo. Destino inicial iPhone14 de Jesús restaurado, sin Run/Stop físico.
+Revisión final focal por agente nuevo PASS, sin hallazgos; 461 archivos pre/post idénticos:
+`d179735b0ecadf5cde186fec14e5aee500c7f5758df9445010bb978739079be9`.
+El PDF no tiene etiquetado accesible: la revisión visual no acredita lectura VoiceOver del futuro flujo.
+Diff-check PASS; gobernanza conserva únicamente los seis enlaces históricos rotos de 08.3.
+Las pruebas manuales del flujo continúan pausadas.
+
+El propietario indica expresamente revisar ADR, Obsidian/vault, Linear e historia de usuario antes de planear e
+implementar el flujo en su momento. Queda como siguiente paso de planificación; no se modifica ahora un ADR ni se
+crea una nueva fase/issue de implementación. Progress y Linear conservan la evidencia y el pendiente; sin entrega Git.
+
+## Sustitución autorizada del PDF de consentimiento — 2026-09-10
+
+El propietario pide una copia del borrador ajustado y sustituir el recurso. Actualizados catálogo/estructura y
+client-consent-template.pdf, versión específica2026-09-10-draft. Una opción de foto, emailticket/factura solicitado,
+nombre/fecha/firma sin DNI sistemático. Marca jurídica y nota editorial sobre transferencias conservadas.
+Generador acotado a versión propia de consentimiento, dos columnas de identificación y cuerpo8,4pt.
+No cambia código Swift, activación ni pantalla. PDF nuevo de una página A4, texto extraíble sin AcroForm.
+Copia idéntica: `/Users/jesusf/Documents/Codex/2026-09-10/franalonso-08-4/consent-draft/consentimiento-datos-fotografia-borrador-2026-09-10.pdf`.
+
+Propuesta independiente read-only PASS, huella460archivos pre/post idéntica:
+`ebb29363057d606d376c0a10c01051262966112e0628cf721deb326a04643a75`.
+Regenerado con CPython3.12.14/zlib1.2.12 y requirements fijados en venvexterno; dos pasadas binarias idénticas.
+Ticket y factura reproducen y conservan los originales. Tres renders inspeccionados; consentimiento sin recortes,
+texto y firma completos; no se alteran layouts previos de facturación. Extracción verifica las20claves de contenido
+referenciadas, ausencia de opciones comerciales y DNI/NIE, versión y marca jurídica.
+SHA256consentimiento: `5895c606ab265b062081c5ac3d9fa2a73aabe3e8bc3bb42917475da8749b5106`.
+
+Xcode MCP en esquema localSignature-Manual/iPadAir11M4/26.5: DocumentTemplateResourceTests4/4, sin fallidos/omitidos.
+Resumen `ABC7DE53-9D2A-43B3-A066-7956E9F09652.txt`, RunSomeTests22:44:36. Build22:45:31 PASS6,033s.
+Log completo `BuildProject-Log-20260910-224531.txt`: sin errores y con el aviso AppIntents previo.
+Destino inicial iPhone14 de Jesús restaurado tras validación; no Run/Stop ni instalación en el teléfono.
+Son comprobaciones de recurso, no reanudación de pruebas manuales. Revisión final focal por agente nuevo PASS,
+sin hallazgos; digest pre/post idéntico de 460 archivos:
+`4220d8236d06427a0a7db2e1ceb781082937651d88571cab2353559b4e51b7c9`.
+Diff-check PASS; gobernanza solo falla por los seis enlaces históricos08.3 ya registrados.
+Sin commit/push, cierre08.4 ni inicio08.5.
+
+## Finalidades reales y optimización del texto — 2026-09-10
+
+El propietario confirma ausencia de marketing: ficha, foto interna opcional y envío de ticket/factura por email
+solo a quien lo solicita. Preparada propuesta08.4-consent-text con una única autorización opcional, información
+sobre tratamiento necesario, constancia de recepción y versionado del documento. Consultadas fuentes oficiales
+AEPD/RGPD; no se presenta el borrador como jurídicamente validado. Datos de proveedores/transferencias y conservación
+siguen pendientes de ajuste real. Señalada la revisión del requisito de firma para activar de ADR0009 como decisión
+operativa, sin alterar el ADR ni la máquina de estados. Solo documentación; pruebas pausadas y build/tests N/A.
+
+## Lectura del borrador de consentimiento existente — 2026-09-10
+
+El propietario localiza el borrador en Resources/DocumentTemplates. Se inspecciona íntegramente
+client-consent-template.pdf (A4, una página, texto extraíble, sin campos AcroForm), incluido render visual.
+El texto y estructura ya se generan desde docs/legal/DocumentTemplates.xcstrings y document-template-content.json.
+Se identifica recepción de información y tres opciones independientes: foto interna, comunicaciones electrónicas,
+comunicaciones por teléfono/correo postal. No contempla publicación de imágenes; rechazar opciones no impide servicio
+según el propio borrador. Mantiene marca y versión de borrador pendiente de revisión jurídica.
+Hallazgos y orientación UX incorporados a propuesta08.4; fuente de texto ya localizada, finalidades por confirmar.
+Sin cambios del PDF, textos legales, código o configuración; no se reanudan pruebas. Build/tests N/A documental.
+
+## Replanteamiento del consentimiento y pausa de pruebas — 2026-09-10
+
+El propietario confirma el recorrido VoiceOver solicitado (título, instrucciones, botones, cancelar y volver a
+Capturar firma) y precisa que lo realiza en iPhone 14 físico. Se corrige la atribución de esta comprobación al iPad;
+no se deduce un cambio de dispositivo para los recorridos anteriores ni una nueva ejecución MCP en el teléfono.
+No consta versión del sistema físico. Evidencia comunicada por propietario, sin audio ni Inspector.
+
+El propietario pide detener las pruebas de la pantalla aislada hasta definir cómo leer y firmar el consentimiento
+para uso de datos e imágenes y cómo conservarlo. Describe la app vigente: imagen del texto y firma compuestas en
+una imagen que se guarda en Firebase Storage; es contexto del producto, no decisión técnica para la app nueva.
+Pruebas pausadas por instrucción explícita; sin más cambios ejecutables, relanzamientos ni retirada del acceso temporal.
+
+La spec08 y ADR0009 ya distribuyen captura/renderizado/Storage/orquestación/activación entre 08.4–08.8 y fijan
+borrador local recuperable antes de activar tras upload. Falta acordar lectura, opciones de aceptación, versión de
+contenido, vínculo con firma y artefacto conservado. La captura actual queda como componente validado, no como
+flujo de consentimiento validado. Orientación de diseño en propuesta08.4, pendiente de texto real y aprobación.
+No se cierran ADR0022/08.4/PLU-38 ni se inicia08.5. Actualización documental: build/tests N/A.
+
+
+
+## Confirmación funcional de la versión final 08.4 — 2026-09-10
+
+El propietario comunica: «Muy bien, he probado todo lo anterior y funciona bien». Confirma la regresión de R01/R02
+tras retirar el modo por puntos, en la sesión preparada de iPad Air 11-inch (M4)/26.5: dibujar, deshacer el último
+trazo, confirmar con recepción sin guardado, borrar con confirmación deshabilitada y cancelar con cierre.
+Ambos recorridos PASS manual en la versión final. Esta confirmación sustituye su pendiente funcional anterior;
+no acredita técnicas de asistencia ni interrupción/redimensionado, que no formaban parte de esos recorridos.
+Acceso temporal conservado para las comprobaciones restantes. Solo evidencia/documentación: build/tests N/A;
+se conservan 26/26 y build MCP ya ejecutados, sin cambios de código, esquema ni proceso. PLU-38 sigue In Progress.
+
+## Estado vigente 08.4 — retirada del modo por puntos — 2026-09-10
+
+El propietario rechaza el modo por coordenadas y autoriza retirarlo. ADR 0027 documenta la excepción puntual de
+entrada manuscrita frente a ADR 0022; no presupone accesibilidad universal, identidad, poderes ni validez jurídica.
+Se elimina ClientSignaturePointControls, Toggle/cursor/estado y acciones exclusivos, doce textos y dos tests de ese
+modo. Instrucciones actualizadas y preview Narrow RTL usa tinta manuscrita. Domain y contratos terminales intactos.
+
+Propuestas independientes de estándares y accesibilidad PASS antes del código; digest pre/post idéntico de 459 archivos:
+`f1bae91a9ff2eb5ea0d1a298e0ca2c499610e535d06ea459f1f95fc4d5209e7d`.
+No se fabrica un RED para comprobar ausencia de código; se conserva la regresión de los contratos vigentes.
+Xcode MCP, Develop/iPad Air 11-inch (M4)/26.5: 26/26 resultados, 0 fallidos/omitidos/no ejecutados; cuatro suites
+completas, incluidos los cinco argumentos de coordenadas inválidas. Resumen:
+`/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RunSomeTests/9702A6D0-6A29-410C-A2EA-A4F188187DEE.txt`.
+Estilo: cinco Swift modificados, cero candidatos y revisión manual local e independiente PASS.
+Build final MCP 18:27:12 PASS, 12,878 s, sin errores y aviso previo AppIntents. Cuatro previews iPad efectivas
+iOS 27 inspeccionadas: Light/Large, Dark/AX5, Light High/XXX Large y Dark High/350 pt RTL; detalle en matriz.
+Auditoría final de estándares/estilo PASS. Reauditoría accesible estática/visual PASS, sin hallazgos, por revisor
+independiente reutilizado: el límite de agentes impidió crear uno nuevo y esa puerta operativa queda pendiente.
+Huella pre/post idéntica de 459 archivos: `37ba75728f6819b3f59f96cb119042b8308788ffbdcc599226b06fba37c56228`.
+R01/R02 se conservan como historia de la versión anterior, pendientes de regresión con el propietario en el binario actualizado.
+RunProject 18:31 compiló pero falló al lanzar; PID informado después no estaba vivo. Reintento MCP 18:34:53 PASS
+en 4,760 s, PID 78962 vivo y único argumento `--franalonso-auth-fixture-signed-out` comprobado.
+Destino iPad Air 11-inch (M4)/26.5 y esquema local FranAlonso-Signature-Manual. Acceso temporal se mantendrá hasta terminar las pruebas.
+Para limpiarlo, usar Localizable.xcstrings.freehand.before fuera de Git: el backup antiguo reintroduciría el modo.
+
+Las secciones siguientes conservan el historial y sus resultados con su versión; este apartado fija el alcance vigente.
+
+## Implementación inicial 08.4 — evidencia manual pendiente — 2026-09-10
+
+El propietario solicita abrir issue/rama e implementar 8.04. Creada [PLU-38](https://linear.app/plusprojects/issue/PLU-38)
+en In Progress, hija de PLU-34, y rama `codex/plu-38-phase-08-4-signature-capture` desde `9ffce6a`.
+`git fetch` y comparación `main...origin/main` 0/0; árbol inicial limpio. Xcode MCP identifica este checkout en
+`windowtab-jyb1Pv0A7J`: Develop, iPad Air 11-inch (M4)/26.5, SDK Simulator iOS27, Swift6, target26.
+
+Propuesta exacta, alternativas, fuentes y exclusiones: [captura08.4](08-4-signature-proposal.md).
+Dos revisiones independientes previas PASS (`review_084_proposal`, `review_084_ui_proposal`), estrictamente read-only.
+Huella pre/post idéntica de 448 archivos tracked y untracked no ignorados:
+`42e35bb814c491c3a321ec56eb9373f22ce75a6f15232cfef6ef1971aa42b20d`.
+La autorización de implementación del propietario cubre esta subfase; no se requiere repetirla.
+
+Captura independiente: firma vectorial inmutable, coordenadas normalizadas y validación al construir/decodificar;
+ViewModel posee el buffer, cancelación, deshacer/borrar y callback terminal único. La pantalla se conecta al consumidor
+durable en una subfase posterior: el formulario actual solo guarda ClientProfile y destruye su sesión al finalizar.
+No se añade firma efímera a Guardar cliente ni se implementa PDF, Storage, Store, activación o gate live.
+
+TDD con Swift Testing y Xcode MCP:
+- Primer intento no ejecutó tests por import CoreGraphics ausente en el nuevo test; corregido antes del RED válido.
+- RED válido: 18 resultados, 17 fallos esperados y 1 negativo que ya pasaba con el stub vacío. Resumen
+  `/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RunSomeTests/224DA948-1DED-4A81-BB33-023988510EF6.txt`.
+- GREEN inicial: 14 resultados correctos, resumen
+  `/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RunSomeTests/F0AE9D92-A984-46D5-BEAB-9F4EFF3D5C71.txt`.
+  Inspección del console log acredita solo -inf de los cinco valores Double. Se sustituyen los argumentos de test por
+  cadenas identificables que se convierten a los mismos valores antes de llamar a producción; sin rebajar aserciones.
+  Ese GREEN parcial no acredita los cinco casos; la pasada final por suites descrita abajo sí los ejecuta.
+- Log completo de baseline y del GREEN conserva Metadata extraction skipped / AppIntents ya existente. No se afirma
+  cero warnings globales ni se altera configuración para ocultarlo.
+
+Evidencia de pantalla: [matriz08.4](../accessibility/evidence/08-4-signature-capture.md), con 55 criterios clasificados.
+Validación final: selección por suites completas en Xcode MCP15:01:29, 28/28 resultados de cuatro suites,
+con los cinco argumentos de coordenadas acreditados en el console log. Resumen:
+`/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RunSomeTests/D7EDFC55-162D-44A8-8A88-72C573F258DD.txt`.
+La ejecución por método conservaba una selección de casos obsoleta: el primer reintento con cadenas ejecutó cero
+casos de coordenadas aunque el resumen era verde. El reintento por suite resolvió esta limitación; no se cuenta como
+cobertura la ejecución vacía. Domain aislado también pasó10/10, incluidas las cinco cadenas.
+
+Build MCP15:03:15 PASS12,016s; log `BuildProject-Log-20260910-150315.txt`. Cero errores y sin diagnósticos Swift
+nuevos; log completo conserva aviso AppIntents previo. Sin afirmación de cero warnings globales ni Production.
+Previews finales Large/XXX Large/AX5, cuatro apariencias, iPhone/iPad y350pt RTL inspeccionadas. Corregidos título
+AX5 truncado y contraste de Borrar firma oscuro3,642:1 mediante superficie opaca; detalle y ratios en matriz.
+Scheme sin modificaciones, destino restaurado a iPadAir11M4/26.5. No harness ni cambios de configuración.
+Auditorías finales independientes read-only completadas. Estándares iOS y estilo PASS, sin hallazgos: ocho Swift,
+script con cero candidatos y pasada manual. Accesibilidad revisó tres Views, 28 claves, seis imágenes finales y los
+55 criterios; único P2 documental corregido: 1.3.4 conserva `A/No pasa — excepción de producto aceptada` de ADR 0026.
+Reauditoría documental focal PASS, sin nuevos hallazgos. Huella pre/post de ambos revisores idéntica, 457 archivos tracked y untracked
+no ignorados: `54c54ae6f89d36473c243cfdb316bf6f4109937ac4972b16d78d8ee8a397e881`.
+Huella pre/post focal también idéntica, 457 archivos:
+`facbcf8656ade9a6147bd02db44f4da1df54cce1a94df974e2851834f79e0716`.
+Última corrección exclusivamente documental: build/tests N/A; conserva la validación ejecutada sobre el código final.
+Gobernanza y diff-check PASS. Runtime/AT permanece pendiente hasta evidencia real; PLU-38 conserva In Progress.
+Sin commit, push, PR, merge, cierre de PLU-38 ni avance a08.5.
+
+### R02 manual confirmado — 2026-09-10
+
+Propietario confirma borrar dos trazos (lienzo vacío y confirmación deshabilitada) y cancelar después de volver
+a dibujar (cierre y mensaje de cancelación sin guardado), en la sesión iPad Air 11-inch (M4)/26.5. R02 PASS.
+No equivale a interrupción del gesto, redimensionado ni técnicas de asistencia. Modo por puntos pendiente;
+acceso temporal activo. Evidencia documental, build/tests N/A.
+
+### R01 manual confirmado — 2026-09-10
+
+Propietario confirma el recorrido completo en iPad Air 11-inch (M4)/26.5: dos trazos, deshacer solo el último y
+confirmar, cierre de captura y mensaje de firma recibida sin guardar. R01 PASS; no se infiere persistencia ni AT.
+Borrar, cancelar, modo por puntos y las técnicas de asistencia siguen pendientes. Acceso temporal activo hasta
+terminar las pruebas. Detalle en matriz08.4; actualización documental, build/tests N/A.
+
+### Estado manual vigente — 2026-09-10 18:04
+
+Sesión retomada tras retirada prematura del acceso. Usuario indica usar iPad o su iPhone 14, no iPhone 17.
+RunProject MCP en iPad Air 11-inch (M4)/26.5 PASS, 37,653 s; PID 69739 vivo con único argumento signed-out verificado.
+Acceso temporal idéntico al ya auditado y esquema local FranAlonso-Signature-Manual permanecen activos hasta que
+el propietario termine; retirada pendiente, excluidos de entrega. El scheme canónico sigue intacto. Resultado manual
+aún pendiente. Detalle y log en matriz08.4. Esta nota sustituye el estado operativo de la sesión anterior.
+
+### Acceso manual preparado — 2026-09-10 17:46
+
+RunProject MCP PASS en iPhone 17/iOS 27 con argumento signed-out comprobado en PID 61417. Acceso temporal revisado
+antes y después, ya retirado; App, catálogo y scheme canónico restaurados byte a byte. Develop/iPad Air 11-inch (M4)/26.5
+restaurado y proceso de prueba aún vivo. Solo se añaden anotaciones documentales; código final08.4 sin modificaciones.
+Gesto y resultados del propietario pendientes. Detalle de intentos, limitaciones, logs y huellas en la
+[sesión manual](../accessibility/evidence/08-4-signature-capture.md#sesión-manual-preparada--2026-09-10-1746).
+
+
+Comprobación documental posterior: `git diff --check` PASS. El validador global de gobernanza falla por seis enlaces
+a capturas de 08.3 del Escritorio que ya no existen (13:40:20–13:41:57), fuera del cambio 08.4. No se alteran esos
+archivos ni se presenta el resultado global como PASS; no impide realizar esta sesión manual.
 
 ## Cierre vigente de08.3 — 2026-09-10
 
