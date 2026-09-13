@@ -15,7 +15,7 @@
   TDD: preparación6 RED→6 GREEN; render6 RED→6 GREEN. Regresión43/43 y catálogo ampliado8/8; build PASS12,132s
   por Xcode MCP Develop/iPadAir11M4/26.5. PDF sintéticos inspeccionados; sin cambios en los cuatro borradores PDF.
   Dos revisiones independientes reutilizadas favorables tras corregir un P3 documental; el límite de agentes impidió
-  crear revisores nuevos. Commit y push autorizados el13/09; preparación de publicación en curso.
+  crear revisores nuevos. Commit funcional `bce8859` y push completados el13/09; rama con upstream sincronizado.
   La PR, el merge y el cierre de issue siguen pendientes, incluida la revisión por agente nuevo.
 - Captura efímera con valor inmutable Codable, ViewModel, lienzo, deshacer/borrar/confirmar/cancelar. No se integra
   todavía en formulario, persistencia, PDF firmado, Storage ni activación. ADR0027 limita la excepción de dibujo libre.

@@ -1,5 +1,18 @@
 # Fase 08 — Clientes, consentimiento y foto
 
+## Publicación de08.5 completada — 2026-09-13
+
+Commit funcional `bce8859ee0b0f3598b56813f6f4bafac06ed7cc1` publicado en
+`origin/codex/plu-39-phase-08-5-signed-documents`; upstream configurado y divergencia0/0 verificados.
+25 archivos en el commit (26 rutas explícitas, incluido el traslado reconocido del JSON); ningún archivo ajeno,
+PDF de cliente, credencial ni acceso temporal incorporado. Los cuatro PDF de borrador no cambiaron.
+
+Este registro posterior solo modifica documentación; build/tests N/A, conserva la validación de implementación.
+La PR no se ha abierto ni se ha hecho merge/cierre. Siguiente entrega: PR y revisión por agente nuevo; una vez
+resueltos los hallazgos y autorizado el merge, integrar y reconciliar la subfase/Linear. PLU-39 continúa In Progress.
+Los dos revisores reutilizados dieron dictamen técnico favorable, sin sustituir la puerta pendiente de agente nuevo.
+Gobernanza conserva únicamente seis enlaces históricos08.3; diff y escaneo acotado de secretos sin incidencias nuevas.
+
 ## Commit y push de08.5 autorizados — 2026-09-13
 
 El propietario solicita commit y push y pregunta por el siguiente paso. Se prepara la publicación de la rama
