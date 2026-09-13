@@ -20,6 +20,7 @@ All notable changes to this project are documented in this file.
 
 ### Documentation
 
+- 2026-09-13 | 📝 docs(delivery): close PLU-40 after merge
 - 2026-09-13 | 📝 docs(delivery): close PLU-39 after merge
 
 - 2026-09-13 | 📝 docs(delivery): record PLU-39 reviews

@@ -1,5 +1,23 @@
 # Fase 08 — Clientes, consentimiento y foto
 
+## Cierre de 08.6 completado — 2026-09-13
+
+[PR #13](https://github.com/JFrancoG/FranAlonso/pull/13) creada e integrada con merge commit
+`7ac0fb5e810f3039c4350b303a45f4ccf2688eea`, sobre head revisado y publicado
+`32e314cffabdda3c501afe2d3afa4298ac64e9fd` (`✨ feat(clients): persist signed documents`).
+GitHub confirma MERGED y main actualizado por fast-forward. PLU-40 figura Done tras la integración.
+Rama `codex/plu-40-phase-08-6-document-persistence` eliminada en origin y local después de comprobar que está
+completamente contenida en main. Todas estas acciones cuentan con autorización expresa del propietario.
+
+Conserva 1.020 resultados verdes de 113 suites (770 declaraciones), build Xcode MCP PASS 6,993 s y auditorías PRE,
+POST y focal completas sin hallazgos pendientes. El código integrado coincide con el validado; el registro de cierre
+solo modifica documentación, por lo que build/tests nuevos N/A. GitHub no tiene checks remotos; no equivale a CI.
+Aviso AppIntents previo y seis enlaces históricos de 08.3 conservados. Diff-check y escaneo acotado sin incidencias nuevas.
+
+PLU-34 permanece abierta; PLU-38 conserva sus dos pendientes propios. 08.7 / PLU-41 sigue sin iniciarse.
+No se activa live ni se integra todavía el flujo de pantalla. Progress, propuesta y changelog reconciliados;
+el estado de entrega pendiente de los registros inferiores es histórico y queda sustituido por este cierre.
+
 ## Entrega completa de 08.6 autorizada — 2026-09-13
 
 El propietario solicita commit, push, PR, merge, cierre de PLU-40 y eliminación de la rama. Se prepara la entrega

@@ -5,16 +5,12 @@
 ## Estado actual
 
 - Fase08 / [PLU-34](https://linear.app/plusprojects/issue/PLU-34) abierta.
-- **08.6 / [PLU-40](https://linear.app/plusprojects/issue/PLU-40): implementada y validada localmente; In Progress por entrega pendiente**.
-  Issue existente reutilizada y rama local `codex/plu-40-phase-08-6-document-persistence` creada desde main/36f5efa.
-  [Propuesta](progress/08-6-document-persistence-proposal.md) de persistencia, migración y Storage fake preparada;
-  PRE independiente por agente nuevo PASS sin hallazgos y huella477 estable. Implementación aprobada («Si, adelante»).
-  Implementación local terminada: borrador/artefacto durable, migración aditiva 1→2, recuperación y envío Storage fake.
-  Suite global Xcode MCP: 770 declaraciones / 1.020 resultados verdes de 113 suites, cero fallos/omitidos.
-  Build final PASS 6,993 s; solo aviso AppIntents conocido. POST independiente detectó un P2, corregido con RED/GREEN.
-  Reauditoría focal PASS sin hallazgos; huellas pre/post verificadas. Linear y documentación reconciliados.
-  Entrega completa autorizada: commit/push/PR/merge, cierre de PLU-40 y eliminación de su rama en curso.
-  Integración de pantalla y live conservan sus puertas separadas.
+- **08.6 / [PLU-40](https://linear.app/plusprojects/issue/PLU-40): completada y Done**.
+  [PR #13](https://github.com/JFrancoG/FranAlonso/pull/13) integrada con `7ac0fb5`; implementación publicada en `32e314c`.
+  Rama local y remota eliminadas. Persistencia recuperable, migración aditiva 1→2 y envío con Storage neutral/fake.
+  Xcode MCP: 770 declaraciones / 113 suites / 1.020 resultados verdes, cero fallos/omitidos; build PASS 6,993 s.
+  PRE, POST y reauditoría focal PASS sin hallazgos; huellas pre/post verificadas y evidencia en fase08.
+  Aviso AppIntents y seis enlaces históricos de 08.3 conservados. Sin checks remotos, integración de pantalla o live.
 - **08.4 / [PLU-38](https://linear.app/plusprojects/issue/PLU-38): integrada mediante [PR#11](https://github.com/JFrancoG/FranAlonso/pull/11); DoD pendiente**.
   Merge autorizado y completado el13/09: `c4d7b00989a58783f953752bdc8f29dca90c6715`. Rama anterior conservada.
   Linear cerró automáticamente la issue al integrar; restaurada a In Progress para mantener su evidencia pendiente.
@@ -60,7 +56,7 @@ La consolidación actual sustituye pendientes ya resueltos de las anotaciones hi
 
 ADR0028 y spec08 aprobados distinguen información inicial firmada y autorización fotográfica opcional. Dos borradores
 PDF en Resources, catálogo y generador ajustados; continúan pendientes de revisión jurídica antes del uso real.
-08.5 completada; 08.6 / PLU-40 validada localmente, con entrega pendiente. 08.7–08.9 / PLU-41–PLU-43 permanecen en Backlog.
+08.5 completada; 08.6 / PLU-40 completada y Done mediante PR #13. 08.7–08.9 / PLU-41–PLU-43 permanecen en Backlog.
 El vault Obsidian es este repositorio. Sin activación live ni cierre administrativo de08.4.
 
 ## Entregas anteriores

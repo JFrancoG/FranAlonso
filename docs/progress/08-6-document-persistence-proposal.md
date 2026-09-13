@@ -1,8 +1,9 @@
 # 08.6 — Propuesta de persistencia recuperable y envío de documentos
 
-Fecha: 2026-09-13. Issue [PLU-40](https://linear.app/plusprojects/issue/PLU-40), In Progress.
+Fecha: 2026-09-13. Issue [PLU-40](https://linear.app/plusprojects/issue/PLU-40), Done tras integrar PR #13.
 Estado: implementación aprobada por el propietario el 13/09 («Si, adelante»), tras revisión independiente PRE favorable.
-Implementada y validada localmente; [evidencia final](phase-08.md) y entrega Git pendiente.
+Implementada, validada y entregada mediante [PR #13](https://github.com/JFrancoG/FranAlonso/pull/13);
+[evidencia final](phase-08.md). Rama local y remota eliminadas; la propuesta inferior conserva el contexto de inicio.
 Rama local `codex/plu-40-phase-08-6-document-persistence`, desde `main`/`origin/main`
 `36f5efa88a97a7c223ac58c8eca1f4bac2b6ae72`, limpios y coincidentes al inicio.
 
