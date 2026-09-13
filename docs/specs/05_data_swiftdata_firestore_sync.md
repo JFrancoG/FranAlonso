@@ -1,5 +1,12 @@
 # Fase 05 — SwiftData local, Firestore remoto y sincronización
 
+## Extensión futura de Clientes en fase 08
+
+ADR 0028 sitúa en 08.6 el almacenamiento recuperable de documentos firmados y sus envíos, y en 08.9 la fotografía
+opcional. Cualquier cambio de esquema debe versionarse y migrarse conforme a ADR 0018, conservando referencias
+iniciales y operaciones Codable pendientes. No se modifica retrospectivamente la baseline 1.0.0 ni se da por
+implementada esta extensión al planificarla; la fase 05 conserva su evidencia histórica.
+
 ## Objetivo
 
 Implementar por colección el recorrido entre Domain y SwiftData/Firestore mediante conversiones propiedad de Data, manteniendo SwiftData como fuente de verdad local y una sincronización bidireccional, offline-first e idempotente.

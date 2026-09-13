@@ -5,6 +5,9 @@
 - `FranAlonso/Resources/Localizable.xcstrings` is the default catalog.
 - Spanish (`es`) is the source language. Add translations to the same catalog unless a feature needs a justified separate table.
 - `docs/legal/DocumentTemplates.xcstrings` is the dedicated source catalog for generated consent, ticket and invoice PDFs. It stays outside the app bundle because the build-time generator consumes it directly; `document-template-content.json` contains only document structure, version and non-localizable business identity/data. The provisional vector wordmark is derived from the single `tradeName` value rather than duplicating brand words in code.
+- ADR 0028 plans shared, versioned consent content for the native reader and document renderer in 08.5.
+  The current build-time setup remains unchanged until that subphase defines and validates app distribution;
+  do not duplicate legal text manually or derive runtime reading content from the generated PDF.
 - Keep `STRING_CATALOG_GENERATE_SYMBOLS = YES` for the app target in Debug and Release.
 - Consume generated `LocalizedStringResource` symbols so keys are discoverable by autocomplete and invalid references fail at compile time.
 

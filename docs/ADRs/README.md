@@ -18,7 +18,7 @@ Los ADR se escriben antes de implementar una decisión no trivial y no se reescr
 | [0006](0006-sync-conflicts-tombstones.md) | Conflictos, revisiones y tombstones | Aceptado |
 | [0007](0007-firebase-temporary-vapor-exit.md) | Excepción temporal Firebase y salida a Vapor | Aceptado |
 | [0008](0008-atomic-billing-numbering.md) | Numeración atómica e idempotente | Aceptado |
-| [0009](0009-client-consent-activation.md) | Consentimiento y activación offline-first | Aceptado |
+| [0009](0009-client-consent-activation.md) | Consentimiento y activación offline-first | Sustituido parcialmente por 0028 |
 | [0010](0010-on-device-assistant-provider-strategy.md) | Asistente local en el MVP y proveedor remoto pos-MVP | Aceptado |
 | [0011](0011-swiftui-boundaries-specialized-reviews.md) | Límites SwiftUI y revisiones especializadas | Aceptado |
 | [0012](0012-firestore-incremental-change-feed.md) | Feed incremental ordenado para Firestore | Aceptado |
@@ -36,6 +36,11 @@ Los ADR se escriben antes de implementar una decisión no trivial y no se reescr
 | [0024](0024-develop-only-clients-error-fixture.md) | Error determinista de Clientes exclusivo de Develop | Aceptado |
 | [0025](0025-develop-only-auth-root-error-fixtures.md) | Errores deterministas de raíz de autenticación exclusivos de Develop | Aceptado |
 | [0026](0026-iphone-portrait-only-product-exception.md) | iPhone solo portrait como excepción de producto | Aceptado |
+| [0027](0027-freehand-signature-input-product-exception.md) | Firma a mano alzada; excepción limitada a la entrada por trayectoria | Aceptado |
+| [0028](0028-client-signed-information-and-photo-authorization.md) | Información firmada y autorización opcional de fotografía | Aceptado |
+
+El propietario aceptó ADR 0028 el 11 de septiembre de 2026: precisa el documento inicial, conserva su firma como regla
+de producto y separa la autorización posterior de foto sin desactivar la ficha. Implementación prevista en 08.5–08.9.
 
 El propietario aceptó el ADR 0024 el 21 de agosto de 2026 como suplemento de ADR 0023: añade un fallo determinista de
 Clientes subordinado a sesión restaurada y hace fail-closed cualquier intención inválida de esa fixture.

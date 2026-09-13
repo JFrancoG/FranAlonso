@@ -160,7 +160,7 @@ def consent_page_header(
         pdf,
         strings[content["consent"]["titleKey"]],
         business["tradeName"],
-        f"{strings[content['reviewStatusKey']]} · {content['documentVersion']}",
+        f"{strings[content['reviewStatusKey']]} · {content['consent']['documentVersion']}",
     )
     draw_wordmark(
         pdf,
@@ -188,7 +188,7 @@ def consent_page_header(
     pdf.drawRightString(
         A4[0] - document.rightMargin,
         24,
-        f"{content['documentVersion']} · {strings['document.page.label']} {document.page}",
+        f"{content['consent']['documentVersion']} · {strings['document.page.label']} {document.page}",
     )
 
 
@@ -243,8 +243,8 @@ def build_consent_template(
         "ConsentBody",
         parent=base_styles["BodyText"],
         fontName="Helvetica",
-        fontSize=6.7,
-        leading=8.25,
+        fontSize=8.4,
+        leading=10.3,
         textColor=INK,
         spaceAfter=2,
     )
@@ -257,8 +257,8 @@ def build_consent_template(
     small_style = ParagraphStyle(
         "ConsentSmall",
         parent=body_style,
-        fontSize=6.2,
-        leading=7.6,
+        fontSize=7.4,
+        leading=9.1,
         textColor=SECONDARY_INK,
     )
 
@@ -308,9 +308,10 @@ def build_consent_template(
             )
         )
 
-    story.append(
-        Paragraph(strings["consent.section.optional_consents"], section_style)
-    )
+    if consent["optionalConsents"]:
+        story.append(
+            Paragraph(strings["consent.section.optional_consents"], section_style)
+        )
     for option_key in consent["optionalConsents"]:
         checkbox = Table(
             [["", Paragraph(strings[option_key], body_style)]],
@@ -344,16 +345,15 @@ def build_consent_template(
     signature_rows = [
         [
             strings["consent.field.client_name"],
-            strings["consent.field.client_identifier"],
             strings["document.field.date"],
         ],
-        ["", "", ""],
-        [strings["consent.field.client_signature"], "", ""],
-        ["", "", ""],
+        ["", ""],
+        [strings["consent.field.client_signature"], ""],
+        ["", ""],
     ]
     signature_table = Table(
         signature_rows,
-        colWidths=[82 * mm, 45 * mm, 40 * mm],
+        colWidths=[127 * mm, 40 * mm],
         rowHeights=[10, 18, 10, 27],
         hAlign="LEFT",
     )
@@ -636,6 +636,11 @@ def main() -> None:
         content,
         strings,
         arguments.output_dir / "client-consent-template.pdf",
+    )
+    build_consent_template(
+        {**content, "consent": content["dataInformation"]},
+        strings,
+        arguments.output_dir / "client-data-information-template.pdf",
     )
     build_ticket_template(
         content,

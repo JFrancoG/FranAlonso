@@ -4,6 +4,10 @@ All notable changes to this project are documented in this file.
 
 ## [Unreleased]
 
+### Added
+
+- 2026-09-13 | ✨ feat(clients): add ephemeral signature capture
+
 ### Maintenance
 
 - 2026-09-10 | 📦 build(config): move app metadata to build settings
