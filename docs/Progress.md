@@ -5,11 +5,11 @@
 ## Estado actual
 
 - Fase08 / [PLU-34](https://linear.app/plusprojects/issue/PLU-34) abierta.
-- **08.7 / [PLU-41](https://linear.app/plusprojects/issue/PLU-41): publicada en rama; integración pendiente**.
+- **08.7 / [PLU-41](https://linear.app/plusprojects/issue/PLU-41): integrada y Done por alcance funcional**.
   [ADR 0029](ADRs/0029-progressive-accessibility-validation.md) aceptado el28/09: entrega funcional para demo y
-  validación integral separadas. Commit/push autorizados el28/09; PLU-41 sigue In Progress, sin PR/merge/cierre.
+  validación integral separadas. [PR #14](https://github.com/JFrancoG/FranAlonso/pull/14) integrada el29/09 en `334703d`.
   Revisiones finales favorables; configuración temporal retirada y recorrido funcional comprobado el28/09.
-  Rama `codex/plu-41-phase-08-7-consent-flow`, desde `b8a3d47`. Sin activación ni foto real.
+  Commit validado `ece99ff`; rama local/remota eliminadas. Sin checks remotos, activación ni foto real.
   Xcode MCP final: 814 declaraciones / 1.067 resultados PASS, cero fallos/omitidos; build6,685s, aviso AppIntents.
   Corregida aceptación de nombre obsoleto durante render; TDD RED→GREEN y retest final focal2/2.
   Smoke táctil de firma/conservación/error/reintento/reapertura favorable; previews previas reutilizadas por impacto.
@@ -75,7 +75,7 @@ La consolidación actual sustituye pendientes ya resueltos de las anotaciones hi
 
 ADR0028 y spec08 aprobados distinguen información inicial firmada y autorización fotográfica opcional. Dos borradores
 PDF en Resources, catálogo y generador ajustados; continúan pendientes de revisión jurídica antes del uso real.
-08.5 y08.6 completadas. 08.7 / PLU-41 publicada en rama, pendiente de integración; PLU-44 conserva la validación accesible según ADR0029.
+08.5 y08.6 completadas. 08.7 / PLU-41 Done funcional; PLU-44 conserva la validación accesible según ADR0029.
 08.8–08.9 / PLU-42–PLU-43 permanecen en Backlog, sin iniciar sus implementaciones.
 El vault Obsidian es este repositorio. Sin activación live ni cierre administrativo de08.4.
 

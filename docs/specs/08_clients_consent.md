@@ -78,20 +78,21 @@ ADR 0028 precisa el significado del documento inicial y la autorización posteri
 - 08.4 no se cierra automáticamente por aceptar ADR 0028; entrega Git y comienzo de 08.5 conservan autorización separada.
 
 
-## Separación de entrega y validación de 08.7 — 2026-09-28
+## Separación de entrega y validación de 08.7 — actualización 2026-09-29
 
 - [PLU-41](https://linear.app/plusprojects/issue/PLU-41) conserva el alcance funcional de lectura, revisión, firma,
-  invalidación, conservación y recuperación; permanece `In Progress` hasta completar su entrega funcional autorizada.
+  invalidación, conservación y recuperación; `Done` funcional tras [PR #14](https://github.com/JFrancoG/FranAlonso/pull/14)
+  integrada en `334703d`. La fase 08 / PLU-34 permanece `In Progress`.
 - [PLU-44](https://linear.app/plusprojects/issue/PLU-44), hija de fase 08 y relacionada con PLU-41, conserva los fallos
   accesibles conocidos y la evidencia pendiente. Responsable: Jesus Franco. La
   [matriz 08.7](../accessibility/evidence/08-7-consent-flow.md) sigue siendo el registro canónico de resultados.
 - Retomar PLU-44 tras incorporar el feedback de Fran y estabilizar cada recorrido; completarla antes del primer
   candidato para uso real. No bloquea por sí sola la entrega funcional de PLU-41 ni 08.8 tras satisfacer la dependencia
   funcional. Sí impide el cierre integral de fase 08 y la puerta de uso real de fase 18.
-- PLU-41 solo podrá marcarse `Done` cuando valide su recorrido funcional, reconcilie la deuda y complete la entrega
-  autorizada; su cierre enlazará PLU-44. Esta separación no aplaza integridad, privacidad o recuperación funcional.
+- El cierre funcional de PLU-41 valida su recorrido, reconcilia la deuda y completa la entrega autorizada;
+  enlaza PLU-44 abierta. Esta separación no aplaza integridad, privacidad o recuperación funcional.
 - 08.4/PLU-38 conserva sus pendientes separados. 08.8–08.9 continúan en Backlog; aceptar este cambio no inicia código,
-  no completa ninguna subfase ni activa upload o servicios reales.
+  y el cierre funcional de 08.7 no activa upload o servicios reales.
 
 ## Resultado de fase
 

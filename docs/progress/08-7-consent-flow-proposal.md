@@ -1,7 +1,8 @@
 # Propuesta 08.7 — Lectura, revisión y firma
 
 Fecha: 2026-09-13. Issue: [PLU-41](https://linear.app/plusprojects/issue/PLU-41), hija de PLU-34.
-Estado vigente 29/09/2026: implementación publicada en rama; PLU-41 In Progress, pendiente de integración. ADR 0029
+Estado vigente 29/09/2026: PLU-41 Done funcional; [PR #14](https://github.com/JFrancoG/FranAlonso/pull/14)
+integrada en `334703d`, rama local/remota eliminadas. ADR 0029
 separa la validación accesible aplazada en [PLU-44](https://linear.app/plusprojects/issue/PLU-44), obligatoria tras
 feedback/UI estable y antes del primer candidato para uso real. La validación funcional sigue en PLU-41. El alcance
 y evidencia históricos inferiores se conservan; las disposiciones de cierre integral se leen con
@@ -13,7 +14,7 @@ smoke funcional focal favorable. La revisión detectó aceptación de un nombre 
 durante render. PRE de corrección favorable: comprobar el nombre vigente en la nueva aceptación atómica,
 devolver conflicto recuperable y mantener tanto campos no presentados como históricos aceptados. Dos pruebas
 integradas reproducen el fallo y sus límites; RED→GREEN, suite final 1.067/1.067 y build PASS6,685s.
-Sin nueva arquitectura, schema, UI ni ampliación de08.8. Revisiones finales favorables; PR/merge pendientes;
+Sin nueva arquitectura, schema, UI ni ampliación de08.8. Revisiones finales favorables; entrega funcional completada;
 evidencia completa en [fase08](phase-08.md).
 
 ## Estado reconstruido

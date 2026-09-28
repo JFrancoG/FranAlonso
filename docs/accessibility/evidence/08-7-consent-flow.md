@@ -2,13 +2,14 @@
 
 Fecha inicial: 2026-09-13. Actualización manual: 2026-09-28. PLU-41. Implementación y revisión estática/visual completadas; validación runtime parcial con fallos de foco y anuncio pendientes. No acredita conformidad jurídica ni certificación.
 
-## Disposición vigente tras ADR 0029 — 2026-09-28
+## Disposición vigente tras ADR 0029 — 2026-09-29
 
 [PLU-44](https://linear.app/plusprojects/issue/PLU-44) organiza la validación integral aplazada de este registro,
 relacionada con la entrega funcional PLU-41 y bajo fase 08. Responsable: Jesus Franco. Retomar tras incorporar el
 feedback de Fran y estabilizar cada flujo F01–F05; completar antes del primer candidato para uso real. Conforme a
 [ADR 0029](../../ADRs/0029-progressive-accessibility-validation.md), esta deuda no bloquea por sí sola la entrega
-funcional para demo, pero sí el cierre integral y el uso real. PLU-41 publicada en rama el29/09, sin integrar ni cerrar.
+funcional para demo, pero sí el cierre integral y el uso real. PLU-41 cerrada por alcance funcional el29/09 tras
+integrar [PR #14](https://github.com/JFrancoG/FranAlonso/pull/14) en `334703d`; PLU-44 permanece Backlog.
 
 - **Fallos conocidos:** foco de entrada/restauración (2.4.3), anuncio interrumpido (4.1.3) y descubribilidad del
   error/reintento reportada. Las correcciones locales no acreditan su resolución. La entrada sigue fallando en el

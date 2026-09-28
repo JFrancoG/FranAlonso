@@ -1,5 +1,27 @@
 # Fase 08 — Clientes, consentimiento y foto
 
+## Cierre funcional de 08.7 — 2026-09-29
+
+El propietario autoriza «Adelante entonces con la PR, el merge y los cierres».
+[PR #14](https://github.com/JFrancoG/FranAlonso/pull/14) integrada mediante
+`334703d18ca175ad8a65ac0d686243964b8a3173`; contiene `ece99ffb26bdddecf63ff1e78a24965213e6be76`.
+Verificados ascendencia y árbol idéntico al commit validado, antes del cierre documental. `main` actualizado por
+fast-forward; rama `codex/plu-41-phase-08-7-consent-flow` eliminada localmente y en remoto después del merge.
+
+- PLU-41 **Done por alcance funcional** según ADR 0029. PLU-34/fase 08 continúa **In Progress**.
+- PLU-44 permanece **Backlog**, con los fallos y la evidencia accesible aplazada intactos; PLU-38 sigue **In Progress**
+  con sus pendientes propios. No se declara cierre integral, accesibilidad completa ni aptitud para uso real.
+- 08.8/PLU-42 y 08.9/PLU-43 permanecen **Backlog**. La dependencia funcional de 08.8 queda satisfecha; no se inicia
+  su implementación ni se activa ningún servicio live. El proyecto permanece In Progress, sin cerrar fase 07.
+- Se reutilizan suite 1.067/1.067, retest final 2/2, build PASS 6,685 s, smoke y revisiones favorables del apartado
+  siguiente. El merge no cambia código/configuración; nuevos build/tests/previews N/A por cierre documental.
+  Persiste el aviso AppIntents conocido. GitHub no reporta checks remotos; no equivale a CI validada.
+- Documentación canónica, CHANGELOG y Linear reconciliados; matriz de 55 criterios conservada sin nuevos PASS.
+  Gobernanza conserva los seis enlaces históricos rotos de 08.3; el cierre no altera esa evidencia.
+
+Este estado sustituye los pendientes históricos de publicación, PR, merge y cierre funcional de los apartados
+inferiores. El registro de validación y los límites pendientes mantienen su alcance original.
+
 ## Publicación en rama — 2026-09-29
 
 El propietario autoriza «commit y push» de la preparación revisada. Se publica el alcance08.7 y ADR0029 en
