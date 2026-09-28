@@ -92,6 +92,10 @@ Validar lo aplicable en:
 
 ## Registro obligatorio por criterio y flujo
 
+El momento de completar la evidencia se rige por [ADR 0029](../ADRs/0029-progressive-accessibility-validation.md):
+una entrega funcional para demo puede conservar deuda vinculada; el primer candidato para uso real exige cierre
+integral. Aplazar no cambia aplicabilidad ni convierte `Falla`, `Pendiente` o `Limitado` en `Pasa` o `N/A`.
+
 Cada pantalla, componente reutilizable o flujo completo afectado incluye una fila para **cada** criterio A/AA de esta
 matriz. Se evalúan también flujos que cruzan pantallas: autenticación, navegación, sheets, errores, estados asíncronos,
 confirmaciones y restauración de foco.

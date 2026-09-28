@@ -19,7 +19,8 @@
 - TDD con Swift Testing; no XCTest, XCUITest ni UI tests nativos; serialización con Codable.
 - Texto visible en `.xcstrings`; warnings como errores; API moderna compatible con el target real.
 - Una sola conformidad `View` por archivo, preview determinista por View y DocC solo para contratos semánticos.
-- Toda pantalla aplica ADR 0022 y no se cierra sin su evidencia de accesibilidad.
+- Toda pantalla aplica ADR 0022. ADR 0029 permite entrega funcional para demo con deuda accesible vinculada;
+  el cierre integral y el primer candidato para uso real exigen completar la evidencia aplicable.
 - `GoogleService-Info.plist`, PII y payloads de negocio nunca entran en Git, logs o telemetría.
 
 ## Herramientas y skills
@@ -42,5 +43,6 @@
 - Seguir `docs/DEVELOPMENT_GUIDE.md` y `docs/PULL_REQUEST_CHECKLIST.md`.
 - Validar por Xcode MCP cuando cambie código/configuración; para documentación registrar `N/A` razonado.
 - Actualizar `docs/Progress.md` y `docs/progress/phase-XX.md` con evidencia, pendiente y bloqueos.
-- Corregir hallazgos válidos y repetir solo la auditoría cuyo ámbito cambió.
+- Corregir hallazgos válidos y repetir solo la auditoría cuyo ámbito cambió; registrar los aplazamientos de accesibilidad
+  permitidos por ADR 0029 sin declararlos resueltos.
 - Detenerse ante una excepción arquitectónica, unsafe, dependencia nueva, activación live o ampliación material de alcance.

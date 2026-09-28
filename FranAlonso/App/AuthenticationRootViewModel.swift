@@ -34,6 +34,13 @@ final class AuthenticationRootViewModel {
         let localAccessRevision: Int
     }
 
+    /// Identifies one authorized shell lifetime, including reauthorization of the same account.
+    struct ProtectedAccessIdentity: Hashable {
+        let principalID: String
+        let localAccessRevision: Int
+        let authorizationRevision: Int
+    }
+
     private struct CredentialProof: Equatable {
         let session: AuthenticationSession
         let revision: Int
@@ -89,6 +96,15 @@ final class AuthenticationRootViewModel {
             sessionState: sessionViewModel.state,
             credentialProofRevision: credentialProofRevision,
             localAccessRevision: sessionViewModel.localAccessRevision
+        )
+    }
+
+    var protectedAccessIdentity: ProtectedAccessIdentity? {
+        guard case let .authenticated(session) = state else { return nil }
+        return ProtectedAccessIdentity(
+            principalID: session.id,
+            localAccessRevision: sessionViewModel.localAccessRevision,
+            authorizationRevision: authorizationRevision
         )
     }
 
@@ -177,6 +193,30 @@ final class AuthenticationRootViewModel {
     /// authoritative `nil` or the operation reports a failure.
     func signOut() async {
         await sessionViewModel.signOut()
+    }
+
+    /// Captures local authorization for one document session and rejects later revocation.
+    ///
+    /// Each operation rechecks the existing durable principal authorizer. The captured shell identity
+    /// cannot become valid again after logout, observation replacement or local reauthorization.
+    func makeClientDocumentAccess() throws -> ClientDocumentAccess {
+        guard let identity = protectedAccessIdentity, case let .authenticated(session) = state else {
+            throw ClientDocumentAccessError.sessionExpired
+        }
+        return ClientDocumentAccess(
+            session: session,
+            authorizer: LocalPrincipalAuthorizer { [authorizeLocalPrincipalUseCase] session in
+                try await authorizeLocalPrincipalUseCase(session: session)
+            },
+            validateSession: { [weak self] in
+                guard let self else { throw ClientDocumentAccessError.sessionExpired }
+                try await self.validateDocumentAccess(identity)
+            }
+        )
+    }
+
+    private func validateDocumentAccess(_ identity: ProtectedAccessIdentity) throws {
+        guard protectedAccessIdentity == identity else { throw ClientDocumentAccessError.sessionExpired }
     }
 
     private var authorizationRequest: (

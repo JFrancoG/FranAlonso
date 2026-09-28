@@ -38,6 +38,13 @@ Los ADR se escriben antes de implementar una decisión no trivial y no se reescr
 | [0026](0026-iphone-portrait-only-product-exception.md) | iPhone solo portrait como excepción de producto | Aceptado |
 | [0027](0027-freehand-signature-input-product-exception.md) | Firma a mano alzada; excepción limitada a la entrada por trayectoria | Aceptado |
 | [0028](0028-client-signed-information-and-photo-authorization.md) | Información firmada y autorización opcional de fotografía | Aceptado |
+| [0029](0029-progressive-accessibility-validation.md) | Entrega funcional y validación progresiva de accesibilidad | Aceptado |
+
+El propietario aceptó ADR 0029 el 28 de septiembre de 2026 para separar entrega funcional para demo y validación
+integral. ADR 0022 permanece aceptado como objetivo; únicamente su disposición de cierre queda parcialmente sustituida
+por 0029. La evidencia aplazada conserva sus resultados, responsable e issue vinculada y se completa tras el feedback
+de Fran, antes del primer candidato para uso real. PLU-41 sigue In Progress hasta su entrega funcional; PLU-44 recoge
+la validación aplazada. No se reescribe el texto histórico de ADR 0022.
 
 El propietario aceptó ADR 0028 el 11 de septiembre de 2026: precisa el documento inicial, conserva su firma como regla
 de producto y separa la autorización posterior de foto sin desactivar la ficha. Implementación prevista en 08.5–08.9.

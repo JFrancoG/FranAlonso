@@ -1,6 +1,666 @@
 {
   "sourceLanguage" : "es",
   "strings" : {
+    "clients.consent.photo.authorized" : {
+      "comment" : "Estado explícito tras autorizar la fotografía interna opcional.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Autorización de fotografía seleccionada"
+          }
+        }
+      }
+    },
+    "clients.consent.section" : {
+      "comment" : "Texto del recorrido nativo de información, revisión y firma de clientes.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Información y firma"
+          }
+        }
+      }
+    },
+    "clients.consent.title" : {
+      "comment" : "Texto del recorrido nativo de información, revisión y firma de clientes.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Información del cliente"
+          }
+        }
+      }
+    },
+    "clients.consent.information" : {
+      "comment" : "Texto del recorrido nativo de información, revisión y firma de clientes.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Consultar información"
+          }
+        }
+      }
+    },
+    "clients.consent.review" : {
+      "comment" : "Texto del recorrido nativo de información, revisión y firma de clientes.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Revisar y firmar"
+          }
+        }
+      }
+    },
+    "clients.consent.resume" : {
+      "comment" : "Texto del recorrido nativo de información, revisión y firma de clientes.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reanudar documento"
+          }
+        }
+      }
+    },
+    "clients.consent.back" : {
+      "comment" : "Texto del recorrido nativo de información, revisión y firma de clientes.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Volver a la ficha"
+          }
+        }
+      }
+    },
+    "clients.consent.review.instruction" : {
+      "comment" : "Texto del recorrido nativo de información, revisión y firma de clientes.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Revisa este texto antes de firmar. La firma quedará vinculada a esta información."
+          }
+        }
+      }
+    },
+    "clients.consent.capture" : {
+      "comment" : "Texto del recorrido nativo de información, revisión y firma de clientes.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "He revisado el texto; firmar"
+          }
+        }
+      }
+    },
+    "clients.consent.accept" : {
+      "comment" : "Texto del recorrido nativo de información, revisión y firma de clientes.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Conservar documento firmado"
+          }
+        }
+      }
+    },
+    "clients.consent.retained" : {
+      "comment" : "Texto del recorrido nativo de información, revisión y firma de clientes.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Documento conservado en este dispositivo"
+          }
+        }
+      }
+    },
+    "clients.consent.pending" : {
+      "comment" : "Texto del recorrido nativo de información, revisión y firma de clientes.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El documento está pendiente de envío."
+          }
+        }
+      }
+    },
+    "clients.consent.uploaded" : {
+      "comment" : "Texto del recorrido nativo de información, revisión y firma de clientes.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Documento enviado."
+          }
+        }
+      }
+    },
+    "clients.consent.upload" : {
+      "comment" : "Texto del recorrido nativo de información, revisión y firma de clientes.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reintentar envío"
+          }
+        }
+      }
+    },
+    "clients.consent.retry" : {
+      "comment" : "Texto del recorrido nativo de información, revisión y firma de clientes.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reintentar"
+          }
+        }
+      }
+    },
+    "clients.consent.current.content" : {
+      "comment" : "Texto del recorrido nativo de información, revisión y firma de clientes.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Revisar la versión actual"
+          }
+        }
+      }
+    },
+    "clients.consent.photo.optional" : {
+      "comment" : "Texto del recorrido nativo de información, revisión y firma de clientes.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La autorización de fotografía es opcional. Puedes continuar sin ella."
+          }
+        }
+      }
+    },
+    "clients.consent.photo.authorize" : {
+      "comment" : "Texto del recorrido nativo de información, revisión y firma de clientes.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Autorizar el uso interno de la fotografía"
+          }
+        }
+      }
+    },
+    "clients.consent.photo.decline" : {
+      "comment" : "Texto del recorrido nativo de información, revisión y firma de clientes.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continuar sin fotografía"
+          }
+        }
+      }
+    },
+    "clients.consent.photo.remove" : {
+      "comment" : "Texto del recorrido nativo de información, revisión y firma de clientes.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Retirar autorización de fotografía"
+          }
+        }
+      }
+    },
+    "clients.consent.signature" : {
+      "comment" : "Texto del recorrido nativo de información, revisión y firma de clientes.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Firma"
+          }
+        }
+      }
+    },
+    "clients.consent.signature.saved" : {
+      "comment" : "Texto del recorrido nativo de información, revisión y firma de clientes.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Firma vinculada a este texto."
+          }
+        }
+      }
+    },
+    "clients.consent.signature.date" : {
+      "comment" : "Texto del recorrido nativo de información, revisión y firma de clientes.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fecha de firma"
+          }
+        }
+      }
+    },
+    "clients.consent.signature.description" : {
+      "comment" : "Texto del recorrido nativo de información, revisión y firma de clientes.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Firma manuscrita aportada para este documento."
+          }
+        }
+      }
+    },
+    "clients.consent.profile.conflict.title" : {
+      "comment" : "Texto del recorrido nativo de información, revisión y firma de clientes.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La ficha ha cambiado"
+          }
+        }
+      }
+    },
+    "clients.consent.profile.conflict.message" : {
+      "comment" : "Texto del recorrido nativo de información, revisión y firma de clientes.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Los datos de la ficha ya no coinciden con este borrador. Revisa los datos actuales antes de continuar; puede ser necesario volver a firmar."
+          }
+        }
+      }
+    },
+    "clients.consent.profile.current" : {
+      "comment" : "Texto del recorrido nativo de información, revisión y firma de clientes.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Revisar con los datos actuales"
+          }
+        }
+      }
+    },
+    "clients.consent.choices.title" : {
+      "comment" : "Texto del recorrido nativo de información, revisión y firma de clientes.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elige el documento que quieres continuar"
+          }
+        }
+      }
+    },
+    "clients.consent.draft" : {
+      "comment" : "Texto del recorrido nativo de información, revisión y firma de clientes.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Borrador"
+          }
+        }
+      }
+    },
+    "clients.consent.document" : {
+      "comment" : "Texto del recorrido nativo de información, revisión y firma de clientes.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Documento conservado"
+          }
+        }
+      }
+    },
+    "clients.consent.revision" : {
+      "comment" : "Texto del recorrido nativo de información, revisión y firma de clientes.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Revisión"
+          }
+        }
+      }
+    },
+    "clients.consent.unsigned" : {
+      "comment" : "Texto del recorrido nativo de información, revisión y firma de clientes.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sin firma"
+          }
+        }
+      }
+    },
+    "clients.consent.discard" : {
+      "comment" : "Texto del recorrido nativo de información, revisión y firma de clientes.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Descartar borrador del documento"
+          }
+        }
+      }
+    },
+    "clients.consent.discard.title" : {
+      "comment" : "Texto del recorrido nativo de información, revisión y firma de clientes.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¿Descartar este borrador?"
+          }
+        }
+      }
+    },
+    "clients.consent.discard.message" : {
+      "comment" : "Texto del recorrido nativo de información, revisión y firma de clientes.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se descartará el borrador del documento y su firma pendiente. La ficha del cliente se conserva."
+          }
+        }
+      }
+    },
+    "clients.consent.unsaved.title" : {
+      "comment" : "Texto del recorrido nativo de información, revisión y firma de clientes.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¿Salir sin guardar los cambios?"
+          }
+        }
+      }
+    },
+    "clients.consent.unsaved.message" : {
+      "comment" : "Texto del recorrido nativo de información, revisión y firma de clientes.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Los cambios de la ficha posteriores al último guardado se perderán. El trabajo guardado se conserva."
+          }
+        }
+      }
+    },
+    "clients.consent.unsaved.discard" : {
+      "comment" : "Texto del recorrido nativo de información, revisión y firma de clientes.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Salir sin guardar"
+          }
+        }
+      }
+    },
+    "clients.consent.loading.information" : {
+      "comment" : "Texto del recorrido nativo de información, revisión y firma de clientes.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cargando información…"
+          }
+        }
+      }
+    },
+    "clients.consent.recovering" : {
+      "comment" : "Texto del recorrido nativo de información, revisión y firma de clientes.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Recuperando documento…"
+          }
+        }
+      }
+    },
+    "clients.consent.saving.draft" : {
+      "comment" : "Texto del recorrido nativo de información, revisión y firma de clientes.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Guardando borrador…"
+          }
+        }
+      }
+    },
+    "clients.consent.saving.signature" : {
+      "comment" : "Texto del recorrido nativo de información, revisión y firma de clientes.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Guardando firma…"
+          }
+        }
+      }
+    },
+    "clients.consent.rendering" : {
+      "comment" : "Texto del recorrido nativo de información, revisión y firma de clientes.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Conservando documento firmado…"
+          }
+        }
+      }
+    },
+    "clients.consent.uploading" : {
+      "comment" : "Texto del recorrido nativo de información, revisión y firma de clientes.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enviando documento…"
+          }
+        }
+      }
+    },
+    "clients.consent.discarding" : {
+      "comment" : "Texto del recorrido nativo de información, revisión y firma de clientes.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Descartando borrador…"
+          }
+        }
+      }
+    },
+    "clients.consent.error.catalog" : {
+      "comment" : "Texto del recorrido nativo de información, revisión y firma de clientes.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se ha podido cargar la información. Vuelve a intentarlo."
+          }
+        }
+      }
+    },
+    "clients.consent.error.persistence" : {
+      "comment" : "Texto del recorrido nativo de información, revisión y firma de clientes.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se ha podido guardar el documento. Conserva esta pantalla y vuelve a intentarlo."
+          }
+        }
+      }
+    },
+    "clients.consent.error.rendering" : {
+      "comment" : "Texto del recorrido nativo de información, revisión y firma de clientes.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se ha podido generar el documento. Tu firma guardada sigue disponible; vuelve a intentarlo."
+          }
+        }
+      }
+    },
+    "clients.consent.error.authorization" : {
+      "comment" : "Texto del recorrido nativo de información, revisión y firma de clientes.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El acceso a este documento ha caducado. Vuelve a abrir la ficha desde una sesión autorizada."
+          }
+        }
+      }
+    },
+    "clients.consent.error.conflict" : {
+      "comment" : "Texto del recorrido nativo de información, revisión y firma de clientes.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El documento ha cambiado en otra sesión o tiene un conflicto. Recupera su estado antes de continuar."
+          }
+        }
+      }
+    },
+    "clients.consent.error.photo.decision" : {
+      "comment" : "Texto del recorrido nativo de información, revisión y firma de clientes.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elige si autorizas la fotografía o continúa sin ella antes de firmar."
+          }
+        }
+      }
+    },
+    "clients.consent.error.unavailable" : {
+      "comment" : "Texto del recorrido nativo de información, revisión y firma de clientes.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El envío no está disponible. El documento se conserva en este dispositivo para reintentarlo."
+          }
+        }
+      }
+    },
+    "clients.consent.error.permission" : {
+      "comment" : "Texto del recorrido nativo de información, revisión y firma de clientes.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No hay permiso para enviar este documento. El documento se conserva; revisa el acceso antes de reintentar."
+          }
+        }
+      }
+    },
+    "clients.consent.stale" : {
+      "comment" : "Texto del recorrido nativo de información, revisión y firma de clientes.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Los datos han cambiado. Revisa el documento actualizado antes de continuar."
+          }
+        }
+      }
+    },
+    "clients.consent.preview.error" : {
+      "comment" : "Texto del recorrido nativo de información, revisión y firma de clientes.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se ha podido preparar la vista previa."
+          }
+        }
+      }
+    },
     "app.shell.tab.catalog" : {
       "comment" : "Etiqueta visible y accesible de la sección Catálogo en la navegación principal.",
       "extractionState" : "manual",

@@ -21,15 +21,28 @@ actor ClientDocumentPersistenceActor {
 
     /// Saves profile, causal work and editing state together, incrementing the optimistic revision once.
     /// An unchanged draft is idempotent; stale edits, retired document identities and accepted drafts are rejected.
+    /// Divergent contextual profile edits require reconciliation; signing alone never rewrites the client or its queue.
     func saveDraft(_ draft: ClientDocumentDraft, operationID: UUID) throws -> ClientDocumentDraft {
         try transaction {
             guard try acceptedModel(draftID: draft.id) == nil else {
                 throw ClientDocumentPersistenceError.alreadyAccepted
             }
             let model = try draftModel(id: draft.id)
+            let clients = ClientLocalDataSource()
+            let existingClient = try clients.client(id: draft.fields.clientID, in: modelContext)
+            let currentProfile = try existingClient.map {
+                try ClientProfile(
+                    displayName: $0.displayName,
+                    taxIdentifier: $0.taxIdentifier,
+                    billingAddress: $0.billingAddress
+                )
+            }
             if let existing = try model?.toDomain() {
                 guard existing.fields.clientID == draft.fields.clientID else {
                     throw ClientDocumentPersistenceError.invalidDraft
+                }
+                guard currentProfile == existing.fields.profile || currentProfile == draft.fields.profile else {
+                    throw ClientDocumentPersistenceError.staleDraft
                 }
                 if try atRevision(draft, existing.fields.revision) == existing {
                     return existing
@@ -42,8 +55,6 @@ actor ClientDocumentPersistenceActor {
             }
             guard draft.fields.revision < Int.max else { throw ClientDocumentPersistenceError.invalidDraft }
             let updated = try atRevision(draft, draft.fields.revision + 1)
-            let clients = ClientLocalDataSource()
-            let existingClient = try clients.client(id: draft.fields.clientID, in: modelContext)
             if draft.fields.snapshot?.fields.context.purpose == .subsequentPhotoAuthorization {
                 guard case .active = existingClient?.status else {
                     throw ClientDocumentPersistenceError.invalidDraft
@@ -56,7 +67,9 @@ actor ClientDocumentPersistenceActor {
                 billingAddress: draft.fields.profile.billingAddress,
                 status: existingClient?.status ?? .draft
             )
-            try clients.stagePendingUpsert(client, operationID: operationID, in: modelContext)
+            if currentProfile != draft.fields.profile {
+                try clients.stagePendingUpsert(client, operationID: operationID, in: modelContext)
+            }
             if let model {
                 try model.update(updated)
             } else {
@@ -97,6 +110,7 @@ actor ClientDocumentPersistenceActor {
 
     /// Reuses an identical artifact; a competing payload becomes a durable conflict without replacing the original.
     /// A new artifact must match the current signed draft revision, binding and pre-render signing date.
+    /// A name changed through another form during rendering requires reconciliation before new acceptance.
     func accept(_ document: ClientSignedDocument, draftID: UUID, revision: Int) throws -> ClientDocumentDelivery {
         if let existing = try documentModel(id: document.id) {
             let retained = try existing.toDomain()
@@ -125,6 +139,10 @@ actor ClientDocumentPersistenceActor {
             guard draft.fields.binding == document.fields.binding,
                   draft.fields.signedAt == document.fields.signedAt
             else { throw ClientDocumentPersistenceError.invalidDraft }
+            let currentClient = try ClientLocalDataSource().client(id: draft.fields.clientID, in: modelContext)
+            guard currentClient?.displayName == document.fields.binding.snapshot.fields.clientName else {
+                throw ClientDocumentPersistenceError.staleDraft
+            }
             let model = try ClientSignedDocumentModel(draftID: draftID, document: document)
             modelContext.insert(model)
             return try model.toDomain()

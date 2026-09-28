@@ -9,6 +9,7 @@ final class AppRuntime {
     private let modelContainer: ModelContainer
     private let persistenceActor: ClientPersistenceActor
     private let observationSignal: ClientObservationSignal
+    private let clientDocumentComposition: ClientDocumentComposition
     private let productPersistenceActor: ProductPersistenceActor
     private let productObservationSignal: ProductObservationSignal
     private let servicePersistenceActor: ServicePersistenceActor
@@ -67,6 +68,10 @@ final class AppRuntime {
     ) {
         let persistenceActor = ClientPersistenceActor(modelContainer: modelContainer)
         let observationSignal = ClientObservationSignal()
+        let clientDocumentComposition = ClientDocumentComposition(
+            modelContainer: modelContainer,
+            observationSignal: observationSignal
+        )
         let productPersistenceActor = ProductPersistenceActor(modelContainer: modelContainer)
         let productObservationSignal = ProductObservationSignal()
         let servicePersistenceActor = ServicePersistenceActor(modelContainer: modelContainer)
@@ -77,6 +82,7 @@ final class AppRuntime {
         self.modelContainer = modelContainer
         self.persistenceActor = persistenceActor
         self.observationSignal = observationSignal
+        self.clientDocumentComposition = clientDocumentComposition
         self.productPersistenceActor = productPersistenceActor
         self.productObservationSignal = productObservationSignal
         self.servicePersistenceActor = servicePersistenceActor
@@ -97,7 +103,8 @@ final class AppRuntime {
             servicePersistenceActor: servicePersistenceActor,
             serviceObservationSignal: serviceObservationSignal,
             salePersistenceActor: salePersistenceActor,
-            saleObservationSignal: saleObservationSignal
+            saleObservationSignal: saleObservationSignal,
+            makeClientConsentServices: clientDocumentComposition.makeServices
         )
     }
 
@@ -111,6 +118,7 @@ final class AppRuntime {
         guard firebaseIsConfigured, authenticationRootViewModel == nil else { return }
 
         authenticationRootViewModel = makeAuthenticationRootViewModel(modelContainer)
+        clientDocumentComposition.authenticationRoot = authenticationRootViewModel
     }
 
     /// Composes the inactive Clients sync engine once Firebase is ready.

@@ -29,10 +29,17 @@ final class ClientFormViewModel {
     }
 
     let destination: ClientFormDestination
+    let consentStore: ClientConsentStore?
+    let consentUnavailable: Bool
+    private(set) var loadedClient: Client?
+    private(set) var savedFields = ClientFormFields()
 
     /// Clears only a rejected name's validation error when editing makes that name valid, without saving.
     var fields = ClientFormFields() {
         didSet {
+            if fields.displayName != oldValue.displayName {
+                consentStore?.invalidatePresentation(clientName: fields.displayName)
+            }
             guard fields.displayName != oldValue.displayName,
                   state == .failed(.save, .invalidDisplayName),
                   (try? ClientProfile(displayName: fields.displayName)) != nil else { return }
@@ -55,9 +62,13 @@ final class ClientFormViewModel {
         getClient: GetClientUseCase,
         create: @escaping SaveOperation,
         update: @escaping SaveOperation,
-        deactivate: @escaping DeactivateOperation
+        deactivate: @escaping DeactivateOperation,
+        consentServices: ClientConsentServices? = nil,
+        consentUnavailable: Bool = false
     ) {
         self.destination = destination
+        consentStore = consentServices.map { ClientConsentStore(clientID: destination.clientID, services: $0) }
+        self.consentUnavailable = consentUnavailable
         self.getClient = getClient
         self.create = create
         self.update = update
@@ -67,7 +78,8 @@ final class ClientFormViewModel {
 
     /// Allows editing after a rejected mutation, but never before an existing profile has loaded.
     var canEdit: Bool {
-        switch state {
+        guard consentStore?.isBusy != true else { return false }
+        return switch state {
         case .editing, .failed(.save, _), .failed(.deactivate, _): true
         default: false
         }
@@ -88,7 +100,21 @@ final class ClientFormViewModel {
             let client = try await getClient(destination.clientID)
             try Task.checkCancellation()
             guard operationGeneration == generation else { return }
+            loadedClient = client
             fields = ClientFormFields(client)
+            savedFields = fields
+            if let consentStore {
+                await consentStore.recover(profile: try normalizedProfile())
+                guard operationGeneration == generation else { return }
+                if consentStore.failure == .authorization {
+                    close()
+                    return
+                }
+                guard consentStore.failure == nil else {
+                    state = .failed(.load, .persistenceUnavailable)
+                    return
+                }
+            }
             state = .editing
         } catch {
             guard operationGeneration == generation else { return }
@@ -122,15 +148,35 @@ final class ClientFormViewModel {
         let generation = UUID()
         operationGeneration = generation
         state = .saving
+        if let consentStore, consentStore.hasPendingDraft {
+            let accepted = await consentStore.saveProfile(profile)
+            guard operationGeneration == generation else { return }
+            if accepted {
+                finishDocumentProfile(profile)
+                if let loadedClient {
+                    state = .saved(loadedClient)
+                }
+            } else if consentStore.failure == .authorization {
+                close()
+            } else {
+                state = .failed(.save, .persistenceUnavailable)
+            }
+            return
+        }
+        if consentStore?.phase == .choosing || consentStore?.requiresReconciliation == true {
+            state = .failed(.save, .conflict)
+            return
+        }
         do {
             let client: Client
-            switch destination.mode {
-            case .create:
-                client = try await create(destination.clientID, profile, context)
-            case .edit:
+            if loadedClient != nil || destination.mode == .edit {
                 client = try await update(destination.clientID, profile, context)
+            } else {
+                client = try await create(destination.clientID, profile, context)
             }
             guard operationGeneration == generation else { return }
+            loadedClient = client
+            savedFields = fields
             state = .saved(client)
         } catch {
             guard operationGeneration == generation else { return }
@@ -158,7 +204,151 @@ final class ClientFormViewModel {
     /// Closes presentation and ignores later responses without claiming to roll back accepted writes.
     func close() {
         operationGeneration = UUID()
+        consentStore?.close()
+        fields = ClientFormFields()
+        savedFields = fields
+        loadedClient = nil
         state = .closed
+    }
+
+    /// Ends the document presentation; the caller cancels its task and later recovery reconciles durable work.
+    func dismissConsentPresentation() {
+        operationGeneration = UUID()
+        consentStore?.dismiss()
+    }
+
+    /// Serializes document intentions with the form and never maps document acceptance to activation.
+    func performConsent(_ action: ConsentAction) async {
+        guard state != .closed, consentStore?.isBusy != true, let consentStore else { return }
+        switch state {
+        case .saving, .deactivating, .loading: return
+        default: break
+        }
+        let generation = UUID()
+        operationGeneration = generation
+        let submittedFields = fields
+        var persistedProfile: ClientProfile?
+        switch action {
+        case .information:
+            await consentStore.showInformation()
+        case .backToForm:
+            consentStore.dismiss()
+        case .captured(let result, let id):
+            await consentStore.completeCapture(result, id: id)
+        case .accept:
+            await consentStore.accept()
+        case .upload:
+            await consentStore.upload()
+        case .discard:
+            await consentStore.discard()
+        case .selectDelivery(let id):
+            consentStore.selectDelivery(id: id)
+        case .recover:
+            persistedProfile = await recoverConsent(store: consentStore, generation: generation)
+        default:
+            persistedProfile = await performProfileConsent(action, store: consentStore)
+        }
+        guard operationGeneration == generation else { return }
+        if consentStore.failure == .authorization {
+            close()
+        } else if let persistedProfile, fields == submittedFields {
+            finishDocumentProfile(persistedProfile)
+        }
+    }
+
+    private func performProfileConsent(_ action: ConsentAction, store: ClientConsentStore) async -> ClientProfile? {
+        let profile: ClientProfile
+        do {
+            if action == .useCurrentProfile, let loadedClient {
+                profile = try consentProfile(loadedClient)
+            } else {
+                profile = try normalizedProfile()
+            }
+        } catch {
+            state = .failed(.save, clientError(error))
+            return nil
+        }
+        switch action {
+        case .review, .currentContent:
+            guard canReviewConsent else { return nil }
+            state = .editing
+            return await store.review(profile: profile, currentContent: action == .currentContent) ? profile : nil
+        case .selectDraft(let id):
+            store.selectDraft(id: id, profile: profile)
+            if store.phase == .review {
+                return await store.review(profile: profile) ? profile : nil
+            }
+        case .useCurrentProfile:
+            return await store.resolveProfile(useDraft: false, current: profile)
+        case .authorizePhoto:
+            await store.choosePhoto(.authorized)
+        case .declinePhoto:
+            await store.choosePhoto(.declined)
+        case .removePhoto:
+            await store.choosePhoto(.notSelected)
+        default:
+            break
+        }
+        return nil
+    }
+
+    /// Reloads the durable profile after a conflict while retaining unsubmitted edits until an explicit choice.
+    private func recoverConsent(store: ClientConsentStore, generation: UUID) async -> ClientProfile? {
+        do {
+            var current = try normalizedProfile()
+            if loadedClient != nil || destination.mode == .edit {
+                let latest = try await getClient(destination.clientID)
+                try Task.checkCancellation()
+                guard operationGeneration == generation else { return nil }
+                current = try consentProfile(latest)
+                if !hasUnsavedChanges {
+                    finishDocumentProfile(current)
+                } else {
+                    loadedClient = latest
+                }
+            }
+            await store.recover(profile: current)
+            let submitted = try normalizedProfile()
+            return await store.review(profile: submitted) ? submitted : nil
+        } catch {
+            guard operationGeneration == generation else { return nil }
+            if !(error is CancellationError) {
+                state = .failed(.save, clientError(error))
+            }
+            return nil
+        }
+    }
+
+    private func consentProfile(_ client: Client) throws -> ClientProfile {
+        try ClientProfile(
+            displayName: client.displayName,
+            taxIdentifier: client.taxIdentifier,
+            billingAddress: client.billingAddress
+        )
+    }
+
+    private func normalizedProfile() throws -> ClientProfile {
+        try prepareProfile(
+            displayName: fields.displayName,
+            taxIdentifier: fields.taxIdentifier,
+            streetLine: fields.streetLine,
+            postalCode: fields.postalCode,
+            city: fields.city,
+            province: fields.province
+        )
+    }
+
+    private func finishDocumentProfile(_ profile: ClientProfile) {
+        let client = Client(
+            id: destination.clientID,
+            displayName: profile.displayName,
+            taxIdentifier: profile.taxIdentifier,
+            billingAddress: profile.billingAddress,
+            status: loadedClient?.status ?? .draft
+        )
+        loadedClient = client
+        fields = ClientFormFields(client)
+        savedFields = fields
     }
 
     private func clientError(_ error: any Error) -> ClientError {

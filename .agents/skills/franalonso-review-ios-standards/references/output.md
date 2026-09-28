@@ -11,5 +11,7 @@ Then report:
 - Build/tests/diagnostics evidence inspected or missing.
 - Out-of-scope observations.
 - Residual risks and gate result: pass, correct before proceeding, or blocked.
+- When ADR 0029 applies, distinguish the functional demo gate from integral validation and identify the linked
+  accessibility work still pending, without implying phase closure.
 
 If there are no findings, say `Sin hallazgos` without claiming absolute correctness beyond the evidence.
