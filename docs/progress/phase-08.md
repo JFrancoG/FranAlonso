@@ -1,5 +1,420 @@
 # Fase 08 — Clientes, consentimiento y foto
 
+## Publicación en rama — 2026-09-29
+
+El propietario autoriza «commit y push» de la preparación revisada. Se publica el alcance08.7 y ADR0029 en
+`origin/codex/plu-41-phase-08-7-consent-flow`, con mensaje `✨ feat(clients): integrate consent review flow`.
+CHANGELOG registra la entrega; la identidad exacta del commit y la paridad remota se verifican en Git y Linear.
+Se reutilizan build6,685s, suite1.067/1.067, retest final2/2 y auditorías anteriores: después solo cambia documentación
+de entrega. Sin ejecución Xcode adicional. Diff y archivos previstos comprobados; el esquema compartido sigue en HEAD.
+
+PLU-41 y PLU-34 permanecen In Progress. PR, merge, cierre de issues y08.8 no están autorizados por este paso.
+PLU-44 conserva la accesibilidad integral aplazada; no se modifican sus resultados ni los pendientes dePLU-38.
+El estado de publicación de este apartado sustituye las referencias históricas inferiores a código solo local.
+
+## Preparación de entrega funcional — 2026-09-28
+
+El propietario autoriza «ok, adelante» a preparar08.7 antes de commit/push. Se aplica el gate funcional de ADR0029;
+PLU-44 conserva la validación accesible integral y PLU-38 sus pendientes propios.
+
+- Esquema compartido Develop restaurado byte a byte a HEAD, fixtures desactivadas; retirados FocusDiagnostics,
+  traceFocus, callbacks solo diagnósticos y binding/caso temporal back. Coordinación y observadores funcionales intactos.
+- PRE de limpieza favorable por estándares/UI;518rutas idénticas antes/después, SHA256
+  `a584a15be95a28e861d12f04323f6dbda19c22be1ce94df62022ed8f31f729a0`.
+  DeviceInteractionInstallAndRun recibe solo signed-out explícito para esa ejecución; no se crea otro esquema.
+- Build-for-testing inicial PASS21,640s. Primera suite:1.065resultados,1.052PASS/13FAIL,0omitidos.
+  El xcresult nativo confirma iPhone11/27.2 pese a que SwitchRunDestination anunció Simulator. Fallan10pruebas
+  de configuración y3de assets al leer rutas del Mac mediante #filePath. StartWorkspaceSession por UUID fija
+  iPadAir11M4/27.0; reintento13/13PASS, sin cambiar tests. No se maquilla la primera ejecución como verde.
+- POST detecta P2 de integridad: un formulario abierto antes del borrador puede cambiar el nombre vía CRUD
+  durante render, sin cambiar revisión documental. PRE focal favorable: guard del nombre vigente dentro de nueva
+  aceptación, sin afectar históricos ya aceptados ni campos no presentados. Alternativas de comprobar antes del
+  render o solo en Store conservan la ventana; invalidar desde todo CRUD amplía innecesariamente el cambio.
+- TDD con dos formularios y GatedRecoveryRenderer: RED1FAIL/1PASS, nombre obsoleto aceptado reproducido;
+  GREEN2/2PASS. Se comprueban conflicto, recuperación/nueva firma, NIF concurrente y reintento histórico.
+  Cambio final solo en ClientDocumentPersistenceActor.accept y dos tests de integración; sin schema, UI o live.
+- Suite final Xcode MCP Develop/iPadAir11M4/27.0:814declaraciones,1.067/1.067PASS, cero fallos/omitidos.
+  Build final PASS6,685s; GetBuildLog sin issues estructuradas, log completo conserva aviso AppIntents.
+  No se declara cero warnings globales, Production, CI o servicios live.
+- POST corrige el control del test histórico: el segundo formulario ya estaba guardado y su siguiente save era
+  inoperante. El test reabre un formulario y comprueba el nombre durable antes del reintento. Retest2/2PASS
+  a23:29:16 en Simulator; sin cambios posteriores de producción ni repetición de la suite completa.
+
+Bundles nativos bajo `/Users/jesusf/Library/Developer/Xcode/DerivedData/FranAlonso-eehpkvodmpnqlchgeqriatcucsjf/Logs/Test/`,
+prefijo `Test-FranAlonso-Develop-2026.09.28_`, sufijo `-+0200.xcresult`:
+`23-15-47` inicial, `23-16-59` reintento13, `23-23-47` RED, `23-24-24` GREEN, `23-24-58` suite y `23-29-16` retest final.
+Verificación sobre originales cerrados: las copias ActionArtifacts pueden carecer de Info.plist.
+Logs MCP bajo `/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/`:
+`BuildProject/BuildProject-Log-20260928-232524.txt` y
+`RunAllTests/41E36E56-E3FC-4116-A3E3-ED252A88F396.txt`.
+
+Smoke funcional táctil favorable de4m45s por subagente con skill Apple: lectura/revisión, cancelación de captura sin
+salto del botón Firmar, firma, conservar, error/reintento y recuperación al guardar/reabrir. Artefactos y límites en
+[matriz08.7](../accessibility/evidence/08-7-consent-flow.md#smoke-funcional-de-preparación--2026-09-28).
+El error desplaza Reintentar80,5pt; scroll corto lo deja operable. No resuelve foco/anuncios/descubribilidad por AT.
+Invalidación y cancelar salida con cambios no repetidos; evidencia anterior conservada sin ampliar su alcance.
+Recuperación en mismo proceso de fixture no acredita reinicio durable. Previews previas Large/XXX Large/AX5
+reutilizadas por impacto; sin nueva matriz AX. Smoke anterior al guard Data, validado después por tests integrados.
+
+Llamado EndSession al finalizar: responde que la sesión ya no existe después de las ejecuciones de tests.
+Selección Develop/iPhone11 original restaurada y verificada; no se relanza el físico.
+La sesión auxiliar del retest final devuelve Session stopped; destino original restaurado y verificado otra vez.
+Preparación funcional validada y revisiones finales favorables; PLU-41 sigue In Progress y fase08 abierta.
+Sin commit/push/PR/merge/cierre/activación ni inicio de08.8.
+
+POST de estándares y UI/documentación favorables tras corregir el P2 y el control del test. Dos revisores
+independientes reutilizados por límite de agentes; ninguno implementa código. Huella518rutas path+NUL+bytes+NUL:
+POST conjunta idéntica `bbdff317e1ff90f8b949663893cef86017b955ea189e2d7e31743c54081d3534`;
+relectura final de estándares tras ajustar test/evidencia idéntica
+`dd205e63f5bc24d7d9ab7def4a44a596ea705183a4fc0493855fd91c95089072`.
+Este registro se añade después de verificar las huellas. Matriz55criterios sin cambios de resultados;
+diff-check limpio; gobernanza conserva solo seis enlaces históricos rotos de08.3. Progress dentro de8.192bytes.
+PLU-41 reconciliada manteniendo In Progress; PLU-44 conserva la deuda y las demás issues no cambian de estado.
+
+## Entrega funcional y validación separadas — 2026-09-28
+
+El propietario acepta «OK, me parece bien, hazlo así» sobre separar entrega funcional de 08.7 y validación accesible
+aplazada. [ADR 0029](../ADRs/0029-progressive-accessibility-validation.md) queda aceptado; sustituye únicamente el
+momento del cierre de ADR 0022 y conserva su objetivo. Constitución, AGENTS, guía/checklist, índice, specs 08/18,
+matriz y skills locales se reconcilian. No se renumeran fases ni se reescriben ADR aceptados anteriores.
+
+- [PLU-41](https://linear.app/plusprojects/issue/PLU-41) sigue `In Progress`: implementación local, entrega funcional
+  pendiente. Antes del cierre: revisar diff y configuración temporal, comprobar recorrido y validación técnica
+  afectada, reconciliar deuda y realizar solo la entrega Git expresamente autorizada.
+- [PLU-44](https://linear.app/plusprojects/issue/PLU-44) creada en `Backlog`, asignada a Jesus Franco, hija de PLU-34 y
+  relacionada con PLU-41. Separa fallos conocidos (foco/anuncios y error/reintento reportado) de comprobaciones pendientes;
+  la [matriz 08.7](../accessibility/evidence/08-7-consent-flow.md) conserva las 55 filas y todos sus resultados.
+- Recuperación: tras incorporar feedback de Fran y estabilizar cada flujo, sin esperar al final de la app; antes del
+  primer candidato para uso real. PLU-44 no bloquea por sí sola entrega funcional/08.8, pero impide cierre integral de
+  fase 08 y la puerta de uso real de fase 18. Integridad, privacidad y recuperación funcional no se aplazan.
+- PLU-38 sigue `In Progress` con sus dos pendientes propios; no se absorbe ni cierra. PLU-34 permanece abierta y
+  PLU-42–PLU-43 siguen en `Backlog`. No se inicia 08.8 ni se da por concluida la 08.7.
+
+La creación de PLU-44 y la reconciliación de descripciones están autorizadas por esta decisión. Sin cambios de código,
+configuración de la app, commit/push/PR/merge, cierre de issues o live. Build/tests/previews Xcode MCP nuevos: `N/A`
+por cambio exclusivamente documental; la evidencia técnica y manual inferior sigue siendo histórica, no reejecutada.
+
+Validación del cambio documental: 23 Markdown previstos; enlaces modificados y `git diff --check` correctos;
+55/55 filas de matriz idénticas; 426 archivos no Markdown de la baseline sin cambios. Las cuatro skills modificadas
+pasan `quick_validate.py`. Progress vuelve a estar dentro de 8.192 bytes; el validador global conserva únicamente
+los seis enlaces históricos rotos de capturas08.3, ya presentes antes del cambio.
+
+POST independientes `adr0029_standards_post` y `adr0029_accessibility_post`: favorables tras corregir una incoherencia
+de previews. Se conservan Large/XXX Large/AX5 soportados también para demo, conforme a ADR0011; solo se aplaza la
+matriz exhaustiva restante. Sin nuevos previews/Inspector/runtime ni PASS de accesibilidad. Primer control operacional
+repetido tras retirar un bytecode auxiliar creado por el validador del orquestador, sin escritura de los revisores.
+Reauditoría focal: huella PRE/POST idéntica de518rutas, algoritmo path+NUL+bytes+NUL ordenado y SHA256
+`48721dadb46add7bf218dba0b2c42a3ac4d7c2c3d70d8eb227c798cbd67439f1`.
+Este registro de resultados se añade después de la huella. Obsidian CLI confirma vault raíz y lectura del ADR0029.
+
+## Pasada manual y remediación 08.7 — 2026-09-28
+
+El propietario ejecuta la pasada guiada en iPhone 11 físico y simulador de iPad; resultados comunicados en chat,
+sin observación directa por el agente. [Registro acotado](../accessibility/evidence/08-7-consent-flow.md): lectura con
+nombre vacío, código postal preservado y retorno al control origen; revisión del nombre, invalidación de firma al
+editarlo, conservación y recuperación tras reabrir ficha, descarte de edición sin pérdida de documento; dos acciones
+por Control por voz; AX5, orientación horizontal iPad y ventana mínima; entrada/cancelación de captura por teclado.
+
+Fallos reportados: VoiceOver vuelve a «Volver a la ficha» al entrar/regresar de captura; locución se interrumpe;
+reintento desplaza y deja error difícil de localizar; foco FKA poco perceptible solo en acción prominente.
+El propietario aclara que el texto del botón siempre es legible: no es un fallo observado de contraste textual.
+
+Corrección focal en ClientConsentScreen, ClientConsentActionsView, derivación del Store y un test nuevo:
+un propietario de foco contextual espera operación finalizada y sheet descartada; resultados importantes con prioridad
+alta; progreso/error junto a acciones; retry presente pero deshabilitado al enviar; estilo bordered nativo local para
+acciones principales, sin modificar estilo compartido ni captura08.4. Defaults finales válidos también tras éxito upload
+y recuperación. Sin Domain/Data, esquema de datos, dependencias, unsafe, activación ni publicación.
+
+Fuentes Apple leídas por Cupertino:
+[foco predeterminado iOS26](https://developer.apple.com/documentation/swiftui/view/accessibilitydefaultfocus(_:_:)),
+[prioridades de anuncio](https://developer.apple.com/documentation/uikit/uiaccessibilitypriority),
+[AccessibilityTechnologies](https://developer.apple.com/documentation/swiftui/accessibilitytechnologies).
+No se asume que isFocused observe Full Keyboard Access ni se simula foco con un borde permanente.
+
+Xcode27 estable/MCP Service abrió este proyecto como `workspace-EYu6rxi7hg`; Develop estaba seleccionado, destino
+iPhone11 (herramienta informa iOS27.2). Para validación se seleccionó temporalmente iPadAir11M4/27.0, SDK27.0.
+Este dato de dispositivo consultado no reconstruye el modelo/build exacto de las pasadas manuales previas.
+
+- RED: `RunSomeTests/Test-FranAlonso-Develop-2026.09.28_18-43-26-+0200.xcresult`, falla la presencia de retry durante
+  envío suspendido al conservar la condición anterior. Un fallo conductual esperado, no error de compilación.
+- GREEN: `RunSomeTests/Test-FranAlonso-Develop-2026.09.28_18-47-17-+0200.xcresult`, 19 resultados Store PASS,
+  incluidos tres parámetros de decisión de foto; cero fallos/omitidos. Sin repetir suite global por este arreglo focal.
+- Build final PASS11,324s, `BuildProject/BuildProject-Log-20260928-185215.txt`. GetBuildLog sin issues estructuradas;
+  log completo conserva aviso de extracción AppIntents; no se declara cero warnings globales.
+- Previews finales, destino efectivo iPadPro13M5/27.2: `Review actions - 2026-09-28 at 18.51.02.png` LargeLightNormal;
+  `Review actions - 2026-09-28 at 18.51.14.png` XXXLargeDarkNormal; sufijos `18.51.14 2.png` AX5LightHigh y
+  `18.51.14 3.png` AX5DarkHigh; `Signed - 2026-09-28 at 18.51.52.png` AX5LightHigh y
+  `Error - 2026-09-28 at 18.51.53.png` AX5DarkHigh. Seis imágenes inspeccionadas por revisor independiente.
+  Viewport firmado no muestra todo el documento; Error representa fallo de catálogo, no envío de documento largo.
+  Dos capturas anteriores de Actions tenían decisión de foto pendiente y botón deshabilitado: no acreditan el estilo
+  de la acción habilitada y quedan sustituidas por las cuatro finales.
+
+Rutas anteriores relativas a `/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/`;
+las imágenes están bajo `RenderPreview/`.
+
+PRE focal `a11y087_runtime_pre` aprobado con precisiones. POST `standards087_runtime_post` PASS técnico y
+`a11y087_runtime_pre` PASS estático/estilo/visual; sin edición de revisores, sin atribuirles pruebas runtime.
+Huella determinista de515rutas tracked/untracked no ignoradas (path+NUL+SHA256 bytes):
+PRE idéntica `002da660c69d0bc69cf4ec16b33506eade15aa35a070ae0a62c48438f36e7aa1`;
+POST ambos idéntica `fe1a9dd68ebb0adb605c295189baedf453fc319df6c83f788d9fc40227435659`;
+retest UI final tras resolver default y preview habilitada idéntica
+`f444812d58ad978877e88960acbc56c995ed28d45e68df950c9ce5c56d058240`.
+Documentación actualizada después de las huellas.
+
+Diff-check limpio. Validador de gobernanza solo informa los seis enlaces históricos rotos de capturas08.3.
+Destino de MCP Service restaurado al iPhone11 original tras validar; no se relanza la app para conservar la pasada manual.
+
+Pendiente retest corto en binario corregido: foco inicial y cancelar/confirmar VoiceOver, anuncio íntegro,
+error/reintento. El propietario confirma después el foco FKA del botón principal con el estilo corregido en las
+cuatro apariencias (claro/oscuro, contraste normal/incrementado), en simulador de iPad. Hallazgo manual de foco de
+esa acción resuelto; no acredita ratios ni todas las acciones. El retest de entrada VoiceOver en iPhone11 sigue
+fallando: «Nombre obligatorio» casi interrumpido seguido de «Volver a la ficha, botón», donde permanece el foco.
+Cancelar captura también devuelve «Volver a la ficha, botón». El default declarado no acredita el foco real.
+No se da por fallo de
+validación del nombre solo por esa locución. No repetir regresiones manuales de datos ya aceptadas salvo nuevo
+hallazgo. Inspector/mediciones y resto de variantes aplicables conservan sus pendientes. La fixture signed-out activada
+por el propietario para la pasada sigue siendo configuración temporal sin autorización de entrega. Sin commit/push/PR,
+merge, cierre ni modificación de estado de Linear; la descripción operativa detallada no se actualiza en esta pasada.
+
+### Segundo diagnóstico y remediación del retorno — 2026-09-28
+
+PRE independiente `a11y087_runtime_pre`: detecta reanuncio de validación anterior en el formulario mientras se abre
+información y eliminación del botón origen durante captura. Huella515rutas idéntica antes/después:
+`f389b6ce5f246e55fd4a712a01b411ceb68de23e416297664f5e155c77c65d41`.
+Corrección solo en Views: no emitir feedback del padre si el consentimiento está presentado; conservar Firmar en
+review/capture, deshabilitado por canCapture. No se borra validación ni cambia persistencia o reglas del Store.
+
+Inspección independiente `consent_focus_runtime` mediante skill Apple device-interaction exportado, iPadA16/27.2:
+antes, cancelar deja el texto de Firmar fuera del viewport; después de conservar ese control queda plenamente visible.
+Permanece salto74pt asociado a Revisar la versión actual, también ausente durante captura. PRE adicional favorable:
+conservarlo deshabilitado en capture. Último delta aprobado aplicado; estabilidad final de scroll y VoiceOver pendientes.
+Los artefactos y coordenadas están en [evidencia08.7](../accessibility/evidence/08-7-consent-flow.md).
+
+Build Xcode MCP Develop/iPadA16 PASS20,435s, `BuildProject-Log-20260928-200829.txt`; instalación/retest por sesión
+DeviceInteraction del revisor. POST UI de las dos primeras líneas PASS estático; huella515rutas idéntica
+`6f0b1f0dc46b12c0d6e3d5d19a0d9cd6f2ce982f45ae296d28009fb5874eb800`.
+Sesión cerrada con respuesta Session stopped. Destino restaurado a iPhone11; build final PASS23,091s,
+`BuildProject-Log-20260928-201353.txt`. Ambos logs conservan aviso previo de extracción AppIntents.
+POST independiente del último delta PASS estático; huella515rutas idéntica
+`b48579cae6917dcfa12655c91b86283d632ead94f16457ae478dbf4d594e6639`.
+Documentación actualizada después de verificar las huellas. Sin relanzar el iPhone físico.
+
+No nuevos tests unitarios: delta exclusivamente de presentación/ownership de feedback, sin cambio de comportamiento
+del modelo; las pruebas unitarias no acreditan jerarquía, scroll ni foco nativo. Se verifica mediante build e inspección
+runtime focal; no se amplía la evidencia de previews anteriores ni se repiten regresiones ya aceptadas. Sin cierre DoD.
+
+### Retest físico fallido y traza temporal — 2026-09-28
+
+Binario tras la segunda corrección: propietario abre revisión de Retest087 y cancela captura vacía; ambas
+transiciones anuncian Volver a la ficha, botón. No queda resuelto el foco. Sin repetir las pruebas de teclado/datos.
+PRE independiente `consent_focus_runtime` rechaza mezclar hipótesis adicionales sin traza; aprueba diagnóstico
+acotado. Huella515rutas idéntica `c146e790eb44b3e0ef70d3b287a4c52358a9705775c5ab57bf10dd0b10aa90c9`.
+
+ClientConsentScreen registra secuencia/eventos estáticos, flags y enums sin payload, solo DEBUG y
+FRANALONSO_AUTH_FIXTURE con argumento `--franalonso-consent-focus-diagnostics`. Contador de referencia no observable;
+no produce redibujos por registro. Binding temporal `.back` permite observar el botón, pero altera instrumentación
+del árbol: no es observación externa ni corrección. Sin esperas ni nuevas peticiones de foco.
+POST estático/privacidad PASS independiente, huella515rutas idéntica
+`8ba64bbc86096b600b988151a5f39d7d6452a67b0fe1cb36e0ce0946859012bf`.
+
+Xcode MCP Develop/iPhone11: build17,515s, `BuildProject-Log-20260928-202843.txt`, aviso AppIntents previo.
+RunProject con debugger PASS3,392s, `RunProject-Log-20260928-202949.txt`, sesión `7bbdf2d380`, PID13806.
+El recorrido diagnosticado aún requiere interacción física; no se atribuye evidencia a una consola vacía.
+Sin tests nuevos para instrumentación temporal. Retirar trazas y restaurar esquema desde backup
+`/tmp/franalonso-consent-diagnostics-20260928-Develop.xcscheme` al terminar; conserva flag signed-out del propietario.
+Sin entrega ni cierre accesible.
+
+### Traza obtenida y experimento aislado de región — 2026-09-28
+
+Lectura filtrada por ConsentFocus de sesión7bbdf2d380: 33eventos, sin payload. Entrada y cancelación siguen fallando
+por reporte físico. La finalización se ejecuta y espera onDismiss; solicita capture desde nil con canCapture=true,
+pero el usuario escucha Volver a la ficha. No inferir foco efectivo desde el binding ni duración desde stdout agrupado.
+Traza conservada en `/tmp/franalonso-consent-focus-trace-20260928.txt`; secuencia resumida en evidencia08.7.
+
+PRE independiente `consent_focus_runtime` aprueba experimento aislado: mover accessibilityDefaultFocus al VStack que
+contiene destinos. No añadir reset ni cambiar orden de finalización; la traza no apoya esas hipótesis. Fuente Apple
+de foco predeterminado ya enlazada arriba. Huella515rutas PRE idéntica
+`445cde60de8e7f587c1c972d930df7679dbe615f9b65f4b8073e8c38af259c6d`.
+Solo cambia ubicación del modificador; mismo diagnóstico temporal. POST estático favorable, huella515idéntica
+`4debbc4a19e577fa3e23d3ed801e5b91c616abae4949a261f8e373594b585698`.
+
+Xcode MCP Develop/iPhone11: Build9,195s `BuildProject-Log-20260928-213242.txt`, aviso AppIntents previo;
+RunProject con debugger3,350s `RunProject-Log-20260928-213330.txt`, sesión7bbdf2eb80/PID14297.
+No nuevos tests unitarios por cambio exclusivo de región AX. No nuevas previews ni evidencia funcional de esta variante.
+Retest físico de entrada/cancelación pendiente; la instrumentación temporal y su limpieza conservan el pendiente anterior.
+
+### Evento nativo de foco y consumo único — 2026-09-28
+
+Retest físico de la región VStack FALLA en entrada y cancelación. Traza7bbdf2eb80, 29eventos, confirma binding=back
+en ambos; petición capture tras onDismiss no acredita foco recibido. Archivo temporal
+`/tmp/franalonso-consent-focus-scoped-trace-20260928.txt`. No se modifica timing por esta observación.
+
+PRE UI rechaza esperar al primer binding no nulo: ignoraría texto sin binding y podría robar foco más tarde.
+Aprueba consumir el primer evento nativo completo, incluso elemento nil/desconocido, y cancelar también al desactivar
+VoiceOver. Huella PRE515rutas idéntica `70ba307ac77234904b15c5798b6e4ee8dd3b7d28c02d83d20e21504f89c0022d`.
+Integración en Presentation: UIAccessibility.ElementFocusedMessage y VoiceOverStatusDidChangeMessage, ambas
+NotificationCenter.MainActorMessage nativas de iOS26, target real26. Observación tipada síncrona MainActor con tokens
+conservados y retirados explícitamente. Sin GCD, unsafe, callbacks legacy ni acceso a jerarquías privadas.
+Se compara únicamente accessibilityIdentifier de retorno propio con UUID efímero de UI; no se registra ese valor.
+ClientConsentFocusRestoration consume la intención antes de solicitar foco; otros eventos la descartan sin corregir.
+
+Fuentes Apple leídas por Cupertino y verificadas en SDK UIKit/Foundation:
+[ElementFocusedMessage](https://developer.apple.com/documentation/uikit/uiaccessibility/elementfocusedmessage),
+[notificaciones tipadas](https://developer.apple.com/documentation/foundation/notification-center-messages).
+La API messages async requiere AsyncMessage en el SDK; se usa observación MainActor tipada para estos eventos.
+
+TDD MCP Develop/iPadAir11M4/27.0: RED con implementación provisional sin corrección, cinco resultados:
+dos fallos conductuales esperados y tres controles PASS, `Test-FranAlonso-Develop-2026.09.28_21-44-44-+0200.xcresult`.
+GREEN5/5 sin fallos/omitidos, `Test-FranAlonso-Develop-2026.09.28_21-46-33-+0200.xcresult`.
+Comprueba consumo único, navegación a otro elemento, sustitución, cancelación y preparación sin VoiceOver;
+no acredita notificación nativa ni foco audible. Build for testing13,685s correcto.
+
+POST independientes `consent_focus_runtime` (UI) y `standards087_runtime_post` (estándares/estilo) sin hallazgos.
+Huella517rutas idéntica, verificada por root antes/después:
+`1a700460ea7b5c2541575fdf29c3bcfd4100055a82ada117fb01a3b4f37f437d`.
+Destino restaurado a iPhone11: build14,306s `BuildProject-Log-20260928-214748.txt`; aviso AppIntents previo.
+RunProject con debugger3,434s `RunProject-Log-20260928-214828.txt`, sesión7bbdf01e00/PID14409.
+Sin cambios geométricos ni nuevas previews; sin ampliar evidencia anterior. Instrumentación y backup temporal del
+esquema siguen pendientes de retirada. Entrada, retorno y confirmación físicos pendientes; sin cierre ni entrega.
+
+### Corrección del reconocimiento del elemento SwiftUI — 2026-09-28
+
+Primera entrada en PID14409 con eventos nativos falla: Volver a la ficha y destello breve, reportados por propietario.
+Cinco eventos, dos native.otherFocused y ningún focus.requested, en
+`/tmp/franalonso-consent-native-entry-trace-20260928.txt`. No se infiere foco transitorio del destello.
+LLDB por Xcode MCP consulta API pública focusedElement(using:.notificationVoiceOver), tipo/conformidad y booleano
+del prefijo del getter público. El elemento SwiftUI no conforma nominalmente a UIAccessibilityIdentification, pero
+`element.accessibilityIdentifier?.hasPrefix("clients.consent.return.") == true` devuelve true sobre AnyObject.
+No se leen labels, negocio ni valores de identificador; proceso continuado después de cada consulta.
+
+Microcorrección revisada: eliminar cast formal y acceder opcionalmente al getter público desde message.element.
+No depende de nombres internos de clases, KVC, perform, selectors privados, jerarquías o unsafe.
+Fuente [AnyObject de Swift](https://developer.apple.com/documentation/swift/anyobject) y getter público UIKit.
+No demuestra que ambos eventos anteriores fueran ese mismo elemento ni corrige por sí solo todo el recorrido.
+PRE UI/estándares favorables; huella517rutas idéntica
+`bfab63d43ee868f2d8faf78e72613c8c5bfb0038d0aa04656b87fcae84f90c95`.
+POST ambos favorable sobre la línea cambiada; huella517rutas idéntica
+`101adf7c34ac2b0f67005918059725434da36a2164cd629b7b7f3b154ee6016a`.
+
+Build físico9,103s, `BuildProject-Log-20260928-221150.txt`, aviso AppIntents previo. RunProject con debugger3,500s,
+`RunProject-Log-20260928-221245.txt`, PID14573, referencia7bbdf2d380 reutilizada por Xcode (distinguir por PID).
+La política no cambia; sus cinco tests no se repiten por esta lectura de UI. Retest integrado PID14573:
+el propietario vuelve a oír Volver a la ficha. Cinco eventos; native.otherFocused precede a native.returnFocused,
+consume la intención y no se emite focus.requested. El reconocimiento queda comprobado; la restauración falla.
+El primer elemento no está identificado. Siguiente comprobación acotada: retorno al cancelar captura en este binario.
+Se mantiene instrumentación temporal hasta acabar el diagnóstico; sin cierre ni entrega.
+
+## Implementación de 08.7 autorizada — 2026-09-13
+
+El propietario aprueba el alcance revisado con «Si, adelante». Se implementa en
+`codex/plu-41-phase-08-7-consent-flow`; PLU-41 permanece In Progress. Esta aprobación sustituye el pendiente de
+implementación del inicio inferior; no autoriza entrega Git, cierre, activación ni foto real.
+
+RED conductual inicial por Xcode MCP Develop/iPadAir11M4/26.5: 22 resultados, 21 fallos esperados y un control de
+acceso no autorizado verde; bundle `Test-FranAlonso-Develop-2026.09.13_21-27-47-+0200.xcresult`.
+Store y composición inicial pasan después 22/22; los cinco tests nuevos de fachada fallan como RED esperado en
+`Test-FranAlonso-Develop-2026.09.13_21-33-29-+0200.xcresult`.
+
+Tanda adversarial de 21:42:46: 26/29 PASS y tres RED reales (callback obsoleto, selector tras cierre y conflicto de
+perfil tras cierre). Corregidos mediante resultado explícito de persistencia y conservación de decisiones pendientes.
+Tanda enfocada posterior de 21:49:30: 34/34 resultados PASS; bundle nativo cerrado consultado. Este RunSomeTests ejecutó
+solo el argumento `.notSelected` del test parametrizado; la suite global final debe acreditar los otros dos. Incluye
+fallo al guardar tinta con reintento, fallo de render con reintento, aceptación simultánea, composición runtime y
+fixture con revocación. BuildForTesting Xcode MCP PASS21,307s (21:49:19); log completo conserva aviso AppIntents.
+UI final, regresión global, previews y POST aún en curso.
+
+[Matriz del recorrido 08.7](../accessibility/evidence/08-7-consent-flow.md): 55 criterios clasificados; no se atribuye
+evidencia runtime pendiente a pruebas lógicas o previews. Cambios de ficha no incluidos conservan firma; nombres
+incluidos invalidan. El lector informativo público no asocia una firma/snapshot personal previo a ese catálogo.
+
+### Validación integrada antes de POST
+
+Código congelado tras restauración de foco al botón origen del formulario y anuncios de operaciones/documento.
+RunAllTests Xcode MCP (21:52:21), Develop/iPad Air11M4/26.5: **804 declaraciones / 1.056 resultados**, cero fallos,
+cero omitidos. Bundle nativo cerrado consultado; el log confirma `.authorized`, `.declined` y `.notSelected`.
+Artefacto: `Test-FranAlonso-Develop-2026.09.13_21-52-21-+0200.xcresult` bajo ActionArtifacts/default/RunAllTests.
+Build posterior PASS10,481s (21:53:09), log completo revisado; aviso AppIntents conocido. Sin cero warnings globales.
+Pase lexical en 25 Swift afectados: seis root y19 App/UI/composición. Candidatos verticales justificados por closures
+async/función; if y closures con efectos expandidos. Diff-check limpio. Gobernanza: únicamente seis enlaces históricos.
+Previews y dos auditorías POST independientes pendientes de su ejecución; no se marca la subfase completada.
+
+### POST inicial y correcciones
+
+POST independiente `post087_standards` sobre515 rutas: huella root pre/post idéntica
+`950d16f2019d02152623f7b7c22ea86910c636ad3129044ee6a1e483007de405`.
+P1: confirmar firma podía reescribir el perfil antiguo sobre una edición contextual de otra ventana. P2: tras aceptar
+ o descartar desde alta, Guardar intentaba crear otra vez la ficha. Root reproduce3/3 RED a22:00:20 y corrige:
+
+- Elegir update cuando la revisión ya creó un cliente durable.
+- Comparar perfil actual con anterior/propuesto dentro de saveDraft, incluso antes del retorno idempotente;
+  divergencia produce conflicto. Firma sola no reescribe ficha ni cola. No cambia schema ni contrato CRUD entre contextos.
+- Recuperar relee la ficha actual antes de la decisión; conserva ediciones sin enviar hasta elección explícita.
+  Reproducción adicional RED22:01:53 y GREEN22:03:25 de recuperar conflicto y adoptar ficha guardada.
+- El PreviewHost inicialmente mostraba solo spinner. Fixtures preparadas con PreviewModifier.makeSharedContext async,
+  API Apple contrastada con Cupertino; render22:05:00 ya muestra lector real en iPadPro13M5/iOS27, no iOS26 runtime.
+
+Nueva regresión global Xcode MCP22:05:25: **806 declaraciones /116 suites /1.059 resultados PASS**, cero fallos/omitidos.
+Bundle cerrado `Test-FranAlonso-Develop-2026.09.13_22-05-25-+0200.xcresult`, ActionArtifacts/default/RunAllTests.
+BuildForTesting posterior22:06:41 PASS13,083s, log completo revisado con aviso AppIntents conocido. Ajustes finales solo
+lexicales en fixture y firma del PreviewModifier; sin comportamiento adicional. Diff-check y gobernanza se revisan al final.
+
+El entorno rechaza la creación del segundo agente con `agent thread limit reached`, también desde el revisor.
+La reauditoría de estándares y pasada de accesibilidad se asignan al mismo agente POST independiente, que nunca ha
+implementado ni editado archivos. Se documenta esta adaptación; no se declara que intervinieran dos revisores POST.
+Código congelado nuevamente; reauditoría y variantes visuales en curso. Runtime ADR0022 pendiente; no hay cierre ni entrega.
+
+### Resultado técnico consolidado de 08.7
+
+Implementación local completa. Estándares POST y reauditoría focal PASS sin hallazgos pendientes de implementación.
+Segundo ámbito UI por el mismo revisor independiente, conforme a la adaptación de límite de agentes registrada:
+20 previews inspeccionadas, P2 de nombre truncado en350pt/RTL/AX5 corregido con metadatos verticales y valores
+multilínea; retest22:17:15 PASS. FormContent con Reanudar inspeccionado22:17:32. Matriz corregida:55 criterios únicos.
+
+Root verificó la huella de515rutas de la pasada integrada antes y después:
+`4183042bf4da782e198131ab9495b58dcb02f650b6da33570c064ef4aa927215`.
+Después de las correcciones visuales/documentales, reauditoría focal con huella pre/post idéntica:
+`e0dcf88b3b6d9047fe10708e728958ef15f975cb1d6e9e6039a22fcf0fabff5f`.
+Revisor sin escrituras ni publicaciones. No se declara un segundo agente POST distinto.
+
+Build de metadatos finales Xcode MCP22:15:40 PASS15,651s, log completo revisado; aviso AppIntents conocido.
+La variante posterior de preview con trabajo recuperable compiló y renderizó correctamente. No cambió lógica tras
+la regresión global806declaraciones/116suites/1.059resultadosPASS22:05:25; no se repitió por ajustes de layout/preview.
+31archivos afectados,26Swift; sin nuevas rutas sensibles, Task.detached, GCD, unsafe, XCTest ni logs de producto.
+Diff-check limpio; validador de gobernanza conserva solo seis enlaces históricos de capturas08.3.
+
+Límites: runtime nuevo de Inspector, VoiceOver, Voice Control, Switch Control, FKA, foco/anuncios, scroll AX5 completo,
+preferencias, orientación/ventana y mediciones nativas de contraste según [matriz08.7](../accessibility/evidence/08-7-consent-flow.md).
+Previews iPadPro13M5/iOS27; tests iPadAir11M4/26.5. No se confunden esos entornos ni se repiten pruebas aceptadas de08.4.
+PLU-41 yPLU-34 permanecen In Progress. Código sin commit/push/PR/merge, sin cierre ni activación/live/foto real.
+La evidencia anterior queda conservada; este estado sustituye sus pendientes de implementación y revisiones técnicas.
+
+## Inicio de 08.7 — 2026-09-13
+
+El propietario solicita «Inicia subfase 8.07». Se reutiliza [PLU-41](https://linear.app/plusprojects/issue/PLU-41),
+In Progress, y se crea `codex/plu-41-phase-08-7-consent-flow` desde main/origin/main coincidentes en
+`b8a3d47d091bc75ea9faa866d3190afcd8c27fdd`, con árbol limpio. PLU-40 verificada Done satisface la dependencia de entrega.
+
+[Propuesta concreta](08-7-consent-flow-proposal.md): información consultable desde formulario, lector nativo,
+revisión/firma, ClientConsentStore propiedad del ViewModel, snapshot inmutable, guardado único y recuperación por
+identidad durable. Cubre selección entre borradores, invalidación, cancelación, errores y composición autorizada por
+sesión/revisión con actor compartido. Ambas variantes mediante fixtures; sin foto real, activación ni live.
+
+PRE independiente por agente nuevo `proposal087_pre`: **PASS, sin hallazgos**. Revisión operacional read-only,
+sin escrituras, publicaciones, build/tests/previews. Root verificó 499 rutas tracked/untracked no ignoradas con
+huella pre/post idéntica: `bcdb3609b5bbc69dfe453358c9e0e5751f38c16712431a0509165a00a5919dba`.
+Propuesta lista para aprobación de implementación; no se ha escrito código 08.7.
+
+Xcode MCP conectado a FranAlonso/windowtab-QTPhkgjxly, Develop/iPadAir11M4/26.5 y SDK27 ya seleccionado, sin cambios
+de esquema/destino/configuración. Settings reales consultados por MCP, Swift6/concurrencia completa y mínimo iOS26.
+Bundle 08.6 final cerrado y releído: 770 declaraciones / 1.020 resultados PASS, cero fallos/omitidos. GetBuildLog
+confirma último build correcto; log completo conserva aviso AppIntents. Se reutiliza build 6,993s de la entrega anterior:
+desde su código validado solo cambió documentación. Nuevos builds/tests N/A por preparación documental.
+Diff-check limpio; gobernanza mantiene únicamente los seis enlaces históricos de 08.3.
+
+PLU-34 permanece abierta y PLU-38 conserva sus dos pendientes propios; 08.8/08.9 continúan en Backlog.
+Progress y Linear reconciliados. Sin commit, push, PR, merge, cierre ni activación live.
+Las menciones inferiores a 08.7 no iniciada son históricas y quedan sustituidas por este registro.
+
 ## Cierre de 08.6 completado — 2026-09-13
 
 [PR #13](https://github.com/JFrancoG/FranAlonso/pull/13) creada e integrada con merge commit

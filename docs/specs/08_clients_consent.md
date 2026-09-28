@@ -10,6 +10,8 @@ y opcional. El documento aplicable se lee antes de firmar y se conserva sin rees
 
 ADR 0009 y [ADR 0028](../ADRs/0028-client-signed-information-and-photo-authorization.md) aceptados.
 ADR 0028 precisa el significado del documento inicial y la autorización posterior; conserva los estados de alta.
+[ADR 0029](../ADRs/0029-progressive-accessibility-validation.md) permite separar la entrega funcional para demo de
+08.7 y su validación integral de accesibilidad, sin cambiar contratos ni dependencias funcionales.
 
 ## Estado y responsabilidades
 
@@ -36,7 +38,7 @@ ADR 0028 precisa el significado del documento inicial y la autorización posteri
 | 08.4 | Captura efímera a mano alzada como valor inmutable, según ADR 0027. | Firma vacía, válida, cancelada; deshacer, borrar e interrupción. | View sin persistencia; cerrar únicamente evidencia propia y retirar acceso temporal. |
 | 08.5 | Contenido común versionado, dos variantes, contrato de documento firmado y renderizado. | Correspondencia entre contenido presentado y PDF, decisiones, versión, invalidación de firma y artefacto estable. | Definir distribución del catálogo a lector/generador; texto real, trabajo pesado fuera de MainActor. |
 | 08.6 | Persistencia recuperable del documento/borrador y repositorio Storage con fake. | Reinicio, offline, permisos, reintentos, duplicados, conflicto de ID/payload y migración. | SwiftData local-first; Storage encapsulado; schema versionado según ADR 0018. |
-| 08.7 | Integrar lectura, revisión y firma mediante `ClientConsentStore`. | Sin foto, autorización/rechazo, cambio de contenido, cancelación, recuperación y errores. | ViewModel posee Store; lectura nativa accesible y documento fijado al firmar. |
+| 08.7 | Integrar lectura, revisión y firma mediante `ClientConsentStore`. | Sin foto, autorización/rechazo, cambio de contenido, cancelación, recuperación y errores. | ViewModel posee Store; documento fijado al firmar; entrega funcional PLU-41 y validación integral PLU-44 según ADR 0029. |
 | 08.8 | Activación inicial idempotente tras upload. | Reinicio entre upload y activación; reintento sin duplicar documento ni alta. | Nunca activo sin referencia del documento inicial firmado. |
 | 08.9 | Foto opcional inicial/posterior y detalle. | Autorización posterior, fallo no bloqueante, reemplazo, retirada, cancelación y recuperación. | Foto no publicada sin autorización; ficha activa permanece operativa; receta, notas e histórico visibles. |
 
@@ -50,7 +52,7 @@ ADR 0028 precisa el significado del documento inicial y la autorización posteri
    mediante OCR ni se mantienen dos copias manuales.
 3. El documento firmado fija ID, cliente, variante/finalidad, versión/idioma, contenido y datos presentados, decisiones,
    fecha, firma y artefacto. Cambiar un dato incluido, el texto o las decisiones invalida la firma pendiente.
-4. Lectura nativa y revisión accesibles según ADR 0022. Consultar el texto sigue siendo posible al revisar la firma;
+4. Lectura nativa y revisión accesibles según ADR 0022, con secuencia de validación de ADR 0029. Consultar el texto sigue siendo posible al revisar la firma;
    desplazarlo o esperar un tiempo no se interpreta como lectura. PDF con texto real y firma, validado por separado.
 5. Persistir borrador, documento y envío de forma recuperable; reiniciar o perder red no exige repetir una firma cuyo
    contenido no ha cambiado. Reintentar el mismo ID/artefacto, sin regenerar históricos desde el catálogo vigente.
@@ -76,6 +78,21 @@ ADR 0028 precisa el significado del documento inicial y la autorización posteri
 - 08.4 no se cierra automáticamente por aceptar ADR 0028; entrega Git y comienzo de 08.5 conservan autorización separada.
 
 
+## Separación de entrega y validación de 08.7 — 2026-09-28
+
+- [PLU-41](https://linear.app/plusprojects/issue/PLU-41) conserva el alcance funcional de lectura, revisión, firma,
+  invalidación, conservación y recuperación; permanece `In Progress` hasta completar su entrega funcional autorizada.
+- [PLU-44](https://linear.app/plusprojects/issue/PLU-44), hija de fase 08 y relacionada con PLU-41, conserva los fallos
+  accesibles conocidos y la evidencia pendiente. Responsable: Jesus Franco. La
+  [matriz 08.7](../accessibility/evidence/08-7-consent-flow.md) sigue siendo el registro canónico de resultados.
+- Retomar PLU-44 tras incorporar el feedback de Fran y estabilizar cada recorrido; completarla antes del primer
+  candidato para uso real. No bloquea por sí sola la entrega funcional de PLU-41 ni 08.8 tras satisfacer la dependencia
+  funcional. Sí impide el cierre integral de fase 08 y la puerta de uso real de fase 18.
+- PLU-41 solo podrá marcarse `Done` cuando valide su recorrido funcional, reconcilie la deuda y complete la entrega
+  autorizada; su cierre enlazará PLU-44. Esta separación no aplaza integridad, privacidad o recuperación funcional.
+- 08.4/PLU-38 conserva sus pendientes separados. 08.8–08.9 continúan en Backlog; aceptar este cambio no inicia código,
+  no completa ninguna subfase ni activa upload o servicios reales.
+
 ## Resultado de fase
 
 Clientes offline-first con documento inicial firmado recuperable, autorización fotográfica opcional independiente,
@@ -83,4 +100,5 @@ Storage aislado y Store justificado por complejidad real. Los borradores jurídi
 
 ## Cierre obligatorio de cada subfase
 
-Ejecutar las puertas especializadas de [DEVELOPMENT_GUIDE.md](../DEVELOPMENT_GUIDE.md).
+Ejecutar las puertas especializadas de [DEVELOPMENT_GUIDE.md](../DEVELOPMENT_GUIDE.md), identificando entrega funcional
+para demo o cierre integral conforme a ADR 0029. La fase permanece abierta mientras conserve validaciones vinculadas.

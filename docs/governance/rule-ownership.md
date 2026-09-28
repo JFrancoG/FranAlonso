@@ -22,6 +22,7 @@ documento versionado; un skill solo explica cuándo y cómo aplicarla.
 | Agenda local demo | Sí | `docs/specs/15_appointments_demo.md` | Spec de subfase activa | Swift Testing + preview |
 | Una View por archivo, builders, previews, escalado | Sí | ADR 0011 | `$ios-accessibility-implementation` | Búsqueda + preview + auditoría |
 | Objetivo de accesibilidad nativa | Sí | ADR 0022 + matriz WCAG | Skills UI y revisor | Matriz + evidencia manual |
+| Entrega funcional para demo y cierre integral de accesibilidad | Sí | ADR 0029 + guía + spec 18 | Skills UI y cierre | Deuda vinculada + revisión + puerta antes de uso real |
 | SwiftData/Firebase/offline-first | Sí | Constitución + ADR 0002/0006/0007/0012–0018 | `$ios-development-standards` | Tests + revisión |
 | Swift Concurrency y prohibiciones unsafe | Sí | Constitución | `$ios-development-standards` | Compilador + búsqueda |
 | APIs legacy/deprecated y target real | Sí | Constitución | `$ios-development-standards`, `$cupertino-mcp` | Compilador + búsqueda |

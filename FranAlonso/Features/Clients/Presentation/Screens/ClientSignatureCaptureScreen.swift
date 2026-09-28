@@ -191,7 +191,7 @@ extension ClientSignatureCaptureScreen {
         _viewModel = State(initialValue: ClientSignatureCaptureViewModel(onFinish: onFinish))
     }
 
-    fileprivate init(viewModel: ClientSignatureCaptureViewModel) {
+    init(viewModel: ClientSignatureCaptureViewModel) {
         _viewModel = State(initialValue: viewModel)
     }
 }

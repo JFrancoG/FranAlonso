@@ -29,18 +29,22 @@
 
 ## SwiftUI y accesibilidad
 
+- [ ] Tipo de entrega identificado: funcional para demo (ADR 0029) o cierre integral para uso real.
 - [ ] Un tipo `View` por archivo; preview determinista propio con trait compartido.
 - [ ] Estados carga, vacío, contenido y error cubiertos cuando aplican.
-- [ ] Variantes soportadas `Large`, `XXX Large` y `AX 5` renderizadas e inspeccionadas.
-- [ ] Matriz de ADR 0022 completada para cada pantalla afectada.
-- [ ] VoiceOver, Voice Control, Switch Control, teclado, orden/foco y anuncios validados cuando aplican.
-- [ ] Contraste, color, Dynamic Type, Reduce Motion/Transparency, orientación, ventana, RTL y gestos alternativos validados.
+- [ ] Pantallas afectadas renderizadas e inspeccionadas en `Large`, `XXX Large` y `AX 5` soportados, también para demo;
+  estados/apariencias representativos y evidencia previa válida reutilizada. Matriz restante completa en cierre integral.
+- [ ] Matriz de ADR 0022 actualizada con evidencia real; cada aplazamiento de demo enlaza issue, responsable y recuperación.
+- [ ] VoiceOver, Voice Control, Switch Control, teclado, orden/foco y anuncios validados o aplazados conforme a ADR 0029.
+- [ ] Contraste, color, Dynamic Type, preferencias, orientación, ventana, RTL y gestos validados o aplazados conforme a ADR 0029.
+- [ ] En cierre integral: evidencia aplicable completa y deuda accesible resuelta antes del primer candidato para uso real.
 - [ ] Objetivos interactivos cumplen la política de 44×44 pt o documentan excepción equivalente y operable.
 
 ## Revisión y cierre
 
 - [ ] `$franalonso-review-ios-standards` sin hallazgos abiertos.
-- [ ] `$franalonso-review-accessibility` sin hallazgos abiertos, o `N/A` justificado.
+- [ ] `$franalonso-review-accessibility` favorable para el tipo de entrega; deuda permitida explícita en demo, sin
+  hallazgos abiertos en cierre integral salvo excepciones aceptadas; o `N/A` justificado por ausencia de alcance UI.
 - [ ] Solo se repitieron las auditorías cuyos ámbitos cambiaron.
 - [ ] `docs/Progress.md` y `docs/progress/phase-XX.md` contienen estado, evidencia, pendiente y bloqueos.
 - [ ] Linear coincide con el estado real; activación live y siguiente subfase siguen siendo gates separados.

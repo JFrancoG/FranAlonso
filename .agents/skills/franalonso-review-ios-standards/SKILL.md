@@ -22,6 +22,9 @@ implementation pass is not independent.
 6. Run read-only checks such as `git status`, diff inspection and `git diff --check`. Never use `xcodebuild`.
 7. Do not duplicate visual/accessibility findings owned by `$franalonso-review-accessibility` unless they prove a cross-layer
    defect.
+8. For an ADR 0029 functional demo gate, verify that deferred accessibility work has a linked issue, owner and recovery
+   trigger before the first candidate for real use. Do not treat functional closure as integral validation or phase
+   closure. Privacy, data integrity, functional regressions and technical validation remain required.
 
 Read [references/output.md](references/output.md) before reporting.
 

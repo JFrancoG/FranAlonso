@@ -2,6 +2,7 @@ import SwiftData
 
 struct AppDependencies {
     typealias ClientFormFactory = @MainActor @Sendable (ClientFormDestination) -> ClientFormViewModel
+    typealias ClientConsentServicesFactory = @MainActor @Sendable () throws -> ClientConsentServices
 
     let observeClients: ObserveClientsUseCase
     let makeClientForm: ClientFormFactory
@@ -37,16 +38,29 @@ struct AppDependencies {
 
 #if FRANALONSO_AUTH_FIXTURE
     /// Creates isolated local-first dependencies with explicitly supplied telemetry boundaries.
+    @MainActor
     static func local(
         modelContainer: ModelContainer,
         analyticsDataSource: any AnalyticsDataSource,
         crashDataSource: any CrashDataSource,
-        clientRepository: (any ClientRepository)? = nil
+        clientRepository: (any ClientRepository)? = nil,
+        authenticationRoot: AuthenticationRootViewModel? = nil
     ) -> AppDependencies {
         let observationSignal = ClientObservationSignal()
         let productObservationSignal = ProductObservationSignal()
         let serviceObservationSignal = ServiceObservationSignal()
         let saleObservationSignal = SaleObservationSignal()
+        let makeClientConsentServices: ClientConsentServicesFactory?
+        if let authenticationRoot {
+            let composition = ClientDocumentComposition(
+                modelContainer: modelContainer,
+                observationSignal: observationSignal
+            )
+            composition.authenticationRoot = authenticationRoot
+            makeClientConsentServices = { try composition.makeServices() }
+        } else {
+            makeClientConsentServices = nil
+        }
         return .fixtureComposed(
             persistenceActor: ClientPersistenceActor(modelContainer: modelContainer),
             observationSignal: observationSignal,
@@ -58,7 +72,8 @@ struct AppDependencies {
             saleObservationSignal: saleObservationSignal,
             analyticsDataSource: analyticsDataSource,
             crashDataSource: crashDataSource,
-            clientRepository: clientRepository
+            clientRepository: clientRepository,
+            makeClientConsentServices: makeClientConsentServices
         )
     }
 #endif
@@ -82,7 +97,8 @@ struct AppDependencies {
         servicePersistenceActor: ServicePersistenceActor,
         serviceObservationSignal: ServiceObservationSignal,
         salePersistenceActor: SalePersistenceActor,
-        saleObservationSignal: SaleObservationSignal
+        saleObservationSignal: SaleObservationSignal,
+        makeClientConsentServices: ClientConsentServicesFactory? = nil
     ) -> AppDependencies {
         .composed(
             persistenceActor: persistenceActor,
@@ -94,7 +110,8 @@ struct AppDependencies {
             salePersistenceActor: salePersistenceActor,
             saleObservationSignal: saleObservationSignal,
             analyticsDataSource: FirebaseAnalyticsDataSource(),
-            crashDataSource: FirebaseCrashDataSource()
+            crashDataSource: FirebaseCrashDataSource(),
+            makeClientConsentServices: makeClientConsentServices
         )
     }
 
@@ -108,7 +125,8 @@ struct AppDependencies {
         salePersistenceActor: SalePersistenceActor,
         saleObservationSignal: SaleObservationSignal,
         analyticsDataSource: any AnalyticsDataSource,
-        crashDataSource: any CrashDataSource
+        crashDataSource: any CrashDataSource,
+        makeClientConsentServices: ClientConsentServicesFactory? = nil
     ) -> AppDependencies {
         let clientRepository = DefaultClientRepository(
             persistenceActor: persistenceActor,
@@ -129,7 +147,11 @@ struct AppDependencies {
 
         return AppDependencies(
             clientRepository: clientRepository,
-            makeClientForm: clientFormFactory(persistenceActor: persistenceActor, observationSignal: observationSignal),
+            makeClientForm: clientFormFactory(
+                persistenceActor: persistenceActor,
+                observationSignal: observationSignal,
+                makeClientConsentServices: makeClientConsentServices
+            ),
             productRepository: productRepository,
             serviceRepository: serviceRepository,
             saleRepository: saleRepository,
@@ -150,7 +172,8 @@ struct AppDependencies {
         saleObservationSignal: SaleObservationSignal,
         analyticsDataSource: any AnalyticsDataSource,
         crashDataSource: any CrashDataSource,
-        clientRepository injectedClientRepository: (any ClientRepository)?
+        clientRepository injectedClientRepository: (any ClientRepository)?,
+        makeClientConsentServices: ClientConsentServicesFactory?
     ) -> AppDependencies {
         let clientRepository = injectedClientRepository ?? DefaultClientRepository(
             persistenceActor: persistenceActor,
@@ -172,7 +195,11 @@ struct AppDependencies {
         return AppDependencies(
             clientRepository: clientRepository,
             makeClientForm: injectedClientRepository.map { readOnlyClientFormFactory(repository: $0) }
-                ?? clientFormFactory(persistenceActor: persistenceActor, observationSignal: observationSignal),
+                ?? clientFormFactory(
+                    persistenceActor: persistenceActor,
+                    observationSignal: observationSignal,
+                    makeClientConsentServices: makeClientConsentServices
+                ),
             productRepository: productRepository,
             serviceRepository: serviceRepository,
             saleRepository: saleRepository,

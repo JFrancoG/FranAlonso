@@ -10,6 +10,11 @@ Preparar una versión estable para uso real en iPad, con evidencia de calidad, m
 - No se crean XCTest, XCUITest ni tests UI nativos.
 - Los flujos visuales se validan con previews, revisión manual y un checklist en dispositivos acordados.
 - Cualquier ajuste de esta fase corrige un defecto o deuda de entrega; una feature nueva vuelve a planificación.
+- Según [ADR 0029](../ADRs/0029-progressive-accessibility-validation.md), las validaciones accesibles aplazadas se retoman
+  por flujo tras incorporar el feedback de Fran. Esta fase comprueba su cierre; no retrasa hasta aquí su ejecución.
+- Antes del primer candidato para uso real, inventariar las issues de validación vinculadas a entregas funcionales,
+  completar evidencia aplicable, resolver defectos y obtener revisión independiente. Una issue funcional `Done` no
+  acredita por sí sola esta puerta. El inventario inicial de 08.7 vive en su [matriz](../accessibility/evidence/08-7-consent-flow.md).
 
 ## Subfases
 
@@ -32,4 +37,7 @@ Build candidata trazable, sin warnings, con suite verde, validación manual y pl
 
 ## Cierre obligatorio de cada subfase
 
-Ejecutar las puertas especializadas de [DEVELOPMENT_GUIDE.md](../DEVELOPMENT_GUIDE.md). La build no se entrega mientras cualquiera de las auditorías aplicables conserve hallazgos válidos abiertos.
+Ejecutar las puertas especializadas de [DEVELOPMENT_GUIDE.md](../DEVELOPMENT_GUIDE.md). La build candidata para uso real
+no se entrega mientras falte evidencia aplicable o cualquiera de las auditorías conserve hallazgos válidos abiertos,
+salvo las excepciones de producto aceptadas por sus ADR específicos. La demo de feedback con deuda explícita de ADR
+0029 no acredita este cierre ni autoriza distribución o activación live.

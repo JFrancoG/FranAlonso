@@ -66,7 +66,8 @@ skills y la evidencia en Progress, Git y Linear.
 - Cada View tiene un `#Preview` propio con el `PreviewModifier` compartido y datos in-memory deterministas.
 - Todo texto visible vive en `Localizable.xcstrings`.
 - Toda pantalla aplica el objetivo interno aceptado por ADR 0022, basado en WCAG 2.2 A/AA, WCAG2ICT y convenciones de
-  accesibilidad Apple, y conserva su evidencia antes del cierre.
+  accesibilidad Apple. ADR 0029 separa entrega funcional para demo y cierre integral: la deuda queda vinculada y la
+  evidencia aplicable se completa tras estabilizar cada flujo con Fran, antes del primer candidato para uso real.
 - Dynamic Type, VoiceOver, Voice Control, Switch Control, teclado, contraste, movimiento, orientación, RTL y tamaños de
   ventana se consideran desde la implementación, no como remediación final.
 
@@ -76,7 +77,8 @@ skills y la evidencia en Progress, Git y Linear.
 - Usar dobles deterministas, `ModelContainer` in-memory e inyección de reloj/UUID/errores cuando afecten al resultado.
 - Validar código y configuración mediante Xcode MCP y mantener cero warnings.
 - Auditar arquitectura/gobernanza y, cuando aplique, SwiftUI/accesibilidad mediante revisores independientes read-only.
-- Una subfase termina solo con checklist, evidencia, Progress y Linear reconciliados.
+- Una subfase termina solo con checklist, evidencia, Progress y Linear reconciliados. Un cierre funcional bajo ADR 0029
+  enlaza su validación integral pendiente y no cierra la fase ni acredita accesibilidad completa.
 - Commit, push, PR, merge, publicación, activación live y siguiente subfase son autorizaciones separadas.
 
 ## Referencias normativas

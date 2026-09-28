@@ -2,13 +2,15 @@ extension AppDependencies {
     /// Captures runtime-owned Clients roles while leaving the calling screen's context ephemeral.
     static func clientFormFactory(
         persistenceActor: ClientPersistenceActor,
-        observationSignal: ClientObservationSignal
+        observationSignal: ClientObservationSignal,
+        makeClientConsentServices: ClientConsentServicesFactory? = nil
     ) -> ClientFormFactory {
         { destination in
             makeClientFormViewModel(
                 destination: destination,
                 persistenceActor: persistenceActor,
-                observationSignal: observationSignal
+                observationSignal: observationSignal,
+                makeClientConsentServices: makeClientConsentServices
             )
         }
     }
@@ -40,13 +42,23 @@ extension AppDependencies {
     static func makeClientFormViewModel(
         destination: ClientFormDestination,
         persistenceActor: ClientPersistenceActor,
-        observationSignal: ClientObservationSignal
+        observationSignal: ClientObservationSignal,
+        makeClientConsentServices: ClientConsentServicesFactory? = nil
     ) -> ClientFormViewModel {
         let repository = DefaultClientRepository(
             persistenceActor: persistenceActor,
             observationSignal: observationSignal
         )
         let adapter = ClientContextualPersistenceAdapter(observationSignal: observationSignal)
+        let consentServices: ClientConsentServices?
+        let consentUnavailable: Bool
+        do {
+            consentServices = try makeClientConsentServices?()
+            consentUnavailable = false
+        } catch {
+            consentServices = nil
+            consentUnavailable = true
+        }
         return ClientFormViewModel(
             destination: destination,
             getClient: GetClientUseCase(repository: repository),
@@ -58,7 +70,9 @@ extension AppDependencies {
             },
             deactivate: { id, context in
                 try await adapter.deactivate(id, in: context)
-            }
+            },
+            consentServices: consentServices,
+            consentUnavailable: consentUnavailable
         )
     }
 }

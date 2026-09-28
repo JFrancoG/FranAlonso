@@ -9,9 +9,9 @@ struct AuthenticationRootScreen: View {
         let state = viewModel.state
 
         Group {
-            if case let .authenticated(session) = state {
+            if case .authenticated = state {
                 AppShellScreen(requestSignOut: requestSignOut)
-                    .id(session.id)
+                    .id(viewModel.protectedAccessIdentity)
             } else {
                 NavigationStack {
                     unauthenticatedContent(for: state)

@@ -11,8 +11,12 @@ struct ClientFormScreen: View {
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     @State private var viewModel: ClientFormViewModel?
     @State private var request: Request?
+    @State private var consentRequest: ConsentRequest?
     @State private var showsDeactivationConfirmation = false
+    @State private var showsDiscardChanges = false
     @State private var validationAttemptID: UUID?
+    @State private var consentOrigin: ClientFormContent.ConsentControl?
+    @State private var consentFocusReturn: ClientFormContent.ConsentFocusReturn?
 
     enum Completion {
         case cancelled
@@ -23,6 +27,11 @@ struct ClientFormScreen: View {
     private struct Request: Equatable {
         let id: UUID
         let operation: ClientFormViewModel.Operation
+    }
+
+    private struct ConsentRequest: Equatable {
+        let id: UUID
+        let action: ClientFormViewModel.ConsentAction
     }
 
     var body: some View {
@@ -38,10 +47,7 @@ struct ClientFormScreen: View {
             .navigationBarTitleDisplayMode(.large)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button {
-                        viewModel?.close()
-                        onFinish(.cancelled)
-                    } label: {
+                    Button(action: requestCancellation) {
                         if dynamicTypeSize.isAccessibilitySize {
                             Image(systemName: "xmark")
                                 .frame(minWidth: 44, minHeight: 44)
@@ -81,7 +87,7 @@ struct ClientFormScreen: View {
                             Image(systemName: "checkmark")
                         }
                     }
-                    .disabled(viewModel?.canEdit != true || request != nil)
+                    .disabled(viewModel?.canEdit != true || request != nil || consentRequest != nil)
                 }
             }
         }
@@ -90,6 +96,25 @@ struct ClientFormScreen: View {
             ClientDeactivationConfirmationView {
                 requestOperation(.deactivate)
             }
+        }
+        .sheet(isPresented: consentPresentation, onDismiss: restoreConsentFocus) {
+            if let viewModel {
+                ClientConsentScreen(viewModel: viewModel)
+            }
+        }
+        .confirmationDialog(
+            Text(.clientsConsentUnsavedTitle),
+            isPresented: $showsDiscardChanges,
+            titleVisibility: .visible
+        ) {
+            Button(role: .destructive, action: cancelForm) {
+                Text(.clientsConsentUnsavedDiscard)
+            }
+            Button(role: .cancel) {} label: {
+                Text(.clientsFormCancel)
+            }
+        } message: {
+            Text(.clientsConsentUnsavedMessage)
         }
         .task {
             guard !Task.isCancelled else { return }
@@ -127,6 +152,19 @@ struct ClientFormScreen: View {
                 break
             }
         }
+        .task(id: consentRequest) {
+            guard let consentRequest, let viewModel else { return }
+            await viewModel.performConsent(consentRequest.action)
+            guard self.consentRequest?.id == consentRequest.id, !Task.isCancelled else { return }
+            self.consentRequest = nil
+            guard viewModel.consentStore?.isPresented != true else { return }
+            if let error = viewModel.state.formError {
+                validationAttemptID = consentRequest.id
+                announce(error.clientFormMessage)
+            } else if let failure = viewModel.consentStore?.failure {
+                announce(failure.consentMessage)
+            }
+        }
         .onDisappear {
             viewModel?.close()
         }
@@ -140,15 +178,74 @@ struct ClientFormScreen: View {
             state: viewModel.state,
             mode: destination.mode,
             canEdit: viewModel.canEdit,
-            isRequestPending: request != nil,
+            isRequestPending: request != nil || consentRequest != nil,
             validationAttemptID: validationAttemptID,
+            consentAvailable: viewModel.consentStore != nil,
+            consentUnavailable: viewModel.consentUnavailable,
+            canReviewConsent: viewModel.canReviewConsent,
+            hasConsentWork: viewModel.hasConsentWork,
+            consentFocusReturn: consentFocusReturn,
             onRetry: {
                 requestOperation(.load)
             },
             onDeactivate: {
                 showsDeactivationConfirmation = true
+            },
+            onInformation: {
+                requestConsent(.information)
+            },
+            onReviewConsent: {
+                requestConsent(.review)
+            },
+            onResumeConsent: {
+                requestConsent(.recover)
             }
         )
+    }
+
+    private var consentPresentation: Binding<Bool> {
+        Binding {
+            viewModel?.consentStore?.isPresented == true
+        } set: { isPresented in
+            guard !isPresented else { return }
+            consentRequest = nil
+            viewModel?.dismissConsentPresentation()
+        }
+    }
+
+    private func requestConsent(_ action: ClientFormViewModel.ConsentAction) {
+        guard request == nil, consentRequest == nil else { return }
+        switch action {
+        case .information:
+            consentOrigin = .information
+        case .review:
+            consentOrigin = .review
+        case .recover:
+            consentOrigin = .recovery
+        default:
+            break
+        }
+        consentRequest = ConsentRequest(id: UUID(), action: action)
+    }
+
+    private func restoreConsentFocus() {
+        guard let consentOrigin, viewModel?.state != .closed else { return }
+        consentFocusReturn = .init(id: UUID(), control: consentOrigin)
+    }
+
+    private func requestCancellation() {
+        if viewModel?.hasUnsavedChanges == true {
+            showsDiscardChanges = true
+        } else {
+            cancelForm()
+        }
+    }
+
+    private func cancelForm() {
+        request = nil
+        consentRequest = nil
+        viewModel?.close()
+        onFinish(.cancelled)
     }
 
     private func requestOperation(_ operation: ClientFormViewModel.Operation) {

@@ -1,10 +1,29 @@
 # Project Progress
 
-Última actualización: 2026-09-13
+Última actualización: 2026-09-29
 
 ## Estado actual
 
 - Fase08 / [PLU-34](https://linear.app/plusprojects/issue/PLU-34) abierta.
+- **08.7 / [PLU-41](https://linear.app/plusprojects/issue/PLU-41): publicada en rama; integración pendiente**.
+  [ADR 0029](ADRs/0029-progressive-accessibility-validation.md) aceptado el28/09: entrega funcional para demo y
+  validación integral separadas. Commit/push autorizados el28/09; PLU-41 sigue In Progress, sin PR/merge/cierre.
+  Revisiones finales favorables; configuración temporal retirada y recorrido funcional comprobado el28/09.
+  Rama `codex/plu-41-phase-08-7-consent-flow`, desde `b8a3d47`. Sin activación ni foto real.
+  Xcode MCP final: 814 declaraciones / 1.067 resultados PASS, cero fallos/omitidos; build6,685s, aviso AppIntents.
+  Corregida aceptación de nombre obsoleto durante render; TDD RED→GREEN y retest final focal2/2.
+  Smoke táctil de firma/conservación/error/reintento/reapertura favorable; previews previas reutilizadas por impacto.
+  Detalle y límites en [fase08](progress/phase-08.md) y [matriz08.7](accessibility/evidence/08-7-consent-flow.md).
+- **[PLU-44](https://linear.app/plusprojects/issue/PLU-44): validación accesible aplazada de08.7, Backlog**.
+  Responsable Jesus Franco; hija dePLU-34 y relacionada conPLU-41. Fallos conocidos de foco/anuncios VoiceOver y
+  error/reintento reportado conservados; Inspector, contraste medido y demás evidencia aplicable siguen pendientes.
+  Último retest de entrada sigue fallando: un evento previo consume la intención antes del retorno reconocido;
+  cancelación pendiente en ese binario. FKA del botón principal en cuatro apariencias y legibilidad ya aceptados.
+  Retomar tras feedback de Fran/UI estable por flujo, antes del primer candidato para uso real. Bloquea cierre
+  integral de fase08 y uso real; no por sí sola la entrega funcional. Integridad/recuperación funcional siguen enPLU-41.
+  Las55filas de la matriz y sus resultados permanecen intactos. PLU-38 conserva sus pendientes separados.
+  Cambio documental revisado por dos agentes independientes; huellas idénticas. El smoke funcional posterior no
+  acredita tecnologías de asistencia. Enlaces editados correctos; siguen seis enlaces históricos rotos de08.3.
 - **08.6 / [PLU-40](https://linear.app/plusprojects/issue/PLU-40): completada y Done**.
   [PR #13](https://github.com/JFrancoG/FranAlonso/pull/13) integrada con `7ac0fb5`; implementación publicada en `32e314c`.
   Rama local y remota eliminadas. Persistencia recuperable, migración aditiva 1→2 y envío con Storage neutral/fake.
@@ -23,8 +42,8 @@
   Dos agentes nuevos independientes completan POST de estándares y recursos/localización/PDF sin hallazgos pendientes.
   P3 documental de la spec corregido y releído; huellas pre/post verificadas. Sin cambios ejecutables posteriores.
   GitHub sin checks remotos, no equivale a CI. Sin UI integrada, guardado, upload ni activación live.
-- Captura efímera con valor inmutable Codable, ViewModel, lienzo, deshacer/borrar/confirmar/cancelar. No se integra
-  todavía en formulario, persistencia, PDF firmado, Storage ni activación. ADR0027 limita la excepción de dibujo libre.
+- Captura con valor inmutable Codable, ViewModel, lienzo y edición. 08.7 conecta su consumidor durable al formulario;
+  la activación sigue reservada a08.8. ADR0027 limita la excepción de dibujo libre.
 - Botones de edición en fila, Confirmar con forma accesible rectangular y resultados Deshacer/Borrar con prioridad alta.
   Foco visible Light/Dark y activación por Espacio confirmados; VoiceOver confirma nombres/roles/atenuado, recorrido,
   valores vacío/listo y resultados. Último retest físico: iPhone14/iOS26.7, RunProject001300, PASS11,023s.
@@ -56,7 +75,8 @@ La consolidación actual sustituye pendientes ya resueltos de las anotaciones hi
 
 ADR0028 y spec08 aprobados distinguen información inicial firmada y autorización fotográfica opcional. Dos borradores
 PDF en Resources, catálogo y generador ajustados; continúan pendientes de revisión jurídica antes del uso real.
-08.5 completada; 08.6 / PLU-40 completada y Done mediante PR #13. 08.7–08.9 / PLU-41–PLU-43 permanecen en Backlog.
+08.5 y08.6 completadas. 08.7 / PLU-41 publicada en rama, pendiente de integración; PLU-44 conserva la validación accesible según ADR0029.
+08.8–08.9 / PLU-42–PLU-43 permanecen en Backlog, sin iniciar sus implementaciones.
 El vault Obsidian es este repositorio. Sin activación live ni cierre administrativo de08.4.
 
 ## Entregas anteriores

@@ -39,6 +39,11 @@ Las fases 01–18 constituyen el MVP. Tras entregarlo:
 
 Los documentos de fase son la única fuente de verdad del plan. No se mantiene un plan consolidado duplicado.
 
+Desde 08.7, [ADR 0029](../ADRs/0029-progressive-accessibility-validation.md) permite separar entrega funcional para
+demo y validación integral de accesibilidad, con deuda vinculada. Conserva la numeración, alcance y dependencias
+funcionales; no autoriza comenzar nuevas subfases. La validación se retoma por flujo tras el feedback de Fran y la
+[fase 18](18_qa_release.md) comprueba su cierre antes del primer candidato para uso real.
+
 ## Uso con Codex
 
 Para iniciar una subfase, proporcionar o cargar:
@@ -49,7 +54,7 @@ Para iniciar una subfase, proporcionar o cargar:
 - Los ADR aceptados aplicables.
 - Los contratos, `docs/Progress.md` y el diff del que dependa.
 
-Invocar `$ios-development-standards` para implementar. Tras validar, crear un subagente nuevo con `$franalonso-review-ios-standards` para arquitectura, datos y concurrencia. Si existe alcance SwiftUI, crear en paralelo otro con `$franalonso-review-accessibility`; si no, registrar esa puerta como `N/A`. Corregir los hallazgos válidos y repetir solo la auditoría especializada cuyo ámbito cambie. Actualizar `docs/Progress.md` con la evidencia y el siguiente paso.
+Invocar `$ios-development-standards` para implementar. Tras validar, crear un subagente nuevo con `$franalonso-review-ios-standards` para arquitectura, datos y concurrencia. Si existe alcance SwiftUI, crear en paralelo otro con `$franalonso-review-accessibility`; si no, registrar esa puerta como `N/A`. Corregir los hallazgos válidos o registrar el aplazamiento accesible permitido por ADR 0029; repetir solo la auditoría especializada cuyo ámbito cambie. Actualizar `docs/Progress.md` con la evidencia y el siguiente paso.
 
 ## Decisiones transversales
 
@@ -60,7 +65,7 @@ Invocar `$ios-development-standards` para implementar. Tras validar, crear un su
 - Cada pantalla conserva un `ViewModel` `@Observable @MainActor`. Un `Store` se extrae solo por complejidad o responsabilidad cohesiva demostrable.
 - Las Views son declarativas, contienen un único tipo `View` por archivo, delegan acciones al ViewModel, usan las formas trailing closure de SwiftUI, limitan `@ViewBuilder` a composición real y escalan dimensiones custom no textuales con `@ScaledMetric` cuando deben seguir Dynamic Type.
 - Las mutaciones del contexto principal siguen `View → ViewModel → closure @MainActor → adaptador Data`: la View solo pasa `ModelContext`, App compone la closure, Domain no conoce SwiftData y Data conserva CRUD/mapping/local-first sin importar Presentation.
-- Cada `View` tiene un `#Preview` con el trait compartido `PreviewModifier`, `ModelContainer` de test y datos navegables; las pantallas afectadas se inspeccionan mediante Xcode MCP en `Large`, `XXX Large` y `AX 5` cuando estén soportados.
+- Cada `View` tiene un `#Preview` con el trait compartido `PreviewModifier`, `ModelContainer` de test y datos navegables; las pantallas afectadas se inspeccionan mediante Xcode MCP en `Large`, `XXX Large` y `AX 5` cuando estén soportados, también para demo. ADR 0029 permite estados/apariencias representativos y aplazar la matriz exhaustiva restante hasta el cierre integral.
 - Se aplica TDD con Swift Testing. No se crean XCTest, XCUITest ni tests UI nativos.
 - Solo se permiten frameworks Apple, excepto los productos aprobados `FirebaseCore`, `FirebaseAuth`, `FirebaseFirestore`, `FirebaseStorage`, `FirebaseAnalyticsCore` y `FirebaseCrashlytics`; backend y telemetría conservan fronteras de sustitución independientes.
 - El asistente del MVP usa APIs Apple estables y procesamiento local detrás de contratos propios. No eleva el target, adopta beta ni activa un fallback cloud silencioso.

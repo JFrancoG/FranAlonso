@@ -1,14 +1,32 @@
 import SwiftUI
 
 struct ClientFormContent: View {
+    enum ConsentControl: Hashable {
+        case information, review, recovery
+    }
+
+    struct ConsentFocusReturn: Equatable {
+        let id: UUID
+        let control: ConsentControl
+    }
+
     @Binding var fields: ClientFormFields
     let state: ClientFormViewModel.State
     let mode: ClientFormDestination.Mode
     let canEdit: Bool
     let isRequestPending: Bool
     let validationAttemptID: UUID?
+    let consentAvailable: Bool
+    let consentUnavailable: Bool
+    let canReviewConsent: Bool
+    let hasConsentWork: Bool
+    let consentFocusReturn: ConsentFocusReturn?
     let onRetry: @MainActor () -> Void
     let onDeactivate: @MainActor () -> Void
+    let onInformation: @MainActor () -> Void
+    let onReviewConsent: @MainActor () -> Void
+    let onResumeConsent: @MainActor () -> Void
+    @AccessibilityFocusState private var focusedConsentControl: ConsentControl?
 
     var body: some View {
         switch state {
@@ -56,6 +74,36 @@ struct ClientFormContent: View {
                 )
                 .disabled(!canEdit || isRequestPending)
 
+                if consentAvailable || consentUnavailable {
+                    Section {
+                        if consentUnavailable {
+                            Text(.clientsConsentErrorAuthorization).foregroundStyle(.errorInk)
+                        } else {
+                            Button(action: onInformation) {
+                                Text(.clientsConsentInformation).frame(minHeight: 44)
+                            }
+                            .accessibilityFocused($focusedConsentControl, equals: .information)
+                            .disabled(isRequestPending)
+                            if canReviewConsent {
+                                Button(action: onReviewConsent) {
+                                    Text(.clientsConsentReview).frame(minHeight: 44)
+                                }
+                                .accessibilityFocused($focusedConsentControl, equals: .review)
+                                .disabled(!canEdit || isRequestPending)
+                            }
+                            if hasConsentWork {
+                                Button(action: onResumeConsent) {
+                                    Text(.clientsConsentResume).frame(minHeight: 44)
+                                }
+                                .accessibilityFocused($focusedConsentControl, equals: .recovery)
+                                .disabled(!canEdit || isRequestPending)
+                            }
+                        }
+                    } header: {
+                        Text(.clientsConsentSection)
+                    }
+                }
+
                 if mode == .edit {
                     Section {
                         Button(role: .destructive, action: onDeactivate) {
@@ -68,6 +116,17 @@ struct ClientFormContent: View {
                 }
             }
             .scrollDismissesKeyboard(.interactively)
+            .onChange(of: consentFocusReturn) { _, request in
+                guard let request else { return }
+                switch request.control {
+                case .information:
+                    focusedConsentControl = .information
+                case .review:
+                    focusedConsentControl = canReviewConsent ? .review : .information
+                case .recovery:
+                    focusedConsentControl = hasConsentWork ? .recovery : .information
+                }
+            }
         }
     }
 }
@@ -82,8 +141,16 @@ struct ClientFormContent: View {
         canEdit: true,
         isRequestPending: false,
         validationAttemptID: nil,
+        consentAvailable: true,
+        consentUnavailable: false,
+        canReviewConsent: true,
+        hasConsentWork: false,
+        consentFocusReturn: nil,
         onRetry: {},
-        onDeactivate: {}
+        onDeactivate: {},
+        onInformation: {},
+        onReviewConsent: {},
+        onResumeConsent: {}
     )
 }
 
@@ -97,8 +164,16 @@ struct ClientFormContent: View {
         canEdit: true,
         isRequestPending: false,
         validationAttemptID: nil,
+        consentAvailable: true,
+        consentUnavailable: false,
+        canReviewConsent: true,
+        hasConsentWork: true,
+        consentFocusReturn: nil,
         onRetry: {},
-        onDeactivate: {}
+        onDeactivate: {},
+        onInformation: {},
+        onReviewConsent: {},
+        onResumeConsent: {}
     )
 }
 
@@ -112,8 +187,16 @@ struct ClientFormContent: View {
         canEdit: true,
         isRequestPending: false,
         validationAttemptID: nil,
+        consentAvailable: true,
+        consentUnavailable: false,
+        canReviewConsent: true,
+        hasConsentWork: false,
+        consentFocusReturn: nil,
         onRetry: {},
-        onDeactivate: {}
+        onDeactivate: {},
+        onInformation: {},
+        onReviewConsent: {},
+        onResumeConsent: {}
     )
 }
 
@@ -127,8 +210,16 @@ struct ClientFormContent: View {
         canEdit: false,
         isRequestPending: false,
         validationAttemptID: nil,
+        consentAvailable: true,
+        consentUnavailable: false,
+        canReviewConsent: true,
+        hasConsentWork: false,
+        consentFocusReturn: nil,
         onRetry: {},
-        onDeactivate: {}
+        onDeactivate: {},
+        onInformation: {},
+        onReviewConsent: {},
+        onResumeConsent: {}
     )
 }
 
@@ -142,8 +233,16 @@ struct ClientFormContent: View {
         canEdit: true,
         isRequestPending: false,
         validationAttemptID: nil,
+        consentAvailable: true,
+        consentUnavailable: false,
+        canReviewConsent: true,
+        hasConsentWork: false,
+        consentFocusReturn: nil,
         onRetry: {},
-        onDeactivate: {}
+        onDeactivate: {},
+        onInformation: {},
+        onReviewConsent: {},
+        onResumeConsent: {}
     )
 }
 
@@ -157,7 +256,15 @@ struct ClientFormContent: View {
         canEdit: false,
         isRequestPending: true,
         validationAttemptID: nil,
+        consentAvailable: true,
+        consentUnavailable: false,
+        canReviewConsent: true,
+        hasConsentWork: false,
+        consentFocusReturn: nil,
         onRetry: {},
-        onDeactivate: {}
+        onDeactivate: {},
+        onInformation: {},
+        onReviewConsent: {},
+        onResumeConsent: {}
     )
 }

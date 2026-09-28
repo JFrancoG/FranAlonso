@@ -69,12 +69,6 @@ struct DevelopAuthenticationFixture {
         case .observationError:
             DevelopClientErrorRepository()
         }
-        let dependencies = AppDependencies.local(
-            modelContainer: container,
-            analyticsDataSource: DevelopAnalyticsDataSource(),
-            crashDataSource: DevelopCrashDataSource(),
-            clientRepository: clientRepository
-        )
         let authenticationMode = configuration.authenticationMode
         let dataSource = DevelopAuthenticationDataSource(
             initialState: authenticationMode.initialState,
@@ -89,6 +83,13 @@ struct DevelopAuthenticationFixture {
             authorizeLocalPrincipal: AuthorizeLocalPrincipalUseCase(
                 authorizer: localPrincipalAuthorizer(for: authenticationMode)
             )
+        )
+        let dependencies = AppDependencies.local(
+            modelContainer: container,
+            analyticsDataSource: DevelopAnalyticsDataSource(),
+            crashDataSource: DevelopCrashDataSource(),
+            clientRepository: clientRepository,
+            authenticationRoot: root
         )
 
         return DevelopAuthenticationFixture(
