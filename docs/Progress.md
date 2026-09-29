@@ -5,12 +5,12 @@
 ## Estado actual
 
 - **Fase09 / [PLU-49](https://linear.app/plusprojects/issue/PLU-49): In Progress**.
-  **09.1 / [PLU-50](https://linear.app/plusprojects/issue/PLU-50): publicada en rama**, commit `349f3b7`, PR/merge pendientes.
-  **09.2 / [PLU-51](https://linear.app/plusprojects/issue/PLU-51): implementada localmente**, In Progress.
-  Rama dependiente `codex/plu-51-phase-09-2-product-sync`; [propuesta](progress/09-2-product-sync-proposal.md) aprobada.
-  Cinco recorridos CRUD/sync/reapertura PASS inicial; producción intacta. **1.156/1.156 PASS**, build Develop con tests;
-  aviso AppIntents conocido. PRE/POST PASS. Publicación/PR/merge09.1–09.2 y posterior implementación09.3 autorizados.
-  [Registro](progress/phase-09.md). UI/accesibilidad N/A;09.3–09.7 pendientes.
+  **09.1 / [PLU-50](https://linear.app/plusprojects/issue/PLU-50) y09.2 / [PLU-51](https://linear.app/plusprojects/issue/PLU-51): Done**.
+  [PR17](https://github.com/JFrancoG/FranAlonso/pull/17) merge `7c9ab09` y
+  [PR18](https://github.com/JFrancoG/FranAlonso/pull/18) merge `8ed0af5`; ramas local/remota eliminadas.
+  Árbol integrado idéntico a `04e3760`: **1.156/1.156 PASS**, build Develop con tests; PRE/POST PASS.
+  Aviso AppIntents conocido. [Registro](progress/phase-09.md). UI/accesibilidad N/A, sin activación live.
+  Implementación09.3 autorizada como siguiente paso;09.4–09.7 pendientes.
 - **[ADR0030](ADRs/0030-reusable-demo-and-early-foundation-models.md) aceptado y publicado** el29/09;
   orden excepcional y alcance canónico en [índice](specs/00_index.md). [Registro](progress/phase-08.md).
 - **08.8a / [PLU-46](https://linear.app/plusprojects/issue/PLU-46): Done funcional**, entrega y cierre autorizados.

@@ -1,5 +1,22 @@
 # Fase 09 — Productos e inventario físico
 
+## Entrega y cierre09.1–09.2, 2026-09-29
+
+Autorización completa del propietario: commit/push09.2, PR y merge de09.1/09.2, cierre de ramas y posterior09.3.
+09.2 publicada como `04e376078e75d56215a1b2ac3d530304028b6980`, `✅ test(products): verify CRUD sync and recovery`.
+[PR17](https://github.com/JFrancoG/FranAlonso/pull/17) integra09.1/349f3b7 mediante
+`7c9ab09fe4e71152ad23f24afa0faddf113f0fca`; [PR18](https://github.com/JFrancoG/FranAlonso/pull/18) integra09.2/04e3760
+mediante `8ed0af5b9bc3e5a33a8c7f24190f56f19e990755`. Ambas MERGED, CLEAN/MERGEABLE antes del merge, sin checks remotos.
+Se conservan merges explícitos y toda la historia; árbol de cada merge idéntico al head validado correspondiente.
+Las dos ramas se eliminaron localmente y en origin después de confirmar cero commits únicos respecto a main.
+
+PLU-50 yPLU-51 Done; fase09/PLU-49 In Progress. Docs y Linear reconciliados con la entrega real.
+Se reutilizan1.156/1.156 resultados, build Develop con tests y POST09.2; Production09.1 permanece válido porque09.2
+solo cambió tests/docs. Aviso AppIntents y seis enlaces históricos08.3 conservados; UI/accesibilidad N/A en estos deltas.
+No servicios live ni cierre de deuda08. Esta reconciliación es documental: Xcode N/A por código/configuración intactos.
+Siguiente alcance autorizado09.3: ProductListViewModel/ProductFormViewModel, con propuesta/PRE antes del código.
+Los estados inferiores se conservan como historial, superados por este cierre.
+
 ## Entrega09.1–09.2 autorizada, 2026-09-29
 
 El propietario solicita «Commit y push. Lanza PR y merge de09.1 y09.2, y cierra ramas. Despues comienza a implementar09.3».
