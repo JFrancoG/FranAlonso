@@ -1,6 +1,15 @@
 # Fase 10 — Catálogo comercial de servicios
 
-## Estado actual — 10.5 implementada y validada funcionalmente — 2026-09-30
+## Estado actual — 10.5 entregada — 2026-09-30
+
+[PR28](https://github.com/JFrancoG/FranAlonso/pull/28) MERGED. Commit792adba414da4e8afe72fce29ea637176534160e,
+mergec2f1af0cc248a97ea541f7cef62cb2734e1a791b; árbol completo idéntico al head validado. PLU-64 Done confirmado.
+Rama local/remota eliminada tras ancestry y cero commits únicos. GitHub CLEAN/MERGEABLE, sin checks/reviews ni
+protección/rulesets configurados. Se reutilizan PRE/POST,1.520resultados, builds, previews y smoke; cierre documental
+con Xcode N/A. PLU-65 Backlog mantiene evidencia integral pendiente y responsable Jesus Franco antes de uso real.
+Fase10 In Progress. Implementación10.6 autorizada, propuesta/PRE propias antes de código.
+
+## Historial de implementación — 10.5 — 2026-09-30
 
 [PLU-64](https://linear.app/plusprojects/issue/PLU-64), hija de PLU-59, Jesus Franco, In Progress.
 Rama `codex/phase-10-5-service-screens`, baseline b4801df. [Propuesta](10-5-service-screens-proposal.md), PRE PASS.
