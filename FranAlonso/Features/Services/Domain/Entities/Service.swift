@@ -23,6 +23,9 @@ enum ServiceError: Error, Equatable {
     case conflict
     case persistenceUnavailable
 
+    /// The selected physical product is absent, deleted, inactive or has another identity.
+    case linkedProductUnavailable
+
     /// A product offering was created without a physical product reference.
     case linkedProductRequired
 

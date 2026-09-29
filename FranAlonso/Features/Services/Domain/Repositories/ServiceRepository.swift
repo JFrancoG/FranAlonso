@@ -18,10 +18,12 @@ protocol ServiceRepository: Sendable {
     func service(id: ServiceID) async throws -> Service?
 
     /// Creates an active offering without overwriting any previously used identity.
+    /// A product offering requires its linked product to exist and be active at local acceptance.
     /// - Throws: `ServiceError` for local rejection, or cancellation before acceptance.
     func createService(id: ServiceID, profile: ServiceProfile) async throws -> Service
 
     /// Replaces the commercial profile while preserving the identity and current availability.
+    /// Revalidates the linked product even when its identity has not changed.
     /// Acceptance is local-first, without compare-and-swap across independent contexts.
     func updateService(id: ServiceID, profile: ServiceProfile) async throws -> Service
 

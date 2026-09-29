@@ -41,6 +41,9 @@ struct ServiceCRUDPersistenceTests {
         let adapter = ServiceContextualPersistenceAdapter(observationSignal: signal)
         let id = ServiceID(rawValue: UUID())
         let linkedID = ProductID(rawValue: UUID())
+        let linkedProduct = Product.testSnapshot(id: linkedID, name: "Linked product")
+        let products = ProductLocalDataSource()
+        try products.upsert(linkedProduct, in: ModelContext(container))
         let initial = try serviceCRUDProfile(name: "Before")
         let changed = try ServiceProfile(
             name: "  Champú  especial  ",
@@ -87,7 +90,8 @@ struct ServiceCRUDPersistenceTests {
         try await repository.deactivateService(id)
         #expect(try await actor.pendingUpserts().map(\.operationID) == identifiers)
         #expect(try await repository.service(id: id) == expected)
-        #expect(try ModelContext(container).fetchCount(FetchDescriptor<ProductModel>()) == 0)
+        #expect(try products.fetchAll(in: ModelContext(container)) == [linkedProduct])
+        #expect(try products.pendingOperations(in: ModelContext(container)).isEmpty)
     }
 
     @Test(arguments: [false, true])

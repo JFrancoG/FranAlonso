@@ -11,6 +11,8 @@ struct AppDependencies {
     let observeProducts: ObserveProductsUseCase
     let makeProductForm: ProductFormFactory
     let makeStockAdjustment: StockAdjustmentFactory
+    let observeLinkableProducts: ObserveLinkableProductsUseCase
+    let getLinkableProduct: GetLinkableProductUseCase
     let observeServices: ObserveServicesUseCase
     let observeSales: ObserveSalesUseCase
     let saveSale: SaveSaleUseCase
@@ -286,7 +288,7 @@ struct AppDependencies {
             productRepository: productRepository,
             makeProductForm: readOnlyProductFormFactory(repository: productRepository),
             makeStockAdjustment: readOnlyStockAdjustmentFactory(productRepository: productRepository),
-            serviceRepository: InMemoryServiceRepository(services: services),
+            serviceRepository: InMemoryServiceRepository(services: services, productRepository: productRepository),
             saleRepository: InMemorySaleRepository(sales: sales),
             analyticsDataSource: PreviewAnalyticsDataSource(),
             crashDataSource: PreviewCrashDataSource()
@@ -312,6 +314,8 @@ extension AppDependencies {
             observeProducts: ObserveProductsUseCase(repository: productRepository),
             makeProductForm: makeProductForm,
             makeStockAdjustment: makeStockAdjustment,
+            observeLinkableProducts: ObserveLinkableProductsUseCase(repository: productRepository),
+            getLinkableProduct: GetLinkableProductUseCase(repository: productRepository),
             observeServices: ObserveServicesUseCase(repository: serviceRepository),
             observeSales: ObserveSalesUseCase(repository: saleRepository),
             saveSale: SaveSaleUseCase(repository: saleRepository),

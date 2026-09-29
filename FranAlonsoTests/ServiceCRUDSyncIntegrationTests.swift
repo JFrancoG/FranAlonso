@@ -41,6 +41,7 @@ struct ServiceCRUDSyncIntegrationTests {
         let local = try await GetServiceUseCase(repository: read)(id)
         #expect(try local == serviceSyncExpected(id: id, name: "After", status: .inactive))
         #expect(try ModelContext(fixture.container).fetchCount(FetchDescriptor<ServicePendingDeleteModel>()) == 0)
+        try fixture.verifyProductUnchanged()
     }
 
     @Test
@@ -113,6 +114,7 @@ struct ServiceCRUDSyncIntegrationTests {
             changeSequence: 3
         ))
         #expect(await remote.appliedOperationIDs == [createID, editID, deactivateID])
+        try fixture.verifyProductUnchanged()
     }
 
     @Test
@@ -179,6 +181,7 @@ struct ServiceCRUDSyncIntegrationTests {
         #expect(await remote.record(for: otherID.rawValue)?.liveService?.name == "Still operable")
         #expect(await remote.appliedOperationIDs == [createID, otherOperationID])
         #expect(await remote.receivedOperationIDs == [createID, otherOperationID])
+        try fixture.verifyProductUnchanged()
     }
 
     @Test
@@ -241,6 +244,7 @@ struct ServiceCRUDSyncIntegrationTests {
         #expect(await remote.record(for: id.rawValue) == tombstone)
         #expect(await remote.appliedOperationIDs == [createID])
         #expect(await remote.receivedOperationIDs == [createID])
+        try fixture.verifyProductUnchanged()
     }
 }
 
@@ -248,6 +252,13 @@ private struct ServiceCRUDSyncFixture {
     let container: ModelContainer
     let actor: ServicePersistenceActor
     let signal: ServiceObservationSignal
+
+    func verifyProductUnchanged() throws {
+        let context = ModelContext(container)
+        let products = ProductLocalDataSource()
+        #expect(try products.fetchAll(in: context) == [serviceSyncLinkedProduct()])
+        #expect(try products.pendingOperations(in: context).isEmpty)
+    }
 
     func repository(operationID: UUID) -> DefaultServiceRepository {
         DefaultServiceRepository(
@@ -274,6 +285,7 @@ private struct ServiceCRUDSyncFixture {
 private extension ServiceCRUDSyncFixture {
     init() throws {
         let container = try ModelContainer.inMemory(for: .franAlonso)
+        try ProductLocalDataSource().upsert(serviceSyncLinkedProduct(), in: ModelContext(container))
         self.init(
             container: container,
             actor: ServicePersistenceActor(modelContainer: container),
@@ -284,6 +296,10 @@ private extension ServiceCRUDSyncFixture {
 
 private func serviceSyncUUID(_ suffix: String) throws -> UUID {
     try #require(UUID(uuidString: "10020000-0000-0000-0000-0000000000\(suffix)"))
+}
+
+private func serviceSyncLinkedProduct() throws -> Product {
+    .testSnapshot(id: ProductID(rawValue: try serviceSyncUUID("99")), name: "Linked product")
 }
 
 private func serviceSyncProfile(name: String, product: Bool = false) throws -> ServiceProfile {

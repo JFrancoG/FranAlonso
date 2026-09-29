@@ -1,6 +1,61 @@
 # Fase 10 — Catálogo comercial de servicios
 
-## Estado actual —10.2 entregada —2026-09-29
+## Estado actual —10.3 implementada —2026-09-29
+
+[PLU-62](https://linear.app/plusprojects/issue/PLU-62), hija dePLU-59, In Progress, Jesus Franco.
+Rama `codex/phase-10-3-linkable-products` desde main/origin/main84a57e5. Implementación autorizada tras entregar10.2.
+[Propuesta10.3](10-3-linkable-products-proposal.md): PRE independiente PASS,630 archivos idénticos; huella en propuesta.
+Lectores Domain activos y validación al aceptar alta/edición por actor y ruta contextual, preservando históricos/desactivación.
+Política compartida, errores neutrales y prioridad de identidad/conflicto; App comparte ProductRepository. InMemory vuelve
+a comprobar identidad/estado tras consultar Product. Sin schema/DTO/sync/UI/live ni nuevas dependencias.
+Fixtures10.1/10.2 siembran productos activos sin cola y comprueban su conservación; durabilidad solo siembra en primera vida.
+
+### TDD y validación10.3
+
+Xcode MCP estable, workspace-EYu6rxi7hg, Develop/iPhone18Pro/iOS27.0, Swift6 estricto/target26, configuración intacta.
+17 declaraciones nuevas/36 resultados:12 de lectura/composición/in-memory y5 de persistencia con24 variantes.
+- RED compilable: build18,154s PASS;36 resultados con23 fallos semánticos esperados y13 PASS. No filtrar inactivos ni validar
+  disponibilidad permitía aceptar vínculos obsoletos. Summary `RunSomeTests/83B45B4F-E666-488A-9CBC-DE4EA971F4BC.txt`.
+  Hubo antes un error de compilación del fixture por helper privado, corregido; no se contabiliza como RED semántico.
+- GREEN focal:18/18 PASS, summary `RunSomeTests/7CF674F9-D369-4A0F-9E40-0C703C428EF5.txt`. Xcode omitió variantes
+  parametrizadas en la selección focal; la global siguiente ejecutó todas. No se presenta18 como cobertura de36.
+- GREEN global: **1.030 declaraciones/1.436 resultados PASS**,0fallos/skip/notRun/expectedFailures/runtimeWarnings.
+  Summary `RunAllTests/DC3B0711-568D-466C-BB17-857D2434B8C1.txt` bajo ActionArtifacts/default.
+  Resultado nativo original cerrado inspeccionado,1030PASS y finishTime presente:
+  `/Users/jesusf/Library/Developer/Xcode/DerivedData/FranAlonso-eehpkvodmpnqlchgeqriatcucsjf/Logs/Test/Test-FranAlonso-Develop-2026.09.29_23-03-51-+0200.xcresult`.
+- Builds Develop con tests16,429s y final3,965s; Production20,291s PASS. Logs completos inspeccionados:
+  `BuildProject-Log-20260929-230302.txt`, `BuildProject-Log-20260929-230427.txt`, `BuildProject-Log-20260929-230455.txt`.
+  Sin warnings Swift/Clang ni errores; solo aviso AppIntents metadata previo. GetBuildLog warning sin issues estructurados.
+  Scheme/plan Develop e iPhone18Pro restaurados. Sin nueva ejecución por posteriores registros documentales.
+
+### Revisión y límites10.3
+
+Style audit14Swift:4 candidatos históricos válidos por closures/tipos función; sin hallazgos tras revisión manual del diff.
+`git diff --check` limpio. Gobernanza: solo seis enlaces históricos08.3 a capturas ausentes; sin errores nuevos.
+POST independiente PASS sin hallazgos P0–P3. UI/previews/accesibilidad nueva N/A por ausencia de cambios en pantallas, textos o interacción.
+La deuda08/PLU-54/57 conserva responsable Jesus Franco y recuperación tras feedback/estabilización antes de uso real.
+El test de rechazo verifica snapshot/cola/estado Product; no afirma evidencia negativa de señales sin seam determinista.
+La ausencia de publicación se inspecciona en los callpaths: únicamente se publica tras aceptación exitosa.
+La validación es local, sin garantía CAS entre contextos independientes ni reserva del producto para una operación futura.
+
+POST por agente nuevo ios-standards-reviewer, operacionalmente read-only:14Swift/4docs y callpaths revisados.
+Reviewer/root verifican635/635 archivos tracked y untracked no ignorados idénticos, sin altas/bajas/cambios.
+Manifest `/tmp/franalonso-10-3-post1.json`, SHA256 `0b4c39ca5a7ff9e227bc33e5e3b154eb98ad534eb597a3a439a2ac9316b395c4`.
+Inspeccionados RED/GREEN, los36 resultados nuevos, xcresult cerrado y logs. Solo después de verificar la huella se registra
+el resultado en tres documentos y Linear; código/configuración/tests siguen idénticos al árbol validado y auditado.
+
+Commit/push/PR/merge/cierre10.3 y10.4 pendientes de autorización; PLU-62/PLU-59 permanecen In Progress.
+Siguiente paso tras entregar10.3:10.4, ViewModels de lista/formulario. PLU-47 sigue después de10.7; no se inicia aquí.
+
+## Entrega10.3 autorizada —2026-09-29
+
+El propietario autoriza commit, push, PR, merge, cierre de issue/rama e implementar10.4 después.
+Preflight: main/origin/main84a57e5 idénticos; sin PR previa.14Swift/configuración/tests conservan la huella POST1;
+solo cambian registros documentales. Se reutilizan PRE/POST,1.436 resultados y builds Develop/Production PASS.
+Xcode nuevo N/A por cierre documental; aviso AppIntents, seis enlaces históricos08.3 y deuda accesible intactos.
+PLU-62 todavía In Progress hasta confirmar merge.10.4 tendrá propuesta y PRE antes de código.
+
+## Entrega anterior —10.2 —2026-09-29
 
 [PR25](https://github.com/JFrancoG/FranAlonso/pull/25) MERGED; commit `25ef3531e9d9f813b7098ea671da918d42014dd4`,
 merge `df0a5d63408edab5d7ddd231819244f05b1820a8`. Árbol completo idéntico al head publicado/validado. Rama10.2 eliminada

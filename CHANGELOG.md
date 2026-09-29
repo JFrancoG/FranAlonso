@@ -6,6 +6,9 @@ All notable changes to this project are documented in this file.
 
 ### Added
 
+- 2026-09-29 | ✨ feat(services): validate linkable products
+  Filters active products and rejects stale commercial links while preserving historical services.
+
 - 2026-09-29 | ✨ feat(services): add catalogue commands
   Validates editable commercial profiles and preserves exact prices, current state and causal local acceptance.
 
