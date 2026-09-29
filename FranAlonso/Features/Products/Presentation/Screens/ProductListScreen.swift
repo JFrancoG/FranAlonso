@@ -3,6 +3,7 @@ import SwiftUI
 
 struct ProductListScreen: View {
     let makeProductForm: @MainActor @Sendable (ProductFormDestination) -> ProductFormViewModel
+    let makeStockAdjustment: @MainActor @Sendable (StockAdjustmentDestination) -> StockAdjustmentViewModel
     @Environment(\.locale) private var locale
     @AccessibilityFocusState(for: .voiceOver) private var addButtonIsFocused: Bool
     @State private var hasNotifiedFailureLayout = false
@@ -41,7 +42,11 @@ struct ProductListScreen: View {
         }
         .accessibilityDefaultFocus($addButtonIsFocused, true)
         .sheet(item: formDestination, onDismiss: restoreFormFocus) { destination in
-            ProductFormScreen(destination: destination, makeViewModel: makeProductForm) { completion in
+            ProductFormScreen(
+                destination: destination,
+                makeViewModel: makeProductForm,
+                makeStockAdjustment: makeStockAdjustment
+            ) { completion in
                 finishForm(destination, completion: completion)
             }
             .id(destination.id)
@@ -121,9 +126,11 @@ struct ProductListScreen: View {
 extension ProductListScreen {
     init(
         observeProducts: ObserveProductsUseCase,
-        makeProductForm: @escaping @MainActor @Sendable (ProductFormDestination) -> ProductFormViewModel
+        makeProductForm: @escaping @MainActor @Sendable (ProductFormDestination) -> ProductFormViewModel,
+        makeStockAdjustment: @escaping @MainActor @Sendable (StockAdjustmentDestination) -> StockAdjustmentViewModel
     ) {
         self.makeProductForm = makeProductForm
+        self.makeStockAdjustment = makeStockAdjustment
         _viewModel = State(initialValue: ProductListViewModel(observeProducts: observeProducts))
     }
 }
@@ -132,6 +139,10 @@ extension ProductListScreen {
     @Previewable @Environment(\.appDependencies) var dependencies
 
     NavigationStack {
-        ProductListScreen(observeProducts: dependencies.observeProducts, makeProductForm: dependencies.makeProductForm)
+        ProductListScreen(
+            observeProducts: dependencies.observeProducts,
+            makeProductForm: dependencies.makeProductForm,
+            makeStockAdjustment: dependencies.makeStockAdjustment
+        )
     }
 }

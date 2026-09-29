@@ -13,13 +13,12 @@ struct AdjustStockUseCase {
         occurredAt: Date
     ) async throws -> StockMovement {
         try Task.checkCancellation()
-        let movement = try StockMovement(
+        let movement = try PrepareStockAdjustmentUseCase()(
             id: id,
             productID: productID,
             quantityDelta: quantityDelta,
             reason: reason,
-            occurredAt: occurredAt,
-            origin: .manual(reference: id)
+            occurredAt: occurredAt
         )
         return try await repository.append(movement)
     }

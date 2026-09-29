@@ -11,6 +11,10 @@ struct ProductFormContent: View {
     let validationAttemptID: UUID?
     let onRetry: @MainActor () -> Void
     let onDeactivate: @MainActor () -> Void
+    var canAdjustStock = false
+    var stockReturnFocusID: UUID?
+    var onAdjustStock: @MainActor () -> Void = {}
+    @AccessibilityFocusState private var stockButtonIsFocused: Bool
     @FocusState private var nameIsFocused: Bool
     @AccessibilityFocusState private var nameIsAccessibilityFocused: Bool
 
@@ -85,6 +89,25 @@ struct ProductFormContent: View {
                             .fixedSize(horizontal: false, vertical: true)
                     }
                 }
+                if mode == .edit {
+                    Section {
+                        Button {
+                            stockButtonIsFocused = false
+                            onAdjustStock()
+                        } label: {
+                            Label {
+                                Text(.stockAdjustmentOpen)
+                                    .fixedSize(horizontal: false, vertical: true)
+                            } icon: {
+                                Image(systemName: "arrow.up.arrow.down")
+                                    .accessibilityHidden(true)
+                            }
+                            .frame(minHeight: 44)
+                        }
+                        .accessibilityFocused($stockButtonIsFocused)
+                        .disabled(!canAdjustStock || isRequestPending)
+                    }
+                }
                 if mode == .edit, !isInactive {
                     Section {
                         Button(role: .destructive, action: onDeactivate) {
@@ -98,6 +121,10 @@ struct ProductFormContent: View {
                 }
             }
             .scrollDismissesKeyboard(.interactively)
+            .onChange(of: stockReturnFocusID) {
+                guard stockReturnFocusID != nil, canAdjustStock else { return }
+                stockButtonIsFocused = true
+            }
             .onChange(of: validationAttemptID) {
                 guard state.formError == .invalidName else { return }
                 nameIsFocused = true
@@ -172,5 +199,24 @@ struct ProductFormContent: View {
         validationAttemptID: nil,
         onRetry: {},
         onDeactivate: {}
+    )
+}
+
+#Preview("Stock entry", traits: .modifier(AppPreviewModifier())) {
+    @Previewable @State var name = ProductPreviewFixtures.standard.secondaryProduct.name
+
+    ProductFormContent(
+        name: $name,
+        state: .editing,
+        mode: .edit,
+        isInactive: true,
+        canEdit: true,
+        canDeactivate: false,
+        isRequestPending: false,
+        validationAttemptID: nil,
+        onRetry: {},
+        onDeactivate: {},
+        canAdjustStock: true,
+        onAdjustStock: {}
     )
 }

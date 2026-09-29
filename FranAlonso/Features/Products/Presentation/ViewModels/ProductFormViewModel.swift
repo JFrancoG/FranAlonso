@@ -37,6 +37,7 @@ final class ProductFormViewModel {
             state = .editing
         }
     }
+    private(set) var stockAdjustmentDestination: StockAdjustmentDestination?
     private(set) var loadedProduct: Product?
     private(set) var state: State
 
@@ -69,6 +70,20 @@ final class ProductFormViewModel {
         case .editing, .failed(.save, _), .failed(.deactivate, _): true
         default: false
         }
+    }
+
+    var canAdjustStock: Bool { destination.mode == .edit && loadedProduct != nil && canEdit }
+
+    /// Opens one child session without replacing or accepting the parent's editable name.
+    func openStockAdjustment() {
+        guard canAdjustStock, stockAdjustmentDestination == nil else { return }
+        stockAdjustmentDestination = StockAdjustmentDestination(id: UUID(), productID: destination.productID)
+    }
+
+    /// A delayed dismissal cannot close a newer child session.
+    func dismissStockAdjustment(id: UUID) {
+        guard stockAdjustmentDestination?.id == id else { return }
+        stockAdjustmentDestination = nil
     }
 
     var canDeactivate: Bool { destination.mode == .edit && loadedProduct?.status == .active && canEdit }
@@ -107,7 +122,7 @@ final class ProductFormViewModel {
     /// Validates a captured name and submits one local write with the caller's ephemeral context.
     /// Success reflects durable local acceptance even if cancellation arrives during that write.
     func save(in context: ModelContext) async {
-        guard canEdit, !Task.isCancelled else { return }
+        guard canEdit, stockAdjustmentDestination == nil, !Task.isCancelled else { return }
         let profile: ProductProfile
         do {
             profile = try prepareProfile(name: name)
@@ -138,7 +153,7 @@ final class ProductFormViewModel {
     /// Applies an already-confirmed deactivation; completion means local acceptance, not remote convergence.
     /// Inactive products, overlapping requests and terminal sessions cannot submit another mutation.
     func deactivate(in context: ModelContext) async {
-        guard canDeactivate, !Task.isCancelled else { return }
+        guard canDeactivate, stockAdjustmentDestination == nil, !Task.isCancelled else { return }
         let generation = UUID()
         operationGeneration = generation
         state = .deactivating
@@ -154,6 +169,7 @@ final class ProductFormViewModel {
 
     /// Clears presentation and fences later responses without claiming to undo an accepted write.
     func close() {
+        stockAdjustmentDestination = nil
         operationGeneration = UUID()
         name = ""
         loadedProduct = nil

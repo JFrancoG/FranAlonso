@@ -1,4 +1,4 @@
-# Demo de clientes y productos — 08.8a / 09.4
+# Demo de clientes, productos y stock — 08.8a / 09.4 / 09.6
 
 ## Arranque
 
@@ -41,14 +41,26 @@ En el mismo proceso, abrir Catálogo: muestra «Champú DEMO hidratante» y «Ma
 Buscar por nombre, añadir un producto, editarlo y cancelar con descarte confirmado. Desactivar exige confirmación;
 el producto queda visible como Inactivo y se puede editar su nombre. La desactivación descarta cambios de nombre
 sin guardar, tal como avisa el diálogo. La hoja se cierra por sus acciones explícitas, no arrastrándola.
-Guardar vacío muestra un error; corregir y guardar recorre la persistencia local real. No hay precio, stock ni servicios.
+Guardar vacío muestra un error; corregir y guardar recorre la persistencia local real. No hay precio ni servicios.
+
+## Ajuste de stock — 09.6
+
+Abrir un producto existente y pulsar «Ajustar stock». Champú arranca con8 unidades y Mascarilla con2.
+Elegir Entrada o Salida, indicar unidades enteras positivas y un motivo; pulsar «Registrar».
+«Ajuste registrado» confirma aceptación local. «Finalizar» vuelve a la ficha; reabrir el ajuste lee el saldo vigente.
+Una salida de10 unidades del Champú inicial deja saldo−2, permitido y mostrado textualmente.
+
+Probar unidades0 y motivo vacío; corregir después del error. Cancelar con datos muestra Descartar/Seguir editando.
+El nombre sin guardar en la ficha padre se conserva al entrar/salir de stock. Los productos inactivos también permiten
+ajustes; un producto nuevo debe guardarse antes. Un fallo de envío congela el ajuste para reintentar exactamente el mismo;
+un fallo de recarga después de aceptar solo ofrece actualizar existencias, sin volver a registrar.
 
 ## Reinicio y límites de ambos recorridos
 
-Terminar el proceso y volver a lanzar recrea los dos borradores y dos productos, vacía documentos/recibos y rearma el primer fallo del modo
+Terminar el proceso y volver a lanzar recrea los dos borradores y dos productos con saldos8/2, vacía documentos/recibos y rearma el primer fallo del modo
 de recuperación. Ir a segundo plano o reabrir una pantalla no reinicia datos. Este reset no es recuperación durable.
 El storage normal continúa no disponible; esta demo no utiliza Firebase, Keychain, telemetría real ni motores live.
-No demuestra transporte, sincronización, persistencia entre procesos, fotografía, stock, servicios, venta o Foundation Models.
+No demuestra transporte, sincronización, persistencia entre procesos, fotografía, servicios, venta o Foundation Models. Los movimientos de stock de la demo solo viven durante ese proceso.
 
 Usar parámetros temporales de `DeviceInteractionInstallAndRun` al validar con Xcode MCP; no es necesario editar el esquema
 para cada recorrido. Cerrar la sesión de interacción al terminar y conservar ambos argumentos `NO` en el esquema.

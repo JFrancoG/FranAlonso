@@ -33,7 +33,8 @@ struct AppShellScreen: View {
                 NavigationStack {
                     ProductListScreen(
                         observeProducts: dependencies.observeProducts,
-                        makeProductForm: dependencies.makeProductForm
+                        makeProductForm: dependencies.makeProductForm,
+                        makeStockAdjustment: dependencies.makeStockAdjustment
                     )
                     .toolbar {
                         signOutToolbar

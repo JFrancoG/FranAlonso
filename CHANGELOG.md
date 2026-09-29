@@ -6,6 +6,9 @@ All notable changes to this project are documented in this file.
 
 ### Added
 
+- 2026-09-29 | ✨ feat(stock): add adjustment screens
+  Adds contextual stock entry and withdrawal, protected retry sessions and repeatable demo balances.
+
 - 2026-09-29 | ✨ feat(stock): add durable idempotent adjustments
   Preserves append-only movements across migration and restart, derives exact balances and protects unbound stores.
 

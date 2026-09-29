@@ -1,5 +1,6 @@
 /// Neutral adjustment failures without provider details or business payloads.
 enum StockError: Error, Equatable {
+    case invalidQuantity
     case invalidDelta
     case invalidReason
     case invalidDate

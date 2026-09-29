@@ -6,7 +6,7 @@ import SwiftData
 @MainActor
 final class AppRuntime {
     let dependencies: AppDependencies
-    /// The single local ledger writer shared by stock callers in this runtime; no stock transport is composed.
+    /// Shares the local ledger reader with UI composition; contextual UI acceptance is the active writer.
     let stockRepository: DefaultStockRepository
     private let modelContainer: ModelContainer
     private let persistenceActor: ClientPersistenceActor
@@ -105,6 +105,7 @@ final class AppRuntime {
             observationSignal: observationSignal,
             productPersistenceActor: productPersistenceActor,
             productObservationSignal: productObservationSignal,
+            stockRepository: stockRepository,
             servicePersistenceActor: servicePersistenceActor,
             serviceObservationSignal: serviceObservationSignal,
             salePersistenceActor: salePersistenceActor,
