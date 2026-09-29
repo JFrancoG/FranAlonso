@@ -11,6 +11,7 @@ extension ClientConsentStore.Failure {
         case .photoDecision: .clientsConsentErrorPhotoDecision
         case .unavailable: .clientsConsentErrorUnavailable
         case .permission: .clientsConsentErrorPermission
+        case .activation: .clientsConsentActivationFailed
         }
     }
 }
@@ -24,12 +25,20 @@ extension ClientConsentStore.Operation {
         case .signature: .clientsConsentSavingSignature
         case .render: .clientsConsentRendering
         case .upload: .clientsConsentUploading
+        case .activate: .clientsConsentActivating
         case .discard: .clientsConsentDiscarding
         }
     }
 }
 
 extension ClientDocumentUploadState {
+    var isUploaded: Bool {
+        if case .uploaded = self {
+            return true
+        }
+        return false
+    }
+
     var consentMessage: LocalizedStringResource {
         switch self {
         case .pending: .clientsConsentPending
@@ -58,6 +67,39 @@ struct ClientConsentDraftChoice: Identifiable {
 }
 
 extension ClientFormViewModel {
+    var isClientActivated: Bool {
+        if case .active = loadedClient?.status {
+            return true
+        }
+        return consentStore?.isActivated == true
+    }
+
+    var hasConsentUploadAction: Bool {
+        guard let store = consentStore else { return false }
+        let isInitial = store.snapshot?.fields.context.purpose == .initialInformation
+        return store.hasUploadAction && !(isInitial && isClientActivated)
+    }
+
+    var consentUploadActionTitle: LocalizedStringResource {
+        consentStore?.delivery?.state.isUploaded == true ? .clientsConsentFinishActivation : .clientsConsentUpload
+    }
+
+    var consentActivationMessage: LocalizedStringResource? {
+        guard consentStore?.snapshot?.fields.context.purpose == .initialInformation else { return nil }
+        if case .active(let reference) = loadedClient?.status {
+            guard case .uploaded(let receipt) = consentStore?.delivery?.state,
+                  receipt.reference == reference else { return .clientsConsentActivationUnlinked }
+            return .clientsConsentActivated
+        }
+        if consentStore?.isActivated == true {
+            return .clientsConsentActivated
+        }
+        if consentStore?.delivery?.state.isUploaded == true {
+            return .clientsConsentActivationPending
+        }
+        return nil
+    }
+
     var hasConsentWork: Bool {
         guard let consentStore else { return false }
         return consentStore.draft != nil || consentStore.delivery != nil

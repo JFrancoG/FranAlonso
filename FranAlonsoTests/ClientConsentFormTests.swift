@@ -7,6 +7,150 @@ import Testing
 @MainActor
 struct ClientConsentFormTests {
     @Test(arguments: [false, true])
+    func `recovery adopts activation from another form while preserving local edits`(hasLocalEdit: Bool) async throws {
+        let fixture = try ConsentFlowFixture(storage: InMemoryClientDocumentStorage())
+        let first = writableModel(fixture, mode: .create)
+        first.fields.displayName = fixture.profile.displayName
+        await first.performConsent(.review)
+        let capture = try #require(first.beginConsentCapture())
+        await first.performConsent(.captured(.captured(try ConsentFlowFixture.ink()), capture))
+        await first.performConsent(.accept)
+        let second = writableModel(fixture, mode: .edit)
+        await second.load()
+        if hasLocalEdit {
+            second.fields.taxIdentifier = "UNSAVED-OTHER-FORM"
+        }
+        await first.performConsent(.upload)
+        let active = try #require(first.loadedClient)
+        guard case .active = active.status else {
+            Issue.record("Expected the first form to activate the client")
+            return
+        }
+        await second.performConsent(.recover)
+        #expect(second.loadedClient == active)
+        #expect(second.consentActivationMessage == .clientsConsentActivated)
+        #expect(!second.hasConsentUploadAction)
+        #expect(second.hasUnsavedChanges == hasLocalEdit)
+        #expect(second.fields.taxIdentifier == (hasLocalEdit ? "UNSAVED-OTHER-FORM" : ""))
+    }
+
+    @Test(arguments: [false, true])
+    func `activation confirmation identifies the selected document`(uploadOther: Bool) async throws {
+        let fixture = try ConsentFlowFixture(storage: InMemoryClientDocumentStorage())
+        let signed = try await fixture.sign()
+        await fixture.store.accept()
+        let initial = try #require(fixture.store.delivery)
+        let snapshot = try #require(signed.fields.snapshot)
+        let otherSnapshot = try ClientDocumentSnapshot(.init(
+            id: UUID(),
+            clientID: fixture.clientID,
+            clientName: snapshot.fields.clientName,
+            context: snapshot.fields.context,
+            content: snapshot.fields.content
+        ))
+        let otherDraft = try ClientDocumentDraft(.init(
+            id: UUID(),
+            clientID: fixture.clientID,
+            profile: fixture.profile,
+            snapshot: otherSnapshot,
+            binding: ClientDocumentSignature(snapshot: otherSnapshot, signature: ConsentFlowFixture.ink()),
+            signedAt: ClientDocumentTestFixtures.date,
+            revision: 0
+        ))
+        let saved = try await fixture.services.repository.saveDraft(otherDraft, operationID: UUID())
+        let other = try await RenderAndPersistConsentUseCase(
+            repository: fixture.services.repository,
+            renderer: fixture.services.renderer
+        )(draftID: saved.id)
+        if uploadOther {
+            _ = try await UploadConsentUseCase(
+                repository: fixture.services.repository,
+                storage: fixture.services.storage,
+                now: fixture.services.now
+            )(documentID: other.id)
+        }
+        let active = try #require(await fixture.store.upload())
+        let reopened = writableModel(fixture, mode: .edit)
+        await reopened.load()
+        await reopened.performConsent(.selectDelivery(other.id))
+        #expect(reopened.consentActivationMessage != nil)
+        #expect(reopened.consentActivationMessage == .clientsConsentActivationUnlinked)
+        #expect(!reopened.hasConsentUploadAction)
+        await reopened.performConsent(.recover)
+        await reopened.performConsent(.selectDelivery(initial.id))
+        #expect(reopened.consentActivationMessage == .clientsConsentActivated)
+        #expect(!reopened.hasConsentUploadAction)
+        let current = try ClientLocalDataSource().client(id: fixture.clientID, in: ModelContext(fixture.container))
+        #expect(current == active)
+    }
+
+    @Test
+    func `activation preserves a profile edit committed by another form during upload`() async throws {
+        let gate = RecoveryOperationGate()
+        let storage = AfterUploadRecoveryStorage(base: InMemoryClientDocumentStorage()) { await gate.enter() }
+        let fixture = try ConsentFlowFixture(storage: storage)
+        let first = writableModel(fixture, mode: .create)
+        first.fields.displayName = fixture.profile.displayName
+        await first.performConsent(.review)
+        let capture = try #require(first.beginConsentCapture())
+        await first.performConsent(.captured(.captured(try ConsentFlowFixture.ink()), capture))
+        await first.performConsent(.accept)
+        let second = writableModel(fixture, mode: .edit)
+        await second.load()
+        let upload = Task {
+            await first.performConsent(.upload)
+            await gate.finish()
+        }
+        let entered = await gate.waitForEntry()
+        second.fields.displayName = "Perfil actualizado durante el envío"
+        second.fields.taxIdentifier = "NEW-TAX-ACTIVATION"
+        await second.save(in: ModelContext(fixture.container))
+        await gate.release()
+        await upload.value
+        #expect(entered)
+        let context = ModelContext(fixture.container)
+        let current = try #require(try ClientLocalDataSource().client(id: fixture.clientID, in: context))
+        guard case .active = current.status else {
+            Issue.record("Expected the uploaded document to activate the current profile")
+            return
+        }
+        #expect(current.displayName == "Perfil actualizado durante el envío")
+        #expect(current.taxIdentifier == "NEW-TAX-ACTIVATION")
+        #expect(first.loadedClient == current)
+        #expect(first.fields.displayName == current.displayName)
+        let operations = try ClientLocalDataSource().pendingOperations(in: context)
+        let activeWrites = operations.compactMap { operation -> ClientDTO? in
+            guard case .upsert(let upsert) = operation else { return nil }
+            guard upsert.client.status == .active else { return nil }
+            return upsert.client
+        }
+        #expect(activeWrites.count == 1)
+        #expect(try activeWrites.first?.toDomain() == current)
+    }
+
+    @Test
+    func `activation leaves unsaved form fields editable while updating the persisted status`() async throws {
+        let fixture = try ConsentFlowFixture(storage: InMemoryClientDocumentStorage())
+        let model = writableModel(fixture, mode: .create)
+        model.fields.displayName = fixture.profile.displayName
+        await model.performConsent(.review)
+        let capture = try #require(model.beginConsentCapture())
+        await model.performConsent(.captured(.captured(try ConsentFlowFixture.ink()), capture))
+        await model.performConsent(.accept)
+        model.fields.taxIdentifier = "UNSAVED-TAX"
+        await model.performConsent(.upload)
+        let loaded = try #require(model.loadedClient)
+        guard case .active = loaded.status else {
+            Issue.record("Expected the facade to adopt the durable activation result")
+            return
+        }
+        #expect(model.fields.taxIdentifier == "UNSAVED-TAX")
+        #expect(model.hasUnsavedChanges)
+        #expect(loaded.taxIdentifier == nil)
+        #expect(!model.canReviewConsent)
+    }
+
+    @Test(arguments: [false, true])
     func savingAfterDocumentCompletionUpdatesTheAlreadyCreatedClient(acceptDocument: Bool) async throws {
         let fixture = try ConsentFlowFixture()
         let model = writableModel(fixture, mode: .create)

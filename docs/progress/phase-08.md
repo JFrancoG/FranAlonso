@@ -1,5 +1,131 @@
 # Fase 08 — Clientes, consentimiento y foto
 
+## PR y smoke funcional de 08.8 — 2026-09-29
+
+El propietario autoriza «abre PR y haz esa prueba». [PR #15](https://github.com/JFrancoG/FranAlonso/pull/15) abierta
+desde `92bb217` contra main; se prepara para revisión con el resultado registrado. Merge, cierre de PLU-42/rama,
+08.9 y servicios live siguen pendientes de su autorización. PLU-42 y PLU-34 permanecen In Progress.
+
+**Smoke funcional PASS**, 07:28–07:34 Europe/Madrid, Xcode MCP Develop/iPad Air 11-inch (M4)/iOS 27.0 Simulator.
+Interacción táctil dirigida por agente con datos sintéticos: creación, revisión, firma y conservación; envío simulado
+con fallo local posterior; vuelta a lista, reapertura, Finalizar alta y nueva reapertura con confirmación activa.
+El contador registra un único upload antes y después del reintento; no se repite la firma. La lista muestra el nombre,
+no el estado: se verifica la confirmación en el documento reabierto. Sin bloqueo ni defecto visual observado en ese flujo.
+
+PRE y POST independientes del harness temporal PASS. Triple gate Develop/plan de fixture/argumento explícito,
+actor de escenario compartido entre formularios y delegación a las capas reales. Solo Storage y un primer fallo local
+se simulan; los marcadores contienen constantes y contador. Root reproduce la huella del POST, 527 rutas idénticas,
+SHA-256 JSON canónico `83222a0308d9be50dee789573df61dd9dbe33db82a801b8cd9eca76ae07f6499`.
+
+Sesión cerrada tras el recorrido. Composición original restaurada byte a byte y las 527 rutas previas verificadas,
+SHA-256 JSON canónico `030f8fe58e75e711511d9e12b3e081f2735e6aaafb8a217e4996bfb46600ad91`.
+Ningún harness, argumento persistente o cambio ejecutable nuevo entra en la PR. Build normal restaurado **8,907s PASS**;
+log completo conserva únicamente el aviso AppIntents conocido. Retest focal **2/2 PASS** de Storage normal indisponible
+y autenticación completa de la fixture. Bundle nativo cerrado confirma iPadAir11M4/27.0 y cero runtimeWarnings.
+Selección inicial Develop/iPhone11 restaurada sin relanzar el dispositivo físico. La suite completa previa1.094/1.094
+y POST funcionales se reutilizan porque el código final vuelve a ser exactamente el validado.
+
+Artefactos bajo `/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/`:
+build `BuildProject/BuildProject-Log-20260929-073507.txt`;
+tests `RunSomeTests/1D561FF7-B16D-4B9D-8B90-5717EAD59C1C.txt`;
+bundle nativo en DerivedData, `Test-FranAlonso-Develop-2026.09.29_07-35-39-+0200.xcresult`.
+Capturas, jerarquías y marcadores del recorrido en [evidencia08.8](../accessibility/evidence/08-8-client-activation.md).
+
+El smoke funcional pendiente de PLU-42 queda satisfecho en la composición aislada autorizada. No acredita reinicio
+del proceso, servicios reales ni AT. La composición normal mantiene Storage no disponible y una futura demo permanente
+deberá verificar su propio recorrido. PLU-45 conserva accesibilidad integral, PLU-44/PLU-38 sus deudas separadas;
+ningún criterio histórico se convierte en PASS. La fase continúa abierta. Este registro sustituye el pendiente de smoke
+y PR de los apartados históricos siguientes. Publicación adicional limitada a documentación y CHANGELOG.
+
+## Publicación en rama de08.8 — 2026-09-29
+
+El propietario autoriza «commit y push» y solicita recomendación sobre una entrega posterior por PR/merge/cierres.
+Se publica el alcance revisado en `origin/codex/plu-42-phase-08-8-client-activation`, con mensaje
+`✨ feat(clients): add recoverable client activation`; CHANGELOG incluido. La identidad exacta de este commit y
+la paridad remota se verifican en Git y se registran en Linear tras el push.
+
+Se reutilizan suite1.094/1.094, build9,323s y POST finales favorables: Swift, recursos y configuración mantienen
+la huella del alcance validado. Solo se añaden notas de publicación. Nuevos build/tests/previews N/A por ese delta.
+Diff, archivos previstos y gobernanza revisados; persisten aviso AppIntents y seis enlaces históricos rotos de08.3.
+
+PLU-42 y PLU-34 permanecen In Progress; PLU-45 Backlog conserva accesibilidad integral y PLU-44/PLU-38 sus deudas
+separadas. El alcance normal conserva Storage indisponible y no se acredita un nuevo smoke manual de activación.
+Revisión de la puerta de cierre: ADR0029 exige comprobar funcionalmente el recorrido que se enseñará. Se recomienda
+PR y posible integración, manteniendo PLU-42 abierta hasta un smoke breve de activación/reintento en composición
+de demo aislada y autorizada. No exige Storage live ni repetir la matriz accesible. El smoke funcional pertenece a
+PLU-42; PLU-45 conserva únicamente la operación/comunicación accesible de esos recorridos. Esta precisión corrige
+cualquier interpretación anterior que incluyera ese pendiente funcional en el aplazamiento accesible.
+PR, merge, cierre de issue/rama, 08.9 y servicios live no están autorizados en este paso. Esta publicación sustituye
+la condición de trabajo solo local de los apartados históricos inferiores.
+
+## Implementación local de08.8 — 2026-09-29
+
+PLU-42 permanece In Progress en `codex/plu-42-phase-08-8-client-activation`, base `70905c2`.
+Autorización: issue, rama e implementación. Sin commit/push/PR/merge/cierre ni inicio08.9 o live.
+
+- Domain añade capacidad de activación y UseCase orquestador. Preparar pending antes del upload y activar después
+  del recibo durable usan el mismo actor documental, autorización y transacción local con rollback/cola causal.
+  Validan identidad, finalidad inicial, sesión/principal, ausencia de conflicto/tombstone y correspondencia del recibo.
+  Misma referencia es idempotente; otra referencia/documento posterior se rechaza. Accept/upload separados no activan.
+- Store/fachada integran la intención de alta; error/reinicio mantienen firma/PDF/recibo y permiten reintento local.
+  Preservan campos sin guardar y perfil confirmado durante el await del upload. No se afirma exclusión global
+  entre commits simultáneos de distintos contextos CRUD. Sin schema, dependencia o motor nuevos.
+- UI: Finalizar alta para documento enviado, confirmación ligada al recibo seleccionado, error de activación y
+  mensaje neutral si el cliente activo no tiene ese documento confirmado como alta. Seis claves es en xcstrings.
+  Composición normal sigue con UnavailableClientDocumentStorage; simulación únicamente en tests/previews.
+- PRE independiente PASS:519 rutas idénticas. TDD inicial4RED de Store/formulario y3RED de Domain/Data;
+  GREEN focal53/53. Nuevos tests ejercen persistencia real en disco/reapertura, idempotencia, rollback, sesión,
+  cancelación, finalidad y referencias inválidas, dos formularios y cola durable desde contexto independiente.
+- Primera suite: **833 declaraciones/1.090 resultados PASS**. POST detecta dos P2 de presentación:
+  recuperar conservaba status obsoleto; un documento distinto recibía la confirmación de alta. PRE focal favorable,
+  RED3FAIL/1PASS en cuatro casos; corregir adopción del cliente actual y correlación con referencia activa.
+  Retest focal MCP2/2 corresponde a los casos false seleccionados por el runner; la suite final ejecuta los cuatro.
+  P3 de formato corregidos en feedback, fixtures, enum y tests sin cambio adicional de comportamiento.
+- Suite final MCP Develop/iPadAir11M4/iOS27.0: **835 declaraciones / 1.094 resultados PASS**,0fallos/omitidos.
+  Bundle nativo cerrado confirma destino y346ejecuciones parametrizadas de87tests; runtimeWarnings vacío.
+  Build final PASS **9,323s**. GetBuildLog sin issues estructuradas; log completo conserva exactamente el aviso
+  AppIntents «Metadata extraction skipped, no AppIntents.framework dependency found». No afirmar cero warnings globales.
+- Seis previews inspeccionadas: pantalla y componente en Large clara, XXX Large clara y AX5 oscura.
+  Destino efectivo del pipeline iPadPro13M5/iOS27.2. Contenido inicial y acciones revisados por separado debido a la
+  longitud del documento. El cambio lógico final no altera layout/textos de esos estados. Nuevo mensaje no vinculado
+  revisado estáticamente y por tests, sin preview específica ni ejecución manual de ese caso.
+- Matriz/manual integral nueva en [PLU-45](https://linear.app/plusprojects/issue/PLU-45), Backlog, responsable Jesus Franco;
+  retomar tras feedback/estabilización del flujo y siempre antes del uso real. [Evidencia08.8](../accessibility/evidence/08-8-client-activation.md)
+  conserva55criterios y resultados previos sin convertirlos en PASS. PLU-44/PLU-38 conservan deudas separadas.
+  No se repite smoke08.7 ni se declara un smoke manual nuevo. Futura composición de demo deberá validar su recorrido;
+  este binario normal aún no realiza la subida real necesaria para activar por UI.
+
+POST inicial operacionalmente read-only: dos revisores independientes, ninguno implementó. El segundo se reutiliza
+tras el PRE por límite de agentes. Root verifica526rutas iguales mediante manifiesto `/tmp/franalonso-088-post-root.json`.
+Estándares: SHA256 agregado path+NUL+SHA256(bytes)+LF `7a951547b261f57909843175ed668b11f28227c6d567e8ad67cc56e0f173eb82`.
+UI: SHA256 de JSON canónico del mismo manifiesto `a6456d1f930659edccaf0c8b74bb0e4f43ef51a279988efa0eaa388163b4c09d`.
+Relectura focal final de estándares y UI/estilo: **PASS sin hallazgos pendientes de implementación**. Ambos revisores
+confirman527rutas idénticas contra `/tmp/franalonso-088-final-review.json`; root reproduce SHA256 JSON canónico
+`43aa2fc2794fc47c8c78fa32934b57a88a3f887ac85565fc6c41f5f160ec6f2a`. Estándares contrasta los cuatro casos
+parametrizados en el bundle nativo y el log completo. Este párrafo de registro se añade después de verificar la huella;
+sin cambios ejecutables posteriores. El PASS funcional de revisión no acredita recorrido manual nuevo ni cierre integral.
+
+Gobernanza sin nuevos defectos: conserva únicamente seis enlaces históricos rotos de08.3; diff-check limpio.
+EndSession de Client Activation Validation responde que la sesión ya no existe tras tests. Selección inicial
+Develop/iPhone11 restaurada y verificada, sin relanzar el físico ni cambiar el esquema compartido.
+
+Artefactos Xcode MCP bajo `/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/`:
+RED inicial `RunSomeTests/164542A4-B71C-4317-9097-341EA6488413.txt` y `7884E9FB-E715-4EE8-8877-26265386FB39.txt`;
+GREEN53 `RunSomeTests/0195C0E6-ABA8-4532-8EFC-C0BAEE69A02E.txt`; RED POST `639693DE-E17C-4F3E-85D0-824985083BDF.txt`;
+suite final `RunAllTests/F61205CC-A187-4B42-81C5-4B7BC37209B6.txt`; build `BuildProject/BuildProject-Log-20260929-005713.txt`.
+Bundles originales cerrados bajo `/Users/jesusf/Library/Developer/Xcode/DerivedData/FranAlonso-eehpkvodmpnqlchgeqriatcucsjf/Logs/Test/`,
+prefijo `Test-FranAlonso-Develop-2026.09.29_` y sufijo `-+0200.xcresult`: RED00-37-15/00-38-06, GREEN00-42-31,
+primera suite00-48-37, RED POST00-53-51, GREEN focal00-55-11, suite final00-56-40. Verificar originales: copias MCP
+pueden carecer de Info.plist. No hay Git nuevo ni checks remotos de esta implementación.
+
+## Inicio de 08.8 — 2026-09-29
+
+El propietario autoriza issue, rama e implementación de 08.8. Se reutiliza PLU-42 en In Progress y se crea
+`codex/plu-42-phase-08-8-client-activation` desde `70905c2`, main/remoto limpios y sincronizados.
+[Propuesta concreta](08-8-client-activation-proposal.md): preparación pendiente, subida durable y activación
+idempotente, con recuperación explícita. PRE independiente PASS con 519 rutas intactas; sin live, 08.9 ni entrega Git.
+PLU-41 Done funcional satisface la dependencia; PLU-38/PLU-44 y fase 08 permanecen abiertas.
+
 ## Cierre funcional de 08.7 — 2026-09-29
 
 El propietario autoriza «Adelante entonces con la PR, el merge y los cierres».

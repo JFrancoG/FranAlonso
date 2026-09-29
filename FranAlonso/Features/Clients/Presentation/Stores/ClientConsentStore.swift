@@ -1,7 +1,7 @@
 import Foundation
 import Observation
 
-/// Owns recoverable document work independently of form navigation and client activation.
+/// Owns recoverable document work and receipt-backed activation independently of form navigation.
 @Observable @MainActor
 final class ClientConsentStore {
     enum Phase: Equatable {
@@ -9,11 +9,12 @@ final class ClientConsentStore {
     }
 
     enum Operation: Equatable {
-        case information, recover, save, signature, render, upload, discard
+        case information, recover, save, signature, render, upload, activate, discard
     }
 
     enum Failure: Equatable {
         case catalog, persistence, rendering, authorization, conflict, photoDecision, unavailable, permission
+        case activation
     }
 
     let clientID: ClientID
@@ -31,6 +32,7 @@ final class ClientConsentStore {
     private(set) var isRecovered = false
     private(set) var requiresReconciliation = false
     private(set) var presentationIsStale = false
+    private(set) var isActivated = false
 
     var isBusy: Bool { operation != nil }
     var snapshot: ClientDocumentSnapshot? { delivery?.document.fields.binding.snapshot ?? draft?.fields.snapshot }
@@ -52,10 +54,11 @@ final class ClientConsentStore {
 
     /// Keeps the retry control present while its operation runs; execution is gated separately.
     var hasUploadAction: Bool {
-        guard !requiresReconciliation, phase == .retained, let delivery else { return false }
+        guard !requiresReconciliation, !isActivated, phase == .retained, let delivery else { return false }
         switch delivery.state {
         case .pending, .failed: return true
-        case .uploaded, .conflict: return false
+        case .uploaded: return delivery.document.fields.binding.snapshot.fields.context.purpose == .initialInformation
+        case .conflict: return false
         }
     }
 
@@ -100,6 +103,7 @@ final class ClientConsentStore {
                 value.fields.snapshot.map { !acceptedIDs.contains($0.id) } ?? true
             }
             deliveries = retained
+            isActivated = false
             draft = nil
             delivery = nil
             captureID = nil
@@ -166,6 +170,7 @@ final class ClientConsentStore {
         failure = nil
         draft = nil
         delivery = selected
+        isActivated = false
         phase = .retained
     }
 
@@ -230,18 +235,33 @@ final class ClientConsentStore {
         }
     }
 
-    func upload() async {
-        guard !isBusy, !requiresReconciliation, phase == .retained, let delivery else { return }
+    /// Resumes initial activation from its durable receipt; later documents keep their independent upload path.
+    @discardableResult
+    func upload() async -> Client? {
+        guard !isBusy, !requiresReconciliation, phase == .retained, let delivery else { return nil }
         if case .conflict = delivery.state {
-            return
+            return nil
         }
-        await perform(.upload) { token in
+        let isInitial = delivery.document.fields.binding.snapshot.fields.context.purpose == .initialInformation
+        var activatedClient: Client?
+        await perform(isInitial ? .activate : .upload) { token in
             do {
-                _ = try await UploadConsentUseCase(
+                let upload = UploadConsentUseCase(
                     repository: services.repository,
                     storage: services.storage,
                     now: services.now
-                )(documentID: delivery.id)
+                )
+                if isInitial {
+                    let client = try await ActivateClientUseCase(
+                        repository: services.activationRepository,
+                        upload: upload,
+                        makeOperationID: services.newID
+                    )(clientID: clientID, documentID: delivery.id)
+                    try check(token)
+                    activatedClient = client
+                } else {
+                    _ = try await upload(documentID: delivery.id)
+                }
             } catch {
                 let errorToReport = error
                 let retained = try await services.repository.delivery(id: delivery.id)
@@ -252,7 +272,9 @@ final class ClientConsentStore {
             let retained = try await services.repository.delivery(id: delivery.id)
             try check(token)
             self.delivery = retained
+            isActivated = activatedClient != nil
         }
+        return failure == nil && !requiresReconciliation && phase != .closed ? activatedClient : nil
     }
 
     func discard() async {
@@ -321,6 +343,7 @@ final class ClientConsentStore {
         isPresented = false
         requiresReconciliation = true
         presentationIsStale = false
+        isActivated = false
     }
 
     private func restore(_ value: ClientDocumentDraft, profile: ClientProfile) {
@@ -429,6 +452,12 @@ final class ClientConsentStore {
     }
 
     private func failure(for error: any Error, operation: Operation) -> Failure {
+        if let activation = error as? ClientActivationError {
+            return activation == .uploadRequired ? .activation : .conflict
+        }
+        if let client = error as? ClientError, client == .conflict || client == .deactivated || client == .notFound {
+            return .conflict
+        }
         if let storage = error as? ClientDocumentStorageError {
             switch storage {
             case .conflict: return .conflict
@@ -439,7 +468,7 @@ final class ClientConsentStore {
         if let persistence = error as? ClientDocumentPersistenceError {
             switch persistence {
             case .staleDraft, .documentConflict, .alreadyAccepted: return .conflict
-            default: return .persistence
+            default: return operation == .activate && delivery?.state.isUploaded == true ? .activation : .persistence
             }
         }
         if let error = error as? ClientDocumentError {

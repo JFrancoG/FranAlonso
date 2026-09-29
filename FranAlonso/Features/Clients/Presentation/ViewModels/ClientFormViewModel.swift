@@ -217,7 +217,7 @@ final class ClientFormViewModel {
         consentStore?.dismiss()
     }
 
-    /// Serializes document intentions with the form and never maps document acceptance to activation.
+    /// Serializes document intentions and adopts activation only from its durable receipt-backed operation.
     func performConsent(_ action: ConsentAction) async {
         guard state != .closed, consentStore?.isBusy != true, let consentStore else { return }
         switch state {
@@ -227,6 +227,7 @@ final class ClientFormViewModel {
         let generation = UUID()
         operationGeneration = generation
         let submittedFields = fields
+        let hadUnsavedChanges = hasUnsavedChanges
         var persistedProfile: ClientProfile?
         switch action {
         case .information:
@@ -238,7 +239,26 @@ final class ClientFormViewModel {
         case .accept:
             await consentStore.accept()
         case .upload:
-            await consentStore.upload()
+            let activated = await consentStore.upload()
+            guard operationGeneration == generation, !Task.isCancelled else { return }
+            if consentStore.failure != .authorization {
+                do {
+                    let current: Client
+                    if let activated {
+                        current = activated
+                    } else {
+                        current = try await getClient(destination.clientID)
+                    }
+                    guard operationGeneration == generation, !Task.isCancelled else { return }
+                    loadedClient = current
+                    savedFields = ClientFormFields(current)
+                    if !hadUnsavedChanges, fields == submittedFields {
+                        fields = savedFields
+                    }
+                } catch {
+                    // The document failure remains actionable; a later reopen reconciles the client snapshot.
+                }
+            }
         case .discard:
             await consentStore.discard()
         case .selectDelivery(let id):
@@ -301,10 +321,11 @@ final class ClientFormViewModel {
                 try Task.checkCancellation()
                 guard operationGeneration == generation else { return nil }
                 current = try consentProfile(latest)
-                if !hasUnsavedChanges {
-                    finishDocumentProfile(current)
-                } else {
-                    loadedClient = latest
+                let preservesEdits = hasUnsavedChanges
+                loadedClient = latest
+                savedFields = ClientFormFields(latest)
+                if !preservesEdits {
+                    fields = savedFields
                 }
             }
             await store.recover(profile: current)

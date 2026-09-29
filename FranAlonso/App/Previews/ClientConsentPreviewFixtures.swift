@@ -5,6 +5,7 @@ import SwiftData
 struct ClientConsentPreviewFixtures {
     enum Scenario: Hashable, CaseIterable {
         case information, review, photoReview, signed, retained, recovery, error
+        case activationPending, activated, activationFailure
     }
 
     @MainActor
@@ -24,8 +25,17 @@ struct ClientConsentPreviewFixtures {
         let renderer = CoreGraphicsClientDocumentRenderer()
         let profile = try ClientProfile(displayName: "Cliente de demostración Álvarez")
         let clientID = ClientID(rawValue: id(0x87))
+        let activation = DefaultClientActivationRepository(
+            persistence: repository.persistence,
+            access: repository.access,
+            observationSignal: signal
+        )
+        let isActivation = scenario == .activationPending || scenario == .activated || scenario == .activationFailure
+        let activationRepository: any ClientActivationRepository = scenario == .activationFailure
+            ? FailingActivationPreviewRepository(base: activation) : activation
         let services = ClientConsentServices(
             repository: repository,
+            activationRepository: activationRepository,
             catalog: scenario == .error ? UnavailableConsentPreviewCatalog() : catalog,
             renderer: renderer,
             storage: UnavailableConsentPreviewStorage(),
@@ -43,13 +53,25 @@ struct ClientConsentPreviewFixtures {
                     documentID: id(0x88),
                     draftID: id(0x89),
                     decision: scenario == .photoReview ? .undecided : .notSelected,
-                    signed: scenario == .signed || scenario == .retained
+                    signed: scenario == .signed || scenario == .retained || isActivation
                 ),
                 operationID: id(0x90)
             )
-            if scenario == .retained {
+            if scenario == .retained || isActivation {
                 let render = RenderAndPersistConsentUseCase(repository: repository, renderer: renderer)
-                _ = try await render(draftID: saved.id)
+                let delivery = try await render(draftID: saved.id)
+                if isActivation {
+                    _ = try await activation.prepareActivation(
+                        clientID: clientID,
+                        documentID: delivery.id,
+                        operationID: id(0x95)
+                    )
+                    _ = try await UploadConsentUseCase(
+                        repository: repository,
+                        storage: InMemoryClientDocumentStorage(),
+                        now: { date }
+                    )(documentID: delivery.id)
+                }
             }
             if scenario == .recovery {
                 _ = try await repository.saveDraft(
@@ -68,7 +90,10 @@ struct ClientConsentPreviewFixtures {
         }
         let model = ClientFormViewModel(
             destination: ClientFormDestination(id: id(0x94), clientID: clientID, mode: .create),
-            getClient: GetClientUseCase(repository: InMemoryClientRepository()),
+            getClient: GetClientUseCase(repository: DefaultClientRepository(
+                persistenceActor: ClientPersistenceActor(modelContainer: container),
+                observationSignal: signal
+            )),
             create: { _, _, _ in
                 throw ClientError.persistenceUnavailable
             },
@@ -82,7 +107,23 @@ struct ClientConsentPreviewFixtures {
         )
         model.fields.displayName = profile.displayName
         await model.performConsent(scenario == .information || scenario == .error ? .information : .review)
+        if scenario == .activated || scenario == .activationFailure {
+            await model.performConsent(.upload)
+        }
         return model
+    }
+}
+
+/// Keeps an uploaded preview recoverable while demonstrating a failed local activation.
+private struct FailingActivationPreviewRepository: ClientActivationRepository {
+    let base: DefaultClientActivationRepository
+
+    func prepareActivation(clientID: ClientID, documentID: UUID, operationID: UUID) async throws -> Client {
+        try await base.prepareActivation(clientID: clientID, documentID: documentID, operationID: operationID)
+    }
+
+    func activate(clientID: ClientID, documentID: UUID, operationID: UUID) async throws -> Client {
+        throw ClientDocumentPersistenceError.persistenceUnavailable
     }
 }
 

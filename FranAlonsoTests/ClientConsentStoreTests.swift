@@ -8,6 +8,100 @@ import Testing
 @MainActor
 struct ClientConsentStoreTests {
     @Test
+    func `sending the initial document activates the same client with its durable reference`() async throws {
+        let fixture = try ConsentFlowFixture(storage: InMemoryClientDocumentStorage())
+        _ = try await fixture.sign()
+        await fixture.store.accept()
+        let accepted = try #require(fixture.store.delivery?.document)
+        await fixture.store.upload()
+        let delivery = try #require(fixture.store.delivery)
+        guard case .uploaded(let receipt) = delivery.state else {
+            Issue.record("Expected a durable receipt before activation")
+            return
+        }
+        let context = ModelContext(fixture.container)
+        let clients = try context.fetch(FetchDescriptor<ClientModel>())
+        #expect(clients.count == 1)
+        #expect(try clients.first?.toDomain().status == .active(consentReference: receipt.reference))
+        #expect(delivery.document == accepted)
+    }
+
+    @Test
+    func `offline activation retains the signed artifact and a nonoperational pending client`() async throws {
+        let fixture = try ConsentFlowFixture()
+        _ = try await fixture.sign()
+        await fixture.store.accept()
+        let accepted = try #require(fixture.store.delivery?.document)
+        await fixture.store.upload()
+        let clients = try ModelContext(fixture.container).fetch(FetchDescriptor<ClientModel>())
+        #expect(try clients.first?.toDomain().status == .consentPendingUpload)
+        #expect(fixture.store.delivery?.document == accepted)
+        #expect(fixture.store.failure == .unavailable)
+    }
+
+    @Test
+    func `a failed activation stays actionable after reopening without another upload attempt`() async throws {
+        let rejectActivation = Mutex(true)
+        let fixture = try ConsentFlowFixture(storage: InMemoryClientDocumentStorage(), saveChanges: { context in
+            let activating = try context.fetch(FetchDescriptor<ClientModel>()).contains {
+                if case .active = try $0.toDomain().status {
+                    return true
+                }
+                return false
+            }
+            let reject = activating && rejectActivation.withLock { value in
+                defer { value = false }
+                return value
+            }
+            if reject {
+                throw ClientDocumentPersistenceError.persistenceUnavailable
+            }
+            try context.save()
+        })
+        _ = try await fixture.sign()
+        await fixture.store.accept()
+        await fixture.store.upload()
+        #expect(fixture.store.failure == .activation)
+        let uploaded = try #require(fixture.store.delivery)
+        #expect(uploaded.state.isUploaded)
+        let reopened = ClientConsentStore(clientID: fixture.clientID, services: fixture.services)
+        await reopened.recover(profile: fixture.profile)
+        #expect(reopened.hasUploadAction)
+        let activated = try #require(await reopened.upload())
+        guard case .active = activated.status else {
+            Issue.record("Expected activation retry from the already uploaded document")
+            return
+        }
+        #expect(reopened.delivery == uploaded)
+        #expect(reopened.failure == nil)
+        #expect(!reopened.hasUploadAction)
+    }
+
+    @Test
+    func `closing during upload fences the result and leaves activation pending`() async throws {
+        let gate = RecoveryOperationGate()
+        let storage = AfterUploadRecoveryStorage(base: InMemoryClientDocumentStorage()) { await gate.enter() }
+        let fixture = try ConsentFlowFixture(storage: storage)
+        _ = try await fixture.sign()
+        await fixture.store.accept()
+        let task = Task {
+            await fixture.store.upload()
+            await gate.finish()
+        }
+        let entered = await gate.waitForEntry()
+        fixture.store.close()
+        task.cancel()
+        await gate.release()
+        await task.value
+        #expect(entered)
+        #expect(fixture.store.phase == .closed)
+        #expect(!fixture.store.isActivated)
+        #expect(fixture.store.delivery == nil)
+        let clients = try ModelContext(fixture.container).fetch(FetchDescriptor<ClientModel>())
+        #expect(try clients.first?.toDomain().status == .consentPendingUpload)
+    }
+
+    @Test
     func failedSignatureSaveKeepsInkForRetryWithoutAnotherCapture() async throws {
         let saves = Mutex(0)
         let fixture = try ConsentFlowFixture(saveChanges: { context in
@@ -238,7 +332,7 @@ struct ClientConsentStoreTests {
         let accepted = try #require(fixture.store.delivery)
         await fixture.store.upload()
         let uploaded = try #require(fixture.store.delivery)
-        guard case .uploaded = uploaded.state else {
+        guard case .uploaded(let receipt) = uploaded.state else {
             Issue.record("Expected a durable upload receipt")
             return
         }
@@ -247,7 +341,7 @@ struct ClientConsentStoreTests {
         #expect(fixture.store.delivery?.attemptCount == 1)
         #expect(fixture.store.delivery?.state == uploaded.state)
         let client = try #require(fixture.container.mainContext.fetch(FetchDescriptor<ClientModel>()).first).toDomain()
-        #expect(client.status == .draft)
+        #expect(client.status == .active(consentReference: receipt.reference))
     }
 
     @Test
@@ -326,9 +420,15 @@ extension ConsentFlowFixture {
         }
     ) throws {
         let container = try ModelContainer.inMemory(for: .franAlonso)
+        let repository = ClientDocumentRecoveryFixtures.repository(
+            persistence: ClientDocumentPersistenceActor(modelContainer: container, saveChanges: saveChanges)
+        )
         let services = ClientConsentServices(
-            repository: ClientDocumentRecoveryFixtures.repository(
-                persistence: ClientDocumentPersistenceActor(modelContainer: container, saveChanges: saveChanges)
+            repository: repository,
+            activationRepository: DefaultClientActivationRepository(
+                persistence: repository.persistence,
+                access: repository.access,
+                observationSignal: repository.observationSignal
             ),
             catalog: BundleClientDocumentCatalog(bundle: .main),
             renderer: renderer,

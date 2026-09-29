@@ -6,6 +6,8 @@ All notable changes to this project are documented in this file.
 
 ### Added
 
+- 2026-09-29 | ✨ feat(clients): add recoverable client activation
+  Activates only from a retained initial-document receipt and preserves recovery, retries and concurrent edits.
 - 2026-09-29 | ✨ feat(clients): integrate consent review flow
   Includes recoverable signing, concurrent-edit protection and progressive accessibility validation under ADR 0029.
 - 2026-09-13 | ✨ feat(clients): persist signed documents
@@ -22,6 +24,8 @@ All notable changes to this project are documented in this file.
 
 ### Documentation
 
+- 2026-09-29 | 📝 docs(delivery): record activation smoke
+  Records the isolated activation/retry walkthrough, exact harness removal and PR #15 validation.
 - 2026-09-29 | 📝 docs(delivery): close PLU-41 after merge
 - 2026-09-13 | 📝 docs(delivery): close PLU-40 after merge
 - 2026-09-13 | 📝 docs(delivery): close PLU-39 after merge
