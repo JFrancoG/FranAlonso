@@ -24,6 +24,8 @@ All notable changes to this project are documented in this file.
 
 ### Documentation
 
+- 2026-09-29 | 📝 docs(delivery): record activation smoke
+  Records the isolated activation/retry walkthrough, exact harness removal and PR #15 validation.
 - 2026-09-29 | 📝 docs(delivery): close PLU-41 after merge
 - 2026-09-13 | 📝 docs(delivery): close PLU-40 after merge
 - 2026-09-13 | 📝 docs(delivery): close PLU-39 after merge

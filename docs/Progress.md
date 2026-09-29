@@ -4,7 +4,7 @@
 
 ## Estado actual
 
-- **08.8 / [PLU-42](https://linear.app/plusprojects/issue/PLU-42): In Progress**, implementada y con publicación en rama autorizada.
+- **08.8 / [PLU-42](https://linear.app/plusprojects/issue/PLU-42): In Progress**, implementada, con PR y smoke funcional.
   Rama `codex/plu-42-phase-08-8-client-activation`, base `70905c2`; [propuesta](progress/08-8-client-activation-proposal.md).
   Alta inicial recuperable: pending antes de upload, active solo con recibo durable, reintento sin nuevo envío/firma,
   referencia inicial inmutable y conservación de edición concurrente. UI de Finalizar alta, éxito y fallo localizado.
@@ -13,11 +13,12 @@
   build **9,323s**, único aviso AppIntents previo. TDD inicial7RED→53GREEN; POST reproduce dos P2 en3/4 casos,
   corregidos y cubiertos por la suite final. Previews Large/XXX Large/AX5 de pantalla y componente inspeccionadas.
   PRE y POST independientes PASS tras corregir los hallazgos; evidencia y límites en [fase08](progress/phase-08.md).
-  Commit/push autorizados el29/09; PR, merge y cierre siguen pendientes. PLU-42 no está Done.
-  Antes de su cierre funcional falta un smoke manual breve de activación/reintento en una composición de demo
-  aislada y autorizada (ADR0029); permanece en PLU-42 y no se transfiere a la deuda accesible.
-  Storage normal sigue no disponible: pruebas/previews usan simulación,
-  sin afirmar subida real ni recorrido manual nuevo de éxito. 08.9/PLU-43 permanece Backlog.
+  [PR #15](https://github.com/JFrancoG/FranAlonso/pull/15) abierta desde `92bb217`; merge y cierres pendientes.
+  Smoke táctil por Xcode MCP PASS: fallo local después del envío, vuelta a lista, reapertura, Finalizar alta y
+  nueva reapertura activa, sin refirma y con un único upload. Datos sintéticos y Storage simulado, mismo proceso.
+  Harness temporal retirado byte a byte; las 527 rutas previas coinciden. Build restaurado **8,907s** y retest
+  focal **2/2 PASS**; aviso AppIntents previo. Composición normal sigue sin Storage disponible; no acredita live,
+  reinicio del proceso ni tecnologías de asistencia. PLU-42 no está Done; 08.9/PLU-43 permanece Backlog.
 - **[PLU-45](https://linear.app/plusprojects/issue/PLU-45): Backlog**, validación accesible integral nueva de08.8.
   Responsable Jesus Franco; hija dePLU-34 y relacionada conPLU-42/44. [Matriz08.8](accessibility/evidence/08-8-client-activation.md)
   conserva construcción/revisión y previews, con foco/anuncios/AT, Inspector, contraste y variantes pendientes.

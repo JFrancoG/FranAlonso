@@ -23,14 +23,51 @@ estabilización de este recorrido; completar antes del primer candidato para uso
   Las previews del componente muestran por separado los nuevos mensajes y acciones con el mismo ancho máximo760pt.
 - Swift Testing valida transiciones, reintento, cancelación, dos formularios y recibo seleccionado. Suite final
   835 declaraciones / 1.094 resultados PASS. Los tests no son evidencia de tecnologías de asistencia.
-- No se repite el smoke táctil de 08.7: la nueva activación satisfactoria se valida con capas reales y Storage simulado
-  en tests/previews. No se ejecuta un recorrido manual nuevo de éxito/fallo local posterior al upload, ni AT.
-  La composición normal mantiene Storage no disponible. La futura composición de demo debe probar su recorrido real;
-  no se afirma que el binario normal ya pueda completar una subida.
+- Smoke funcional nuevo por interacción táctil de Xcode MCP: fallo local posterior al upload, reapertura,
+  Finalizar alta y nueva reapertura activa. Un único envío simulado, sin refirma; detalle en el registro siguiente.
+  La composición normal mantiene Storage no disponible. No se afirma subida real ni funcionamiento con AT.
 
-El smoke funcional breve de activación/reintento permanece en **PLU-42**, antes de su cierre funcional por ADR0029.
-No se aplaza a PLU-45 ni a la estabilización posterior a la demo; puede validarse con una composición aislada
-autorizada, sin Storage live. PLU-45 registra la operación accesible, anuncios/foco y matriz integral de los recorridos.
+El smoke funcional de **PLU-42** queda satisfecho en la composición aislada autorizada. La issue sigue abierta por
+entrega pendiente en [PR #15](https://github.com/JFrancoG/FranAlonso/pull/15). PLU-45 conserva la operación accesible,
+anuncios/foco y matriz integral; este resultado funcional no convierte sus criterios en PASS.
+
+## Smoke funcional aislado — 2026-09-29
+
+07:28–07:34 Europe/Madrid, Develop, iPad Air 11-inch (M4)/iOS 27.0 Simulator. Interacción dirigida por agente mediante
+Xcode MCP; sesión `Activation Functional Smoke`, datos sintéticos, mismo proceso durante todo el recorrido.
+
+1. Crear cliente, revisar documento, dibujar firma, confirmar y conservar mediante la UI real.
+2. Enviar: recibo simulado retenido y fallo local único inyectado antes de activar. Se muestra el error de alta,
+   Documento enviado y Finalizar alta.
+3. Volver a ficha/lista, cerrar formulario y reabrirlo: Reanudar documento conserva firma, fecha y envío pendiente de alta.
+4. Finalizar alta: confirma cliente activo y documento vinculado; desaparece la acción, sin firmar ni enviar de nuevo.
+5. Regresar otra vez a lista y reabrir: conserva la confirmación activa y firma. El listado muestra el nombre,
+   sin indicador de estado; la confirmación se verifica en el documento reabierto.
+
+Resultado **PASS** para ese recorrido, sin bloqueos ni defectos visuales observados. Log filtrado:
+
+```text
+ACTIVATION_SMOKE upload attempts=1
+ACTIVATION_SMOKE injected_local_failure uploads=1
+ACTIVATION_SMOKE activated uploads=1
+```
+
+Harness temporal en la composición, protegido por Develop, plan de autenticación de fixture y argumento explícito.
+Comparte escenario entre formularios y delega preparación/activación al repositorio real; solo sustituye Storage e
+inyecta un fallo. PRE/POST independientes PASS. Retirado antes de publicar: composición original SHA-256
+`0425a5df642ec66988bd75aa58b05f64d11c1face4adab87c2ae67299e429e2e`; 527 rutas idénticas al estado previo.
+Build restaurado 8,907s, retest focal 2/2 PASS; límite previo AppIntents. Sin cambios de esquema o argumentos persistentes.
+
+Artefactos locales de Xcode MCP bajo
+`/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/DeviceInteractionSynthesize/`:
+prefijos `Activation Functional Smoke-07_32_08_532` (fallo), `07_33_09_957` (reapertura pendiente),
+`07_33_21_137` (éxito), `07_33_39_436` (lista) y `07_34_30_332` (reapertura activa).
+Todos llevan el prefijo `Activation Functional Smoke-` y sufijos `-screenshot.png`, `-hierarchy.txt`, `-logs.txt`;
+el último log contiene los tres marcadores. Root inspecciona capturas de fallo/éxito y jerarquías de recuperación.
+
+Límites: Storage simulado y fixture en memoria; no se reinicia el proceso ni se acredita transporte real. La recuperación
+durable en disco sigue sustentada por Swift Testing. Sin VoiceOver, otras AT ni matriz integral; tampoco cubre manualmente
+otra ventana o un documento no correlacionado. Una futura composición permanente para demo deberá verificar su recorrido.
 
 ## Previews inspeccionadas
 
@@ -50,12 +87,13 @@ Nombres reales: `<nombre> - 2026-09-29 at <hora>.png`. Previews anteriores a la 
 correlación: layout, estilo y textos de estos tres estados no cambian. El mensaje neutral no vinculado se revisa
 estáticamente y mediante prueba de selección pendiente/subida; su inspección visual específica queda en PLU-45.
 
-## Recorridos pendientes de validación manual
+## Recorridos pendientes de validación accesible integral
 
 A01: subir documento inicial y verificar estado activo/listado, foco y anuncio. A02: reabrir después de upload y
 finalizar sin refirmar/reenvío. A03: fallo local, mensaje, acción y reintento. A04: recuperar activación desde otra
 ventana con/sin campos sin guardar. A05: escoger documento no vinculado y después el usado para el alta.
 Ejecutar con datos sintéticos y una composición aislada explícita; nunca inferir servicio real desde la fixture.
+El smoke anterior cubre la operación táctil básica A01–A03 en un proceso; no sustituye su comprobación accesible.
 VoiceOver, Control por voz, Control por botón, teclado/FKA, Inspector, contraste medido y variantes de preferencias,
 ventana/orientación/RTL nuevas siguen pendientes según impacto. Reutilizar el resto de evidencia válida.
 

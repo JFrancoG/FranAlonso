@@ -95,7 +95,8 @@ ADR 0028 precisa el significado del documento inicial y la autorización posteri
   In Progress; 08.9/PLU-43 continúa en Backlog. La activación inicial se implementa sin habilitar Storage real.
 - [PLU-45](https://linear.app/plusprojects/issue/PLU-45) conserva la validación accesible integral nueva de08.8,
   con Jesus Franco como responsable y el mismo disparador de feedback/estabilización antes del uso real.
-  [Evidencia08.8](../accessibility/evidence/08-8-client-activation.md) distingue tests/previews de runtime pendiente.
+  [Evidencia08.8](../accessibility/evidence/08-8-client-activation.md) distingue el smoke funcional aislado
+  de la validación accesible integral pendiente.
 
 ## Resultado de fase
 
