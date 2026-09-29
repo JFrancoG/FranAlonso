@@ -1,5 +1,17 @@
 # Fase 09 — Productos e inventario físico
 
+## Entrega y cierre funcional 09.4, 2026-09-29
+
+Commit `092d72eb32e639513697af1d5254cbcad8f26823`, `✨ feat(products): add catalogue and product forms`, publicado.
+[PR20](https://github.com/JFrancoG/FranAlonso/pull/20) MERGED mediante `dfd73b0c8364400f59cc77df5164b867ef51c48e`.
+Árbol integrado idéntico al head validado; CLEAN/MERGEABLE, sin checks ni reviews remotos obligatorios.
+Ramas local/remota eliminadas tras comprobar cero commits únicos respecto a main. PLU-53 Done funcional;
+PLU-54 Backlog conserva accesibilidad integral, Jesus Franco, tras feedback/estabilización antes de uso real.
+Se reutilizan 1.199/1.199 resultados, ambos builds, previews, smoke y PRE/POST: código/recursos intactos desde POST.
+El transporte HTTPS/HTTP1.1 completó la entrega tras fallos de SSH, credencial almacenada y errores internos transitorios.
+Aviso AppIntents y seis enlaces históricos 08.3 conservados. Esta reconciliación documental no requiere nuevo Xcode.
+Fase09/PLU-49 abierta; autorizado comenzar 09.5 con propuesta/PRE antes de código. Historial inferior superado.
+
 ## Entrega 09.4 autorizada, 2026-09-29
 
 El propietario autoriza commit/push, PR/merge, cierre funcional de issue/rama y comienzo de la siguiente subfase 09.5.
