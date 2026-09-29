@@ -1,6 +1,744 @@
 {
   "sourceLanguage" : "es",
   "strings" : {
+    "products.form.createTitleCompact": {
+      "comment": "Título compacto del formulario de productos en tamaños de accesibilidad.",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nuevo"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "New"
+          }
+        }
+      }
+    },
+    "products.form.editTitleCompact": {
+      "comment": "Título compacto del formulario de productos en tamaños de accesibilidad.",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Editar"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Edit"
+          }
+        }
+      }
+    },
+    "products.list.title": {
+      "comment": "Product inventory screen: products.list.title",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Productos"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Products"
+          }
+        }
+      }
+    },
+    "products.list.search.prompt": {
+      "comment": "Product inventory screen: products.list.search.prompt",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Buscar productos"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Search products"
+          }
+        }
+      }
+    },
+    "products.list.add": {
+      "comment": "Product inventory screen: products.list.add",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Añadir producto"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Add product"
+          }
+        }
+      }
+    },
+    "products.list.loading": {
+      "comment": "Product inventory screen: products.list.loading",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cargando productos…"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Loading products…"
+          }
+        }
+      }
+    },
+    "products.list.empty.title": {
+      "comment": "Product inventory screen: products.list.empty.title",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Todavía no hay productos"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No products yet"
+          }
+        }
+      }
+    },
+    "products.list.empty.message": {
+      "comment": "Product inventory screen: products.list.empty.message",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Añade el primer producto para empezar tu inventario."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Add your first product to start your inventory."
+          }
+        }
+      }
+    },
+    "products.list.search.empty.title": {
+      "comment": "Product inventory screen: products.list.search.empty.title",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sin resultados"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No results"
+          }
+        }
+      }
+    },
+    "products.list.search.empty.message": {
+      "comment": "Product inventory screen: products.list.search.empty.message",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Prueba con otro nombre o borra la búsqueda."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Try another name or clear the search."
+          }
+        }
+      }
+    },
+    "products.list.error.title": {
+      "comment": "Product inventory screen: products.list.error.title",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No se han podido cargar los productos"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Couldn’t load products"
+          }
+        }
+      }
+    },
+    "products.list.error.message": {
+      "comment": "Product inventory screen: products.list.error.message",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Los productos no están disponibles. Inténtalo de nuevo."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Products are unavailable. Try again."
+          }
+        }
+      }
+    },
+    "products.list.retry": {
+      "comment": "Product inventory screen: products.list.retry",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reintentar"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Retry"
+          }
+        }
+      }
+    },
+    "products.list.edit.hint": {
+      "comment": "Product inventory screen: products.list.edit.hint",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abre la ficha para editar el producto."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Opens the product for editing."
+          }
+        }
+      }
+    },
+    "products.status.inactive": {
+      "comment": "Product inventory screen: products.status.inactive",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Inactivo"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Inactive"
+          }
+        }
+      }
+    },
+    "products.form.createTitle": {
+      "comment": "Product inventory screen: products.form.createTitle",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nuevo producto"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "New product"
+          }
+        }
+      }
+    },
+    "products.form.editTitle": {
+      "comment": "Product inventory screen: products.form.editTitle",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Editar producto"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Edit product"
+          }
+        }
+      }
+    },
+    "products.form.name": {
+      "comment": "Product inventory screen: products.form.name",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nombre"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Name"
+          }
+        }
+      }
+    },
+    "products.form.namePlaceholder": {
+      "comment": "Product inventory screen: products.form.namePlaceholder",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+              "value": "Nombre"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+              "value": "Name"
+          }
+        }
+      }
+    },
+    "products.form.cancel": {
+      "comment": "Product inventory screen: products.form.cancel",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cancelar"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cancel"
+          }
+        }
+      }
+    },
+    "products.form.save": {
+      "comment": "Product inventory screen: products.form.save",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Guardar"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Save"
+          }
+        }
+      }
+    },
+    "products.form.loading": {
+      "comment": "Product inventory screen: products.form.loading",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cargando producto…"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Loading product…"
+          }
+        }
+      }
+    },
+    "products.form.saving": {
+      "comment": "Product inventory screen: products.form.saving",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Guardando producto…"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Saving product…"
+          }
+        }
+      }
+    },
+    "products.form.deactivating": {
+      "comment": "Product inventory screen: products.form.deactivating",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Desactivando producto…"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deactivating product…"
+          }
+        }
+      }
+    },
+    "products.form.retry": {
+      "comment": "Product inventory screen: products.form.retry",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reintentar"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Retry"
+          }
+        }
+      }
+    },
+    "products.form.errorTitle": {
+      "comment": "Product inventory screen: products.form.errorTitle",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No se ha podido cargar el producto"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Couldn’t load the product"
+          }
+        }
+      }
+    },
+    "products.form.error.name": {
+      "comment": "Product inventory screen: products.form.error.name",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Escribe un nombre para el producto."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enter a product name."
+          }
+        }
+      }
+    },
+    "products.form.error.exists": {
+      "comment": "Product inventory screen: products.form.error.exists",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Este producto ya existe. Cierra el formulario y vuelve a abrirlo."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This product already exists. Close and reopen the form."
+          }
+        }
+      }
+    },
+    "products.form.error.missing": {
+      "comment": "Product inventory screen: products.form.error.missing",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Este producto ya no está disponible."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This product is no longer available."
+          }
+        }
+      }
+    },
+    "products.form.error.conflict": {
+      "comment": "Product inventory screen: products.form.error.conflict",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hay un conflicto pendiente en este producto. Inténtalo de nuevo cuando se resuelva."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This product has an unresolved conflict. Try again after it is resolved."
+          }
+        }
+      }
+    },
+    "products.form.error.unavailable": {
+      "comment": "Product inventory screen: products.form.error.unavailable",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No se ha podido completar la operación. Inténtalo de nuevo."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Couldn’t complete the operation. Try again."
+          }
+        }
+      }
+    },
+    "products.form.inactive": {
+      "comment": "Product inventory screen: products.form.inactive",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Inactivo"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Inactive"
+          }
+        }
+      }
+    },
+    "products.form.deactivate": {
+      "comment": "Product inventory screen: products.form.deactivate",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Desactivar producto"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deactivate product"
+          }
+        }
+      }
+    },
+    "products.form.deactivate.title": {
+      "comment": "Product inventory screen: products.form.deactivate.title",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¿Desactivar este producto?"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deactivate this product?"
+          }
+        }
+      }
+    },
+    "products.form.deactivate.message": {
+      "comment": "Product inventory screen: products.form.deactivate.message",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "El producto seguirá en el catálogo como inactivo. Los cambios de nombre sin guardar se descartarán."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The product will remain in the catalog as inactive. Unsaved name changes will be discarded."
+          }
+        }
+      }
+    },
+    "products.form.discard.title": {
+      "comment": "Product inventory screen: products.form.discard.title",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¿Descartar los cambios?"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Discard changes?"
+          }
+        }
+      }
+    },
+    "products.form.discard.message": {
+      "comment": "Product inventory screen: products.form.discard.message",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Perderás los cambios de nombre sin guardar."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unsaved name changes will be lost."
+          }
+        }
+      }
+    },
+    "products.form.discard.confirm": {
+      "comment": "Product inventory screen: products.form.discard.confirm",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Descartar"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Discard"
+          }
+        }
+      }
+    },
+    "products.form.discard.keepEditing": {
+      "comment": "Product inventory screen: products.form.discard.keepEditing",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seguir editando"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keep editing"
+          }
+        }
+      }
+    },
+    "products.form.saved": {
+      "comment": "Product inventory screen: products.form.saved",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Producto guardado"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Product saved"
+          }
+        }
+      }
+    },
+    "products.form.deactivated": {
+      "comment": "Product inventory screen: products.form.deactivated",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Producto desactivado"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Product deactivated"
+          }
+        }
+      }
+    },
     "demo.title": {
       "comment": "Identifica una composición aislada con datos sintéticos.",
       "extractionState": "manual",

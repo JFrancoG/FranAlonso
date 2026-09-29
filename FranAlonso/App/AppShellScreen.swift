@@ -30,7 +30,15 @@ struct AppShellScreen: View {
             }
 
             Tab(.appShellTabCatalog, systemImage: "square.grid.2x2", value: AppSection.catalog) {
-                unavailableSection(title: .appShellTabCatalog, systemImage: "square.grid.2x2")
+                NavigationStack {
+                    ProductListScreen(
+                        observeProducts: dependencies.observeProducts,
+                        makeProductForm: dependencies.makeProductForm
+                    )
+                    .toolbar {
+                        signOutToolbar
+                    }
+                }
             }
 
             Tab(.appShellTabReports, systemImage: "chart.bar.xaxis", value: AppSection.reports) {

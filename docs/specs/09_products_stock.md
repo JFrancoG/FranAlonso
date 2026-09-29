@@ -51,6 +51,15 @@ Alcance autorizado el29/09/2026 y revisado independientemente:
 
 ## Subfases
 
+### Alcance de pantallas — 09.4
+
+Catálogo abre lista y formulario de productos sobre los ViewModels09.3. Activos e inactivos permanecen visibles/editables,
+sin reactivación ni campos comerciales. Cancelar con cambios exige descarte explícito; la hoja no se cierra por gesto.
+Desactivar requiere confirmación que explica el descarte del nombre no guardado. Estados de carga, vacío, búsqueda
+sin coincidencias y error con retry forman parte del recorrido; textos localizados y previews0/250 con variantes accesibles.
+La demo aislada existente incorpora dos productos sintéticos al arrancar y conserva su reset por proceso, sin live.
+ADR0029 rige la evidencia progresiva de estas pantallas; PLU-54 conserva la validación integral restante.
+
 | ID | Tarea | Test primero | Validación |
 |---|---|---|---|
 | 09.1 | Implementar contratos y casos de uso de producto. | CRUD, búsqueda, desactivación y duplicados. | Product sin campos comerciales. |

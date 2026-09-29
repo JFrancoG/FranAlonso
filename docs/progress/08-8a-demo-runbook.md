@@ -1,4 +1,4 @@
-# Demo de clientes — 08.8a
+# Demo de clientes y productos — 08.8a / 09.4
 
 ## Arranque
 
@@ -35,14 +35,22 @@ Cerrar/reabrir la ficha, abrir «Reanudar documento» y pulsar «Reintentar env�
 sin firmar de nuevo. «Finalizar alta» corresponde al caso distinto de recibo ya confirmado con activación local pendiente.
 Los envíos siguientes del mismo proceso funcionan normalmente. No crear otro documento para resolver ese error.
 
-## Reinicio y límites
+## Catálogo de productos — 09.4
 
-Terminar el proceso y volver a lanzar recrea los dos borradores, vacía documentos/recibos y rearma el primer fallo del modo
+En el mismo proceso, abrir Catálogo: muestra «Champú DEMO hidratante» y «Mascarilla DEMO nutritiva».
+Buscar por nombre, añadir un producto, editarlo y cancelar con descarte confirmado. Desactivar exige confirmación;
+el producto queda visible como Inactivo y se puede editar su nombre. La desactivación descarta cambios de nombre
+sin guardar, tal como avisa el diálogo. La hoja se cierra por sus acciones explícitas, no arrastrándola.
+Guardar vacío muestra un error; corregir y guardar recorre la persistencia local real. No hay precio, stock ni servicios.
+
+## Reinicio y límites de ambos recorridos
+
+Terminar el proceso y volver a lanzar recrea los dos borradores y dos productos, vacía documentos/recibos y rearma el primer fallo del modo
 de recuperación. Ir a segundo plano o reabrir una pantalla no reinicia datos. Este reset no es recuperación durable.
 El storage normal continúa no disponible; esta demo no utiliza Firebase, Keychain, telemetría real ni motores live.
-No demuestra transporte, sincronización, persistencia entre procesos, fotografía, catálogo, venta o Foundation Models.
+No demuestra transporte, sincronización, persistencia entre procesos, fotografía, stock, servicios, venta o Foundation Models.
 
 Usar parámetros temporales de `DeviceInteractionInstallAndRun` al validar con Xcode MCP; no es necesario editar el esquema
 para cada recorrido. Cerrar la sesión de interacción al terminar y conservar ambos argumentos `NO` en el esquema.
-Resultados de validación y deuda accesible en [fase08](phase-08.md); diseño y límites en
+Resultados de validación y deuda accesible en [fase08](phase-08.md) y [fase09](phase-09.md); diseño y límites en
 [propuesta08.8a](08-8a-reusable-demo-proposal.md) y [ADR0030](../ADRs/0030-reusable-demo-and-early-foundation-models.md).

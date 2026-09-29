@@ -73,6 +73,9 @@ final class ProductFormViewModel {
 
     var canDeactivate: Bool { destination.mode == .edit && loadedProduct?.status == .active && canEdit }
 
+    /// Protects an editable draft from dismissal, using the loaded name as its baseline.
+    var hasUnsavedChanges: Bool { canEdit && name != (loadedProduct?.name ?? "") }
+
     /// Loads or retries an existing product without replacing an editable draft.
     /// Absence remains a failed read. Cancelled, replaced or closed loads cannot publish late results.
     func load() async {

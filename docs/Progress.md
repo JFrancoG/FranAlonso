@@ -5,13 +5,14 @@
 ## Estado actual
 
 - **Fase09 / [PLU-49](https://linear.app/plusprojects/issue/PLU-49): In Progress**.
-  **09.1 / [PLU-50](https://linear.app/plusprojects/issue/PLU-50) y09.2 / [PLU-51](https://linear.app/plusprojects/issue/PLU-51): Done**.
-  [PR17](https://github.com/JFrancoG/FranAlonso/pull/17) merge `7c9ab09` y
-  [PR18](https://github.com/JFrancoG/FranAlonso/pull/18) merge `8ed0af5`; ramas local/remota eliminadas.
-  Árbol integrado `04e3760`: **1.156/1.156 PASS**, build y PRE/POST PASS. [Registro](progress/phase-09.md).
-  **09.3 / [PLU-52](https://linear.app/plusprojects/issue/PLU-52): Done**, [PR19](https://github.com/JFrancoG/FranAlonso/pull/19).
-  ViewModels y composición contextual; **1.191/1.191 PASS**, Develop/Production y PRE/POST PASS.
-  Merge `13b0839`, head `58ee95f` intacto; rama eliminada. Implementación09.4 autorizada; fase09 abierta.
+  09.1/09.2 Done por PR17/18; **09.3 / [PLU-52](https://linear.app/plusprojects/issue/PLU-52): Done** por
+  [PR19](https://github.com/JFrancoG/FranAlonso/pull/19), merge13b0839, head58ee95f intacto; ramas eliminadas.
+  09.3: **1.191/1.191 PASS**, Develop/Production y PRE/POST PASS; aviso AppIntents conocido.
+  **09.4 / [PLU-53](https://linear.app/plusprojects/issue/PLU-53): implementada localmente**; 1.199/1.199 PASS.
+  Develop/Production, smoke y PRE/POST funcionales PASS; accesibilidad integral pendiente.
+  Lista/formulario, Catálogo y demo; [propuesta](progress/09-4-product-screens-proposal.md), [evidencia](progress/phase-09.md).
+  [PLU-54](https://linear.app/plusprojects/issue/PLU-54): Backlog accesible09.4, Jesus Franco, tras feedback antes de uso real.
+  Entrega09.4 y comienzo09.5 autorizados; sin servicios live.
 - **[ADR0030](ADRs/0030-reusable-demo-and-early-foundation-models.md) aceptado y publicado** el29/09;
   orden excepcional y alcance canónico en [índice](specs/00_index.md). [Registro](progress/phase-08.md).
 - **08.8a / [PLU-46](https://linear.app/plusprojects/issue/PLU-46): Done funcional**, entrega y cierre autorizados.

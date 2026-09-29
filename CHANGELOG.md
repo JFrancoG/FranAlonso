@@ -6,6 +6,9 @@ All notable changes to this project are documented in this file.
 
 ### Added
 
+- 2026-09-29 | ✨ feat(products): add catalogue and product forms
+  Adds searchable product screens, protected drafts, deactivation and an isolated demo catalogue.
+
 - 2026-09-29 | ✨ feat(products): coordinate list and form state
   Adds observable list/form state, stable sessions and caller-context mutations with cancellation protection.
 - 2026-09-29 | ✨ feat(products): add CRUD and local search
