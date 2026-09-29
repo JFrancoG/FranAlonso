@@ -6,6 +6,9 @@ All notable changes to this project are documented in this file.
 
 ### Added
 
+- 2026-09-29 | ✨ feat(stock): observe local low-stock state
+  Derives low-stock and recovery from an explicit minimum, sharing committed changes with catalogue observation.
+
 - 2026-09-29 | ✨ feat(stock): add adjustment screens
   Adds contextual stock entry and withdrawal, protected retry sessions and repeatable demo balances.
 

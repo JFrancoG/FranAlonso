@@ -4,15 +4,20 @@ import SwiftData
 @MainActor
 struct StockContextualPersistenceAdapter {
     private let localDataSource: StockLocalDataSource
+    private let observationSignal: ProductObservationSignal
 
     /// Acceptance does not suspend between identity checks and durable commit; retry preserves the original event.
+    /// Invalidation follows acceptance and cannot turn a durable commit into cancellation or failure.
     func append(_ movement: StockMovement, in context: ModelContext) async throws -> StockMovement {
-        try localDataSource.append(movement, in: context)
+        let accepted = try localDataSource.append(movement, in: context)
+        await observationSignal.publishChange()
+        return accepted
     }
 }
 
 extension StockContextualPersistenceAdapter {
-    init(dataSource: StockLocalDataSource = StockLocalDataSource()) {
-        self.init(localDataSource: dataSource)
+    /// Uses the feature's shared invalidation; the caller's context is never retained by this adapter.
+    init(dataSource: StockLocalDataSource = StockLocalDataSource(), observationSignal: ProductObservationSignal) {
+        self.init(localDataSource: dataSource, observationSignal: observationSignal)
     }
 }

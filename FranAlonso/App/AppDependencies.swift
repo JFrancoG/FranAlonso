@@ -34,7 +34,8 @@ struct AppDependencies {
             productPersistenceActor: ProductPersistenceActor(modelContainer: modelContainer),
             productObservationSignal: productObservationSignal,
             stockRepository: DefaultStockRepository(
-                persistenceActor: StockPersistenceActor(modelContainer: modelContainer)
+                persistenceActor: StockPersistenceActor(modelContainer: modelContainer),
+                observationSignal: productObservationSignal
             ),
             servicePersistenceActor: ServicePersistenceActor(modelContainer: modelContainer),
             serviceObservationSignal: serviceObservationSignal,
@@ -76,7 +77,8 @@ struct AppDependencies {
             productPersistenceActor: ProductPersistenceActor(modelContainer: modelContainer),
             productObservationSignal: productObservationSignal,
             stockRepository: DefaultStockRepository(
-                persistenceActor: StockPersistenceActor(modelContainer: modelContainer)
+                persistenceActor: StockPersistenceActor(modelContainer: modelContainer),
+                observationSignal: productObservationSignal
             ),
             servicePersistenceActor: ServicePersistenceActor(modelContainer: modelContainer),
             serviceObservationSignal: serviceObservationSignal,
@@ -175,7 +177,8 @@ struct AppDependencies {
             ),
             makeStockAdjustment: stockAdjustmentFactory(
                 productRepository: productRepository,
-                stockRepository: stockRepository
+                stockRepository: stockRepository,
+                observationSignal: productObservationSignal
             ),
             serviceRepository: serviceRepository,
             saleRepository: saleRepository,
@@ -232,7 +235,8 @@ struct AppDependencies {
             ),
             makeStockAdjustment: stockAdjustmentFactory(
                 productRepository: productRepository,
-                stockRepository: stockRepository
+                stockRepository: stockRepository,
+                observationSignal: productObservationSignal
             ),
             serviceRepository: serviceRepository,
             saleRepository: saleRepository,
@@ -247,13 +251,15 @@ struct AppDependencies {
     /// Stock reads share one actor while UI acceptance uses the same contextual primitive as the ledger.
     /// Telemetry is inert; no remote data source or synchronization engine is composed.
     static func preview(modelContainer: ModelContainer) -> AppDependencies {
-        .composed(
+        let productObservationSignal = ProductObservationSignal()
+        return .composed(
             persistenceActor: ClientPersistenceActor(modelContainer: modelContainer),
             observationSignal: ClientObservationSignal(),
             productPersistenceActor: ProductPersistenceActor(modelContainer: modelContainer),
-            productObservationSignal: ProductObservationSignal(),
+            productObservationSignal: productObservationSignal,
             stockRepository: DefaultStockRepository(
-                persistenceActor: StockPersistenceActor(modelContainer: modelContainer)
+                persistenceActor: StockPersistenceActor(modelContainer: modelContainer),
+                observationSignal: productObservationSignal
             ),
             servicePersistenceActor: ServicePersistenceActor(modelContainer: modelContainer),
             serviceObservationSignal: ServiceObservationSignal(),

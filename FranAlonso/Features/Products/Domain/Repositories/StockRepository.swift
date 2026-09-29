@@ -6,4 +6,7 @@ protocol StockRepository: Sendable {
     func movement(id: StockMovementID) async throws -> StockMovement?
     /// Derives the current quantity from accepted movements; no mutable total is stored on Product.
     func quantity(for productID: ProductID) async throws -> Int
+    /// Emits the initial local quantity and distinct updates; cancellation releases the observation.
+    /// This is current state, not an event history. Missing products and read failures terminate the stream.
+    func observeQuantity(for productID: ProductID) async -> AsyncThrowingStream<Int, any Error>
 }

@@ -160,6 +160,11 @@ private actor StockDomainRecordingRepository: StockRepository {
 
     func movement(id: StockMovementID) -> StockMovement? { accepted.first { $0.id == id } }
     func quantity(for productID: ProductID) -> Int { 0 }
+    func observeQuantity(for productID: ProductID) -> AsyncThrowingStream<Int, any Error> {
+        AsyncThrowingStream {
+            $0.finish()
+        }
+    }
 }
 
 private struct StockDomainDelayedRepository: StockRepository {
@@ -176,6 +181,11 @@ private struct StockDomainDelayedRepository: StockRepository {
 
     func movement(id: StockMovementID) -> StockMovement? { nil }
     func quantity(for productID: ProductID) -> Int { 0 }
+    func observeQuantity(for productID: ProductID) -> AsyncThrowingStream<Int, any Error> {
+        AsyncThrowingStream {
+            $0.finish()
+        }
+    }
 }
 
 private let stockDomainID = StockMovementID(rawValue: UUID(uuidString: "09050000-0000-0000-0000-000000000001")!)

@@ -6,9 +6,10 @@
 
 - **Fase09 / [PLU-49](https://linear.app/plusprojects/issue/PLU-49): In Progress**.
   09.1–09.6 entregadas por PR17–22; **[PLU-56](https://linear.app/plusprojects/issue/PLU-56): Done funcional**.
-  [PR22](https://github.com/JFrancoG/FranAlonso/pull/22), merge `7f83cdf`, head `824fad8` intacto; rama eliminada.
-  PRE/POST,1.315 resultados, builds, previews y smoke PASS; aviso AppIntents conocido. [Evidencia](progress/phase-09.md).
-  Preparación09.7 autorizada; aún sin código. [PLU-54](https://linear.app/plusprojects/issue/PLU-54) y
+  [09.7/PLU-58](https://linear.app/plusprojects/issue/PLU-58): implementación local validada; PRE/POST PASS.
+  Observación local por producto/mínimo explícito; sin UI nueva.979 declaraciones/1.346 resultados y ambos builds PASS.
+  Entrega Git autorizada en curso; aviso AppIntents conocido. [Evidencia y límites](progress/phase-09.md).
+  [PLU-54](https://linear.app/plusprojects/issue/PLU-54) y
   [PLU-57](https://linear.app/plusprojects/issue/PLU-57): Backlog accesible09.4/09.6, Jesus Franco,
   tras feedback/estabilización y antes de uso real. La fase conserva su cierre integral pendiente.
 - **[ADR0030](ADRs/0030-reusable-demo-and-early-foundation-models.md) aceptado y publicado** el29/09;

@@ -14,7 +14,7 @@ struct StockContextualPersistenceTests {
         try seedStockTestProduct(product, in: container)
         let movement = try stockTestMovement(productID: product.id, delta: -3, ordinal: 1)
         let context = ModelContext(container)
-        let adapter = StockContextualPersistenceAdapter()
+        let adapter = StockContextualPersistenceAdapter(observationSignal: ProductObservationSignal())
 
         #expect(try await adapter.append(movement, in: context) == movement)
         #expect(try await adapter.append(movement, in: context) == movement)
@@ -34,7 +34,8 @@ struct StockContextualPersistenceTests {
         context.insert(ProductModel(unsaved))
         let movement = try stockTestMovement(productID: product.id, delta: 1, ordinal: 1)
         await #expect(throws: StockError.storageFailure) {
-            try await StockContextualPersistenceAdapter().append(movement, in: context)
+            let adapter = StockContextualPersistenceAdapter(observationSignal: ProductObservationSignal())
+            return try await adapter.append(movement, in: context)
         }
         #expect(context.hasChanges)
         #expect(try context.fetchCount(FetchDescriptor<ProductModel>()) == 2)
@@ -50,7 +51,7 @@ struct StockContextualPersistenceTests {
         let context = container.mainContext
         let movement = try stockTestMovement(productID: product.id, delta: 4, ordinal: 1)
         let withdrawal = try stockTestMovement(productID: product.id, delta: -7, ordinal: 2)
-        let adapter = StockContextualPersistenceAdapter()
+        let adapter = StockContextualPersistenceAdapter(observationSignal: ProductObservationSignal())
         let first = Task { @MainActor in
             try await adapter.append(movement, in: context)
         }
@@ -73,15 +74,16 @@ struct StockContextualPersistenceTests {
         try seedStockTestProduct(product, in: container)
         let context = ModelContext(container)
         let movement = try stockTestMovement(productID: product.id, delta: 4, ordinal: 1)
-        let adapter = StockContextualPersistenceAdapter()
+        let adapter = StockContextualPersistenceAdapter(observationSignal: ProductObservationSignal())
         _ = try await adapter.append(movement, in: context)
         let collision = try stockTestMovement(productID: product.id, delta: 5, ordinal: 1)
         await #expect(throws: StockError.identityConflict) {
             try await adapter.append(collision, in: context)
         }
-        let failing = StockContextualPersistenceAdapter(dataSource: StockLocalDataSource { _ in
-            throw StockContextualFailure.commit
-        })
+        let failing = StockContextualPersistenceAdapter(
+            dataSource: StockLocalDataSource { _ in throw StockContextualFailure.commit },
+            observationSignal: ProductObservationSignal()
+        )
         let another = try stockTestMovement(productID: product.id, delta: -2, ordinal: 2)
         await #expect(throws: StockError.storageFailure) {
             try await failing.append(another, in: context)
@@ -99,7 +101,8 @@ struct StockContextualPersistenceTests {
         let context = container.mainContext
         let movement = try stockTestMovement(productID: product.id, delta: 4, ordinal: 1)
         let writing = Task {
-            try await StockContextualPersistenceAdapter().append(movement, in: context)
+            let adapter = StockContextualPersistenceAdapter(observationSignal: ProductObservationSignal())
+            return try await adapter.append(movement, in: context)
         }
         writing.cancel()
         await #expect(throws: CancellationError.self) {

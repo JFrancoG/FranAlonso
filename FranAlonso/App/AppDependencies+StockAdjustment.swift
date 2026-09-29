@@ -2,10 +2,11 @@ extension AppDependencies {
     /// Shares the composition's ledger reader and accepts UI writes in the caller's ephemeral context.
     static func stockAdjustmentFactory(
         productRepository: any ProductRepository,
-        stockRepository: any StockRepository
+        stockRepository: any StockRepository,
+        observationSignal: ProductObservationSignal
     ) -> StockAdjustmentFactory {
         { destination in
-            let adapter = StockContextualPersistenceAdapter()
+            let adapter = StockContextualPersistenceAdapter(observationSignal: observationSignal)
             return StockAdjustmentViewModel(
                 destination: destination,
                 getProduct: GetProductUseCase(repository: productRepository),

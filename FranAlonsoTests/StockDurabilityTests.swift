@@ -56,7 +56,10 @@ struct StockDurabilityTests {
             isPendingSync: true
         ))
         try context.save()
-        let repository = DefaultStockRepository(persistenceActor: StockPersistenceActor(modelContainer: container))
+        let repository = DefaultStockRepository(
+            persistenceActor: StockPersistenceActor(modelContainer: container),
+            observationSignal: ProductObservationSignal()
+        )
 
         await #expect(throws: StockError.storageFailure) {
             try await repository.movement(id: StockMovementID(rawValue: rowID))
@@ -134,7 +137,7 @@ private func acceptStockOnDisk(
     let container = try stockDiskContainer(at: url)
     try seedStockTestProduct(product, in: container)
     let writer = StockPersistenceActor(modelContainer: container)
-    let repository = DefaultStockRepository(persistenceActor: writer)
+    let repository = DefaultStockRepository(persistenceActor: writer, observationSignal: ProductObservationSignal())
     lifetime.container = container
     lifetime.writer = writer
     for movement in movements {
@@ -152,7 +155,7 @@ private func retryReopenedStock(
 ) async throws {
     let container = try stockDiskContainer(at: url)
     let writer = StockPersistenceActor(modelContainer: container)
-    let repository = DefaultStockRepository(persistenceActor: writer)
+    let repository = DefaultStockRepository(persistenceActor: writer, observationSignal: ProductObservationSignal())
     lifetime.container = container
     lifetime.writer = writer
 

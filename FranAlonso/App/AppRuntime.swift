@@ -77,7 +77,8 @@ final class AppRuntime {
         let productPersistenceActor = ProductPersistenceActor(modelContainer: modelContainer)
         let productObservationSignal = ProductObservationSignal()
         stockRepository = DefaultStockRepository(
-            persistenceActor: StockPersistenceActor(modelContainer: modelContainer)
+            persistenceActor: StockPersistenceActor(modelContainer: modelContainer),
+            observationSignal: productObservationSignal
         )
         let servicePersistenceActor = ServicePersistenceActor(modelContainer: modelContainer)
         let serviceObservationSignal = ServiceObservationSignal()
