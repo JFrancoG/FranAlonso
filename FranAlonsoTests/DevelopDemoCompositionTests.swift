@@ -8,7 +8,7 @@ import Testing
 @MainActor
 struct DevelopDemoCompositionTests {
     @Test
-    func `launch seeds only two synthetic drafts and their causal work`() async throws {
+    func `launch seeds synthetic clients and products without unrelated business data`() async throws {
         let demo = try DevelopDemoComposition.make(configuration: .clients)
         let composition = demo.applicationComposition
         let context = ModelContext(composition.modelContainer)
@@ -27,7 +27,7 @@ struct DevelopDemoCompositionTests {
         ])
         #expect(try context.fetchCount(FetchDescriptor<ClientDocumentDraftModel>()) == 0)
         #expect(try context.fetchCount(FetchDescriptor<ClientSignedDocumentModel>()) == 0)
-        #expect(try context.fetchCount(FetchDescriptor<ProductModel>()) == 0)
+        #expect(try context.fetchCount(FetchDescriptor<ProductModel>()) == 2)
         #expect(try context.fetchCount(FetchDescriptor<ServiceModel>()) == 0)
         #expect(try context.fetchCount(FetchDescriptor<SaleModel>()) == 0)
         #expect(await demo.documentRemoteStore.documentCount == 0)

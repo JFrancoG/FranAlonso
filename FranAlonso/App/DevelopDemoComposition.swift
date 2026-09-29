@@ -1,7 +1,7 @@
 #if FRANALONSO_AUTH_FIXTURE
 import SwiftData
 
-/// Owns one isolated launch of the reusable client demonstration.
+/// Owns one isolated launch of the reusable client and product demonstration.
 struct DevelopDemoComposition {
     enum Configuration: Equatable {
         case clients
@@ -19,6 +19,7 @@ struct DevelopDemoComposition {
     static func make(configuration: Configuration) throws -> DevelopDemoComposition {
         let container = try ModelContainer.inMemory(for: Schema.franAlonso)
         try DevelopDemoScenario.clients.seed(in: container)
+        try DevelopDemoProductScenario.seed(in: container)
         let remote = InMemoryClientDocumentStorage.RemoteStore()
         let storage = InMemoryClientDocumentStorage(
             remote: remote,

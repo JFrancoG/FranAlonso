@@ -1,5 +1,85 @@
 # Fase 09 — Productos e inventario físico
 
+## Entrega 09.4 autorizada, 2026-09-29
+
+El propietario autoriza commit/push, PR/merge, cierre funcional de issue/rama y comienzo de la siguiente subfase 09.5.
+Se reutilizan 1.199/1.199 resultados, builds Develop/Production, smoke y PRE/POST: los 15 Swift y el catálogo de textos
+coinciden byte a byte con el manifiesto POST. Solo se añade estado de entrega y changelog; Xcode nuevo N/A.
+PLU-54 conserva toda la validación integral pendiente. La fase 09 permanece abierta; sin activación live.
+El resultado Git se registrará después de comprobarlo. La entrada inferior conserva el checkpoint local previo.
+
+## 09.4 — Implementación local, 2026-09-29
+
+[PLU-53](https://linear.app/plusprojects/issue/PLU-53) In Progress, Jesus Franco, rama
+`codex/plu-53-phase-09-4-product-screens` desde acd0514. [Propuesta](09-4-product-screens-proposal.md) PRE PASS:
+el cierre por gesto siempre queda desactivado; root verificó 562/562 archivos idénticos en ambos pases.
+
+### Alcance implementado
+
+- Catálogo abre ProductListScreen: carga, lista, vacío, búsqueda sin coincidencias, error y reintento; inactivos visibles.
+- ProductFormScreen crea/edita, valida nombre, conserva borrador ante errores, confirma descarte y desactivación;
+  editar un inactivo no lo reactiva. Cierre mediante Cancelar o mutación confirmada; gesto de cierre deshabilitado.
+- Reutiliza los ViewModels y factories de 09.3; solo añade detección de cambios del borrador y feedback localizado.
+  Contexto SwiftData efímero según ADR 0011; Domain, Data, schema, sync y dependencias intactos.
+- 41 recursos nuevos es/en, previews deterministas y dos productos sintéticos en la demo Develop. Se amplía el
+  [runbook](08-8a-demo-runbook.md); cada relanzamiento con el argumento existente restablece clientes y productos.
+- 15 archivos Swift nuevos/modificados. Sin stock, servicios, venta, Foundation Models ni activación live.
+
+### TDD y validación
+
+Xcode MCP estable, Develop/iPhone 18 Pro Simulator 27.0; target 26, Swift 6, strict complete y nonisolated intactos.
+
+| Paso | Evidencia |
+|---|---|
+| RED | Build con tests 26,451 s PASS; 9/9 fallos semánticos previstos: seis variantes de borrador y tres recorridos de seed. |
+| GREEN focal | Build con tests 20,055 s PASS; 7/7 resultados, selección incompleta de dos variantes terminales. |
+| Global justificado | **902 declaraciones / 1.199 resultados PASS**, cero fallos, skips y expected failures en bundle nativo cerrado. Las tres terminales saved/deactivated/closed están presentes. |
+| Previews | 15 capturas representativas inspeccionadas; Large, XXX Large, AX 5, Light/Dark y contraste incrementado. Lista 0/250, sin coincidencias/error; crear/editar inactivo y errores; shell. |
+| Smoke táctil | Alta, validación/corrección, búsqueda sin tilde, no resultados/recuperación, bloqueo de gesto, descarte, desactivación, edición/reapertura de inactivo y reset PASS. Retest de las dos confirmaciones PASS. |
+| Builds finales | Develop PASS 3,818 s; Production PASS 20,909 s. Develop/iPhone 18 Pro restaurados, sesión y app de smoke detenidas. |
+
+El fallback global se limita a la selección parametrizada parcial reproducida. Las dos nuevas suites prueban borrador
+tras errores/terminales y composición real preview/demo; no añaden UI tests, sleeps, red real ni serialización artificial.
+El bundle cerrado confirma los resultados; los 1.191 anteriores siguen verdes. No se equiparan declaraciones y variantes.
+
+Artefactos bajo `/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/`:
+
+- RED: `RunSomeTests/19C41087-0E06-4BBD-BDF5-5A21B79F852C.txt`, consola 16-06-17.
+- GREEN focal: `RunSomeTests/FDA88837-AA4B-4A39-9F70-30F4B37DF394.txt`, consola 16-10-05.
+- Global: `RunAllTests/7071DAC8-0E48-45E8-AED5-C89AF3FA0C97.txt`, consola 16-10-25.
+- Bundle cerrado: `~/Library/Developer/Xcode/DerivedData/FranAlonso-eehpkvodmpnqlchgeqriatcucsjf/Logs/Test/Test-FranAlonso-Develop-2026.09.29_16-10-25-+0200.xcresult`.
+- Builds TDD: `BuildProject/BuildProject-Log-20260929-160554.txt` y `BuildProject-Log-20260929-160957.txt`.
+- Builds finales: `BuildProject/BuildProject-Log-20260929-162856.txt` y `BuildProject-Log-20260929-162923.txt`.
+- Previews y smoke: inventario en la [matriz de 55 criterios](../accessibility/evidence/09-4-product-screens.md).
+
+Los logs completos conservan el aviso conocido `Metadata extraction skipped, no AppIntents.framework dependency found`.
+No se afirma cero warnings globales, exportación DocC ni validación física. Los previews realmente usaron iPhone 18 Pro Max
+con iOS 27.2, distinto del destino de build/tests/smoke. El teclado software quedó oculto por la configuración del simulador;
+la operación con teclado visible y AT integral permanece pendiente.
+
+### Correcciones visuales y revisión
+
+Se corrigieron título y placeholder recortados en AX 5, y el icono de vacío; las variantes afectadas se renderizaron de nuevo.
+El smoke detectó que el popover nativo ocultaba el botón de cancelación: «Seguir editando» ahora es una acción explícita
+que cierra cada confirmación y conserva el borrador. La comprobación táctil focal confirma ambas acciones visibles y la conservación del borrador.
+
+POST independientes de estándares y UI/accesibilidad: **PASS funcional, sin hallazgos P0–P3 de código**. Ambas revisiones
+fueron operativamente read-only; root verificó **573/573 archivos idénticos** tras cada revisión. Manifiesto
+`/tmp/franalonso-09-4-post.json`, SHA-256 `82ae2c4eed46474bb7da0c59d5fa4baa5d1151135221c474c7ddec53118f8bba`.
+Después solo se completa este registro y Linear; no cambia código ni configuración. Estilo de 15 Swift revisado y
+diff-check limpio; gobernanza mantiene únicamente los seis enlaces históricos de capturas 08.3.
+
+Precisión accesible: 44 pt es la política/intención de construcción. El árbol del smoke devuelve frames de toolbar de
+36 pt, lo que no determina su área táctil efectiva. Medición pendiente en PLU-54; criterio 2.5.8 conserva Limitado.
+
+### Estado y límites
+
+[PLU-54](https://linear.app/plusprojects/issue/PLU-54) Backlog conserva la nueva validación integral de 09.4: Jesus Franco,
+tras feedback y estabilización, siempre antes del primer candidato para uso real. No absorbe la deuda de fase 08.
+La implementación permanece local: 22 archivos nuevos/modificados, sin commit/push/PR/merge ni cierre de PLU-53.
+Docs y Linear reconciliados; fase 09/PLU-49 abierta, PLU-53 In Progress y PLU-54 Backlog.
+Entrega 09.4 y comienzo de 09.5 requieren autorización posterior. Las entradas inferiores son historial superado.
+
 ## Entrega y cierre09.3, 2026-09-29
 
 Commit `58ee95f9cd5611439a5d069ad3aefa0ae8e824a0`, `✨ feat(products): coordinate list and form state`, publicado.
