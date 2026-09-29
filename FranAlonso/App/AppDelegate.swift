@@ -25,7 +25,7 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
         return true
     }
 
-    /// Selects fixture readiness before any live Firebase configuration can be requested.
+    /// Selects isolated fixture or demo readiness before any live Firebase configuration can be requested.
     func completeApplicationBootstrap(
         for plan: ApplicationLaunchPlan,
         configureFirebase: () -> Bool
@@ -34,7 +34,7 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
         switch plan {
         case .live:
             completeFirebaseBootstrap(configurationSucceeded: configureFirebase())
-        case .authenticationFixture:
+        case .authenticationFixture, .demo:
             firebaseBootstrapState = .fixtureReady
         case .invalidFixtureConfiguration:
             firebaseBootstrapState = .fixtureConfigurationFailed

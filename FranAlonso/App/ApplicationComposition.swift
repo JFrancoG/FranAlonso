@@ -9,10 +9,11 @@ struct ApplicationComposition {
     let runtime: AppRuntime?
 #if FRANALONSO_AUTH_FIXTURE
     let authenticationRootViewModel: AuthenticationRootViewModel?
+    let demoConfiguration: DevelopDemoComposition.Configuration?
 #endif
 
 #if FRANALONSO_AUTH_FIXTURE
-    /// Selects exactly one live or fixture composition path from the immutable launch plan.
+    /// Selects exactly one live, fixture or demo path without constructing dependencies from another route.
     static func make(
         plan: ApplicationLaunchPlan = .current,
         makeLive: @MainActor () throws -> ApplicationComposition = {
@@ -23,6 +24,11 @@ struct ApplicationComposition {
         ) throws -> ApplicationComposition = { configuration in
             try DevelopAuthenticationFixture.make(configuration: configuration).applicationComposition
         },
+        makeDemo: @MainActor (
+            DevelopDemoComposition.Configuration
+        ) throws -> ApplicationComposition = { configuration in
+            try DevelopDemoComposition.make(configuration: configuration).applicationComposition
+        },
         makeInvalidFixture: @MainActor () throws -> ApplicationComposition = {
             try DevelopAuthenticationFixture.makeInvalidApplicationComposition()
         }
@@ -32,6 +38,8 @@ struct ApplicationComposition {
             try makeLive()
         case let .authenticationFixture(configuration):
             try makeFixture(configuration)
+        case let .demo(configuration):
+            try makeDemo(configuration)
         case .invalidFixtureConfiguration:
             try makeInvalidFixture()
         }
@@ -43,6 +51,25 @@ struct ApplicationComposition {
     }
 #endif
 }
+
+#if FRANALONSO_AUTH_FIXTURE
+extension ApplicationComposition {
+    init(
+        modelContainer: ModelContainer,
+        dependencies: AppDependencies,
+        runtime: AppRuntime?,
+        authenticationRootViewModel: AuthenticationRootViewModel?
+    ) {
+        self.init(
+            modelContainer: modelContainer,
+            dependencies: dependencies,
+            runtime: runtime,
+            authenticationRootViewModel: authenticationRootViewModel,
+            demoConfiguration: nil
+        )
+    }
+}
+#endif
 
 private extension ApplicationComposition {
     static func makeLiveComposition() throws -> ApplicationComposition {

@@ -5,6 +5,96 @@ import Testing
 @Suite("Application launch plan")
 struct ApplicationLaunchPlanTests {
     @Test(
+        arguments: [
+            ("--franalonso-demo-clients", DevelopDemoComposition.Configuration.clients),
+            ("--franalonso-demo-clients-response-lost", .clientsResponseLost)
+        ]
+    )
+    func `an exact Develop gate selects the requested demo`(
+        argument: String,
+        configuration: DevelopDemoComposition.Configuration
+    ) {
+        let plan = ApplicationLaunchPlan.resolve(
+            appEnvironment: "develop",
+            bundleIdentifier: "com.plusprojects.FranAlonso.develop",
+            arguments: ["/demo/app", argument]
+        )
+
+        #expect(plan == .demo(configuration))
+    }
+
+    @Test(arguments: [DevelopDemoComposition.Configuration.clients, .clientsResponseLost])
+    @MainActor
+    func `a demo route invokes only its own composition factory`(
+        configuration: DevelopDemoComposition.Configuration
+    ) throws {
+        let expected = try DevelopAuthenticationFixture.makeInvalidApplicationComposition()
+        var liveCalls = 0
+        var fixtureCalls = 0
+        var invalidCalls = 0
+        var demoConfigurations: [DevelopDemoComposition.Configuration] = []
+
+        let composition = ApplicationComposition.make(
+            plan: .demo(configuration),
+            makeLive: {
+                liveCalls += 1
+                return expected
+            },
+            makeFixture: { _ in
+                fixtureCalls += 1
+                return expected
+            },
+            makeDemo: { selectedConfiguration in
+                demoConfigurations.append(selectedConfiguration)
+                return expected
+            },
+            makeInvalidFixture: {
+                invalidCalls += 1
+                return expected
+            }
+        )
+
+        #expect(composition.modelContainer === expected.modelContainer)
+        #expect(demoConfigurations == [configuration])
+        #expect(liveCalls == 0)
+        #expect(fixtureCalls == 0)
+        #expect(invalidCalls == 0)
+    }
+
+    @Test
+    @MainActor
+    func `a failed demo composition propagates its failure without opening another route`() throws {
+        enum DemoFailure: Error {
+            case seed
+        }
+        let unexpected = try DevelopAuthenticationFixture.makeInvalidApplicationComposition()
+        var fallbackCalls = 0
+
+        #expect(throws: DemoFailure.seed) {
+            try ApplicationComposition.make(
+                plan: .demo(.clients),
+                makeLive: {
+                    fallbackCalls += 1
+                    return unexpected
+                },
+                makeFixture: { _ in
+                    fallbackCalls += 1
+                    return unexpected
+                },
+                makeDemo: { _ in
+                    throw DemoFailure.seed
+                },
+                makeInvalidFixture: {
+                    fallbackCalls += 1
+                    return unexpected
+                }
+            )
+        }
+
+        #expect(fallbackCalls == 0)
+    }
+
+    @Test(
         "An exact Develop gate resolves each supported fixture",
         arguments: [
             (
@@ -170,6 +260,51 @@ struct ApplicationLaunchPlanTests {
             appEnvironment: "develop",
             bundleIdentifier: "com.plusprojects.FranAlonso.develop",
             arguments: arguments
+        )
+
+        #expect(plan == .invalidFixtureConfiguration)
+    }
+
+    @Test(
+        arguments: [
+            ["--franalonso-demo-unknown"],
+            ["--franalonso-demo-clients", "--franalonso-demo-clients"],
+            ["--franalonso-demo-clients-response-lost", "--franalonso-demo-clients-response-lost"],
+            ["--franalonso-demo-clients", "--franalonso-demo-clients-response-lost"],
+            ["--franalonso-demo-clients", "--franalonso-demo-unknown"],
+            ["--franalonso-demo-clients", "--franalonso-auth-fixture-signed-out"],
+            ["--franalonso-demo-clients-response-lost", "--franalonso-auth-fixture-restored-session"],
+            ["--franalonso-demo-clients", "--franalonso-clients-fixture-observation-error"],
+            [
+                "--franalonso-demo-clients",
+                "--franalonso-auth-fixture-restored-session",
+                "--franalonso-clients-fixture-observation-error"
+            ]
+        ]
+    )
+    func `malformed or conflicting demo intent fails closed`(_ arguments: [String]) {
+        let plan = ApplicationLaunchPlan.resolve(
+            appEnvironment: "develop",
+            bundleIdentifier: "com.plusprojects.FranAlonso.develop",
+            arguments: ["/demo/app"] + arguments
+        )
+
+        #expect(plan == .invalidFixtureConfiguration)
+    }
+
+    @Test(
+        arguments: [
+            (nil, "com.plusprojects.FranAlonso.develop"),
+            ("production", "com.plusprojects.FranAlonso.develop"),
+            ("develop", nil),
+            ("develop", "com.plusprojects.FranAlonso")
+        ] as [(String?, String?)]
+    )
+    func `demo intent fails closed outside exact Develop identity`(environment: String?, bundleIdentifier: String?) {
+        let plan = ApplicationLaunchPlan.resolve(
+            appEnvironment: environment,
+            bundleIdentifier: bundleIdentifier,
+            arguments: ["/demo/app", "--franalonso-demo-clients"]
         )
 
         #expect(plan == .invalidFixtureConfiguration)

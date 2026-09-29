@@ -6,6 +6,8 @@ All notable changes to this project are documented in this file.
 
 ### Added
 
+- 2026-09-29 | ✨ feat(demo): add reusable isolated client demo
+  Includes repeatable in-memory clients, real consent flows, lost-response recovery and a localized demo marker.
 - 2026-09-29 | ✨ feat(clients): add recoverable client activation
   Activates only from a retained initial-document receipt and preserves recovery, retries and concurrent edits.
 - 2026-09-29 | ✨ feat(clients): integrate consent review flow

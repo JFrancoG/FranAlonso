@@ -256,11 +256,21 @@ struct BuildEnvironmentConfigurationTests {
             "--franalonso-auth-fixture-restored-session",
             "--franalonso-auth-fixture-local-access-denied",
             "--franalonso-auth-fixture-observation-failed",
-            "--franalonso-clients-fixture-observation-error"
+            "--franalonso-clients-fixture-observation-error",
+            "--franalonso-demo-clients",
+            "--franalonso-demo-clients-response-lost"
         ] {
             #expect(developScheme.contains("argument = \"\(argument)\"\n            isEnabled = \"NO\""))
-            #expect(occurrenceCount(of: argument, in: developScheme) == 1)
+            #expect(occurrenceCount(of: "argument = \"\(argument)\"", in: developScheme) == 1)
             #expect(!productionScheme.contains(argument))
+        }
+
+        let launchStart = try #require(developScheme.range(of: "<LaunchAction")?.lowerBound)
+        let launchEnd = try #require(developScheme.range(of: "</LaunchAction>")?.upperBound)
+        let launchAction = developScheme[launchStart..<launchEnd]
+
+        for argument in ["--franalonso-demo-clients", "--franalonso-demo-clients-response-lost"] {
+            #expect(launchAction.contains("argument = \"\(argument)\""))
         }
     }
 
@@ -268,6 +278,9 @@ struct BuildEnvironmentConfigurationTests {
     func fixtureImplementationFilesAreCompletelyGuarded() throws {
         for relativePath in [
             "FranAlonso/App/DevelopAuthenticationFixture.swift",
+            "FranAlonso/App/DevelopDemoComposition.swift",
+            "FranAlonso/App/DevelopDemoScenario.swift",
+            "FranAlonso/App/DevelopDemoBanner.swift",
             "FranAlonso/Features/Clients/Data/Repositories/DevelopClientErrorRepository.swift",
             "FranAlonso/Features/Authentication/Data/Adapters/DevelopAuthenticationDataSource.swift"
         ] {
@@ -287,17 +300,29 @@ struct BuildEnvironmentConfigurationTests {
                 "case authenticationFixture(DevelopAuthenticationFixture.Configuration)"
             ),
             ("FranAlonso/App/ApplicationLaunchPlan.swift", "case invalidFixtureConfiguration"),
+            ("FranAlonso/App/ApplicationLaunchPlan.swift", "case demo(DevelopDemoComposition.Configuration)"),
+            ("FranAlonso/App/ApplicationLaunchPlan.swift", "let demoArguments = arguments.filter"),
             (
                 "FranAlonso/App/ApplicationComposition.swift",
                 "let authenticationRootViewModel: AuthenticationRootViewModel?"
             ),
+            (
+                "FranAlonso/App/ApplicationComposition.swift",
+                "let demoConfiguration: DevelopDemoComposition.Configuration?"
+            ),
+            ("FranAlonso/App/ApplicationComposition.swift", "makeDemo: @MainActor"),
             ("FranAlonso/App/AppDelegate.swift", "case fixtureReady"),
             ("FranAlonso/App/AppDelegate.swift", "case fixtureConfigurationFailed"),
+            ("FranAlonso/App/AppDelegate.swift", "case .authenticationFixture, .demo:"),
             ("FranAlonso/App/AppDependencies.swift", "static func local("),
             ("FranAlonso/App/AppDependencies.swift", "clientRepository injectedClientRepository"),
             (
                 "FranAlonso/App/FranAlonsoApp.swift",
                 "private let authenticationRootViewModel: AuthenticationRootViewModel?"
+            ),
+            (
+                "FranAlonso/App/FranAlonsoApp.swift",
+                "private let demoConfiguration: DevelopDemoComposition.Configuration?"
             )
         ]
 

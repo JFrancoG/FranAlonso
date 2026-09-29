@@ -1,6 +1,42 @@
 {
   "sourceLanguage" : "es",
   "strings" : {
+    "demo.title": {
+      "comment": "Identifica una composición aislada con datos sintéticos.",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Demo · Datos de ejemplo"
+          }
+        }
+      }
+    },
+    "demo.reset.message": {
+      "comment": "Explica el reinicio de los datos de demostración al iniciar otro proceso.",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Los cambios se reinician al abrir la app"
+          }
+        }
+      }
+    },
+    "demo.response.lost.message": {
+      "comment": "Identifica el escenario de recuperación con un primer envío simulado fallido.",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Primer envío con error simulado"
+          }
+        }
+      }
+    },
     "clients.consent.photo.authorized" : {
       "comment" : "Estado explícito tras autorizar la fotografía interna opcional.",
       "extractionState" : "manual",
