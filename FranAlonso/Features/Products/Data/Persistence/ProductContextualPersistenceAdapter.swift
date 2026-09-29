@@ -38,3 +38,37 @@ extension ProductContextualPersistenceAdapter {
         self.init(dataSource: dataSource, observationSignal: observationSignal, makeOperationID: operationID)
     }
 }
+
+extension ProductContextualPersistenceAdapter {
+    /// Creates a locally accepted active profile and publishes only after its causal operation commits.
+    /// The caller's context remains ephemeral; errors are neutral Domain failures or prior cancellation.
+    func create(id: ProductID, profile: ProductProfile, in context: ModelContext) async throws -> Product {
+        let product = try dataSource.createProduct(
+            id: id,
+            profile: profile,
+            operationID: makeOperationID(),
+            in: context
+        )
+        await observationSignal.publishChange()
+        return product
+    }
+
+    /// Edits metadata through the shared acceptance primitive, preserving current availability.
+    func update(id: ProductID, profile: ProductProfile, in context: ModelContext) async throws -> Product {
+        let product = try dataSource.updateProduct(
+            id: id,
+            profile: profile,
+            operationID: makeOperationID(),
+            in: context
+        )
+        await observationSignal.publishChange()
+        return product
+    }
+
+    /// Retains the profile as inactive; repeating the command neither writes nor publishes a mutation.
+    func deactivate(_ id: ProductID, in context: ModelContext) async throws {
+        let changed = try dataSource.deactivateProduct(id, operationID: makeOperationID(), in: context)
+        guard changed else { return }
+        await observationSignal.publishChange()
+    }
+}

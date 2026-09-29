@@ -13,6 +13,71 @@ extension ProductLocalDataSource {
         return try context.fetch(descriptor).map { try $0.toDomain() }
     }
 
+    /// Reads active and inactive profiles without exposing deleted identities.
+    /// - Throws: A neutral `ProductError` or cancellation before reading.
+    func product(id: ProductID, in context: ModelContext) throws -> Product? {
+        try performProductOperation {
+            guard try !hasDeletionState(for: id, in: context) else { return nil }
+            return try model(for: id, in: context)?.toDomain()
+        }
+    }
+
+    /// Creates an active product and its causal operation without replacing any known identity.
+    /// Checks and local acceptance share this context without suspension; no cross-context CAS is promised.
+    func createProduct(
+        id: ProductID,
+        profile: ProductProfile,
+        operationID: UUID,
+        in context: ModelContext
+    ) throws -> Product {
+        try performProductOperation {
+            try requireClean(context)
+            guard try !hasDeletionState(for: id, in: context) else { throw ProductError.alreadyExists }
+            guard try model(for: id, in: context) == nil,
+                  try pendingOperations(for: id, in: context).isEmpty,
+                  try remoteState(for: id, in: context) == nil else {
+                throw ProductError.alreadyExists
+            }
+            let product = Product(id: id, name: profile.name, status: .active)
+            try persistPendingUpsert(product, operationID: operationID, in: context)
+            return product
+        }
+    }
+
+    /// Replaces only the name, preserving the availability read in this acceptance boundary.
+    /// Missing, deleted and conflicted identities cannot be edited through this command.
+    func updateProduct(
+        id: ProductID,
+        profile: ProductProfile,
+        operationID: UUID,
+        in context: ModelContext
+    ) throws -> Product {
+        try performProductOperation {
+            try requireClean(context)
+            guard try !hasDeletionState(for: id, in: context) else { throw ProductError.deleted }
+            guard let existing = try model(for: id, in: context)?.toDomain() else { throw ProductError.notFound }
+            let product = Product(id: id, name: profile.name, status: existing.status)
+            try persistPendingUpsert(product, operationID: operationID, in: context)
+            return product
+        }
+    }
+
+    /// Makes an existing product inactive while retaining its name, identity and references.
+    /// - Returns: Whether a new local mutation was committed. An inactive product is a write-free no-op,
+    ///   even after synchronization acknowledged its last operation. Conflicts still reject the command.
+    func deactivateProduct(_ id: ProductID, operationID: UUID, in context: ModelContext) throws -> Bool {
+        try performProductOperation {
+            try requireClean(context)
+            guard try !hasDeletionState(for: id, in: context) else { throw ProductError.deleted }
+            guard let existing = try model(for: id, in: context)?.toDomain() else { throw ProductError.notFound }
+            guard try conflict(for: id, in: context) == nil else { throw ProductError.conflict }
+            guard existing.status != .inactive else { return false }
+            let product = Product(id: id, name: existing.name, status: .inactive)
+            try persistPendingUpsert(product, operationID: operationID, in: context)
+            return true
+        }
+    }
+
     /// Materializes a product without creating a pending local mutation.
     func upsert(_ product: Product, in context: ModelContext) throws {
         try materialize(product, in: context)
@@ -517,6 +582,25 @@ extension ProductLocalDataSource {
 
     private func requireClean(_ context: ModelContext) throws {
         guard !context.hasChanges else { throw ProductLocalDataSourceError.contextHasUncommittedChanges }
+    }
+
+    private func performProductOperation<Value>(
+        _ operation: () throws -> Value
+    ) throws -> Value {
+        try Task.checkCancellation()
+        do {
+            return try operation()
+        } catch let error as ProductError {
+            throw error
+        } catch is CancellationError {
+            throw CancellationError()
+        } catch ProductLocalDataSourceError.syncConflictPending {
+            throw ProductError.conflict
+        } catch ProductLocalDataSourceError.restoreRequiresExplicitResolution {
+            throw ProductError.deleted
+        } catch {
+            throw ProductError.persistenceUnavailable
+        }
     }
 
     private func model(for id: ProductID, in context: ModelContext) throws -> ProductModel? {

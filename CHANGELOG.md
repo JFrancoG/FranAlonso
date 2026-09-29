@@ -6,6 +6,8 @@ All notable changes to this project are documented in this file.
 
 ### Added
 
+- 2026-09-29 | ✨ feat(products): add CRUD and local search
+  Validates editable names, preserves inactive profiles and accepts causal local writes without restoring tombstones.
 - 2026-09-29 | ✨ feat(demo): add reusable isolated client demo
   Includes repeatable in-memory clients, real consent flows, lost-response recovery and a localized demo marker.
 - 2026-09-29 | ✨ feat(clients): add recoverable client activation
