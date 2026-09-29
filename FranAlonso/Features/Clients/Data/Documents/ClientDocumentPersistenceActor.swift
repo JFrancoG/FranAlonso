@@ -188,6 +188,8 @@ actor ClientDocumentPersistenceActor {
                 throw error
             case let error as ClientDocumentStorageError:
                 throw error
+            case let error as ClientActivationError:
+                throw error
             case is CancellationError:
                 throw CancellationError()
             case ClientLocalDataSourceError.syncConflictPending:

@@ -84,11 +84,14 @@ struct ClientConsentActionsView: View {
                     Text(.clientsConsentRetained).font(.headline).accessibilityAddTraits(.isHeader)
                         .accessibilityFocused(accessibilityFocus, equals: .retained)
                     Text(delivery.state.consentMessage)
-                    if store.hasUploadAction {
+                    if let message = viewModel.consentActivationMessage {
+                        Text(message)
+                    }
+                    if viewModel.hasConsentUploadAction {
                         Button {
                             onAction(.upload)
                         } label: {
-                            Text(.clientsConsentUpload).frame(maxWidth: .infinity, minHeight: 44)
+                            Text(viewModel.consentUploadActionTitle).frame(maxWidth: .infinity, minHeight: 44)
                         }
                         .consentPrimaryActionStyle()
                         .accessibilityFocused(accessibilityFocus, equals: .upload)
@@ -162,6 +165,60 @@ struct ClientConsentActionsView: View {
             onCapture: {}
         )
         .padding()
+    }
+}
+
+#Preview("Finish activation", traits: .modifier(ClientConsentPreviewModifier())) {
+    @Previewable @AccessibilityFocusState var focusedElement: ClientConsentScreen.FocusTarget?
+
+    ClientConsentPreviewHost(scenario: .activationPending) { model in
+        ScrollView {
+            ClientConsentActionsView(
+                viewModel: model,
+                isRequestPending: false,
+                accessibilityFocus: $focusedElement,
+                onAction: { _ in },
+                onCapture: {}
+            )
+            .padding()
+            .frame(maxWidth: 760)
+        }
+    }
+}
+
+#Preview("Active client", traits: .modifier(ClientConsentPreviewModifier())) {
+    @Previewable @AccessibilityFocusState var focusedElement: ClientConsentScreen.FocusTarget?
+
+    ClientConsentPreviewHost(scenario: .activated) { model in
+        ScrollView {
+            ClientConsentActionsView(
+                viewModel: model,
+                isRequestPending: false,
+                accessibilityFocus: $focusedElement,
+                onAction: { _ in },
+                onCapture: {}
+            )
+            .padding()
+            .frame(maxWidth: 760)
+        }
+    }
+}
+
+#Preview("Retry activation", traits: .modifier(ClientConsentPreviewModifier())) {
+    @Previewable @AccessibilityFocusState var focusedElement: ClientConsentScreen.FocusTarget?
+
+    ClientConsentPreviewHost(scenario: .activationFailure) { model in
+        ScrollView {
+            ClientConsentActionsView(
+                viewModel: model,
+                isRequestPending: false,
+                accessibilityFocus: $focusedElement,
+                onAction: { _ in },
+                onCapture: {}
+            )
+            .padding()
+            .frame(maxWidth: 760)
+        }
     }
 }
 

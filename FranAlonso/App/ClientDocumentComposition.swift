@@ -28,8 +28,14 @@ final class ClientDocumentComposition {
     /// Uses the supported Spanish catalog and local rendering; remote delivery stays unavailable.
     /// Creating this capability never starts a render, write or network operation.
     func makeServices() throws -> ClientConsentServices {
-        try ClientConsentServices(
-            repository: makeRepository(),
+        let repository = try makeRepository()
+        return ClientConsentServices(
+            repository: repository,
+            activationRepository: DefaultClientActivationRepository(
+                persistence: persistence,
+                access: repository.access,
+                observationSignal: observationSignal
+            ),
             catalog: catalog,
             renderer: renderer,
             storage: UnavailableClientDocumentStorage(),

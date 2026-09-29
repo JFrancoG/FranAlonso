@@ -2076,6 +2076,77 @@
           }
         }
       }
+    },
+    "clients.consent.activating" : {
+      "comment" : "Estado o acción de activación inicial tras conservar el recibo del documento firmado.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Completando alta…"
+          }
+        }
+      }
+    },
+    "clients.consent.activated" : {
+      "comment" : "Estado o acción de activación inicial tras conservar el recibo del documento firmado.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cliente activo. El documento inicial está enviado y vinculado a la ficha."
+          }
+        }
+      }
+    },
+    "clients.consent.activation.pending" : {
+      "comment" : "Estado o acción de activación inicial tras conservar el recibo del documento firmado.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Documento enviado. Falta finalizar el alta del cliente."
+          }
+        }
+      }
+    },
+    "clients.consent.activation.unlinked" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El cliente ya está activo. Este documento no está confirmado como documento de alta."
+          }
+        }
+      }
+    },
+    "clients.consent.activation.failed" : {
+      "comment" : "Estado o acción de activación inicial tras conservar el recibo del documento firmado.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El documento está enviado, pero no se pudo completar el alta. Puedes volver a intentarlo sin firmar ni enviar de nuevo."
+          }
+        }
+      }
+    },
+    "clients.consent.finishActivation" : {
+      "comment" : "Estado o acción de activación inicial tras conservar el recibo del documento firmado.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Finalizar alta"
+          }
+        }
+      }
     }
   },
   "version" : "1.0"

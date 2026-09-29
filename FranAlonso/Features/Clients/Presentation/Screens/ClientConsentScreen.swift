@@ -186,6 +186,9 @@ struct ClientConsentScreen: View {
             announce(.clientsConsentRetained, priority: .high)
         } else if completedRequest.action == .upload, store.delivery != nil {
             moveFocus(to: .retained)
+            if let message = viewModel.consentActivationMessage {
+                announce(message, priority: .high)
+            }
         } else {
             defaultFocus = .title
         }
@@ -282,6 +285,24 @@ struct ClientConsentScreen: View {
 
 #Preview("Recovery", traits: .modifier(ClientConsentPreviewModifier())) {
     ClientConsentPreviewHost(scenario: .recovery) {
+        ClientConsentScreen(viewModel: $0)
+    }
+}
+
+#Preview("Activation pending", traits: .modifier(ClientConsentPreviewModifier())) {
+    ClientConsentPreviewHost(scenario: .activationPending) {
+        ClientConsentScreen(viewModel: $0)
+    }
+}
+
+#Preview("Activated", traits: .modifier(ClientConsentPreviewModifier())) {
+    ClientConsentPreviewHost(scenario: .activated) {
+        ClientConsentScreen(viewModel: $0)
+    }
+}
+
+#Preview("Activation failed", traits: .modifier(ClientConsentPreviewModifier())) {
+    ClientConsentPreviewHost(scenario: .activationFailure) {
         ClientConsentScreen(viewModel: $0)
     }
 }

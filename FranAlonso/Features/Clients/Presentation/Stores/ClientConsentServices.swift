@@ -3,6 +3,7 @@ import Foundation
 /// Replaceable document capabilities for one authorized form session.
 struct ClientConsentServices {
     let repository: any ClientDocumentRepository
+    let activationRepository: any ClientActivationRepository
     let catalog: any ClientDocumentCatalog
     let renderer: any ClientDocumentRenderer
     let storage: any ClientDocumentStorage
