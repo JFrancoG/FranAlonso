@@ -1,5 +1,16 @@
 # Fase 09 — Productos e inventario físico
 
+## Entrega y cierre funcional 09.6 —2026-09-29
+
+Commit `824fad833c19d8b0b40a853560f6c2f95baeab01`, `✨ feat(stock): add adjustment screens`, publicado.
+[PR22](https://github.com/JFrancoG/FranAlonso/pull/22) MERGED mediante `7f83cdf423865f778a7da4d38ddd232afd169a98`.
+Árbol integrado idéntico al head validado; CLEAN/MERGEABLE, sin checks ni reviews remotos; main sin protección configurada.
+Ramas local/remota eliminadas tras verificar cero commits únicos. PLU-56 Done funcional por autorización expresa.
+PLU-57 Backlog conserva accesibilidad integral, Jesus Franco, tras feedback/estabilización y antes de uso real.
+Se reutilizan1.315 resultados, Develop/Production,16previews, smoke y PRE/POST PASS: código/configuración intactos.
+Aviso AppIntents y seis enlaces históricos08.3 conservados; sin activación live. Nuevo Xcode N/A para cierre documental.
+Fase09/PLU-49 sigue abierta. El propietario solicita preparar09.7: propuesta/PRE y gate de implementación separados.
+
 ## Entrega 09.6 autorizada —2026-09-29
 
 El propietario autoriza commit/push, PR/merge, cierre funcional de issue/rama y preparación de09.7.
