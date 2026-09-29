@@ -16,11 +16,12 @@ struct FranAlonsoApp: App {
     private let runtime: AppRuntime?
 #if FRANALONSO_AUTH_FIXTURE
     private let authenticationRootViewModel: AuthenticationRootViewModel?
+    private let demoConfiguration: DevelopDemoComposition.Configuration?
 #endif
 
     var body: some Scene {
         WindowGroup {
-            applicationRoot
+            framedApplicationRoot
                 .environment(\.appDependencies, dependencies)
                 .task(id: appDelegate.firebaseBootstrapState) {
                     let firebaseIsConfigured = appDelegate.firebaseBootstrapState == .configured
@@ -36,6 +37,22 @@ struct FranAlonsoApp: App {
 }
 
 private extension FranAlonsoApp {
+    @ViewBuilder
+    var framedApplicationRoot: some View {
+#if FRANALONSO_AUTH_FIXTURE
+        if let demoConfiguration {
+            VStack(spacing: 0) {
+                DevelopDemoBanner(simulatesResponseLoss: demoConfiguration == .clientsResponseLost)
+                applicationRoot
+            }
+        } else {
+            applicationRoot
+        }
+#else
+        applicationRoot
+#endif
+    }
+
     @ViewBuilder
     var applicationRoot: some View {
         switch appDelegate.firebaseBootstrapState {
@@ -82,6 +99,7 @@ extension FranAlonsoApp {
             runtime = composition.runtime
 #if FRANALONSO_AUTH_FIXTURE
             authenticationRootViewModel = composition.authenticationRootViewModel
+            demoConfiguration = composition.demoConfiguration
 #endif
         } catch {
             fatalError("Unable to compose the application: \(error)")
@@ -94,6 +112,7 @@ extension FranAlonsoApp {
         runtime = nil
 #if FRANALONSO_AUTH_FIXTURE
         authenticationRootViewModel = nil
+        demoConfiguration = nil
 #endif
     }
 }

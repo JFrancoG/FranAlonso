@@ -1,5 +1,129 @@
 # Fase 08 — Clientes, consentimiento y foto
 
+## Publicación en rama de 08.8a — 2026-09-29
+
+El propietario autoriza «ok, commit y push». Este commit entrega la implementación, guía, matriz y evidencia de08.8a
+en `codex/plu-46-reusable-demo`; SHA y verificación de publicación remota quedan en Git y PLU-46. No autoriza PR,
+merge, cierre de issue/rama, fase09 ni activación live. PLU-46 y PLU-34 permanecen In Progress; PLU-48 Backlog
+conserva la validación accesible integral, responsable Jesus Franco y recuperación tras feedback/estabilización antes
+de uso real. El estado de preparación local del apartado siguiente es histórico y queda sustituido por esta entrega.
+
+Código/configuración idénticos al árbol recién validado: se reutilizan1.120/1.120 resultados, builds Develop/Production,
+smoke de los dos modos, previews y revisiones de estándares/UI/estilo. Solo se añaden metadatos de publicación y changelog;
+no requiere nueva ejecución de Xcode. Diff-check limpio; gobernanza conserva únicamente seis enlaces históricos08.3.
+No hay cambios locales ajenos ni secretos en el alcance preparado.
+
+## Implementación y validación de 08.8a — 2026-09-29
+
+PLU-46 implementada localmente en `codex/plu-46-reusable-demo`, base `7ecbf68`, dentro de la autorización
+«Adelante con08.8a» y la [propuesta PRE](08-8a-reusable-demo-proposal.md). Permanece In Progress; no hay
+commit/push/PR/merge/cierre ni servicios live. [Guía de ejecución](08-8a-demo-runbook.md).
+
+### Resultado
+
+- Selección exclusiva anterior al bootstrap, protegida por Debug-Develop y por entorno/bundle/argumento exactos.
+  Dos argumentos desactivados por defecto; conflictos o intención desconocida fallan cerrados. Las fixtures previas
+  conservan sus escenarios vacíos y la composición normal mantiene Storage no disponible.
+- `DevelopDemoComposition` posee container en memoria, dos borradores DEMO sembrados por creación causal real,
+  autenticación sintética por sus capas habituales y un storage simulado compartido por proceso. No construye
+  AppRuntime, Firebase, Keychain ni telemetría real. Un fallo de seed no expone una composición parcial.
+- Modo normal y modo de primera respuesta perdida después de aceptar. Reabrir/reintentar usa el mismo documento
+  y recibo; no fuerza el estado activo. Logout revoca capacidades documentales/de alta, incluso al volver el mismo
+  principal. Reabrir o cambiar sesión conserva datos del proceso; relanzar restaura el escenario y el fallo inicial.
+- Aviso de demo/reset/modo de error en xcstrings, con fuentes/colores semánticos y wrapping. La primera implementación
+  safeAreaInset solapaba títulos en preview y runtime; corregida con espacio propio en VStack antes de validar.
+  Previews directas de LoginScreen/AppShellScreen evitan capturar un estado asíncrono transitorio de autenticación.
+
+### TDD y validación técnica
+
+RED focal: 8 declaraciones /19 resultados,18 fallos esperados de selección/seed todavía no implementados y1 caso
+ya satisfecho por la protección existente. Antes se corrigió un error de compilación del nuevo test por combinar
+nombre raw y displayName explícito de Swift Testing; no se presenta ese error de sintaxis como RED de comportamiento.
+GREEN focal:69 declaraciones /72 resultados PASS,0 fallos/omitidos/no ejecutados. Incluye launch/bootstrap/config,
+demo/fixtures existentes, composición documental y activación. Summary completo y xcresult nativo contrastados:
+72 resultados por dispositivo,69 declaraciones,0 runtimeWarnings.
+
+Artefactos locales bajo `/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RunSomeTests/`:
+
+- RED `FC078549-3965-4E3F-A108-8B3B0869B31B.txt`,
+  `Test-FranAlonso-Develop-2026.09.29_08-40-35-+0200.xcresult`.
+- GREEN `93A47130-4E23-4FC9-9507-E158EE392913.txt`,
+  `Test-FranAlonso-Develop-2026.09.29_08-44-47-+0200.xcresult`.
+- Sus logs completos conservan el diagnóstico de StoreKit del simulador sin cuenta Sandbox; no es un fallo de tests
+  ni evidencia de que la demo use StoreKit. No hay warning del compilador en esos logs de ejecución.
+
+Validación final por Xcode MCP en iPadAir11M4/iOS27.0: **847 declaraciones,121 suites /1.120 resultados PASS**,
+0 fallos/omitidos/no ejecutados. Summary completo contrastado con el xcresult nativo cerrado:847 tests declarados,
+1.120 ejecuciones por dispositivo,0 runtimeWarnings. Los parámetros explican la diferencia de contadores.
+La copia ActionArtifacts del bundle carece de Info.plist; se inspecciona el original completo de DerivedData,
+sin repetir la suite ni considerar esa copia incompleta un fallo de tests.
+
+- `RunAllTests/5E99E6B2-521E-4592-A33D-0FC25C150DFD.txt` y log completo
+  `RunAllTests/test-console-log-2026-09-29T09-04-20+02-00.txt`, bajo ActionArtifacts/default.
+- Bundle nativo: `/Users/jesusf/Library/Developer/Xcode/DerivedData/FranAlonso-eehpkvodmpnqlchgeqriatcucsjf/Logs/Test/Test-FranAlonso-Develop-2026.09.29_09-04-20-+0200.xcresult`.
+- Build Develop PASS **3,541s**, Production PASS **20,723s**. Logs completos
+  `BuildProject/BuildProject-Log-20260929-090336.txt` y `BuildProject-Log-20260929-090409.txt` bajo ActionArtifacts/default.
+  GetBuildLog no enumera incidencias, pero ambos logs completos conservan el aviso conocido del extractor AppIntents
+  sin dependencia de ese framework. No se afirma cero warnings globales; sin nuevos warnings de compilador.
+- Consola de tests: diagnósticos esperados de stores read-only/migración incompatible, además de StoreKit sin cuenta y
+  Crashlytics sobre el terminate handler del host de tests. Las pruebas correspondientes pasan; runtimeWarnings nativo vacío.
+
+### Smoke funcional de los dos modos
+
+**PASS** por interacción táctil de Xcode MCP, skill device-interaction ejecutada por subagente. Datos y firma sintéticos.
+Modo normal: login, dos borradores, edición Alba, documento revisado/firmado/conservado/enviado y alta activa; creación
+Carla, logout/login en el mismo proceso conserva tres clientes, edición y documento enviado/alta. Nuevo proceso en modo
+response-lost restaura solo Alba/Bruno sin edición ni Carla; primer envío muestra error explícito y conserva firma.
+Cerrar/reabrir, Reanudar documento y Reintentar envío confirma enviado+activo sin refirmar; una última reapertura lo retiene.
+
+Root inspecciona las capturas de alta normal, error, recuperación y reapertura final; su firma/fecha coinciden en recuperación.
+El recuento de una aceptación y la identidad exacta del recibo se prueban por Swift Testing, no se deducen de la UI.
+No crashes ni nuevo bloqueo visual. Sesiones terminadas; Xcode restaurado a **Develop/iPhone11**, sin ejecutar el físico.
+Argumentos compartidos siguen `NO`. [Matriz08.8a](../accessibility/evidence/08-8a-reusable-demo.md) retiene las marcas/rutas.
+No se ha repetido la matriz AT ni se afirma VoiceOver físico. La demo no acredita Storage/red real o durabilidad entre procesos.
+
+### Revisión independiente y evidencia visual
+
+POST de estándares PASS sin hallazgos: selección/factories, aislamiento, causalidad, revocación, storage compartido,
+regresión de fixtures, tests, DocC y estilo. Manifiesto535 rutas idénticas antes/después, verificado por root:
+`/tmp/franalonso-08-8a-post-review.json`, SHA-256 JSON canónico
+`50fd5f0b40e1fe3bcb8c40b133f2737797878357f700e3c1574846ef8161d80f`.
+
+Tras corregir el encuadre, revisión UI/estilo focal read-only por el mismo agente independiente, que no implementó
+código; no se pudo crear otro agente especializado por el límite del entorno. Aplicó la skill de revisión accesible,
+inspeccionó las seis previews finales y la matriz55. Sin hallazgos de código/visual; P3 documental corregido al trasladar
+«Sin nueva ejecución» al método y mantener resultados formales. Retest documental PASS. Scope de estándares previo
+se conserva, salvo los dos Swift de encuadre nuevamente auditados. Root verifica ambos manifests completos:
+
+- `/tmp/franalonso-08-8a-ui-review.json`,536 rutas,
+  `7dd14f906d4dabd4a0944774bc9cf093ea61b93b6f23dbb109515d1dbb15443e`.
+- `/tmp/franalonso-08-8a-ui-retest.json`,536 rutas,
+  `5d05acf0aa7a80b116182e17469e7bca43a4ff8b15a763e5025f4d78e57e8335`.
+
+Este registro se añade después de verificar los hashes. La [matriz08.8a](../accessibility/evidence/08-8a-reusable-demo.md)
+documenta seis previews Large/XXX Large/AX5 de login y shell, con apariencias representativas, todas inspeccionadas.
+Xcode MCP estable/Develop; destino real de previews iPadPro13M5/iOS27.2 elegido por el pipeline. Tests y smoke usan
+iPadAir11M4/iOS27.0. No se confunden destinos ni se infiere runtime accesible desde previews.
+
+### Límites y siguiente puerta
+
+[PLU-48](https://linear.app/plusprojects/issue/PLU-48), Backlog, hija dePLU-34, relacionada conPLU-46 y asignada a
+Jesus Franco, conserva la validación accesible integral nueva del aviso/encuadre. Recuperar tras feedback de Fran y
+estabilización del flujo, antes del primer candidato para uso real. PLU-44/45/38 conservan fallos/pendientes propios;
+PLU-34 sigue In Progress. ADR0029 no permite aplazar integridad, privacidad o una regresión funcional de la demo.
+
+Sin cambios en dependencias, API beta, opt-outs de concurrencia, target, esquema Production o gates live. Sin catálogo,
+ventas, foto08.9 o inferencia Foundation Models en esta subfase. La siguiente puerta tras la entrega autorizada
+es fase09, luego10 y PLU-47 según ADR0030. Gobernanza conserva seis enlaces históricos rotos de capturas08.3.
+
+## Inicio de 08.8a — 2026-09-29
+
+El propietario autoriza «Adelante con08.8a». Se prepara y revisa la [propuesta concreta](08-8a-reusable-demo-proposal.md)
+antes de código: estándares y UI PRE PASS,529 rutas read-only verificadas. PLU-46 pasa a In Progress; rama
+`codex/plu-46-reusable-demo` desde `7ecbf68`, sin publicación nueva ni live. TDD y validación de implementación pendientes.
+La base ejecutable/configuración permanece idéntica al árbol validado91eb3a7 antes de comenzar; no se repite baseline.
+El inicio sustituye el estado Backlog/siguiente puerta de los registros históricos inferiores; PLU-34 sigue In Progress.
+
 ## Publicación de la planificación — 2026-09-29
 
 El propietario autoriza publicar la planificación aprobada. Este commit documental en `main` entrega ADR0030,

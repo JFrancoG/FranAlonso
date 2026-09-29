@@ -44,7 +44,8 @@ struct AppDependencies {
         analyticsDataSource: any AnalyticsDataSource,
         crashDataSource: any CrashDataSource,
         clientRepository: (any ClientRepository)? = nil,
-        authenticationRoot: AuthenticationRootViewModel? = nil
+        authenticationRoot: AuthenticationRootViewModel? = nil,
+        clientDocumentStorage: (any ClientDocumentStorage)? = nil
     ) -> AppDependencies {
         let observationSignal = ClientObservationSignal()
         let productObservationSignal = ProductObservationSignal()
@@ -54,7 +55,8 @@ struct AppDependencies {
         if let authenticationRoot {
             let composition = ClientDocumentComposition(
                 modelContainer: modelContainer,
-                observationSignal: observationSignal
+                observationSignal: observationSignal,
+                storage: clientDocumentStorage
             )
             composition.authenticationRoot = authenticationRoot
             makeClientConsentServices = { try composition.makeServices() }

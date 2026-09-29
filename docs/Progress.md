@@ -7,9 +7,15 @@
 - **[ADR0030](ADRs/0030-reusable-demo-and-early-foundation-models.md) aceptado** el29/09: planificación publicada
   en `main`, sin código nuevo. Orden excepcional y alcance canónico en [índice](specs/00_index.md).
   Revisiones independientes PASS; Xcode N/A documental. [Registro](progress/phase-08.md) y Linear reconciliados.
-- **08.8a / [PLU-46](https://linear.app/plusprojects/issue/PLU-46): Backlog**, siguiente puerta de inicio.
-  Base de demo Debug-Develop separada, datos sintéticos en memoria, reset al relanzar y alta sin foto por capas reales.
-  Proveedores simulados; no equivale a Storage/live/durabilidad. Responsable Jesus Franco; [spec08](specs/08_clients_consent.md).
+- **08.8a / [PLU-46](https://linear.app/plusprojects/issue/PLU-46): In Progress**, implementada y validada;
+  publicación en rama autorizada. `codex/plu-46-reusable-demo`; [guía](progress/08-8a-demo-runbook.md), detalle en [fase08](progress/phase-08.md).
+  Demo Debug-Develop aislada: dos borradores, capas reales, datos en memoria y proveedores simulados; sin live/durabilidad.
+  Xcode MCP: **847 declaraciones /1.120 resultados PASS**, builds Develop/Production PASS con aviso AppIntents conocido.
+  PRE/POST favorables; seis previews Large/XXX Large/AX5. Smoke PASS: alta, crear/editar, logout/login, reset y recuperación
+  sin refirmar. Sesiones cerradas, Develop/iPhone11 restaurado, argumentos `NO`. PR, merge y cierres pendientes.
+- **[PLU-48](https://linear.app/plusprojects/issue/PLU-48): Backlog**, evidencia accesible integral nueva del aviso/encuadre.
+  Jesus Franco, hija dePLU-34 y relacionada conPLU-46; [matriz55](accessibility/evidence/08-8a-reusable-demo.md).
+  Recuperar tras feedback y estabilización de este flujo, antes de uso real. PLU-44/45/38 conservan su deuda propia.
 - **[PLU-47](https://linear.app/plusprojects/issue/PLU-47): Backlog**, adelanto de Foundation Models tras09–10.
   Una descripción escrita propone un servicio profesional editable; inferencia local real y guardado manual habitual.
   Hija dePLU-9, responsable Jesus Franco; alcance parcial en [spec16](specs/16_on_device_voice_assistant.md).

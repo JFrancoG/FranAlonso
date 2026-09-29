@@ -9,10 +9,16 @@ final class ClientDocumentComposition {
     private let observationSignal: ClientObservationSignal
     private let catalog = BundleClientDocumentCatalog(bundle: .main)
     private let renderer = CoreGraphicsClientDocumentRenderer()
+    private let storage: any ClientDocumentStorage
 
-    init(modelContainer: ModelContainer, observationSignal: ClientObservationSignal) {
+    init(
+        modelContainer: ModelContainer,
+        observationSignal: ClientObservationSignal,
+        storage: (any ClientDocumentStorage)? = nil
+    ) {
         persistence = ClientDocumentPersistenceActor(modelContainer: modelContainer)
         self.observationSignal = observationSignal
+        self.storage = storage ?? UnavailableClientDocumentStorage()
     }
 
     /// Binds a new form to current authority while all forms share the same serialization owner.
@@ -25,7 +31,8 @@ final class ClientDocumentComposition {
         )
     }
 
-    /// Uses the supported Spanish catalog and local rendering; remote delivery stays unavailable.
+    /// Uses the supported Spanish catalog, local rendering and the composition-owned storage boundary.
+    /// Normal composition leaves delivery unavailable until a separately authorized live gate.
     /// Creating this capability never starts a render, write or network operation.
     func makeServices() throws -> ClientConsentServices {
         let repository = try makeRepository()
@@ -38,7 +45,7 @@ final class ClientDocumentComposition {
             ),
             catalog: catalog,
             renderer: renderer,
-            storage: UnavailableClientDocumentStorage(),
+            storage: storage,
             version: "2026-09-10-draft",
             language: "es",
             now: { .now },

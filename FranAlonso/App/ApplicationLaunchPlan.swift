@@ -6,6 +6,7 @@ enum ApplicationLaunchPlan: Equatable {
 
 #if FRANALONSO_AUTH_FIXTURE
     case authenticationFixture(DevelopAuthenticationFixture.Configuration)
+    case demo(DevelopDemoComposition.Configuration)
     case invalidFixtureConfiguration
 #endif
 
@@ -16,7 +17,7 @@ enum ApplicationLaunchPlan: Equatable {
         arguments: ProcessInfo.processInfo.arguments
     )
 
-    /// Resolves a fixture only when its compile-time, environment, bundle and argument gates agree.
+    /// Resolves an isolated route only when its compile-time, environment, bundle and argument gates agree.
     static func resolve(
         appEnvironment: String?,
         bundleIdentifier: String?,
@@ -29,11 +30,28 @@ enum ApplicationLaunchPlan: Equatable {
         let clientsArguments = arguments.filter {
             $0.hasPrefix("--franalonso-clients-fixture-")
         }
-        let hasFixtureIntent = !authenticationArguments.isEmpty || !clientsArguments.isEmpty
+        let demoArguments = arguments.filter {
+            $0.hasPrefix("--franalonso-demo-")
+        }
+        let hasFixtureIntent = !authenticationArguments.isEmpty || !clientsArguments.isEmpty || !demoArguments.isEmpty
 
         guard hasFixtureIntent else { return .live }
         guard appEnvironment == "develop" else { return .invalidFixtureConfiguration }
         guard bundleIdentifier == "com.plusprojects.FranAlonso.develop" else { return .invalidFixtureConfiguration }
+
+        if !demoArguments.isEmpty {
+            guard authenticationArguments.isEmpty, clientsArguments.isEmpty else { return .invalidFixtureConfiguration }
+            guard demoArguments.count == 1 else { return .invalidFixtureConfiguration }
+
+            return switch demoArguments[0] {
+            case "--franalonso-demo-clients":
+                .demo(.clients)
+            case "--franalonso-demo-clients-response-lost":
+                .demo(.clientsResponseLost)
+            default:
+                .invalidFixtureConfiguration
+            }
+        }
 
         if !clientsArguments.isEmpty {
             guard authenticationArguments == [
