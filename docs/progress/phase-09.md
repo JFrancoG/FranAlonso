@@ -1,5 +1,112 @@
 # Fase 09 — Productos e inventario físico
 
+## Entrega09.1–09.2 autorizada, 2026-09-29
+
+El propietario solicita «Commit y push. Lanza PR y merge de09.1 y09.2, y cierra ramas. Despues comienza a implementar09.3».
+Se autoriza publicar09.2, integrar primero09.1 y después09.2, cerrar sus issues/ramas y comenzar09.3 tras su PRE.
+Esta autorización sustituye las puertas pendientes descritas en las entradas históricas inferiores. Se reutiliza la
+validación reciente: cuatro Swift09.2 coinciden byte a byte con el POST; del helper compartido solo se retira una
+línea vacía final detectada al incluir el archivo nuevo en el índice. Sin cambio semántico; resto documental.
+El resultado definitivo de commits/PR/merge se registrará después de comprobarlo; fase09 permanece abierta.
+
+## 09.2 — Implementación local, 2026-09-29
+
+El propietario aprueba la [propuesta PRE PASS](09-2-product-sync-proposal.md) con «si, adelante».
+[PLU-51](https://linear.app/plusprojects/issue/PLU-51) sigue In Progress, responsable Jesus Franco, hija dePLU-49.
+Rama local `codex/plu-51-phase-09-2-product-sync`, dependiente de09.1/349f3b7, sin upstream ni publicación09.2.
+Esta entrada sustituye los estados de preparación/aprobación pendiente del inicio histórico inferior.
+
+### Alcance y resultado
+
+Cinco escenarios de integración recorren los UseCases09.1, repositorio, persistencia SwiftData y motor Product reales,
+con remoto determinista en la frontera existente: CRUD/repetición, desactivar durante ack por vía contextual, conflicto,
+tombstone observado y recuperación durable. ProductCRUDSyncIntegrationTests aporta cuatro casos y
+ProductCRUDDurabilityTests el recorrido en disco. ProductSyncTestSupport comparte solo remoto, gate y reloj previamente
+privados; las dos suites originales conservan sus pruebas. Cinco archivos Swift de tests nuevos/modificados.
+
+El caso durable falla en PUSH tres veces, comprueba retry por operation ID, libera actores/motor/contenedor mediante
+referencias weak y reabre la misma URL con Schema.franAlonso2.0/PhaseFiveSchemaMigrationPlan. Verifica payloads/bytes,
+IDs, bases, predecesores, snapshot inactive, retry y cursor; recupera y reabre una segunda vez para confirmar estado
+remoto, cursor3, ausencia de colas/retries y un único documento remoto. Nunca toca el store de la app.
+
+**PASS inicial de caracterización; ningún defecto productivo demostrado.** No se cambia producción, App, schema,
+configuración, UI, recursos ni localización. No se fabrica un RED: la primera compilación detectó una colisión entre
+helpers de tests al extraer RetryManualTiming, corregida con el nombre ProductRetryManualTiming. No fue un fallo
+semántico del producto. La extracción no altera las pruebas existentes salvo referencias y formato de dos llamadas.
+
+### Validación y límites
+
+Xcode MCP estable Service, Develop/iPhone18Pro Simulator27.0, target26/Swift6/strict complete/nonisolated sin cambios.
+
+| Comprobación | Resultado |
+|---|---|
+| Cinco escenarios nuevos |5/5 PASS al primer intento ejecutable. |
+| Regresión focal |123 declaraciones/129 resultados PASS; selección incompleta de dos variantes parametrizadas. |
+| Fallback global |**875 declaraciones/125 suites,1.156/1.156 resultados PASS**; cero fallos/skips/expected failures/runtime warnings en bundle nativo cerrado. |
+| Build Develop con tests |PASS10,502s; final9,731s tras formato de dos llamadas, sin cambios semánticos posteriores al global. |
+| Production |N/A nuevo: solo tests/documentación; producción/configuración idénticas a09.1, cuya evidencia sigue válida. |
+| UI, previews y accesibilidad |N/A en09.2 por ausencia de pantallas/textos/recursos afectados; no revalida ni cierra deuda08. |
+
+RunSomeTests omitió nuevamente remote=false y status=.inactive en ProductCRUDPersistenceTests. RunAllTests ejecutó
+ambas, comprobadas en consola y resultado cerrado. Por ello se amplió la regresión una sola vez; no se alteró la
+parametrización. Los1.151 resultados previos siguen pasando junto con los cinco nuevos.
+
+Logs completos mantienen el aviso conocido `Metadata extraction skipped, no AppIntents.framework dependency found`;
+GetBuildLog estructurado devuelve0 issues, sin acreditar cero warnings globales. Los diagnósticos de StoreKit sin
+cuenta Sandbox del host de tests no son fallos del escenario; el resultado nativo no registra runtime warnings.
+Sin xcodebuild, XCTest/XCUITest, pruebas UI, opt-outs unsafe, dependencias nuevas ni tráfico live de negocio.
+No acredita transporte Firebase real ni cierre abrupto del proceso; acredita liberación y reapertura real en disco.
+
+Artefactos Xcode bajo `/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/`:
+
+- Nuevos: `RunSomeTests/A88A8A68-833F-4D1D-B6B5-B4CA4063589A.txt`.
+- Focal: `RunSomeTests/11BEBEF5-D1F9-435B-ADB5-24FB0C77B6D2.txt`.
+- Global: `RunAllTests/4E70A5A0-67F2-4094-AD9B-815A9AE34AC2.txt`, consola14-01-12.
+- Bundle nativo cerrado: `~/Library/Developer/Xcode/DerivedData/FranAlonso-eehpkvodmpnqlchgeqriatcucsjf/Logs/Test/Test-FranAlonso-Develop-2026.09.29_14-01-12-+0200.xcresult`.
+- Build: `BuildProject/BuildProject-Log-20260929-135932.txt`; final `BuildProject-Log-20260929-140210.txt`.
+
+Estilo revisado en los cinco Swift: tres candidatos del script conservan formato vertical por closures; nombre atómico
+de un test de121 columnas aceptado frente al límite preferido120. No se reformatea código histórico ajeno.
+Gobernanza conserva únicamente seis enlaces históricos rotos de capturas08.3; diff-check limpio.
+POST independiente por agente fresco ios-standards-reviewer: **PASS, sin hallazgos P0–P3**. Auditoría operativamente
+read-only, prohibición explícita de escribir/publicar. Root verifica552/552 archivos tracked/no ignorados idénticos antes
+y después; manifiesto `/tmp/franalonso-09-2-post-review.json`, SHA-256
+`4609bcd38bdbd8945d90f8b9051c5a138df04ef85df8f81cc24921eefa657151`.
+Revisión de oráculos, durabilidad, concurrencia, estilo y evidencia nativa; sin correcciones POST ni retest adicional.
+Este dictamen se registra después de verificar la huella. PLU-51, PLU-49 y proyecto se reconcilian con implementación
+local validada, entrega pendiente; conservan In Progress. Las descripciones no equivalen a commit ni cierre.
+Commit/push09.2, PR, merge, cierres y09.3 siguen pendientes de autorización.09.1 no se cierra al completar09.2.
+
+## 09.2 — Inicio histórico, 2026-09-29
+
+El propietario autoriza «commit y push. Despues inicia 09.2».09.1 se publica en
+[349f3b7](https://github.com/JFrancoG/FranAlonso/commit/349f3b7e38b68cd0e40a10b6bc823e11d0c55aa4), SHA local/remoto
+idénticos en `codex/plu-50-phase-09-1-product-contracts`, árbol limpio después del push. PR/merge/cierre no incluidos.
+23 archivos publicados;18Swift coinciden con el POST final. CHANGELOG y descripción/comentario de PLU-50 reconciliados.
+
+[PLU-51](https://linear.app/plusprojects/issue/PLU-51), responsable Jesus Franco, hija dePLU-49, In Progress.
+Rama local dependiente `codex/plu-51-phase-09-2-product-sync` creada desde349f3b7.09.1/PLU-50 sigue In Progress hasta
+su entrega final; comenzar09.2 no altera su rama ni equivale a integración en main. La futura entrega09.2 conservará
+su delta/dependencia respecto a09.1. Solo documentación local en esta preparación; sin commit/push09.2.
+
+[Propuesta09.2](09-2-product-sync-proposal.md): cinco recorridos con capas Product reales, remoto de prueba y oráculos
+explícitos: CRUD/repetición, desactivar durante ack, offline/reapertura durable, conflicto y tombstone observados.
+No se ha demostrado un defecto productivo; empezar por caracterización y corregir solo fallos reproducibles dentro
+de los contratos aprobados. No reescribir infraestructura ni anticipar App/UI, stock, demo, migración o live.
+PRE independiente PASS, sin P0–P3. Propuesta concreta pendiente de aprobación para implementar.
+
+Baseline técnica09.1 reutilizada:1.151/1.151 resultados, retest1/1 y builds Develop/Production, PRE/POST PASS, aviso
+AppIntents conocido. Xcode MCP estable conectado a FranAlonso.xcodeproj/Develop/iPhone18Pro Simulator27.0; no se altera.
+Esquema SwiftData actual ClientDocumentsSchema2.0 y plan PhaseFiveSchemaMigrationPlan; no volver al histórico1.0.
+Inicio documental: build/tests/previews/accesibilidad nuevos N/A, sin código o configuración modificados.
+Revisión por agente fresco `ios-standards-reviewer`, operativamente read-only con prohibición de escribir/publicar.
+Root verifica549/549 archivos tracked/untracked no ignorados idénticos antes/después: manifiesto
+`/tmp/franalonso-09-2-pre-review.json`, SHA-256 canónico
+`1db9d49cd79ec3653019296c2a9f1a2e6fcddf590ae0b99334331355fcd9e926`.
+Valida los cinco oráculos, reapertura2.0, límites, alternativas y baseline. Resultado añadido tras comprobar la huella.
+Gobernanza: solo seis enlaces históricos rotos de capturas08.3; diff-check limpio, Progress bajo8192bytes.
+Linear reconciliado:09.1 publicada pendiente de PR/merge/cierre;09.2 propuesta revisada, pendiente de implementación.
+
 ## 09.1 — Implementación local, 2026-09-29
 
 [PLU-49](https://linear.app/plusprojects/issue/PLU-49) y [PLU-50](https://linear.app/plusprojects/issue/PLU-50)

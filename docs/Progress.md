@@ -5,14 +5,14 @@
 ## Estado actual
 
 - **Fase09 / [PLU-49](https://linear.app/plusprojects/issue/PLU-49): In Progress**.
-  **09.1 / [PLU-50](https://linear.app/plusprojects/issue/PLU-50): implementada localmente**, entrega pendiente.
-  Rama `codex/plu-50-phase-09-1-product-contracts`, base `7ec61a5`; commit/push autorizados; PR/merge pendientes.
-  [Propuesta aprobada](progress/09-1-product-contracts-proposal.md) y [evidencia](progress/phase-09.md): perfil validado,
-  CRUD/búsqueda e inactive idempotente con aceptación local real. Xcode: **1.151/1.151 PASS**, builds Develop/Production
-  PASS, aviso AppIntents conocido; PRE/POST PASS y retest1/1. UI/accesibilidad N/A;09.2–09.7 siguen pendientes.
-- **[ADR0030](ADRs/0030-reusable-demo-and-early-foundation-models.md) aceptado** el29/09: planificación publicada
-  en `main`, sin código nuevo. Orden excepcional y alcance canónico en [índice](specs/00_index.md).
-  Revisiones independientes PASS; Xcode N/A documental. [Registro](progress/phase-08.md) y Linear reconciliados.
+  **09.1 / [PLU-50](https://linear.app/plusprojects/issue/PLU-50): publicada en rama**, commit `349f3b7`, PR/merge pendientes.
+  **09.2 / [PLU-51](https://linear.app/plusprojects/issue/PLU-51): implementada localmente**, In Progress.
+  Rama dependiente `codex/plu-51-phase-09-2-product-sync`; [propuesta](progress/09-2-product-sync-proposal.md) aprobada.
+  Cinco recorridos CRUD/sync/reapertura PASS inicial; producción intacta. **1.156/1.156 PASS**, build Develop con tests;
+  aviso AppIntents conocido. PRE/POST PASS. Publicación/PR/merge09.1–09.2 y posterior implementación09.3 autorizados.
+  [Registro](progress/phase-09.md). UI/accesibilidad N/A;09.3–09.7 pendientes.
+- **[ADR0030](ADRs/0030-reusable-demo-and-early-foundation-models.md) aceptado y publicado** el29/09;
+  orden excepcional y alcance canónico en [índice](specs/00_index.md). [Registro](progress/phase-08.md).
 - **08.8a / [PLU-46](https://linear.app/plusprojects/issue/PLU-46): Done funcional**, entrega y cierre autorizados.
   [PR #16](https://github.com/JFrancoG/FranAlonso/pull/16), merge `b334c04`; árbol validado `0c76967` intacto.
   Rama local/remota eliminadas; [guía](progress/08-8a-demo-runbook.md), evidencia en [fase08](progress/phase-08.md).

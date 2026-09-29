@@ -262,68 +262,6 @@ private actor ProductSyncChangeSignalSpy: ProductChangeSignaling {
     }
 }
 
-private actor ProductSyncRemoteFake: ProductRemoteDataSource {
-    private var records: [UUID: ProductRemoteRecord]
-    private var operationIDs: [UUID] = []
-    private let acknowledgementGate: ProductSyncAcknowledgementGate?
-    private let policy = ProductSyncPolicy()
-    private var changeSequence: Int64
-    private var cursors: [ProductSyncCursor?] = []
-
-    init(records: [ProductRemoteRecord] = [], acknowledgementGate: ProductSyncAcknowledgementGate? = nil) {
-        self.records = Dictionary(
-            uniqueKeysWithValues: records.compactMap { record in
-                guard let identifier = UUID(uuidString: record.id) else { return nil }
-                return (identifier, record)
-            }
-        )
-        changeSequence = records.compactMap(\.changeSequence).max() ?? 0
-        self.acknowledgementGate = acknowledgementGate
-    }
-
-    var recordCount: Int { records.count }
-    var receivedOperationIDs: [UUID] { operationIDs }
-    var requestedCursors: [ProductSyncCursor?] { cursors }
-
-    func fetchChanges(after cursor: ProductSyncCursor?) async throws -> ProductRemoteChangeBatch {
-        cursors.append(cursor)
-        let records = records.values.filter { record in
-            guard let cursor else { return true }
-            return (record.changeSequence ?? 0) > cursor.changeSequence
-        }.sorted { $0.id > $1.id }
-        return ProductRemoteChangeBatch(records: records, nextCursor: ProductSyncCursor(changeSequence: changeSequence))
-    }
-
-    func apply(_ operation: ProductPendingOperation) async throws -> ProductRemoteMutationResult {
-        operationIDs.append(operation.operationID)
-        let currentRecord = records[operation.productID]
-        switch policy.decision(for: operation, against: currentRecord) {
-        case .apply(let nextRecord):
-            changeSequence += 1
-            let sequencedRecord = ProductRemoteRecord(
-                content: nextRecord.content,
-                version: nextRecord.version,
-                changeSequence: changeSequence
-            )
-            records[operation.productID] = sequencedRecord
-            if let acknowledgementGate {
-                await acknowledgementGate.blockOnce()
-            }
-            return .applied(sequencedRecord)
-        case .alreadyApplied(let record):
-            return .alreadyApplied(record)
-        case .conflict(let reason, let record):
-            return .conflict(reason, record)
-        case .invalid(let error):
-            throw error
-        }
-    }
-
-    func record(for productID: UUID) -> ProductRemoteRecord? {
-        records[productID]
-    }
-}
-
 private actor ProductSyncFailingPushRemote: ProductRemoteDataSource {
     private let record: ProductRemoteRecord
 
@@ -385,34 +323,6 @@ private actor ProductSyncPushConflictRemote: ProductRemoteDataSource {
     func apply(_ operation: ProductPendingOperation) async throws -> ProductRemoteMutationResult {
         operationIDs.append(operation.operationID)
         return .conflict(.baseChanged, record)
-    }
-}
-
-private actor ProductSyncAcknowledgementGate {
-    private var shouldBlock = true
-    private var blockedWaiters: [CheckedContinuation<Void, Never>] = []
-    private var releaseContinuation: CheckedContinuation<Void, Never>?
-
-    func blockOnce() async {
-        guard shouldBlock else { return }
-        shouldBlock = false
-        blockedWaiters.forEach { $0.resume() }
-        blockedWaiters.removeAll()
-        await withCheckedContinuation { continuation in
-            releaseContinuation = continuation
-        }
-    }
-
-    func waitUntilBlocked() async {
-        guard shouldBlock else { return }
-        await withCheckedContinuation { continuation in
-            blockedWaiters.append(continuation)
-        }
-    }
-
-    func release() {
-        releaseContinuation?.resume()
-        releaseContinuation = nil
     }
 }
 
