@@ -1,5 +1,16 @@
 # Fase 09 — Productos e inventario físico
 
+## Entrega y cierre 09.5 —2026-09-29
+
+Commit `3b308c3a8a84c10e5686815814116117f41330a0`, `✨ feat(stock): add durable idempotent adjustments`, publicado.
+[PR21](https://github.com/JFrancoG/FranAlonso/pull/21) MERGED mediante `70775d9003152d14437cd749aeb709f8b92c1862`.
+Árbol integrado idéntico al head validado; CLEAN/MERGEABLE, sin checks ni reviews remotos obligatorios.
+Ramas local/remota eliminadas tras comprobar cero commits únicos. PLU-55 Done; fase09/PLU-49 permanece abierta.
+Se reutilizan1.268/1.268 resultados, Develop/Production y PRE/POST PASS: código/configuración intactos.
+Aviso AppIntents y seis enlaces históricos08.3 conservados. UI/accesibilidad nuevas N/A; PLU-54 y deuda08 intactas.
+El propietario autoriza implementar09.6 después del cierre; se prepara su propuesta/PRE antes del código.
+Este cierre documental no requiere nuevas ejecuciones Xcode. No se activa ningún servicio live.
+
 ## Implementación local 09.5 —2026-09-29
 
 [PLU-55](https://linear.app/plusprojects/issue/PLU-55), Jesus Franco, In Progress; rama `codex/phase-09-5-stock-adjustments`

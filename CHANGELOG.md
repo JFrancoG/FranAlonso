@@ -36,6 +36,8 @@ All notable changes to this project are documented in this file.
 
 ### Documentation
 
+- 2026-09-29 | 📝 docs(delivery): close stock adjustments
+
 - 2026-09-29 | 📝 docs(delivery): close product screens
   Records PR20, functional closure and retained accessibility debt before stock adjustments.
 

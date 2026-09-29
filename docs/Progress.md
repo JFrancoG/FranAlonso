@@ -10,8 +10,8 @@
   **1.199/1.199 PASS**, Develop/Production, previews, smoke y PRE/POST funcionales PASS; aviso AppIntents conocido.
   Catálogo/demo disponibles; [evidencia](progress/phase-09.md).
   [PLU-54](https://linear.app/plusprojects/issue/PLU-54): Backlog accesible09.4, Jesus Franco, tras feedback antes de uso real.
-  **09.5 / [PLU-55](https://linear.app/plusprojects/issue/PLU-55): In Progress**, stock durable/v3 implementado.
-  **1.268/1.268 PASS**, Develop/Production; PRE/POST PASS. [Alcance](progress/09-5-stock-adjustments-proposal.md).
+  **09.5 / [PLU-55](https://linear.app/plusprojects/issue/PLU-55): Done**, [PR21](https://github.com/JFrancoG/FranAlonso/pull/21), `70775d9`.
+  **1.268/1.268 PASS**, Develop/Production, PRE/POST PASS; ramas eliminadas. Implementación09.6 autorizada.
 - **[ADR0030](ADRs/0030-reusable-demo-and-early-foundation-models.md) aceptado y publicado** el29/09;
   orden excepcional y alcance canónico en [índice](specs/00_index.md). [Registro](progress/phase-08.md).
 - **08.8a / [PLU-46](https://linear.app/plusprojects/issue/PLU-46): Done funcional**, entrega y cierre autorizados.
