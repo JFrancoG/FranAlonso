@@ -1,5 +1,26 @@
 # Fase 08 — Clientes, consentimiento y foto
 
+## Cierre funcional de 08.8 — 2026-09-29
+
+El propietario autoriza merge y cierre funcional. [PR #15](https://github.com/JFrancoG/FranAlonso/pull/15) integrada
+en main mediante `0126c6b0148ea04ee25fddbdadd2d261a85a788b`, con el árbol de `91eb3a7` íntegramente idéntico.
+Se verifican ausencia de commits exclusivos y paridad remota antes de eliminar la rama local/remota
+`codex/plu-42-phase-08-8-client-activation`. **PLU-42: Done funcional** según ADR 0029.
+
+Se reutilizan suite completa 1.094/1.094, build restaurado 8,907s, retest 2/2, seis previews, revisiones independientes
+y smoke táctil de fallo/reapertura/activación con un único envío simulado. No hay delta ejecutable tras la validación;
+nuevos build/tests/previews N/A para el registro documental de cierre. PR sin checks remotos. Permanecen el aviso
+AppIntents conocido y los seis enlaces históricos rotos de capturas08.3; diff y gobernanza revisados sin nuevos defectos.
+
+PLU-45 sigue Backlog, responsable Jesus Franco, con accesibilidad integral de 08.8 y recuperación tras feedback y
+estabilización por flujo, antes del primer candidato para uso real. PLU-44 y PLU-38 conservan sus deudas separadas.
+**PLU-34/fase08 sigue In Progress**. No se declara conformidad accesible completa ni se activa Storage live.
+
+Siguiente puerta: preparar 08.9/PLU-43, aún Backlog, con dependencia funcional satisfecha. Foto opcional inicial/posterior,
+autorización y detalle requieren propuesta concreta y revisión antes de código. Una composición de demo reutilizable
+y cualquier adelanto del prototipo Foundation Models deben concretarse por separado; el smoke temporal no los implementa.
+Este cierre sustituye los estados históricos inferiores de PR abierta y PLU-42 In Progress.
+
 ## PR y smoke funcional de 08.8 — 2026-09-29
 
 El propietario autoriza «abre PR y haz esa prueba». [PR #15](https://github.com/JFrancoG/FranAlonso/pull/15) abierta

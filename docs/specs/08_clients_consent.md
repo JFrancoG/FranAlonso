@@ -91,8 +91,9 @@ ADR 0028 precisa el significado del documento inicial y la autorización posteri
   funcional. Sí impide el cierre integral de fase 08 y la puerta de uso real de fase 18.
 - El cierre funcional de PLU-41 valida su recorrido, reconcilia la deuda y completa la entrega autorizada;
   enlaza PLU-44 abierta. Esta separación no aplaza integridad, privacidad o recuperación funcional.
-- 08.4/PLU-38 conserva sus pendientes separados. El29/09 se autoriza iniciar e implementar 08.8/PLU-42, ahora
-  In Progress; 08.9/PLU-43 continúa en Backlog. La activación inicial se implementa sin habilitar Storage real.
+- 08.4/PLU-38 conserva sus pendientes separados. 08.8/PLU-42 queda Done funcional tras entrega autorizada por
+  [PR #15](https://github.com/JFrancoG/FranAlonso/pull/15), merge `0126c6b`, con smoke aislado validado y sin Storage real.
+  08.9/PLU-43 continúa en Backlog, con dependencia funcional satisfecha y puerta de inicio propia.
 - [PLU-45](https://linear.app/plusprojects/issue/PLU-45) conserva la validación accesible integral nueva de08.8,
   con Jesus Franco como responsable y el mismo disparador de feedback/estabilización antes del uso real.
   [Evidencia08.8](../accessibility/evidence/08-8-client-activation.md) distingue el smoke funcional aislado

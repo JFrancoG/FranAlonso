@@ -27,8 +27,9 @@ estabilización de este recorrido; completar antes del primer candidato para uso
   Finalizar alta y nueva reapertura activa. Un único envío simulado, sin refirma; detalle en el registro siguiente.
   La composición normal mantiene Storage no disponible. No se afirma subida real ni funcionamiento con AT.
 
-El smoke funcional de **PLU-42** queda satisfecho en la composición aislada autorizada. La issue sigue abierta por
-entrega pendiente en [PR #15](https://github.com/JFrancoG/FranAlonso/pull/15). PLU-45 conserva la operación accesible,
+El smoke funcional de **PLU-42** queda satisfecho en la composición aislada autorizada. **Done funcional** tras
+la entrega autorizada de [PR #15](https://github.com/JFrancoG/FranAlonso/pull/15), merge `0126c6b`, árbol validado
+`91eb3a7` intacto y rama local/remota eliminadas. PLU-45 conserva la operación accesible,
 anuncios/foco y matriz integral; este resultado funcional no convierte sus criterios en PASS.
 
 ## Smoke funcional aislado — 2026-09-29

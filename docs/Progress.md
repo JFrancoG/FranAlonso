@@ -4,8 +4,9 @@
 
 ## Estado actual
 
-- **08.8 / [PLU-42](https://linear.app/plusprojects/issue/PLU-42): In Progress**, implementada, con PR y smoke funcional.
-  Rama `codex/plu-42-phase-08-8-client-activation`, base `70905c2`; [propuesta](progress/08-8-client-activation-proposal.md).
+- **08.8 / [PLU-42](https://linear.app/plusprojects/issue/PLU-42): Done funcional**, entrega y cierre autorizados.
+  [PR #15](https://github.com/JFrancoG/FranAlonso/pull/15) integrada en `0126c6b`; árbol validado `91eb3a7` intacto.
+  Rama local/remota eliminadas; [propuesta](progress/08-8-client-activation-proposal.md).
   Alta inicial recuperable: pending antes de upload, active solo con recibo durable, reintento sin nuevo envío/firma,
   referencia inicial inmutable y conservación de edición concurrente. UI de Finalizar alta, éxito y fallo localizado.
   Recuperar adopta el estado vigente y la confirmación distingue el documento que realmente completó el alta.
@@ -13,12 +14,14 @@
   build **9,323s**, único aviso AppIntents previo. TDD inicial7RED→53GREEN; POST reproduce dos P2 en3/4 casos,
   corregidos y cubiertos por la suite final. Previews Large/XXX Large/AX5 de pantalla y componente inspeccionadas.
   PRE y POST independientes PASS tras corregir los hallazgos; evidencia y límites en [fase08](progress/phase-08.md).
-  [PR #15](https://github.com/JFrancoG/FranAlonso/pull/15) abierta desde `92bb217`; merge y cierres pendientes.
   Smoke táctil por Xcode MCP PASS: fallo local después del envío, vuelta a lista, reapertura, Finalizar alta y
   nueva reapertura activa, sin refirma y con un único upload. Datos sintéticos y Storage simulado, mismo proceso.
   Harness temporal retirado byte a byte; las 527 rutas previas coinciden. Build restaurado **8,907s** y retest
   focal **2/2 PASS**; aviso AppIntents previo. Composición normal sigue sin Storage disponible; no acredita live,
-  reinicio del proceso ni tecnologías de asistencia. PLU-42 no está Done; 08.9/PLU-43 permanece Backlog.
+  reinicio del proceso ni tecnologías de asistencia. Sin checks remotos. Evidencia reutilizada por árbol idéntico.
+- **08.9 / [PLU-43](https://linear.app/plusprojects/issue/PLU-43): Backlog**, siguiente dependencia funcional satisfecha.
+  Foto opcional inicial/posterior, autorización independiente y detalle; requiere su puerta de inicio y propuesta.
+  El cierre de 08.8 no inicia código de 08.9 ni crea una composición permanente de demo.
 - **[PLU-45](https://linear.app/plusprojects/issue/PLU-45): Backlog**, validación accesible integral nueva de08.8.
   Responsable Jesus Franco; hija dePLU-34 y relacionada conPLU-42/44. [Matriz08.8](accessibility/evidence/08-8-client-activation.md)
   conserva construcción/revisión y previews, con foco/anuncios/AT, Inspector, contraste y variantes pendientes.
