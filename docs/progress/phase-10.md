@@ -1,6 +1,15 @@
 # Fase 10 — Catálogo comercial de servicios
 
-## Estado actual —10.3 implementada —2026-09-29
+## Estado actual —10.3 entregada —2026-09-29
+
+[PR26](https://github.com/JFrancoG/FranAlonso/pull/26) MERGED; commit9e281b4c3394b4111ed680bfa76cc8f24b25221f,
+merge3a771c2d4a5b6d4a9a19cf66bf0f328bc5682d31. Árbol completo idéntico al head validado/publicado.
+Rama10.3 eliminada localmente y en origin tras ancestry y cero commits únicos. PLU-62 Done por integración GitHub–Linear.
+GitHub CLEAN/MERGEABLE antes del merge; sin checks/reviews ni protección/rulesets configurados.
+Se reutilizan PRE/POST,1.436 resultados y builds; Xcode nuevo N/A por cierre documental. Límites previos intactos.
+El propietario autoriza implementar10.4 a continuación, con propuesta/PRE antes de código; fase10/PLU-59 sigue In Progress.
+
+## Historial de implementación10.3 —2026-09-29
 
 [PLU-62](https://linear.app/plusprojects/issue/PLU-62), hija dePLU-59, In Progress, Jesus Franco.
 Rama `codex/phase-10-3-linkable-products` desde main/origin/main84a57e5. Implementación autorizada tras entregar10.2.

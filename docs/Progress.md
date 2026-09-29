@@ -5,10 +5,9 @@
 ## Estado actual
 
 - **Fase10 / [PLU-59](https://linear.app/plusprojects/issue/PLU-59): In Progress**.
-  10.1/PLU-60 y10.2/PLU-61 Done; [PR25](https://github.com/JFrancoG/FranAlonso/pull/25), df0a5d6, rama eliminada.
-  [10.3/PLU-62](https://linear.app/plusprojects/issue/PLU-62) In Progress: productos vinculables implementados.
-  PRE/POST,1.436 resultados y Develop/Production PASS. Aviso AppIntents previo. [Evidencia](progress/phase-10.md).
-  Pendiente entrega Git; siguiente10.4. Sin nueva UI/live.
+  10.1–10.3 entregadas; PLU-62 Done, [PR26](https://github.com/JFrancoG/FranAlonso/pull/26),3a771c2, rama eliminada.
+  PRE/POST,1.436 resultados y Develop/Production PASS; aviso AppIntents previo. [Evidencia](progress/phase-10.md).
+  Siguiente10.4: ViewModels de lista/formulario, implementación autorizada con PRE antes de código.
 - **Fase09 / [PLU-49](https://linear.app/plusprojects/issue/PLU-49): In Progress**.
   09.1–09.7 entregadas; PLU-58 Done, PR23/b40e1f6, cierre50ecc39 y rama eliminada. [Evidencia](progress/phase-09.md).
   PRE/POST,1.346 resultados y builds PASS; aviso AppIntents conocido. PLU-54/57: Backlog accesible09.4/09.6,
