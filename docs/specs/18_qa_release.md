@@ -15,6 +15,9 @@ Preparar una versión estable para uso real en iPad, con evidencia de calidad, m
 - Antes del primer candidato para uso real, inventariar las issues de validación vinculadas a entregas funcionales,
   completar evidencia aplicable, resolver defectos y obtener revisión independiente. Una issue funcional `Done` no
   acredita por sí sola esta puerta. El inventario inicial de 08.7 vive en su [matriz](../accessibility/evidence/08-7-consent-flow.md).
+- [ADR0030](../ADRs/0030-reusable-demo-and-early-foundation-models.md) conserva08.9 y todo el resto de16 en el MVP.
+  Su aplazamiento/adelanto parcial no permite omitirlos de esta puerta. Comprobar que el perfil de demo no existe como
+  capacidad activable en Production/Release; numeración, transporte y datos sintéticos no son evidencia de servicios reales.
 
 ## Subfases
 

@@ -39,9 +39,26 @@ Las fases 01–18 constituyen el MVP. Tras entregarlo:
 
 Los documentos de fase son la única fuente de verdad del plan. No se mantiene un plan consolidado duplicado.
 
+## Orden de ejecución para la demo — ADR 0030
+
+La numeración anterior identifica fases del MVP; [ADR 0030](../ADRs/0030-reusable-demo-and-early-foundation-models.md)
+autoriza esta excepción de secuencia desde 08.8 funcionalmente entregada:
+
+1. **08.8a**, base de demo reutilizable aislada; contratos y aceptación en [spec08](08_clients_consent.md).
+2. **09 → 10**, inventario y catálogo comercial, conservando sus subfases y reglas.
+3. Adelanto textual acotado de **16** sobre el formulario de servicio; alcance parcial y dependencias en
+   [spec16](16_on_device_voice_assistant.md), sin completar todavía el asistente de voz.
+4. **11 → 12 → 13**, venta, pago, stock y documento final; ampliar los adaptadores simulados de demo por fase.
+5. Tras el feedback de la demo, retomar **08.9** con todo su alcance; continuar **14 → 15 → resto de16 → 17 → 18**.
+
+La validación accesible aplazada se recupera por flujo cuando se estabilice con Fran, sin esperar a toda la app ni
+a fase18. 08.9, el resto del asistente y la evidencia integral siguen siendo requisitos del MVP y del uso real.
+Cada inicio conserva propuesta/revisión/autorización propias. La aprobación documental no inicia 08.8a o09 ni publica.
+
 Desde 08.7, [ADR 0029](../ADRs/0029-progressive-accessibility-validation.md) permite separar entrega funcional para
-demo y validación integral de accesibilidad, con deuda vinculada. Conserva la numeración, alcance y dependencias
-funcionales; no autoriza comenzar nuevas subfases. La validación se retoma por flujo tras el feedback de Fran y la
+demo y validación integral de accesibilidad, con deuda vinculada. Conserva alcance y dependencias funcionales;
+ADR0030 ajusta exclusivamente el orden señalado arriba. No autoriza comenzar nuevas subfases. La validación se retoma
+por flujo tras el feedback de Fran y la
 [fase 18](18_qa_release.md) comprueba su cierre antes del primer candidato para uso real.
 
 ## Uso con Codex

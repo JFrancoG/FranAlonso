@@ -4,6 +4,16 @@
 
 ## Estado actual
 
+- **[ADR0030](ADRs/0030-reusable-demo-and-early-foundation-models.md) aceptado** el29/09: planificación publicada
+  en `main`, sin código nuevo. Orden excepcional y alcance canónico en [índice](specs/00_index.md).
+  Revisiones independientes PASS; Xcode N/A documental. [Registro](progress/phase-08.md) y Linear reconciliados.
+- **08.8a / [PLU-46](https://linear.app/plusprojects/issue/PLU-46): Backlog**, siguiente puerta de inicio.
+  Base de demo Debug-Develop separada, datos sintéticos en memoria, reset al relanzar y alta sin foto por capas reales.
+  Proveedores simulados; no equivale a Storage/live/durabilidad. Responsable Jesus Franco; [spec08](specs/08_clients_consent.md).
+- **[PLU-47](https://linear.app/plusprojects/issue/PLU-47): Backlog**, adelanto de Foundation Models tras09–10.
+  Una descripción escrita propone un servicio profesional editable; inferencia local real y guardado manual habitual.
+  Hija dePLU-9, responsable Jesus Franco; alcance parcial en [spec16](specs/16_on_device_voice_assistant.md).
+  Resto de16 pendiente. Después siguen11–13 para venta completa; la demo se amplía al implementar cada capacidad.
 - **08.8 / [PLU-42](https://linear.app/plusprojects/issue/PLU-42): Done funcional**, entrega y cierre autorizados.
   [PR #15](https://github.com/JFrancoG/FranAlonso/pull/15) integrada en `0126c6b`; árbol validado `91eb3a7` intacto.
   Rama local/remota eliminadas; [propuesta](progress/08-8-client-activation-proposal.md).
@@ -19,9 +29,9 @@
   Harness temporal retirado byte a byte; las 527 rutas previas coinciden. Build restaurado **8,907s** y retest
   focal **2/2 PASS**; aviso AppIntents previo. Composición normal sigue sin Storage disponible; no acredita live,
   reinicio del proceso ni tecnologías de asistencia. Sin checks remotos. Evidencia reutilizada por árbol idéntico.
-- **08.9 / [PLU-43](https://linear.app/plusprojects/issue/PLU-43): Backlog**, siguiente dependencia funcional satisfecha.
-  Foto opcional inicial/posterior, autorización independiente y detalle; requiere su puerta de inicio y propuesta.
-  El cierre de 08.8 no inicia código de 08.9 ni crea una composición permanente de demo.
+- **08.9 / [PLU-43](https://linear.app/plusprojects/issue/PLU-43): Backlog**, aplazada por ADR0030 hasta el feedback
+  de la demo acordada. Responsable Jesus Franco; foto, autorización y detalle completos conservados. Retomar antes
+  del cierre integral de fase08 y uso real. No bloquea09–10/venta sin foto; no equivale a una subfase terminada.
 - **[PLU-45](https://linear.app/plusprojects/issue/PLU-45): Backlog**, validación accesible integral nueva de08.8.
   Responsable Jesus Franco; hija dePLU-34 y relacionada conPLU-42/44. [Matriz08.8](accessibility/evidence/08-8-client-activation.md)
   conserva construcción/revisión y previews, con foco/anuncios/AT, Inspector, contraste y variantes pendientes.
@@ -58,7 +68,7 @@
 
 ## Plan y fuentes
 
-[Spec08](specs/08_clients_consent.md), ADR0028/0029 y [fase08](progress/phase-08.md) conservan autoridad y evidencia.
+[Índice](specs/00_index.md), specs de fase, ADR0028/0029/0030 y [fase08](progress/phase-08.md) conservan autoridad y evidencia.
 Información inicial firmada y autorización fotográfica opcional siguen separadas. Borradores jurídicos pendientes de
 revisión antes del uso real. Sin activación live, foto real08.9 ni cierre administrativo de08.4.
 El vault Obsidian es este repositorio. Gobernanza conserva seis enlaces históricos rotos de capturas08.3.

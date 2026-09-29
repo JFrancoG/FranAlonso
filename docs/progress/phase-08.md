@@ -1,5 +1,49 @@
 # Fase 08 — Clientes, consentimiento y foto
 
+## Publicación de la planificación — 2026-09-29
+
+El propietario autoriza publicar la planificación aprobada. Este commit documental en `main` entrega ADR0030,
+índice/specs reconciliados, Progress y changelog. No cambia el alcance revisado ni inicia la implementación.
+Git identifica el commit de publicación; Linear conserva su enlace y los mismos estados operativos:
+PLU-46/47/43/9 Backlog, PLU-34 In Progress y la deuda accesible previa intacta. La siguiente puerta es08.8a/PLU-46.
+
+Se reutilizan las revisiones independientes del ajuste inferior porque ADR y specs permanecen idénticos al árbol
+revisado; solo se añaden metadatos de evidencia/publicación. Diff-check correcto; gobernanza conserva únicamente
+los seis enlaces históricos rotos de capturas08.3. Build/tests/previews N/A: no hay delta ejecutable/configuración.
+El registro de preparación siguiente conserva su estado local histórico, sustituido por esta publicación.
+
+## Ajuste de secuencia para demo — ADR0030, 2026-09-29
+
+El propietario acepta definir una base de demo reutilizable y adelantar el rellenado textual de un servicio mediante
+Foundation Models. [ADR0030](../ADRs/0030-reusable-demo-and-early-foundation-models.md) registra alternativas, límites
+y relaciones sin reescribir ADR aceptados. [Índice](../specs/00_index.md) y specs08/09/10/11/13/16/17/18 reconciliados.
+No se mantiene otro plan consolidado ni se renumeran las fases. Documentación local, sin commit/push o código nuevo.
+
+- **08.8a/PLU-46: Backlog**, nueva hija dePLU-34, responsable Jesus Franco, siguiente puerta de propuesta/inicio.
+  Perfil Debug-Develop separado con datos sintéticos en memoria, reset al relanzar, Auth y documento simulados, capas
+  reales y ausencia de servicios reales. Las fixtures vacías existentes permanecen intactas. Catálogo y numeración de
+  demo se incorporan al existir sus flujos, no en esta base inicial. Planificar no implementa ni activa ese perfil.
+- **PLU-47: Backlog**, hija dePLU-9, responsable Jesus Franco, después de09–10 y08.8a: un servicio profesional desde
+  texto, inferencia real, borrador editable y guardado visual. Evidencia parcial de16.1/.2/.3/.8 y seguridad16.9 desde
+  el inicio, sin cerrar subfases completas ni simular éxito del modelo. Speech/TTS/sesión y jornada8h conservan su gate.
+- **08.9/PLU-43: Backlog**, responsable Jesus Franco, conserva foto inicial/posterior, autorización, reemplazo/retirada
+  y detalle/receta/notas/histórico. Recuperar después del feedback de la demo acordada, antes de cierre integral y uso
+  real. Su aplazamiento no impide catálogo/venta sin foto ni reduce los requisitos del MVP.
+- La demo acordada culmina con11–13: pago, stock y documento final. Sus series/PDF simulados deben ser inequívocamente
+  de muestra; no acreditan numeración remota real, envío de correo, emisión fiscal ni la integración de fase17.
+- PLU-44/45 y PLU-38 conservan estado/evidencia; la validación accesible se retoma por flujo tras feedback y
+  estabilización, sin esperar a toda la app. PLU-34 sigue In Progress; PLU-9 Backlog conserva el asistente completo.
+
+Build/tests/previews nuevos N/A por delta exclusivamente documental. Revisiones independientes de estándares y
+política accesible **PASS sin hallazgos**; puerta SwiftUI N/A, sin cambios de pantalla. Ambos agentes operaron read-only
+y root verifica 528 rutas idénticas antes/después, manifiesto `/tmp/franalonso-0030-review.json`, SHA-256 JSON canónico
+`49d298aba7d02c00a13a79222ea3688f738bb494952b0d9782a2a12cdd24ad4c`. Este registro se añade después de verificarlo.
+Diff-check limpio; gobernanza solo conserva los seis enlaces históricos rotos de08.3. Matrices y código intactos;
+no se afirma nueva evidencia runtime ni la revisión de las futuras propuestas de implementación. Linear contrastado:
+PLU-46/47/43 Backlog con responsables y padres; PLU-34 In Progress, PLU-9 Backlog y deuda previa conservada.
+El siguiente paso ya no es08.9: preparar08.8a conforme al flujo normal.
+Los apartados inferiores conservan la historia de entrega y sus recomendaciones anteriores.
+
 ## Cierre funcional de 08.8 — 2026-09-29
 
 El propietario autoriza merge y cierre funcional. [PR #15](https://github.com/JFrancoG/FranAlonso/pull/15) integrada

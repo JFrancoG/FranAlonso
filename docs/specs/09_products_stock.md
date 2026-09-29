@@ -6,6 +6,11 @@ Gestionar productos como inventario sin precios ni descuentos y registrar ajuste
 
 ## Diseño
 
+- [ADR0030](../ADRs/0030-reusable-demo-and-early-foundation-models.md): iniciar tras la entrega funcional de08.8a
+  y08.8, sin esperar fotografía08.9 ni cierre integral de fase08. Cada subfase conserva su propia puerta de inicio.
+- Incorporar escenarios sintéticos de producto/stock al perfil de demo mantenido en spec08 cuando estén implementados
+  estos flujos. No reactivar motores live ni cambiar las fixtures de autenticación vacías; el seed no prueba sync real.
+
 - `ProductRepository` y casos de uso viven en Domain; SwiftData/Firestore en Data.
 - `Product` no contiene precio de compra, precio de venta o descuento.
 - Cada ajuste crea un `StockMovement` con ID estable, motivo, cantidad, fecha y referencia de origen.

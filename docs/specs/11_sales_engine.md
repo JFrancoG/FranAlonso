@@ -19,6 +19,11 @@ Solo se puede registrar el pago cuando todos los servicios han terminado y solo 
 
 ## Subfases
 
+Para la demo de [ADR0030](../ADRs/0030-reusable-demo-and-early-foundation-models.md), ejecutar esta fase después de09–10
+y del adelanto textual de16. Usar la composición aislada de08.8a con datos sintéticos; pagos, snapshots y reglas reales.
+El formulario de venta no depende de fotografía/detalle08.9. La venta completa de la demo incluye stock12 y documento
+final/cierre13; registrar el pago no permite declarar cerrada la operación ni resuelta toda la demo.
+
 | ID | Tarea | Test primero | Validación |
 |---|---|---|---|
 | 11.1 | Integrar y completar el repositorio y los casos de uso de borrador sobre la vertical Data/sync base de 05.10c. | Crear, recuperar, editar y descartar sin duplicar infraestructura. | SwiftData es SoT local. |

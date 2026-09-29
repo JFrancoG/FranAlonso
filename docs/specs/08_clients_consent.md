@@ -12,6 +12,8 @@ ADR 0009 y [ADR 0028](../ADRs/0028-client-signed-information-and-photo-authoriza
 ADR 0028 precisa el significado del documento inicial y la autorización posterior; conserva los estados de alta.
 [ADR 0029](../ADRs/0029-progressive-accessibility-validation.md) permite separar la entrega funcional para demo de
 08.7 y su validación integral de accesibilidad, sin cambiar contratos ni dependencias funcionales.
+[ADR 0030](../ADRs/0030-reusable-demo-and-early-foundation-models.md) añade la base de demo 08.8a y aplaza
+08.9 hasta después del feedback de la demo, manteniendo su alcance y la fase abierta.
 
 ## Estado y responsabilidades
 
@@ -40,7 +42,43 @@ ADR 0028 precisa el significado del documento inicial y la autorización posteri
 | 08.6 | Persistencia recuperable del documento/borrador y repositorio Storage con fake. | Reinicio, offline, permisos, reintentos, duplicados, conflicto de ID/payload y migración. | SwiftData local-first; Storage encapsulado; schema versionado según ADR 0018. |
 | 08.7 | Integrar lectura, revisión y firma mediante `ClientConsentStore`. | Sin foto, autorización/rechazo, cambio de contenido, cancelación, recuperación y errores. | ViewModel posee Store; documento fijado al firmar; entrega funcional PLU-41 y validación integral PLU-44 según ADR 0029. |
 | 08.8 | Activación inicial idempotente tras upload. | Reinicio entre upload y activación; reintento sin duplicar documento ni alta. | Nunca activo sin referencia del documento inicial firmado. |
+| 08.8a | Composición de demo reutilizable para el recorrido sin foto. | Selección exclusiva/fail-closed, aislamiento, escenario coherente y reset al relanzar. | Capas reales, datos en memoria y proveedores simulados; alta funcional y ausencia de servicios reales. |
 | 08.9 | Foto opcional inicial/posterior y detalle. | Autorización posterior, fallo no bloqueante, reemplazo, retirada, cancelación y recuperación. | Foto no publicada sin autorización; ficha activa permanece operativa; receta, notas e histórico visibles. |
+
+## 08.8a — Base reutilizable de demo
+
+[PLU-46](https://linear.app/plusprojects/issue/PLU-46), Backlog, responsable Jesus Franco: siguiente trabajo planificado
+después de PLU-42, pendiente de inicio y propuesta concreta. Conserva el patrón aislado
+de ADR0023/0025 mediante un perfil separado: Debug-Develop, entorno/bundle correcto y argumento explícito único;
+intención inválida/conflictiva falla cerrada antes de construir Firebase. Las fixtures originales permanecen vacías.
+
+- Contenedor SwiftData en memoria, principal sintético autorizado, telemetría nula y proveedores remotos simulados.
+  No construir el almacén durable, binding Keychain, motores/factories remotos o SDK Firebase del camino normal.
+- Escenario inicial mínimo y determinista de clientes, sin datos personales reales. Relanzar recrea ese escenario;
+  no se promete conservar cambios entre procesos. No se inventan entidades de catálogo o ventas futuras.
+- Login/raíz, repositorios locales, UseCases, validaciones y pantallas reales. El adaptador simulado de documentos
+  conserva idempotencia/correlación: solo permite activar tras un recibo compatible, sin forzar estados en Presentation.
+- Demo identificable, activación deshabilitada por defecto y excluida de Production/Release. La selección no cambia
+  la composición normal ni sus gates live. Sin PII ni payloads en logs/telemetría, también durante la demostración.
+- La propuesta de implementación concretará los argumentos, propiedad del escenario y escenarios de error/reintento,
+  reutilizando componentes existentes. No se requiere infraestructura genérica o seed remoto de fase17.
+
+Aceptación: arranque aislado, listado/datos iniciales coherentes, crear/editar cliente sin foto, revisión/firma,
+conservación/envío simulado, alta, fallo/reintento y reapertura en el mismo proceso; nuevo lanzamiento vuelve al
+escenario conocido. Probar que argumentos inválidos, logout y capacidades antiguas fallan cerrados. Se documentan
+destino/build y límites de simulación. Construcción accesible, previews/revisión focal y deuda conforme a ADR0029.
+Esta base no acredita Storage real, sincronización ni recuperación durable; sus pruebas propias permanecen vigentes.
+
+Las fases09/10 añaden catálogo sintético cuando exista su UI; fase13 añade adaptadores de numeración/documentos de
+demo. No se implementan anticipadamente en08.8a. Foundation Models real se incorpora por el adelanto de spec16.
+
+## 08.9 — Recuperación después de la demo
+
+PLU-43 permanece Backlog, responsable Jesus Franco; retomar tras el feedback de la demo acordada de clientes,
+catálogo, borrador asistido y venta completa. Conserva selección/foto inicial y posterior, autorización independiente,
+reemplazo, retirada/limpieza recuperable y detalle con receta/notas/histórico. No se cierra parcialmente por aplazarla.
+La fase08 conserva este pendiente hasta su entrega y evidencia aplicable; debe resolverse antes de uso real.
+La ruta de demo sin foto no depende de este detalle ni de una autorización fotográfica inexistente.
 
 ## Recorrido y criterios de aceptación
 
@@ -63,7 +101,8 @@ ADR 0028 precisa el significado del documento inicial y la autorización posteri
 
 ## Dependencias y cierre de 08.4
 
-- Orden de entrega: 08.4 → 08.5 → 08.6 → 08.7 → 08.8 → 08.9. La planificación de 08.5–08.9 no inicia su código.
+- Orden de dependencias: 08.4 → 08.5 → 08.6 → 08.7 → 08.8. Desde ADR0030 se prepara08.8a y continúa09–10,
+  adelanto16 y11–13 antes de recuperar08.9 tras el feedback. Planificar no inicia código ni cierra evidencia pendiente.
 - 08.5 define el contexto de foto y autorización que 08.7 consumirá. 08.7 valida ambas variantes con fixtures;
   el selector/subida de foto reales y el recorrido completo con foto se integran en 08.9. Así no depende del código
   futuro de 08.9 para cerrar su alcance ni se declara antes una integración fotográfica inexistente.
@@ -93,7 +132,8 @@ ADR 0028 precisa el significado del documento inicial y la autorización posteri
   enlaza PLU-44 abierta. Esta separación no aplaza integridad, privacidad o recuperación funcional.
 - 08.4/PLU-38 conserva sus pendientes separados. 08.8/PLU-42 queda Done funcional tras entrega autorizada por
   [PR #15](https://github.com/JFrancoG/FranAlonso/pull/15), merge `0126c6b`, con smoke aislado validado y sin Storage real.
-  08.9/PLU-43 continúa en Backlog, con dependencia funcional satisfecha y puerta de inicio propia.
+  08.9/PLU-43 continúa en Backlog tras ADR0030, con dependencia funcional satisfecha y recuperación tras la demo.
+  08.8a es la siguiente puerta de inicio; la fase08 permanece abierta.
 - [PLU-45](https://linear.app/plusprojects/issue/PLU-45) conserva la validación accesible integral nueva de08.8,
   con Jesus Franco como responsable y el mismo disparador de feedback/estabilización antes del uso real.
   [Evidencia08.8](../accessibility/evidence/08-8-client-activation.md) distingue el smoke funcional aislado

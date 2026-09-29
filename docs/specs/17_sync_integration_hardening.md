@@ -16,6 +16,10 @@ Integrar el MVP, probar recuperación e idempotencia entre features y endurecer 
 
 ## Subfases
 
+El perfil sintético en memoria de08.8a ([ADR0030](../ADRs/0030-reusable-demo-and-early-foundation-models.md)) es
+infraestructura de demo y no satisface17.9 ni el recorrido de integración/reinicio17.10–17.11. Esta fase contrasta
+los adaptadores reales bajo su gate operativo; no presenta resultados simulados como evidencia de sync o red reales.
+
 | ID | Tarea | Test primero | Validación |
 |---|---|---|---|
 | 17.1 | Implementar `AppSyncEngine`. | Colecciones parciales, repetición, orden distinto y cancelación. | Convergencia sin duplicados. |

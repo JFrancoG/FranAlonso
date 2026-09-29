@@ -19,6 +19,19 @@ No se usa un flujo separado `getNext` / `confirmNumber`: una caída entre ambos 
 
 ## Estado de presentación
 
+### Frontera de la demo aislada
+
+[ADR0030](../ADRs/0030-reusable-demo-and-early-foundation-models.md) permite añadir a08.8a un adaptador simulado del
+contrato de numeración/documentos al implementar esta fase. No usa Firebase ni consume series reales. Sus respuestas
+deben respetar request ID, idempotencia, series separadas y registro+numeración coherentes; no se inyecta un número
+directamente en la UI ni se salta el cierre13.12. Identificar UI y PDF como DEMO/muestra, con datos y series sintéticos.
+
+La simulación se limita al perfil Debug-Develop y conserva el flujo manual de selección, render y cierre. No se envía
+correo real desde la demo. No sustituye13.3, pruebas de integración/transacción ni la puerta live: la numeración definitiva
+de negocio continúa siendo exclusivamente remota y atómica. La demo no acredita emisión fiscal ni recuperación remota.
+
+### Fachada y Store
+
 - `BillingViewModel` es la fachada de selección, navegación y presentación.
 - `BillingDocumentStore` se justifica por la máquina de estados: selección, datos fiscales, numeración, renderizado, subida, correo, error, reintento y cancelación.
 - El ViewModel instancia el Store; no duplica su estado.

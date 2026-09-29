@@ -19,7 +19,7 @@ Los ADR se escriben antes de implementar una decisión no trivial y no se reescr
 | [0007](0007-firebase-temporary-vapor-exit.md) | Excepción temporal Firebase y salida a Vapor | Aceptado |
 | [0008](0008-atomic-billing-numbering.md) | Numeración atómica e idempotente | Aceptado |
 | [0009](0009-client-consent-activation.md) | Consentimiento y activación offline-first | Sustituido parcialmente por 0028 |
-| [0010](0010-on-device-assistant-provider-strategy.md) | Asistente local en el MVP y proveedor remoto pos-MVP | Aceptado |
+| [0010](0010-on-device-assistant-provider-strategy.md) | Asistente local en el MVP y proveedor remoto pos-MVP | Aceptado; secuencia parcialmente sustituida por0030 |
 | [0011](0011-swiftui-boundaries-specialized-reviews.md) | Límites SwiftUI y revisiones especializadas | Aceptado |
 | [0012](0012-firestore-incremental-change-feed.md) | Feed incremental ordenado para Firestore | Aceptado |
 | [0013](0013-durable-sync-retry-scheduling.md) | Reintentos durables y cancelables de sincronización | Aceptado |
@@ -38,7 +38,13 @@ Los ADR se escriben antes de implementar una decisión no trivial y no se reescr
 | [0026](0026-iphone-portrait-only-product-exception.md) | iPhone solo portrait como excepción de producto | Aceptado |
 | [0027](0027-freehand-signature-input-product-exception.md) | Firma a mano alzada; excepción limitada a la entrada por trayectoria | Aceptado |
 | [0028](0028-client-signed-information-and-photo-authorization.md) | Información firmada y autorización opcional de fotografía | Aceptado |
-| [0029](0029-progressive-accessibility-validation.md) | Entrega funcional y validación progresiva de accesibilidad | Aceptado |
+| [0029](0029-progressive-accessibility-validation.md) | Entrega funcional y validación progresiva de accesibilidad | Aceptado; orden de ejecución sustituido parcialmente por0030 |
+| [0030](0030-reusable-demo-and-early-foundation-models.md) | Demo reutilizable y adelanto textual de Foundation Models | Aceptado |
+
+El propietario aceptó ADR 0030 el 29 de septiembre de 2026: base de demo 08.8a, catálogo09–10, adelanto textual
+acotado de16 y venta11–13; 08.9 se recupera después del feedback. Sustituye solo el orden de ejecución afectado de
+ADR0010/0029 y complementa ADR0023 con un perfil sintético separado. No inicia código, Git o live ni acredita los
+pendientes integrales. El índice de specs conserva el orden vigente; los registros inferiores son históricos.
 
 El propietario aceptó ADR 0029 el 28 de septiembre de 2026 para separar entrega funcional para demo y validación
 integral. ADR 0022 permanece aceptado como objetivo; únicamente su disposición de cierre queda parcialmente sustituida

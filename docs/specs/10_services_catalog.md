@@ -6,6 +6,12 @@ Gestionar todos los conceptos cobrables, incluidos los productos vendidos al pú
 
 ## Diseño
 
+- [ADR0030](../ADRs/0030-reusable-demo-and-early-foundation-models.md): conserva la dependencia de09 y añade al
+  perfil aislado de demo servicios sintéticos con vínculos coherentes a productos. La composición remota sigue inactiva.
+- Tras la entrega funcional de10.1–10.7, el formulario manual permite el adelanto textual acotado de
+  [spec16](16_on_device_voice_assistant.md). Es una propuesta editable de servicio profesional, no guardado automático.
+  El adelanto requiere su implementación/evidencia propias; terminar catálogo no lo entrega implícitamente.
+
 - `Service` contiene nombre comercial, tipo, `Money`, impuesto/descuento aplicable y estado.
 - Un servicio de tipo producto requiere `linkedProductID`; un servicio profesional no lo admite.
 - La lista de productos vinculables procede de un caso de uso de Domain y solo expone entidades activas.
