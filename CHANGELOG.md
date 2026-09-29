@@ -86,6 +86,9 @@ All notable changes to this project are documented in this file.
 
 ### Tests
 
+- 2026-09-29 | ✅ test(services): verify CRUD sync and recovery
+  Covers exact commercial snapshots, causal ACK, conflicts, tombstones and durable offline recovery.
+
 - 2026-09-29 | ✅ test(products): verify CRUD sync and recovery
   Covers causal commands, conflicts, tombstones and durable retry across two store reopenings.
 - 2026-08-29 | ✅ test(suite): remove low-value tests
