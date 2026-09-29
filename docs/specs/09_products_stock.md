@@ -64,6 +64,23 @@ Alcance autorizado el29/09/2026 y revisado independientemente:
   Una fila StockMovement impide reclamar un almacén no vinculado según ADR0021.
 - AppRuntime comparte el writer local. UI/contexto de09.6, mínimos09.7 y sync/venta12 conservan sus puertas propias.
 
+## Contratos de observación de bajo stock —09.7
+
+[Propuesta aprobada](../progress/09-7-low-stock-observation-proposal.md) el29/09/2026 tras PRE PASS:
+
+- Observar un ProductID con StockMinimum explícito, no negativo y fijo por suscripción; validar también al decodificar.
+  No existe mínimo predeterminado ni persistido. LowStockState deriva isLow de `quantity < minimum`, sin restas;
+  igualdad no es bajo stock y las cantidades cero/negativas conservan significado.
+- Snapshot inicial y cambios locales distintos, incluidos recuperación y saldo negativo. Buffers newest1 conservan
+  estado reciente; no prometen entregar cada transición intermedia ni constituyen historial.
+- Producto existente sin movimientos emite0; activos, inactivos y conflictos de metadatos conservan lectura.
+  Ausente/tombstone y fallos de lectura terminan con el error Domain correspondiente, sin fabricar cero ni recuperación.
+- Suscribir antes de la lectura inicial. Compartir ProductObservationSignal entre Product, repositorio Stock y adaptador
+  contextual, también en AppRuntime/live/preview/demo. Publicar tras aceptación durable, incluida cancelación tardía.
+  El catálogo puede recargar por movimientos sin modificar borradores abiertos; el observador de saldo suprime duplicados.
+- Cancelar la iteración libera la suscripción; un error terminal exige nueva observación explícita. Sin polling, timers,
+  reintentos automáticos, UI, notificaciones, cambios de schema ni stock sync/live. No acredita writes de procesos ajenos.
+
 ## Subfases
 
 ### Alcance de pantallas — 09.4

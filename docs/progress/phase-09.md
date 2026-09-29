@@ -1,5 +1,98 @@
 # Fase 09 — Productos e inventario físico
 
+## Entrega 09.7 autorizada —2026-09-29
+
+El propietario autoriza commit/push, PR/merge y cierre de issue/rama si se conservan los gates de entrega.
+Preflight: código, configuración y tests idénticos al manifiesto POST2; solo se añadieron registros documentales.
+Se reutilizan1.346 resultados, Develop/Production y PRE/POST PASS. Xcode nuevo N/A para esta reconciliación documental.
+Fase09/PLU-49 conserva deuda integral PLU-54/57; no se autoriza iniciar fase10 ni activar live.
+El resultado Git se registrará después de verificarlo. El checkpoint siguiente conserva la evidencia previa.
+
+## Implementación local 09.7 —2026-09-29
+
+[PLU-58](https://linear.app/plusprojects/issue/PLU-58), Jesus Franco, In Progress, hija dePLU-49.
+Rama `codex/phase-09-7-low-stock-observation`, base e16163b. El propietario aprueba expresamente implementar la
+[propuesta PRE PASS](09-7-low-stock-observation-proposal.md). Implementación completa local; PRE/POST independientes PASS.
+Entrega Git y cierre de issue/rama no autorizados. Fase09 sigue abierta; no se inicia fase10 ni activa ningún servicio live.
+
+### Resultado y límites
+
+- StockMinimum valida también Codable; LowStockState deriva bajo stock por comparación estricta, incluidos extremos.
+  ObserveLowStockUseCase emite estado inicial/cambios distintos y recuperación, con mínimo explícito fijo por observación.
+- DefaultStockRepository suscribe antes de leer el saldo, suprime cantidades iguales y propaga errores neutrales.
+  ProductObservationSignal compartida con Product y el adaptador contextual; publica tras aceptación durable incluso
+  ante cancelación tardía. AppRuntime/live/preview/demo comparten la señal y conservan el borrador padre.
+- Cancelación del consumidor termina la tarea puente y upstream. Buffers newest1 pueden agrupar cambios: estado actual,
+  no historial. Writes de procesos/contextos ajenos no están cubiertos. Sin polling ni reintento automático.
+- No cambia Product, schema, migración, ViewModel, Views, textos ni recursos; no hay mínimo persistido, avisos visibles,
+  notificaciones ni sync de movimientos. UI/previews/auditoría accesible nueva N/A por ausencia de cambios visuales.
+  PLU-54/57, Jesus Franco, conservan evidencia integral tras feedback/estabilización y antes del primer uso real.
+
+### TDD y validación
+
+RED compilable:16 declaraciones/25 resultados,19 fallos semánticos y6 comparaciones ya correctas; cubre Domain/Data.
+Build RED15,779s PASS. GREEN añade cobertura de corrupción, conflictos y composición; no se atribuye RED retrospectivo
+a esas caracterizaciones. Correcciones de compilación limitaron capturas de iteradores en macros y construcción de fixtures.
+Focused GREEN inicial20/22: dos oráculos releían next() después del error capturado y Swift volvió a lanzar el mismo error.
+Se conserva el error neutral y ausencia de estado inventado, retirando solo esa relectura del iterador ya fallido;
+producción intacta. Retest2/2 PASS. La aplicación exige nueva observación tras error, no reutiliza ese iterador.
+
+GREEN global: **979 declaraciones/1.346 resultados PASS**, cero fallos/skip/expected failures/runtime warnings,
+bundle nativo cerrado inspeccionado con xcresulttool. Nuevos casos:17 Domain,10 Data y4 composición.
+Incluyen umbral/igualdad/extremos, invariante de decodificación, supresión de duplicados, error/cancelación upstream,
+lector caliente con tombstone en otro contexto conocido, retry/rollback/cancelación tras commit, dos productos aislados,
+señal retrasada y borrador padre conservado. Los casos parametrizados se verifican en suite global; selección focalizada
+de Xcode MCP no enumera todos. No XCTest/XCUITest/UI tests nativos, sleeps, unsafe ni dependencias nuevas.
+
+Xcode MCP estable, SDK27.0, target26, Swift6/strict complete/default nonisolated; warnings como errores sin cambios.
+Develop build-for-testing previo a POST3,896s PASS; Production20,338s PASS. Diagnósticos estructurados0; logs conservan
+únicamente el aviso conocido `Metadata extraction skipped, no AppIntents.framework dependency found`.
+No se declara cero warnings absolutos. Develop/iPhone18Pro restaurados; ninguna sesión de interacción nueva.
+
+Artefactos bajo `/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/`:
+
+- RED summary `RunSomeTests/FE835807-1851-433B-8143-913037844981.txt`, bundle
+  `RunSomeTests/Test-FranAlonso-Develop-2026.09.29_19-57-45-+0200.xcresult`.
+- GREEN summary `RunAllTests/F7BF97B6-31F2-4CA7-BC71-4ECC5E297808.txt`, bundle
+  `RunAllTests/Test-FranAlonso-Develop-2026.09.29_20-05-27-+0200.xcresult`.
+- Retest summary `RunSomeTests/D2087DD0-94EA-464E-9CDF-C016EDD42502.txt`.
+- Builds `BuildProject/BuildProject-Log-20260929-200609.txt` y `BuildProject-Log-20260929-200636.txt`.
+
+El detalle de AsyncThrowingStream se contrastó con [Apple AsyncIteratorProtocol](https://developer.apple.com/documentation/swift/asynciteratorprotocol)
+y [Swift AsyncStreamBuffer](https://github.com/swiftlang/swift/blob/main/stdlib/public/Concurrency/AsyncStreamBuffer.swift):
+la ruta que reanuda un next suspendido con error puede conservarlo para otra lectura. No se parchea la librería ni se
+convierte esa diferencia de planificación en un requisito de negocio. El oráculo termina al comprobar el error terminal.
+
+### POST y siguiente puerta
+
+POST independiente de estándares: PASS, sin hallazgos abiertos de arquitectura, datos, concurrencia, privacidad ni
+comportamiento. POST1 encontró solo P3 de estilo en cuatro closures con finish; corregido exclusivamente con saltos
+de línea en tres archivos. El reviewer comprobó su equivalencia exacta reconstruyendo hashes previos. Retest de estilo
+PASS y build-for-testing Develop22,583s PASS (`BuildProject/BuildProject-Log-20260929-201332.txt`), solo aviso AppIntents.
+No se repiten suite/Production porque no cambia ningún token ejecutable; se conserva la evidencia1.346/1.346.
+
+Reviewer y root verifican613/613 archivos idénticos antes/después de ambas revisiones, sin altas/bajas/cambios:
+POST1 `/tmp/franalonso-09-7-post1.json`, SHA256 `bedf58db837800afb025bfd9ea708393bda100ba709efc2e87a998079f7c88d5`;
+POST2 `/tmp/franalonso-09-7-post2.json`, SHA256 `8e24476f5c264d07a48a7d52112be2a7620bf91a06f8086bd6cc40f52dae7cb6`.
+Revisión manual de16 Swift, recall0 candidatos y0 líneas>120. Diff--check limpio; sin paths sensibles ni opt-outs nuevos.
+Auditoría UI/accesible nueva N/A por alcance sin Views/textos/recursos; PLU-54/57 conservan su evidencia integral.
+
+Tras POST solo se añade este registro documental y se reconcilia Linear. Gobernanza mantiene únicamente los seis
+enlaces históricos de capturas08.3 rotos; Progress dentro de8KiB. PLU-58/PLU-49 y proyecto In Progress: listos para
+entrega Git09.7 cuando se autorice; la fase09 conserva su cierre integral pendiente. No se inicia fase10 ni se activa live.
+
+## Preparación 09.7 —2026-09-29
+
+[PLU-58](https://linear.app/plusprojects/issue/PLU-58), Jesus Franco, In Progress, hija dePLU-49.
+Rama `codex/phase-09-7-low-stock-observation` desde main/origin/main e16163b limpios e idénticos.
+Preparación autorizada: [propuesta](09-7-low-stock-observation-proposal.md) de observación por producto/mínimo explícito,
+comparación estricta, invalidación local compartida y pruebas de stream/contextos. PRE PASS, sin hallazgos P0–P3.
+Reviewer y root verifican607/607 archivos idénticos, manifiesto `/tmp/franalonso-09-7-pre1.json`, SHA256
+`e7c0e2da5183d81f4e5232939571e59b600a530d8e4cb3c191a980d489653f6e`. Solo se añade después este registro documental.
+Snapshot histórico de preparación, previo a aprobación e implementación registradas arriba; entonces sin código09.7.
+Baseline09.6 reutilizado; Xcode MCP y configuración verificados. Nuevos build/tests/UI N/A por alcance documental.
+La implementación recibió después su aprobación; entrega09.7, fase09 y deuda accesible siguen abiertas.
+
 ## Entrega y cierre funcional 09.6 —2026-09-29
 
 Commit `824fad833c19d8b0b40a853560f6c2f95baeab01`, `✨ feat(stock): add adjustment screens`, publicado.

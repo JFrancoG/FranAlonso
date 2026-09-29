@@ -12,7 +12,7 @@ struct StockPersistenceTests {
         let product = try stockTestProduct()
         try seedStockTestProduct(product, in: container)
         let writer = StockPersistenceActor(modelContainer: container)
-        let repository = DefaultStockRepository(persistenceActor: writer)
+        let repository = DefaultStockRepository(persistenceActor: writer, observationSignal: ProductObservationSignal())
         #expect(try await repository.quantity(for: product.id) == 0)
         let input = try stockTestMovement(productID: product.id, delta: 5, ordinal: 1)
         let output = try stockTestMovement(productID: product.id, delta: -8, ordinal: 2)
@@ -128,8 +128,9 @@ struct StockPersistenceTests {
         let product = try stockTestProduct()
         try seedStockTestProduct(product, in: container)
         let writer = StockPersistenceActor(modelContainer: container)
-        let firstCaller = DefaultStockRepository(persistenceActor: writer)
-        let secondCaller = DefaultStockRepository(persistenceActor: writer)
+        let signal = ProductObservationSignal()
+        let firstCaller = DefaultStockRepository(persistenceActor: writer, observationSignal: signal)
+        let secondCaller = DefaultStockRepository(persistenceActor: writer, observationSignal: signal)
         let movement = try stockTestMovement(productID: product.id, delta: 12, ordinal: 1)
 
         async let first = firstCaller.append(movement)
@@ -149,7 +150,10 @@ struct StockPersistenceTests {
         let container = try stockTestContainer()
         let product = try stockTestProduct()
         try seedStockTestProduct(product, in: container)
-        let repository = DefaultStockRepository(persistenceActor: StockPersistenceActor(modelContainer: container))
+        let repository = DefaultStockRepository(
+            persistenceActor: StockPersistenceActor(modelContainer: container),
+            observationSignal: ProductObservationSignal()
+        )
         let original = try stockTestMovement(productID: product.id, delta: 4, ordinal: 1)
         _ = try await repository.append(original)
         let products = ProductPersistenceActor(modelContainer: container)
