@@ -8,7 +8,7 @@ struct ServiceSyncRetryEngineTests {
     @Test("A recoverable pull retries with deterministic exponential delays")
     func recoverablePullRetriesWithDeterministicDelays() async throws {
         let container = try retryEngineContainer()
-        let timing = RetryManualTiming(now: Date(timeIntervalSinceReferenceDate: 1_000))
+        let timing = ServiceRetryManualTiming(now: Date(timeIntervalSinceReferenceDate: 1_000))
         let remote = RetryPullRemote(failuresBeforeSuccess: 2)
         let engine = retryEngine(container: container, remote: remote, timing: timing.dependency)
 
@@ -32,7 +32,7 @@ struct ServiceSyncRetryEngineTests {
         let actor = ServicePersistenceActor(modelContainer: container)
         try await actor.persistPendingUpsert(firstService, operationID: firstOperationID)
         try await actor.persistPendingUpsert(secondService, operationID: secondOperationID)
-        let timing = RetryManualTiming(now: Date(timeIntervalSinceReferenceDate: 2_000))
+        let timing = ServiceRetryManualTiming(now: Date(timeIntervalSinceReferenceDate: 2_000))
         let remote = RetryOperationsRemote(failuresBeforeSuccess: 2)
         let engine = retryEngine(container: container, remote: remote, timing: timing.dependency)
 
@@ -50,7 +50,7 @@ struct ServiceSyncRetryEngineTests {
     func thirdTransientFailurePersistsDeadlineForRestart() async throws {
         let container = try retryEngineContainer()
         let start = Date(timeIntervalSinceReferenceDate: 3_000)
-        let timing = RetryManualTiming(now: start)
+        let timing = ServiceRetryManualTiming(now: start)
         let failingRemote = RetryPullRemote(failuresBeforeSuccess: .max)
         let firstEngine = retryEngine(container: container, remote: failingRemote, timing: timing.dependency)
 
@@ -85,7 +85,7 @@ struct ServiceSyncRetryEngineTests {
                 lastRecoverableCategory: .unavailable
             )
         )
-        let timing = RetryManualTiming(now: Date(timeIntervalSinceReferenceDate: 4_000))
+        let timing = ServiceRetryManualTiming(now: Date(timeIntervalSinceReferenceDate: 4_000))
         let remote = RetryDefinitivePullRemote()
         let engine = retryEngine(container: container, remote: remote, timing: timing.dependency)
 
@@ -103,7 +103,7 @@ struct ServiceSyncRetryEngineTests {
         let container = try retryEngineContainer()
         let gate = RetryRemoteGate()
         let remote = RetryGatedPullRemote(gate: gate, outcome: .success)
-        let engine = retryEngine(container: container, remote: remote, timing: RetryManualTiming(now: .now).dependency)
+        let engine = retryEngine(container: container, remote: remote, timing: ServiceRetryManualTiming(now: .now).dependency)
         let first = Task { try await engine.synchronize() }
         await gate.waitUntilBlocked()
 
@@ -148,7 +148,7 @@ struct ServiceSyncRetryEngineTests {
         let container = try retryEngineContainer()
         let gate = RetryRemoteGate()
         let remote = RetryGatedPullRemote(gate: gate, outcome: .unavailable)
-        let timing = RetryManualTiming(now: .now)
+        let timing = ServiceRetryManualTiming(now: .now)
         let engine = retryEngine(container: container, remote: remote, timing: timing.dependency)
         let task = Task { try await engine.synchronize() }
         await gate.waitUntilBlocked()
@@ -205,7 +205,7 @@ struct ServiceSyncRetryEngineTests {
         try await actor.persistPendingUpsert(service, operationID: operationID)
         let gate = RetryRemoteGate()
         let remote = RetryCommittedMutationRemote(gate: gate)
-        let engine = retryEngine(container: container, remote: remote, timing: RetryManualTiming(now: .now).dependency)
+        let engine = retryEngine(container: container, remote: remote, timing: ServiceRetryManualTiming(now: .now).dependency)
         let cancelledPass = Task { try await engine.synchronize() }
         await gate.waitUntilBlocked()
 
@@ -221,35 +221,6 @@ struct ServiceSyncRetryEngineTests {
 
         #expect(try await actor.pendingOperations().isEmpty)
         #expect(await remote.applyCount == 1)
-    }
-}
-
-private actor RetryManualTiming {
-    private var currentDate: Date
-    private var sleeps: [Duration] = []
-
-    init(now: Date) {
-        currentDate = now
-    }
-
-    nonisolated var dependency: SyncTiming {
-        SyncTiming(
-            now: { await self.current() },
-            sleep: { duration in try await self.sleep(for: duration) },
-            jitterFactor: { 1 }
-        )
-    }
-
-    var recordedSleeps: [Duration] { sleeps }
-
-    private func current() -> Date { currentDate }
-
-    private func sleep(for duration: Duration) throws {
-        let components = duration.components
-        let interval = Double(components.seconds)
-            + Double(components.attoseconds) / 1_000_000_000_000_000_000
-        sleeps.append(duration)
-        currentDate = currentDate.addingTimeInterval(interval)
     }
 }
 

@@ -1,6 +1,16 @@
 # Fase 10 — Catálogo comercial de servicios
 
-## Estado actual —10.1 entregada —2026-09-29
+## Estado actual —10.2 implementada —2026-09-29
+
+[PLU-61](https://linear.app/plusprojects/issue/PLU-61), hija dePLU-59, In Progress, Jesus Franco.
+Issue, rama e implementación autorizadas. Rama `codex/phase-10-2-service-sync` desde main/origin/main d9731f2 limpios.
+[Propuesta10.2](10-2-service-sync-proposal.md): cinco escenarios CRUD/sync y reapertura durable con perfil Service completo.
+PRE independiente PASS,626 archivos idénticos. Implementación solo en tests/helpers; no defecto productivo demostrado.
+Cinco caracterizaciones PASS inicial; regresión1.013 declaraciones/1.400 resultados PASS y Develop con tests PASS.
+POST1 detectó espera indefinida en test de ACK, corregida; retest20/20 PASS. POST2 PASS sin hallazgos restantes.
+Sin UI/live ni nueva deuda accesible. Entrega Git y10.3 pendientes de autorización.
+
+## Entrega anterior —10.1 —2026-09-29
 
 [PR24](https://github.com/JFrancoG/FranAlonso/pull/24) MERGED, commit funcional
 `5665dbb114ea1c4271193b99c7cc8f960280e709`, merge `fd4ed5aa898bc187ba5cd1df04e21bfb8e546c53`.
@@ -127,3 +137,96 @@ Preflight de root y revisor independiente:19Swift/configuración/tests idéntico
 el resultado de la auditoría. Main/origin/main y base local coinciden en50ecc39. Sin PR previa para la rama.
 Se reutilizan1.008 declaraciones/1.395 resultados, ambos builds y PRE/POST. Nuevas ejecuciones Xcode N/A por registros
 documentales de entrega; aviso AppIntents y seis enlaces históricos08.3 permanecen documentados. Entrega en curso.
+
+
+## Implementación y validación10.2 —2026-09-29
+
+Solicitud: «Adelante abre issue y rama e implementa10.2». PLU-61 y rama creadas desde d9731f2 limpio y sincronizado.
+PRE independiente PASS sin P0–P3,626 archivos idénticos (huella completa en propuesta); implementación posterior.
+Tres archivos Swift nuevos y dos modificados, todos de tests. ServiceSyncRemoteFake, gate de ACK y reloj manual extraídos
+para reutilización; semántica previa conservada, con registro de operaciones aplicadas e inyección de cambios remotos.
+Sin diferencias en código de producción, configuración, modelos/DTO, schema, App ni recursos.
+
+- CRUD completo converge a un único documento inactivo; tres operaciones causales se aplican una vez. Repetir sync o
+  desactivar después del ACK no genera tombstone, revisión nueva ni otra operación.
+- ACK del alta suspendido mientras el adapter contextual edita/desactiva: preserva perfil más reciente y ambos sucesores;
+  siguiente pasada converge. Observación local y repositorio comparten actor/señal reales.
+- Conflicto recibido por pull conserva snapshot, ambos lados y cadena; bloquea mutaciones de esa identidad mientras otra
+  sigue operable. Tombstone elimina de observación/lookup, conserva conflicto e impide resurrección por CRUD/sync repetido.
+- Offline falla push tres veces; retry1/2s y deadline posterior persisten. Reapertura de archivo único con esquema3.0/plan
+  vigente conserva bytes payload/base, IDs/predecesores, snapshot, cursor y retry. Weak references prueban liberación de
+  container/actor/engine. Recuperación espera4s en reloj manual, converge sin duplicados y una segunda reapertura confirma
+  estado remoto/local final y ausencia de colas/retries/conflictos. No se mata la app ni se usa su store.
+- Oráculos completos con cadenas decimales independientes del mapper/política; precio/moneda, impuesto/descuento, tipo y
+  vínculo. Profesional→producto y producto→profesional; vínculo retenido al desactivar, nil/cero/fracción distinguidos.
+
+### Evidencia Xcode MCP
+
+Workspace-EYu6rxi7hg, Develop/plan Develop, iPhone18Pro/iOS27.0. No cambio de scheme ni destino.
+
+- Build con tests PASS28,376s. Log `BuildProject/BuildProject-Log-20260929-222917.txt` bajo ActionArtifacts/default;
+  sin errores/warnings Swift/Clang. Únicamente aviso AppIntents metadata ya conocido.
+- Focal nueva **5/5 PASS inicial**. No se fabrica RED: el recorrido productivo ya estaba implementado.
+  Summary `RunSomeTests/2081AFE5-D2B6-49C9-BAB3-3D06FE2765DE.txt`. Original nativo cerrado en DerivedData:
+  `Logs/Test/Test-FranAlonso-Develop-2026.09.29_22-29-50-+0200.xcresult`; finishTime presente, sin runtimewarnings.
+- Ajustes finales solo de layout/nombre de un test; regresión completa **1.013 declaraciones/1.400 resultados PASS**,
+  cero fallos/skip/notRun/expectedFailures/runtimewarnings. Se usa global para cubrir la extracción compartida y todas las
+  variantes Service/composición/migraciones: la selección parcial ya había omitido argumentos en10.1. No se repite después.
+  Summary `RunAllTests/B859A782-CBEF-4D76-8528-9C2F1B8ABBCC.txt`. Original nativo cerrado inspeccionado:
+  `/Users/jesusf/Library/Developer/Xcode/DerivedData/FranAlonso-eehpkvodmpnqlchgeqriatcucsjf/Logs/Test/Test-FranAlonso-Develop-2026.09.29_22-30-28-+0200.xcresult`.
+  Resumen auxiliar `/tmp/franalonso-102-all-summary.json`. GetBuildLog final sin issues estructurados; log completo inspeccionado.
+- Production reutiliza10.1 PASS19,421s: árbol de producción/configuración idéntico. Nuevo build Production N/A por cambio
+  exclusivo de tests; no se afirma ejecución nueva. Previews/accesibilidad nueva N/A, sin UI ni recursos modificados.
+
+Estilo: cinco Swift inspeccionados, tres candidatos del recall con closures justifican vertical; dos son históricos
+intactos. Sin líneas nuevas>120 tras ajuste. Diff-check limpio. Gobernanza conserva únicamente seis enlaces históricos08.3.
+POST independiente en curso, sin modificar archivos durante su huella. PLU-61 y padrePLU-59 siguen In Progress.
+Pendientes commit/push y entrega posterior autorizada;10.3 productos vinculables será siguiente. Deuda08/PLU-54/57 intacta.
+
+
+### POST1 y corrección del test de ACK
+
+POST1 independiente detecta un P2: si synchronize termina antes de apply, el test podía esperar indefinidamente el gate.
+Sin otros hallazgos. Auditor/root verifican629 archivos idénticos; manifiesto `/tmp/franalonso-10-2-post1.json`, SHA256
+`078c075c170700092092ea8c552bb0efcbdd7b44801bd1ba825f7adbff3fba8c`. Se cierra la huella antes de corregir.
+
+Corrección limitada a dos archivos de tests: gate distingue ACK alcanzado de sincronización terminada y conserva ese
+estado si llega antes del waiter. Wrapper async let estructurado notifica finalización tanto al éxito como al error.
+El test exige haber llegado al ACK y su cleanup libera gate y espera al hijo. API histórica waitUntilBlocked conservada.
+No cambia ninguna ruta productiva.
+
+Dos inyecciones negativas temporales verifican que el escenario falla y termina, sin colgarse: drenar la cola antes del
+pase para provocar éxito temprano, y lanzar unexpected desde fetch para error temprano. Ambas terminan en la aserción
+reachedAcknowledgement con1fallo intencional/1test, resultado nativo cerrado y sin runtimewarnings. No son RED productivo
+ni fallos pendientes; sirven para verificar el hallazgo del harness. Summaries bajo RunSomeTests:
+`4A169452-7225-4743-8045-8068B847E6A8.txt` y `00E5828F-1B6B-4DDC-9E61-5650093BA6CC.txt`.
+Inyecciones retiradas y fuentes finales restauradas byte a byte antes de la regresión.
+
+Retest final por impacto: **20/20 PASS**, sin parámetros omitidos, fallos/skip/notRun/runtimewarnings. Incluye cinco
+escenarios nuevos más todas las pruebas ServiceSyncEngineTests y ServiceSyncRetryEngineTests que comparten helpers.
+Summary `RunSomeTests/A82654F3-15BC-4E7B-A6DC-B51BF8F6E2D8.txt`; original cerrado
+`Logs/Test/Test-FranAlonso-Develop-2026.09.29_22-37-56-+0200.xcresult` bajo DerivedData anterior.
+GetBuildLog final PASS sin issues estructurados; únicamente AppIntents conocido en log completo. El global1.400 anterior
+sigue como baseline y este retest acredita la corrección final; no se presenta el global como posterior a ella.
+Estilo/diff-check limpios. POST2 independiente pendiente sobre el alcance corregido; sin nueva ejecución global ni Production.
+
+
+### POST2 y estado final10.2
+
+**POST2 PASS, sin hallazgos restantes; P2 del harness corregido.** Auditor independiente verifica cierre temprano de ACK,
+ambas inyecciones negativas, retest20/20, estilo y log final. Los restantes ámbitos de POST1 conservan vigencia.
+Modo operacional read-only:629/629 archivos tracked/untracked no ignorados idénticos antes/después, sin altas/bajas/cambios.
+Manifest `/tmp/franalonso-10-2-post2.json`, SHA256 `dded9b8352ce3afe685b315205b002274232c1e42cf0c6c2d1fb92e14e46c1fe`.
+Tras cerrar huella solo se registra el resultado en documentación y Linear; fuentes/configuración/tests permanecen intactos.
+
+10.2 implementada, validada y auditada, lista para commit/push y posterior entrega cuando se autoricen.
+PLU-61 y fase10/PLU-59 In Progress; rama local `codex/phase-10-2-service-sync`. No commit/push/PR/merge/cierre ni live.
+Siguiente subfase10.3: productos vinculables activos y manejo de ausencia/eliminación. No iniciada en este alcance.
+
+
+### Entrega10.2 autorizada —2026-09-29
+
+El propietario autoriza commit/push, PR/merge, cierre de issue/rama si proceden y después implementar10.3.
+Preflight: base main/origin/main d9731f2 idéntica, sin PR previa; cinco Swift coinciden con POST2, solo registros documentales
+posteriores. Se reutilizan validaciones y revisión finales; nuevas ejecuciones Xcode N/A por metadata de entrega.
+Changelog actualizado. No se modifica código durante el cierre. Entrega en curso;10.3 conserva PRE antes de implementación.
