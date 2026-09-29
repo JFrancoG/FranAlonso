@@ -9,9 +9,9 @@
   [PR17](https://github.com/JFrancoG/FranAlonso/pull/17) merge `7c9ab09` y
   [PR18](https://github.com/JFrancoG/FranAlonso/pull/18) merge `8ed0af5`; ramas local/remota eliminadas.
   Árbol integrado `04e3760`: **1.156/1.156 PASS**, build y PRE/POST PASS. [Registro](progress/phase-09.md).
-  **09.3 / [PLU-52](https://linear.app/plusprojects/issue/PLU-52): implementada localmente**, In Progress.
+  **09.3 / [PLU-52](https://linear.app/plusprojects/issue/PLU-52): Done**, [PR19](https://github.com/JFrancoG/FranAlonso/pull/19).
   ViewModels y composición contextual; **1.191/1.191 PASS**, Develop/Production y PRE/POST PASS.
-  [Propuesta](progress/09-3-product-view-models-proposal.md). Entrega09.3 y posterior implementación09.4 autorizadas.
+  Merge `13b0839`, head `58ee95f` intacto; rama eliminada. Implementación09.4 autorizada; fase09 abierta.
 - **[ADR0030](ADRs/0030-reusable-demo-and-early-foundation-models.md) aceptado y publicado** el29/09;
   orden excepcional y alcance canónico en [índice](specs/00_index.md). [Registro](progress/phase-08.md).
 - **08.8a / [PLU-46](https://linear.app/plusprojects/issue/PLU-46): Done funcional**, entrega y cierre autorizados.

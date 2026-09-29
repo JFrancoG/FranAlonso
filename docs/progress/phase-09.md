@@ -1,5 +1,15 @@
 # Fase 09 — Productos e inventario físico
 
+## Entrega y cierre09.3, 2026-09-29
+
+Commit `58ee95f9cd5611439a5d069ad3aefa0ae8e824a0`, `✨ feat(products): coordinate list and form state`, publicado.
+[PR19](https://github.com/JFrancoG/FranAlonso/pull/19) MERGED mediante `13b083972be14ea40cc2babfd929d34ee870c40e`.
+Árbol integrado idéntico al head validado; CLEAN/MERGEABLE y sin checks/reviews obligatorios antes del merge.
+Rama local/remota eliminadas tras comprobar cero commits únicos respecto a main. PLU-52 Done; fase09/PLU-49 abierta.
+Reutilizados1.191/1.191 resultados, builds Develop/Production y PRE/POST;10Swift intactos desde POST.
+Aviso AppIntents y seis enlaces históricos08.3 conservados. Sin live, UI/accesibilidad nuevas N/A en09.3.
+Siguiente alcance autorizado09.4: lista/formulario y conexión a Catálogo, previa propuesta/PRE. Historial inferior superado.
+
 ## Entrega09.3 autorizada, 2026-09-29
 
 El propietario autoriza commit/push, PR/merge y cierre de issue/rama09.3, seguido de implementación09.4.
