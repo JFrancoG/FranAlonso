@@ -8,9 +8,10 @@
   **09.1 / [PLU-50](https://linear.app/plusprojects/issue/PLU-50) y09.2 / [PLU-51](https://linear.app/plusprojects/issue/PLU-51): Done**.
   [PR17](https://github.com/JFrancoG/FranAlonso/pull/17) merge `7c9ab09` y
   [PR18](https://github.com/JFrancoG/FranAlonso/pull/18) merge `8ed0af5`; ramas local/remota eliminadas.
-  Árbol integrado idéntico a `04e3760`: **1.156/1.156 PASS**, build Develop con tests; PRE/POST PASS.
-  Aviso AppIntents conocido. [Registro](progress/phase-09.md). UI/accesibilidad N/A, sin activación live.
-  Implementación09.3 autorizada como siguiente paso;09.4–09.7 pendientes.
+  Árbol integrado `04e3760`: **1.156/1.156 PASS**, build y PRE/POST PASS. [Registro](progress/phase-09.md).
+  **09.3 / [PLU-52](https://linear.app/plusprojects/issue/PLU-52): implementada localmente**, In Progress.
+  ViewModels y composición contextual; **1.191/1.191 PASS**, Develop/Production y PRE/POST PASS.
+  [Propuesta](progress/09-3-product-view-models-proposal.md). Entrega09.3 y posterior implementación09.4 autorizadas.
 - **[ADR0030](ADRs/0030-reusable-demo-and-early-foundation-models.md) aceptado y publicado** el29/09;
   orden excepcional y alcance canónico en [índice](specs/00_index.md). [Registro](progress/phase-08.md).
 - **08.8a / [PLU-46](https://linear.app/plusprojects/issue/PLU-46): Done funcional**, entrega y cierre autorizados.

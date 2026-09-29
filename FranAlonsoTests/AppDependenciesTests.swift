@@ -42,10 +42,12 @@ struct AppDependenciesTests {
         let analytics = CompositionAnalyticsDataSourceSpy()
         let crash = CompositionCrashDataSourceSpy()
         let clientRepository = CompositionClientRepositoryFake(clients: [])
+        let productRepository = CompositionProductRepositoryFake(products: [])
         let dependencies = AppDependencies(
             clientRepository: clientRepository,
             makeClientForm: AppDependencies.readOnlyClientFormFactory(repository: clientRepository),
-            productRepository: CompositionProductRepositoryFake(products: []),
+            productRepository: productRepository,
+            makeProductForm: AppDependencies.readOnlyProductFormFactory(repository: productRepository),
             serviceRepository: CompositionServiceRepositoryFake(services: []),
             saleRepository: InMemorySaleRepository(),
             analyticsDataSource: analytics,
@@ -83,10 +85,12 @@ struct AppDependenciesTests {
             )
         ]
         let repository = CompositionClientRepositoryFake(clients: expectedClients)
+        let productRepository = CompositionProductRepositoryFake(products: [])
         let dependencies = AppDependencies(
             clientRepository: repository,
             makeClientForm: AppDependencies.readOnlyClientFormFactory(repository: repository),
-            productRepository: CompositionProductRepositoryFake(products: []),
+            productRepository: productRepository,
+            makeProductForm: AppDependencies.readOnlyProductFormFactory(repository: productRepository),
             serviceRepository: CompositionServiceRepositoryFake(services: []),
             saleRepository: InMemorySaleRepository(),
             analyticsDataSource: CompositionAnalyticsDataSourceSpy(),
@@ -128,6 +132,7 @@ struct AppDependenciesTests {
             clientRepository: clientRepository,
             makeClientForm: AppDependencies.readOnlyClientFormFactory(repository: clientRepository),
             productRepository: repository,
+            makeProductForm: AppDependencies.readOnlyProductFormFactory(repository: repository),
             serviceRepository: CompositionServiceRepositoryFake(services: []),
             saleRepository: InMemorySaleRepository(),
             analyticsDataSource: CompositionAnalyticsDataSourceSpy(),
@@ -158,10 +163,12 @@ struct AppDependenciesTests {
         let expectedServices = [try compositionService()]
         let repository = CompositionServiceRepositoryFake(services: expectedServices)
         let clientRepository = CompositionClientRepositoryFake(clients: [])
+        let productRepository = CompositionProductRepositoryFake(products: [])
         let dependencies = AppDependencies(
             clientRepository: clientRepository,
             makeClientForm: AppDependencies.readOnlyClientFormFactory(repository: clientRepository),
-            productRepository: CompositionProductRepositoryFake(products: []),
+            productRepository: productRepository,
+            makeProductForm: AppDependencies.readOnlyProductFormFactory(repository: productRepository),
             serviceRepository: repository,
             saleRepository: InMemorySaleRepository(),
             analyticsDataSource: CompositionAnalyticsDataSourceSpy(),
@@ -192,10 +199,12 @@ struct AppDependenciesTests {
         let expectedSales = [try compositionSale()]
         let repository = CompositionSaleRepositoryFake(sales: expectedSales)
         let clientRepository = CompositionClientRepositoryFake(clients: [])
+        let productRepository = CompositionProductRepositoryFake(products: [])
         let dependencies = AppDependencies(
             clientRepository: clientRepository,
             makeClientForm: AppDependencies.readOnlyClientFormFactory(repository: clientRepository),
-            productRepository: CompositionProductRepositoryFake(products: []),
+            productRepository: productRepository,
+            makeProductForm: AppDependencies.readOnlyProductFormFactory(repository: productRepository),
             serviceRepository: CompositionServiceRepositoryFake(services: []),
             saleRepository: repository,
             analyticsDataSource: CompositionAnalyticsDataSourceSpy(),

@@ -1,5 +1,90 @@
 # Fase 09 — Productos e inventario físico
 
+## Entrega09.3 autorizada, 2026-09-29
+
+El propietario autoriza commit/push, PR/merge y cierre de issue/rama09.3, seguido de implementación09.4.
+Se reutilizan1.191/1.191 resultados, builds Develop/Production, estilo y PRE/POST: los10Swift coinciden byte a byte
+con el manifiesto POST. Solo cambian documentos de estado/entrega y changelog. UI/accesibilidad N/A en09.3;
+la fase09 sigue abierta y09.4 requiere su propuesta/PRE antes del código. El resultado Git se registrará tras verificarlo.
+
+## Implementación09.3 local, 2026-09-29
+
+[PLU-52](https://linear.app/plusprojects/issue/PLU-52) sigue In Progress, Jesus Franco; rama local
+`codex/plu-52-phase-09-3-product-view-models`, base b8efe87. La autorización vigente incluye implementación09.3,
+no su publicación/cierre ni09.4. [Propuesta aprobada y PRE PASS](09-3-product-view-models-proposal.md).
+
+### Alcance implementado
+
+- ProductListViewModel @Observable @MainActor: snapshots locales, búsqueda derivada y distinción vacío/sin coincidencias;
+  conserva inactivos, representa errores/cancelación y protege cargas reemplazadas mediante generación.
+- ProductFormDestination separa sesión y ProductID; alta conserva identidad, edición exige producto visible y un cierre
+  antiguo no afecta una sesión nueva. No hay pantalla ni navegación visual nueva.
+- ProductFormViewModel @Observable @MainActor: carga/ausencia/error/retry, nombre validado y capturado, escritura contextual,
+  desactivación de activos y errores Domain neutrales. Impide solapamientos/repeticiones, conserva un commit confirmado
+  ante cancelación tardía y descarta respuestas después de cerrar o sustituir una carga. No retiene ModelContext.
+- ProductFormFactory en App comparte actor/señal existentes y crea adaptador contextual dentro de su closure MainActor.
+  Composición live/local/preview interactiva; snapshots finitos leen su repositorio y rechazan toda mutación.
+- Diez Swift nuevos/modificados: cinco de producción/presentación-composición y cinco de tests/callsites.
+  Domain, Data, schema, sync, recursos/localización, shell y demo seed intactos. Sin Store ni dependencia nueva.
+
+### TDD y validación
+
+Xcode MCP estable Service, Develop/iPhone18Pro Simulator27.0, target26/Swift6/strict complete/nonisolated.
+
+| Paso | Evidencia |
+|---|---|
+| RED inicial |7/7 fallos semánticos de lista/sesión y formulario sobre APIs provisionales compilables; build20,720s correcto. |
+| GREEN ViewModels + RED composición |35 resultados:33 PASS,2 fallos esperados de escritura contra factory provisional solo lectura. Los nuevos casos de concurrencia se registran como regresión, no RED previo. |
+| Corrección de compilación |Al conectar el adaptador, el compilador exigió construirlo en MainActor; se trasladó a la closure factory ya aislada. No cambia contrato ni es RED semántico. |
+| GREEN focal final |21/21 PASS, pero solo3 ejecuciones dinámicas de3 declaraciones parametrizadas: insuficiente para35 resultados esperados. |
+| Verificación completa |**896 declaraciones/129 suites,1.191/1.191 resultados PASS**, incluidos35 nuevos; cero fallos/skips/expected failures/runtime warnings en bundle nativo cerrado. |
+| Build Develop |PASS10,375s, sin errores; aviso AppIntents conocido. |
+| Build Production |PASS18,426s, sin errores; mismo aviso. Develop/iPhone18Pro restaurados. |
+
+Fallback global justificado por selección parcial reproducida; comprobadas las8 variantes de observación reemplazada,
+las6 interrupciones de mutación y las3 interrupciones de lectura. Los1.156 resultados previos siguen verdes.
+No sleeps/polling/red real ni suite serializada; gates concretos y containers aislados. Los tests de composición recorren
+crear→editar→desactivar→editar inactive, snapshot/observación y cola causal; preview interactiva y solo lectura.
+
+Logs completos separan `Metadata extraction skipped, no AppIntents.framework dependency found`; GetBuildLog estructurado
+puede mostrar0issues. No se afirma cero warnings globales ni validación DocC exportada. Sin xcodebuild, XCTest/XCUITest,
+opt-outs unsafe o servicios live. UI/previews visuales/accesibilidad N/A: no hay Views/textos/recursos afectados.
+La evidencia integral/deuda de fase08 permanece abierta; los formularios visuales y sus previews0/250 pertenecen a09.4.
+
+Artefactos Xcode bajo `/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/`:
+
+- RED7: `RunSomeTests/4ED38941-0090-49B8-8D48-A145D701B83F.txt`.
+- GREEN VM/RED composición: `RunSomeTests/323D2B6B-809C-4C57-9496-E8CE25D1E497.txt`.
+- GREEN focal: `RunSomeTests/BD3E5FA4-5B11-4067-A500-725F0E1DB024.txt`.
+- Global: `RunAllTests/3473B340-1E20-44FA-A85C-E411DCEE4D73.txt`, consola15-02-48.
+- Bundle nativo cerrado: `~/Library/Developer/Xcode/DerivedData/FranAlonso-eehpkvodmpnqlchgeqriatcucsjf/Logs/Test/Test-FranAlonso-Develop-2026.09.29_15-02-48-+0200.xcresult`.
+- Builds: `BuildProject/BuildProject-Log-20260929-150328.txt` y `BuildProject-Log-20260929-150413.txt`.
+
+Estilo:10Swift revisados manualmente y con script; único candidato conserva vertical por closure/tipo función.
+Gobernanza conserva solo seis enlaces históricos de08.3; diff-check limpio incluyendo los archivos nuevos.
+
+### Auditoría y estado final
+
+POST independiente por ios-standards-reviewer: **PASS, sin hallazgos P0–P3** sobre10Swift y4documentos. Inspeccionados
+RED, paso de composición, bundle global cerrado, variantes parametrizadas y logs completos de ambos builds.
+Revisión read-only operativa: root verificó **561/561 archivos tracked/no ignorados idénticos** antes/después;
+manifiesto `/tmp/franalonso-09-3-post-review.json`, SHA-256
+`7832a4039fefc66f4ce22d9e53b63777dc9a651dcc7c41ab8718ee2145b60e5b`.
+Sin correcciones ejecutables ni retest posterior; solo registro documental y reconciliación Linear.
+
+PLU-52, fase09/PLU-49 y proyecto permanecen In Progress, con implementación validada y entrega09.3 pendiente.
+Documentación y Linear reconciliados. La rama conserva14archivos nuevos/modificados sin commit/push;09.4 no iniciada.
+Siguiente puerta: autorización de entrega09.3; las pantallas y sus evidencias propias corresponden a09.4.
+
+## Inicio09.3, 2026-09-29
+
+[PLU-52](https://linear.app/plusprojects/issue/PLU-52), Jesus Franco, hija dePLU-49, In Progress.
+Implementación autorizada por el propietario tras los merges09.1/09.2. Rama local
+`codex/plu-52-phase-09-3-product-view-models` creada desde main/origin/main b8efe87 idénticos y limpios.
+[Propuesta09.3](09-3-product-view-models-proposal.md): dos fachadas @Observable @MainActor, destino de formulario y
+composición contextual ADR0011; no UI, Store, stock ni cambios Data/Domain. PRE independiente PASS sin hallazgos;553/553 archivos idénticos. Implementación autorizada en curso.
+Baseline1.156/1.156 y builds/auditorías anteriores reutilizados; preparación documental, Xcode/UI/accesibilidad nuevos N/A.
+
 ## Entrega y cierre09.1–09.2, 2026-09-29
 
 Autorización completa del propietario: commit/push09.2, PR y merge de09.1/09.2, cierre de ramas y posterior09.3.

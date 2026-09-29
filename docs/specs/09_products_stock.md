@@ -34,6 +34,21 @@ Alcance concreto aprobado el29/09/2026 tras revisión independiente:
 - Errores Domain neutrales; sin tipos/payloads del proveedor.09.2 mantiene la integración y regresión completa de sync;
   no se promete compare-and-swap entre contextos ni se añade esquema o infraestructura nueva.
 
+## Contratos de presentación —09.3
+
+Alcance autorizado el29/09/2026 y revisado independientemente:
+
+- Lista y formulario usan fachadas @Observable @MainActor separadas; la lista observa snapshots locales y mantiene
+  visibles los inactivos. Consulta derivada, vacío y sin coincidencias son estados distintos.
+- Cada formulario tiene identidad de sesión distinta del ProductID estable; reintentos conservan identidad y un cierre
+  antiguo no cierra una reapertura. La ausencia en edición bloquea escrituras; nunca se convierte en alta vacía.
+- Guardar valida y captura el nombre antes de suspender. El contexto del caller es efímero según ADR0011; App comparte
+  actor/señal y compone las mutaciones mediante el adaptador existente. Snapshot preview rechaza escritura explícitamente.
+- Respuestas de cargas reemplazadas o sesiones cerradas no alteran presentación. Se excluyen mutaciones solapadas;
+  cancelación previa no escribe y una aceptación durable sigue siendo éxito ante cancelación tardía.
+- Desactivar se ofrece para un producto existente activo; inactive conserva edición y observación. Cerrar no deshace
+  commits. Pantallas, textos, confirmaciones visuales y previews corresponden a09.4.
+
 ## Subfases
 
 | ID | Tarea | Test primero | Validación |
