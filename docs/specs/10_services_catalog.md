@@ -17,6 +17,25 @@ Gestionar todos los conceptos cobrables, incluidos los productos vendidos al pú
 - La lista de productos vinculables procede de un caso de uso de Domain y solo expone entidades activas.
 - `ServiceListViewModel` y `ServiceFormViewModel` son fachadas simples. Un Store solo se extrae si el formulario acumula una responsabilidad independiente real.
 
+## Contratos aprobados de10.1
+
+- `ServiceProfile` es la entrada comercial editable, sin identidad ni estado. Recorta espacios exteriores del nombre y
+  rechaza nombres vacíos. Su precio `Money` normalizado admite cero y rechaza negativos; conserva las monedas vigentes,
+  precio con impuesto incluido, `TaxRate` validado y descuento opcional (ausente distinto de cero).
+- Construcción y Codable validan la relación tipo/vínculo. Los snapshots `Service` históricos mantienen sus reglas
+  previas; existencia y actividad del Product vinculado se validan en10.3.
+- Alta con ID explícito nace activa y no reutiliza una identidad conocida. Se permiten nombres iguales con IDs distintos.
+  Consulta devuelve activos/inactivos; ausentes y borrados devuelven nil. Edición conserva identidad y estado vigente.
+- Desactivar conserva todos los campos y referencias. Repetir sobre inactive sin conflicto no escribe ni publica una
+  nueva mutación, incluso después del ack. Borrados y conflictos impiden edición/desactivación; no hay restauración.
+- Búsqueda local por nombre parcial, insensible a caja/diacríticos; query vacía devuelve el corpus en su orden, incluyendo
+  ambos tipos y estados. Los filtros para venta pertenecen a10.7.
+- La aceptación local mínima comparte comprobación y escritura sin suspensión entre actor y ruta contextual: snapshot y
+  cola causal se guardan juntos, los fallos se traducen a Domain y no se descartan cambios ajenos. Cancelación previa no
+  escribe; cancelación posterior al commit conserva éxito. No se promete CAS entre contextos independientes.
+- 10.2 conserva la integración completa CRUD→sync, conflictos remotos, tombstones, offline y reapertura durable, sobre la
+  vertical05.10b existente.10.1 no cambia schema, DTO, motor, composición live ni UI.
+
 ## Subfases
 
 | ID | Tarea | Test primero | Validación |

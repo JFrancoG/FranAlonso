@@ -23,3 +23,61 @@ actor InMemoryServiceRepository: ServiceRepository {
         }
     }
 }
+
+extension InMemoryServiceRepository {
+    func service(id: ServiceID) async throws -> Service? {
+        try Task.checkCancellation()
+        return services.first { $0.id == id }
+    }
+
+    func createService(id: ServiceID, profile: ServiceProfile) async throws -> Service {
+        try Task.checkCancellation()
+        guard !services.contains(where: { $0.id == id }) else { throw ServiceError.alreadyExists }
+        let service = try Service(
+            id: id,
+            name: profile.name,
+            type: profile.type,
+            linkedProductID: profile.linkedProductID,
+            price: profile.price,
+            taxRate: profile.taxRate,
+            discount: profile.discount,
+            status: .active
+        )
+        services.append(service)
+        return service
+    }
+
+    func updateService(id: ServiceID, profile: ServiceProfile) async throws -> Service {
+        try Task.checkCancellation()
+        guard let index = services.firstIndex(where: { $0.id == id }) else { throw ServiceError.notFound }
+        let service = try Service(
+            id: id,
+            name: profile.name,
+            type: profile.type,
+            linkedProductID: profile.linkedProductID,
+            price: profile.price,
+            taxRate: profile.taxRate,
+            discount: profile.discount,
+            status: services[index].status
+        )
+        services[index] = service
+        return service
+    }
+
+    func deactivateService(_ id: ServiceID) async throws {
+        try Task.checkCancellation()
+        guard let index = services.firstIndex(where: { $0.id == id }) else { throw ServiceError.notFound }
+        let service = services[index]
+        guard service.status != .inactive else { return }
+        services[index] = try Service(
+            id: service.id,
+            name: service.name,
+            type: service.type,
+            linkedProductID: service.linkedProductID,
+            price: service.price,
+            taxRate: service.taxRate,
+            discount: service.discount,
+            status: .inactive
+        )
+    }
+}

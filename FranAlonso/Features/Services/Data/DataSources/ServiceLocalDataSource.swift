@@ -13,6 +13,98 @@ extension ServiceLocalDataSource {
         return try context.fetch(descriptor).map { try $0.toDomain() }
     }
 
+    /// Reads active and inactive profiles without exposing deleted identities.
+    /// - Throws: A neutral `ServiceError` or cancellation before reading.
+    func service(id: ServiceID, in context: ModelContext) throws -> Service? {
+        try performServiceOperation {
+            guard try !hasDeletionState(for: id, in: context) else { return nil }
+            return try model(for: id, in: context)?.toDomain()
+        }
+    }
+
+    /// Creates an active service and its causal operation without replacing any known identity.
+    /// Checks and local acceptance share this context without suspension; no cross-context CAS is promised.
+    func createService(
+        id: ServiceID,
+        profile: ServiceProfile,
+        operationID: UUID,
+        in context: ModelContext
+    ) throws -> Service {
+        try performServiceOperation {
+            try requireClean(context)
+            guard try !hasDeletionState(for: id, in: context) else { throw ServiceError.alreadyExists }
+            guard try model(for: id, in: context) == nil,
+                  try pendingOperations(for: id, in: context).isEmpty,
+                  try remoteState(for: id, in: context) == nil else {
+                throw ServiceError.alreadyExists
+            }
+            let service = try Service(
+                id: id,
+                name: profile.name,
+                type: profile.type,
+                linkedProductID: profile.linkedProductID,
+                price: profile.price,
+                taxRate: profile.taxRate,
+                discount: profile.discount,
+                status: .active
+            )
+            try persistPendingUpsert(service, operationID: operationID, in: context)
+            return service
+        }
+    }
+
+    /// Replaces the complete commercial profile, preserving the availability read in this acceptance boundary.
+    /// Missing, deleted and conflicted identities cannot be edited through this command.
+    func updateService(
+        id: ServiceID,
+        profile: ServiceProfile,
+        operationID: UUID,
+        in context: ModelContext
+    ) throws -> Service {
+        try performServiceOperation {
+            try requireClean(context)
+            guard try !hasDeletionState(for: id, in: context) else { throw ServiceError.deleted }
+            guard let existing = try model(for: id, in: context)?.toDomain() else { throw ServiceError.notFound }
+            let service = try Service(
+                id: id,
+                name: profile.name,
+                type: profile.type,
+                linkedProductID: profile.linkedProductID,
+                price: profile.price,
+                taxRate: profile.taxRate,
+                discount: profile.discount,
+                status: existing.status
+            )
+            try persistPendingUpsert(service, operationID: operationID, in: context)
+            return service
+        }
+    }
+
+    /// Makes an existing service inactive while retaining every commercial field and physical product reference.
+    /// - Returns: Whether a new local mutation was committed. An inactive service is a write-free no-op,
+    ///   even after synchronization acknowledged its last operation. Conflicts still reject the command.
+    func deactivateService(_ id: ServiceID, operationID: UUID, in context: ModelContext) throws -> Bool {
+        try performServiceOperation {
+            try requireClean(context)
+            guard try !hasDeletionState(for: id, in: context) else { throw ServiceError.deleted }
+            guard let existing = try model(for: id, in: context)?.toDomain() else { throw ServiceError.notFound }
+            guard try conflict(for: id, in: context) == nil else { throw ServiceError.conflict }
+            guard existing.status != .inactive else { return false }
+            let service = try Service(
+                id: id,
+                name: existing.name,
+                type: existing.type,
+                linkedProductID: existing.linkedProductID,
+                price: existing.price,
+                taxRate: existing.taxRate,
+                discount: existing.discount,
+                status: .inactive
+            )
+            try persistPendingUpsert(service, operationID: operationID, in: context)
+            return true
+        }
+    }
+
     /// Materializes a service without creating a pending local mutation.
     func upsert(_ service: Service, in context: ModelContext) throws {
         try materialize(service, in: context)
@@ -517,6 +609,25 @@ extension ServiceLocalDataSource {
 
     private func requireClean(_ context: ModelContext) throws {
         guard !context.hasChanges else { throw ServiceLocalDataSourceError.contextHasUncommittedChanges }
+    }
+
+    private func performServiceOperation<Value>(
+        _ operation: () throws -> Value
+    ) throws -> Value {
+        try Task.checkCancellation()
+        do {
+            return try operation()
+        } catch let error as ServiceError {
+            throw error
+        } catch is CancellationError {
+            throw CancellationError()
+        } catch ServiceLocalDataSourceError.syncConflictPending {
+            throw ServiceError.conflict
+        } catch ServiceLocalDataSourceError.restoreRequiresExplicitResolution {
+            throw ServiceError.deleted
+        } catch {
+            throw ServiceError.persistenceUnavailable
+        }
     }
 
     private func model(for id: ServiceID, in context: ModelContext) throws -> ServiceModel? {

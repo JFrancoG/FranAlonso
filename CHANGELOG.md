@@ -6,6 +6,9 @@ All notable changes to this project are documented in this file.
 
 ### Added
 
+- 2026-09-29 | ✨ feat(services): add catalogue commands
+  Validates editable commercial profiles and preserves exact prices, current state and causal local acceptance.
+
 - 2026-09-29 | ✨ feat(stock): observe local low-stock state
   Derives low-stock and recovery from an explicit minimum, sharing committed changes with catalogue observation.
 
