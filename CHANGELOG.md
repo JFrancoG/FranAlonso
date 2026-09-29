@@ -6,6 +6,8 @@ All notable changes to this project are documented in this file.
 
 ### Added
 
+- 2026-09-29 | ✨ feat(products): coordinate list and form state
+  Adds observable list/form state, stable sessions and caller-context mutations with cancellation protection.
 - 2026-09-29 | ✨ feat(products): add CRUD and local search
   Validates editable names, preserves inactive profiles and accepts causal local writes without restoring tombstones.
 - 2026-09-29 | ✨ feat(demo): add reusable isolated client demo
