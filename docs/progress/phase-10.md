@@ -1,6 +1,58 @@
 # Fase 10 — Catálogo comercial de servicios
 
-## Estado actual — 10.5 entregada — 2026-09-30
+## Estado actual — 10.6 implementada, pendiente de entrega — 2026-09-30
+
+[PLU-66](https://linear.app/plusprojects/issue/PLU-66), In Progress, Jesus Franco, hija de PLU-59.
+Rama `codex/phase-10-6-linked-product-selector`, base limpia01d0657 tras entrega10.5.
+[Propuesta](10-6-linked-product-selector-proposal.md): PRE1 P2 de finalización snapshot corregido;
+PRE2 PASS, 661archivos idénticos, SHA256 e57089c7c440035eff550b6e3c9d861a76396a9392b7c2df70e1626811a49d5c.
+Picker nativo de tipo/producto, observación independiente, selección/sustitución y recuperación sin
+perder borrador. Sin Domain/Data/esquema/sync/live. TDD, regresión, smoke y POST PASS para demo (ADR0029).
+[Matriz10.6](../accessibility/evidence/10-6-linked-product-selector.md), PLU-67 Backlog propia.
+El propietario autoriza entrega completa10.6 e implementación10.7; fase10 permanece abierta.
+
+### Validación 10.6
+
+- TDD: RED1 17 fallos/3 PASS sobre20 resultados; las tres guardas se reforzaron con una selección válida previa.
+  RED2 con stub:17/17 fallos semánticos,12 declaraciones representadas; RunSomeTests omitió7 variantes.
+  Los tests de composición se añadieron antes de GREEN. Informe `/tmp/franalonso-106-model.md`.
+  Summaries RED `CA1365EB-A597-4850-B96C-F85903725B60.txt` y `5E14F838-83B5-494C-BBA9-90B2C2239E93.txt`.
+- GREEN global Xcode MCP: **1.073 declaraciones / 1.544 resultados PASS**, cero fallos/skips/notRun/runtime warnings.
+  Incluye las24 invocaciones nuevas: selección/sustitución/conversión, observación/error/retry/cancelación/cierre,
+  composición contextual real, rechazo sin efectos al inactivar y recuperación por otro producto o Profesional.
+  Summary `RunAllTests/E6F18335-294E-43E2-9FEC-DB8F827362EA.txt`; consola `test-console-log-2026-09-30T00-49-26+02-00.txt`.
+  Native `.xcresult` cerrado: `Test-FranAlonso-Develop-2026.09.30_00-49-26-+0200.xcresult`, finishTime presente,
+  DerivedData/FranAlonso-eehpkvodmpnqlchgeqriatcucsjf/Logs/Test. Develop/iPhone18Pro/iOS27.0.
+- Build Develop con tests PASS16,958s; Production PASS21,59s tras simplificar sección visual. GetBuildLog 0issues;
+  logs completos revisados: solo aviso AppIntents metadata conocido, ningún warning Swift/Clang nuevo.
+  Logs `BuildProject-Log-20260930-004912.txt` y `BuildProject-Log-20260930-005421.txt`. Develop restaurado.
+- Previews de Screen y contenido en Large/XXX Large/AX5, ES/EN, Light/Dark y contraste aumentado representativo.
+  Destino real de renders iPhone18ProMax/iOS27.2; no confundir con tests. Componentes permiten inspeccionar catálogo
+  elegido, vacío, fallo y vínculo no disponible. Screen XXX/AX capturó carga; contenido determinista complementa.
+  Se eliminó duplicación visual de la etiqueta de producto, conservando etiqueta nativa, nombres multilínea y44pt.
+  [Matriz y artefactos](../accessibility/evidence/10-6-linked-product-selector.md).
+- Después de la suite solo se ajustó presentación de la sección y añadió un preview determinista. Sin cambio de lógica,
+  contratos ni tests; builds/previews/smoke validan ese delta, sin repetir la suite global.
+- Estilo:11Swift cambiados, cero candidatos tras revisión; diff-check limpio. Gobernanza conserva únicamente los seis
+  enlaces históricos08.3 ausentes. Sin XCTest/XCUITest ni UI tests nativos; sin dependencias, unsafe ni live.
+- Smoke final Develop/iPhone18Pro/iOS27.0 PASS: entrar/salir del Picker conserva sesión y campos, sustituir
+  Champú→Mascarilla, guardar/reabrir conserva nuevo vínculo; Profesional→Producto no restaura vínculo, guardar vacío
+  muestra error, elegir y guardar recupera. Informe `/tmp/franalonso-106-smoke.md`, ocho hitos00:57:04–00:58:29.
+  Sesión cerrada, argumentos demo NO, esquemas intactos. Build de InstallAndRun succeeded,0issues estructurados;
+  log `GetBuildLog/E6A4A76E-3918-45FB-8455-AC7442AF3D68.txt`, solo AppIntents conocido en texto completo.
+- Runtime conserva dos avisos SwiftUI `Invalid frame dimension`; ya existían ocho en smoke10.5, log final
+  `Service Catalogue Smoke-00_14_30_256-logs.txt`, líneas395/561/673/681/693/797/805/823. Sin impacto observado;
+  causa pendiente, seguimiento de layout PLU-65/67. No equivale a warnings Swift/Clang ni a runtimeWarnings de la suite.
+  Recuperación de vínculo histórico probada en composición, sin recorrido UI específico; teclado software oculto.
+- POST independientes estándares y UI/accesibilidad: PASS funcional, sin hallazgos nuevosP0–P3. Cada revisor y root
+  verificaron664archivosidénticos, `/tmp/franalonso-10-6-post1.json`, SHA256
+  `91f7360b9bf73fb80cfa12e52b4f6b66e9fb146eaabeaf643100a812eeea8046`. Operacionalmente read-only, sin builds ni ediciones.
+  Confirmar en validación integral nombre/valor del Picker Tipo (jerarquía «Tipo, Tipo»), sin afirmar fallo AT.
+- PLU-66 continúa In Progress hasta entrega autorizada. PLU-67 Backlog mantiene deuda integral propia con Jesus Franco,
+  tras feedback/estabilización y antes del primer candidato real. No se cierra fase;10.7 comienza tras la entrega. Tras las auditorías
+  solo se actualizan registros documentales y Linear; código/configuración/tests/recursos conservan la huella revisada.
+
+## Entrega anterior — 10.5 entregada — 2026-09-30
 
 [PR28](https://github.com/JFrancoG/FranAlonso/pull/28) MERGED. Commit792adba414da4e8afe72fce29ea637176534160e,
 mergec2f1af0cc248a97ea541f7cef62cb2734e1a791b; árbol completo idéntico al head validado. PLU-64 Done confirmado.

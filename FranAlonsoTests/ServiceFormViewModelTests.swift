@@ -260,10 +260,10 @@ struct ServiceFormViewModelTests {
 
 enum ServiceFormInterruption { case cancelled, cooperative, closed }
 enum ServiceFormReadInterruption { case replaced, cancelled, closed }
-private enum ServiceFormTestFailure: Error { case expected }
+enum ServiceFormTestFailure: Error { case expected }
 
 @MainActor
-private struct ServiceFormFixture {
+struct ServiceFormFixture {
     let container: ModelContainer
     let reads: ServiceFormReadStub
     let writes: ServiceFormWriteStub
@@ -272,8 +272,8 @@ private struct ServiceFormFixture {
     var id: ServiceID { model.destination.serviceID }
 }
 
-private extension ServiceFormFixture {
-    init(mode: ServiceFormDestination.Mode) throws {
+extension ServiceFormFixture {
+    init(mode: ServiceFormDestination.Mode, products: any ProductRepository = InMemoryProductRepository()) throws {
         let container = try ModelContainer.inMemory(for: .franAlonso)
         let reads = ServiceFormReadStub()
         let writes = ServiceFormWriteStub()
@@ -284,6 +284,7 @@ private extension ServiceFormFixture {
             model: ServiceFormViewModel(
                 destination: ServiceFormDestination(id: UUID(), serviceID: ServiceID(rawValue: UUID()), mode: mode),
                 getService: GetServiceUseCase(repository: reads),
+                observeLinkableProducts: ObserveLinkableProductsUseCase(repository: products),
                 create: { id, profile, _ in
                     try await writes.save(id, profile)
                 },
@@ -300,7 +301,7 @@ private extension ServiceFormFixture {
 }
 
 @MainActor
-private final class ServiceFormWriteStub {
+final class ServiceFormWriteStub {
     var failure: (any Error)?
     var gate: ServiceFormTestGate?
     var ids: [ServiceID] = []
@@ -335,7 +336,7 @@ private final class ServiceFormWriteStub {
     }
 }
 
-private actor ServiceFormReadStub: ServiceRepository {
+actor ServiceFormReadStub: ServiceRepository {
     private var stored: Service?
     private var failure: (any Error)?
     private var gate: ServiceFormTestGate?
@@ -379,7 +380,7 @@ private actor ServiceFormReadStub: ServiceRepository {
 }
 
 @MainActor
-private final class ServiceFormTestGate {
+final class ServiceFormTestGate {
     private let entered = AsyncStream<Void>.makeStream()
     private let released = AsyncStream<Void>.makeStream()
     private var didBlock = false
@@ -403,7 +404,7 @@ private final class ServiceFormTestGate {
     }
 }
 
-private func serviceEditingDraft() -> ServiceFormDraft {
+func serviceEditingDraft() -> ServiceFormDraft {
     ServiceFormDraft(
         name: "  Offering  ",
         type: .professional,
@@ -415,7 +416,7 @@ private func serviceEditingDraft() -> ServiceFormDraft {
     )
 }
 
-private func serviceFormExpected(id: ServiceID, name: String, status: ServiceStatus = .active) throws -> Service {
+func serviceFormExpected(id: ServiceID, name: String, status: ServiceStatus = .active) throws -> Service {
     try Service(
         id: id,
         name: name,

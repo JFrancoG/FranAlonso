@@ -2,7 +2,7 @@ import Foundation
 
 /// Fields that can receive focus after an explicit, unsuccessful save attempt.
 enum ServiceFormValidationField: Hashable {
-    case name, price, tax, discount
+    case name, product, price, tax, discount
 }
 
 extension ServiceFormError {
@@ -22,13 +22,14 @@ extension ServiceFormError {
         }
     }
 
-    /// Keeps input errors next to their field; persistence and historical-link failures stay general.
+    /// Keeps input errors next to their field; other persistence failures stay general.
     var validationField: ServiceFormValidationField? {
         switch self {
         case .service(.invalidName): .name
         case .invalidPriceInput, .service(.invalidPrice): .price
         case .invalidTaxInput: .tax
         case .invalidDiscountInput: .discount
+        case .service(.linkedProductRequired), .service(.linkedProductUnavailable): .product
         default: nil
         }
     }

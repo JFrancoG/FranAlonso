@@ -1,6 +1,176 @@
 {
   "sourceLanguage" : "es",
   "strings" : {
+    "services.form.linkedProduct": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Producto asociado"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Linked product"
+          }
+        }
+      }
+    },
+    "services.form.product.choose": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Elegir producto"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choose product"
+          }
+        }
+      }
+    },
+    "services.form.product.hint": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Elige un producto activo. Puedes sustituirlo antes de guardar."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choose an active product. You can replace it before saving."
+          }
+        }
+      }
+    },
+    "services.form.product.unavailable": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Producto no disponible"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Product unavailable"
+          }
+        }
+      }
+    },
+    "services.form.product.unknown": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Disponibilidad sin comprobar"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Availability not checked"
+          }
+        }
+      }
+    },
+    "services.form.product.unavailableHint": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "El producto asociado ya no está disponible. Elige otro o cambia el tipo a Profesional."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The linked product is no longer available. Choose another or change the type to Professional."
+          }
+        }
+      }
+    },
+    "services.form.products.loading": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cargando productos…"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Loading products…"
+          }
+        }
+      }
+    },
+    "services.form.products.error": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No se han podido cargar los productos. Reintenta para comprobar su disponibilidad."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Products could not be loaded. Try again to check their availability."
+          }
+        }
+      }
+    },
+    "services.form.products.retry": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reintentar productos"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Retry products"
+          }
+        }
+      }
+    },
+    "services.form.products.empty": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No hay productos activos. Puedes cambiar el tipo a Profesional o cancelar y añadir un producto al catálogo."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "There are no active products. You can change the type to Professional or cancel and add a product to the catalog."
+          }
+        }
+      }
+    },
     "services.form.createTitleCompact": {
       "comment": "Service catalogue: services.form.createTitleCompact",
       "extractionState": "manual",
@@ -1103,13 +1273,13 @@
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "El producto asociado ya no está disponible. No se han guardado los cambios. Puedes cancelar para volver al catálogo."
+            "value": "El producto asociado ya no está disponible. No se han guardado los cambios. Elige otro producto o cambia el tipo a Profesional y vuelve a guardar."
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "The linked product is no longer available. Your changes were not saved. You can cancel to return to the catalog."
+            "value": "The linked product is no longer available. Your changes were not saved. Choose another product or change the type to Professional and save again."
           }
         }
       }
@@ -1120,13 +1290,13 @@
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "No se puede guardar la relación con el producto. Cancela y vuelve a abrir el servicio."
+            "value": "Elige un producto activo para el tipo Producto o cambia el tipo a Profesional."
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "The product link could not be saved. Cancel and reopen the service."
+            "value": "Choose an active product for the Product type or change the type to Professional."
           }
         }
       }

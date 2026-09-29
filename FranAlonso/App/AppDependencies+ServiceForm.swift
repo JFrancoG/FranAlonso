@@ -1,8 +1,9 @@
 extension AppDependencies {
-    /// Shares runtime-owned Service persistence and invalidation without retaining the caller's context.
+    /// Shares Service persistence and active Product observation without retaining the caller's context.
     static func serviceFormFactory(
         persistenceActor: ServicePersistenceActor,
-        observationSignal: ServiceObservationSignal
+        observationSignal: ServiceObservationSignal,
+        productRepository: any ProductRepository
     ) -> ServiceFormFactory {
         let repository = DefaultServiceRepository(
             persistenceActor: persistenceActor,
@@ -13,6 +14,7 @@ extension AppDependencies {
             return ServiceFormViewModel(
                 destination: destination,
                 getService: GetServiceUseCase(repository: repository),
+                observeLinkableProducts: ObserveLinkableProductsUseCase(repository: productRepository),
                 create: { id, profile, context in
                     try await adapter.create(id: id, profile: profile, in: context)
                 },
@@ -28,11 +30,15 @@ extension AppDependencies {
     }
 
     /// Supplies finite snapshot reads and rejects writes before accessing the caller's context.
-    static func readOnlyServiceFormFactory(repository: any ServiceRepository) -> ServiceFormFactory {
+    static func readOnlyServiceFormFactory(
+        repository: any ServiceRepository,
+        productRepository: any ProductRepository
+    ) -> ServiceFormFactory {
         { destination, locale in
             ServiceFormViewModel(
                 destination: destination,
                 getService: GetServiceUseCase(repository: repository),
+                observeLinkableProducts: ObserveLinkableProductsUseCase(repository: productRepository),
                 create: { _, _, _ in
                     throw ServiceError.persistenceUnavailable
                 },

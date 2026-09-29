@@ -11,6 +11,7 @@ struct ServiceFormScreen: View {
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     @State private var viewModel: ServiceFormViewModel?
     @State private var request: Request?
+    @State private var productObservationRequestID = UUID()
     @State private var showsDiscardChanges = false
     @State private var showsDeactivationConfirmation = false
     @State private var validationAttemptID: UUID?
@@ -22,6 +23,11 @@ struct ServiceFormScreen: View {
     private struct Request: Equatable {
         let id: UUID
         let operation: ServiceFormViewModel.Operation
+    }
+
+    private struct ProductObservationRequest: Equatable {
+        let sessionID: UUID?
+        let retryID: UUID
     }
 
     var body: some View {
@@ -130,6 +136,16 @@ struct ServiceFormScreen: View {
                 announce(error.serviceFormMessage)
             }
         }
+        .task(id: ProductObservationRequest(
+            sessionID: viewModel?.destination.id,
+            retryID: productObservationRequestID
+        )) {
+            await viewModel?.observeProducts()
+        }
+        .onChange(of: viewModel?.linkableProductsState) { _, state in
+            guard state == .failed, viewModel?.draft.type == .product else { return }
+            announce(.servicesFormProductsError)
+        }
         .task(id: request) {
             guard let request, let viewModel else { return }
             switch request.operation {
@@ -178,6 +194,12 @@ struct ServiceFormScreen: View {
             canDeactivate: viewModel.canDeactivate,
             isRequestPending: request != nil,
             validationAttemptID: validationAttemptID,
+            linkableProductsState: viewModel.linkableProductsState,
+            onChangeType: viewModel.changeType,
+            onSelectProduct: viewModel.selectLinkedProduct,
+            onRetryProducts: {
+                productObservationRequestID = UUID()
+            },
             onRetry: {
                 requestOperation(.load)
             },

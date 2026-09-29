@@ -83,6 +83,21 @@ Gestionar todos los conceptos cobrables, incluidos los productos vendidos al pú
   Previews siembran solo identidades ausentes y conservan las ediciones. No cambia schema, sync ni activación live.
 - Evidencia progresiva en [matriz 10.5](../accessibility/evidence/10-5-service-screens.md), deuda integral PLU-65.
 
+## Contratos aprobados de 10.6
+
+- El formulario permite cambiar tipo, elegir y sustituir producto activo mediante controles nativos. Elegir Profesional
+  limpia el vínculo explícitamente; volver a Producto no selecciona automáticamente. Los demás campos se conservan.
+- La observación pertenece a la tarea del caller y tiene generación independiente de carga/guardado/desactivación.
+  Emisiones no modifican borrador, baseline ni errores de escritura. Finalización normal conserva el último snapshot,
+  incluido vacío; terminar sin emitir o fallar produce estado recuperable; cancelación es neutral y cierre invalida respuestas.
+- Una selección desaparecida conserva su identidad en el borrador y muestra indisponibilidad después de una lectura válida.
+  Carga/fallo significan disponibilidad desconocida. No se muestra UUID ni se afirma una eliminación a partir de un error.
+- Solo se eligen IDs presentes en el snapshot activo observado. Guardar sigue revalidando en la aceptación contextual10.3,
+  por lo que un producto retirado entre elección y guardado no deja escrituras parciales. Recuperar permite sustituir o
+  convertir a Profesional y reintentar, sin perder otros datos. Desactivación histórica sigue disponible.
+- Todas las composiciones inyectan el mismo ProductRepository. No cambia Domain/Data, schema, sync ni activación live.
+  [Evidencia10.6](../accessibility/evidence/10-6-linked-product-selector.md) y deuda integral propia PLU-67 según ADR0029.
+
 ## Subfases
 
 | ID | Tarea | Test primero | Validación |
