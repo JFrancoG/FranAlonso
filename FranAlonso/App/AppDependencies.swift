@@ -1,8 +1,9 @@
+import Foundation
 import SwiftData
 
 struct AppDependencies {
     typealias ClientFormFactory = @MainActor @Sendable (ClientFormDestination) -> ClientFormViewModel
-    typealias ServiceFormFactory = @MainActor @Sendable (ServiceFormDestination) -> ServiceFormViewModel
+    typealias ServiceFormFactory = @MainActor @Sendable (ServiceFormDestination, Locale) -> ServiceFormViewModel
     typealias ProductFormFactory = @MainActor @Sendable (ProductFormDestination) -> ProductFormViewModel
     typealias StockAdjustmentFactory = @MainActor @Sendable (StockAdjustmentDestination) -> StockAdjustmentViewModel
     typealias ClientConsentServicesFactory = @MainActor @Sendable () throws -> ClientConsentServices

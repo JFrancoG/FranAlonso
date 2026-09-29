@@ -6,6 +6,9 @@ All notable changes to this project are documented in this file.
 
 ### Added
 
+- 2026-09-30 | ✨ feat(services): add catalogue screens
+  Adds searchable commercial services, localized forms and repeatable linked-product demo data.
+
 - 2026-09-29 | ✨ feat(services): coordinate list and form state
   Adds complete commercial drafts, exact localized decimals and protected contextual form sessions.
 

@@ -1,6 +1,1136 @@
 {
   "sourceLanguage" : "es",
   "strings" : {
+    "services.form.createTitleCompact": {
+      "comment": "Service catalogue: services.form.createTitleCompact",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nuevo"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "New"
+          }
+        }
+      }
+    },
+    "services.form.editTitleCompact": {
+      "comment": "Service catalogue: services.form.editTitleCompact",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Editar"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Edit"
+          }
+        }
+      }
+    },
+    "services.list.title": {
+      "comment": "Service catalogue: services.list.title",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Servicios"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Services"
+          }
+        }
+      }
+    },
+    "services.list.search.prompt": {
+      "comment": "Service catalogue: services.list.search.prompt",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Buscar servicios"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Search services"
+          }
+        }
+      }
+    },
+    "services.list.add": {
+      "comment": "Service catalogue: services.list.add",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Añadir servicio"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Add service"
+          }
+        }
+      }
+    },
+    "services.list.loading": {
+      "comment": "Service catalogue: services.list.loading",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cargando servicios…"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Loading services…"
+          }
+        }
+      }
+    },
+    "services.list.empty.title": {
+      "comment": "Service catalogue: services.list.empty.title",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Todavía no hay servicios"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No services yet"
+          }
+        }
+      }
+    },
+    "services.list.empty.message": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Añade el primer servicio a tu catálogo comercial."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Add the first service to your commercial catalog."
+          }
+        }
+      }
+    },
+    "services.list.search.empty.title": {
+      "comment": "Service catalogue: services.list.search.empty.title",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sin resultados"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No results"
+          }
+        }
+      }
+    },
+    "services.list.search.empty.message": {
+      "comment": "Service catalogue: services.list.search.empty.message",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Prueba con otro nombre o borra la búsqueda."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Try another name or clear the search."
+          }
+        }
+      }
+    },
+    "services.list.error.title": {
+      "comment": "Service catalogue: services.list.error.title",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No se han podido cargar los servicios"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Couldn’t load services"
+          }
+        }
+      }
+    },
+    "services.list.error.message": {
+      "comment": "Service catalogue: services.list.error.message",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Los servicios no están disponibles. Inténtalo de nuevo."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Services are unavailable. Try again."
+          }
+        }
+      }
+    },
+    "services.list.retry": {
+      "comment": "Service catalogue: services.list.retry",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reintentar"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Retry"
+          }
+        }
+      }
+    },
+    "services.list.edit.hint": {
+      "comment": "Service catalogue: services.list.edit.hint",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abre la ficha para editar el servicio."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Opens the service for editing."
+          }
+        }
+      }
+    },
+    "services.status.inactive": {
+      "comment": "Service catalogue: services.status.inactive",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Inactivo"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Inactive"
+          }
+        }
+      }
+    },
+    "services.form.createTitle": {
+      "comment": "Service catalogue: services.form.createTitle",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nuevo servicio"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "New service"
+          }
+        }
+      }
+    },
+    "services.form.editTitle": {
+      "comment": "Service catalogue: services.form.editTitle",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Editar servicio"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Edit service"
+          }
+        }
+      }
+    },
+    "services.form.name": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nombre comercial"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Commercial name"
+          }
+        }
+      }
+    },
+    "services.form.namePlaceholder": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nombre del servicio"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Service name"
+          }
+        }
+      }
+    },
+    "services.form.cancel": {
+      "comment": "Service catalogue: services.form.cancel",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cancelar"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cancel"
+          }
+        }
+      }
+    },
+    "services.form.save": {
+      "comment": "Service catalogue: services.form.save",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Guardar"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Save"
+          }
+        }
+      }
+    },
+    "services.form.loading": {
+      "comment": "Service catalogue: services.form.loading",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cargando servicio…"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Loading service…"
+          }
+        }
+      }
+    },
+    "services.form.saving": {
+      "comment": "Service catalogue: services.form.saving",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Guardando servicio…"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Saving service…"
+          }
+        }
+      }
+    },
+    "services.form.deactivating": {
+      "comment": "Service catalogue: services.form.deactivating",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Desactivando servicio…"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deactivating service…"
+          }
+        }
+      }
+    },
+    "services.form.retry": {
+      "comment": "Service catalogue: services.form.retry",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reintentar"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Retry"
+          }
+        }
+      }
+    },
+    "services.form.errorTitle": {
+      "comment": "Service catalogue: services.form.errorTitle",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No se ha podido cargar el servicio"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Couldn’t load the service"
+          }
+        }
+      }
+    },
+    "services.form.error.name": {
+      "comment": "Service catalogue: services.form.error.name",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Escribe un nombre para el servicio."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enter a service name."
+          }
+        }
+      }
+    },
+    "services.form.error.exists": {
+      "comment": "Service catalogue: services.form.error.exists",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Este servicio ya existe. Cierra el formulario y vuelve a abrirlo."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This service already exists. Close and reopen the form."
+          }
+        }
+      }
+    },
+    "services.form.error.missing": {
+      "comment": "Service catalogue: services.form.error.missing",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Este servicio ya no está disponible."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This service is no longer available."
+          }
+        }
+      }
+    },
+    "services.form.error.conflict": {
+      "comment": "Service catalogue: services.form.error.conflict",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hay un conflicto pendiente en este servicio. Inténtalo de nuevo cuando se resuelva."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This service has an unresolved conflict. Try again after it is resolved."
+          }
+        }
+      }
+    },
+    "services.form.error.unavailable": {
+      "comment": "Service catalogue: services.form.error.unavailable",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No se ha podido completar la operación. Inténtalo de nuevo."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Couldn’t complete the operation. Try again."
+          }
+        }
+      }
+    },
+    "services.form.inactive": {
+      "comment": "Service catalogue: services.form.inactive",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Inactivo"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Inactive"
+          }
+        }
+      }
+    },
+    "services.form.deactivate": {
+      "comment": "Service catalogue: services.form.deactivate",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Desactivar servicio"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deactivate service"
+          }
+        }
+      }
+    },
+    "services.form.deactivate.title": {
+      "comment": "Service catalogue: services.form.deactivate.title",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¿Desactivar este servicio?"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deactivate this service?"
+          }
+        }
+      }
+    },
+    "services.form.deactivate.message": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "El servicio seguirá en el catálogo como inactivo y conservará su historial. Los cambios sin guardar se descartarán."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The service will remain in the catalog as inactive and retain its history. Unsaved changes will be discarded."
+          }
+        }
+      }
+    },
+    "services.form.discard.title": {
+      "comment": "Service catalogue: services.form.discard.title",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¿Descartar los cambios?"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Discard changes?"
+          }
+        }
+      }
+    },
+    "services.form.discard.message": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Perderás todos los cambios sin guardar."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "All unsaved changes will be lost."
+          }
+        }
+      }
+    },
+    "services.form.discard.confirm": {
+      "comment": "Service catalogue: services.form.discard.confirm",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Descartar"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Discard"
+          }
+        }
+      }
+    },
+    "services.form.discard.keepEditing": {
+      "comment": "Service catalogue: services.form.discard.keepEditing",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seguir editando"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keep editing"
+          }
+        }
+      }
+    },
+    "services.form.saved": {
+      "comment": "Service catalogue: services.form.saved",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Servicio guardado"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Service saved"
+          }
+        }
+      }
+    },
+    "services.form.deactivated": {
+      "comment": "Service catalogue: services.form.deactivated",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Servicio desactivado"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Service deactivated"
+          }
+        }
+      }
+    },
+    "services.type.professional": {
+      "comment": "Service catalogue: services.type.professional",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Profesional"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Professional"
+          }
+        }
+      }
+    },
+    "services.type.product": {
+      "comment": "Service catalogue: services.type.product",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Producto"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Product"
+          }
+        }
+      }
+    },
+    "catalog.services.title": {
+      "comment": "Service catalogue: catalog.services.title",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Servicios"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Services"
+          }
+        }
+      }
+    },
+    "catalog.services.message": {
+      "comment": "Service catalogue: catalog.services.message",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Precios y conceptos de venta"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Prices and offerings"
+          }
+        }
+      }
+    },
+    "catalog.products.title": {
+      "comment": "Service catalogue: catalog.products.title",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Productos"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Products"
+          }
+        }
+      }
+    },
+    "catalog.products.message": {
+      "comment": "Service catalogue: catalog.products.message",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Inventario y existencias"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Inventory and stock"
+          }
+        }
+      }
+    },
+    "services.form.type": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tipo"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Type"
+          }
+        }
+      }
+    },
+    "services.form.price": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Precio"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Price"
+          }
+        }
+      }
+    },
+    "services.form.priceHint": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Impuestos incluidos. Escribe el importe sin separadores de miles."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tax included. Enter the amount without thousands separators."
+          }
+        }
+      }
+    },
+    "services.form.currency": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Moneda"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Currency"
+          }
+        }
+      }
+    },
+    "services.form.currency.eur": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Euro (EUR)"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Euro (EUR)"
+          }
+        }
+      }
+    },
+    "services.form.currency.usd": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dólar (USD)"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "US dollar (USD)"
+          }
+        }
+      }
+    },
+    "services.form.tax": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Impuesto (%)"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tax (%)"
+          }
+        }
+      }
+    },
+    "services.form.taxHint": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Porcentaje entre 0 y 100."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Percentage from 0 to 100."
+          }
+        }
+      }
+    },
+    "services.form.discount": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Descuento (%)"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Discount (%)"
+          }
+        }
+      }
+    },
+    "services.form.discountHint": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Opcional, entre 0 y 100. Déjalo vacío para no aplicar descuento."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Optional, from 0 to 100. Leave blank to apply no discount."
+          }
+        }
+      }
+    },
+    "services.form.keyboardDone": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Listo"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Done"
+          }
+        }
+      }
+    },
+    "services.form.linkedProductPreserved": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Se conserva el producto asociado a este servicio."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The product linked to this service is retained."
+          }
+        }
+      }
+    },
+    "services.form.error.price": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Escribe un precio de cero o mayor, sin separadores de miles."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enter a price of zero or more, without thousands separators."
+          }
+        }
+      }
+    },
+    "services.form.error.tax": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Escribe un porcentaje de impuesto entre 0 y 100."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enter a tax percentage from 0 to 100."
+          }
+        }
+      }
+    },
+    "services.form.error.discount": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Escribe un descuento entre 0 y 100 o deja el campo vacío."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enter a discount from 0 to 100 or leave the field blank."
+          }
+        }
+      }
+    },
+    "services.form.error.linkedProductUnavailable": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "El producto asociado ya no está disponible. No se han guardado los cambios. Puedes cancelar para volver al catálogo."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The linked product is no longer available. Your changes were not saved. You can cancel to return to the catalog."
+          }
+        }
+      }
+    },
+    "services.form.error.linkedProduct": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No se puede guardar la relación con el producto. Cancela y vuelve a abrir el servicio."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The product link could not be saved. Cancel and reopen the service."
+          }
+        }
+      }
+    },
     "stock.adjustment.titleCompact": {
       "comment": "Compact stock sheet title at accessibility text sizes.",
       "extractionState": "manual",

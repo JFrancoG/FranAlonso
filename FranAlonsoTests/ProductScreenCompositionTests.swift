@@ -64,7 +64,7 @@ struct ProductScreenCompositionTests {
         #expect(try await iterator.next() == products)
         let restarted = try DevelopDemoComposition.make(configuration: .clients).applicationComposition
         #expect(try source.fetchAll(in: ModelContext(restarted.modelContainer)) == initial)
-        #expect(try context.fetchCount(FetchDescriptor<ServiceModel>()) == 0)
+        #expect(try context.fetchCount(FetchDescriptor<ServiceModel>()) == 2)
         #expect(try context.fetchCount(FetchDescriptor<SaleModel>()) == 0)
         #expect(demo.runtime == nil)
     }

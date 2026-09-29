@@ -1,4 +1,4 @@
-# Demo de clientes, productos y stock — 08.8a / 09.4 / 09.6
+# Demo de clientes, productos, stock y servicios — 08.8a / 09 / 10.5
 
 ## Arranque
 
@@ -37,11 +37,11 @@ Los envíos siguientes del mismo proceso funcionan normalmente. No crear otro do
 
 ## Catálogo de productos — 09.4
 
-En el mismo proceso, abrir Catálogo: muestra «Champú DEMO hidratante» y «Mascarilla DEMO nutritiva».
+En el mismo proceso, abrir Catálogo → Productos: muestra «Champú DEMO hidratante» y «Mascarilla DEMO nutritiva».
 Buscar por nombre, añadir un producto, editarlo y cancelar con descarte confirmado. Desactivar exige confirmación;
 el producto queda visible como Inactivo y se puede editar su nombre. La desactivación descarta cambios de nombre
 sin guardar, tal como avisa el diálogo. La hoja se cierra por sus acciones explícitas, no arrastrándola.
-Guardar vacío muestra un error; corregir y guardar recorre la persistencia local real. No hay precio ni servicios.
+Guardar vacío muestra un error; corregir y guardar recorre la persistencia local real. El precio comercial pertenece a Servicios, no al inventario.
 
 ## Ajuste de stock — 09.6
 
@@ -55,14 +55,27 @@ El nombre sin guardar en la ficha padre se conserva al entrar/salir de stock. Lo
 ajustes; un producto nuevo debe guardarse antes. Un fallo de envío congela el ajuste para reintentar exactamente el mismo;
 un fallo de recarga después de aceptar solo ofrece actualizar existencias, sin volver a registrar.
 
+## Catálogo comercial — 10.5
+
+Catálogo → Servicios muestra «Corte y peinado DEMO» (profesional, 35 EUR) y «Champú DEMO venta»
+(producto, 20 EUR), vinculado a «Champú DEMO hidratante». Ambos tienen impuesto 21 y ningún descuento.
+Buscar por nombre y añadir un servicio profesional. Guardar vacío muestra la validación; completar nombre, precio e
+impuesto (por ejemplo 21). En español usar coma decimal, sin separadores de miles; descuento vacío significa ninguno.
+La moneda puede ser EUR o USD. Guardar cierra y actualiza la lista mediante persistencia local real.
+
+Abrir, editar y cancelar exige confirmar descarte. Desactivar confirma que conserva historial y descarta el borrador;
+reabrir muestra Inactivo. La edición conserva el tipo y producto asociado. Elegir/cambiar tipo o vínculo llega en 10.6.
+Si se desactiva el producto de inventario asociado, el servicio histórico sigue visible y desactivable, pero no puede
+aceptar una edición comercial con ese vínculo indisponible. El mensaje de error explica esta limitación.
+
 ## Reinicio y límites de ambos recorridos
 
-Terminar el proceso y volver a lanzar recrea los dos borradores y dos productos con saldos8/2, vacía documentos/recibos y rearma el primer fallo del modo
+Terminar el proceso y volver a lanzar recrea los dos borradores y dos productos con saldos8/2 y los dos servicios iniciales, vacía documentos/recibos y rearma el primer fallo del modo
 de recuperación. Ir a segundo plano o reabrir una pantalla no reinicia datos. Este reset no es recuperación durable.
 El storage normal continúa no disponible; esta demo no utiliza Firebase, Keychain, telemetría real ni motores live.
-No demuestra transporte, sincronización, persistencia entre procesos, fotografía, servicios, venta o Foundation Models. Los movimientos de stock de la demo solo viven durante ese proceso.
+No demuestra transporte, sincronización, persistencia entre procesos, fotografía, venta o Foundation Models. Los movimientos de stock de la demo solo viven durante ese proceso.
 
 Usar parámetros temporales de `DeviceInteractionInstallAndRun` al validar con Xcode MCP; no es necesario editar el esquema
 para cada recorrido. Cerrar la sesión de interacción al terminar y conservar ambos argumentos `NO` en el esquema.
-Resultados de validación y deuda accesible en [fase08](phase-08.md) y [fase09](phase-09.md); diseño y límites en
+Resultados de validación y deuda accesible en [fase08](phase-08.md) y [fase09](phase-09.md) y [fase10](phase-10.md); diseño y límites en
 [propuesta08.8a](08-8a-reusable-demo-proposal.md) y [ADR0030](../ADRs/0030-reusable-demo-and-early-foundation-models.md).

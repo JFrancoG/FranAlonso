@@ -8,7 +8,7 @@ extension AppDependencies {
             persistenceActor: persistenceActor,
             observationSignal: observationSignal
         )
-        return { destination in
+        return { destination, locale in
             let adapter = ServiceContextualPersistenceAdapter(observationSignal: observationSignal)
             return ServiceFormViewModel(
                 destination: destination,
@@ -21,14 +21,15 @@ extension AppDependencies {
                 },
                 deactivate: { id, context in
                     try await adapter.deactivate(id, in: context)
-                }
+                },
+                locale: locale
             )
         }
     }
 
     /// Supplies finite snapshot reads and rejects writes before accessing the caller's context.
     static func readOnlyServiceFormFactory(repository: any ServiceRepository) -> ServiceFormFactory {
-        { destination in
+        { destination, locale in
             ServiceFormViewModel(
                 destination: destination,
                 getService: GetServiceUseCase(repository: repository),
@@ -40,7 +41,8 @@ extension AppDependencies {
                 },
                 deactivate: { _, _ in
                     throw ServiceError.persistenceUnavailable
-                }
+                },
+                locale: locale
             )
         }
     }
