@@ -1,6 +1,654 @@
 {
   "sourceLanguage" : "es",
   "strings" : {
+    "stock.adjustment.titleCompact": {
+      "comment": "Compact stock sheet title at accessibility text sizes.",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stock"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stock"
+          }
+        }
+      }
+    },
+    "stock.adjustment.open": {
+      "comment": "Stock adjustment screen: open",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ajustar stock"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Adjust stock"
+          }
+        }
+      }
+    },
+    "stock.adjustment.loading": {
+      "comment": "Stock adjustment screen: loading",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cargando existencias…"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Loading stock…"
+          }
+        }
+      }
+    },
+    "stock.adjustment.product": {
+      "comment": "Stock adjustment screen: product",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Producto"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Product"
+          }
+        }
+      }
+    },
+    "stock.adjustment.balance": {
+      "comment": "Stock adjustment screen: balance",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Existencias actuales"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Current stock"
+          }
+        }
+      }
+    },
+    "stock.adjustment.negative": {
+      "comment": "Stock adjustment screen: negative",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "El saldo de existencias es negativo."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The stock balance is negative."
+          }
+        }
+      }
+    },
+    "stock.adjustment.direction": {
+      "comment": "Stock adjustment screen: direction",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tipo de ajuste"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Adjustment type"
+          }
+        }
+      }
+    },
+    "stock.adjustment.entry": {
+      "comment": "Stock adjustment screen: entry",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Entrada"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stock in"
+          }
+        }
+      }
+    },
+    "stock.adjustment.withdrawal": {
+      "comment": "Stock adjustment screen: withdrawal",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Salida"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stock out"
+          }
+        }
+      }
+    },
+    "stock.adjustment.units": {
+      "comment": "Stock adjustment screen: units",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unidades"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Units"
+          }
+        }
+      }
+    },
+    "stock.adjustment.unitsPlaceholder": {
+      "comment": "Stock adjustment screen: unitsPlaceholder",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cantidad entera positiva"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Positive whole number"
+          }
+        }
+      }
+    },
+    "stock.adjustment.reason": {
+      "comment": "Stock adjustment screen: reason",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Motivo"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reason"
+          }
+        }
+      }
+    },
+    "stock.adjustment.reasonPlaceholder": {
+      "comment": "Stock adjustment screen: reasonPlaceholder",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Por ejemplo, recuento de inventario"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "For example, inventory count"
+          }
+        }
+      }
+    },
+    "stock.adjustment.save": {
+      "comment": "Stock adjustment screen: save",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Registrar"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Record"
+          }
+        }
+      }
+    },
+    "stock.adjustment.saving": {
+      "comment": "Stock adjustment screen: saving",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Registrando ajuste…"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Recording adjustment…"
+          }
+        }
+      }
+    },
+    "stock.adjustment.retry": {
+      "comment": "Stock adjustment screen: retry",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reintentar"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Retry"
+          }
+        }
+      }
+    },
+    "stock.adjustment.cancel": {
+      "comment": "Stock adjustment screen: cancel",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cancelar"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cancel"
+          }
+        }
+      }
+    },
+    "stock.adjustment.done": {
+      "comment": "Stock adjustment screen: done",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Finalizar"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Done"
+          }
+        }
+      }
+    },
+    "stock.adjustment.saved": {
+      "comment": "Stock adjustment screen: saved",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ajuste registrado"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Adjustment recorded"
+          }
+        }
+      }
+    },
+    "stock.adjustment.refreshing": {
+      "comment": "Stock adjustment screen: refreshing",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Actualizando existencias…"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Updating stock…"
+          }
+        }
+      }
+    },
+    "stock.adjustment.refreshError": {
+      "comment": "Stock adjustment screen: refreshError",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "El ajuste está registrado, pero no se han podido actualizar las existencias."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The adjustment is recorded, but the stock balance could not be updated."
+          }
+        }
+      }
+    },
+    "stock.adjustment.refresh": {
+      "comment": "Stock adjustment screen: refresh",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Actualizar existencias"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Refresh stock"
+          }
+        }
+      }
+    },
+    "stock.adjustment.frozen": {
+      "comment": "Stock adjustment screen: frozen",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reintentar registrará este mismo ajuste. Para cambiar los datos, cancela y abre un ajuste nuevo."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Retry will record this same adjustment. To change the details, cancel and open a new adjustment."
+          }
+        }
+      }
+    },
+    "stock.adjustment.discardTitle": {
+      "comment": "Stock adjustment screen: discardTitle",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¿Descartar el ajuste?"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Discard adjustment?"
+          }
+        }
+      }
+    },
+    "stock.adjustment.discardMessage": {
+      "comment": "Stock adjustment screen: discardMessage",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Los datos de este ajuste no se conservarán. Los movimientos ya registrados se mantienen."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This adjustment draft will be discarded. Previously recorded movements are kept."
+          }
+        }
+      }
+    },
+    "stock.adjustment.discard": {
+      "comment": "Stock adjustment screen: discard",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Descartar"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Discard"
+          }
+        }
+      }
+    },
+    "stock.adjustment.keepEditing": {
+      "comment": "Stock adjustment screen: keepEditing",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seguir editando"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keep editing"
+          }
+        }
+      }
+    },
+    "stock.adjustment.errorTitle": {
+      "comment": "Stock adjustment screen: errorTitle",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No se puede cargar el stock"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unable to load stock"
+          }
+        }
+      }
+    },
+    "stock.adjustment.errorQuantity": {
+      "comment": "Stock adjustment screen: errorQuantity",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Introduce un número entero de unidades mayor que cero, sin signos ni separadores."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enter a whole number of units greater than zero, without signs or separators."
+          }
+        }
+      }
+    },
+    "stock.adjustment.errorReason": {
+      "comment": "Stock adjustment screen: errorReason",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Escribe el motivo del ajuste."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enter a reason for the adjustment."
+          }
+        }
+      }
+    },
+    "stock.adjustment.errorDate": {
+      "comment": "Stock adjustment screen: errorDate",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No se ha podido preparar la fecha del ajuste. Cancela y vuelve a intentarlo."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The adjustment date could not be prepared. Cancel and try again."
+          }
+        }
+      }
+    },
+    "stock.adjustment.errorMissing": {
+      "comment": "Stock adjustment screen: errorMissing",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Este producto ya no está disponible."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This product is no longer available."
+          }
+        }
+      }
+    },
+    "stock.adjustment.errorConflict": {
+      "comment": "Stock adjustment screen: errorConflict",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "El producto tiene cambios pendientes de resolver. Inténtalo después de resolverlos."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The product has changes that need resolving. Try again after resolving them."
+          }
+        }
+      }
+    },
+    "stock.adjustment.errorIdentity": {
+      "comment": "Stock adjustment screen: errorIdentity",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Este ajuste entra en conflicto con otro movimiento. Cancela y abre un ajuste nuevo."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This adjustment conflicts with another movement. Cancel and open a new adjustment."
+          }
+        }
+      }
+    },
+    "stock.adjustment.errorOverflow": {
+      "comment": "Stock adjustment screen: errorOverflow",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "El ajuste supera el límite de unidades permitido."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The adjustment exceeds the allowed unit limit."
+          }
+        }
+      }
+    },
+    "stock.adjustment.errorStorage": {
+      "comment": "Stock adjustment screen: errorStorage",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No se ha podido completar la operación local. Vuelve a intentarlo."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The local operation could not be completed. Try again."
+          }
+        }
+      }
+    },
     "products.form.createTitleCompact": {
       "comment": "Título compacto del formulario de productos en tamaños de accesibilidad.",
       "extractionState": "manual",

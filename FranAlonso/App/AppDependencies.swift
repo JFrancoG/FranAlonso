@@ -3,12 +3,14 @@ import SwiftData
 struct AppDependencies {
     typealias ClientFormFactory = @MainActor @Sendable (ClientFormDestination) -> ClientFormViewModel
     typealias ProductFormFactory = @MainActor @Sendable (ProductFormDestination) -> ProductFormViewModel
+    typealias StockAdjustmentFactory = @MainActor @Sendable (StockAdjustmentDestination) -> StockAdjustmentViewModel
     typealias ClientConsentServicesFactory = @MainActor @Sendable () throws -> ClientConsentServices
 
     let observeClients: ObserveClientsUseCase
     let makeClientForm: ClientFormFactory
     let observeProducts: ObserveProductsUseCase
     let makeProductForm: ProductFormFactory
+    let makeStockAdjustment: StockAdjustmentFactory
     let observeServices: ObserveServicesUseCase
     let observeSales: ObserveSalesUseCase
     let saveSale: SaveSaleUseCase
@@ -31,6 +33,9 @@ struct AppDependencies {
             observationSignal: observationSignal,
             productPersistenceActor: ProductPersistenceActor(modelContainer: modelContainer),
             productObservationSignal: productObservationSignal,
+            stockRepository: DefaultStockRepository(
+                persistenceActor: StockPersistenceActor(modelContainer: modelContainer)
+            ),
             servicePersistenceActor: ServicePersistenceActor(modelContainer: modelContainer),
             serviceObservationSignal: serviceObservationSignal,
             salePersistenceActor: SalePersistenceActor(modelContainer: modelContainer),
@@ -70,6 +75,9 @@ struct AppDependencies {
             observationSignal: observationSignal,
             productPersistenceActor: ProductPersistenceActor(modelContainer: modelContainer),
             productObservationSignal: productObservationSignal,
+            stockRepository: DefaultStockRepository(
+                persistenceActor: StockPersistenceActor(modelContainer: modelContainer)
+            ),
             servicePersistenceActor: ServicePersistenceActor(modelContainer: modelContainer),
             serviceObservationSignal: serviceObservationSignal,
             salePersistenceActor: SalePersistenceActor(modelContainer: modelContainer),
@@ -89,6 +97,7 @@ struct AppDependencies {
     ///   - observationSignal: The invalidation shared by local writes and sync reconciliation.
     ///   - productPersistenceActor: The single actor that owns durable Products state.
     ///   - productObservationSignal: The Products invalidation shared by local writes and sync.
+    ///   - stockRepository: The runtime ledger reader; UI acceptance uses the caller context.
     ///   - servicePersistenceActor: The single actor that owns durable Services state.
     ///   - serviceObservationSignal: The Services invalidation shared by local writes and sync.
     ///   - salePersistenceActor: The single actor that owns durable Sales state.
@@ -98,6 +107,7 @@ struct AppDependencies {
         observationSignal: ClientObservationSignal,
         productPersistenceActor: ProductPersistenceActor,
         productObservationSignal: ProductObservationSignal,
+        stockRepository: any StockRepository,
         servicePersistenceActor: ServicePersistenceActor,
         serviceObservationSignal: ServiceObservationSignal,
         salePersistenceActor: SalePersistenceActor,
@@ -109,6 +119,7 @@ struct AppDependencies {
             observationSignal: observationSignal,
             productPersistenceActor: productPersistenceActor,
             productObservationSignal: productObservationSignal,
+            stockRepository: stockRepository,
             servicePersistenceActor: servicePersistenceActor,
             serviceObservationSignal: serviceObservationSignal,
             salePersistenceActor: salePersistenceActor,
@@ -124,6 +135,7 @@ struct AppDependencies {
         observationSignal: ClientObservationSignal,
         productPersistenceActor: ProductPersistenceActor,
         productObservationSignal: ProductObservationSignal,
+        stockRepository: any StockRepository,
         servicePersistenceActor: ServicePersistenceActor,
         serviceObservationSignal: ServiceObservationSignal,
         salePersistenceActor: SalePersistenceActor,
@@ -161,6 +173,10 @@ struct AppDependencies {
                 persistenceActor: productPersistenceActor,
                 observationSignal: productObservationSignal
             ),
+            makeStockAdjustment: stockAdjustmentFactory(
+                productRepository: productRepository,
+                stockRepository: stockRepository
+            ),
             serviceRepository: serviceRepository,
             saleRepository: saleRepository,
             analyticsDataSource: analyticsDataSource,
@@ -174,6 +190,7 @@ struct AppDependencies {
         observationSignal: ClientObservationSignal,
         productPersistenceActor: ProductPersistenceActor,
         productObservationSignal: ProductObservationSignal,
+        stockRepository: any StockRepository,
         servicePersistenceActor: ServicePersistenceActor,
         serviceObservationSignal: ServiceObservationSignal,
         salePersistenceActor: SalePersistenceActor,
@@ -213,6 +230,10 @@ struct AppDependencies {
                 persistenceActor: productPersistenceActor,
                 observationSignal: productObservationSignal
             ),
+            makeStockAdjustment: stockAdjustmentFactory(
+                productRepository: productRepository,
+                stockRepository: stockRepository
+            ),
             serviceRepository: serviceRepository,
             saleRepository: saleRepository,
             analyticsDataSource: analyticsDataSource,
@@ -223,6 +244,7 @@ struct AppDependencies {
 
     /// Creates an interactive preview over the same in-memory container supplied to SwiftUI.
     /// Clients and Products reads, observation and contextual mutations share their existing actor and signal.
+    /// Stock reads share one actor while UI acceptance uses the same contextual primitive as the ledger.
     /// Telemetry is inert; no remote data source or synchronization engine is composed.
     static func preview(modelContainer: ModelContainer) -> AppDependencies {
         .composed(
@@ -230,6 +252,9 @@ struct AppDependencies {
             observationSignal: ClientObservationSignal(),
             productPersistenceActor: ProductPersistenceActor(modelContainer: modelContainer),
             productObservationSignal: ProductObservationSignal(),
+            stockRepository: DefaultStockRepository(
+                persistenceActor: StockPersistenceActor(modelContainer: modelContainer)
+            ),
             servicePersistenceActor: ServicePersistenceActor(modelContainer: modelContainer),
             serviceObservationSignal: ServiceObservationSignal(),
             salePersistenceActor: SalePersistenceActor(modelContainer: modelContainer),
@@ -239,7 +264,7 @@ struct AppDependencies {
         )
     }
 
-    /// Creates finite snapshot dependencies; Clients and Products form mutations are explicitly unavailable.
+    /// Creates finite snapshot dependencies; Client, Product and stock mutations are explicitly unavailable.
     /// Use `preview(modelContainer:)` when a preview needs interactive local persistence.
     static func preview(
         clients: [Client] = [],
@@ -254,6 +279,7 @@ struct AppDependencies {
             makeClientForm: readOnlyClientFormFactory(repository: clientRepository),
             productRepository: productRepository,
             makeProductForm: readOnlyProductFormFactory(repository: productRepository),
+            makeStockAdjustment: readOnlyStockAdjustmentFactory(productRepository: productRepository),
             serviceRepository: InMemoryServiceRepository(services: services),
             saleRepository: InMemorySaleRepository(sales: sales),
             analyticsDataSource: PreviewAnalyticsDataSource(),
@@ -268,6 +294,7 @@ extension AppDependencies {
         makeClientForm: @escaping ClientFormFactory,
         productRepository: any ProductRepository,
         makeProductForm: @escaping ProductFormFactory,
+        makeStockAdjustment: @escaping StockAdjustmentFactory,
         serviceRepository: any ServiceRepository,
         saleRepository: any SaleRepository,
         analyticsDataSource: any AnalyticsDataSource,
@@ -278,6 +305,7 @@ extension AppDependencies {
             makeClientForm: makeClientForm,
             observeProducts: ObserveProductsUseCase(repository: productRepository),
             makeProductForm: makeProductForm,
+            makeStockAdjustment: makeStockAdjustment,
             observeServices: ObserveServicesUseCase(repository: serviceRepository),
             observeSales: ObserveSalesUseCase(repository: saleRepository),
             saveSale: SaveSaleUseCase(repository: saleRepository),

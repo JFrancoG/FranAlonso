@@ -1,5 +1,52 @@
 # Fase 09 — Productos e inventario físico
 
+## Entrega 09.6 autorizada —2026-09-29
+
+El propietario autoriza commit/push, PR/merge, cierre funcional de issue/rama y preparación de09.7.
+Se reutiliza toda la validación09.6: código/configuración idénticos al manifiesto POST; solo cambió documentación.
+PLU-57 mantiene la evidencia accesible integral pendiente; no hay activación live ni código09.7 autorizado.
+El resultado Git se registrará después de verificarlo. El checkpoint siguiente conserva la evidencia previa.
+
+## Implementación local 09.6 —2026-09-29
+
+[PLU-56](https://linear.app/plusprojects/issue/PLU-56), Jesus Franco, In Progress, hija dePLU-49.
+Rama `codex/phase-09-6-stock-adjustment-ui`, base8908ab6 main/origin/main limpios e idénticos. Inicio e implementación
+solicitados explícitamente por el propietario. [Propuesta concreta](09-6-stock-adjustment-ui-proposal.md), PRE PASS,
+sin hallazgos P0–P3; reviewer y root verifican591/591 archivos idénticos al manifiesto PRE. Implementación completa.
+RED compilable:31 resultados,17 fallos semánticos y14 rechazos esperados correctos. GREEN global:
+**958 declaraciones /1.315 resultados PASS**, cero fallos/skip/expected failures/runtime warnings. Bundle nativo cerrado
+`RunAllTests/Test-FranAlonso-Develop-2026.09.29_18-40-32-+0200.xcresult`, summary `EAC3AAF7-2F9F-4E35-90E6-0F509BAB61CD.txt`,
+bajo `/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/`.
+26 archivos Swift nuevos/tocados revisados: recall de estilo0 candidatos,0 líneas>120, diff--check limpio.
+36 recursos nuevos es/en. [Evidencia de pantalla](../accessibility/evidence/09-6-stock-adjustment.md):16 previews
+inspeccionadas en18ProMax27.2; smoke táctil PASS en18Pro27.0 (8→11→−3, borrador padre, cancelación y reset8/2).
+Production20,776s PASS; ambos POST PASS funcionales, sin hallazgos P0–P3. Build Develop GREEN10,198s PASS,
+aviso AppIntents conocido; correcciones de compilación restringidas a doubles de pruebas, sin opt-outs.
+
+Implementación: cantidad y preparación Domain compartida con09.5; ViewModel y sesión propios, comando congelado,
+guardado terminal antes de refrescar, adaptador contextual y composición real/preview/demo. Entrada desde ficha existente
+activa/inactiva, conserva borrador padre y rechaza cierres antiguos. Demo seed8/2 y reset por composición.
+No hay mínimos, historial, nuevas migraciones, dependencias ni activación live.
+Build para RED16,891s PASS. `/tmp/franalonso-09-6-pre.json` SHA256
+`1e3d1328d4c7e15386df3be8a0f2f432be8782e1384f2ca6df5346c930632042`.
+[PLU-57](https://linear.app/plusprojects/issue/PLU-57): Backlog, Jesus Franco, validación integral nueva de hoja/entrada/retorno
+tras feedback y estabilización, antes de uso real. PLU-54 conserva su alcance09.4. EntregaGit09.6 separada.
+
+### POST y siguiente puerta
+
+Auditorías independientes de estándares y UI/accesibilidad: **PASS funcional ADR0029, sin hallazgos P0–P3**.
+Ambos reviewers y root verifican606/606 archivos idénticos, sin altas/bajas/cambios, frente a
+`/tmp/franalonso-09-6-post2.json`, SHA256 `6b603ff317e487c371b03dfe5eff0952497974193837ec8866af664ffc5ce992`.
+El especialista visual inspecciona las16 previews,14 jerarquías y3 capturas de smoke; no ejecuta AT adicionales.
+Reloj fijo del test de retry es un límite aislado de cobertura de fecha; UUID variable y comparación del movimiento completo
+protegen identidad/payload. No hay ruta observada de regeneración del comando congelado; sin defecto ni retest adicional.
+
+Tras auditorías solo se incorpora este registro documental y la reconciliación de Linear. Código/configuración congelados.
+Gobernanza: Progress dentro de8KiB, diff--check limpio; persisten únicamente los seis enlaces históricos rotos de08.3.
+PLU-56 y fase09/PLU-49 permanecen In Progress: implementación local lista, entrega Git09.6 pendiente de autorización.
+PLU-57 conserva validación integral propia y PLU-54/deuda08 permanecen abiertas. La fase no se cierra;09.7 no se inicia.
+Sesión de interacción cerrada, app detenida y Develop/iPhone18Pro restaurados. No se ha activado ningún servicio live.
+
 ## Entrega y cierre 09.5 —2026-09-29
 
 Commit `3b308c3a8a84c10e5686815814116117f41330a0`, `✨ feat(stock): add durable idempotent adjustments`, publicado.

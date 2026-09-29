@@ -5,13 +5,12 @@
 ## Estado actual
 
 - **Fase09 / [PLU-49](https://linear.app/plusprojects/issue/PLU-49): In Progress**.
-  09.1–09.3 Done por PR17/18/19. **09.4 / [PLU-53](https://linear.app/plusprojects/issue/PLU-53): Done funcional**,
-  [PR20](https://github.com/JFrancoG/FranAlonso/pull/20), merge `dfd73b0`, head `092d72e` intacto; rama eliminada.
-  **1.199/1.199 PASS**, Develop/Production, previews, smoke y PRE/POST funcionales PASS; aviso AppIntents conocido.
-  Catálogo/demo disponibles; [evidencia](progress/phase-09.md).
-  [PLU-54](https://linear.app/plusprojects/issue/PLU-54): Backlog accesible09.4, Jesus Franco, tras feedback antes de uso real.
-  **09.5 / [PLU-55](https://linear.app/plusprojects/issue/PLU-55): Done**, [PR21](https://github.com/JFrancoG/FranAlonso/pull/21), `70775d9`.
-  **1.268/1.268 PASS**, Develop/Production, PRE/POST PASS; ramas eliminadas. Implementación09.6 autorizada.
+  09.1–09.5 entregadas por PR17–21; última [PR21](https://github.com/JFrancoG/FranAlonso/pull/21), merge `70775d9`,
+  PLU-55 Done y ramas eliminadas. Cierre documental `8908ab6`; evidencia histórica en [fase09](progress/phase-09.md).
+  **[09.6/PLU-56](https://linear.app/plusprojects/issue/PLU-56): In Progress**, rama `codex/phase-09-6-stock-adjustment-ui`.
+  PRE/POST funcionales PASS; implementación local y1.315 resultados PASS. Builds, previews y smoke PASS.
+  [PLU-54](https://linear.app/plusprojects/issue/PLU-54) y [PLU-57](https://linear.app/plusprojects/issue/PLU-57): Backlog
+  accesible09.4/09.6, Jesus Franco, tras feedback/estabilización y antes de uso real. Entrega Git09.6 autorizada; preparación09.7 posterior.
 - **[ADR0030](ADRs/0030-reusable-demo-and-early-foundation-models.md) aceptado y publicado** el29/09;
   orden excepcional y alcance canónico en [índice](specs/00_index.md). [Registro](progress/phase-08.md).
 - **08.8a / [PLU-46](https://linear.app/plusprojects/issue/PLU-46): Done funcional**, entrega y cierre autorizados.

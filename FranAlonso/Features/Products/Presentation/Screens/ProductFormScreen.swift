@@ -5,6 +5,7 @@ import SwiftUI
 struct ProductFormScreen: View {
     let destination: ProductFormDestination
     let makeViewModel: @MainActor @Sendable (ProductFormDestination) -> ProductFormViewModel
+    let makeStockAdjustment: @MainActor @Sendable (StockAdjustmentDestination) -> StockAdjustmentViewModel
     let onFinish: @MainActor (Completion) -> Void
     @Environment(\.modelContext) private var modelContext
     @Environment(\.locale) private var locale
@@ -14,6 +15,7 @@ struct ProductFormScreen: View {
     @State private var showsDiscardChanges = false
     @State private var showsDeactivationConfirmation = false
     @State private var validationAttemptID: UUID?
+    @State private var stockReturnFocusID: UUID?
 
     enum Completion {
         case cancelled, saved, deactivated
@@ -82,6 +84,14 @@ struct ProductFormScreen: View {
                     .disabled(viewModel?.canEdit != true || request != nil)
                 }
             }
+        }
+        .sheet(item: stockDestination, onDismiss: {
+            stockReturnFocusID = UUID()
+        }) { destination in
+            StockAdjustmentScreen(destination: destination, makeViewModel: makeStockAdjustment) {
+                viewModel?.dismissStockAdjustment(id: destination.id)
+            }
+            .id(destination.id)
         }
         .interactiveDismissDisabled()
         .confirmationDialog(
@@ -155,7 +165,18 @@ struct ProductFormScreen: View {
             }
         }
         .onDisappear {
+            guard viewModel?.stockAdjustmentDestination == nil else { return }
             viewModel?.close()
+        }
+    }
+
+    private var stockDestination: Binding<StockAdjustmentDestination?> {
+        let sessionID = viewModel?.stockAdjustmentDestination?.id
+        return Binding {
+            viewModel?.stockAdjustmentDestination
+        } set: { destination in
+            guard destination == nil, let sessionID else { return }
+            viewModel?.dismissStockAdjustment(id: sessionID)
         }
     }
 
@@ -183,7 +204,10 @@ struct ProductFormScreen: View {
             },
             onDeactivate: {
                 showsDeactivationConfirmation = true
-            }
+            },
+            canAdjustStock: viewModel.canAdjustStock,
+            stockReturnFocusID: stockReturnFocusID,
+            onAdjustStock: viewModel.openStockAdjustment
         )
     }
 
@@ -222,7 +246,8 @@ struct ProductFormScreen: View {
             productID: ProductID(rawValue: UUID(uuid: (9, 4, 0, 0, 0, 0, 64, 0, 128, 0, 0, 0, 0, 0, 0, 3))),
             mode: .create
         ),
-        makeViewModel: dependencies.makeProductForm
+        makeViewModel: dependencies.makeProductForm,
+        makeStockAdjustment: dependencies.makeStockAdjustment
     ) { _ in }
 }
 
@@ -235,6 +260,7 @@ struct ProductFormScreen: View {
             productID: ProductPreviewFixtures.standard.secondaryProduct.id,
             mode: .edit
         ),
-        makeViewModel: dependencies.makeProductForm
+        makeViewModel: dependencies.makeProductForm,
+        makeStockAdjustment: dependencies.makeStockAdjustment
     ) { _ in }
 }

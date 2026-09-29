@@ -226,6 +226,60 @@ struct ProductFormViewModelTests {
             #expect(fixture.model.loadedProduct == nil)
         }
     }
+    @Test
+    func `stock adjustment sessions preserve the parent draft and reject stale dismissal`() async throws {
+        let fixture = try ProductFormFixture(mode: .edit)
+        fixture.model.openStockAdjustment()
+        #expect(fixture.model.stockAdjustmentDestination == nil)
+        let product = Product(id: fixture.model.destination.productID, name: "Before", status: .inactive)
+        await fixture.repository.set(product)
+        await fixture.model.load()
+        fixture.model.name = "Unsaved name"
+        #expect(fixture.model.canAdjustStock)
+        fixture.model.openStockAdjustment()
+        let first = try #require(fixture.model.stockAdjustmentDestination)
+        #expect(first.productID == product.id)
+        fixture.model.openStockAdjustment()
+        #expect(fixture.model.stockAdjustmentDestination == first)
+        fixture.model.dismissStockAdjustment(id: first.id)
+        fixture.model.openStockAdjustment()
+        let second = try #require(fixture.model.stockAdjustmentDestination)
+        #expect(second.id != first.id)
+        fixture.model.dismissStockAdjustment(id: first.id)
+        #expect(fixture.model.stockAdjustmentDestination == second)
+        #expect(fixture.model.name == "Unsaved name")
+        #expect(fixture.model.hasUnsavedChanges)
+        fixture.model.close()
+        #expect(fixture.model.stockAdjustmentDestination == nil)
+    }
+
+    @Test
+    func `parent mutations wait until the stock child is dismissed`() async throws {
+        let fixture = try ProductFormFixture(mode: .edit)
+        let product = Product(id: fixture.model.destination.productID, name: "Before", status: .active)
+        await fixture.repository.set(product)
+        await fixture.model.load()
+        fixture.model.name = "Unsaved name"
+        fixture.model.openStockAdjustment()
+        let child = try #require(fixture.model.stockAdjustmentDestination)
+        await fixture.model.save(in: fixture.context)
+        await fixture.model.deactivate(in: fixture.context)
+        #expect(fixture.writes.identities.isEmpty)
+        #expect(fixture.writes.deactivatedIDs.isEmpty)
+        #expect(fixture.model.hasUnsavedChanges)
+        fixture.model.dismissStockAdjustment(id: child.id)
+        await fixture.model.save(in: fixture.context)
+        #expect(fixture.writes.profiles.map(\.name) == ["Unsaved name"])
+    }
+
+    @Test
+    func `unsaved new products cannot open stock adjustments`() throws {
+        let fixture = try ProductFormFixture(mode: .create)
+        fixture.model.name = "New draft"
+        fixture.model.openStockAdjustment()
+        #expect(!fixture.model.canAdjustStock)
+        #expect(fixture.model.stockAdjustmentDestination == nil)
+    }
 }
 
 enum WriteInterruption {
