@@ -5,10 +5,9 @@
 ## Estado actual
 
 - **Fase10 / [PLU-59](https://linear.app/plusprojects/issue/PLU-59): In Progress**.
-  10.1–10.5 entregadas; PLU-64 Done, [PR28](https://github.com/JFrancoG/FranAlonso/pull/28), c2f1af0, rama eliminada.
-  **10.6 implementada**, PLU-66 In Progress; rama `codex/phase-10-6-linked-product-selector`, sin commit/push.
+  10.1–10.6 entregadas; PLU-66 Done, [PR29](https://github.com/JFrancoG/FranAlonso/pull/29), 3bb7155, rama eliminada.
   PRE/POST,1.544resultados, builds, previews y smoke PASS. [Evidencia](progress/phase-10.md).
-  Deuda integral PLU-65/67. Siguiente: entrega10.6, después10.7 y adelanto FoundationModels/PLU-47.
+  Deuda integral PLU-65/67. Siguiente autorizado: implementar10.7; después adelanto FoundationModels/PLU-47.
 - **Fase09 / [PLU-49](https://linear.app/plusprojects/issue/PLU-49): In Progress**.
   09.1–09.7 entregadas; PLU-58 Done, PR23/b40e1f6, cierre50ecc39 y rama eliminada. [Evidencia](progress/phase-09.md).
   PRE/POST,1.346 resultados y builds PASS; aviso AppIntents conocido. PLU-54/57: Backlog accesible09.4/09.6,

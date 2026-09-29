@@ -57,6 +57,9 @@ All notable changes to this project are documented in this file.
 
 ### Documentation
 
+- 2026-09-30 | 📝 docs(delivery): close linked product selector
+  Records PR29 delivery and retained accessibility debt before service selection work.
+
 - 2026-09-30 | 📝 docs(delivery): close service screens
   Records PR28, verified merge and branch cleanup before the linked-product selector.
 

@@ -1,6 +1,15 @@
 # Fase 10 — Catálogo comercial de servicios
 
-## Estado actual — 10.6 implementada, pendiente de entrega — 2026-09-30
+## Estado actual — 10.6 entregada — 2026-09-30
+
+[PR29](https://github.com/JFrancoG/FranAlonso/pull/29) MERGED. Commit5db50c342e26baa6e155a33064dc1321b7ee49b8,
+merge3bb7155c6f6db9801c9c8168142126064492e433. Árbol completo idéntico al head validado. PLU-66 Done confirmado.
+Rama local/remota eliminada tras ancestry y cero commits únicos. GitHub CLEAN/MERGEABLE, sin checks/reviews ni
+protección/rulesets configurados. PRE/POST,1.544resultados, builds, previews y smoke reutilizados; nuevo Xcode N/A
+por cierre documental. PLU-65/67 Backlog mantienen deuda integral, Jesus Franco, tras feedback/estabilización y antes
+de uso real. Fase10 In Progress. Implementar10.7 autorizado; requiere propuesta/PRE antes de código.
+
+## Historial de implementación — 10.6 — 2026-09-30
 
 [PLU-66](https://linear.app/plusprojects/issue/PLU-66), In Progress, Jesus Franco, hija de PLU-59.
 Rama `codex/phase-10-6-linked-product-selector`, base limpia01d0657 tras entrega10.5.
