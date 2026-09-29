@@ -8,7 +8,7 @@ struct ProductSyncRetryEngineTests {
     @Test("A recoverable pull retries with deterministic exponential delays")
     func recoverablePullRetriesWithDeterministicDelays() async throws {
         let container = try retryEngineContainer()
-        let timing = RetryManualTiming(now: Date(timeIntervalSinceReferenceDate: 1_000))
+        let timing = ProductRetryManualTiming(now: Date(timeIntervalSinceReferenceDate: 1_000))
         let remote = RetryPullRemote(failuresBeforeSuccess: 2)
         let engine = retryEngine(container: container, remote: remote, timing: timing.dependency)
 
@@ -29,7 +29,7 @@ struct ProductSyncRetryEngineTests {
         let actor = ProductPersistenceActor(modelContainer: container)
         try await actor.persistPendingUpsert(firstProduct, operationID: firstOperationID)
         try await actor.persistPendingUpsert(secondProduct, operationID: secondOperationID)
-        let timing = RetryManualTiming(now: Date(timeIntervalSinceReferenceDate: 2_000))
+        let timing = ProductRetryManualTiming(now: Date(timeIntervalSinceReferenceDate: 2_000))
         let remote = RetryOperationsRemote(failuresBeforeSuccess: 2)
         let engine = retryEngine(container: container, remote: remote, timing: timing.dependency)
 
@@ -47,7 +47,7 @@ struct ProductSyncRetryEngineTests {
     func thirdTransientFailurePersistsDeadlineForRestart() async throws {
         let container = try retryEngineContainer()
         let start = Date(timeIntervalSinceReferenceDate: 3_000)
-        let timing = RetryManualTiming(now: start)
+        let timing = ProductRetryManualTiming(now: start)
         let failingRemote = RetryPullRemote(failuresBeforeSuccess: .max)
         let firstEngine = retryEngine(container: container, remote: failingRemote, timing: timing.dependency)
 
@@ -82,7 +82,7 @@ struct ProductSyncRetryEngineTests {
                 lastRecoverableCategory: .unavailable
             )
         )
-        let timing = RetryManualTiming(now: Date(timeIntervalSinceReferenceDate: 4_000))
+        let timing = ProductRetryManualTiming(now: Date(timeIntervalSinceReferenceDate: 4_000))
         let remote = RetryDefinitivePullRemote()
         let engine = retryEngine(container: container, remote: remote, timing: timing.dependency)
 
@@ -100,7 +100,11 @@ struct ProductSyncRetryEngineTests {
         let container = try retryEngineContainer()
         let gate = RetryRemoteGate()
         let remote = RetryGatedPullRemote(gate: gate, outcome: .success)
-        let engine = retryEngine(container: container, remote: remote, timing: RetryManualTiming(now: .now).dependency)
+        let engine = retryEngine(
+            container: container,
+            remote: remote,
+            timing: ProductRetryManualTiming(now: .now).dependency
+        )
         let first = Task { try await engine.synchronize() }
         await gate.waitUntilBlocked()
 
@@ -145,7 +149,7 @@ struct ProductSyncRetryEngineTests {
         let container = try retryEngineContainer()
         let gate = RetryRemoteGate()
         let remote = RetryGatedPullRemote(gate: gate, outcome: .unavailable)
-        let timing = RetryManualTiming(now: .now)
+        let timing = ProductRetryManualTiming(now: .now)
         let engine = retryEngine(container: container, remote: remote, timing: timing.dependency)
         let task = Task { try await engine.synchronize() }
         await gate.waitUntilBlocked()
@@ -199,7 +203,11 @@ struct ProductSyncRetryEngineTests {
         try await actor.persistPendingUpsert(product, operationID: operationID)
         let gate = RetryRemoteGate()
         let remote = RetryCommittedMutationRemote(gate: gate)
-        let engine = retryEngine(container: container, remote: remote, timing: RetryManualTiming(now: .now).dependency)
+        let engine = retryEngine(
+            container: container,
+            remote: remote,
+            timing: ProductRetryManualTiming(now: .now).dependency
+        )
         let cancelledPass = Task { try await engine.synchronize() }
         await gate.waitUntilBlocked()
 
@@ -215,35 +223,6 @@ struct ProductSyncRetryEngineTests {
 
         #expect(try await actor.pendingOperations().isEmpty)
         #expect(await remote.applyCount == 1)
-    }
-}
-
-private actor RetryManualTiming {
-    private var currentDate: Date
-    private var sleeps: [Duration] = []
-
-    init(now: Date) {
-        currentDate = now
-    }
-
-    nonisolated var dependency: SyncTiming {
-        SyncTiming(
-            now: { await self.current() },
-            sleep: { duration in try await self.sleep(for: duration) },
-            jitterFactor: { 1 }
-        )
-    }
-
-    var recordedSleeps: [Duration] { sleeps }
-
-    private func current() -> Date { currentDate }
-
-    private func sleep(for duration: Duration) throws {
-        let components = duration.components
-        let interval = Double(components.seconds)
-            + Double(components.attoseconds) / 1_000_000_000_000_000_000
-        sleeps.append(duration)
-        currentDate = currentDate.addingTimeInterval(interval)
     }
 }
 
