@@ -1,6 +1,50 @@
 # Fase 10 — Catálogo comercial de servicios
 
-## Estado actual — 10.4 entregada — 2026-09-29
+## Estado actual — 10.5 implementada y validada funcionalmente — 2026-09-30
+
+[PLU-64](https://linear.app/plusprojects/issue/PLU-64), hija de PLU-59, Jesus Franco, In Progress.
+Rama `codex/phase-10-5-service-screens`, baseline b4801df. [Propuesta](10-5-service-screens-proposal.md), PRE PASS.
+Catálogo con destinos Servicios/Productos; lista buscable y formulario comercial con errores, confirmaciones y Locale
+por sesión. Alta profesional; edición conserva ambos tipos/vínculo. Selector y cambios de tipo quedan en 10.6.
+Demo aislada con dos servicios coherentes; previews idempotentes. Sin cambios Domain/Data, schema, sync ni live.
+
+### Validación 10.5
+
+- TDD: 5 fallos/1 PASS sobre seis resultados (semillas ausentes y Locale ignorado). GREEN focal 5 PASS, pero Xcode omitió
+  la variante en_US; por eso se ejecutó una sola regresión completa, sin ampliar tests tautológicos de Views.
+- Xcode MCP Develop, iPhone18Pro/iOS27: **1.061 declaraciones / 1.520 resultados PASS**, cero fallos/skips/runtime warnings.
+  `.xcresult` nativo cerrado `Test-FranAlonso-Develop-2026.09.30_00-04-10-+0200.xcresult`, finishTime presente.
+  Summary MCP `RunAllTests/6E3012B0-E66D-4E28-A747-D92E877341FE.txt` y log `test-console-log-2026-09-30T00-04-10+02-00.txt`.
+  El contenedor nativo está en DerivedData/FranAlonso-eehpkvodmpnqlchgeqriatcucsjf/Logs/Test.
+- Build Develop para tests PASS; Production PASS 21,301s. GetBuildLog sin issues; log completo Production conserva
+  el aviso conocido AppIntents metadata. Sin warnings Swift/Clang nuevos; warnings-as-errors no cambiado.
+- Renders representativos Catálogo/lista/formulario Large/XXX Large/AX5 y componentes; destino devuelto por previews:
+  iPhone18ProMax/iOS27.2, distinto al simulador de tests. ES y EN, Light/Dark/contraste incrementado representativo.
+  Capturas de carga no se cuentan como contenido; AX5 de lista se complementa con Content de250 elementos.
+  [Matriz y artefactos](../accessibility/evidence/10-5-service-screens.md).
+- Smoke táctil PASS por Xcode MCP Develop/iPhone18Pro/iOS27: login, ambas entradas de Catálogo, búsqueda, alta inválida→válida,
+  edición/descarte/reapertura, edición del servicio producto y desactivación/reapertura inactivo. Sesión cerrada; argumentos
+  de demo siguen NO en Git. Identidad exacta del vínculo acreditada por integración; UI solo muestra su conservación.
+  Teclado hardware ocultó el teclado software: no se atribuye cobertura de ese layout ni AT a este smoke.
+  Informe `/tmp/franalonso-105-smoke.md`, 14 pares jerarquía/captura, tiempos00:10:51–00:14:30; detalle en matriz.
+- POST estándares PASS sin P0–P3; POST accesibilidad encontró un P2 de texto: el error de vínculo ofrecía Desactivar también
+  al servicio ya inactivo. Corregido ES/EN para ofrecer Cancelar y volver al catálogo; rerevisión focal PASS sin hallazgos nuevos.
+  Ambas auditorías verificaron660archivosidénticos, `/tmp/franalonso-10-5-post1.json`, SHA256
+  `a5fe752d8505bd0bbcde18b913736c8a92a3bc85d00c405e17df0a4394c488d7`.
+- Rerevisión accesible read-only sobre660archivos, `/tmp/franalonso-10-5-post2.json`, SHA256
+  `9be48c48b23516b9262220b74a4eb0a5de1d3a6183bc3aeabf31d543ee5efabc`. Root dispone P2 corregido;
+  puerta funcional ADR0029 PASS. Criterio3.3.3 sigue Limitado hasta su validación integral.
+  BuildDevelop tras copy PASS16,081s y render focal del error PASS; no se repiten tests porque no cambia Swift/contratos.
+  Registros finales posteriores son solo documentación; los20Swift y recursos conservan la huella POST2.
+- Estilo:20Swift, dos candidatos multilinea justificados por tupla anidada/trailing closure, revisión manual.
+  No XCUITest ni pruebas de UI nativas. Gobernanza: solo los seis enlaces históricos08.3 ausentes; diff-check limpio.
+
+PLU-65 Backlog conserva deuda integral propia, Jesus Franco, tras feedback/estabilización antes de uso real.
+PLU-64 permanece In Progress hasta entrega. El propietario autoriza commit/push/PR/merge/cierres10.5 e implementar10.6.
+La fase sigue abierta. Tras entregar10.5 corresponde selector10.6 con propuesta/PRE, y después picker10.7,
+y después PLU-47/FoundationModels según ADR0030. No anticipar venta11–13.
+
+## Entrega anterior — 10.4 entregada — 2026-09-29
 
 [PR27](https://github.com/JFrancoG/FranAlonso/pull/27) MERGED; commit5b9cc0d4a03db5db28cdb565fc5d8d84e3d55f78,
 merge86a1d0967065881f52ff71e2e644e84f177515c1. Árbol integrado idéntico al head validado. PLU-63 Done tras integración.
@@ -365,3 +409,10 @@ Commit, push, PR, merge y cierres incluidos en la entrega solicitada, seguidos d
 Preflight sin cambios ajenos: los 13 Swift conservan la huella POST; solo registros documentales posteriores.
 Se reutilizan 1.516 resultados, builds Develop/Production y PRE/POST PASS. Xcode nuevo N/A por cierre documental.
 Aviso AppIntents, seis enlaces históricos08.3 y deuda accesible intactos. Propuesta/PRE propias antes de código10.5.
+
+## Entrega 10.5 autorizada — 2026-09-30
+
+Se conserva la huella ejecutable y recursos POST2; únicamente registros documentales posteriores.
+Se reutilizan1.520resultados, builds, previews, smoke y revisiones favorables. Xcode nuevo N/A para preparación documental.
+PLU-65 Backlog conserva dueño/trigger y evidencia integral pendiente. La entrega incluye cierre funcional dePLU-64 y
+rama, sin cerrar fase10 ni deuda accesible. La siguiente implementación autorizada es10.6, con PRE propia antes de código.

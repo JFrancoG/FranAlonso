@@ -4,6 +4,10 @@ import SwiftData
 
 /// Adds validated synthetic products before the isolated launch exposes its container.
 struct DevelopDemoProductScenario {
+    static let primaryProductID = ProductID(
+        rawValue: UUID(uuid: (9, 4, 0, 0, 0, 0, 64, 0, 128, 0, 0, 0, 0, 0, 0, 1))
+    )
+
     /// The unpublished container must be discarded if any seed write fails.
     @MainActor
     static func seed(in container: ModelContainer) throws {
@@ -11,8 +15,11 @@ struct DevelopDemoProductScenario {
         let source = ProductLocalDataSource()
         for (index, name) in ["Champú DEMO hidratante", "Mascarilla DEMO nutritiva"].enumerated() {
             let suffix = UInt8(index + 1)
+            let productID = index == 0 ? primaryProductID : ProductID(
+                rawValue: UUID(uuid: (9, 4, 0, 0, 0, 0, 64, 0, 128, 0, 0, 0, 0, 0, 0, suffix))
+            )
             let product = try source.createProduct(
-                id: ProductID(rawValue: UUID(uuid: (9, 4, 0, 0, 0, 0, 64, 0, 128, 0, 0, 0, 0, 0, 0, suffix))),
+                id: productID,
                 profile: ProductProfile(name: name),
                 operationID: UUID(uuid: (9, 4, 0, 0, 0, 0, 64, 0, 144, 0, 0, 0, 0, 0, 0, suffix)),
                 in: context

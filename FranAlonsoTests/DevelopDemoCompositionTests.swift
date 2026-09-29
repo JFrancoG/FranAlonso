@@ -28,7 +28,7 @@ struct DevelopDemoCompositionTests {
         #expect(try context.fetchCount(FetchDescriptor<ClientDocumentDraftModel>()) == 0)
         #expect(try context.fetchCount(FetchDescriptor<ClientSignedDocumentModel>()) == 0)
         #expect(try context.fetchCount(FetchDescriptor<ProductModel>()) == 2)
-        #expect(try context.fetchCount(FetchDescriptor<ServiceModel>()) == 0)
+        #expect(try context.fetchCount(FetchDescriptor<ServiceModel>()) == 2)
         #expect(try context.fetchCount(FetchDescriptor<SaleModel>()) == 0)
         #expect(await demo.documentRemoteStore.documentCount == 0)
         #expect(composition.runtime == nil)

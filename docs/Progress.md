@@ -1,13 +1,13 @@
 # Project Progress
 
-Última actualización: 2026-09-29
+Última actualización: 2026-09-30
 
 ## Estado actual
 
 - **Fase10 / [PLU-59](https://linear.app/plusprojects/issue/PLU-59): In Progress**.
   10.1–10.4 entregadas; PLU-63 Done, [PR27](https://github.com/JFrancoG/FranAlonso/pull/27),86a1d09, rama eliminada.
   PRE/POST, 1.516 resultados y builds PASS; aviso AppIntents previo. [Evidencia](progress/phase-10.md).
-  Siguiente10.5: lista/formulario adaptativos, implementación autorizada con PRE antes de código.
+  10.5/PLU-64 implementada: 1.520 resultados, builds, previews y smoke PASS. PRE/POST PASS; entrega autorizada, PLU-65 deuda integral.
 - **Fase09 / [PLU-49](https://linear.app/plusprojects/issue/PLU-49): In Progress**.
   09.1–09.7 entregadas; PLU-58 Done, PR23/b40e1f6, cierre50ecc39 y rama eliminada. [Evidencia](progress/phase-09.md).
   PRE/POST,1.346 resultados y builds PASS; aviso AppIntents conocido. PLU-54/57: Backlog accesible09.4/09.6,

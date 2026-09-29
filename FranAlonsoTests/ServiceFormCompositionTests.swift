@@ -12,7 +12,7 @@ struct ServiceFormCompositionTests {
         var observation = await fixture.repository.observeServices().makeAsyncIterator()
         #expect(try await observation.next() == [])
         let id = ServiceID(rawValue: UUID())
-        let creating = fixture.factory(ServiceFormDestination(id: UUID(), serviceID: id, mode: .create))
+        let creating = fixture.factory(ServiceFormDestination(id: UUID(), serviceID: id, mode: .create), .current)
         creating.draft = ServiceFormDraft(name: "  Original  ", priceText: "10", taxText: "21")
 
         await creating.save(in: fixture.container.mainContext)
@@ -26,7 +26,7 @@ struct ServiceFormCompositionTests {
         try #require(creating.state == .saved(original))
         #expect(try await observation.next() == [original])
 
-        let editing = fixture.factory(ServiceFormDestination(id: UUID(), serviceID: id, mode: .edit))
+        let editing = fixture.factory(ServiceFormDestination(id: UUID(), serviceID: id, mode: .edit), .current)
         await editing.load()
         try #require(editing.state == .editing)
         editing.draft = ServiceFormDraft(
@@ -48,7 +48,7 @@ struct ServiceFormCompositionTests {
         try #require(editing.state == .saved(renamed))
         #expect(try await observation.next() == [renamed])
 
-        let deactivating = fixture.factory(ServiceFormDestination(id: UUID(), serviceID: id, mode: .edit))
+        let deactivating = fixture.factory(ServiceFormDestination(id: UUID(), serviceID: id, mode: .edit), .current)
         await deactivating.load()
         await deactivating.deactivate(in: fixture.container.mainContext)
         try #require(deactivating.state == .deactivated)
@@ -63,7 +63,7 @@ struct ServiceFormCompositionTests {
         )
         #expect(try await observation.next() == [inactive])
 
-        let inactiveEdit = fixture.factory(ServiceFormDestination(id: UUID(), serviceID: id, mode: .edit))
+        let inactiveEdit = fixture.factory(ServiceFormDestination(id: UUID(), serviceID: id, mode: .edit), .current)
         await inactiveEdit.load()
         try #require(inactiveEdit.state == .editing)
         #expect(!inactiveEdit.canDeactivate)
@@ -102,7 +102,7 @@ struct ServiceFormCompositionTests {
         )
         try await fixture.services.persistPendingUpsert(original, operationID: UUID())
         let acceptedQueue = try await fixture.services.pendingOperations()
-        let model = fixture.factory(ServiceFormDestination(id: UUID(), serviceID: original.id, mode: .edit))
+        let model = fixture.factory(ServiceFormDestination(id: UUID(), serviceID: original.id, mode: .edit), .current)
         await model.load()
         try #require(model.state == .editing)
         model.draft.priceText = "19"
@@ -134,7 +134,7 @@ struct ServiceFormCompositionTests {
             discountPercentage: 3
         )
         try await fixture.services.upsert(original)
-        let model = fixture.factory(ServiceFormDestination(id: UUID(), serviceID: original.id, mode: .edit))
+        let model = fixture.factory(ServiceFormDestination(id: UUID(), serviceID: original.id, mode: .edit), .current)
         await model.load()
         try #require(model.state == .editing)
         #expect(model.canDeactivate)
@@ -170,7 +170,9 @@ struct ServiceFormCompositionTests {
         var observation = await dependencies.observeServices().makeAsyncIterator()
         #expect(try await observation.next() == [])
         let id = ServiceID(rawValue: UUID())
-        let model = dependencies.makeServiceForm(ServiceFormDestination(id: UUID(), serviceID: id, mode: .create))
+        let model = dependencies.makeServiceForm(
+            ServiceFormDestination(id: UUID(), serviceID: id, mode: .create), .current
+        )
         model.draft = ServiceFormDraft(name: "Interactive service", priceText: "35", taxText: "10")
 
         await model.save(in: container.mainContext)
@@ -197,7 +199,8 @@ struct ServiceFormCompositionTests {
         let original = try makeService(name: "Read only", priceAmount: 10, discountPercentage: nil)
         let dependencies = AppDependencies.preview(services: [original])
         let editing = dependencies.makeServiceForm(
-            ServiceFormDestination(id: UUID(), serviceID: original.id, mode: .edit)
+            ServiceFormDestination(id: UUID(), serviceID: original.id, mode: .edit),
+            .current
         )
         await editing.load()
         try #require(editing.state == .editing)
@@ -208,7 +211,8 @@ struct ServiceFormCompositionTests {
         await editing.deactivate(in: callerContext)
         #expect(editing.state == .failed(.deactivate, .service(.persistenceUnavailable)))
         let creating = dependencies.makeServiceForm(
-            ServiceFormDestination(id: UUID(), serviceID: ServiceID(rawValue: UUID()), mode: .create)
+            ServiceFormDestination(id: UUID(), serviceID: ServiceID(rawValue: UUID()), mode: .create),
+            .current
         )
         creating.draft = ServiceFormDraft(name: "Rejected creation", priceText: "20", taxText: "21")
         await creating.save(in: callerContext)

@@ -69,6 +69,20 @@ Gestionar todos los conceptos cobrables, incluidos los productos vendidos al pú
 - App comparte actor/señal existentes en composición real, fixture y preview interactiva; snapshot preview permite leer
   y rechaza las tres mutaciones antes de acceder al contexto. Sin cambios Domain/Data, schema, sync, UI ni live.
 
+## Contratos aprobados de 10.5
+
+- Catálogo presenta entradas independientes a Servicios y Productos mediante navegación tipada, conservando inventario.
+- Lista con búsqueda por nombre, ambos tipos y estados; filas muestran nombre, tipo, precio con moneda e Inactivo textual.
+- Formulario con nombre, precio con impuestos incluidos, moneda, impuesto y descuento opcional; errores por campo,
+  reintento, confirmaciones de descarte/desactivación y resultados tras cerrar la hoja.
+- El Locale visual se inyecta al crear la sesión; entrada decimal y presentación usan ese idioma. Las Views delegan
+  validación y persistencia a las fachadas 10.4 y conservan contexto/tareas efímeros del caller.
+- En este incremento el tipo es informativo: alta profesional y edición de ambos tipos conservando vínculo.
+  Elegir/cambiar tipo o producto se implementa en 10.6. Un vínculo indisponible impide guardar, pero permite desactivar.
+- Demo aislada añade un profesional y un servicio vinculado al producto sintético activo; reiniciar restaura ambos.
+  Previews siembran solo identidades ausentes y conservan las ediciones. No cambia schema, sync ni activación live.
+- Evidencia progresiva en [matriz 10.5](../accessibility/evidence/10-5-service-screens.md), deuda integral PLU-65.
+
 ## Subfases
 
 | ID | Tarea | Test primero | Validación |
