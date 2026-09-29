@@ -17,6 +17,23 @@ Gestionar productos como inventario sin precios ni descuentos y registrar ajuste
 - Aplicar dos veces el mismo movimiento no cambia el stock dos veces.
 - Listado y formulario comienzan con ViewModels simples; no se crea Store sin complejidad demostrada.
 
+## Contratos de producto — 09.1
+
+Alcance concreto aprobado el29/09/2026 tras revisión independiente:
+
+- Entrada editable de nombre no vacío, recortando whitespace exterior también al decodificar; conservar grafía y espacios
+  interiores. Product/DTO históricos no se endurecen retroactivamente por esta entrada nueva.
+- Alta activa con identidad explícita nueva. Duplicados por ProductID; nombres iguales con IDs distintos permitidos.
+- Lectura y gestión incluyen activos e inactivos; ausente o tombstone devuelve ausencia. Edición cambia solo nombre y
+  preserva identidad/estado vigentes, sin crear ausentes ni restaurar tombstones; conflictos bloquean mutaciones.
+- Desactivar pasa a inactive conservando ficha y referencias. Repetir sobre inactive no escribe ni crea operación;
+  desconocido falla. Borrado técnico/tombstone, restauración y reactivación son flujos distintos, fuera de09.1.
+- Búsqueda local parcial por nombre, insensible a caja/diacríticos, conserva orden e inactivos; query vacía devuelve todos.
+- Aceptación local mínima reutiliza una primitiva Data sin suspensión para comprobar/mutar; actor y adaptador contextual
+  comparten esa ruta y publican después del commit. Cancelación previa impide aceptar; la tardía no oculta un commit.
+- Errores Domain neutrales; sin tipos/payloads del proveedor.09.2 mantiene la integración y regresión completa de sync;
+  no se promete compare-and-swap entre contextos ni se añade esquema o infraestructura nueva.
+
 ## Subfases
 
 | ID | Tarea | Test primero | Validación |

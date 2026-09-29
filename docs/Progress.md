@@ -4,6 +4,12 @@
 
 ## Estado actual
 
+- **Fase09 / [PLU-49](https://linear.app/plusprojects/issue/PLU-49): In Progress**.
+  **09.1 / [PLU-50](https://linear.app/plusprojects/issue/PLU-50): implementada localmente**, entrega pendiente.
+  Rama `codex/plu-50-phase-09-1-product-contracts`, base `7ec61a5`; commit/push autorizados; PR/merge pendientes.
+  [Propuesta aprobada](progress/09-1-product-contracts-proposal.md) y [evidencia](progress/phase-09.md): perfil validado,
+  CRUD/búsqueda e inactive idempotente con aceptación local real. Xcode: **1.151/1.151 PASS**, builds Develop/Production
+  PASS, aviso AppIntents conocido; PRE/POST PASS y retest1/1. UI/accesibilidad N/A;09.2–09.7 siguen pendientes.
 - **[ADR0030](ADRs/0030-reusable-demo-and-early-foundation-models.md) aceptado** el29/09: planificación publicada
   en `main`, sin código nuevo. Orden excepcional y alcance canónico en [índice](specs/00_index.md).
   Revisiones independientes PASS; Xcode N/A documental. [Registro](progress/phase-08.md) y Linear reconciliados.
@@ -14,7 +20,7 @@
   Xcode MCP: **847 declaraciones /1.120 resultados PASS**, builds Develop/Production PASS con aviso AppIntents conocido.
   PRE/POST favorables; seis previews Large/XXX Large/AX5. Smoke PASS: alta, crear/editar, logout/login, reset y recuperación
   sin refirmar. Sesiones cerradas, Develop/iPhone11 restaurado, argumentos `NO`. Sin checks remotos.
-  Siguiente puerta: inicio de fase09 según ADR0030; todavía no iniciado.
+  Fase09 iniciada según ADR0030; detalle arriba.
 - **[PLU-48](https://linear.app/plusprojects/issue/PLU-48): Backlog**, evidencia accesible integral nueva del aviso/encuadre.
   Jesus Franco, hija dePLU-34 y relacionada conPLU-46; [matriz55](accessibility/evidence/08-8a-reusable-demo.md).
   Recuperar tras feedback y estabilización de este flujo, antes de uso real. PLU-44/45/38 conservan su deuda propia.
@@ -25,17 +31,10 @@
 - **08.8 / [PLU-42](https://linear.app/plusprojects/issue/PLU-42): Done funcional**, entrega y cierre autorizados.
   [PR #15](https://github.com/JFrancoG/FranAlonso/pull/15) integrada en `0126c6b`; árbol validado `91eb3a7` intacto.
   Rama local/remota eliminadas; [propuesta](progress/08-8-client-activation-proposal.md).
-  Alta inicial recuperable: pending antes de upload, active solo con recibo durable, reintento sin nuevo envío/firma,
-  referencia inicial inmutable y conservación de edición concurrente. UI de Finalizar alta, éxito y fallo localizado.
-  Recuperar adopta el estado vigente y la confirmación distingue el documento que realmente completó el alta.
-  Xcode MCP: **835 declaraciones / 1.094 resultados PASS**, build **9,323s** con aviso AppIntents previo.
-  TDD y dos P2 corregidos cubiertos por la suite final; previews Large/XXX Large/AX5 inspeccionadas.
-  PRE y POST independientes PASS tras corregir los hallazgos; evidencia y límites en [fase08](progress/phase-08.md).
-  Smoke táctil por Xcode MCP PASS: fallo local después del envío, vuelta a lista, reapertura, Finalizar alta y
-  nueva reapertura activa, sin refirma y con un único upload. Datos sintéticos y Storage simulado, mismo proceso.
-  Harness temporal retirado byte a byte; las 527 rutas previas coinciden. Build restaurado **8,907s** y retest
-  focal **2/2 PASS**; aviso AppIntents previo. Composición normal sigue sin Storage disponible; no acredita live,
-  reinicio del proceso ni tecnologías de asistencia. Sin checks remotos. Evidencia reutilizada por árbol idéntico.
+  Alta recuperable tras recibo durable, reintento sin refirma ni segundo envío y conservación de edición concurrente.
+  Xcode MCP:1.094/1.094 resultados PASS; build9,323s, retest2/2 y restauración8,907s con aviso AppIntents previo.
+  PRE/POST, previews y smoke táctil PASS; harness temporal retirado byte a byte. Árbol integrado idéntico al validado;
+  sin checks remotos. Evidencia completa en [fase08](progress/phase-08.md); no acredita Storage real ni AT integral.
 - **08.9 / [PLU-43](https://linear.app/plusprojects/issue/PLU-43): Backlog**, aplazada por ADR0030 hasta el feedback
   de la demo acordada. Responsable Jesus Franco; foto, autorización y detalle completos conservados. Retomar antes
   del cierre integral de fase08 y uso real. No bloquea09–10/venta sin foto; no equivale a una subfase terminada.

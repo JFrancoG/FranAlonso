@@ -73,3 +73,15 @@ private func repositoryProduct() -> Product {
 }
 
 private func requireProductUseCaseSendable<Value: Sendable>(_ value: Value) {}
+
+extension ProductRepositoryFake {
+
+    func product(id: ProductID) async throws -> Product? { throw ProductError.persistenceUnavailable }
+    func createProduct(id: ProductID, profile: ProductProfile) async throws -> Product {
+        throw ProductError.persistenceUnavailable
+    }
+    func updateProduct(id: ProductID, profile: ProductProfile) async throws -> Product {
+        throw ProductError.persistenceUnavailable
+    }
+    func deactivateProduct(_ id: ProductID) async throws { throw ProductError.persistenceUnavailable }
+}

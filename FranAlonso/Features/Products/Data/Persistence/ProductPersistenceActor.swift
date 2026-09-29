@@ -17,6 +17,36 @@ actor ProductPersistenceActor {
         try dataSource.fetchAll(in: modelContext)
     }
 
+    /// Reads a local active or inactive profile without exposing tombstones.
+    func product(id: ProductID) throws -> Product? {
+        try dataSource.product(id: id, in: modelContext)
+    }
+
+    /// Accepts a new active profile and its pending operation within the actor context.
+    func createProduct(id: ProductID, profile: ProductProfile, operationID: UUID) throws -> Product {
+        try dataSource.createProduct(
+            id: id,
+            profile: profile,
+            operationID: operationID,
+            in: modelContext
+        )
+    }
+
+    /// Edits only metadata while retaining this context's current availability.
+    func updateProduct(id: ProductID, profile: ProductProfile, operationID: UUID) throws -> Product {
+        try dataSource.updateProduct(
+            id: id,
+            profile: profile,
+            operationID: operationID,
+            in: modelContext
+        )
+    }
+
+    /// Returns whether deactivation committed a mutation; an already inactive product does not write.
+    func deactivateProduct(_ id: ProductID, operationID: UUID) throws -> Bool {
+        try dataSource.deactivateProduct(id, operationID: operationID, in: modelContext)
+    }
+
     /// Inserts or replaces a product by stable identity and saves the actor's context.
     ///
     /// - Parameter product: The detached Domain value to persist.

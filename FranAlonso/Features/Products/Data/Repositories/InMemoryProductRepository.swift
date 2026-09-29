@@ -23,3 +23,33 @@ actor InMemoryProductRepository: ProductRepository {
         }
     }
 }
+
+extension InMemoryProductRepository {
+    func product(id: ProductID) async throws -> Product? {
+        try Task.checkCancellation()
+        return products.first { $0.id == id }
+    }
+
+    func createProduct(id: ProductID, profile: ProductProfile) async throws -> Product {
+        try Task.checkCancellation()
+        guard !products.contains(where: { $0.id == id }) else { throw ProductError.alreadyExists }
+        let product = Product(id: id, name: profile.name, status: .active)
+        products.append(product)
+        return product
+    }
+
+    func updateProduct(id: ProductID, profile: ProductProfile) async throws -> Product {
+        try Task.checkCancellation()
+        guard let index = products.firstIndex(where: { $0.id == id }) else { throw ProductError.notFound }
+        let product = Product(id: id, name: profile.name, status: products[index].status)
+        products[index] = product
+        return product
+    }
+
+    func deactivateProduct(_ id: ProductID) async throws {
+        try Task.checkCancellation()
+        guard let index = products.firstIndex(where: { $0.id == id }) else { throw ProductError.notFound }
+        guard products[index].status != .inactive else { return }
+        products[index] = Product(id: id, name: products[index].name, status: .inactive)
+    }
+}

@@ -54,3 +54,27 @@ extension DefaultProductRepository {
         )
     }
 }
+
+extension DefaultProductRepository {
+    func product(id: ProductID) async throws -> Product? {
+        try await persistenceActor.product(id: id)
+    }
+
+    func createProduct(id: ProductID, profile: ProductProfile) async throws -> Product {
+        let product = try await persistenceActor.createProduct(id: id, profile: profile, operationID: makeOperationID())
+        await observationSignal.publishChange()
+        return product
+    }
+
+    func updateProduct(id: ProductID, profile: ProductProfile) async throws -> Product {
+        let product = try await persistenceActor.updateProduct(id: id, profile: profile, operationID: makeOperationID())
+        await observationSignal.publishChange()
+        return product
+    }
+
+    func deactivateProduct(_ id: ProductID) async throws {
+        let changed = try await persistenceActor.deactivateProduct(id, operationID: makeOperationID())
+        guard changed else { return }
+        await observationSignal.publishChange()
+    }
+}
