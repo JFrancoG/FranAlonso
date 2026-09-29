@@ -6,7 +6,8 @@ import Testing
 struct ServiceCRUDUseCaseTests {
     @Test(arguments: [ServiceType.professional, .product])
     func `creation normalizes exterior whitespace and reads both commercial types`(_ type: ServiceType) async throws {
-        let repository = InMemoryServiceRepository()
+        let products = InMemoryProductRepository(products: [serviceCRUDProduct])
+        let repository = InMemoryServiceRepository(productRepository: products)
         let profile = try serviceCRUDProfile(name: "  Corte  suave \n", type: type)
         let id = serviceCRUDID(1)
 
@@ -24,6 +25,7 @@ struct ServiceCRUDUseCaseTests {
             discountPercentage: Decimal(string: "2.375")!,
             status: .active
         )))
+        #expect(try await products.product(id: serviceCRUDProductID) == serviceCRUDProduct)
     }
 
     @Test(arguments: [Decimal.zero, Decimal(string: "-0.004")!])
@@ -93,7 +95,8 @@ struct ServiceCRUDUseCaseTests {
             linkedProductID: originalType == .product ? serviceCRUDProductID.rawValue : nil,
             status: .inactive
         )
-        let repository = InMemoryServiceRepository(services: [original])
+        let products = InMemoryProductRepository(products: [serviceCRUDProduct])
+        let repository = InMemoryServiceRepository(services: [original], productRepository: products)
         let newType: ServiceType = originalType == .product ? .professional : .product
         let profile = try serviceCRUDProfile(name: "  Renamed  ", type: newType)
 
@@ -110,6 +113,7 @@ struct ServiceCRUDUseCaseTests {
             discountPercentage: Decimal(string: "2.375")!,
             status: .inactive
         ))
+        #expect(try await products.product(id: serviceCRUDProductID) == serviceCRUDProduct)
     }
 
     @Test
@@ -232,7 +236,11 @@ struct ServiceCRUDUseCaseTests {
         _ command: ServiceCRUDCommand
     ) async throws {
         let original = try makeService(id: serviceCRUDID(1).rawValue, name: "Original")
-        let backing = InMemoryServiceRepository(services: command == .create ? [] : [original])
+        let products = InMemoryProductRepository(products: [serviceCRUDProduct])
+        let backing = InMemoryServiceRepository(
+            services: command == .create ? [] : [original],
+            productRepository: products
+        )
         let accepted = AsyncStream<Void>.makeStream()
         let release = AsyncStream<Void>.makeStream()
         let repository = ServiceCRUDDelayedRepository(
@@ -266,6 +274,7 @@ struct ServiceCRUDUseCaseTests {
         #expect(reopened.status == (command == .deactivate ? .inactive : .active))
         #expect(reopened.name == (command == .deactivate ? "Original" : "Accepted"))
         #expect(reopened.type == (command == .deactivate ? .professional : .product))
+        #expect(try await products.product(id: serviceCRUDProductID) == serviceCRUDProduct)
     }
 }
 
@@ -331,6 +340,7 @@ private func serviceCRUDProfile(name: String, type: ServiceType) throws -> Servi
 }
 
 private let serviceCRUDProductID = ProductID(rawValue: UUID(uuidString: "10010000-0000-0000-0000-000000000010")!)
+private let serviceCRUDProduct = Product.testSnapshot(id: serviceCRUDProductID, name: "Retail product")
 
 private func serviceCRUDID(_ suffix: Int) -> ServiceID {
     ServiceID(rawValue: UUID(uuidString: "10010000-0000-0000-0000-00000000000\(suffix)")!)

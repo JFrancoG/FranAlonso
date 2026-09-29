@@ -38,6 +38,8 @@ extension ServiceLocalDataSource {
                   try remoteState(for: id, in: context) == nil else {
                 throw ServiceError.alreadyExists
             }
+            guard try conflict(for: id, in: context) == nil else { throw ServiceError.conflict }
+            try validateProductLink(profile, in: context)
             let service = try Service(
                 id: id,
                 name: profile.name,
@@ -65,6 +67,8 @@ extension ServiceLocalDataSource {
             try requireClean(context)
             guard try !hasDeletionState(for: id, in: context) else { throw ServiceError.deleted }
             guard let existing = try model(for: id, in: context)?.toDomain() else { throw ServiceError.notFound }
+            guard try conflict(for: id, in: context) == nil else { throw ServiceError.conflict }
+            try validateProductLink(profile, in: context)
             let service = try Service(
                 id: id,
                 name: profile.name,
@@ -609,6 +613,12 @@ extension ServiceLocalDataSource {
 
     private func requireClean(_ context: ModelContext) throws {
         guard !context.hasChanges else { throw ServiceLocalDataSourceError.contextHasUncommittedChanges }
+    }
+
+    private func validateProductLink(_ profile: ServiceProfile, in context: ModelContext) throws {
+        guard let id = profile.linkedProductID else { return }
+        let product = try ProductLocalDataSource().product(id: id, in: context)
+        try ServiceProductLinkPolicy().validate(profile, product: product)
     }
 
     private func performServiceOperation<Value>(

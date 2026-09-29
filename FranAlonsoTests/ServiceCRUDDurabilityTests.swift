@@ -150,6 +150,7 @@ private func acceptOfflineServiceChain(
     lifetime: ServiceDurabilityLifetime
 ) async throws -> [UUID: ServiceDurabilityPayload] {
     let container = try serviceDurabilityContainer(at: storeURL)
+    try ProductLocalDataSource().upsert(serviceDurabilityLinkedProduct(), in: ModelContext(container))
     let persistenceActor = ServicePersistenceActor(modelContainer: container)
     let signal = ServiceObservationSignal()
     let creationRepository = DefaultServiceRepository(
@@ -191,6 +192,7 @@ private func acceptOfflineServiceChain(
     }
 
     #expect(try await GetServiceUseCase(repository: creationRepository)(fixture.id) == fixture.inactiveService)
+    try verifyServiceDurabilityProduct(in: ModelContext(container))
     return try serviceDurabilityPayloads(in: ModelContext(container))
 }
 
@@ -249,6 +251,7 @@ private func recoverReopenedServiceChain(
     #expect(try await persistenceActor.pendingOperations().isEmpty)
     #expect(try await persistenceActor.retryState(for: .operation(fixture.creationID)) == nil)
     #expect(try await persistenceActor.cursor() == ServiceSyncCursor(changeSequence: 3))
+    try verifyServiceDurabilityProduct(in: context)
 }
 
 @MainActor
@@ -270,6 +273,7 @@ private func verifyRecoveredServiceStore(
     let remoteStates = try context.fetch(FetchDescriptor<ServiceRemoteStateModel>())
     try #require(remoteStates.count == 1)
     #expect(try remoteStates[0].decodeRecord() == fixture.finalRemoteRecord)
+    try verifyServiceDurabilityProduct(in: context)
 }
 
 private func serviceDurabilityContainer(at storeURL: URL) throws -> ModelContainer {
@@ -302,6 +306,16 @@ private func serviceDurabilityPayloads(in context: ModelContext) throws -> [UUID
 
 private func serviceDurabilityLinkID() throws -> UUID {
     try #require(UUID(uuidString: "10200000-0000-0000-0000-000000000099"))
+}
+
+private func serviceDurabilityLinkedProduct() throws -> Product {
+    .testSnapshot(id: ProductID(rawValue: try serviceDurabilityLinkID()), name: "Durable linked product")
+}
+
+private func verifyServiceDurabilityProduct(in context: ModelContext) throws {
+    let products = ProductLocalDataSource()
+    #expect(try products.fetchAll(in: context) == [serviceDurabilityLinkedProduct()])
+    #expect(try products.pendingOperations(in: context).isEmpty)
 }
 
 private func serviceDurabilityProfile(edited: Bool) throws -> ServiceProfile {

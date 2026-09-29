@@ -36,6 +36,21 @@ Gestionar todos los conceptos cobrables, incluidos los productos vendidos al pú
 - 10.2 conserva la integración completa CRUD→sync, conflictos remotos, tombstones, offline y reapertura durable, sobre la
   vertical05.10b existente.10.1 no cambia schema, DTO, motor, composición live ni UI.
 
+## Contratos aprobados de10.3
+
+- `ObserveLinkableProductsUseCase` transforma ProductRepository en una secuencia de productos activos, conservando
+  orden, emisiones vacías, errores, finalización y cancelación. Inventario conserva su consulta general sin este filtro.
+- `GetLinkableProductUseCase` reconsulta el ID seleccionado: exige identidad coincidente y estado activo. Ausencia,
+  borrado o inactividad producen `ServiceError.linkedProductUnavailable`; lectura fallida y cancelación se conservan.
+- Cada alta/edición comercial de tipo producto valida el vínculo en la aceptación local, aunque no haya cambiado el ID.
+  La política reside en Domain; el adaptador Data resuelve Product con su datasource en el mismo contexto y sin suspensión.
+  Errores de identidad/conflicto prevalecen. Fallos de lectura se traducen a `ServiceError.persistenceUnavailable`.
+- Rechazar no cambia Service, su cola ni Product. El servicio histórico sigue legible, sincronizable y desactivable cuando
+  su producto desaparece; para editarlo hay que elegir otro producto activo o convertirlo en profesional.
+- App compone ambos lectores con el ProductRepository existente. El repositorio de preview usa ese mismo catálogo y
+  revalida identidad/estado después del await. No se promete reserva, CAS global, stock positivo, unicidad ni cascadas.
+- No se endurecen Service/Codable/DTO ni la materialización/sync técnica; la UI y el selector pertenecen a10.4–10.6.
+
 ## Subfases
 
 | ID | Tarea | Test primero | Validación |
