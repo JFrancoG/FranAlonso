@@ -4,14 +4,14 @@
 
 ## Estado actual
 
+- **Fase10 / [PLU-59](https://linear.app/plusprojects/issue/PLU-59): In Progress**.
+  [10.1/PLU-60](https://linear.app/plusprojects/issue/PLU-60): implementada y validada, PRE/POST PASS.
+  1.008 declaraciones/1.395 resultados y builds PASS; aviso AppIntents previo. Rama `codex/phase-10-1-service-contracts`.
+  [Propuesta](progress/10-1-service-contracts-proposal.md) y [evidencia](progress/phase-10.md). Entrega Git autorizada; en curso.
 - **Fase09 / [PLU-49](https://linear.app/plusprojects/issue/PLU-49): In Progress**.
-  09.1–09.7 entregadas por PR17–23; **[PLU-58](https://linear.app/plusprojects/issue/PLU-58): Done**.
-  [PR23](https://github.com/JFrancoG/FranAlonso/pull/23), merge `b40e1f6`, head `51afed1` intacto; rama eliminada.
-  PRE/POST,979 declaraciones/1.346 resultados y ambos builds PASS; aviso AppIntents conocido. [Evidencia](progress/phase-09.md).
-  Siguiente puerta: preparar10.1, contratos/casos de uso de Service; aún sin iniciar fase10.
-  [PLU-54](https://linear.app/plusprojects/issue/PLU-54) y
-  [PLU-57](https://linear.app/plusprojects/issue/PLU-57): Backlog accesible09.4/09.6, Jesus Franco,
-  tras feedback/estabilización y antes de uso real. La fase conserva su cierre integral pendiente.
+  09.1–09.7 entregadas; PLU-58 Done, PR23/b40e1f6, cierre50ecc39 y rama eliminada. [Evidencia](progress/phase-09.md).
+  PRE/POST,1.346 resultados y builds PASS; aviso AppIntents conocido. PLU-54/57: Backlog accesible09.4/09.6,
+  Jesus Franco, tras feedback/estabilización y antes de uso real. La fase conserva su cierre integral pendiente.
 - **[ADR0030](ADRs/0030-reusable-demo-and-early-foundation-models.md) aceptado y publicado** el29/09;
   orden excepcional y alcance canónico en [índice](specs/00_index.md). [Registro](progress/phase-08.md).
 - **08.8a / [PLU-46](https://linear.app/plusprojects/issue/PLU-46): Done funcional**, entrega y cierre autorizados.

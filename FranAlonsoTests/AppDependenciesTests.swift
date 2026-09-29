@@ -432,3 +432,14 @@ extension CompositionProductRepositoryFake {
     }
     func deactivateProduct(_ id: ProductID) async throws { throw ProductError.persistenceUnavailable }
 }
+
+private extension CompositionServiceRepositoryFake {
+    func service(id: ServiceID) async throws -> Service? { throw ServiceError.persistenceUnavailable }
+    func createService(id: ServiceID, profile: ServiceProfile) async throws -> Service {
+        throw ServiceError.persistenceUnavailable
+    }
+    func updateService(id: ServiceID, profile: ServiceProfile) async throws -> Service {
+        throw ServiceError.persistenceUnavailable
+    }
+    func deactivateService(_ id: ServiceID) async throws { throw ServiceError.persistenceUnavailable }
+}

@@ -13,13 +13,35 @@ enum ServiceStatus: String, Codable {
     case inactive
 }
 
-/// Errors raised when a service type and its physical product link are inconsistent.
+/// Commercial validation and local acceptance failures, independent of infrastructure details.
 enum ServiceError: Error, Equatable {
+    case invalidName
+    case invalidPrice
+    case alreadyExists
+    case notFound
+    case deleted
+    case conflict
+    case persistenceUnavailable
+
     /// A product offering was created without a physical product reference.
     case linkedProductRequired
 
     /// A professional offering was created with a physical product reference.
     case linkedProductNotAllowed
+}
+
+extension ServiceType {
+    /// Enforces structural linkage only; product existence and availability are separate policies.
+    func validate(linkedProductID: ProductID?) throws {
+        switch (self, linkedProductID) {
+        case (.product, nil):
+            throw ServiceError.linkedProductRequired
+        case (.professional, .some):
+            throw ServiceError.linkedProductNotAllowed
+        case (.product, .some), (.professional, nil):
+            break
+        }
+    }
 }
 
 /// A catalog offering that owns its tax-inclusive price, tax rate, and optional discount.
@@ -69,14 +91,7 @@ extension Service {
         discount: Discount?,
         status: ServiceStatus
     ) throws {
-        switch (type, linkedProductID) {
-        case (.product, nil):
-            throw ServiceError.linkedProductRequired
-        case (.professional, .some):
-            throw ServiceError.linkedProductNotAllowed
-        case (.product, .some), (.professional, nil):
-            break
-        }
+        try type.validate(linkedProductID: linkedProductID)
 
         self.init(
             id: id,

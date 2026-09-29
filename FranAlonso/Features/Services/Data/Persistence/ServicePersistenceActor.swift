@@ -17,6 +17,36 @@ actor ServicePersistenceActor {
         try dataSource.fetchAll(in: modelContext)
     }
 
+    /// Reads a local active or inactive profile without exposing tombstones.
+    func service(id: ServiceID) throws -> Service? {
+        try dataSource.service(id: id, in: modelContext)
+    }
+
+    /// Accepts a new active profile and its pending operation within the actor context.
+    func createService(id: ServiceID, profile: ServiceProfile, operationID: UUID) throws -> Service {
+        try dataSource.createService(
+            id: id,
+            profile: profile,
+            operationID: operationID,
+            in: modelContext
+        )
+    }
+
+    /// Edits the commercial profile while retaining this context's current availability.
+    func updateService(id: ServiceID, profile: ServiceProfile, operationID: UUID) throws -> Service {
+        try dataSource.updateService(
+            id: id,
+            profile: profile,
+            operationID: operationID,
+            in: modelContext
+        )
+    }
+
+    /// Returns whether deactivation committed a mutation; an already inactive service does not write.
+    func deactivateService(_ id: ServiceID, operationID: UUID) throws -> Bool {
+        try dataSource.deactivateService(id, operationID: operationID, in: modelContext)
+    }
+
     /// Inserts or replaces a service by stable identity and saves the actor's context.
     ///
     /// - Parameter service: The detached Domain value to persist.

@@ -77,3 +77,14 @@ private func repositoryService() throws -> Service {
 }
 
 private func requireServiceUseCaseSendable<Value: Sendable>(_ value: Value) {}
+
+private extension ServiceRepositoryFake {
+    func service(id: ServiceID) async throws -> Service? { throw ServiceError.persistenceUnavailable }
+    func createService(id: ServiceID, profile: ServiceProfile) async throws -> Service {
+        throw ServiceError.persistenceUnavailable
+    }
+    func updateService(id: ServiceID, profile: ServiceProfile) async throws -> Service {
+        throw ServiceError.persistenceUnavailable
+    }
+    func deactivateService(_ id: ServiceID) async throws { throw ServiceError.persistenceUnavailable }
+}

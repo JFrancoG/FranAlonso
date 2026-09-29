@@ -54,3 +54,27 @@ extension DefaultServiceRepository {
         )
     }
 }
+
+extension DefaultServiceRepository {
+    func service(id: ServiceID) async throws -> Service? {
+        try await persistenceActor.service(id: id)
+    }
+
+    func createService(id: ServiceID, profile: ServiceProfile) async throws -> Service {
+        let service = try await persistenceActor.createService(id: id, profile: profile, operationID: makeOperationID())
+        await observationSignal.publishChange()
+        return service
+    }
+
+    func updateService(id: ServiceID, profile: ServiceProfile) async throws -> Service {
+        let service = try await persistenceActor.updateService(id: id, profile: profile, operationID: makeOperationID())
+        await observationSignal.publishChange()
+        return service
+    }
+
+    func deactivateService(_ id: ServiceID) async throws {
+        let changed = try await persistenceActor.deactivateService(id, operationID: makeOperationID())
+        guard changed else { return }
+        await observationSignal.publishChange()
+    }
+}
