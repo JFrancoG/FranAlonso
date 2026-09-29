@@ -6,6 +6,9 @@ All notable changes to this project are documented in this file.
 
 ### Added
 
+- 2026-09-29 | ✨ feat(services): coordinate list and form state
+  Adds complete commercial drafts, exact localized decimals and protected contextual form sessions.
+
 - 2026-09-29 | ✨ feat(services): validate linkable products
   Filters active products and rejects stale commercial links while preserving historical services.
 

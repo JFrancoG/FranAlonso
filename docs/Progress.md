@@ -6,8 +6,8 @@
 
 - **Fase10 / [PLU-59](https://linear.app/plusprojects/issue/PLU-59): In Progress**.
   10.1–10.3 entregadas; PLU-62 Done, [PR26](https://github.com/JFrancoG/FranAlonso/pull/26),3a771c2, rama eliminada.
-  PRE/POST,1.436 resultados y Develop/Production PASS; aviso AppIntents previo. [Evidencia](progress/phase-10.md).
-  Siguiente10.4: ViewModels de lista/formulario, implementación autorizada con PRE antes de código.
+  [10.4/PLU-63](https://linear.app/plusprojects/issue/PLU-63) implementada localmente, In Progress; PRE/POST PASS.
+  1.516 resultados y builds PASS; aviso AppIntents previo. [Evidencia](progress/phase-10.md).
 - **Fase09 / [PLU-49](https://linear.app/plusprojects/issue/PLU-49): In Progress**.
   09.1–09.7 entregadas; PLU-58 Done, PR23/b40e1f6, cierre50ecc39 y rama eliminada. [Evidencia](progress/phase-09.md).
   PRE/POST,1.346 resultados y builds PASS; aviso AppIntents conocido. PLU-54/57: Backlog accesible09.4/09.6,

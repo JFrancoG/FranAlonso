@@ -43,13 +43,15 @@ struct AppDependenciesTests {
         let crash = CompositionCrashDataSourceSpy()
         let clientRepository = CompositionClientRepositoryFake(clients: [])
         let productRepository = CompositionProductRepositoryFake(products: [])
+        let serviceRepository = CompositionServiceRepositoryFake(services: [])
         let dependencies = AppDependencies(
             clientRepository: clientRepository,
             makeClientForm: AppDependencies.readOnlyClientFormFactory(repository: clientRepository),
             productRepository: productRepository,
             makeProductForm: AppDependencies.readOnlyProductFormFactory(repository: productRepository),
             makeStockAdjustment: AppDependencies.readOnlyStockAdjustmentFactory(productRepository: productRepository),
-            serviceRepository: CompositionServiceRepositoryFake(services: []),
+            serviceRepository: serviceRepository,
+            makeServiceForm: AppDependencies.readOnlyServiceFormFactory(repository: serviceRepository),
             saleRepository: InMemorySaleRepository(),
             analyticsDataSource: analytics,
             crashDataSource: crash
@@ -87,13 +89,15 @@ struct AppDependenciesTests {
         ]
         let repository = CompositionClientRepositoryFake(clients: expectedClients)
         let productRepository = CompositionProductRepositoryFake(products: [])
+        let serviceRepository = CompositionServiceRepositoryFake(services: [])
         let dependencies = AppDependencies(
             clientRepository: repository,
             makeClientForm: AppDependencies.readOnlyClientFormFactory(repository: repository),
             productRepository: productRepository,
             makeProductForm: AppDependencies.readOnlyProductFormFactory(repository: productRepository),
             makeStockAdjustment: AppDependencies.readOnlyStockAdjustmentFactory(productRepository: productRepository),
-            serviceRepository: CompositionServiceRepositoryFake(services: []),
+            serviceRepository: serviceRepository,
+            makeServiceForm: AppDependencies.readOnlyServiceFormFactory(repository: serviceRepository),
             saleRepository: InMemorySaleRepository(),
             analyticsDataSource: CompositionAnalyticsDataSourceSpy(),
             crashDataSource: CompositionCrashDataSourceSpy()
@@ -130,13 +134,15 @@ struct AppDependenciesTests {
         let expectedProducts = [compositionProduct()]
         let repository = CompositionProductRepositoryFake(products: expectedProducts)
         let clientRepository = CompositionClientRepositoryFake(clients: [])
+        let serviceRepository = CompositionServiceRepositoryFake(services: [])
         let dependencies = AppDependencies(
             clientRepository: clientRepository,
             makeClientForm: AppDependencies.readOnlyClientFormFactory(repository: clientRepository),
             productRepository: repository,
             makeProductForm: AppDependencies.readOnlyProductFormFactory(repository: repository),
             makeStockAdjustment: AppDependencies.readOnlyStockAdjustmentFactory(productRepository: repository),
-            serviceRepository: CompositionServiceRepositoryFake(services: []),
+            serviceRepository: serviceRepository,
+            makeServiceForm: AppDependencies.readOnlyServiceFormFactory(repository: serviceRepository),
             saleRepository: InMemorySaleRepository(),
             analyticsDataSource: CompositionAnalyticsDataSourceSpy(),
             crashDataSource: CompositionCrashDataSourceSpy()
@@ -174,6 +180,7 @@ struct AppDependenciesTests {
             makeProductForm: AppDependencies.readOnlyProductFormFactory(repository: productRepository),
             makeStockAdjustment: AppDependencies.readOnlyStockAdjustmentFactory(productRepository: productRepository),
             serviceRepository: repository,
+            makeServiceForm: AppDependencies.readOnlyServiceFormFactory(repository: repository),
             saleRepository: InMemorySaleRepository(),
             analyticsDataSource: CompositionAnalyticsDataSourceSpy(),
             crashDataSource: CompositionCrashDataSourceSpy()
@@ -204,13 +211,15 @@ struct AppDependenciesTests {
         let repository = CompositionSaleRepositoryFake(sales: expectedSales)
         let clientRepository = CompositionClientRepositoryFake(clients: [])
         let productRepository = CompositionProductRepositoryFake(products: [])
+        let serviceRepository = CompositionServiceRepositoryFake(services: [])
         let dependencies = AppDependencies(
             clientRepository: clientRepository,
             makeClientForm: AppDependencies.readOnlyClientFormFactory(repository: clientRepository),
             productRepository: productRepository,
             makeProductForm: AppDependencies.readOnlyProductFormFactory(repository: productRepository),
             makeStockAdjustment: AppDependencies.readOnlyStockAdjustmentFactory(productRepository: productRepository),
-            serviceRepository: CompositionServiceRepositoryFake(services: []),
+            serviceRepository: serviceRepository,
+            makeServiceForm: AppDependencies.readOnlyServiceFormFactory(repository: serviceRepository),
             saleRepository: repository,
             analyticsDataSource: CompositionAnalyticsDataSourceSpy(),
             crashDataSource: CompositionCrashDataSourceSpy()

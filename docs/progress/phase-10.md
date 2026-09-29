@@ -1,6 +1,53 @@
 # Fase 10 — Catálogo comercial de servicios
 
-## Estado actual —10.3 entregada —2026-09-29
+## Estado actual — 10.4 implementada y validada — 2026-09-29
+
+[PLU-63](https://linear.app/plusprojects/issue/PLU-63), hija de PLU-59, In Progress, Jesus Franco.
+Rama `codex/phase-10-4-service-view-models` desde main/origin/main 0c98eae limpios. Implementación autorizada.
+[Propuesta 10.4](10-4-service-view-models-proposal.md): PRE independiente PASS, 636 archivos idénticos; huella en propuesta.
+Lista y formulario @Observable @MainActor, sesiones estables, borrador comercial completo y entrada decimal exacta ES/EN.
+Composición contextual comparte actor/señal en runtime, fixture y preview interactiva; snapshot rechaza mutaciones.
+Sin Views, textos, recursos, cambios Domain/Data, schema, sync, live ni nuevas dependencias. UI corresponde a 10.5.
+
+### TDD y validación 10.4
+
+Xcode MCP estable, workspace-EYu6rxi7hg, Develop/iPhone18Pro/iOS27.0, Swift6 estricto/target26, configuración intacta.
+28 declaraciones nuevas / 80 resultados: formulario 16, lista 11, borrador 48 y composición 5.
+- RED compilable: build 18,94s PASS; 75 resultados con 48 fallos semánticos esperados y 27 PASS (rechazos de entrada
+  también satisfechos por el stub). Summary `RunSomeTests/8B8364DD-ECBE-4B50-9B39-CF705F6737D1.txt`.
+  Un error previo de visibilidad de enums en fixtures se corrigió antes; no se contabiliza como RED semántico.
+- RED de composición: build 18,814s PASS, 4 fallos esperados y 1 PASS con factory de solo lectura;
+  summary `RunSomeTests/11796BFC-BB47-4074-AD71-D0D1A57FBF55.txt`. GREEN conecta el adaptador contextual existente.
+- GREEN focal de estado/entrada: 29/29 PASS; summary `RunSomeTests/8B080316-94C7-42D6-A6C6-886F653CBF57.txt`.
+  Xcode omitió variantes parametrizadas; no se presenta como cobertura de los 75 resultados.
+- GREEN global: **1.058 declaraciones / 1.516 resultados PASS**, cero fallos, skip, notRun, expectedFailures y runtimeWarnings.
+  Incluye los 80 resultados nuevos. Summary `RunAllTests/3EA4D75B-8DA8-4987-9F90-18DB05546A67.txt` en ActionArtifacts/default.
+  Resultado nativo original cerrado inspeccionado, finishTime presente:
+  `/Users/jesusf/Library/Developer/Xcode/DerivedData/FranAlonso-eehpkvodmpnqlchgeqriatcucsjf/Logs/Test/Test-FranAlonso-Develop-2026.09.29_23-37-42-+0200.xcresult`.
+- Builds Develop con tests 3,947s y final 22,729s; Production 21,3s PASS. Logs completos inspeccionados:
+  `BuildProject-Log-20260929-233822.txt`, `BuildProject-Log-20260929-233855.txt`, `BuildProject-Log-20260929-233929.txt`.
+  Sin warnings Swift/Clang ni errores; solo aviso AppIntents metadata previo. GetBuildLog warning sin issues estructurados.
+  Scheme/plan Develop e iPhone18Pro restaurados. Después de la global solo cambió una línea de comentario DocC.
+
+### Revisión y límites 10.4
+
+Style audit de los 13 Swift cambiados: un candidato conservado por closure/tipo función de init; revisión manual sin
+hallazgos, sin líneas >120. `git diff --check` limpio. Gobernanza: solo seis enlaces históricos 08.3 a capturas ausentes.
+POST independiente PASS sin hallazgos P0–P3. UI/previews/accesibilidad nueva N/A: no cambian pantallas, textos ni interacción renderizada.
+Deuda 08/PLU-54/57 intacta: Jesus Franco, recuperar tras feedback/estabilización y antes del primer candidato para uso real.
+El éxito de mutación significa aceptación local. No prueba Firestore live, CAS entre contextos ni validación accesible integral.
+
+POST por agente nuevo ios-standards-reviewer, operacionalmente read-only: 13 Swift y cuatro documentos revisados,
+además de callpaths, autoridades y evidencias. Reviewer/root verifican 647 archivos tracked y untracked no ignorados
+idénticos antes/después, sin altas/bajas/cambios. Manifest `/tmp/franalonso-10-4-post1.json`, SHA256
+`2de90204134fa7379d9d1b6765323fee8d0a53734a38ca1d6edbd13911a24df6`.
+Solo tras verificar la huella se registra este resultado en tres documentos y Linear; código/configuración/tests intactos.
+
+Entrega completa de 10.4 e implementación de 10.5 autorizadas por el propietario. PLU-63/PLU-59 siguen In Progress hasta
+confirmar la entrega. Tras entregar 10.4 corresponde 10.5,
+lista/formulario adaptativos; selector 10.6 y picker 10.7. FoundationModels/PLU-47 conserva su lugar después de 10.7.
+
+## Entrega anterior —10.3 —2026-09-29
 
 [PR26](https://github.com/JFrancoG/FranAlonso/pull/26) MERGED; commit9e281b4c3394b4111ed680bfa76cc8f24b25221f,
 merge3a771c2d4a5b6d4a9a19cf66bf0f328bc5682d31. Árbol completo idéntico al head validado/publicado.
@@ -303,3 +350,10 @@ El propietario autoriza commit/push, PR/merge, cierre de issue/rama si proceden 
 Preflight: base main/origin/main d9731f2 idéntica, sin PR previa; cinco Swift coinciden con POST2, solo registros documentales
 posteriores. Se reutilizan validaciones y revisión finales; nuevas ejecuciones Xcode N/A por metadata de entrega.
 Changelog actualizado. No se modifica código durante el cierre. Entrega en curso;10.3 conserva PRE antes de implementación.
+
+## Entrega 10.4 autorizada — 2026-09-29
+
+Commit, push, PR, merge y cierres incluidos en la entrega solicitada, seguidos de implementación 10.5.
+Preflight sin cambios ajenos: los 13 Swift conservan la huella POST; solo registros documentales posteriores.
+Se reutilizan 1.516 resultados, builds Develop/Production y PRE/POST PASS. Xcode nuevo N/A por cierre documental.
+Aviso AppIntents, seis enlaces históricos08.3 y deuda accesible intactos. Propuesta/PRE propias antes de código10.5.
