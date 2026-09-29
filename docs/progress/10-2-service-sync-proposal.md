@@ -5,7 +5,8 @@ Fecha: 2026-09-29. [PLU-61](https://linear.app/plusprojects/issue/PLU-61), hija 
 El propietario autoriza issue, rama e implementación: «Adelante abre issue y rama e implementa 10.2».
 Implementación completada tras PRE PASS: cinco caracterizaciones PASS inicial, sin cambios productivos;
 1.013 declaraciones/1.400 resultados PASS y build Develop con tests PASS. Retest final20/20 PASS tras corregir espera temprana del test de ACK; POST2 PASS. [Evidencia](phase-10.md).
-Los apartados siguientes conservan la propuesta revisada antes de implementar. Entrega Git pendiente.
+Entregada por [PR25](https://github.com/JFrancoG/FranAlonso/pull/25), merge df0a5d6, commit25ef353 intacto;
+PLU-61 Done y rama eliminada. Los apartados siguientes conservan el historial previo a la entrega.
 
 ## Autoridad y estado real
 

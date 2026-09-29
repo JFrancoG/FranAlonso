@@ -5,10 +5,10 @@
 ## Estado actual
 
 - **Fase10 / [PLU-59](https://linear.app/plusprojects/issue/PLU-59): In Progress**.
-  10.1/PLU-60 Done, [PR24](https://github.com/JFrancoG/FranAlonso/pull/24), merge fd4ed5a; rama eliminada.
-  [10.2/PLU-61](https://linear.app/plusprojects/issue/PLU-61) implementada: cinco escenarios CRUD/sync/durabilidad PASS.
-  1.400 resultados y retest20/20 PASS; Develop PASS, aviso AppIntents previo. Solo tests.
-  PRE/POST PASS. [Evidencia](progress/phase-10.md). Entrega pendiente;10.3 no iniciada.
+  10.1/PLU-60 Done, PR24. [10.2/PLU-61](https://linear.app/plusprojects/issue/PLU-61) **Done**,
+  [PR25](https://github.com/JFrancoG/FranAlonso/pull/25), merge df0a5d6; rama eliminada, árbol validado intacto.
+  1.400 resultados y retest20/20 PASS; PRE/POST PASS, aviso AppIntents previo. [Evidencia](progress/phase-10.md).
+  Siguiente:10.3 productos vinculables, inicio e implementación autorizados tras PRE.
 - **Fase09 / [PLU-49](https://linear.app/plusprojects/issue/PLU-49): In Progress**.
   09.1–09.7 entregadas; PLU-58 Done, PR23/b40e1f6, cierre50ecc39 y rama eliminada. [Evidencia](progress/phase-09.md).
   PRE/POST,1.346 resultados y builds PASS; aviso AppIntents conocido. PLU-54/57: Backlog accesible09.4/09.6,

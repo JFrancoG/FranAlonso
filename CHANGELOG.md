@@ -45,6 +45,9 @@ All notable changes to this project are documented in this file.
 
 ### Documentation
 
+- 2026-09-29 | 📝 docs(delivery): close service sync integration
+  Records PR25, verified merge and branch cleanup before linked-product contracts.
+
 - 2026-09-29 | 📝 docs(delivery): close service contracts
   Records PR24, verified merge, branch cleanup and the separate 10.2 integration gate.
 
