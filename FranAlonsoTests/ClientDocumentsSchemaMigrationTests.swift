@@ -69,7 +69,7 @@ struct ClientDocumentsSchemaMigrationTests {
     }
 }
 
-private struct ClientDocumentsMigrationPayload: Equatable {
+struct ClientDocumentsMigrationPayload: Equatable {
     let bytes: Data?
     let version: Int?
 }
@@ -110,7 +110,7 @@ private func documentMigrationOnly<Model: PersistentModel>(
     return try #require(rows.first)
 }
 
-private func preservedPayloads(in context: ModelContext) throws -> [String: ClientDocumentsMigrationPayload] {
+func preservedPayloads(in context: ModelContext) throws -> [String: ClientDocumentsMigrationPayload] {
     let clientUpsert = try documentMigrationOnly(ClientPendingUpsertModel.self, in: context)
     let clientDelete = try documentMigrationOnly(ClientPendingDeleteModel.self, in: context)
     let clientRemote = try documentMigrationOnly(ClientRemoteStateModel.self, in: context)

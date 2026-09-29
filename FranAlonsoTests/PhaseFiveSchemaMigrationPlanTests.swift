@@ -7,12 +7,14 @@ import Testing
 struct PhaseFiveSchemaMigrationPlanTests {
     @Test("The plan starts at the persisted 05.10c baseline")
     func planStartsAtPersistedBaseline() {
-        #expect(PhaseFiveSchemaMigrationPlan.schemas.count == 2)
+        #expect(PhaseFiveSchemaMigrationPlan.schemas.count == 3)
         #expect(PhaseFiveBaselineSchema.versionIdentifier == Schema.Version(1, 0, 0))
         #expect(PhaseFiveBaselineSchema.models.count == 28)
-        #expect(PhaseFiveSchemaMigrationPlan.stages.count == 1)
+        #expect(ClientDocumentsSchema.models.count == 30)
+        #expect(StockMovementsSchema.models.count == 31)
+        #expect(PhaseFiveSchemaMigrationPlan.stages.count == 2)
         #expect(rawCurrentSchema.version == Schema.Version(1, 0, 0))
-        #expect(Schema.franAlonso.version == Schema.Version(2, 0, 0))
+        #expect(Schema.franAlonso.version == Schema.Version(3, 0, 0))
     }
 
     @Test("A raw 05.10c store adopts the plan with all 28 rows intact")
@@ -413,9 +415,13 @@ private func insertSaleRows(in context: ModelContext) throws -> PhaseFiveBaselin
     )
 }
 
-func verifyPhaseFiveMigrationRows(in context: ModelContext, fixture: PhaseFiveMigrationFixture) throws {
+func verifyPhaseFiveMigrationRows(
+    in context: ModelContext,
+    fixture: PhaseFiveMigrationFixture,
+    additionalProducts: [Product] = []
+) throws {
     try verifyClientRows(in: context, fixture: fixture.client)
-    try verifyProductRows(in: context, fixture: fixture.product)
+    try verifyProductRows(in: context, fixture: fixture.product, additionalProducts: additionalProducts)
     try verifyServiceRows(in: context, fixture: fixture.service)
     try verifySaleRows(in: context, fixture: fixture.sale)
 }
@@ -452,8 +458,17 @@ private func verifyClientRows(in context: ModelContext, fixture: PhaseFiveBaseli
     #expect(try only(ClientSyncRetryModel.self, in: context).decodeState(for: fixture.retry.scope) == fixture.retry)
 }
 
-private func verifyProductRows(in context: ModelContext, fixture: PhaseFiveBaselineProductMigrationFixture) throws {
-    #expect(try only(ProductModel.self, in: context).toDomain() == fixture.value)
+private func verifyProductRows(
+    in context: ModelContext,
+    fixture: PhaseFiveBaselineProductMigrationFixture,
+    additionalProducts: [Product]
+) throws {
+    let products = try context.fetch(FetchDescriptor<ProductModel>()).map { try $0.toDomain() }
+    let expected = [fixture.value] + additionalProducts
+    #expect(products.count == expected.count)
+    for product in expected {
+        #expect(products.contains(product))
+    }
 
     let upsert = try only(ProductPendingUpsertModel.self, in: context)
     #expect(upsert.productID == fixture.upsert.productID)

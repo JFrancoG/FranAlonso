@@ -49,6 +49,21 @@ Alcance autorizado el29/09/2026 y revisado independientemente:
 - Desactivar se ofrece para un producto existente activo; inactive conserva edición y observación. Cerrar no deshace
   commits. Pantallas, textos, confirmaciones visuales y previews corresponden a09.4.
 
+## Contratos de ajustes —09.5
+
+[Propuesta aprobada](../progress/09-5-stock-adjustments-proposal.md) el29/09/2026 tras PRE PASS:
+
+- Movimiento inmutable con ID y fecha explícitos, delta entero no cero, motivo normalizado obligatorio y referencia
+  manual igual a su ID. Saldo cero/negativo permitido; se ajustan activos e inactivos sin modificar su estado.
+- Ausente/tombstone/conflicto de producto bloquea movimientos nuevos. Retry del mismo ID/payload canónico devuelve
+  el movimiento original antes de comprobar elegibilidad; cualquier diferencia de payload produce conflicto neutral.
+- Cantidad derivada de movimientos mediante acumulación Int128 y conversión exacta a Int; sin total mutable en Product.
+- Registro local versionado pendiente de sync, writer único y aceptación sin suspensión; sin CAS entre writers
+  independientes ni atomicidad global con Product. Cancelación previa no acepta; cancelación tras commit mantiene éxito.
+- Esquema3 aditivo conserva1/2, documentos y metadata; migración raw y segunda reapertura obligatorias antes de activarlo.
+  Una fila StockMovement impide reclamar un almacén no vinculado según ADR0021.
+- AppRuntime comparte el writer local. UI/contexto de09.6, mínimos09.7 y sync/venta12 conservan sus puertas propias.
+
 ## Subfases
 
 ### Alcance de pantallas — 09.4

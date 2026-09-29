@@ -41,6 +41,38 @@ struct SwiftDataStorePristineDataSourceTests {
         #expect(await secureClaims.count == 0)
     }
 
+    @Test("A sole stock movement denies an unbound store without claiming the secure binding")
+    func soleStockMovementDeniesMissingBindingBeforeSecureClaim() async throws {
+        let container = try ModelContainer.inMemory(for: Schema(versionedSchema: StockMovementsSchema.self))
+        let id = StockMovementID(rawValue: UUID())
+        let movement = try StockMovement(
+            id: id,
+            productID: ProductID(rawValue: UUID()),
+            quantityDelta: 1,
+            reason: "Orphan ledger row",
+            occurredAt: Date(timeIntervalSinceReferenceDate: 95),
+            origin: .manual(reference: id)
+        )
+        container.mainContext.insert(try StockMovementModel(movement))
+        try container.mainContext.save()
+        let inspector = SwiftDataStorePristineDataSource(modelContainer: container)
+        let claims = DocumentStoreSecureClaims()
+        let binding = KeychainLocalPrincipalDataSource(
+            readBinding: { .missing },
+            addBinding: { _ in await claims.add() },
+            isStorePristine: { try await inspector.isPristine() }
+        )
+        let useCase = AuthorizeLocalPrincipalUseCase(authorizer: LocalPrincipalAuthorizer { session in
+            try await binding.authorize(principalID: session.id)
+        })
+
+        #expect(try await !inspector.isPristine())
+        await #expect(throws: LocalPrincipalAuthorizationError.localStoreNotPristine) {
+            try await useCase(session: AuthenticationSession(id: "stock-store-principal"))
+        }
+        #expect(await claims.count == 0)
+    }
+
     @Test("Any persisted feature metadata makes the store non-pristine", arguments: LocalStoreFeature.allCases)
     fileprivate func anyPersistedFeatureMetadataMakesStoreNonPristine(_ feature: LocalStoreFeature) async throws {
         let container = try ModelContainer.inMemory(for: Schema.franAlonso)

@@ -6,6 +6,8 @@ import SwiftData
 @MainActor
 final class AppRuntime {
     let dependencies: AppDependencies
+    /// The single local ledger writer shared by stock callers in this runtime; no stock transport is composed.
+    let stockRepository: DefaultStockRepository
     private let modelContainer: ModelContainer
     private let persistenceActor: ClientPersistenceActor
     private let observationSignal: ClientObservationSignal
@@ -74,6 +76,9 @@ final class AppRuntime {
         )
         let productPersistenceActor = ProductPersistenceActor(modelContainer: modelContainer)
         let productObservationSignal = ProductObservationSignal()
+        stockRepository = DefaultStockRepository(
+            persistenceActor: StockPersistenceActor(modelContainer: modelContainer)
+        )
         let servicePersistenceActor = ServicePersistenceActor(modelContainer: modelContainer)
         let serviceObservationSignal = ServiceObservationSignal()
         let salePersistenceActor = SalePersistenceActor(modelContainer: modelContainer)

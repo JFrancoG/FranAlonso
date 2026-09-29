@@ -1,5 +1,83 @@
 # Fase 09 — Productos e inventario físico
 
+## Implementación local 09.5 —2026-09-29
+
+[PLU-55](https://linear.app/plusprojects/issue/PLU-55), Jesus Franco, In Progress; rama `codex/phase-09-5-stock-adjustments`
+desde b4d2da2. Propuesta concreta aprobada tras PRE2 PASS. Implementación y validación completas; PRE/POST PASS, sin hallazgos abiertos.
+El propietario autoriza ahora commit/push, PR/merge, cierre de issue/rama e implementación09.6. No hay live ni cambios UI09.5.
+
+### Resultado
+
+- StockMovement inmutable/Codable, ID/fecha/origen estables, motivo normalizado no vacío y delta no cero.
+- Cantidad derivada exacta con Int128; cero y negativo permitidos. Activos/inactivos ajustables; nuevo movimiento
+  bloqueado ante ausente/tombstone/conflicto. Retry exacto precede elegibilidad y no ejecuta save; colisión no reemplaza.
+- Modelo versionado pendiente de sync, una primitiva síncrona con contexto limpio y rollback propio, actor y repositorio.
+  AppRuntime comparte un writer local. No se modifica Product/DTO/cola ni se compone transporte de stock.
+- v3 añade solo StockMovementModel a los30 modelos de v2, conserva v1/v2 y plan1→2→3. AppModelSchema se cambió únicamente
+  después de probar ambas migraciones raw, segunda reapertura, preservación de bytes/metadata/documentos y deduplicación.
+- Inspector ADR0021 incluye StockMovement con fetchLimit1. Una fila huérfana deniega claim sin llamadas addBinding;
+  la prueba usa un doble determinista, sin Keychain live.
+
+### Validación
+
+Xcode MCP estable, `workspace-EYu6rxi7hg`, Develop/iPhone18Pro Simulator27.0; target26 y Swift6 strict sin cambios.
+
+| Paso | Evidencia |
+|---|---|
+| RED compilado |25 declaraciones/59 resultados:50 fallos semánticos esperados y9 casos ya verdes, que no se atribuyen a RED. |
+| GREEN focal inicial |30/30 PASS; selección de Xcode omitió variantes parametrizadas, por lo que no prueba59/59. |
+| Matriz antes de activarv3 |9/9 PASS: rawv1, rawv2, desconocido conservado, dos reaperturas completas,4 corrupciones y overflow previo. |
+| Regresión global |**932 declaraciones/1.268 resultados PASS**,69 nuevos frente a1.199;0 fallos/skips/expected failures/runtime warnings. |
+| Develop |PASS10,392s. |
+| Production |PASS18,373s. Develop/iPhone18Pro restaurados. |
+
+La suite global cubre todas las variantes: cinco colisiones, seis estados Product, cinco cambios posteriores, cuatro
+cambios ya confirmados por otro contexto sobre un writer calentado, extremos/permutaciones y cuatro corrupciones.
+Incluye cancelación previa/tardía, rollback y recuperación, contexto ajeno sucio, retry sin save y ambas migraciones.
+Durabilidad, corrupción, cambio secuencial entre contextos y retry sin save se añadieron como caracterización posterior
+al RED inicial; no se inventa un ciclo RED adicional. No se acredita CAS entre writers/procesos independientes.
+Las dos rutas históricas de migración tienen entradas de test propias sobre el mismo helper para comprobar ambas antes
+de activarv3, dada la omisión de variantes en RunSomeTests. La suite completa confirma después la matriz y la regresión.
+
+Artefactos bajo `/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/`:
+
+- RED: `RunSomeTests/82E7227B-50C0-49E7-9742-69F6765ACE3E.txt`, consola17-45-11.
+- GREEN inicial: `RunSomeTests/EF27D582-1367-4D2D-995C-323C303270C6.txt`, consola17-47-48.
+- Matriz: `RunSomeTests/A3CAED69-875C-4858-AC22-51AC51E7036C.txt`, consola17-50-05.
+- Global: `RunAllTests/4DF4704E-356A-4232-B85A-3213B0C815B5.txt`, consola17-50-42.
+- Bundle cerrado global: `RunAllTests/Test-FranAlonso-Develop-2026.09.29_17-50-42-+0200.xcresult`, inspeccionado con xcresulttool.
+- Builds: `BuildProject/BuildProject-Log-20260929-175132.txt` y `BuildProject-Log-20260929-175204.txt`.
+
+Ambos logs completos conservan únicamente el aviso conocido de AppIntents sobre extracción omitida por no depender del
+framework; el filtro GetBuildLog devuelve0. No se afirma cero warnings globales ni exportación DocC validada.
+Estilo:23Swift inspeccionados, script de candidatos y revisión manual; cuatro candidatos justificados por closures o
+restricciones genéricas. Diff-check limpio. Gobernanza conserva solo los seis enlaces históricos de capturas08.3.
+Previews/UI/accesibilidad nuevas N/A: sin pantallas, recursos ni localización modificados; PLU-54 y deuda08 permanecen.
+
+### Auditoría y estado final
+
+Revisión POST independiente `ios-standards-reviewer`, perfil maintenance: **PASS, sin hallazgos** sobre23Swift y5documentos.
+Auditoría operacional read-only: root comprobó **590/590 archivos idénticos** después del revisor, incluidos tracked y
+untracked no ignorados. Manifiesto `/tmp/franalonso-09-5-post1.json`, SHA256
+`c479fe743adce1b9f2be3acc88ca0297adcc567b1339b9e1be2a05090f059eea`. Este registro se añade tras verificar la huella;
+no se modifica código/configuración después de los tests, builds y POST. Revisor contrastó fuentes Apple mediante
+Cupertino y leyó resultados nativos/logs; no ejecutó ni modificó nada.
+
+PLU-55, PLU-49 y proyecto reconciliados; siguen In Progress.09.5 está lista para entrega, con commit/push y demás puertas
+Git pendientes. UI09.6 es el siguiente alcance tras entregar09.5; no se ha comenzado. PLU-54 y deuda08 permanecen abiertas.
+
+## Inicio 09.5, 2026-09-29 —registro histórico
+
+[PLU-55](https://linear.app/plusprojects/issue/PLU-55), Jesus Franco, hija de PLU-49, In Progress.
+Rama local `codex/phase-09-5-stock-adjustments` desde main/origin/main b4d2da2 idénticos y limpios.
+Inicio autorizado; [propuesta concreta](09-5-stock-adjustments-proposal.md) de AdjustStockUseCase y persistencia append-only.
+PRE PASS y propuesta aprobada explícitamente el29/09. Implementación TDD local en curso: ledger y migración rawv1/v2→v3.
+Único P2 resuelto: incluir la tabla en el inspector de almacén vacío y probar rechazo de claim con cero addBinding
+según ADR0021. Root verificó 574/574 archivos idénticos en ambos pases; PRE2 SHA-256
+`da353ae0ac18647157daefa5f415c32be5305fee20d88337f7b1edf3493f6aab`. Solo cambia después el registro documental.
+Código intacto; se reutiliza baseline09.4 (1.199 resultados y ambos builds). Xcode nuevo, UI y accesibilidad N/A por docs.
+Fase09 abierta, PLU-54 y deuda08 conservadas; sin live, commit/push09.5 ni comienzo09.6.
+
 ## Entrega y cierre funcional 09.4, 2026-09-29
 
 Commit `092d72eb32e639513697af1d5254cbcad8f26823`, `✨ feat(products): add catalogue and product forms`, publicado.
