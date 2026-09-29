@@ -49,7 +49,25 @@ Gestionar todos los conceptos cobrables, incluidos los productos vendidos al pú
   su producto desaparece; para editarlo hay que elegir otro producto activo o convertirlo en profesional.
 - App compone ambos lectores con el ProductRepository existente. El repositorio de preview usa ese mismo catálogo y
   revalida identidad/estado después del await. No se promete reserva, CAS global, stock positivo, unicidad ni cascadas.
-- No se endurecen Service/Codable/DTO ni la materialización/sync técnica; la UI y el selector pertenecen a10.4–10.6.
+- No se endurecen Service/Codable/DTO ni la materialización/sync técnica; la UI y el selector pertenecen a10.5–10.6.
+
+## Contratos aprobados de10.4
+
+- Lista y formulario son `@Observable @MainActor`, sin Store. La lista observa snapshots durante la tarea del caller,
+  busca localmente ambos tipos/estados y distingue colección vacía de query sin resultados. Generaciones descartan
+  respuestas de observaciones reemplazadas; sesiones separan UUID de presentación y ServiceID estable.
+- El borrador conserva nombre, tipo, vínculo, precio, moneda, impuesto y descuento como entradas editables. La sesión fija
+  Locale. Entrada decimal completa ES/EN sin agrupación, exponentes, prefijos válidos de basura ni pérdida de precisión;
+  Money aplica su redondeo vigente. Descuento vacío es ausencia y cero es explícito. Domain mantiene reglas comerciales.
+- Solo una carga válida permite editar un ID existente. Errores de escritura conservan borrador/identidad para retry;
+  corregir entrada solo limpia validación local, nunca persistencia/conflicto/producto indisponible. Dirty tracking incluye
+  todos los campos textuales. Guardar captura el perfil completo antes de suspender y bloquea mutaciones superpuestas.
+- Desactivar exige entidad cargada activa e ignora cambios sin guardar, incluso inválidos; cargar históricos no consulta
+  la disponibilidad del producto. La aceptación10.3 conserva esa comprobación para altas/ediciones comerciales.
+- Cancelación previa no escribe; cancelación cooperativa permite retry, éxito local tardío sigue siendo éxito. Cerrar
+  limpia presentación e invalida respuestas, sin fingir rollback. Las tareas y el contexto efímero pertenecen al caller.
+- App comparte actor/señal existentes en composición real, fixture y preview interactiva; snapshot preview permite leer
+  y rechaza las tres mutaciones antes de acceder al contexto. Sin cambios Domain/Data, schema, sync, UI ni live.
 
 ## Subfases
 

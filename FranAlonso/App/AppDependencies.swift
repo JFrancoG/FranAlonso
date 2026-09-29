@@ -2,6 +2,7 @@ import SwiftData
 
 struct AppDependencies {
     typealias ClientFormFactory = @MainActor @Sendable (ClientFormDestination) -> ClientFormViewModel
+    typealias ServiceFormFactory = @MainActor @Sendable (ServiceFormDestination) -> ServiceFormViewModel
     typealias ProductFormFactory = @MainActor @Sendable (ProductFormDestination) -> ProductFormViewModel
     typealias StockAdjustmentFactory = @MainActor @Sendable (StockAdjustmentDestination) -> StockAdjustmentViewModel
     typealias ClientConsentServicesFactory = @MainActor @Sendable () throws -> ClientConsentServices
@@ -14,6 +15,7 @@ struct AppDependencies {
     let observeLinkableProducts: ObserveLinkableProductsUseCase
     let getLinkableProduct: GetLinkableProductUseCase
     let observeServices: ObserveServicesUseCase
+    let makeServiceForm: ServiceFormFactory
     let observeSales: ObserveSalesUseCase
     let saveSale: SaveSaleUseCase
     let telemetryReporter: TelemetryReporter
@@ -183,6 +185,10 @@ struct AppDependencies {
                 observationSignal: productObservationSignal
             ),
             serviceRepository: serviceRepository,
+            makeServiceForm: serviceFormFactory(
+                persistenceActor: servicePersistenceActor,
+                observationSignal: serviceObservationSignal
+            ),
             saleRepository: saleRepository,
             analyticsDataSource: analyticsDataSource,
             crashDataSource: crashDataSource
@@ -241,6 +247,10 @@ struct AppDependencies {
                 observationSignal: productObservationSignal
             ),
             serviceRepository: serviceRepository,
+            makeServiceForm: serviceFormFactory(
+                persistenceActor: servicePersistenceActor,
+                observationSignal: serviceObservationSignal
+            ),
             saleRepository: saleRepository,
             analyticsDataSource: analyticsDataSource,
             crashDataSource: crashDataSource
@@ -249,7 +259,7 @@ struct AppDependencies {
 #endif
 
     /// Creates an interactive preview over the same in-memory container supplied to SwiftUI.
-    /// Clients and Products reads, observation and contextual mutations share their existing actor and signal.
+    /// Client, Product and Service reads, observation and mutations share their existing actor and signal.
     /// Stock reads share one actor while UI acceptance uses the same contextual primitive as the ledger.
     /// Telemetry is inert; no remote data source or synchronization engine is composed.
     static func preview(modelContainer: ModelContainer) -> AppDependencies {
@@ -272,7 +282,7 @@ struct AppDependencies {
         )
     }
 
-    /// Creates finite snapshot dependencies; Client, Product and stock mutations are explicitly unavailable.
+    /// Creates finite snapshot dependencies; Client, Product, Service and stock mutations are explicitly unavailable.
     /// Use `preview(modelContainer:)` when a preview needs interactive local persistence.
     static func preview(
         clients: [Client] = [],
@@ -282,13 +292,15 @@ struct AppDependencies {
     ) -> AppDependencies {
         let clientRepository = InMemoryClientRepository(clients: clients)
         let productRepository = InMemoryProductRepository(products: products)
+        let serviceRepository = InMemoryServiceRepository(services: services, productRepository: productRepository)
         return AppDependencies(
             clientRepository: clientRepository,
             makeClientForm: readOnlyClientFormFactory(repository: clientRepository),
             productRepository: productRepository,
             makeProductForm: readOnlyProductFormFactory(repository: productRepository),
             makeStockAdjustment: readOnlyStockAdjustmentFactory(productRepository: productRepository),
-            serviceRepository: InMemoryServiceRepository(services: services, productRepository: productRepository),
+            serviceRepository: serviceRepository,
+            makeServiceForm: readOnlyServiceFormFactory(repository: serviceRepository),
             saleRepository: InMemorySaleRepository(sales: sales),
             analyticsDataSource: PreviewAnalyticsDataSource(),
             crashDataSource: PreviewCrashDataSource()
@@ -304,6 +316,7 @@ extension AppDependencies {
         makeProductForm: @escaping ProductFormFactory,
         makeStockAdjustment: @escaping StockAdjustmentFactory,
         serviceRepository: any ServiceRepository,
+        makeServiceForm: @escaping ServiceFormFactory,
         saleRepository: any SaleRepository,
         analyticsDataSource: any AnalyticsDataSource,
         crashDataSource: any CrashDataSource
@@ -317,6 +330,7 @@ extension AppDependencies {
             observeLinkableProducts: ObserveLinkableProductsUseCase(repository: productRepository),
             getLinkableProduct: GetLinkableProductUseCase(repository: productRepository),
             observeServices: ObserveServicesUseCase(repository: serviceRepository),
+            makeServiceForm: makeServiceForm,
             observeSales: ObserveSalesUseCase(repository: saleRepository),
             saveSale: SaveSaleUseCase(repository: saleRepository),
             telemetryReporter: TelemetryReporter(
