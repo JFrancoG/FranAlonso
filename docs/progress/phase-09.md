@@ -1,5 +1,20 @@
 # Fase 09 — Productos e inventario físico
 
+## Entrega y cierre 09.7 —2026-09-29
+
+Commit `51afed1266f1f75a8b14a2edb4966bf0fc9a3757`, `✨ feat(stock): observe local low-stock state`, publicado.
+[PR23](https://github.com/JFrancoG/FranAlonso/pull/23) MERGED mediante `b40e1f6b603f8ceeb6120f26c73d04fb8589d091`.
+Árbol integrado idéntico al head validado; CLEAN/MERGEABLE, sin checks ni reviews remotos ni protección/rules en main.
+Ramas local/remota eliminadas tras comprobar cero commits únicos. PLU-58 Done por entrega y cierre autorizados.
+Se reutilizan1.346 resultados, Develop/Production y PRE/POST PASS: código/configuración/tests intactos respecto a POST2.
+Solo cambian los registros documentales; nueva ejecución Xcode N/A. Aviso AppIntents y seis enlaces históricos08.3 conservados.
+
+09.1–09.7 entregadas. Fase09/PLU-49 y proyecto siguen In Progress: PLU-54/57 mantienen validación integral de09.4/09.6,
+Jesus Franco, tras feedback/estabilización y antes de uso real. UI/accesibilidad nueva09.7 N/A; ningún servicio live activado.
+Siguiente puerta canónica: preparar10.1, contratos/casos de uso de Service, propuesta y PRE antes de implementar.
+Fase10 no iniciada. Después de10.1–10.7, adelanto textual Foundation Models/PLU-47; siguen11–13 para la venta completa,
+y08.9 tras feedback, conforme a ADR0030. El usuario pregunta por el siguiente paso; no autoriza aquí esa implementación.
+
 ## Entrega 09.7 autorizada —2026-09-29
 
 El propietario autoriza commit/push, PR/merge y cierre de issue/rama si se conservan los gates de entrega.

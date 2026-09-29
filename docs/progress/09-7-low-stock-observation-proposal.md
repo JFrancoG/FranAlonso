@@ -123,4 +123,4 @@ no autorizada. [Evidencia posterior](phase-09.md):1.346 resultados PASS, lector 
 cancelación y borrador conservado. StockMinimum.ValidationError mantiene el rechazo neutral sin ampliar StockError
 con un caso que la UI actual no puede recibir. POST independiente PASS tras corregir cuatro closures solo de formato;
 la fase09 conserva su cierre integral. El propietario autoriza después commit/push, PR/merge y cierre de issue/rama;
-el resultado de entrega se registra en phase-09.md una vez verificado.
+entrega completada en PR23/merge b40e1f6, PLU-58 Done y ramas eliminadas. Registro y siguiente puerta en phase-09.md.
