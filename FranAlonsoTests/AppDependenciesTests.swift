@@ -51,7 +51,10 @@ struct AppDependenciesTests {
             makeProductForm: AppDependencies.readOnlyProductFormFactory(repository: productRepository),
             makeStockAdjustment: AppDependencies.readOnlyStockAdjustmentFactory(productRepository: productRepository),
             serviceRepository: serviceRepository,
-            makeServiceForm: AppDependencies.readOnlyServiceFormFactory(repository: serviceRepository),
+            makeServiceForm: AppDependencies.readOnlyServiceFormFactory(
+                repository: serviceRepository,
+                productRepository: productRepository
+            ),
             saleRepository: InMemorySaleRepository(),
             analyticsDataSource: analytics,
             crashDataSource: crash
@@ -97,7 +100,10 @@ struct AppDependenciesTests {
             makeProductForm: AppDependencies.readOnlyProductFormFactory(repository: productRepository),
             makeStockAdjustment: AppDependencies.readOnlyStockAdjustmentFactory(productRepository: productRepository),
             serviceRepository: serviceRepository,
-            makeServiceForm: AppDependencies.readOnlyServiceFormFactory(repository: serviceRepository),
+            makeServiceForm: AppDependencies.readOnlyServiceFormFactory(
+                repository: serviceRepository,
+                productRepository: productRepository
+            ),
             saleRepository: InMemorySaleRepository(),
             analyticsDataSource: CompositionAnalyticsDataSourceSpy(),
             crashDataSource: CompositionCrashDataSourceSpy()
@@ -142,7 +148,10 @@ struct AppDependenciesTests {
             makeProductForm: AppDependencies.readOnlyProductFormFactory(repository: repository),
             makeStockAdjustment: AppDependencies.readOnlyStockAdjustmentFactory(productRepository: repository),
             serviceRepository: serviceRepository,
-            makeServiceForm: AppDependencies.readOnlyServiceFormFactory(repository: serviceRepository),
+            makeServiceForm: AppDependencies.readOnlyServiceFormFactory(
+                repository: serviceRepository,
+                productRepository: repository
+            ),
             saleRepository: InMemorySaleRepository(),
             analyticsDataSource: CompositionAnalyticsDataSourceSpy(),
             crashDataSource: CompositionCrashDataSourceSpy()
@@ -180,7 +189,10 @@ struct AppDependenciesTests {
             makeProductForm: AppDependencies.readOnlyProductFormFactory(repository: productRepository),
             makeStockAdjustment: AppDependencies.readOnlyStockAdjustmentFactory(productRepository: productRepository),
             serviceRepository: repository,
-            makeServiceForm: AppDependencies.readOnlyServiceFormFactory(repository: repository),
+            makeServiceForm: AppDependencies.readOnlyServiceFormFactory(
+                repository: repository,
+                productRepository: productRepository
+            ),
             saleRepository: InMemorySaleRepository(),
             analyticsDataSource: CompositionAnalyticsDataSourceSpy(),
             crashDataSource: CompositionCrashDataSourceSpy()
@@ -219,7 +231,10 @@ struct AppDependenciesTests {
             makeProductForm: AppDependencies.readOnlyProductFormFactory(repository: productRepository),
             makeStockAdjustment: AppDependencies.readOnlyStockAdjustmentFactory(productRepository: productRepository),
             serviceRepository: serviceRepository,
-            makeServiceForm: AppDependencies.readOnlyServiceFormFactory(repository: serviceRepository),
+            makeServiceForm: AppDependencies.readOnlyServiceFormFactory(
+                repository: serviceRepository,
+                productRepository: productRepository
+            ),
             saleRepository: repository,
             analyticsDataSource: CompositionAnalyticsDataSourceSpy(),
             crashDataSource: CompositionCrashDataSourceSpy()

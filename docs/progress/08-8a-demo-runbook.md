@@ -1,4 +1,4 @@
-# Demo de clientes, productos, stock y servicios — 08.8a / 09 / 10.5
+# Demo de clientes, productos, stock y servicios — 08.8a / 09 / 10.6
 
 ## Arranque
 
@@ -55,7 +55,7 @@ El nombre sin guardar en la ficha padre se conserva al entrar/salir de stock. Lo
 ajustes; un producto nuevo debe guardarse antes. Un fallo de envío congela el ajuste para reintentar exactamente el mismo;
 un fallo de recarga después de aceptar solo ofrece actualizar existencias, sin volver a registrar.
 
-## Catálogo comercial — 10.5
+## Catálogo comercial — 10.5–10.6
 
 Catálogo → Servicios muestra «Corte y peinado DEMO» (profesional, 35 EUR) y «Champú DEMO venta»
 (producto, 20 EUR), vinculado a «Champú DEMO hidratante». Ambos tienen impuesto 21 y ningún descuento.
@@ -64,9 +64,15 @@ impuesto (por ejemplo 21). En español usar coma decimal, sin separadores de mil
 La moneda puede ser EUR o USD. Guardar cierra y actualiza la lista mediante persistencia local real.
 
 Abrir, editar y cancelar exige confirmar descarte. Desactivar confirma que conserva historial y descarta el borrador;
-reabrir muestra Inactivo. La edición conserva el tipo y producto asociado. Elegir/cambiar tipo o vínculo llega en 10.6.
-Si se desactiva el producto de inventario asociado, el servicio histórico sigue visible y desactivable, pero no puede
-aceptar una edición comercial con ese vínculo indisponible. El mensaje de error explica esta limitación.
+reabrir muestra Inactivo. En Tipo se puede elegir Profesional o Producto. Para Producto, abrir «Producto asociado»
+y elegir uno activo; volver al formulario conserva todos los datos comerciales. Reabrir el selector permite sustituirlo.
+Guardar sin elegir revela un error junto al selector. Cambiar a Profesional limpia el vínculo; volver a Producto exige
+volver a elegir. Elegir por sí solo no guarda la ficha.
+
+Si se desactiva el producto de inventario asociado, el servicio histórico sigue visible y desactivable. Su ficha muestra
+el vínculo no disponible y puede recuperarse eligiendo otro producto activo o convirtiendo a Profesional. Guardar vuelve
+a comprobar la disponibilidad actual sin perder el borrador si falla. Si falla la lectura del catálogo, «Reintentar productos»
+recupera las opciones; no se afirma que el producto haya sido eliminado. Reiniciar restaura el escenario original.
 
 ## Reinicio y límites de ambos recorridos
 

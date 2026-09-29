@@ -9,6 +9,10 @@ struct ServiceFormContent: View {
     let canDeactivate: Bool
     let isRequestPending: Bool
     let validationAttemptID: UUID?
+    let linkableProductsState: ServiceFormViewModel.LinkableProductsState
+    let onChangeType: @MainActor (ServiceType) -> Void
+    let onSelectProduct: @MainActor (ProductID?) -> Void
+    let onRetryProducts: @MainActor () -> Void
     let onRetry: @MainActor () -> Void
     let onDeactivate: @MainActor () -> Void
     @FocusState private var focusedField: ServiceFormValidationField?
@@ -36,6 +40,17 @@ struct ServiceFormContent: View {
                 feedback
                 nameSection
                 typeSection
+                if draft.type == .product {
+                    ServiceLinkedProductSection(
+                        selection: draft.linkedProductID,
+                        state: linkableProductsState,
+                        error: state.formError?.validationField == .product ? state.formError : nil,
+                        canEdit: canEdit && !isRequestPending,
+                        validationAttemptID: validationAttemptID,
+                        onSelect: onSelectProduct,
+                        onRetry: onRetryProducts
+                    )
+                }
                 decimalSection(
                     .servicesFormPrice,
                     systemImage: "banknote",
@@ -83,7 +98,7 @@ struct ServiceFormContent: View {
                 }
             }
             .onChange(of: validationAttemptID) {
-                guard let field = state.formError?.validationField else { return }
+                guard let field = state.formError?.validationField, field != .product else { return }
                 focusedField = field
                 accessibleField = field
             }
@@ -104,7 +119,8 @@ struct ServiceFormContent: View {
                 .foregroundStyle(.textSecondary)
             }
         }
-        if let error = state.formError, error.validationField == nil {
+        if let error = state.formError,
+           error.validationField == nil || (error.validationField == .product && draft.type == .professional) {
             Section {
                 Text(error.serviceFormMessage)
                     .foregroundStyle(.errorInk)
@@ -147,15 +163,17 @@ struct ServiceFormContent: View {
 
     private var typeSection: some View {
         FormFieldSection(.servicesFormType, systemImage: "square.stack") {
-            Text(draft.type == .professional ? .servicesTypeProfessional : .servicesTypeProduct)
-                .fixedSize(horizontal: false, vertical: true)
-                .accessibilityLabel(.servicesFormType)
-                .accessibilityValue(draft.type == .professional ? .servicesTypeProfessional : .servicesTypeProduct)
-            if draft.type == .product {
-                Text(.servicesFormLinkedProductPreserved)
-                    .foregroundStyle(.textSecondary)
-                    .fixedSize(horizontal: false, vertical: true)
+            Picker(selection: Binding(get: { draft.type }, set: onChangeType)) {
+                Text(.servicesTypeProfessional).tag(ServiceType.professional)
+                Text(.servicesTypeProduct).tag(ServiceType.product)
+            } label: {
+                Text(.servicesFormType)
             }
+            .pickerStyle(.menu)
+            .labelsHidden()
+            .accessibilityLabel(.servicesFormType)
+            .frame(minHeight: 44)
+            .disabled(!canEdit || isRequestPending)
         }
     }
 
@@ -230,6 +248,10 @@ struct ServiceFormContent: View {
         canDeactivate: false,
         isRequestPending: false,
         validationAttemptID: nil,
+        linkableProductsState: .loaded([]),
+        onChangeType: { _ in },
+        onSelectProduct: { _ in },
+        onRetryProducts: {},
         onRetry: {},
         onDeactivate: {}
     )
@@ -247,6 +269,10 @@ struct ServiceFormContent: View {
         canDeactivate: false,
         isRequestPending: false,
         validationAttemptID: nil,
+        linkableProductsState: .loaded([]),
+        onChangeType: { _ in },
+        onSelectProduct: { _ in },
+        onRetryProducts: {},
         onRetry: {},
         onDeactivate: {}
     )
@@ -267,6 +293,10 @@ struct ServiceFormContent: View {
         canDeactivate: true,
         isRequestPending: false,
         validationAttemptID: nil,
+        linkableProductsState: .loaded([]),
+        onChangeType: { _ in },
+        onSelectProduct: { _ in },
+        onRetryProducts: {},
         onRetry: {},
         onDeactivate: {}
     )
@@ -288,8 +318,39 @@ struct ServiceFormContent: View {
         canDeactivate: false,
         isRequestPending: true,
         validationAttemptID: nil,
+        linkableProductsState: .loaded([]),
+        onChangeType: { _ in },
+        onSelectProduct: { _ in },
+        onRetryProducts: {},
         onRetry: {},
         onDeactivate: {}
     )
+    .environment(\.locale, Locale(identifier: "en"))
+}
+
+#Preview("Product form EN", traits: .modifier(AppPreviewModifier())) {
+    @Previewable @State var draft = ServiceFormDraft(
+        service: ServicePreviewFixtures.standard.productService,
+        locale: Locale(identifier: "en")
+    )
+
+    NavigationStack {
+        ServiceFormContent(
+            draft: $draft,
+            state: .editing,
+            mode: .edit,
+            isInactive: false,
+            canEdit: true,
+            canDeactivate: true,
+            isRequestPending: false,
+            validationAttemptID: nil,
+            linkableProductsState: .loaded([ProductPreviewFixtures.standard.primaryProduct]),
+            onChangeType: { _ in },
+            onSelectProduct: { _ in },
+            onRetryProducts: {},
+            onRetry: {},
+            onDeactivate: {}
+        )
+    }
     .environment(\.locale, Locale(identifier: "en"))
 }

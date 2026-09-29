@@ -6,6 +6,9 @@ All notable changes to this project are documented in this file.
 
 ### Added
 
+- 2026-09-30 | ✨ feat(services): select linked products
+  Adds native type and active-product selection with recoverable drafts and contextual save validation.
+
 - 2026-09-30 | ✨ feat(services): add catalogue screens
   Adds searchable commercial services, localized forms and repeatable linked-product demo data.
 

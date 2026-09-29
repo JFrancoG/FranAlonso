@@ -28,6 +28,14 @@ final class ServiceFormViewModel {
         case closed
     }
 
+    /// Availability is independent of the editable draft and mutation feedback.
+    enum LinkableProductsState: Equatable {
+        case idle
+        case loading
+        case loaded([Product])
+        case failed
+    }
+
     let destination: ServiceFormDestination
     /// Correction clears local validation feedback only; persistence errors remain until retry.
     var draft = ServiceFormDraft() {
@@ -37,6 +45,8 @@ final class ServiceFormViewModel {
             state = .editing
         }
     }
+    private(set) var linkableProductsState: LinkableProductsState = .idle
+    private let observeLinkableProducts: ObserveLinkableProductsUseCase
     private(set) var loadedService: Service?
     private(set) var state: State
     private let getService: GetServiceUseCase
@@ -45,12 +55,14 @@ final class ServiceFormViewModel {
     private let deactivateService: DeactivateOperation
     private let locale: Locale
     @ObservationIgnored private var operationGeneration = UUID()
+    @ObservationIgnored private var productObservationGeneration = UUID()
     private var baseline = ServiceFormDraft()
 
     /// Captures the numeric locale for the session without retaining a persistent context.
     init(
         destination: ServiceFormDestination,
         getService: GetServiceUseCase,
+        observeLinkableProducts: ObserveLinkableProductsUseCase,
         create: @escaping SaveOperation,
         update: @escaping SaveOperation,
         deactivate: @escaping DeactivateOperation,
@@ -58,6 +70,7 @@ final class ServiceFormViewModel {
     ) {
         self.destination = destination
         self.getService = getService
+        self.observeLinkableProducts = observeLinkableProducts
         self.create = create
         self.update = update
         deactivateService = deactivate
@@ -77,6 +90,59 @@ final class ServiceFormViewModel {
 
     /// Raw input participates in dirty tracking, including currently invalid numeric text.
     var hasUnsavedChanges: Bool { canEdit && draft != baseline }
+
+    /// Observes active choices for the caller task without changing the draft or write feedback.
+    /// A finite snapshot remains usable; completion without a snapshot requires an explicit retry.
+    /// Replaced, cancelled and closed observations cannot publish into the current catalogue.
+    func observeProducts() async {
+        guard state != .closed else { return }
+        let generation = UUID()
+        productObservationGeneration = generation
+        linkableProductsState = .loading
+        var receivedSnapshot = false
+        do {
+            try Task.checkCancellation()
+            let products = await observeLinkableProducts()
+            try Task.checkCancellation()
+            guard productObservationGeneration == generation else { return }
+            for try await snapshot in products {
+                try Task.checkCancellation()
+                guard productObservationGeneration == generation else { return }
+                receivedSnapshot = true
+                linkableProductsState = .loaded(snapshot)
+            }
+            try Task.checkCancellation()
+            guard productObservationGeneration == generation else { return }
+            if !receivedSnapshot {
+                linkableProductsState = .failed
+            }
+        } catch {
+            guard productObservationGeneration == generation else { return }
+            linkableProductsState = error is CancellationError || Task.isCancelled ? .idle : .failed
+        }
+    }
+
+    /// Converting to professional deliberately clears the link; converting back never chooses a product.
+    func changeType(_ type: ServiceType) {
+        guard canEdit else { return }
+        var changed = draft
+        changed.type = type
+        if type == .professional {
+            changed.linkedProductID = nil
+        }
+        draft = changed
+    }
+
+    /// Accepts only currently observed choices; an explicit nil clears the draft even when availability is unknown.
+    /// Selection does not reserve a product: local save acceptance revalidates its current availability.
+    func selectLinkedProduct(_ id: ProductID?) {
+        guard canEdit, draft.type == .product else { return }
+        if let id {
+            guard case .loaded(let products) = linkableProductsState,
+                  products.contains(where: { $0.id == id }) else { return }
+        }
+        draft.linkedProductID = id
+    }
 
     /// Retries reads without replacing an editable draft or consulting current product availability.
     /// Cancelled, replaced and closed loads cannot publish late results into this session.
@@ -159,6 +225,8 @@ final class ServiceFormViewModel {
     /// Clears presentation and fences responses without claiming to undo an accepted write.
     func close() {
         operationGeneration = UUID()
+        productObservationGeneration = UUID()
+        linkableProductsState = .idle
         draft = ServiceFormDraft()
         baseline = ServiceFormDraft()
         loadedService = nil

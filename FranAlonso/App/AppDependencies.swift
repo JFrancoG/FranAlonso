@@ -188,7 +188,8 @@ struct AppDependencies {
             serviceRepository: serviceRepository,
             makeServiceForm: serviceFormFactory(
                 persistenceActor: servicePersistenceActor,
-                observationSignal: serviceObservationSignal
+                observationSignal: serviceObservationSignal,
+                productRepository: productRepository
             ),
             saleRepository: saleRepository,
             analyticsDataSource: analyticsDataSource,
@@ -250,7 +251,8 @@ struct AppDependencies {
             serviceRepository: serviceRepository,
             makeServiceForm: serviceFormFactory(
                 persistenceActor: servicePersistenceActor,
-                observationSignal: serviceObservationSignal
+                observationSignal: serviceObservationSignal,
+                productRepository: productRepository
             ),
             saleRepository: saleRepository,
             analyticsDataSource: analyticsDataSource,
@@ -301,7 +303,10 @@ struct AppDependencies {
             makeProductForm: readOnlyProductFormFactory(repository: productRepository),
             makeStockAdjustment: readOnlyStockAdjustmentFactory(productRepository: productRepository),
             serviceRepository: serviceRepository,
-            makeServiceForm: readOnlyServiceFormFactory(repository: serviceRepository),
+            makeServiceForm: readOnlyServiceFormFactory(
+                repository: serviceRepository,
+                productRepository: productRepository
+            ),
             saleRepository: InMemorySaleRepository(sales: sales),
             analyticsDataSource: PreviewAnalyticsDataSource(),
             crashDataSource: PreviewCrashDataSource()

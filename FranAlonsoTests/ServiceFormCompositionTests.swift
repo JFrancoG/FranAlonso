@@ -192,6 +192,130 @@ struct ServiceFormCompositionTests {
     }
 
     @Test
+    func `selector creates and replaces product links through contextual acceptance without editing inventory`() async throws {
+        let fixture = try ServiceFormCompositionFixture()
+        let first = Product(id: ProductID(rawValue: UUID()), name: "First", status: .active)
+        let second = Product(id: ProductID(rawValue: UUID()), name: "Second", status: .active)
+        try await fixture.products.upsert(first)
+        try await fixture.products.upsert(second)
+        let id = ServiceID(rawValue: UUID())
+        let creating = fixture.factory(ServiceFormDestination(id: UUID(), serviceID: id, mode: .create), .current)
+        creating.draft = ServiceFormDraft(name: "Chosen offering", priceText: "25", taxText: "4", discountText: "2")
+        await creating.observeProducts()
+        creating.changeType(.product)
+        creating.selectLinkedProduct(first.id)
+        await creating.save(in: fixture.container.mainContext)
+        let original = try makeService(
+            id: id.rawValue,
+            name: "Chosen offering",
+            type: .product,
+            linkedProductID: first.id.rawValue,
+            priceAmount: 25,
+            taxPercentage: 4,
+            discountPercentage: 2
+        )
+        try #require(creating.state == .saved(original))
+        #expect(try await fixture.repository.service(id: id) == original)
+
+        let editing = fixture.factory(ServiceFormDestination(id: UUID(), serviceID: id, mode: .edit), .current)
+        await editing.load()
+        await editing.observeProducts()
+        editing.selectLinkedProduct(second.id)
+        await editing.save(in: fixture.container.mainContext)
+        let replacement = try makeService(
+            id: id.rawValue,
+            name: "Chosen offering",
+            type: .product,
+            linkedProductID: second.id.rawValue,
+            priceAmount: 25,
+            taxPercentage: 4,
+            discountPercentage: 2
+        )
+        #expect(editing.state == .saved(replacement))
+        #expect(try await fixture.repository.service(id: id) == replacement)
+        let operations = try await fixture.services.pendingUpserts()
+        try #require(operations.count == 2)
+        #expect(try operations.map { try $0.service.toDomain() } == [original, replacement])
+        #expect(operations[1].predecessorOperationID == operations[0].operationID)
+        #expect(try await fixture.products.pendingOperations().isEmpty)
+        #expect(try await fixture.products.fetchAll().contains(first))
+        #expect(try await fixture.products.fetchAll().contains(second))
+    }
+
+    @Test(arguments: [ServiceType.professional, .product])
+    func `deactivation between choosing and saving has no effects and permits explicit recovery`(
+        _ recoveryType: ServiceType
+    ) async throws {
+        let fixture = try ServiceFormCompositionFixture()
+        let first = Product(id: ProductID(rawValue: UUID()), name: "Initially available", status: .active)
+        let other = Product(id: ProductID(rawValue: UUID()), name: "Recovery choice", status: .active)
+        try await fixture.products.upsert(first)
+        try await fixture.products.upsert(other)
+        let id = ServiceID(rawValue: UUID())
+        let model = fixture.factory(ServiceFormDestination(id: UUID(), serviceID: id, mode: .create), .current)
+        model.draft = ServiceFormDraft(name: "Recoverable offering", priceText: "40", taxText: "10")
+        await model.observeProducts()
+        model.changeType(.product)
+        model.selectLinkedProduct(first.id)
+        let chosenDraft = model.draft
+        let unavailable = Product(id: first.id, name: first.name, status: .inactive)
+        try await fixture.products.persistPendingUpsert(unavailable, operationID: UUID())
+        let productQueue = try await fixture.products.pendingOperations()
+
+        await model.save(in: fixture.container.mainContext)
+
+        try #require(model.state == .failed(.save, .service(.linkedProductUnavailable)))
+        #expect(model.draft == chosenDraft)
+        #expect(try await fixture.repository.service(id: id) == nil)
+        #expect(try await fixture.services.pendingOperations().isEmpty)
+        #expect(try await fixture.products.pendingOperations() == productQueue)
+        #expect(!fixture.container.mainContext.hasChanges)
+        await model.observeProducts()
+        #expect(model.linkableProductsState == .loaded([other]))
+        #expect(model.draft == chosenDraft)
+        #expect(model.state == .failed(.save, .service(.linkedProductUnavailable)))
+        model.changeType(recoveryType)
+        if recoveryType == .product {
+            model.selectLinkedProduct(other.id)
+        }
+        await model.save(in: fixture.container.mainContext)
+        let expected = try makeService(
+            id: id.rawValue,
+            name: "Recoverable offering",
+            type: recoveryType,
+            linkedProductID: recoveryType == .product ? other.id.rawValue : nil,
+            priceAmount: 40,
+            taxPercentage: 10,
+            discountPercentage: nil
+        )
+        #expect(model.state == .saved(expected))
+        #expect(try await fixture.repository.service(id: id) == expected)
+        let accepted = try await fixture.services.pendingUpserts()
+        try #require(accepted.count == 1)
+        #expect(try accepted[0].service.toDomain() == expected)
+        #expect(try await fixture.products.pendingOperations() == productQueue)
+        #expect(try await fixture.products.fetchAll().contains(unavailable))
+    }
+
+    @Test
+    func `snapshot application composition shares product choices with service forms`() async throws {
+        let active = Product(id: ProductID(rawValue: UUID()), name: "Available", status: .active)
+        let inactive = Product(id: ProductID(rawValue: UUID()), name: "Unavailable", status: .inactive)
+        let dependencies = AppDependencies.preview(products: [inactive, active])
+        let model = dependencies.makeServiceForm(
+            ServiceFormDestination(id: UUID(), serviceID: ServiceID(rawValue: UUID()), mode: .create),
+            .current
+        )
+        await model.observeProducts()
+        #expect(model.linkableProductsState == .loaded([active]))
+        model.changeType(.product)
+        model.selectLinkedProduct(active.id)
+        #expect(model.draft.linkedProductID == active.id)
+        model.selectLinkedProduct(inactive.id)
+        #expect(model.draft.linkedProductID == active.id)
+    }
+
+    @Test
     func `snapshot preview reads services and rejects all mutations without saving caller changes`() async throws {
         let container = try ModelContainer.inMemory(for: .franAlonso)
         let callerContext = ModelContext(container)
@@ -242,12 +366,59 @@ private extension ServiceFormCompositionFixture {
         let container = try ModelContainer.inMemory(for: .franAlonso)
         let services = ServicePersistenceActor(modelContainer: container)
         let signal = ServiceObservationSignal()
+        let products = ProductPersistenceActor(modelContainer: container)
         self.init(
             container: container,
             services: services,
-            products: ProductPersistenceActor(modelContainer: container),
+            products: products,
             repository: DefaultServiceRepository(persistenceActor: services, observationSignal: signal),
-            factory: AppDependencies.serviceFormFactory(persistenceActor: services, observationSignal: signal)
+            factory: AppDependencies.serviceFormFactory(
+                persistenceActor: services,
+                observationSignal: signal,
+                productRepository: ServiceFormFiniteProductRepository(
+                    base: DefaultProductRepository(
+                        persistenceActor: products,
+                        observationSignal: ProductObservationSignal()
+                    )
+                )
+            )
         )
+    }
+}
+
+private struct ServiceFormFiniteProductRepository: ProductRepository {
+    let base: DefaultProductRepository
+
+    func observeProducts() async -> AsyncThrowingStream<[Product], any Error> {
+        var iterator = await base.observeProducts().makeAsyncIterator()
+        do {
+            let snapshot = try await iterator.next()
+            return AsyncThrowingStream {
+                if let snapshot {
+                    $0.yield(snapshot)
+                }
+                $0.finish()
+            }
+        } catch {
+            return AsyncThrowingStream {
+                $0.finish(throwing: error)
+            }
+        }
+    }
+
+    func product(id: ProductID) async throws -> Product? {
+        try await base.product(id: id)
+    }
+    func saveProduct(_ product: Product) async throws {
+        try await base.saveProduct(product)
+    }
+    func createProduct(id: ProductID, profile: ProductProfile) async throws -> Product {
+        try await base.createProduct(id: id, profile: profile)
+    }
+    func updateProduct(id: ProductID, profile: ProductProfile) async throws -> Product {
+        try await base.updateProduct(id: id, profile: profile)
+    }
+    func deactivateProduct(_ id: ProductID) async throws {
+        try await base.deactivateProduct(id)
     }
 }
