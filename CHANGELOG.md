@@ -6,6 +6,9 @@ All notable changes to this project are documented in this file.
 
 ### Added
 
+- 2026-09-29 | ✨ feat(stock): add durable idempotent adjustments
+  Preserves append-only movements across migration and restart, derives exact balances and protects unbound stores.
+
 - 2026-09-29 | ✨ feat(products): add catalogue and product forms
   Adds searchable product screens, protected drafts, deactivation and an isolated demo catalogue.
 
