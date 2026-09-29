@@ -7,12 +7,14 @@
 - **[ADR0030](ADRs/0030-reusable-demo-and-early-foundation-models.md) aceptado** el29/09: planificación publicada
   en `main`, sin código nuevo. Orden excepcional y alcance canónico en [índice](specs/00_index.md).
   Revisiones independientes PASS; Xcode N/A documental. [Registro](progress/phase-08.md) y Linear reconciliados.
-- **08.8a / [PLU-46](https://linear.app/plusprojects/issue/PLU-46): In Progress**, implementada y validada;
-  publicación en rama autorizada. `codex/plu-46-reusable-demo`; [guía](progress/08-8a-demo-runbook.md), detalle en [fase08](progress/phase-08.md).
+- **08.8a / [PLU-46](https://linear.app/plusprojects/issue/PLU-46): Done funcional**, entrega y cierre autorizados.
+  [PR #16](https://github.com/JFrancoG/FranAlonso/pull/16), merge `b334c04`; árbol validado `0c76967` intacto.
+  Rama local/remota eliminadas; [guía](progress/08-8a-demo-runbook.md), evidencia en [fase08](progress/phase-08.md).
   Demo Debug-Develop aislada: dos borradores, capas reales, datos en memoria y proveedores simulados; sin live/durabilidad.
   Xcode MCP: **847 declaraciones /1.120 resultados PASS**, builds Develop/Production PASS con aviso AppIntents conocido.
   PRE/POST favorables; seis previews Large/XXX Large/AX5. Smoke PASS: alta, crear/editar, logout/login, reset y recuperación
-  sin refirmar. Sesiones cerradas, Develop/iPhone11 restaurado, argumentos `NO`. PR, merge y cierres pendientes.
+  sin refirmar. Sesiones cerradas, Develop/iPhone11 restaurado, argumentos `NO`. Sin checks remotos.
+  Siguiente puerta: inicio de fase09 según ADR0030; todavía no iniciado.
 - **[PLU-48](https://linear.app/plusprojects/issue/PLU-48): Backlog**, evidencia accesible integral nueva del aviso/encuadre.
   Jesus Franco, hija dePLU-34 y relacionada conPLU-46; [matriz55](accessibility/evidence/08-8a-reusable-demo.md).
   Recuperar tras feedback y estabilización de este flujo, antes de uso real. PLU-44/45/38 conservan su deuda propia.
@@ -26,9 +28,8 @@
   Alta inicial recuperable: pending antes de upload, active solo con recibo durable, reintento sin nuevo envío/firma,
   referencia inicial inmutable y conservación de edición concurrente. UI de Finalizar alta, éxito y fallo localizado.
   Recuperar adopta el estado vigente y la confirmación distingue el documento que realmente completó el alta.
-  Xcode MCP final Develop/iPadAir11M4/27.0: **835 declaraciones / 1.094 resultados PASS**, cero fallos/omitidos;
-  build **9,323s**, único aviso AppIntents previo. TDD inicial7RED→53GREEN; POST reproduce dos P2 en3/4 casos,
-  corregidos y cubiertos por la suite final. Previews Large/XXX Large/AX5 de pantalla y componente inspeccionadas.
+  Xcode MCP: **835 declaraciones / 1.094 resultados PASS**, build **9,323s** con aviso AppIntents previo.
+  TDD y dos P2 corregidos cubiertos por la suite final; previews Large/XXX Large/AX5 inspeccionadas.
   PRE y POST independientes PASS tras corregir los hallazgos; evidencia y límites en [fase08](progress/phase-08.md).
   Smoke táctil por Xcode MCP PASS: fallo local después del envío, vuelta a lista, reapertura, Finalizar alta y
   nueva reapertura activa, sin refirma y con un único upload. Datos sintéticos y Storage simulado, mismo proceso.

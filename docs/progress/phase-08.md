@@ -1,5 +1,24 @@
 # Fase 08 — Clientes, consentimiento y foto
 
+## Cierre funcional de 08.8a — 2026-09-29
+
+El propietario autoriza «Pues abre PR, merge y cierre». [PR #16](https://github.com/JFrancoG/FranAlonso/pull/16)
+integrada mediante `b334c04728d21f9383c237553fe6750898c22e44`, con el árbol completo idéntico al commit validado
+`0c76967e0ce62a30f2ba08effce36c5bd3912bc7`; comparación Git sin diferencias y ancestro confirmado. `main`
+actualizada por fast-forward; rama `codex/plu-46-reusable-demo` eliminada localmente y en remoto.
+
+PLU-46 queda **Done funcional** según ADR0029. PLU-34 permanece **In Progress**; PLU-48 Backlog, responsable
+Jesus Franco, conserva la matriz integral del aviso/encuadre para recuperarla tras feedback y estabilización del flujo,
+antes de uso real. PLU-44/45 Backlog y PLU-38 In Progress conservan sus pendientes propios. Siguiente puerta:
+inicio de fase09 según ADR0030; este cierre no la inicia ni activa servicios live.
+
+Se reutilizan **1.120/1.120 resultados PASS**, builds Develop/Production, seis previews, smoke de ambos modos y
+revisiones favorables porque código/configuración permanecen intactos. Comprobación independiente de entrega
+read-only favorable sobre `0c76967`, sin nuevos hallazgos. Xcode **N/A para el cierre documental**: solo cambian
+Progress, este registro, la cabecera de evidencia y changelog. Sin checks remotos configurados; no se presenta CI
+como validada. Se conservan el aviso AppIntents conocido y seis enlaces históricos rotos de08.3 en gobernanza.
+Los apartados inferiores son históricos; sus estados de publicación/cierre pendientes quedan sustituidos por este.
+
 ## Publicación en rama de 08.8a — 2026-09-29
 
 El propietario autoriza «ok, commit y push». Este commit entrega la implementación, guía, matriz y evidencia de08.8a

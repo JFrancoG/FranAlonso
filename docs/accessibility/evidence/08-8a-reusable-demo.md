@@ -2,6 +2,9 @@
 
 Fecha: 2026-09-29. PLU-46, puerta funcional de ADR0029; no acredita accesibilidad integral ni servicios live.
 
+**Done funcional** tras [PR #16](https://github.com/JFrancoG/FranAlonso/pull/16), merge `b334c04`;
+árbol validado `0c76967` idéntico. PLU-48 conserva la validación integral; los resultados de esta matriz no cambian.
+
 ## Alcance y deuda
 
 Nuevo marcador localizado de datos sintéticos, reset al relanzar y modo de error simulado, con encuadre de la raíz.

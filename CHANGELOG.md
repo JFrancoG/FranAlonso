@@ -26,6 +26,7 @@ All notable changes to this project are documented in this file.
 
 ### Documentation
 
+- 2026-09-29 | 📝 docs(delivery): close PLU-46 after merge
 - 2026-09-29 | 📝 docs(plan): publish the approved demo sequence
   Records ADR 0030, the reusable demo base, early Foundation Models Service draft and deferred optional-photo flow.
 - 2026-09-29 | 📝 docs(delivery): close PLU-42 after merge
