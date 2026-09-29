@@ -51,6 +51,9 @@ All notable changes to this project are documented in this file.
 
 ### Documentation
 
+- 2026-09-29 | 📝 docs(delivery): close service view models
+  Records PR27, verified merge and branch cleanup before service screens.
+
 - 2026-09-29 | 📝 docs(delivery): close linked-product contracts
   Records PR26, verified merge and branch cleanup before service view models.
 
