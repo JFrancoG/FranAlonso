@@ -3,7 +3,7 @@
 2026-09-29. [PLU-60](https://linear.app/plusprojects/issue/PLU-60), Jesus Franco, hija de
 [fase10/PLU-59](https://linear.app/plusprojects/issue/PLU-59). Inicio autorizado: «Abre issue y rama y empieza10.1».
 Rama `codex/phase-10-1-service-contracts` desde main/origin/main `50ecc39`, limpios e idénticos.
-Estado: propuesta PRE PASS aprobada por el propietario («si, adelante»); implementación10.1 validada, POST PASS sin hallazgos.
+Estado: propuesta aprobada e implementada; PRE/POST PASS. Entregada mediantePR24/mergefd4ed5a, PLU-60 Done.
 Entrega Git autorizada posteriormente: «Commit y push, lanza PR, merge y cierra su rama».
 Registro de entrega en phase-10.md;10.2 y live conservan su puerta.
 

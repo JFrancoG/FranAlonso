@@ -45,6 +45,9 @@ All notable changes to this project are documented in this file.
 
 ### Documentation
 
+- 2026-09-29 | 📝 docs(delivery): close service contracts
+  Records PR24, verified merge, branch cleanup and the separate 10.2 integration gate.
+
 - 2026-09-29 | 📝 docs(delivery): close low-stock observation
 
 - 2026-09-29 | 📝 docs(delivery): close stock adjustment screens

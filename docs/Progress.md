@@ -5,9 +5,9 @@
 ## Estado actual
 
 - **Fase10 / [PLU-59](https://linear.app/plusprojects/issue/PLU-59): In Progress**.
-  [10.1/PLU-60](https://linear.app/plusprojects/issue/PLU-60): implementada y validada, PRE/POST PASS.
-  1.008 declaraciones/1.395 resultados y builds PASS; aviso AppIntents previo. Rama `codex/phase-10-1-service-contracts`.
-  [Propuesta](progress/10-1-service-contracts-proposal.md) y [evidencia](progress/phase-10.md). Entrega Git autorizada; en curso.
+  [10.1/PLU-60](https://linear.app/plusprojects/issue/PLU-60): **Done**, [PR24](https://github.com/JFrancoG/FranAlonso/pull/24).
+  Merge `fd4ed5a`, head `5665dbb` intacto; rama eliminada. PRE/POST,1.395 resultados y builds PASS; aviso AppIntents previo.
+  [Evidencia](progress/phase-10.md). Siguiente puerta: preparar10.2, integración CRUD/sync y durabilidad; aún sin iniciar.
 - **Fase09 / [PLU-49](https://linear.app/plusprojects/issue/PLU-49): In Progress**.
   09.1–09.7 entregadas; PLU-58 Done, PR23/b40e1f6, cierre50ecc39 y rama eliminada. [Evidencia](progress/phase-09.md).
   PRE/POST,1.346 resultados y builds PASS; aviso AppIntents conocido. PLU-54/57: Backlog accesible09.4/09.6,

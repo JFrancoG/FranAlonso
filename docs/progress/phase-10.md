@@ -1,5 +1,23 @@
 # Fase 10 — Catálogo comercial de servicios
 
+## Estado actual —10.1 entregada —2026-09-29
+
+[PR24](https://github.com/JFrancoG/FranAlonso/pull/24) MERGED, commit funcional
+`5665dbb114ea1c4271193b99c7cc8f960280e709`, merge `fd4ed5aa898bc187ba5cd1df04e21bfb8e546c53`.
+El árbol integrado completo es idéntico al head publicado. Código/configuración/tests conservan la huella POST;
+se reutilizan1.008 declaraciones/1.395 resultados PASS, Develop/Production y PRE/POST independientes.
+Solo cambiaron registros documentales de entrega/changelog después de validar. Xcode N/A para este cierre documental.
+
+Rama `codex/phase-10-1-service-contracts` eliminada localmente y en origin tras verificar ancestry y0commits únicos.
+GitHub confirmó CLEAN/MERGEABLE antes del merge; no checks/reviews remotos ni reglas de protección configuradas.
+PLU-60 quedó Done por la integración GitHub–Linear tras el merge; fase10/PLU-59 y el proyecto siguen In Progress.
+Changelog, Progress, issue y padre/proyecto se reconcilian con esta entrega. Solo quedan los límites previos registrados:
+aviso AppIntents, seis enlaces históricos08.3 y deuda accesible de otras subfases;10.1 no cambia UI.
+
+Siguiente puerta: preparar10.2, integración completa de CRUD con sync/ack/conflictos/tombstones/offline y reapertura
+durable. No se inicia aquí ni se activa live.10.3–10.7 y adelanto FoundationModels/PLU-47 mantienen su orden aprobado.
+Los apartados siguientes conservan el historial de preparación, implementación y revisión anterior a esta entrega.
+
 ## Inicio y preparación10.1 —2026-09-29
 
 Inicio autorizado por el propietario: «Abre issue y rama y empieza10.1».
