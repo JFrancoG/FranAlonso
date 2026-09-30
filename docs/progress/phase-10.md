@@ -1,6 +1,17 @@
 # Fase 10 — Catálogo comercial de servicios
 
-## Estado actual — 10.7 implementada, pendiente de entrega — 2026-09-30
+## Estado actual — 10.7 entregada — 2026-09-30
+
+[PR30](https://github.com/JFrancoG/FranAlonso/pull/30) MERGED. Commit760a7e7e7781c2a7dd040d47a3d57ce12feea10d,
+mergecf3ff20685debb487307a05da337e74e4d0247e9. Árbol completo idéntico al head validado; PLU-68 Done confirmado.
+Rama local/remota eliminada tras ancestry y cero commits únicos. GitHub CLEAN/MERGEABLE, sin checks/reviews ni
+protección/rulesets configurados. Se reutilizan PRE/POST,1.564resultados y builds: los seis Swift conservan la huella
+validada y los cambios de entrega son documentales. Xcode nuevo N/A; aviso AppIntents y seis enlaces históricos08.3 intactos.
+10.1–10.7 quedan entregadas funcionalmente. Fase10/PLU-59 sigue In Progress por la evidencia integral de PLU-65/67,
+Jesus Franco, tras feedback/estabilización y antes del primer candidato para uso real. Sin activación live.
+Siguiente planificado: adelanto textual FoundationModels/PLU-47 con propuesta/PRE y autorización propias; no iniciado.
+
+## Historial de implementación — 10.7 — 2026-09-30
 
 [PLU-68](https://linear.app/plusprojects/issue/PLU-68), In Progress, Jesus Franco, hija de PLU-59.
 Rama `codex/phase-10-7-service-picker`, base main/origin/main3ddb84f limpia tras cierre10.6.

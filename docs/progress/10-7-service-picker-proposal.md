@@ -1,6 +1,12 @@
 # 10.7 — Selección de servicios para ventas
 
-## Estado y autorización
+## Entrega — 2026-09-30
+
+[PR30](https://github.com/JFrancoG/FranAlonso/pull/30) integrada en cf3ff20; commit760a7e7, PLU-68 Done y rama
+eliminada local/remota. Árbol validado intacto; evidencia reutilizada. Fase10 conserva PLU-65/67 pendientes.
+El apartado siguiente conserva el contexto de inicio; FoundationModels no se inicia con esta entrega.
+
+## Estado y autorización de inicio
 
 2026-09-30. PLU-68 In Progress, Jesus Franco, hija de PLU-59. Implementación autorizada por el propietario tras
 entregar10.6/PR29; rama `codex/phase-10-7-service-picker`, base limpia main/origin/main3ddb84f.
