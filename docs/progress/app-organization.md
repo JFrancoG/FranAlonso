@@ -3,8 +3,9 @@
 ## Alcance y autorización — 2026-09-30
 
 El propietario pide ordenar App en carpetas identificables. Es un cambio transversal independiente de las fases funcionales.
-[PLU-69](https://linear.app/plusprojects/issue/PLU-69), responsable Jesus Franco, está In Progress.
-Rama `codex/plu-69-organize-app`, base limpia `main/origin/main` en `5246815`.
+[PLU-69](https://linear.app/plusprojects/issue/PLU-69), responsable Jesus Franco, está Done tras
+[PR31](https://github.com/JFrancoG/FranAlonso/pull/31). Rama `codex/plu-69-organize-app` eliminada;
+base inicial limpia `main/origin/main` en `5246815`.
 Autorizadas inicialmente la reorganización y su validación. El propietario amplía después la entrega a todos los cambios,
 incluida su actualización de Firebase, y autoriza commit, push, PR, merge y cierre de issue y rama el 2026-09-30.
 Autoridad: constitución, specs 02/03, ADR 0011, política Swift y guía de desarrollo. No requiere un ADR nuevo:
@@ -77,7 +78,7 @@ Previews y matriz AT nuevas N/A para estos movimientos de fuentes idénticas; no
 La evidencia y deuda accesible previas siguen vigentes: este trabajo no acredita conformidad integral ni cierra fases.
 No cambia arquitectura, schema, migraciones, módulos aprobados, unsafe, live ni Foundation Models.
 Bootstrap, Features, Shared y Telemetry conservan sus archivos; no se reordenan tests.
-Entrega completa autorizada y conjunto validado. PLU-69 permanece In Progress hasta el merge.
+Entrega completa autorizada, validada e integrada. PLU-69 Done confirmado tras el merge.
 
 ## Actualización de Firebase y entrega conjunta — 2026-09-30
 
@@ -120,4 +121,20 @@ Validación final del conjunto en Xcode 27.2 beta 2, Develop/iPad Pro 13-inch (M
 
 Se reutiliza la revisión de los movimientos porque sus fuentes Swift no han cambiado. No se añaden tests que reproduzcan
 las mismas rutas o la implementación. Evidencia local; no acredita servicios live ni cierre integral de accesibilidad.
-Entrega Git autorizada y preparada; PLU-69 se cerrará después del merge verificado.
+Entrega Git completada; PLU-69 cerrado después del merge verificado.
+
+## Cierre de entrega — 2026-09-30
+
+- Commit `a1d1894569ef26e0509876d7d9cb4f14392be812`, `🔧 chore(app): organize files and update Firebase`, publicado.
+- [PR31](https://github.com/JFrancoG/FranAlonso/pull/31) MERGED mediante merge commit
+  `ef65fc20320423a1158e0ffc67c418c8fa6ef9fe`. Antes de integrar: CLEAN/MERGEABLE, 38 archivos previstos,
+  HEAD remoto idéntico al revisado; sin checks, revisiones obligatorias, protección ni rulesets remotos configurados.
+- Árbol integrado completo idéntico al validado: 672 archivos,
+  SHA-256 `f7053b01ca42defcde735da50e35a134f66fac308be4476669e0d299ce13a2a1`.
+  Verificadas ascendencia y ausencia de commits únicos antes de eliminar la rama local y remota.
+- PLU-69 Done confirmado por integración GitHub–Linear. Es una tarea transversal sin padre ni milestone;
+  proyecto y fases conservan su estado y deuda. Descripción, comentario de entrega y proyecto reconciliados.
+- Se reutilizan los builds, 1.564 resultados y revisiones anteriores: el código y la configuración integrados
+  son idénticos a los validados. Cierre documental: Xcode N/A; no modifica fuentes ni configuración.
+  Permanecen el aviso AppIntents y los seis enlaces históricos 08.3. No se acredita live ni accesibilidad integral.
+- Siguiente gate funcional ya planificado: PLU-47 / Foundation Models según ADR0030, todavía no iniciado.

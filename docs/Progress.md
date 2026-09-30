@@ -4,8 +4,8 @@
 
 ## Estado actual
 
-- **[PLU-69](https://linear.app/plusprojects/issue/PLU-69): In Progress**. App organizada y Firebase 12.19.2.
-  1.564 resultados, builds y revisiones PASS; entrega en curso. [Registro](progress/app-organization.md).
+- **[PLU-69](https://linear.app/plusprojects/issue/PLU-69): Done**, [PR31](https://github.com/JFrancoG/FranAlonso/pull/31).
+  App ordenada, Firebase 12.19.2; 1.564 resultados/builds PASS. [Registro](progress/app-organization.md).
 - **Fase10 / [PLU-59](https://linear.app/plusprojects/issue/PLU-59): In Progress**.
   10.1–10.7 entregadas funcionalmente; PLU-68 Done, [PR30](https://github.com/JFrancoG/FranAlonso/pull/30).
   [Entrega y evidencia](progress/phase-10.md). Cierre integral pendiente: PLU-65/67 Backlog.

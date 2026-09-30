@@ -64,6 +64,9 @@ All notable changes to this project are documented in this file.
 
 ### Documentation
 
+- 2026-09-30 | 📝 docs(delivery): close App maintenance
+  Records PR31, PLU-69 completion and verified branch cleanup after the App and Firebase delivery.
+
 - 2026-09-30 | 📝 docs(delivery): close service selection
   Records PR30 delivery and the remaining phase10 accessibility gate.
 
