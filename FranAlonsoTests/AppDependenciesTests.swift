@@ -467,3 +467,78 @@ private extension CompositionServiceRepositoryFake {
     }
     func deactivateService(_ id: ServiceID) async throws { throw ServiceError.persistenceUnavailable }
 }
+
+@MainActor
+extension AppDependenciesTests {
+    @Test
+    func `service picker factory selects only active seeded offerings`() async throws {
+        let active = try makeService(name: "Seeded service", priceAmount: 37, discountPercentage: nil)
+        let inactive = try makeService(id: UUID(), name: "Inactive", status: .inactive)
+        let dependencies = AppDependencies.preview(services: [inactive, active])
+        let picker = dependencies.makeServicePicker()
+
+        await picker.load()
+
+        #expect(picker.visibleServices == [active])
+        #expect(picker.selectService(id: active.id) == active)
+        #expect(picker.selectService(id: inactive.id) == nil)
+    }
+
+    @Test
+    func `service picker shares catalogue commands while retaining selected terms`() async throws {
+        let clients = InMemoryClientRepository()
+        let products = InMemoryProductRepository()
+        let services = InMemoryServiceRepository()
+        let dependencies = AppDependencies(
+            clientRepository: clients,
+            makeClientForm: AppDependencies.readOnlyClientFormFactory(repository: clients),
+            productRepository: products,
+            makeProductForm: AppDependencies.readOnlyProductFormFactory(repository: products),
+            makeStockAdjustment: AppDependencies.readOnlyStockAdjustmentFactory(productRepository: products),
+            serviceRepository: services,
+            makeServiceForm: AppDependencies.readOnlyServiceFormFactory(
+                repository: services,
+                productRepository: products
+            ),
+            saleRepository: InMemorySaleRepository(),
+            analyticsDataSource: CompositionAnalyticsDataSourceSpy(),
+            crashDataSource: CompositionCrashDataSourceSpy()
+        )
+        let picker = dependencies.makeServicePicker()
+        let id = ServiceID(rawValue: UUID())
+        let originalProfile = try ServiceProfile(
+            name: "Original terms",
+            type: .professional,
+            price: Money(amount: 37, currency: .eur),
+            taxRate: TaxRate(percentage: 21),
+            discount: nil
+        )
+        _ = try await CreateServiceUseCase(repository: services)(id: id, profile: originalProfile)
+        await picker.load()
+        let selected = try #require(picker.selectService(id: id))
+        let revisedProfile = try ServiceProfile(
+            name: "Revised terms",
+            type: .professional,
+            price: Money(amount: 42, currency: .usd),
+            taxRate: TaxRate(percentage: 10),
+            discount: Discount(percentage: 0)
+        )
+        _ = try await UpdateServiceUseCase(repository: services)(id: id, profile: revisedProfile)
+        await picker.load()
+        let revised = try #require(picker.selectService(id: id))
+        #expect(revised.name == "Revised terms")
+        #expect(revised.price == (try Money(amount: 42, currency: .usd)))
+        #expect(revised.taxRate == (try TaxRate(percentage: 10)))
+        #expect(revised.discount == (try Discount(percentage: 0)))
+        #expect(selected.name == "Original terms")
+        #expect(selected.price == (try Money(amount: 37, currency: .eur)))
+        #expect(selected.taxRate == (try TaxRate(percentage: 21)))
+        #expect(selected.discount == nil)
+
+        try await DeactivateServiceUseCase(repository: services)(id)
+        await picker.load()
+        #expect(picker.visibleServices.isEmpty)
+        #expect(picker.selectService(id: id) == nil)
+        #expect(try await services.service(id: id)?.status == .inactive)
+    }
+}

@@ -98,6 +98,21 @@ Gestionar todos los conceptos cobrables, incluidos los productos vendidos al pú
 - Todas las composiciones inyectan el mismo ProductRepository. No cambia Domain/Data, schema, sync ni activación live.
   [Evidencia10.6](../accessibility/evidence/10-6-linked-product-selector.md) y deuda integral propia PLU-67 según ADR0029.
 
+## Contratos aprobados de 10.7
+
+- `FilterSelectableServicesUseCase` selecciona servicios activos, aplica filtro Todos/Profesional/Producto y reutiliza
+  la búsqueda local por nombre; conserva orden y valores. La búsqueda administrativa mantiene ambos estados.
+- `ServicePickerViewModel @Observable @MainActor` mantiene una colección, query y filtro. Distingue catálogo sin activos
+  de catálogo disponible sin coincidencias. No accede a tipos Data, persistencia ni red.
+- Observación propiedad del caller con generaciones: snapshots reemplazan catálogo; error/cancelación lo retiran.
+  Finalización normal conserva último snapshot, incluido vacío; sin emisión es fallo recuperable. Retry conserva filtros.
+- Seleccionar por ID solo acepta una identidad visible en el último snapshot activo. Entrega una copia Service completa,
+  incluidos moneda, impuesto, descuento opcional y vínculo; cambios posteriores del catálogo no alteran el valor entregado.
+  Carga/error/idle y IDs ajenos, filtrados, retirados o inactivos no producen selección.
+- App compone sesiones independientes sobre `observeServices` compartido. Selección no reconsulta Product ni stock,
+  no reserva y no escribe. La admisión de venta y congelación de SaleLine al añadir quedan en11.6.
+- No cambia UI, strings, schema, sync ni live. PLU-65/67 conservan su evidencia accesible integral pendiente.
+
 ## Subfases
 
 | ID | Tarea | Test primero | Validación |

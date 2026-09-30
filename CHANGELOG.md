@@ -6,6 +6,9 @@ All notable changes to this project are documented in this file.
 
 ### Added
 
+- 2026-09-30 | ✨ feat(services): prepare sale selection
+  Filters active offerings and selects immutable commercial snapshots from the current local catalogue.
+
 - 2026-09-30 | ✨ feat(services): select linked products
   Adds native type and active-product selection with recoverable drafts and contextual save validation.
 

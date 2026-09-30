@@ -1,6 +1,47 @@
 # Fase 10 — Catálogo comercial de servicios
 
-## Estado actual — 10.6 entregada — 2026-09-30
+## Estado actual — 10.7 implementada, pendiente de entrega — 2026-09-30
+
+[PLU-68](https://linear.app/plusprojects/issue/PLU-68), In Progress, Jesus Franco, hija de PLU-59.
+Rama `codex/phase-10-7-service-picker`, base main/origin/main3ddb84f limpia tras cierre10.6.
+[Propuesta](10-7-service-picker-proposal.md), PRE independiente PASS;665archivos idénticos verificados reviewer/root,
+SHA2569b21252115dc304882c32e41bd6d1c8a9feb3ac5752de00e56e91ceaae84fb87. Implementación autorizada.
+Búsqueda, filtro activo/tipo y selección de Service inmutable; sin UI/SaleLine/stock/writes/live. TDD y POST PASS.
+PLU-65/67 Backlog intactos; fase10 sigue abierta. Entrega10.7 completa autorizada; FoundationModels requiere autorización posterior.
+
+### Validación10.7
+
+- RED compilable: Develop con tests22,538s PASS. Nueve declaraciones/20resultados fallan por comportamiento ausente,
+  cero PASS/skips/notRun. Selección, elegibilidad, estados, generaciones y composición; sin fallos de setup.
+  Summary `RunSomeTests/A8B0F827-B9E3-4FD8-833C-46D9190B27F0.txt`, consola01:22:53. Tests intactos después de RED.
+- GREEN global: **1.082 declaraciones /1.564 resultados PASS**, incluidos los20nuevos; cero fallos/skips/notRun,
+  expectedFailures y runtimeWarnings. Una sola regresión global incluye variantes y composición previa, sin repetir focal.
+  Summary `RunAllTests/F2B61E6F-C691-451B-97AC-D2EE7944ED4C.txt`; consola `test-console-log-2026-09-30T01-24-28+02-00.txt`.
+  Resultado nativo original cerrado, finishTime presente: DerivedData/FranAlonso-eehpkvodmpnqlchgeqriatcucsjf/Logs/Test/
+  `Test-FranAlonso-Develop-2026.09.30_01-24-28-+0200.xcresult`. Develop/iPhone18Pro/iOS27.0.
+- Develop con tests14,655s y Production21,155s PASS. Logs completos `BuildProject-Log-20260930-012423.txt` y
+  `BuildProject-Log-20260930-012511.txt`: sin warnings Swift/Clang ni errores, solo AppIntents metadata previo.
+  Scheme/plan Develop e iPhone18Pro restaurados; configuración target26/Swift6/strict completa intacta.
+- Seis Swift cambiados; style recall cero candidatos; revisión manual detectó123columnas en una llamada de test.
+  Corregida a formato vertical y rerevisión focal PASS, sin diferencias de tokens. `git diff --check` limpio.
+  Gobernanza solo seis enlaces históricos08.3 ausentes. Sin nuevas dependencias, unsafe ni XCTest/XCUITest.
+- Composición usa repositorio real in-memory compartido, alta/edición/desactivación y recargas finitas. Streams controlados
+  prueban reemplazo en vivo y generaciones sin sleeps/polling. No atribuye nuevo refresco continuo a SwiftData.
+- UI/previews/accesibilidad nueva N/A: no cambian Views, recursos, textos ni interacciones renderizadas. PLU-65/67 mantienen
+  deuda propia con Jesus Franco, tras feedback/estabilización y antes de uso real; no se cierra fase10.
+- POST independiente: solo P3 de formato123columnas en AppDependenciesTests.swift499. Corregido y POST2 focal PASS,
+  sin hallazgos restantes. Reviewer/root verifican670archivos idénticos antes/después en ambas revisiones:
+  POST1 `/tmp/franalonso-10-7-post1.json`, SHA2564f3a787f6d9af2d806cec7ce83efb84ae02542ad1b7e8121f5eeab739f7c63ae;
+  POST2 `/tmp/franalonso-10-7-post2.json`, SHA2566095c26b9a5cc1718ca6b21ac515043c6ac65bd8a46c6f5b46119fa88a5cbc04.
+  Auditores read-only, sin builds ni mutaciones. Root/auditor confirman que el delta es exclusivamente whitespace.
+- Build final Develop con tests23,807s PASS tras formato; log `BuildProject-Log-20260930-012939.txt`, solo AppIntents
+  conocido. GetBuildLog warning0issues (`CC964DCE-5ECA-446A-9F58-D6BDD5D26C6D.txt`). Suite global/Production reutilizadas
+  por igualdad semántica; sin repetir pruebas. Consola conserva faults esperados de pruebas previas SwiftData read-only/
+  corrupción, no fallos del test ni runtimeWarnings en el resultado nativo.
+- Tras verificar POST2 solo se actualizan estos registros y Linear. PLU-68 In Progress, cambios locales sin commit/push;
+  entrega10.7 autorizada. Siguiente después de entregar: adelanto textual FoundationModels/PLU-47 según ADR0030.
+
+## Entrega anterior — 10.6 entregada — 2026-09-30
 
 [PR29](https://github.com/JFrancoG/FranAlonso/pull/29) MERGED. Commit5db50c342e26baa6e155a33064dc1321b7ee49b8,
 merge3bb7155c6f6db9801c9c8168142126064492e433. Árbol completo idéntico al head validado. PLU-66 Done confirmado.
