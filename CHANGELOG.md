@@ -52,6 +52,9 @@ All notable changes to this project are documented in this file.
 
 ### Maintenance
 
+- 2026-09-30 | 📦 build(xcode): apply recommended settings
+  Records Xcode 27.2 upgrade checks and enables the nonlocalized-text analyzer in all four configurations.
+
 - 2026-09-30 | 🔧 chore(app): organize files and update Firebase
   Groups App composition, startup, persistence, presentation and demo sources by responsibility.
   Updates the existing Firebase dependency to resolved 12.19.2 and its compatible transitive versions.

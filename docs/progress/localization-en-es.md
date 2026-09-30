@@ -113,3 +113,24 @@ Fuentes primarias consultadas con Xcode DocumentationSearch:
 
 La entrega Git reutiliza los builds, suites y auditorías anteriores: desde esos checks solo cambian el registro
 de autorización y el changelog. Xcode adicional: N/A para ese ajuste exclusivamente documental.
+
+## Settings recomendados de Xcode — 2026-09-30
+
+El propietario aplica «Update recommended settings» y autoriza commit/push del diff generado.
+`LastUpgradeCheck` del proyecto y `LastUpgradeVersion` de ambos esquemas pasan de2660 a2720.
+`CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES` queda activado en las cuatro configuraciones de proyecto.
+Sin cambios de código, dependencias, targets, planes de test ni opciones funcionales de esquemas.
+
+Validación con Xcode27.0 Service (toolchain establecido), SDK27.0, destino de build iPhone11/iOS27.2:
+Develop11,729s y Production20,342s PASS. Cero issues estructuradas/diagnósticos Swift o Clang; logs completos conservan
+solo el aviso conocido de extracción AppIntents omitida. Artifacts bajo
+`/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/BuildProject/`:
+`BuildProject-Log-20260930-171457.txt` y `BuildProject-Log-20260930-171531.txt`.
+Build no instala ni ejecuta la app; no se afirma recorrido físico. Develop/iPhone11 restaurado, planes intactos.
+Tests nuevos/repetición funcional y previews: N/A, delta exclusivamente de marcas y análisis estático, sin comportamiento
+modificado; se reutiliza la evidencia funcional anterior. Revisión independiente de configuración favorable,
+sin hallazgos P0–P3; huella read-only PRE=POST:
+`134341bdd75a156aa96c222f2b4aae7053b525fea41c6bb9ddf6237e8f618d93`.
+No se adopta una toolchain beta por actualizar esas marcas. Sin cambios de estado de Linear ni cierre de fase.
+
+Fuente primaria verificada por el revisor: [referencia de build settings de Apple](https://developer.apple.com/documentation/xcode/build-settings-reference).

@@ -573,3 +573,9 @@ inglesas nuevas; catálogo español y151 traducciones previas intactos. Identida
 `shouldTranslate: false`; emisión jurídica sigue solo en español. Validación estática, builds y suites Develop/Production PASS; seis previews login es/en hastaAX5.
 El propietario autoriza mínimo27: app/tests alineados en las cuatro configuraciones.
 [Registro](localization-en-es.md). Commit/push autorizados; sin cierre de fase ni cambios de estado en Linear.
+
+### Mantenimiento de settings Xcode — 2026-09-30
+
+El propietario autoriza commit/push de los ajustes recomendados: marcas de actualización2720 y analizador de textos
+no localizados en las cuatro configuraciones. Builds Develop/Production PASS por Xcode MCP; sin código ni dependencias
+modificados. [Evidencia](localization-en-es.md#settings-recomendados-de-xcode--2026-09-30).

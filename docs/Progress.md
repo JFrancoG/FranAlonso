@@ -4,8 +4,8 @@
 
 ## Estado actual
 
-- **es/en validado**:409 textos; app/tests iOS27; builds/tests/previews PASS.
-  [Evidencia](progress/localization-en-es.md). Git aprobado.
+- **es/en y settings Xcode**:409 textos; iOS27; builds/tests/previews PASS.
+  [Evidencia](progress/localization-en-es.md).
 - **[PLU-69](https://linear.app/plusprojects/issue/PLU-69): Done**, [PR31](https://github.com/JFrancoG/FranAlonso/pull/31).
   App ordenada, Firebase 12.19.2; 1.564 resultados/builds PASS. [Registro](progress/app-organization.md).
 - **Fase10 / [PLU-59](https://linear.app/plusprojects/issue/PLU-59): In Progress**.
