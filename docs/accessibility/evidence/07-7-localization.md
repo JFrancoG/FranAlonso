@@ -16,8 +16,8 @@ No se añaden idiomas, plurales, rutas, pantallas ni abstracciones.
 
 Los archivos de producto y referencias principales son
 [Localizable.xcstrings](../../../FranAlonso/Resources/Localizable.xcstrings),
-[AppShellScreen](../../../FranAlonso/App/AppShellScreen.swift),
-[AuthenticationRootScreen](../../../FranAlonso/App/AuthenticationRootScreen.swift),
+[AppShellScreen](../../../FranAlonso/App/Presentation/Shell/AppShellScreen.swift),
+[AuthenticationRootScreen](../../../FranAlonso/App/Presentation/Authentication/AuthenticationRootScreen.swift),
 [LoginContent](../../../FranAlonso/Features/Authentication/Presentation/Views/LoginContent.swift),
 [SessionContent](../../../FranAlonso/Features/Authentication/Presentation/Views/SessionContent.swift) y
 [ClientListContent](../../../FranAlonso/Features/Clients/Presentation/Views/ClientListContent.swift).
