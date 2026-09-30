@@ -277,10 +277,10 @@ struct BuildEnvironmentConfigurationTests {
     @Test("Fixture implementation files are excluded as complete compilation units")
     func fixtureImplementationFilesAreCompletelyGuarded() throws {
         for relativePath in [
-            "FranAlonso/App/DevelopAuthenticationFixture.swift",
-            "FranAlonso/App/DevelopDemoComposition.swift",
-            "FranAlonso/App/DevelopDemoScenario.swift",
-            "FranAlonso/App/DevelopDemoBanner.swift",
+            "FranAlonso/App/Development/DevelopAuthenticationFixture.swift",
+            "FranAlonso/App/Development/DevelopDemoComposition.swift",
+            "FranAlonso/App/Development/DevelopDemoScenario.swift",
+            "FranAlonso/App/Development/DevelopDemoBanner.swift",
             "FranAlonso/Features/Clients/Data/Repositories/DevelopClientErrorRepository.swift",
             "FranAlonso/Features/Authentication/Data/Adapters/DevelopAuthenticationDataSource.swift"
         ] {
@@ -296,26 +296,29 @@ struct BuildEnvironmentConfigurationTests {
     func sharedFixtureSeamsRemainInsideCompilationGuard() throws {
         let guardedSeams = [
             (
-                "FranAlonso/App/ApplicationLaunchPlan.swift",
+                "FranAlonso/App/Startup/ApplicationLaunchPlan.swift",
                 "case authenticationFixture(DevelopAuthenticationFixture.Configuration)"
             ),
-            ("FranAlonso/App/ApplicationLaunchPlan.swift", "case invalidFixtureConfiguration"),
-            ("FranAlonso/App/ApplicationLaunchPlan.swift", "case demo(DevelopDemoComposition.Configuration)"),
-            ("FranAlonso/App/ApplicationLaunchPlan.swift", "let demoArguments = arguments.filter"),
+            ("FranAlonso/App/Startup/ApplicationLaunchPlan.swift", "case invalidFixtureConfiguration"),
+            ("FranAlonso/App/Startup/ApplicationLaunchPlan.swift", "case demo(DevelopDemoComposition.Configuration)"),
+            ("FranAlonso/App/Startup/ApplicationLaunchPlan.swift", "let demoArguments = arguments.filter"),
             (
-                "FranAlonso/App/ApplicationComposition.swift",
+                "FranAlonso/App/Composition/ApplicationComposition.swift",
                 "let authenticationRootViewModel: AuthenticationRootViewModel?"
             ),
             (
-                "FranAlonso/App/ApplicationComposition.swift",
+                "FranAlonso/App/Composition/ApplicationComposition.swift",
                 "let demoConfiguration: DevelopDemoComposition.Configuration?"
             ),
-            ("FranAlonso/App/ApplicationComposition.swift", "makeDemo: @MainActor"),
-            ("FranAlonso/App/AppDelegate.swift", "case fixtureReady"),
-            ("FranAlonso/App/AppDelegate.swift", "case fixtureConfigurationFailed"),
-            ("FranAlonso/App/AppDelegate.swift", "case .authenticationFixture, .demo:"),
-            ("FranAlonso/App/AppDependencies.swift", "static func local("),
-            ("FranAlonso/App/AppDependencies.swift", "clientRepository injectedClientRepository"),
+            ("FranAlonso/App/Composition/ApplicationComposition.swift", "makeDemo: @MainActor"),
+            ("FranAlonso/App/Startup/AppDelegate.swift", "case fixtureReady"),
+            ("FranAlonso/App/Startup/AppDelegate.swift", "case fixtureConfigurationFailed"),
+            ("FranAlonso/App/Startup/AppDelegate.swift", "case .authenticationFixture, .demo:"),
+            ("FranAlonso/App/Composition/Dependencies/AppDependencies.swift", "static func local("),
+            (
+                "FranAlonso/App/Composition/Dependencies/AppDependencies.swift",
+                "clientRepository injectedClientRepository"
+            ),
             (
                 "FranAlonso/App/FranAlonsoApp.swift",
                 "private let authenticationRootViewModel: AuthenticationRootViewModel?"

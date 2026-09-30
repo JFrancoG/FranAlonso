@@ -98,8 +98,8 @@ final class AppShellViewModel {
 Los archivos se crearán con el primer tipo real, no como carpetas vacías:
 
 - `App/Navigation/AppSection.swift`.
-- `App/AppShellScreen.swift`.
-- `App/AppShellViewModel.swift`.
+- `App/Presentation/Shell/AppShellScreen.swift`.
+- `App/Presentation/Shell/AppShellViewModel.swift`.
 - Rutas locales dentro de `Features/<Feature>/Presentation` cuando una feature tenga más de un destino.
 
 ## Validación futura

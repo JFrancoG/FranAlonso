@@ -4,10 +4,11 @@
 
 ## Estado actual
 
+- **[PLU-69](https://linear.app/plusprojects/issue/PLU-69): In Progress**. App organizada y Firebase 12.19.2.
+  1.564 resultados, builds y revisiones PASS; entrega en curso. [Registro](progress/app-organization.md).
 - **Fase10 / [PLU-59](https://linear.app/plusprojects/issue/PLU-59): In Progress**.
-  **10.1–10.7 entregadas funcionalmente**; PLU-68 Done, [PR30](https://github.com/JFrancoG/FranAlonso/pull/30),
-  merge cf3ff20, rama eliminada. PRE/POST,1.564resultados y builds PASS. [Evidencia](progress/phase-10.md).
-  Cierre integral pendiente: PLU-65/67 Backlog. Siguiente: adelanto FoundationModels/PLU-47, aún sin iniciar.
+  10.1–10.7 entregadas funcionalmente; PLU-68 Done, [PR30](https://github.com/JFrancoG/FranAlonso/pull/30).
+  [Entrega y evidencia](progress/phase-10.md). Cierre integral pendiente: PLU-65/67 Backlog.
 - **Fase09 / [PLU-49](https://linear.app/plusprojects/issue/PLU-49): In Progress**.
   09.1–09.7 entregadas; PLU-58 Done, PR23/b40e1f6, cierre50ecc39 y rama eliminada. [Evidencia](progress/phase-09.md).
   PRE/POST,1.346 resultados y builds PASS; aviso AppIntents conocido. PLU-54/57: Backlog accesible09.4/09.6,
