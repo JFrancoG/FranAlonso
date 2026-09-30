@@ -60,6 +60,10 @@ All notable changes to this project are documented in this file.
 
 ### Fixed
 
+- 2026-09-30 | 🐛 fix(localization): complete English coverage
+  Completes English translations and checks all 409 translatable entries in English and Spanish.
+  Adds compiled-resource regression tests, preserves app identity per environment and aligns targets to iOS 27.
+
 - 2026-09-10 | 🐛 fix(clients): improve confirmation and retry controls
 
 ### Documentation

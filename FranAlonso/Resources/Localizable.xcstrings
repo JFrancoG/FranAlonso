@@ -2696,6 +2696,12 @@
             "state": "translated",
             "value": "Demo · Datos de ejemplo"
           }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Demo · Sample data"
+          }
         }
       }
     },
@@ -2707,6 +2713,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Los cambios se reinician al abrir la app"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Changes reset when you reopen the app"
           }
         }
       }
@@ -2720,6 +2732,12 @@
             "state": "translated",
             "value": "Primer envío con error simulado"
           }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "First upload simulates an error"
+          }
         }
       }
     },
@@ -2731,6 +2749,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Autorización de fotografía seleccionada"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Photo authorization selected"
           }
         }
       }
@@ -2744,6 +2768,12 @@
             "state" : "translated",
             "value" : "Información y firma"
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Information and signature"
+          }
         }
       }
     },
@@ -2755,6 +2785,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Información del cliente"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Client information"
           }
         }
       }
@@ -2768,6 +2804,12 @@
             "state" : "translated",
             "value" : "Consultar información"
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "View information"
+          }
         }
       }
     },
@@ -2779,6 +2821,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Revisar y firmar"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Review and sign"
           }
         }
       }
@@ -2792,6 +2840,12 @@
             "state" : "translated",
             "value" : "Reanudar documento"
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Resume document"
+          }
         }
       }
     },
@@ -2803,6 +2857,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Volver a la ficha"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Back to client record"
           }
         }
       }
@@ -2816,6 +2876,12 @@
             "state" : "translated",
             "value" : "Revisa este texto antes de firmar. La firma quedará vinculada a esta información."
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Review this text before signing. Your signature will be linked to this information."
+          }
         }
       }
     },
@@ -2827,6 +2893,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "He revisado el texto; firmar"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "I have reviewed the text; sign"
           }
         }
       }
@@ -2840,6 +2912,12 @@
             "state" : "translated",
             "value" : "Conservar documento firmado"
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Save signed document"
+          }
         }
       }
     },
@@ -2851,6 +2929,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Documento conservado en este dispositivo"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Document saved on this device"
           }
         }
       }
@@ -2864,6 +2948,12 @@
             "state" : "translated",
             "value" : "El documento está pendiente de envío."
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The document is waiting to be uploaded."
+          }
         }
       }
     },
@@ -2875,6 +2965,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Documento enviado."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Document uploaded."
           }
         }
       }
@@ -2888,6 +2984,12 @@
             "state" : "translated",
             "value" : "Reintentar envío"
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Retry upload"
+          }
         }
       }
     },
@@ -2899,6 +3001,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Reintentar"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Try again"
           }
         }
       }
@@ -2912,6 +3020,12 @@
             "state" : "translated",
             "value" : "Revisar la versión actual"
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Review the current version"
+          }
         }
       }
     },
@@ -2923,6 +3037,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "La autorización de fotografía es opcional. Puedes continuar sin ella."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Photo authorization is optional. You can continue without it."
           }
         }
       }
@@ -2936,6 +3056,12 @@
             "state" : "translated",
             "value" : "Autorizar el uso interno de la fotografía"
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Authorize internal use of the photo"
+          }
         }
       }
     },
@@ -2947,6 +3073,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Continuar sin fotografía"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continue without a photo"
           }
         }
       }
@@ -2960,6 +3092,12 @@
             "state" : "translated",
             "value" : "Retirar autorización de fotografía"
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Withdraw photo authorization"
+          }
         }
       }
     },
@@ -2971,6 +3109,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Firma"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Signature"
           }
         }
       }
@@ -2984,6 +3128,12 @@
             "state" : "translated",
             "value" : "Firma vinculada a este texto."
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Signature linked to this text."
+          }
         }
       }
     },
@@ -2995,6 +3145,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Fecha de firma"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Date signed"
           }
         }
       }
@@ -3008,6 +3164,12 @@
             "state" : "translated",
             "value" : "Firma manuscrita aportada para este documento."
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Handwritten signature provided for this document."
+          }
         }
       }
     },
@@ -3019,6 +3181,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "La ficha ha cambiado"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The client record has changed"
           }
         }
       }
@@ -3032,6 +3200,12 @@
             "state" : "translated",
             "value" : "Los datos de la ficha ya no coinciden con este borrador. Revisa los datos actuales antes de continuar; puede ser necesario volver a firmar."
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The client record no longer matches this draft. Review the current details before continuing; you may need to sign again."
+          }
         }
       }
     },
@@ -3043,6 +3217,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Revisar con los datos actuales"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Review with current details"
           }
         }
       }
@@ -3056,6 +3236,12 @@
             "state" : "translated",
             "value" : "Elige el documento que quieres continuar"
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choose the document you want to resume"
+          }
         }
       }
     },
@@ -3067,6 +3253,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Borrador"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Draft"
           }
         }
       }
@@ -3080,6 +3272,12 @@
             "state" : "translated",
             "value" : "Documento conservado"
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Saved document"
+          }
         }
       }
     },
@@ -3091,6 +3289,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Revisión"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Revision"
           }
         }
       }
@@ -3104,6 +3308,12 @@
             "state" : "translated",
             "value" : "Sin firma"
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unsigned"
+          }
         }
       }
     },
@@ -3115,6 +3325,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Descartar borrador del documento"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Discard document draft"
           }
         }
       }
@@ -3128,6 +3344,12 @@
             "state" : "translated",
             "value" : "¿Descartar este borrador?"
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Discard this draft?"
+          }
         }
       }
     },
@@ -3139,6 +3361,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Se descartará el borrador del documento y su firma pendiente. La ficha del cliente se conserva."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The document draft and its pending signature will be discarded. The client record will be kept."
           }
         }
       }
@@ -3152,6 +3380,12 @@
             "state" : "translated",
             "value" : "¿Salir sin guardar los cambios?"
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Leave without saving changes?"
+          }
         }
       }
     },
@@ -3163,6 +3397,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Los cambios de la ficha posteriores al último guardado se perderán. El trabajo guardado se conserva."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Changes to the client record since you last saved will be lost. Previously saved work will be kept."
           }
         }
       }
@@ -3176,6 +3416,12 @@
             "state" : "translated",
             "value" : "Salir sin guardar"
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Leave without saving"
+          }
         }
       }
     },
@@ -3187,6 +3433,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Cargando información…"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Loading information…"
           }
         }
       }
@@ -3200,6 +3452,12 @@
             "state" : "translated",
             "value" : "Recuperando documento…"
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Recovering document…"
+          }
         }
       }
     },
@@ -3211,6 +3469,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Guardando borrador…"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Saving draft…"
           }
         }
       }
@@ -3224,6 +3488,12 @@
             "state" : "translated",
             "value" : "Guardando firma…"
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Saving signature…"
+          }
         }
       }
     },
@@ -3235,6 +3505,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Conservando documento firmado…"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Saving signed document…"
           }
         }
       }
@@ -3248,6 +3524,12 @@
             "state" : "translated",
             "value" : "Enviando documento…"
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uploading document…"
+          }
         }
       }
     },
@@ -3259,6 +3541,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Descartando borrador…"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Discarding draft…"
           }
         }
       }
@@ -3272,6 +3560,12 @@
             "state" : "translated",
             "value" : "No se ha podido cargar la información. Vuelve a intentarlo."
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unable to load the information. Please try again."
+          }
         }
       }
     },
@@ -3283,6 +3577,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "No se ha podido guardar el documento. Conserva esta pantalla y vuelve a intentarlo."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unable to save the document. Keep this screen open and try again."
           }
         }
       }
@@ -3296,6 +3596,12 @@
             "state" : "translated",
             "value" : "No se ha podido generar el documento. Tu firma guardada sigue disponible; vuelve a intentarlo."
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unable to generate the document. Your saved signature is still available; please try again."
+          }
         }
       }
     },
@@ -3307,6 +3613,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "El acceso a este documento ha caducado. Vuelve a abrir la ficha desde una sesión autorizada."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Access to this document has expired. Reopen the client record from an authorized session."
           }
         }
       }
@@ -3320,6 +3632,12 @@
             "state" : "translated",
             "value" : "El documento ha cambiado en otra sesión o tiene un conflicto. Recupera su estado antes de continuar."
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The document has changed in another session or has a conflict. Recover its state before continuing."
+          }
         }
       }
     },
@@ -3331,6 +3649,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Elige si autorizas la fotografía o continúa sin ella antes de firmar."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choose whether to authorize the photo or continue without it before signing."
           }
         }
       }
@@ -3344,6 +3668,12 @@
             "state" : "translated",
             "value" : "El envío no está disponible. El documento se conserva en este dispositivo para reintentarlo."
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uploading is unavailable. The document is saved on this device so you can try again."
+          }
         }
       }
     },
@@ -3355,6 +3685,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "No hay permiso para enviar este documento. El documento se conserva; revisa el acceso antes de reintentar."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You do not have permission to upload this document. It is saved on this device; check your access before trying again."
           }
         }
       }
@@ -3368,6 +3704,12 @@
             "state" : "translated",
             "value" : "Los datos han cambiado. Revisa el documento actualizado antes de continuar."
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The details have changed. Review the updated document before continuing."
+          }
         }
       }
     },
@@ -3379,6 +3721,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "No se ha podido preparar la vista previa."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unable to prepare the preview."
           }
         }
       }
@@ -3392,6 +3740,12 @@
             "state" : "translated",
             "value" : "Catálogo"
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Catalog"
+          }
         }
       }
     },
@@ -3403,6 +3757,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Clientes"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Clients"
           }
         }
       }
@@ -3416,6 +3776,12 @@
             "state" : "translated",
             "value" : "Histórico"
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "History"
+          }
         }
       }
     },
@@ -3427,6 +3793,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Informes"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reports"
           }
         }
       }
@@ -3440,6 +3812,12 @@
             "state" : "translated",
             "value" : "Jornada"
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Workday"
+          }
         }
       }
     },
@@ -3452,6 +3830,12 @@
             "state" : "translated",
             "value" : "Esta sección todavía no está disponible."
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This section is not available yet."
+          }
         }
       }
     },
@@ -3460,6 +3844,12 @@
       "extractionState" : "manual",
       "localizations" : {
         "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Email"
+          }
+        },
+        "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Email"
@@ -3476,6 +3866,12 @@
             "state" : "translated",
             "value" : "nombre@ejemplo.com"
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "name@example.com"
+          }
         }
       }
     },
@@ -3487,6 +3883,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "El acceso no está configurado correctamente. Contacta con soporte."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sign-in is not configured correctly. Contact support."
           }
         }
       }
@@ -3500,6 +3902,12 @@
             "state" : "translated",
             "value" : "No se ha podido iniciar sesión. Revisa el email y la contraseña."
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unable to sign in. Check your email and password."
+          }
         }
       }
     },
@@ -3511,6 +3919,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "No se puede acceder al almacenamiento seguro del dispositivo."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unable to access this device’s secure storage."
           }
         }
       }
@@ -3524,6 +3938,12 @@
             "state" : "translated",
             "value" : "El acceso no está disponible temporalmente. Inténtalo de nuevo."
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sign-in is temporarily unavailable. Please try again."
+          }
         }
       }
     },
@@ -3535,6 +3955,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "No se ha podido iniciar sesión. Inténtalo de nuevo."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unable to sign in. Please try again."
           }
         }
       }
@@ -3548,6 +3974,12 @@
             "state" : "translated",
             "value" : "Ocultar contraseña"
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hide password"
+          }
         }
       }
     },
@@ -3559,6 +3991,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Contraseña"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Password"
           }
         }
       }
@@ -3572,6 +4010,12 @@
             "state" : "translated",
             "value" : "Introduce tu contraseña"
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enter your password"
+          }
         }
       }
     },
@@ -3583,6 +4027,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Mostrar contraseña"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Show password"
           }
         }
       }
@@ -3596,6 +4046,12 @@
             "state" : "translated",
             "value" : "Comprobando credenciales…"
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Checking credentials…"
+          }
         }
       }
     },
@@ -3607,6 +4063,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Acceder"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sign in"
           }
         }
       }
@@ -3620,6 +4082,12 @@
             "state" : "translated",
             "value" : "Credenciales aceptadas. Comprobando la sesión…"
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Credentials accepted. Checking your session…"
+          }
         }
       }
     },
@@ -3631,6 +4099,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Iniciar sesión"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sign in"
           }
         }
       }
@@ -3644,6 +4118,12 @@
             "state" : "translated",
             "value" : "Desbloquea el acceso a la sesión ya iniciada en este dispositivo."
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unlock access to the session already signed in on this device."
+          }
         }
       }
     },
@@ -3655,6 +4135,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "La biometría del dispositivo no está disponible. Accede con email."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Device biometrics are unavailable. Sign in with email."
           }
         }
       }
@@ -3668,6 +4154,12 @@
             "state" : "translated",
             "value" : "Acceder con biometría del dispositivo"
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sign in with device biometrics"
+          }
         }
       }
     },
@@ -3679,6 +4171,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Acceder"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sign in"
           }
         }
       }
@@ -3692,6 +4190,12 @@
             "state" : "translated",
             "value" : "Comprobando sesión…"
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Checking session…"
+          }
         }
       }
     },
@@ -3703,6 +4207,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Salir y acceder con email"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sign out and sign in with email"
           }
         }
       }
@@ -3716,6 +4226,12 @@
             "state" : "translated",
             "value" : "Salir"
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sign out"
+          }
         }
       }
     },
@@ -3727,6 +4243,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "El desbloqueo biométrico se ha cancelado."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Biometric unlock was cancelled."
           }
         }
       }
@@ -3740,6 +4262,12 @@
             "state" : "translated",
             "value" : "La biometría no ha autorizado el acceso."
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Biometrics did not authorize access."
+          }
         }
       }
     },
@@ -3751,6 +4279,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "La biometría no está disponible ahora. Accede con email."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Biometrics are unavailable right now. Sign in with email."
           }
         }
       }
@@ -3764,6 +4298,12 @@
             "state" : "translated",
             "value" : "La sesión no está configurada correctamente. Contacta con soporte."
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The session is not configured correctly. Contact support."
+          }
         }
       }
     },
@@ -3775,6 +4315,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "La comprobación de la sesión ha terminado antes de confirmar su estado. Vuelve a abrir la pantalla."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The session check ended before its state was confirmed. Reopen the screen."
           }
         }
       }
@@ -3788,6 +4334,12 @@
             "state" : "translated",
             "value" : "No se puede acceder al almacenamiento seguro del dispositivo."
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unable to access this device’s secure storage."
+          }
         }
       }
     },
@@ -3799,6 +4351,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "La operación no está disponible temporalmente. Inténtalo de nuevo."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This operation is temporarily unavailable. Please try again."
           }
         }
       }
@@ -3812,6 +4370,12 @@
             "state" : "translated",
             "value" : "No se ha podido completar la operación. Inténtalo de nuevo."
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unable to complete the operation. Please try again."
+          }
         }
       }
     },
@@ -3823,6 +4387,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Confirma que eres tú para continuar."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Confirm your identity to continue."
           }
         }
       }
@@ -3836,6 +4406,12 @@
             "state" : "translated",
             "value" : "Sesión bloqueada"
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Session locked"
+          }
         }
       }
     },
@@ -3847,6 +4423,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "No se ha podido comprobar la sesión"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unable to check the session"
           }
         }
       }
@@ -3860,6 +4442,12 @@
             "state" : "translated",
             "value" : "Accede de nuevo con tu email y contraseña."
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sign in again with your email and password."
+          }
         }
       }
     },
@@ -3871,6 +4459,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sesión cerrada"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Signed out"
           }
         }
       }
@@ -3884,6 +4478,12 @@
             "state" : "translated",
             "value" : "Cerrando sesión…"
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Signing out…"
+          }
         }
       }
     },
@@ -3895,6 +4495,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sesión"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Session"
           }
         }
       }
@@ -3908,6 +4514,12 @@
             "state" : "translated",
             "value" : "Preparando el acceso seguro…"
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Preparing secure access…"
+          }
         }
       }
     },
@@ -3919,6 +4531,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sesión desbloqueada"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Session unlocked"
           }
         }
       }
@@ -3932,6 +4550,12 @@
             "state" : "translated",
             "value" : "Desbloqueando sesión…"
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unlocking session…"
+          }
         }
       }
     },
@@ -3943,6 +4567,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Cierra y vuelve a abrir la aplicación. Si el problema continúa, contacta con soporte."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Close and reopen the app. If the problem persists, contact support."
           }
         }
       }
@@ -3956,6 +4586,12 @@
             "state" : "translated",
             "value" : "No se pudo preparar el acceso"
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unable to prepare sign-in"
+          }
         }
       }
     },
@@ -3967,6 +4603,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Preparando acceso…"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Preparing sign-in…"
           }
         }
       }
@@ -3980,6 +4622,12 @@
             "state" : "translated",
             "value" : "Acceso local bloqueado"
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Local access blocked"
+          }
         }
       }
     },
@@ -3991,6 +4639,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Comprobando los datos de este dispositivo…"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Checking this device’s data…"
           }
         }
       }
@@ -4004,6 +4658,12 @@
             "state" : "translated",
             "value" : "Comprobando sesión…"
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Checking session…"
+          }
         }
       }
     },
@@ -4015,6 +4675,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Los datos de este dispositivo están vinculados a otra cuenta."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The data on this device is linked to another account."
           }
         }
       }
@@ -4028,6 +4694,12 @@
             "state" : "translated",
             "value" : "Hay datos locales sin un vínculo de cuenta verificable. Contacta con soporte."
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "There is local data without a verifiable account link. Contact support."
+          }
         }
       }
     },
@@ -4039,6 +4711,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "No se pudieron comprobar los datos locales de forma segura."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unable to check local data securely."
           }
         }
       }
@@ -4052,6 +4730,12 @@
             "state" : "translated",
             "value" : "No se pudo comprobar de forma segura la cuenta vinculada a este dispositivo."
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unable to securely verify the account linked to this device."
+          }
         }
       }
     },
@@ -4063,6 +4747,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "No se pudo autorizar el acceso local. Inténtalo de nuevo."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unable to authorize local access. Please try again."
           }
         }
       }
@@ -4076,6 +4766,12 @@
             "state" : "translated",
             "value" : "El acceso protegido se ha cerrado hasta volver a comprobar la sesión."
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Protected access has been closed until the session can be checked again."
+          }
         }
       }
     },
@@ -4087,6 +4783,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "No se pudo comprobar la sesión"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unable to check the session"
           }
         }
       }
@@ -4100,6 +4802,12 @@
             "state" : "translated",
             "value" : "Reintentar"
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Try again"
+          }
         }
       }
     },
@@ -4111,6 +4819,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Cerrar sesión"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sign out"
           }
         }
       }
@@ -4124,6 +4838,12 @@
             "state" : "translated",
             "value" : "Cerrando sesión…"
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Signing out…"
+          }
         }
       }
     },
@@ -4135,6 +4855,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Cancelar"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancel"
           }
         }
       }
@@ -4148,6 +4874,12 @@
             "state" : "translated",
             "value" : "Localidad (opcional)"
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "City (optional)"
+          }
         }
       }
     },
@@ -4159,6 +4891,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nuevo cliente"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "New client"
           }
         }
       }
@@ -4172,6 +4910,12 @@
             "state" : "translated",
             "value" : "Desactivar cliente"
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deactivate client"
+          }
         }
       }
     },
@@ -4183,6 +4927,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Desactivar"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deactivate"
           }
         }
       }
@@ -4196,6 +4946,12 @@
             "state" : "translated",
             "value" : "Dejará de aparecer en el listado de clientes. Sus datos anteriores se conservarán."
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This client will no longer appear in the client list. Their previous data will be kept."
+          }
         }
       }
     },
@@ -4207,6 +4963,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "¿Desactivar este cliente?"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deactivate this client?"
           }
         }
       }
@@ -4220,6 +4982,12 @@
             "state" : "translated",
             "value" : "Cliente desactivado."
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Client deactivated."
+          }
         }
       }
     },
@@ -4231,6 +4999,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Desactivando cliente…"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deactivating client…"
           }
         }
       }
@@ -4244,6 +5018,12 @@
             "state" : "translated",
             "value" : "El cliente se guardará como borrador."
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The client will be saved as a draft."
+          }
         }
       }
     },
@@ -4255,6 +5035,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Editar cliente"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Edit client"
           }
         }
       }
@@ -4268,6 +5054,12 @@
             "state" : "translated",
             "value" : "Los datos del cliente han cambiado. Cierra el formulario y vuelve a abrirlo antes de guardar."
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The client’s details have changed. Close and reopen the form before saving."
+          }
         }
       }
     },
@@ -4279,6 +5071,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Este cliente está desactivado. Vuelve al listado."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This client is deactivated. Return to the list."
           }
         }
       }
@@ -4292,6 +5090,12 @@
             "state" : "translated",
             "value" : "No se ha podido crear el cliente. Cierra el formulario y vuelve a intentarlo."
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unable to create the client. Close the form and try again."
+          }
         }
       }
     },
@@ -4303,6 +5107,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Este cliente ya no está disponible. Vuelve al listado."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This client is no longer available. Return to the list."
           }
         }
       }
@@ -4316,6 +5126,12 @@
             "state" : "translated",
             "value" : "Escribe el nombre del cliente para poder guardarlo."
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enter the client’s name to save."
+          }
         }
       }
     },
@@ -4327,6 +5143,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "No se ha podido completar la operación"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unable to complete the operation"
           }
         }
       }
@@ -4340,6 +5162,12 @@
             "state" : "translated",
             "value" : "No se ha podido completar la operación. Inténtalo de nuevo."
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unable to complete the operation. Please try again."
+          }
         }
       }
     },
@@ -4351,6 +5179,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Cargando cliente…"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Loading client…"
           }
         }
       }
@@ -4364,6 +5198,12 @@
             "state" : "translated",
             "value" : "Nombre (obligatorio)"
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Name (required)"
+          }
         }
       }
     },
@@ -4375,6 +5215,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Código postal (opcional)"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Postal code (optional)"
           }
         }
       }
@@ -4388,6 +5234,12 @@
             "state" : "translated",
             "value" : "Provincia (opcional)"
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Province (optional)"
+          }
         }
       }
     },
@@ -4399,6 +5251,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Reintentar"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Try again"
           }
         }
       }
@@ -4412,6 +5270,12 @@
             "state" : "translated",
             "value" : "Guardar"
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Save"
+          }
         }
       }
     },
@@ -4423,6 +5287,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Cliente guardado."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Client saved."
           }
         }
       }
@@ -4436,6 +5306,12 @@
             "state" : "translated",
             "value" : "Guardando cliente…"
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Saving client…"
+          }
         }
       }
     },
@@ -4447,6 +5323,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Calle y número (opcional)"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Street and number (optional)"
           }
         }
       }
@@ -4460,6 +5342,12 @@
             "state" : "translated",
             "value" : "Identificador fiscal (opcional)"
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tax identifier (optional)"
+          }
         }
       }
     },
@@ -4471,6 +5359,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Añadir cliente"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add client"
           }
         }
       }
@@ -4484,6 +5378,12 @@
             "state" : "translated",
             "value" : "Abre el formulario de este cliente."
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opens this client’s form."
+          }
         }
       }
     },
@@ -4495,6 +5395,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Reintentar"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Try again"
           }
         }
       }
@@ -4508,6 +5414,12 @@
             "state" : "translated",
             "value" : "Prueba con otro nombre o identificador fiscal."
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Try another name or tax identifier."
+          }
         }
       }
     },
@@ -4519,6 +5431,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sin coincidencias"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No matches"
           }
         }
       }
@@ -4532,6 +5450,12 @@
             "state" : "translated",
             "value" : "Buscar clientes"
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Search clients"
+          }
         }
       }
     },
@@ -4543,6 +5467,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Los clientes aparecerán aquí cuando estén disponibles."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Clients will appear here when available."
           }
         }
       }
@@ -4556,6 +5486,12 @@
             "state" : "translated",
             "value" : "No hay clientes"
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No clients"
+          }
         }
       }
     },
@@ -4567,6 +5503,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Inténtalo de nuevo más tarde."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Please try again later."
           }
         }
       }
@@ -4580,6 +5522,12 @@
             "state" : "translated",
             "value" : "No se pudieron cargar los clientes"
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unable to load clients"
+          }
         }
       }
     },
@@ -4591,6 +5539,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Cargando clientes…"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Loading clients…"
           }
         }
       }
@@ -4604,6 +5558,12 @@
             "state" : "translated",
             "value" : "Clientes"
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Clients"
+          }
         }
       }
     },
@@ -4615,6 +5575,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Firma borrada."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Signature cleared."
           }
         }
       }
@@ -4628,6 +5594,12 @@
             "state" : "translated",
             "value" : "Trazo terminado."
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stroke finished."
+          }
         }
       }
     },
@@ -4639,6 +5611,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Último trazo deshecho."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Last stroke undone."
           }
         }
       }
@@ -4652,6 +5630,12 @@
             "state" : "translated",
             "value" : "Cancelar firma"
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancel signature"
+          }
         }
       }
     },
@@ -4663,6 +5647,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Área de firma"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Signature area"
           }
         }
       }
@@ -4676,6 +5666,12 @@
             "state" : "translated",
             "value" : "Borrar firma"
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Clear signature"
+          }
         }
       }
     },
@@ -4687,6 +5683,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Confirmar firma"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Confirm signature"
           }
         }
       }
@@ -4700,6 +5702,12 @@
             "state" : "translated",
             "value" : "No se ha podido usar este trazo. Vuelve a dibujarlo."
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unable to use this stroke. Draw it again."
+          }
         }
       }
     },
@@ -4711,6 +5719,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Añade al menos un trazo antes de confirmar la firma."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add at least one stroke before confirming the signature."
           }
         }
       }
@@ -4724,6 +5738,12 @@
             "state" : "translated",
             "value" : "El trazo necesita dos puntos en posiciones distintas. Vuelve a dibujarlo."
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The stroke needs two points in different positions. Draw it again."
+          }
         }
       }
     },
@@ -4735,6 +5755,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Dibuja tu firma en el área de firma. Puedes deshacer trazos o borrar la firma antes de confirmarla."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Draw your signature in the signature area. You can undo strokes or clear the signature before confirming it."
           }
         }
       }
@@ -4748,6 +5774,12 @@
             "state" : "translated",
             "value" : "Trazo en curso."
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stroke in progress."
+          }
         }
       }
     },
@@ -4759,6 +5791,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Todavía no hay firma."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No signature yet."
           }
         }
       }
@@ -4772,6 +5810,12 @@
             "state" : "translated",
             "value" : "Firma lista para confirmar."
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Signature ready to confirm."
+          }
         }
       }
     },
@@ -4783,6 +5827,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Capturar firma"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Capture signature"
           }
         }
       }
@@ -4796,6 +5846,12 @@
             "state" : "translated",
             "value" : "Deshacer trazo"
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Undo stroke"
+          }
         }
       }
     },
@@ -4807,6 +5863,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Completando alta…"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Completing registration…"
           }
         }
       }
@@ -4820,6 +5882,12 @@
             "state" : "translated",
             "value" : "Cliente activo. El documento inicial está enviado y vinculado a la ficha."
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Client active. The initial document has been uploaded and linked to the client record."
+          }
         }
       }
     },
@@ -4832,6 +5900,12 @@
             "state" : "translated",
             "value" : "Documento enviado. Falta finalizar el alta del cliente."
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Document uploaded. Client registration still needs to be completed."
+          }
         }
       }
     },
@@ -4842,6 +5916,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "El cliente ya está activo. Este documento no está confirmado como documento de alta."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The client is already active. This document has not been confirmed as their registration document."
           }
         }
       }
@@ -4855,6 +5935,12 @@
             "state" : "translated",
             "value" : "El documento está enviado, pero no se pudo completar el alta. Puedes volver a intentarlo sin firmar ni enviar de nuevo."
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The document has been uploaded, but registration could not be completed. You can try again without signing or uploading again."
+          }
         }
       }
     },
@@ -4866,6 +5952,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Finalizar alta"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Complete registration"
           }
         }
       }

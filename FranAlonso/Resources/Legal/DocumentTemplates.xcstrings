@@ -10,6 +10,12 @@
             "state": "translated",
             "value": "NIF"
           }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "NIF"
+          }
         }
       }
     },
@@ -21,6 +27,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Información adicional pendiente de completar"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Additional information to be completed"
           }
         }
       }
@@ -34,6 +46,12 @@
             "state": "translated",
             "value": "Los datos proceden del cliente. No se toman decisiones exclusivamente automatizadas con efectos jurídicos o similares sobre él. [Antes de utilizar este texto: completar la información sobre transferencias internacionales y garantías con los proveedores y servicios realmente configurados; no afirmar su ausencia sin verificarla.]"
           }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The data comes from the client. We do not make decisions based solely on automated processing that have legal or similarly significant effects on them. [Before using this text: complete the information about international transfers and safeguards based on the providers and services actually configured; do not claim that there are none without verifying this.]"
+          }
         }
       }
     },
@@ -45,6 +63,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Qué datos recogemos"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "What data we collect"
           }
         }
       }
@@ -58,6 +82,12 @@
             "state": "translated",
             "value": "Los facilitas tú: datos de identificación y contacto y la información necesaria sobre citas, servicios y facturación. Solo te pediremos los datos necesarios para cada finalidad. El email para recibir el ticket o la factura y la fotografía son opcionales; puedes recibir el servicio sin autorizar una fotografía."
           }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You provide it: identification and contact details, and the information needed for appointments, services and billing. We will only ask for the data needed for each purpose. An email address to receive a receipt or invoice and a photo are optional; you can receive the service without authorizing a photo."
+          }
         }
       }
     },
@@ -69,6 +99,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Quién puede acceder"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Who can access it"
           }
         }
       }
@@ -82,6 +118,12 @@
             "state": "translated",
             "value": "El responsable y las personas autorizadas para atenderte, así como proveedores que presten servicios por cuenta del negocio con las garantías correspondientes. Podremos comunicar datos a las administraciones cuando exista una obligación legal. No publicaremos tu fotografía ni la utilizaremos con fines publicitarios."
           }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The controller and the people authorized to assist you, as well as providers acting on behalf of the business with the appropriate safeguards. We may disclose data to public authorities when required by law. We will not publish your photo or use it for advertising."
+          }
         }
       }
     },
@@ -93,6 +135,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Durante cuánto tiempo"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "How long we keep it"
           }
         }
       }
@@ -106,6 +154,12 @@
             "state": "translated",
             "value": "Conservaremos los datos mientras sean necesarios para las finalidades indicadas y, posteriormente, los que debamos mantener por obligaciones legales o para atender posibles responsabilidades. La fotografía se conservará mientras resulte necesaria para la finalidad autorizada y no retires el consentimiento."
           }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "We will keep the data for as long as it is needed for the stated purposes and, afterwards, retain any data required by law or to address potential liabilities. The photo will be kept for as long as it is needed for the authorized purpose and you have not withdrawn your consent."
+          }
         }
       }
     },
@@ -117,6 +171,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Tus derechos"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your rights"
           }
         }
       }
@@ -130,6 +190,12 @@
             "state": "translated",
             "value": "Puedes solicitar acceso, rectificación o supresión de tus datos, así como ejercer los demás derechos que correspondan, incluidos limitación, oposición y portabilidad, a través de los datos de contacto anteriores. Puedes retirar la autorización de la fotografía en cualquier momento por esos mismos medios, sin afectar al servicio. La retirada no afecta a la licitud de su uso anterior. Puedes reclamar ante la Agencia Española de Protección de Datos (www.aepd.es)."
           }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You can request access to, rectification or erasure of your data, and exercise any other applicable rights, including restriction, objection and portability, using the contact details above. You can withdraw photo authorization at any time through the same channels without affecting the service. Withdrawal does not affect the lawfulness of its previous use. You can lodge a complaint with the Spanish Data Protection Agency (www.aepd.es)."
+          }
         }
       }
     },
@@ -141,6 +207,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Nombre y apellidos"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Full name"
           }
         }
       }
@@ -154,6 +226,12 @@
             "state": "translated",
             "value": "Firma del cliente"
           }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Client signature"
+          }
         }
       }
     },
@@ -165,6 +243,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Información sobre el uso de tus datos en Fran Alonso Peluqueros y autorización opcional para conservar una fotografía en tu ficha interna."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Information about how your data is used at Fran Alonso Peluqueros and optional authorization to keep a photo in your internal client record."
           }
         }
       }
@@ -178,6 +262,12 @@
             "state": "translated",
             "value": "Autorizo a conservar una fotografía en mi ficha interna para gestionar y realizar el seguimiento de los servicios que solicito. Esta autorización no incluye su publicación ni su uso publicitario."
           }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "I authorize a photo to be kept in my internal client record to manage and follow up on the services I request. This authorization does not include publication or use for advertising."
+          }
         }
       }
     },
@@ -189,6 +279,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Información adicional"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Additional information"
           }
         }
       }
@@ -202,6 +298,12 @@
             "state": "translated",
             "value": "Información básica"
           }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Basic information"
+          }
         }
       }
     },
@@ -213,6 +315,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Fotografía opcional para tu ficha"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Optional photo for your client record"
           }
         }
       }
@@ -226,6 +334,12 @@
             "state": "translated",
             "value": "No marcar esta opción significa que no autorizas la fotografía. Puedes continuar sin marcarla. Con mi firma dejo constancia de haber recibido esta información. La autorización para conservar una fotografía se limita a la opción anterior y solo se concede si la he marcado."
           }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Leaving this option unchecked means that you do not authorize the photo. You can continue without selecting it. By signing, I acknowledge receipt of this information. Authorization to keep a photo is limited to the option above and is only granted if I have selected it."
+          }
         }
       }
     },
@@ -237,6 +351,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Responsable"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Controller"
           }
         }
       }
@@ -250,6 +370,12 @@
             "state": "translated",
             "value": "Francisco Alonso Domínguez (Fran Alonso Peluqueros), NIF 48.815.877-X. Contacto: info@franalonsopeluqueros.com. Dirección: c/ Bailén, 33-35. Local Bajo. 41001. Sevilla (España)."
           }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Francisco Alonso Domínguez (Fran Alonso Peluqueros), NIF 48.815.877-X. Contact: info@franalonsopeluqueros.com. Address: c/ Bailén, 33-35. Ground floor premises. 41001. Sevilla (Spain)."
+          }
         }
       }
     },
@@ -261,6 +387,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Por qué podemos tratarlos"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Legal basis for processing"
           }
         }
       }
@@ -274,6 +406,12 @@
             "state": "translated",
             "value": "Los datos necesarios para prestar el servicio se tratan para gestionar esa relación; los exigidos por la normativa, para cumplir las obligaciones legales correspondientes. La fotografía de la ficha es opcional y solo se conservará si la autorizas mediante la opción que aparece al final."
           }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The data needed to provide the service is processed to manage that relationship; data required by law is processed to meet the corresponding legal obligations. The photo in the client record is optional and will only be kept if you authorize it using the option at the end."
+          }
         }
       }
     },
@@ -285,6 +423,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Para qué utilizamos tus datos"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "How we use your data"
           }
         }
       }
@@ -298,6 +442,12 @@
             "state": "translated",
             "value": "Para gestionar tu ficha, las citas y los datos necesarios para prestar y realizar el seguimiento de los servicios que solicitas; emitir los documentos de facturación y cumplir las obligaciones legales. Si nos pides recibir el ticket o la factura por correo electrónico, utilizaremos la dirección que facilites para ese envío. No utilizaremos tus datos para enviarte publicidad ni comunicaciones comerciales."
           }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "To manage your client record, appointments and the information needed to provide and follow up on the services you request; issue billing documents and meet legal obligations. If you ask to receive a receipt or invoice by email, we will use the address you provide for that delivery. We will not use your data to send advertising or commercial communications."
+          }
         }
       }
     },
@@ -309,6 +459,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Información sobre datos y fotografía opcional"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Data information and optional photo"
           }
         }
       }
@@ -322,6 +478,12 @@
             "state": "translated",
             "value": "Te explicamos cómo utilizamos tus datos para atenderte, gestionar tu ficha y emitir tus documentos de facturación."
           }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "We explain how we use your data to assist you, manage your client record and issue your billing documents."
+          }
         }
       }
     },
@@ -333,6 +495,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Los datos necesarios para prestar el servicio se tratan para gestionar esa relación; los exigidos por la normativa, para cumplir las obligaciones legales correspondientes."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The data needed to provide the service is processed to manage that relationship; data required by law is processed to meet the corresponding legal obligations."
           }
         }
       }
@@ -346,6 +514,12 @@
             "state": "translated",
             "value": "Los facilitas tú: datos de identificación y contacto y la información necesaria sobre citas, servicios y facturación. Solo te pediremos los datos necesarios para cada finalidad. El email es opcional y se utiliza para enviarte el ticket o la factura cuando lo solicitas."
           }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You provide it: identification and contact details, and the information needed for appointments, services and billing. We will only ask for the data needed for each purpose. Email is optional and is used to send you a receipt or invoice when you request it."
+          }
         }
       }
     },
@@ -357,6 +531,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "El responsable y las personas autorizadas para atenderte, así como proveedores que presten servicios por cuenta del negocio con las garantías correspondientes. Podremos comunicar datos a las administraciones cuando exista una obligación legal."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The controller and the people authorized to assist you, as well as providers acting on behalf of the business with the appropriate safeguards. We may disclose data to public authorities when required by law."
           }
         }
       }
@@ -370,6 +550,12 @@
             "state": "translated",
             "value": "Conservaremos los datos mientras sean necesarios para las finalidades indicadas y, posteriormente, los que debamos mantener por obligaciones legales o para atender posibles responsabilidades."
           }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "We will keep the data for as long as it is needed for the stated purposes and, afterwards, retain any data required by law or to address potential liabilities."
+          }
         }
       }
     },
@@ -381,6 +567,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Puedes solicitar acceso, rectificación o supresión de tus datos, así como ejercer los demás derechos que correspondan, incluidos limitación, oposición y portabilidad, a través de los datos de contacto anteriores. Puedes reclamar ante la Agencia Española de Protección de Datos (www.aepd.es)."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You can request access to, rectification or erasure of your data, and exercise any other applicable rights, including restriction, objection and portability, using the contact details above. You can lodge a complaint with the Spanish Data Protection Agency (www.aepd.es)."
           }
         }
       }
@@ -394,6 +586,12 @@
             "state": "translated",
             "value": "Con mi firma dejo constancia de haber recibido la información anterior sobre el tratamiento de mis datos personales."
           }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "By signing, I acknowledge receipt of the information above about the processing of my personal data."
+          }
         }
       }
     },
@@ -405,6 +603,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Información sobre tus datos personales"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Information about your personal data"
           }
         }
       }
@@ -418,6 +622,12 @@
             "state": "translated",
             "value": "Fecha"
           }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Date"
+          }
         }
       }
     },
@@ -429,6 +639,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Página"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Page"
           }
         }
       }
@@ -442,6 +658,12 @@
             "state": "translated",
             "value": "BORRADOR PENDIENTE DE REVISIÓN JURÍDICA"
           }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "DRAFT PENDING LEGAL REVIEW"
+          }
         }
       }
     },
@@ -453,6 +675,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Firma y sello (opcional)"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Signature and stamp (optional)"
           }
         }
       }
@@ -466,6 +694,12 @@
             "state": "translated",
             "value": "PLANTILLA PROVISIONAL"
           }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "PROVISIONAL TEMPLATE"
+          }
         }
       }
     },
@@ -478,6 +712,12 @@
             "state": "translated",
             "value": "Base imponible"
           }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Taxable amount"
+          }
         }
       }
     },
@@ -486,6 +726,12 @@
       "extractionState": "manual",
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "TOTAL"
+          }
+        },
+        "en": {
           "stringUnit": {
             "state": "translated",
             "value": "TOTAL"
@@ -502,6 +748,12 @@
             "state": "translated",
             "value": "IVA"
           }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "VAT"
+          }
         }
       }
     },
@@ -513,6 +765,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Dirección"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Address"
           }
         }
       }
@@ -526,6 +784,12 @@
             "state": "translated",
             "value": "Nombre o razón social"
           }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Name or business name"
+          }
         }
       }
     },
@@ -537,6 +801,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Código postal y población"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Postal code and city"
           }
         }
       }
@@ -550,6 +820,12 @@
             "state": "translated",
             "value": "Provincia / país"
           }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Province / country"
+          }
         }
       }
     },
@@ -562,6 +838,12 @@
             "state": "translated",
             "value": "DATOS DEL CLIENTE"
           }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "CLIENT DETAILS"
+          }
         }
       }
     },
@@ -570,6 +852,12 @@
       "extractionState": "manual",
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "NIF/NIE/CIF"
+          }
+        },
+        "en": {
           "stringUnit": {
             "state": "translated",
             "value": "NIF/NIE/CIF"
@@ -586,6 +874,12 @@
             "state": "translated",
             "value": "N.º factura"
           }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Invoice no."
+          }
         }
       }
     },
@@ -597,6 +891,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Documento A4 · Importe en euros"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A4 document · Amount in euros"
           }
         }
       }
@@ -610,6 +910,12 @@
             "state": "translated",
             "value": "Plantilla A4 de factura"
           }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A4 invoice template"
+          }
         }
       }
     },
@@ -621,6 +927,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Descripción"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Description"
           }
         }
       }
@@ -634,6 +946,12 @@
             "state": "translated",
             "value": "Desc."
           }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Disc."
+          }
         }
       }
     },
@@ -645,6 +963,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Cant."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Qty."
           }
         }
       }
@@ -658,6 +982,12 @@
             "state": "translated",
             "value": "P. unit."
           }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unit price"
+          }
         }
       }
     },
@@ -669,6 +999,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "FACTURA"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "INVOICE"
           }
         }
       }
@@ -682,6 +1018,12 @@
             "state": "translated",
             "value": "Descuento"
           }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Discount"
+          }
         }
       }
     },
@@ -693,6 +1035,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Importe"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Amount"
           }
         }
       }
@@ -706,6 +1054,12 @@
             "state": "translated",
             "value": "IVA"
           }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "VAT"
+          }
         }
       }
     },
@@ -717,6 +1071,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Cliente"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Client"
           }
         }
       }
@@ -730,6 +1090,12 @@
             "state": "translated",
             "value": "N.º ticket"
           }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Receipt no."
+          }
         }
       }
     },
@@ -738,6 +1104,12 @@
       "extractionState": "manual",
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "NIF/NIE"
+          }
+        },
+        "en": {
           "stringUnit": {
             "state": "translated",
             "value": "NIF/NIE"
@@ -754,6 +1126,12 @@
             "state": "translated",
             "value": "Documento A4 · Importe en euros · IVA incluido salvo indicación"
           }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A4 document · Amount in euros · VAT included unless stated otherwise"
+          }
         }
       }
     },
@@ -765,6 +1143,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Plantilla A4 de ticket"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A4 receipt template"
           }
         }
       }
@@ -778,6 +1162,12 @@
             "state": "translated",
             "value": "Servicio / concepto"
           }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Service / item"
+          }
         }
       }
     },
@@ -789,6 +1179,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Cant."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Qty."
           }
         }
       }
@@ -802,6 +1198,12 @@
             "state": "translated",
             "value": "TICKET"
           }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "RECEIPT"
+          }
         }
       }
     },
@@ -813,6 +1215,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Identificador de cliente"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Client identifier"
           }
         }
       }
@@ -826,6 +1234,12 @@
             "state": "translated",
             "value": "Identificador del documento"
           }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Document identifier"
+          }
         }
       }
     },
@@ -837,6 +1251,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Versión"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Version"
           }
         }
       }
@@ -850,6 +1270,12 @@
             "state": "translated",
             "value": "Idioma"
           }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Language"
+          }
         }
       }
     },
@@ -861,6 +1287,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Finalidad del documento"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Document purpose"
           }
         }
       }
@@ -874,6 +1306,12 @@
             "state": "translated",
             "value": "Información inicial firmada"
           }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Signed initial information"
+          }
         }
       }
     },
@@ -886,6 +1324,12 @@
             "state": "translated",
             "value": "Autorización fotográfica posterior"
           }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Subsequent photo authorization"
+          }
         }
       }
     },
@@ -897,6 +1341,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Autorización concedida"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Authorization granted"
           }
         }
       }

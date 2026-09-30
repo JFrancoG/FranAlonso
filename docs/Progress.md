@@ -4,6 +4,8 @@
 
 ## Estado actual
 
+- **es/en validado**:409 textos; app/tests iOS27; builds/tests/previews PASS.
+  [Evidencia](progress/localization-en-es.md). Git aprobado.
 - **[PLU-69](https://linear.app/plusprojects/issue/PLU-69): Done**, [PR31](https://github.com/JFrancoG/FranAlonso/pull/31).
   App ordenada, Firebase 12.19.2; 1.564 resultados/builds PASS. [Registro](progress/app-organization.md).
 - **Fase10 / [PLU-59](https://linear.app/plusprojects/issue/PLU-59): In Progress**.
@@ -16,13 +18,12 @@
 - **[ADR0030](ADRs/0030-reusable-demo-and-early-foundation-models.md) aceptado y publicado** el29/09;
   orden excepcional y alcance canónico en [índice](specs/00_index.md). [Registro](progress/phase-08.md).
 - **08.8a / [PLU-46](https://linear.app/plusprojects/issue/PLU-46): Done funcional**, entrega y cierre autorizados.
-  [PR #16](https://github.com/JFrancoG/FranAlonso/pull/16), merge `b334c04`; árbol validado `0c76967` intacto.
-  Rama local/remota eliminadas; [guía](progress/08-8a-demo-runbook.md), evidencia en [fase08](progress/phase-08.md).
-  Demo Debug-Develop aislada: dos borradores, capas reales, datos en memoria y proveedores simulados; sin live/durabilidad.
+  [PR16](https://github.com/JFrancoG/FranAlonso/pull/16), merge `b334c04`, validado `0c76967` intacto; ramas eliminadas.
+  [Guía](progress/08-8a-demo-runbook.md) y [evidencia](progress/phase-08.md). Demo Debug-Develop: dos borradores,
+  capas reales, memoria y proveedores simulados; sin live/durabilidad.
   Xcode MCP: **847 declaraciones /1.120 resultados PASS**, builds Develop/Production PASS con aviso AppIntents conocido.
-  PRE/POST favorables; seis previews Large/XXX Large/AX5. Smoke PASS: alta, crear/editar, logout/login, reset y recuperación
-  sin refirmar. Sesiones cerradas, Develop/iPhone11 restaurado, argumentos `NO`. Sin checks remotos.
-  Fase09 iniciada según ADR0030; detalle arriba.
+  PRE/POST y seis previews PASS; smoke de alta/edición/autenticación/recuperación sin refirma PASS.
+  Sesiones cerradas, Develop/iPhone11 restaurado, argumentos `NO`; sin checks remotos.
 - **[PLU-48](https://linear.app/plusprojects/issue/PLU-48): Backlog**, evidencia accesible integral nueva del aviso/encuadre.
   Jesus Franco, hija dePLU-34 y relacionada conPLU-46; [matriz55](accessibility/evidence/08-8a-reusable-demo.md).
   Recuperar tras feedback y estabilización de este flujo, antes de uso real. PLU-44/45/38 conservan su deuda propia.

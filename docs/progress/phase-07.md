@@ -565,3 +565,11 @@ implementación y `e8eca5a` el handoff. El cierre documental `fda767b` es la bas
   PLU-30.
 - El P1 de contraste post-cápsula queda cerrado tras repetir el Inspector. El gate runtime de ADR 0026 y las auditorías
   finales están completos y entregados en `main`.
+
+## Corrección transversal es/en — 2026-09-30
+
+El propietario autoriza completar inglés y comprobar ambos idiomas.409 textos traducibles completos,258 traducciones
+inglesas nuevas; catálogo español y151 traducciones previas intactos. Identidades por entorno excluidas con
+`shouldTranslate: false`; emisión jurídica sigue solo en español. Validación estática, builds y suites Develop/Production PASS; seis previews login es/en hastaAX5.
+El propietario autoriza mínimo27: app/tests alineados en las cuatro configuraciones.
+[Registro](localization-en-es.md). Commit/push autorizados; sin cierre de fase ni cambios de estado en Linear.

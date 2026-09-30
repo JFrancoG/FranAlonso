@@ -11,7 +11,8 @@
             "value" : "Fran Alonso"
           }
         }
-      }
+      },
+      "shouldTranslate" : false
     },
     "CFBundleName" : {
       "comment" : "Bundle name",
@@ -23,12 +24,19 @@
             "value" : "FranAlonso"
           }
         }
-      }
+      },
+      "shouldTranslate" : false
     },
     "NSFaceIDUsageDescription" : {
       "comment" : "Texto del aviso del sistema de Face ID que explica el desbloqueo de una sesión existente.",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Face ID unlocks access to the session already signed in on this device."
+          }
+        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
