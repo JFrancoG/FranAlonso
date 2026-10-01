@@ -79,6 +79,9 @@ All notable changes to this project are documented in this file.
 
 ### Documentation
 
+- 2026-10-01 | 📝 docs(delivery): close sale draft delivery
+  Records PR33, PLU-72 completion and verified branch cleanup; phase11 remains active.
+
 - 2026-10-01 | 📝 docs(delivery): close service draft delivery
   Records PR32, PLU-47 functional completion and verified branch cleanup while retaining PLU-70 accessibility debt.
 

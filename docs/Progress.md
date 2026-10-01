@@ -4,9 +4,9 @@
 
 ## Estado actual
 
-- **11.1 / [PLU-72](https://linear.app/plusprojects/issue/PLU-72): In Progress**, hija dePLU-71.
-  Rama `codex/plu-72-sale-draft-lifecycle`;1.753/1.753 y builds PASS; PRE/POST PASS.
-  [Evidencia](progress/phase-11.md). Base05.10c, sin UI/live; entrega en curso.
+- **11.1 / [PLU-72](https://linear.app/plusprojects/issue/PLU-72): Done**; PLU-71 sigue activa.
+  [PR33](https://github.com/JFrancoG/FranAlonso/pull/33)/`794478e`, validado `8cc3181`; rama eliminada.
+  1.753/1.753, builds y PRE/POST PASS. [Evidencia](progress/phase-11.md).
 
 - **Borrador textual16 / [PLU-47](https://linear.app/plusprojects/issue/PLU-47): Done funcional**,
   [PR32](https://github.com/JFrancoG/FranAlonso/pull/32), merge `f1c781d`, validado `f727621`; rama eliminada.

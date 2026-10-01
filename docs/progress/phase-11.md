@@ -6,7 +6,7 @@ Autoridad: [spec11](../specs/11_sales_engine.md), constitución y ADR0011/0016/0
 
 ## 11.1 — Ciclo local de borrador
 
-[PLU-72](https://linear.app/plusprojects/issue/PLU-72): In Progress; rama `codex/plu-72-sale-draft-lifecycle`.
+[PLU-72](https://linear.app/plusprojects/issue/PLU-72): Done; rama `codex/plu-72-sale-draft-lifecycle` eliminada.
 Base main `4175fb1`, limpia y sincronizada. Usuario autoriza issue/rama e implementación local.
 El01/10 autoriza también commit, push, PR, merge, cierre de issue y eliminación de rama.
 [Propuesta](11-1-sale-draft-proposal.md): crear, recuperar, editar y descartar sobre la infraestructura05.10c.
@@ -94,7 +94,25 @@ UI/accesibilidad N/A (sin delta). Solo se reconcilia después la metadata de aud
 
 ## Pendientes
 
-Implementación local11.1 y puertas técnicas completas; PLU-72 permanece In Progress hasta la entrega autorizada.
-Entrega administrativa11.1 autorizada y en curso: commit, push, PR, merge y cierre pendientes.
+11.1 entregada y cerrada; no quedan gates abiertos dentro de su alcance aprobado.
 11.2–11.9 pendientes, cada una con su propio gate.
 La demo completa necesita stock12 y documento13; fase11 y deuda accesible previa siguen abiertas.
+
+## Entrega11.1 — 2026-10-01
+
+- Autorización completa del usuario: commit, push, PR, merge, cierre de issue y eliminación de rama.
+- Commit `8cc3181f537093454204b069bdd6176191fa6f90`,
+  `✨ feat(sales): complete local draft lifecycle`, publicado en origin.
+- [PR33](https://github.com/JFrancoG/FranAlonso/pull/33) MERGED;
+  merge `794478ebc2bcac85c2a4048f2fa71abf0928fa13`, con dos padres y árbol idéntico al head validado.
+  Antes de integrar: head/base exactos, CLEAN/MERGEABLE, 21 archivos previstos, sin reviews ni checks pendientes.
+  GitHub no tiene workflows/checks, protección de main ni rulesets configurados; no se atribuye CI PASS.
+- Evidencia técnica reutilizada por identidad de fuente546 y SHA validada; no cambió código/configuración desde GREEN.
+  El cierre documental modifica solo metadata de entrega: Xcode build/tests N/A razonado; no se repiten validaciones.
+- Rama local/remota eliminada después de verificar ancestry y cero commits únicos frente a origin/main.
+  Se comprobó ausencia local/remota y main limpio, actualizado por fast-forward y sincronizado con origin/main.
+- PLU-72 Done leído de vuelta tras el merge; descripción y comentario reconciliados con entrega y límites.
+  PLU-71 conserva In Progress y registra11.1 entregada; siguiente gate11.2/SaleCalculator, sin iniciar.
+- Progress, spec11 y CHANGELOG reconciliados; publicación documental posterior en main según el flujo reciente.
+  `git diff --check` PASS y presupuesto Progress respetado; solo seis enlaces históricos08.3 siguen rotos.
+  Este cierre no activa live ni declara terminada la fase11 o la demo completa.

@@ -39,7 +39,8 @@ final/cierre13; registrar el pago no permite declarar cerrada la operación ni r
 ## Resultado de fase
 
 Estado operativo de11.1: [PLU-72](https://linear.app/plusprojects/issue/PLU-72), fase [PLU-71](https://linear.app/plusprojects/issue/PLU-71).
-Implementación local validada; PRE/POST favorables, entrega autorizada en curso. [Evidencia](../progress/phase-11.md).
+11.1 entregada: PLU-72 Done, [PR33](https://github.com/JFrancoG/FranAlonso/pull/33), merge `794478e`.
+PRE/POST favorables; fuente validada `8cc3181` intacta. [Evidencia](../progress/phase-11.md).
 11.2–11.9 permanecen pendientes; el estado local no declara cerrada la fase.
 
 Jornada local-first sin trabajo cerrado ocupando espacio, Histórico separado, snapshots monetarios inmutables, Store justificado y finalización idempotente.
