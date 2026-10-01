@@ -83,6 +83,9 @@ All notable changes to this project are documented in this file.
 
 ### Documentation
 
+- 2026-10-01 | 📝 docs(delivery): close calculator delivery
+  Records PR34, PLU-73 completion and verified branch cleanup; phase11 remains active with 11.3 pending.
+
 - 2026-10-01 | 📝 docs(delivery): close sale draft delivery
   Records PR33, PLU-72 completion and verified branch cleanup; phase11 remains active.
 

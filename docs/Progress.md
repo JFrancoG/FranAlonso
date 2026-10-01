@@ -4,8 +4,8 @@
 
 ## Estado actual
 
-- **11.2 / [PLU-73](https://linear.app/plusprojects/issue/PLU-73): In Progress**.
-  `codex/plu-73-sale-calculator`; 1.797/1.797, builds/PRE/POST PASS; Git pendiente. [Evidencia](progress/phase-11.md).
+- **11.2 / [PLU-73](https://linear.app/plusprojects/issue/PLU-73): Done**.
+  [PR34](https://github.com/JFrancoG/FranAlonso/pull/34)/`ad5eeb5`; rama eliminada; 1.797/1.797 y builds/PRE/POST PASS.
 
 - **11.1 / [PLU-72](https://linear.app/plusprojects/issue/PLU-72): Done**; PLU-71 sigue activa.
   [PR33](https://github.com/JFrancoG/FranAlonso/pull/33)/`794478e`, validado `8cc3181`; rama eliminada.

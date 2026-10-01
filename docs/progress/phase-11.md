@@ -95,7 +95,8 @@ UI/accesibilidad N/A (sin delta). Solo se reconcilia después la metadata de aud
 ## Pendientes
 
 11.1 entregada y cerrada; no quedan gates abiertos dentro de su alcance aprobado.
-11.2 implementada y validada localmente; GREEN/builds/PRE/POST PASS, entrega pendiente. 11.3–11.9 conservan sus gates.
+11.2 entregada y cerrada en PR34/PLU-73; GREEN/builds/PRE/POST PASS. Siguiente11.3/SaleDraftStore pendiente de inicio.
+11.3–11.9 conservan sus propios gates.
 La demo completa necesita stock12 y documento13; fase11 y deuda accesible previa siguen abiertas.
 
 ## Entrega11.1 — 2026-10-01
@@ -118,6 +119,8 @@ La demo completa necesita stock12 y documento13; fase11 y deuda accesible previa
   Este cierre no activa live ni declara terminada la fase11 o la demo completa.
 
 ## 11.2 — Cálculo monetario
+
+Registro del inicio y gate local, anterior a la autorización de entrega:
 
 [PLU-73](https://linear.app/plusprojects/issue/PLU-73): In Progress, Jesus Franco.
 Rama `codex/plu-73-sale-calculator`, base limpia/sincronizada `c800ccd`.
@@ -218,3 +221,26 @@ La fuente 547 coincide exactamente con GREEN y POST:
 `0e473095954d921d4329178ee6de2a72124bf1ae2d8a0d2abfaf7770c944b2ee`.
 Se reutilizan esas validaciones; desde entonces solo cambia metadata documental. Main/origin en `c800ccd`, sin drift.
 El cierre conserva PLU-71 activa y 11.3 pendiente de su propio inicio; no autoriza live.
+
+## Entrega11.2 — 2026-10-01
+
+- Autorización completa del usuario: commit, push, PR, merge, cierre de issue y eliminación de rama.
+- Commit `5ac7f454e161ea8a7997285f22eb235ebfbcf3ac`,
+  `✨ feat(sales): complete deterministic sale calculations`, publicado en origin.
+- [PR34](https://github.com/JFrancoG/FranAlonso/pull/34) MERGED;
+  merge `ad5eeb552b2115aec1b1aedc0c9fa2116881e8ed`, con dos padres y árbol idéntico al head validado:
+  `f6f70d0b6bf4664eda9f5ca3b123e2dc728b582e`.
+  Antes de integrar: base `c800ccd`, head exacto, CLEAN/MERGEABLE, nueve archivos previstos, sin reviews/checks pendientes.
+  GitHub sin workflows/checks, protección de main ni rulesets configurados; no se atribuye CI PASS.
+- GREEN completo de 1.797/1.797 variantes, builds Develop-for-testing/Production, estilo y PRE/POST reutilizados
+  por identidad de la fuente547. Comprobación independiente de entrega favorable; sin hallazgos abiertos.
+  Cero warnings Swift/Clang; aviso conocido AppIntents documentado. UI/accesibilidad/previews/físico N/A.
+- Rama local/remota eliminada tras verificar ancestry contra main/origin y cero commits únicos.
+  Ausencia local/remota comprobada; main actualizado por fast-forward, limpio y sincronizado.
+- PLU-73 Done leído de vuelta tras el merge; descripción y comentario reconciliados con entrega y límites.
+  PLU-71 permanece In Progress y registra11.2 entregada; siguiente gate11.3/SaleDraftStore pendiente de inicio.
+- Progress, spec11 y CHANGELOG reconciliados; cierre documental publicado después en main según el flujo reciente.
+  Solo metadata documental: Xcode build/tests N/A; fuente547 conserva SHA
+  `0e473095954d921d4329178ee6de2a72124bf1ae2d8a0d2abfaf7770c944b2ee`.
+  Diff/enlaces nuevos y presupuesto Progress correctos; gobernanza conserva los seis enlaces históricos08.3 rotos.
+  Este cierre no activa live ni termina la fase11 o la demo completa.

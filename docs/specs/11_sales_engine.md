@@ -41,9 +41,10 @@ final/cierre13; registrar el pago no permite declarar cerrada la operación ni r
 Estado operativo de11.1: [PLU-72](https://linear.app/plusprojects/issue/PLU-72), fase [PLU-71](https://linear.app/plusprojects/issue/PLU-71).
 11.1 entregada: PLU-72 Done, [PR33](https://github.com/JFrancoG/FranAlonso/pull/33), merge `794478e`.
 PRE/POST favorables; fuente validada `8cc3181` intacta. [Evidencia](../progress/phase-11.md).
-11.2 implementada localmente en [PLU-73](https://linear.app/plusprojects/issue/PLU-73), In Progress;
+11.2 entregada: [PLU-73](https://linear.app/plusprojects/issue/PLU-73) Done,
+[PR34](https://github.com/JFrancoG/FranAlonso/pull/34), merge `ad5eeb5`, validado `5ac7f45`; rama eliminada.
 [ADR 0031](../ADRs/0031-sale-decimal-coefficient-certification.md), TDD GREEN, builds y PRE/POST PASS.
-Entrega Git pendiente; 11.3–11.9 conservan sus propios gates. El estado local no declara cerrada la fase.
+Siguiente gate11.3/SaleDraftStore pendiente; 11.3–11.9 conservan sus gates. La fase11 continúa abierta.
 
 Jornada local-first sin trabajo cerrado ocupando espacio, Histórico separado, snapshots monetarios inmutables, Store justificado y finalización idempotente.
 
