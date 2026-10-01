@@ -123,3 +123,11 @@ entrega Git pendiente de autorización, PLU-76/PLU-71 In Progress. No inicia11.6
 fuente/configuración576 idéntica al cierre local validado, sin nueva implementación ni cambios de UI.
 Se reutiliza evidencia reciente y sus límites; revisión focal de entrega y resultado Git se registran en fase11.
 PLU-77 conserva deuda integral, fase11 sigue activa y11.6/live requieren su gate propio.
+
+## Entrega funcional completada
+
+2026-10-01: [PR37](https://github.com/JFrancoG/FranAlonso/pull/37) MERGED, commit `ad53cf2` → merge `c01ff04`.
+Árbol integrado idéntico al commit validado; fuente/configuración576 conserva el digest final del cierre local.
+Rama local/remota eliminada tras verificar ancestry y cero commits exclusivos. PLU-76 Done funcional según ADR0029;
+PLU-71 In Progress y PLU-77 Backlog/Jesus Franco, con recuperación antes del uso real. Sin checks remotos configurados.
+Reconciliación final solo documental: Xcode adicional N/A; evidencia reutilizada y límites íntegros en fase11.

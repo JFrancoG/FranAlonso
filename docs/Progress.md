@@ -4,9 +4,9 @@
 
 ## Estado actual
 
-- **11.5 / [PLU-76](https://linear.app/plusprojects/issue/PLU-76): In Progress**, Jesus Franco.
-  Rama `codex/plu-76-workday-screens`; [propuesta](progress/11-5-workday-screens-proposal.md), PRE PASS.
-  Jornada/detalle local:1.934 variantes, builds/previews/smoke y PRE/POST PASS. Entrega Git autorizada, en curso.
+- **11.5 / [PLU-76](https://linear.app/plusprojects/issue/PLU-76): Done funcional**, Jesus Franco.
+  [PR37](https://github.com/JFrancoG/FranAlonso/pull/37), merge `c01ff04`; rama eliminada.
+  Jornada/detalle:1.934 variantes, builds/previews/smoke y PRE/POST/entrega PASS. [Evidencia](progress/phase-11.md).
   [PLU-77](https://linear.app/plusprojects/issue/PLU-77), Backlog/Jesus Franco: matriz integral11.5, antes de uso real.
 - **11.1–11.4 / PLU-72/73/74/75: Done**; PLU-71 activa, ramas eliminadas.
   PR33–36;11.4 `d9d1ed1`,1.906/1.906 y builds/auditorías PASS. [Evidencia](progress/phase-11.md).

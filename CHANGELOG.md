@@ -95,6 +95,9 @@ All notable changes to this project are documented in this file.
 
 ### Documentation
 
+- 2026-10-01 | 📝 docs(delivery): close workday screen delivery
+  Records PR37, PLU-76 completion and verified branch cleanup; phase11 and accessibility debt PLU-77 remain open.
+
 - 2026-10-01 | 📝 docs(delivery): close workday facade delivery
   Records PR36, PLU-75 completion and verified branch cleanup; phase11 remains active with 11.5 pending.
 

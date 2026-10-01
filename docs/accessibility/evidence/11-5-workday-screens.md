@@ -5,7 +5,8 @@ y [ADR0029](../../ADRs/0029-progressive-accessibility-validation.md). No acredit
 [PLU-76](https://linear.app/plusprojects/issue/PLU-76) implementa el flujo; deuda propia
 [PLU-77](https://linear.app/plusprojects/issue/PLU-77), Backlog, Jesus Franco, hija de fase11/PLU-71.
 Recuperar tras feedback de Fran y estabilización de cada flujo, antes del primer candidato para uso real y cierre integral.
-No absorbe deuda de08–10/16. La fase11 permanece activa; entrega Git11.5 autorizada y en curso.
+No absorbe deuda de08–10/16. La fase11 permanece activa; PLU-76 Done funcional tras
+[PR37](https://github.com/JFrancoG/FranAlonso/pull/37), merge `c01ff04`; validación integral pendiente en PLU-77.
 
 ## Construcción y evidencia retenida
 

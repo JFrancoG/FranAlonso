@@ -649,3 +649,23 @@ JSON completo734 idéntico antes/después, `291a6e07b161037e760759b09eed458b36f2
 Único P3 documental: frase de autorización obsoleta en matriz; corregida para reflejar entrega autorizada/en curso.
 Corrección de metadata, sin cambiar evidencia/aplicabilidad/resultado integral; verificación focal posterior PASS.
 Whole734 idéntico antes/después del retest documental: `c6e960c82b27240d9b89c5925daa1a9a15ebf774ada9efb1c9ab69888af36a41`.
+
+### Entrega funcional completada11.5 — 2026-10-01
+
+[PR37](https://github.com/JFrancoG/FranAlonso/pull/37) MERGED a las19:47:29UTC. Commit de implementación
+`ad53cf2b2a1d185a97712d68f944dfbb25e33991` → merge `c01ff046d40ea896d4921fc7ab3e79376a48f127`.
+Patch comprometido idéntico al staging revisado:31 archivos, SHA256
+`719f28e8fd3f8117a742cfb807d381b3e55f29191b20bd84061ec535e7ae048f`.
+Árbol merge idéntico al feature `edbfacf256fccc3822c6d633c872017f240f2ad9`; fuente/configuración576
+íntegra, digest `5ee1d8dbf39acb1ddc01d5136b2b8d348b45cbdd802b6b48ecb82327ed0a074b`.
+Main actualizado por fast-forward, limpio y sincronizado en el merge; rama `codex/plu-76-workday-screens`
+local/remota eliminada tras ancestry y cero commits exclusivos, ausencia verificada.
+GitHub sin checks configurados; no se atribuye CI a validación local por Xcode MCP.
+PLU-76 Done funcional (integración Linear lo cerró al merge); descripciones y comentario de entrega reconciliados.
+PLU-71 sigue In Progress, PLU-77 Backlog/Jesus Franco conserva matriz55 y recuperación antes de uso real.
+11.6 mantiene inicio propio; sin cierre integral ni live.
+
+Reconciliación posterior en main: seis documentos/changelog, sin código/configuración ni nueva evidencia de UI.
+Xcode adicional N/A: fuente idéntica y validación reciente reutilizada. Progress dentro de8192bytes,
+diff whitespace PASS; gobernanza mantiene únicamente seis enlaces históricos de capturas08.3 rotos.
+Commit/push documental de cierre autorizado por la entrega completa; main limpio y sincronizado al finalizar.
