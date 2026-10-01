@@ -57,7 +57,12 @@ POST/entrega favorables y fuente intacta.
 [Propuesta](../progress/11-5-workday-screens-proposal.md) con PRE PASS.
 Jornada/detalle, factories y demo aislada;1.934 variantes y builds PASS. Previews/smoke y retest focal PASS; POST técnico/UI PASS para gate funcional ADR0029.
 Deuda integral propia [PLU-77](https://linear.app/plusprojects/issue/PLU-77), Jesus Franco, antes de uso real.
-Entrega/árbol integrado verificados;11.6–11.9 conservan sus gates y live sigue inactivo.
+Entrega/árbol integrado verificados;11.7–11.9 conservan sus gates y live sigue inactivo.
+11.6 implementada localmente por autorización expresa: [PLU-78](https://linear.app/plusprojects/issue/PLU-78) In Progress,
+rama `codex/plu-78-sale-service-selection`, [propuesta](../progress/11-6-service-selection-proposal.md) PRE PASS.
+Selección activa10.7 con Store existente, captura inmutable y retry de la misma unidad/ID; sin schema/Data/stock/live.
+1.245 declaraciones/1.959 ejecuciones PASS; builds y muestraLarge/XXX/AX5. Previews/smoke y POST técnico/UI PASS para gate funcional ADR0029;
+entrega Git autorizada en curso; deuda integral [PLU-79](https://linear.app/plusprojects/issue/PLU-79).
 La fase11 continúa abierta.
 
 Jornada local-first sin trabajo cerrado ocupando espacio, Histórico separado, snapshots monetarios inmutables, Store justificado y finalización idempotente.

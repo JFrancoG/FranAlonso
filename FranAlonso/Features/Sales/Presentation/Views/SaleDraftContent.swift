@@ -9,6 +9,8 @@ struct SaleDraftContent: View {
     let onDecrease: @MainActor (SaleLineID) -> Void
     let onRemove: @MainActor (SaleLineID) -> Void
     let onRetry: @MainActor () -> Void
+    let onAddService: @MainActor () -> Void
+    let addServiceIsFocused: AccessibilityFocusState<Bool>.Binding
 
     var body: some View {
         Form {
@@ -80,6 +82,14 @@ struct SaleDraftContent: View {
                 )
                 .disabled(isWorking)
             }
+            if !viewModel.isReadOnly {
+                Button(action: onAddService) {
+                    Label("sales.services.add", systemImage: "plus")
+                        .frame(minHeight: 44)
+                }
+                .disabled(isWorking || !viewModel.canAddServices)
+                .accessibilityFocused(addServiceIsFocused)
+            }
         } header: {
             Text("sales.lines.title")
                 .textCase(nil)
@@ -100,6 +110,7 @@ struct SaleDraftContent: View {
 
 #Preview("Accepted draft", traits: .modifier(SalesPreviewModifier())) {
     @Previewable @Environment(\.salesPreviewModels) var models
+    @Previewable @AccessibilityFocusState var addServiceIsFocused: Bool
     if let model = models[SalesPreviewFixtures.workday.sales[2].id] {
         SaleDraftContent(
             viewModel: model,
@@ -109,13 +120,16 @@ struct SaleDraftContent: View {
             onIncrease: { _ in },
             onDecrease: { _ in },
             onRemove: { _ in },
-            onRetry: {}
+            onRetry: {},
+            onAddService: {},
+            addServiceIsFocused: $addServiceIsFocused
         )
     }
 }
 
 #Preview("In progress content", traits: .modifier(SalesPreviewModifier())) {
     @Previewable @Environment(\.salesPreviewModels) var models
+    @Previewable @AccessibilityFocusState var addServiceIsFocused: Bool
     if let model = models[SalesPreviewFixtures.workday.sales[3].id] {
         SaleDraftContent(
             viewModel: model,
@@ -125,13 +139,16 @@ struct SaleDraftContent: View {
             onIncrease: { _ in },
             onDecrease: { _ in },
             onRemove: { _ in },
-            onRetry: {}
+            onRetry: {},
+            onAddService: {},
+            addServiceIsFocused: $addServiceIsFocused
         )
     }
 }
 
 #Preview("Awaiting payment content", traits: .modifier(SalesPreviewModifier())) {
     @Previewable @Environment(\.salesPreviewModels) var models
+    @Previewable @AccessibilityFocusState var addServiceIsFocused: Bool
     if let model = models[SalesPreviewFixtures.workday.sales[4].id] {
         SaleDraftContent(
             viewModel: model,
@@ -141,13 +158,16 @@ struct SaleDraftContent: View {
             onIncrease: { _ in },
             onDecrease: { _ in },
             onRemove: { _ in },
-            onRetry: {}
+            onRetry: {},
+            onAddService: {},
+            addServiceIsFocused: $addServiceIsFocused
         )
     }
 }
 
 #Preview("Awaiting document content", traits: .modifier(SalesPreviewModifier())) {
     @Previewable @Environment(\.salesPreviewModels) var models
+    @Previewable @AccessibilityFocusState var addServiceIsFocused: Bool
     if let model = models[SalesPreviewFixtures.workday.sales[5].id] {
         SaleDraftContent(
             viewModel: model,
@@ -157,7 +177,9 @@ struct SaleDraftContent: View {
             onIncrease: { _ in },
             onDecrease: { _ in },
             onRemove: { _ in },
-            onRetry: {}
+            onRetry: {},
+            onAddService: {},
+            addServiceIsFocused: $addServiceIsFocused
         )
     }
 }

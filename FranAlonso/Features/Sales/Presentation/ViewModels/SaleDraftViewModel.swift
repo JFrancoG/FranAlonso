@@ -34,6 +34,7 @@ final class SaleDraftViewModel {
     let destination: SaleDraftDestination
     private(set) var contentState: ContentState = .idle
     private(set) var inspectionState: InspectionState = .idle
+    private(set) var servicePickerDestination: SaleServicePickerDestination?
     private let store: SaleDraftStore
     private let getSale: GetSaleUseCase
     private let getClient: GetClientUseCase?
@@ -69,6 +70,22 @@ final class SaleDraftViewModel {
 
     var canCreate: Bool {
         destination.mode == .create && contentState == .ready && store.state == .idle && !isBusy
+    }
+
+    var canAddServices: Bool {
+        !isClosed && !isReadOnly && !isBusy && contentState == .ready && store.draft != nil
+    }
+
+    /// Opens selection only over an accepted editable draft; repeated requests retain the active sheet identity.
+    func presentServicePicker() {
+        guard canAddServices, servicePickerDestination == nil else { return }
+        servicePickerDestination = SaleServicePickerDestination(id: UUID())
+    }
+
+    /// Ends only the matching nested presentation, preserving the parent Store and accepted draft.
+    func finishServicePicker(_ id: UUID) {
+        guard servicePickerDestination?.id == id else { return }
+        servicePickerDestination = nil
     }
 
     func canIncrease(for id: SaleLineID) -> Bool {
@@ -216,6 +233,7 @@ final class SaleDraftViewModel {
 
     /// Ends presentation, fences late inspection reads and closes the Store without discarding accepted data.
     func close() {
+        servicePickerDestination = nil
         inspectionGeneration = nil
         contentGeneration = nil
         clientNameGeneration = nil

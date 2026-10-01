@@ -2,6 +2,7 @@ import Accessibility
 import SwiftUI
 
 struct SaleDraftScreen: View {
+    let makeServicePicker: @MainActor @Sendable (SaleDraftViewModel) -> SaleServicePickerViewModel
     private enum Operation: Equatable {
         case load
         case create
@@ -23,6 +24,7 @@ struct SaleDraftScreen: View {
     @State private var failedRequest: Request?
     @State private var confirmsDiscard = false
     @State private var removalID: SaleLineID?
+    @AccessibilityFocusState private var addServiceIsFocused: Bool
 
     var body: some View {
         NavigationStack {
@@ -66,6 +68,12 @@ struct SaleDraftScreen: View {
                     Text("sales.line.remove.message")
                 }
         }
+        .sheet(item: servicePickerDestination, onDismiss: restoreAddServiceFocus) { destination in
+            SaleServicePickerScreen {
+                makeServicePicker(viewModel)
+            }
+            .id(destination.id)
+        }
         .task(id: request) {
             guard let request else { return }
             await execute(request)
@@ -95,7 +103,9 @@ struct SaleDraftScreen: View {
                 onIncrease: { requestOperation(.increase($0)) },
                 onDecrease: { requestOperation(.decrease($0)) },
                 onRemove: { removalID = $0 },
-                onRetry: retry
+                onRetry: retry,
+                onAddService: presentServicePicker,
+                addServiceIsFocused: $addServiceIsFocused
             )
         case .unavailable, .closed:
             UnavailableStateView(
@@ -135,6 +145,26 @@ struct SaleDraftScreen: View {
 
     private func retry() {
         requestOperation(failedRequest?.operation ?? .load)
+    }
+
+    private var servicePickerDestination: Binding<SaleServicePickerDestination?> {
+        let sessionID = viewModel.servicePickerDestination?.id
+        return Binding {
+            viewModel.servicePickerDestination
+        } set: { destination in
+            guard destination == nil, let sessionID else { return }
+            viewModel.finishServicePicker(sessionID)
+        }
+    }
+
+    private func presentServicePicker() {
+        addServiceIsFocused = false
+        viewModel.presentServicePicker()
+    }
+
+    private func restoreAddServiceFocus() {
+        guard viewModel.servicePickerDestination == nil, viewModel.canAddServices else { return }
+        addServiceIsFocused = true
     }
 
     private func execute(_ current: Request) async {
@@ -180,8 +210,10 @@ struct SaleDraftScreen: View {
 extension SaleDraftScreen {
     init(
         destination: SaleDraftDestination,
-        makeViewModel: @MainActor @Sendable (SaleDraftDestination) -> SaleDraftViewModel
+        makeViewModel: @MainActor @Sendable (SaleDraftDestination) -> SaleDraftViewModel,
+        makeServicePicker: @escaping @MainActor @Sendable (SaleDraftViewModel) -> SaleServicePickerViewModel
     ) {
+        self.makeServicePicker = makeServicePicker
         _viewModel = State(initialValue: makeViewModel(destination))
     }
 }
@@ -190,7 +222,8 @@ extension SaleDraftScreen {
     @Previewable @Environment(\.appDependencies) var dependencies
     SaleDraftScreen(
         destination: SalesPreviewFixtures.destination(index: 2, mode: .editDraft),
-        makeViewModel: dependencies.makeSaleDraft
+        makeViewModel: dependencies.makeSaleDraft,
+        makeServicePicker: dependencies.makeSaleServicePicker
     )
 }
 
@@ -198,7 +231,8 @@ extension SaleDraftScreen {
     @Previewable @Environment(\.appDependencies) var dependencies
     SaleDraftScreen(
         destination: SalesPreviewFixtures.destination(index: 3, mode: .inspect),
-        makeViewModel: dependencies.makeSaleDraft
+        makeViewModel: dependencies.makeSaleDraft,
+        makeServicePicker: dependencies.makeSaleServicePicker
     )
 }
 
@@ -206,7 +240,8 @@ extension SaleDraftScreen {
     @Previewable @Environment(\.appDependencies) var dependencies
     SaleDraftScreen(
         destination: SalesPreviewFixtures.destination(index: 4, mode: .inspect),
-        makeViewModel: dependencies.makeSaleDraft
+        makeViewModel: dependencies.makeSaleDraft,
+        makeServicePicker: dependencies.makeSaleServicePicker
     )
 }
 
@@ -214,6 +249,7 @@ extension SaleDraftScreen {
     @Previewable @Environment(\.appDependencies) var dependencies
     SaleDraftScreen(
         destination: SalesPreviewFixtures.destination(index: 5, mode: .inspect),
-        makeViewModel: dependencies.makeSaleDraft
+        makeViewModel: dependencies.makeSaleDraft,
+        makeServicePicker: dependencies.makeSaleServicePicker
     )
 }

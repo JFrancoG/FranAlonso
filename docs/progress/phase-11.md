@@ -669,3 +669,207 @@ Reconciliación posterior en main: seis documentos/changelog, sin código/config
 Xcode adicional N/A: fuente idéntica y validación reciente reutilizada. Progress dentro de8192bytes,
 diff whitespace PASS; gobernanza mantiene únicamente seis enlaces históricos de capturas08.3 rotos.
 Commit/push documental de cierre autorizado por la entrega completa; main limpio y sincronizado al finalizar.
+
+### Inicio11.6 — 2026-10-01
+
+[PLU-78](https://linear.app/plusprojects/issue/PLU-78), In Progress/Jesus Franco, rama
+`codex/plu-78-sale-service-selection` sobre main limpio/sincronizado `0d9b06f6fefcd3ad408bf7c84faebb5c5f3f3f37`.
+Usuario autoriza issue/rama e implementación11.6, sin entrega Git/cierre/siguiente subfase/live.
+[Propuesta](11-6-service-selection-proposal.md): selector activo10.7→factory pura SaleLine→fachada/Store aceptado,
+cantidad inicial1, captura literal de términos/UUID estable al retry; sin copia de catálogo/venta ni Data/schema nuevo.
+PRE independiente selection_pre PASS sin hallazgos; JSON completos735 antes/después y root idénticos:
+`a8705ba560f51217749d625a6916b7fbe1073eef99247266a109612c3d17756f`.
+Baseline11.5 reutilizada solo como punto de partida; validación11.6 pendiente, sin extrapolar resultados.
+XcodeMCP estable Service/SDK27, Develop/planDevelop/iPadPro13M5Simulator27.2 confirmados; guardar/restaurar estado real.
+[PLU-79](https://linear.app/plusprojects/issue/PLU-79) Backlog/Jesus Franco: deuda integral propia11.6,
+recuperar tras feedback/estabilización por flujo antes del primer candidato para uso real.
+PLU-77 conserva deuda11.5; PLU-71 activa. Gobernanza conserva seis enlaces históricos de capturas08.3 rotos.
+
+
+### Implementación y validación técnica11.6
+
+Reutiliza catálogo activo10.7, VM padre y Store único. Coordinador observable MainActor posee sólo intención,
+observación y estado de aceptación; no otra venta ni catálogo. Captura síncrona antes de await: ID estable, referencia,
+nombre, cantidad1, precio/moneda, IVA, descuento opcional y vínculo de producto. Retry conserva ID/términos, doble
+toque no duplica, cierre cerca publicación sin deshacer aceptación durable. App compone capacidades concretas del
+mismo repositorio/parent retenido; readonly/noDraft/busy/closed rechazan antes de escritura. Sheet tipada preserva
+Store padre; catálogo usa el último estado visible observado, sin CAS entre actores ni stock.
+
+RED nativo compilable:3 declaraciones/6 variantes fallidas por ausencia del comportamiento, sin fallos de setup.
+Primer GREEN detecta dos oráculos incorrectos:43.27/(1+7.5%) redondea base40.25/IVA3.02 (Decimal independiente),
+y rechazo contractual SaleCalculatorError.incompatibleCurrency, no MoneyError. Correcciones sólo de valores/tipo;
+captura previa al await, ID, términos originales y reopen real intactos.
+14 declaraciones/25 variantes nuevas Swift Testing, con SwiftData real/otros contextos, App/catálogo compartido,
+retry, dobles intenciones, cancelación antes/después de aceptación, identidad visible y cercado de sesión.
+Focal GREEN nativa14 declaraciones/15 ejecuciones efectivas PASS (RunSome selecciona sólo7 argumentos dinámicos);
+regresión completa ejecuta todas las25 variantes nuevas:1.245 declaraciones/1.959 ejecuciones PASS. No se atribuye25
+a la focal. Ambas iPadPro13M5 Simulator27.2; cero fail/skips/expected/runtimeWarnings.
+
+Builds Xcode MCP estable27.0 finales: Develop-for-testing19.103s y Production19.51s PASS; logs completos sin
+warnings/errores Swift/Clang. Notices AppIntents extraction conocidos separados:2Develop/1Production.
+Localización20 claves nuevasES/EN,429Localizable y505entradas totales, validador0errores. Todos los409textos previos
+y su orden/formato intactos; sólo20entradas insertadas, sin reordenación del catálogo.
+Estilo independiente16Swift:2P3UI corregidos (array/factory); retest4archivos PASS, whole745JSON idénticos antes/después
+`2189ab18f69eaf5fdb9e602ffbea652a789d688e9f226e479cab6923cdcef7fc`.
+Fuente/configuración586de GREEN coincide par a par con snapshot previo a estilo/validación final:
+`00b10bca668f0aa86c1dbbb45e4caeb8ba94748624aada463c3bc77eaac21253`.
+
+Artefactos nativos y exports:
+- RED histórico, cerrado y parseado al ejecutarse: `/Users/jesusf/Library/Developer/Xcode/DerivedData/FranAlonso-eehpkvodmpnqlchgeqriatcucsjf/Logs/Test/Test-FranAlonso-Develop-2026.10.01_22-27-58-+0200.xcresult`.
+- Focal GREEN original histórico, cerrado y parseado al ejecutarse: misma carpeta `Test-FranAlonso-Develop-2026.10.01_22-44-50-+0200.xcresult`.
+- Regresión original histórica, cerrada y parseada al ejecutarse: misma carpeta `Test-FranAlonso-Develop-2026.10.01_22-45-19-+0200.xcresult`.
+  Los tres originales de DerivedData fueron retirados durante la validación. Se conserva el export RED histórico
+  `/tmp/plu78-red-native-summary.json` y resumen MCP. Copias MCP GREEN/regresión actuales contienen Info.plist,
+  se parsean y sus cuatro JSON summary/tree coinciden íntegramente con exports; paths abajo. Una copia incompleta
+  sinInfo.plist no se usa como prueba de cierre ni se reconstruye.
+- JSON: `/tmp/plu78-red-native-summary.json`, `/tmp/plu78-green-native-summary.json`, `/tmp/plu78-green-native-tree.json`,
+  `/tmp/plu78-regression-native-summary.json`, `/tmp/plu78-regression-native-tree.json`, `/tmp/plu78-new-regression-nodes.json`.
+- Logs Develop/Production bajo `/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/BuildProject/`:
+  `BuildProject-Log-20261001-224437.txt` y `BuildProject-Log-20261001-224626.txt`.
+
+Smokes/previews/POST en curso. Primer smoke confirma cancel/reopen sin cerrar parent, búsqueda/vacío y filtrado/
+selección profesional/producto. HitPoint agregado del Picker sin respuesta; trailing value funciona. Propuesta focal
+y retest propios antes de cierre. PLU-79 conserva pendientes integrales. Gobernanza sólo6capturas históricas08.3rotas;
+sin bloqueo nuevo ni entrega autorizada.
+
+
+### Corrección focal del filtro11.6
+
+Smoke inicial14comprobaciones/45eventos RunningPID49936, iPhone17Simulator27.2 sobre demo en memoria aislada:
+cancel/reopen mantiene Store, búsqueda/noMatch/clear, filtros porvalortrailing, selección profesional35€/producto20€,
+repetición en líneas distintas, cantidad2/total125€, close/reopen preserva líneas, cambio de catálogo nombre/precio40€
+conserva snapshots35€ y nueva selección40€/total165€, consulta readonly sin Añadir. Artefactos originales intactos
+`/tmp/plu78-smoke-report.md` y `/tmp/plu78-smoke-manifest.json`. No prueba AT, dispositivo físico ni durabilidad entre
+procesos del demo en memoria; pipeline SwiftData cubre su propio reopen local con contexto distinto.
+
+Defecto P2 real: Pickerstandalone330×31pt informa centro sinrespuesta dos veces; valortrailing abre. No se aplaza.
+[Propuesta focal](11-6-service-selection-proposal.md), alternativas y fuentes Apple revisadas independientemente
+selection_filter_pre PASS; whole746JSON idénticos antes/después/root:
+`f6eee87e30ea9c31d2c8a2d4066173d25afe35cb0a8bb12ad49d681534202103`.
+Menu nativo sin primaryAction, label con ViewThatFits horizontal/vertical, frame44/contentShape interaction internos,
+chevron decorativo oculto, nombre/valor accesibles; Pickerinline con Binding y mismas3opciones. Sin estado/negocio nuevo.
+Estilo focal selection_style PASS, whole746 idéntico:
+`3398847253ef2909477b9c99ca1eb7826bd3f2d6285e97233a011cc9246215ce`.
+Builds posteriores XcodeMCP: Develop-for-testing23.962s y Production19.288s PASS; full logs
+`BuildProject-Log-20261001-230132.txt` y `BuildProject-Log-20261001-230228.txt` en carpetaBuildProject ya registrada.
+Cero warnings/errores Swift/Clang; noticesAppIntents separados. Solo cambia Content UI y formato/orden del catálogo
+restaurado conservando JSONsemántico respectoGREEN; contratos/lógica/App/tests íntegros iguales, regresión reutilizada.
+Cambio de scheme invalidó la primera sesión; StopProject cerró sóloPID49936. Sesión nueva de retest activa;
+retetest táctil final, nuevos previews, POST y cleanup/reconciliación todavía pendientes.
+
+
+### Validación final local11.6 — 2026-10-01
+
+POST técnico independiente selection_post_technical favorable sin P0–P2; únicoP3 corregido: el bundleRED original
+fue retirado por retención de Xcode, conservando export histórico cerrado/parseado. Whole746 idéntico antes/después
+`85427a6ea3bdc4f3c6e726578f6e17c11de1f8af4be8bd91e3241b349fa1be77`.
+No es cierre integral ni autorización de entrega.
+
+Primer retest Menu8checks/18eventos PASS,3filtros/alta/cancel/reopen, iPhone17Simulator27.2;
+`/tmp/plu78-filter-retest-report.md` y `/tmp/plu78-filter-retest-manifest.json`. Sesión cerrada y StopProjectPID55774.
+Posteriores previews fallaban por AttributeGraph invalidtype(DisplayList/LayoutComputer). Reproducción en varios
+procesos/destinos. PRE/read-only de layout explícito DynamicType y separador; ambos intentos negativos, sin causa
+atribuida. PRE de ubicación746 íntegro `120e9586dcbcd4e8a4828e8865d415af6c130e9167bd792498aa71fdfa8c9661`:
+Menu fuera de filas de List, instrucción/estados/catálogo desplazables, AX vertical/min44/shape/valor/Binding intactos.
+Esta composición sí renderiza. Separador experimental retirado. Estilo PASS746
+`e52b75ec2bb616d1380a096a63b84ff3047940175092c8b1209889af2f033177`.
+
+Retest final disposición10checks/23capturas PASS, iPhone17Simulator27.2, ES/texto estándar/demo aislada:
+centroMenu370×44 abre3veces,3filtros correctos, búsqueda/noMatches/clear, ambas ofertas alcanzables, altaCorte35€/qty1,
+dismiss al padre, cancelación conserva línea y reopen operativo. Primera NuevaVenta requiere una recaptura/retry
+por transición inicial; sin fallo restante. `/tmp/plu78-final-smoke-report.md`, `/tmp/plu78-final-smoke-manifest.json`:
+92rutas verificadas/0ausentes, PID65757Running en todas las capturas. Consola sólo diagnósticos de framework
+AX/haptics/pointer clasificados en informe; sin error de aplicación/layout/AttributeGraph observado. No acredita AT.
+Teclado hardware con foco; teclado en pantalla no observado. CUA Simulator no accesible, sin cambiar preferencias;
+viewport con teclado táctil y tecnologías de asistencia permanecen enPLU-79. DeviceInteractionEndSession y
+StopProjectPID65757 confirmados, ninguna ejecución propia activa. Develop/planDevelop/iPadPro13M5 restaurado.
+
+Previews finales18: selector Content y Screen + SaleDraftContent/Screen Large/XXX/AX5 ES/EN Light/Dark;
+iPadLarge y iPhone18ProMax27.2, vacío/error catálogo/error alta/noMatch/fila producto. Inspección visual de cada
+snapshot; manifiesto `/tmp/plu78-previews-final.json` contiene requests, overrides y destinos/resultados reales.
+Los cuatro estados secundarios tenían contexto standalone que omitía Menu en su captura: PRE preview-only PASS
+sobre746 `e52b75ec2bb616d1380a096a63b84ff3047940175092c8b1209889af2f033177`; NavigationStack/título como Screen,
+fixtures/bindings iguales, re-render PASS con Menu visible. Estilo de esos bloques PASS whole746 íntegro
+`c325d8274c81c3c34bdd067933890cf042ce1b8d700b2a79a4b06fb56a7dc49e`.
+Screens pueden capturar carga inicial o contenido aceptado; Content fijo aporta estados/entrada independiente del
+momento async. CapturaAX5 no demuestra scroll efectivo ni operación por AT/teclado. LayoutJornada/Shell sin cambios,
+su muestra11.5 aceptada se reutiliza por impacto de composición, sin atribuirla al selector nuevo.
+
+Builds finales traspreview-only: Develop-for-testing16.807s y Production19.598s PASS por XcodeMCP estable27.0;
+logs completos `BuildProject-Log-20261001-234409.txt`/`BuildProject-Log-20261001-234445.txt`, misma carpeta anterior.
+Cero warnings/errores Swift/Clang; noticesAppIntents extraction2Develop/1Production separados.
+Fuente/configuración586 final: 4e05e357feab9199227697ee9f077a2030c6b8335f190545b72c6fda0575e968.
+Comparación par a par con GREEN: sólo ContentUI y formato/orden de Localizable restaurado (semántica igual), todos
+contratos/lógica/App/tests/config intactos. Frente al retest funcional sólo4bloques #Preview cambian. Fullregresión
+1.245/1.959 y25variantes nuevas reutilizada por impacto; sin nueva regla de negocio que justifique repetirla.
+
+[Matriz55](../accessibility/evidence/11-6-sale-service-selector.md):37aplicables/16N/A/2condicionales,
+45Limitado/10Pendiente; fallo táctil inicial preservado en historia, corregido y retesteado funcionalmente, sin Pasa
+normativo ni Inspector. PLU-79 Backlog/Jesus Franco conserva evidencia/pendientes, recuperación tras feedback y
+estabilización de este flujo antes del primer candidato real. PLU-77/65/67 conservan deuda propia; fase11 activa.
+POST técnico focal y UI final en curso sobre fuente congelada. PLU-78 permanece In Progress; rama activa y cambios
+sin commit/staging. Usuario sólo autoriza issue/rama/implementación11.6; sin push/PR/merge/cierre/11.7/live.
+
+
+### Correcciones de POST y retest focal11.6
+
+POST final técnico favorable, únicoP3 documental de ubicación nativa; UI: P2 estático anuncio omitted unavailable y
+P3 de traits de encabezado. Whole746 root/técnico/UIbefore/after idéntico
+`0f50856a458be0412e903552efa6cf5314431ed6eaecc1c34ea6feee431ab52b`.
+PRE focal UI PASS antes de corregir: onChange isSelectionUnavailable anuncia título existente como los otros errores;
+títulos de vacío/noMatches/error catálogo declaran .isHeader. Ningún estado/negocio/recurso/foco/timer nuevo.
+No prueba entrega por AT. Estilo focal2Swift PASS whole746 íntegro
+`7f4142531eb49c63d2cd8c32399a7ad8d3c7d2f89bd63821c6e3fb22ff142c4f`.
+Cuatro previews afectados re-render PASS e inspección visual: vacíoLargeES, errorXXXENdark, noMatchXXXES,
+ScreenAX5EN; restantes snapshots vigentes por impacto,18 en manifiesto final. Builds finales Develop-for-testing12.679s
+`BuildProject-Log-20261001-235540.txt` y Production15.559s `BuildProject-Log-20261001-235619.txt` PASS,
+cero warnings/errores Swift/Clang,2/1noticesmetadatos separados. Source586 final: b335eec849cf32f3baf861ca637da6780eaf6fc848cfe75cca850ffbc32f84d9.
+Contrato/VM/App/tests/config intactos alGREEN; diferencia final de source sólo ContentUI/Screenanuncio y formato
+semánticamente igual de recursos. No justifica repetir suite lógica ni smoke del recorrido intacto para traits/
+anuncio cuya entrega sigue pendiente por AT. Datos/regresión anterior y retest10/23 reutilizados por impacto.
+
+Originales DerivedData Logs/Test hoy retirados; copias MCP actuales cerradas y parseadas verificadas por revisor:
+- `/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RunSomeTests/Test-FranAlonso-Develop-2026.10.01_22-44-50-+0200.xcresult`
+- `/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RunAllTests/Test-FranAlonso-Develop-2026.10.01_22-45-19-+0200.xcresult`
+Ambas conInfo.plist; summaries/árboles FULLJSON iguales a exportsGREEN/regresión retenidos, sin recrearartefactos.
+Matriz conserva límites35.7pt de opciones nativas y outer/innerButton de jerarquía; operación/traversalAT/Inspector
+pendientes enPLU79, noFallaATinventada. Retest POST focal técnico documental y UI pendientes tras estas correcciones.
+
+
+### Implementación local11.6 completada — 2026-10-02
+
+Retest focal POST técnico y UI PASS, sin nuevos hallazgos. Ambos agentes read-only; JSON completos746 antes/después
+iguales al root, `bf27ceb314e985aaaa3dcd5f620244102c7c0236aab0110a1dfb08770518ee7d`.
+P2/P3 UI construidos y P3 documental resueltos; entrega de anuncios/tecnologías de asistencia no se declara probada.
+Fuente586 final `b335eec849cf32f3baf861ca637da6780eaf6fc848cfe75cca850ffbc32f84d9` intacta tras los dictámenes.
+Sólo reconciliación documental posterior registra esos dictámenes y límites, sin código/configuración nuevo.
+Regresión1.245/1.959 con25variantes nuevas, builds finales12.679s/15.559s,18snapshots y smoke10/23 PASS.
+Localización505/0, diff whitespace PASS,23paths(16Swift); staging vacío, sin ruta secreta afectada.
+Gobernanza mantiene sólo6capturas históricas08.3rotas, sin bloqueo nuevo. Progress dentro de8192bytes.
+Sesiones y app propias detenidas; Develop/planDevelop/iPadPro13M5 restaurado.
+
+PLU78 permanece In Progress/Jesus Franco, rama `codex/plu-78-sale-service-selection` local activa sobre0d9b06f;
+implementación y gate funcional terminados, entrega Git pendiente. PLU71 In Progress, PLU79 Backlog/Jesus Franco
+con matriz55 y recuperación tras feedback/estabilización de este flujo antes del primer candidato real.
+PLU77/65/67 conservan su deuda; sin cierre integral,11.7–11.9 ni live. Linear se reconcilia con este estado.
+
+
+### Preparación de entrega autorizada11.6 — 2026-10-02
+
+Usuario autoriza commit, push, PR, merge y cierre dePLU78/rama. Entrega funcional de demo ADR0029;
+PLU79 Backlog/Jesus Franco retiene matriz55 propia, recuperación tras feedback/estabilización por flujo antes del
+primer candidato real. PLU71 sigue In Progress. No autoriza11.7–11.9 ni live.
+Git y Linear actuales verificados: rama exacta sobre0d9b06f, origin/main sin deriva y sin PR previa de esta rama.
+Fuente/configuración586 FULLJSON igual a validación final
+`b335eec849cf32f3baf861ca637da6780eaf6fc848cfe75cca850ffbc32f84d9`.
+Se reutilizan TDD/regresión1.245/1.959(25variantes nuevas), buildsDevelop/Production,18previews, smoke10/23 y
+PRE/estilo/POST técnico/UI finales PASS; preparación sólo documental/changelog, Xcode adicional N/A razonado.
+Inventario24paths/16Swift, sin cambios ajenos ni datos sensibles. PLU78 In Progress hasta integración;
+revisión independiente focal de entrega antes del commit/PR/merge. Gobernanza sólo6enlaces históricos08.3rotos.
+
+Revisión independiente focal de entrega PASS sin hallazgos; agente fresh/read-only, sin mutaciones.
+Root y reviewer FULLJSON746 before/after íntegros iguales
+`03cd4722a43626051376e394d9bf9639d7b98163ad512a1020b100bde2ecfb88`.
+Informe `/tmp/plu78-delivery-independent-report.md`; proofs propios
+`/tmp/plu78-delivery-independent-before.json` y `/tmp/plu78-delivery-independent-after.json`.
+Fuente586 igual, bundles actuales/exports y logs finales verificados. Registro posterior sólo documental.

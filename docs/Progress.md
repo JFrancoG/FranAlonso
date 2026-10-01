@@ -1,24 +1,24 @@
 # Project Progress
 
-Última actualización: 2026-10-01
+Última actualización: 2026-10-02
 
 ## Estado actual
 
-- **11.5 / [PLU-76](https://linear.app/plusprojects/issue/PLU-76): Done funcional**, Jesus Franco.
-  [PR37](https://github.com/JFrancoG/FranAlonso/pull/37), merge `c01ff04`; rama eliminada.
-  Jornada/detalle:1.934 variantes, builds/previews/smoke y PRE/POST/entrega PASS. [Evidencia](progress/phase-11.md).
-  [PLU-77](https://linear.app/plusprojects/issue/PLU-77), Backlog/Jesus Franco: matriz integral11.5, antes de uso real.
-- **11.1–11.4 / PLU-72/73/74/75: Done**; PLU-71 activa, ramas eliminadas.
-  PR33–36;11.4 `d9d1ed1`,1.906/1.906 y builds/auditorías PASS. [Evidencia](progress/phase-11.md).
+- **11.6 / [PLU-78](https://linear.app/plusprojects/issue/PLU-78): In Progress**, Jesus Franco.
+  `codex/plu-78-sale-service-selection`: selector local/snapshots,1.959 variantes y builds PASS.
+  [Evidencia](progress/phase-11.md); previews/smoke/POST técnico/UI PASS para demo, entrega Git autorizada en curso.
+- **11.1–11.5: Done funcional**, PLU-72–76/PR33–37; fasePLU-71 activa, ramas eliminadas.
+
+- [PLU-77](https://linear.app/plusprojects/issue/PLU-77)/[PLU-79](https://linear.app/plusprojects/issue/PLU-79):
+  Backlog accesible11.5/11.6, Jesus Franco; tras estabilizar cada flujo, antes de uso real.
 
 - **Borrador16 / [PLU-47](https://linear.app/plusprojects/issue/PLU-47): Done funcional**,
-  [PR32](https://github.com/JFrancoG/FranAlonso/pull/32)/`f1c781d`, rama eliminada.
-  Local, reversible y guardado manual:106/106, builds, siete previews/PRE/POST;13/13 físicos iPhone16.
-  [Evidencia](progress/phase-16.md):429 textos, cancel Limitado y recuperación reutilizada; sin cierre16/live.
-  [PLU-70](https://linear.app/plusprojects/issue/PLU-70) Backlog/Jesus Franco:
-  recuperar tras feedback/estabilización, antes de uso real; [matriz](accessibility/evidence/16-service-draft-assistant.md).
+  [PR32](https://github.com/JFrancoG/FranAlonso/pull/32)/`f1c781d`; rama eliminada.
+  Local y guardado manual:106/106, builds/previews/PRE/POST y13/13 físicos; [evidencia](progress/phase-16.md).
+  [PLU-70](https://linear.app/plusprojects/issue/PLU-70) Backlog/Jesus Franco: recuperación accesible
+  tras feedback/estabilización, antes de uso real; sin cierre16/live.
 
-- **es/en y Xcode**:485 textos; iOS27. Builds/tests/previews registrados por subfase.
+- **es/en y Xcode**:505 textos; iOS27. Builds/tests/previews registrados por subfase.
   [Evidencia](progress/localization-en-es.md).
 - **[PLU-69](https://linear.app/plusprojects/issue/PLU-69): Done**, [PR31](https://github.com/JFrancoG/FranAlonso/pull/31).
   App ordenada, Firebase 12.19.2; 1.564 resultados/builds PASS. [Registro](progress/app-organization.md).
