@@ -47,7 +47,10 @@ PRE/POST favorables; fuente validada `8cc3181` intacta. [Evidencia](../progress/
 11.3 entregada: [PLU-74](https://linear.app/plusprojects/issue/PLU-74) Done,
 [PR35](https://github.com/JFrancoG/FranAlonso/pull/35), merge `d0a117e`, validado `16ba2c5`; rama eliminada.
 1.840/1.840 variantes, builds Develop/Production y PRE/estilo/POST/entrega favorables.
-11.4–11.9 conservan sus gates. La fase11 continúa abierta.
+11.4 implementada y validada localmente: [PLU-75](https://linear.app/plusprojects/issue/PLU-75) In Progress,
+rama `codex/plu-75-workday-viewmodels`; [propuesta](../progress/11-4-workday-viewmodels-proposal.md) PRE PASS.
+TDD GREEN: 38 declaraciones/66 variantes nuevas, regresión 1.906/1.906; builds Develop/Production y estilo/POST PASS.
+Entrega Git pendiente. 11.5–11.9 conservan sus gates. La fase11 continúa abierta.
 
 Jornada local-first sin trabajo cerrado ocupando espacio, Histórico separado, snapshots monetarios inmutables, Store justificado y finalización idempotente.
 

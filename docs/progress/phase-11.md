@@ -368,3 +368,98 @@ PLU-71 sigue activa; 11.4 conserva su propio gate. Esta entrega no activa live.
   `90302546c9985a3aa461b7551c485bdae897872c07f26fc3586d558d2d844157`.
   Diff/enlaces nuevos y presupuesto Progress correctos; gobernanza conserva los seis enlaces históricos08.3 rotos.
   Este cierre no activa live ni termina fase11 o la demo completa.
+
+
+## Inicio11.4 — 2026-10-01
+
+Usuario autoriza issue/rama e implementación local: PLU-75 In Progress, hija de PLU-71, Jesus Franco;
+`codex/plu-75-workday-viewmodels` sobre main/origin limpio `b16621d474b340579039fe6bdd213a3c4981ec13`.
+Sin duplicado equivalente en Linear. Propuesta y fuentes: [11.4](11-4-workday-viewmodels-proposal.md).
+PRE independiente viewmodels_pre sin hallazgos, PASS antes de código ejecutable; whole707 idéntico
+`b2b06903659aa155a481b272267d7c0cd64e8bcdab8a1bfd7c55a52c7ba6ab42`, fuente551 igual a GREEN11.3.
+Clasificación Domain, fachada del tablero/sesiones y Store único para borrador; operación progressed solo lectura.
+Al iniciar, TDD RED/GREEN, builds, estilo y POST estaban pendientes; resultados finales registrados abajo.
+Sin UI/previews/accesibilidad/físico aplicables en este gate.
+Commit/push/PR/merge/cierre, live y11.5 no autorizados por esta solicitud.
+
+### TDD RED11.4
+
+Scaffolding mínimo compilable y dos criterios contra oráculos independientes. Dos fallos de setup corregidos antes
+de ejecutar: módulo testable FranAlonso y try interno en lectura throwing de #require; no cuentan como RED funcional.
+Build-for-testing Develop/iPhone17 Simulator27.2 PASS12.636s; logs completos sin warnings Swift/Clang,
+con avisos AppIntents metadata conocidos. BuildProject-Log-20261001-183730.txt, ActionArtifacts/default/BuildProject.
+RED nativo0/2: policy vacío donde se esperan2 próximas,1 en curso y2 pendientes; fachada noDraft al cambiar cantidad.
+Prueba de fachada usa DefaultSaleRepository/SalePersistenceActor/Signal y SwiftData in-memory; oráculos literales
+24.20 total,20.00 base,4.20 IVA, lectura posterior desde contexto independiente. No se debilitan asserts.
+xcresult cerrado parseado: `/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RunSomeTests/Test-FranAlonso-Develop-2026.10.01_18-37-46-+0200.xcresult`;
+`/tmp/plu75-red-native-summary.json`.
+Implementación completa, GREEN, estilo, builds finales y POST registrados a continuación.
+
+### Estilo11.4
+
+Auditoría independiente viewmodels_style sobre11 archivos nuevos: whole718 idéntico antes/después,
+SHA `c8814797ff5053466722f2fba77de081660ad9f92000dc541ba277a6206fbfe1`. Único P3:14 closures con efectos
+compactas en los2 tests de concurrencia. Corrección exclusivamente léxica, sin cambiar oráculos/semántica.
+Reauditoría focal PASS sin hallazgos antes de GREEN; whole718 íntegro e idéntico
+`ca8a53b7ac5b0116c62f2c134d10cd20f0b133f333b77fc486cd7e13d412cd40`.
+Un candidato de init Workday justificado por closure MainActor. La primera compilación completa detectó el import
+Foundation necesario para UUID.uuidString; añadido sin cambiar comportamiento, luego build y POST PASS.
+
+### Implementación y GREEN11.4
+
+- Cinco archivos productivos nuevos: policy Domain para clasificación, lectura neutral GetSaleUseCase,
+  destino tipado con identidad de sesión y fachadas WorkdayViewModel/SaleDraftViewModel.
+  Jornada conserva ventas operativas sin filtro de fecha; closed/voided salen y awaitingDocument pagada permanece.
+  Selección, navegación y observación reemplazada/cancelada se cercan; close es terminal.
+- La fachada de borrador conserva un solo Store11.3 y proyecta getters observables sin copiar estado.
+  Intenciones existentes se delegan; el éxito local durable permanece tras cancelación/cierre.
+  Inspección operativa es solo lectura, con recarga explícita y sin writes; una carrera draft/progreso falla cerrada.
+  Integración App con las pantallas queda para11.5. Ningún archivo previo de fuente/configuración cambió.
+- Seis archivos nuevos de Swift Testing:38 declaraciones/66 variantes. Focal66/66 PASS y regresión completa
+  1.213 declaraciones/1.906 variantes, todas Passed. Cero fallos, skipped, notRun, expectedFailures o runtimeWarnings.
+  Los dos criterios RED conservan oráculos. SwiftData real confirma persistencia y24.20/20.00/4.20;
+  casos deterministas cubren streams/lecturas tardías, sustitución, reintento, cancelación y aceptación durable.
+- Xcode MCP, iPhone17 Simulator27.2: Develop-for-testing PASS16.278s y Production PASS17.867s.
+  Logs completos y GetBuildLog: cero warnings Swift/Clang; avisos conocidos AppIntents metadata separados
+  (dos en Develop-for-testing, uno en Production). La consola focal no contiene errores de persistencia;
+  la regresión conserva diagnósticos esperados de los tests previos de save read-only y schema desconocido.
+  Xcode restaurado y verificado Develop/planDevelop/iPhone11. Sin validación física en esta subfase.
+
+Artefactos nativos cerrados y parseados completos:
+
+- Develop: `/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/BuildProject/BuildProject-Log-20261001-185911.txt`.
+- Production: `/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/BuildProject/BuildProject-Log-20261001-190402.txt`.
+- Focal: `/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RunSomeTests/Test-FranAlonso-Develop-2026.10.01_19-04-24-+0200.xcresult`.
+- Regresión: `/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RunAllTests/Test-FranAlonso-Develop-2026.10.01_19-05-34-+0200.xcresult`.
+- JSON summary/tree: `/tmp/plu75-green-focused-summary.json`, `/tmp/plu75-green-focused-tree.json`,
+  `/tmp/plu75-green-all-summary.json`, `/tmp/plu75-green-all-tree.json`; sin nodos inesperados.
+
+Fuente/configuración562 completa idéntica antes/después de GREEN:
+`cb84502ae0f20bb078216ecf33b8d93b1598b344848ccc9c7103fec6b2060872`.
+Los551 archivos baseline siguen intactos; solo11 adiciones Swift (5 producción/6 tests).
+
+### POST y estado operativo11.4
+
+POST independiente fresco viewmodels_post: PASS, sin hallazgos; revisa código, rutas afectadas, autoridad,
+alternativas, Observation, límites de edición/lectura, concurrencia, éxito durable, DocC y evidencia completa.
+Fallback operacional read-only probado por comparación del JSON íntegro antes/después:718 archivos,
+`6418774b186de9172343151849b654a751a8189cefaa239a194854678818acc2`.
+El import Foundation posterior a estilo no altera el resultado favorable.
+
+UI, previews, localización, accesibilidad y dispositivo físico: N/A por ausencia de pantallas o recursos modificados;
+no acredita ni resuelve evidencia de otras fases. Diff/secret-sensitive paths revisados, git diff --check PASS.
+Gobernanza conserva solo las seis capturas históricas08.3 rotas; enlaces nuevos y presupuesto Progress correctos.
+Documentación y Linear reconciliados: PLU-75 y fasePLU-71 In Progress. Implementación local validada, sin bloqueos
+funcionales11.4; entrega Git pendiente de autorización. No commit/push/PR/merge/cierre ni live;11.5 no iniciada.
+
+### Entrega autorizada11.4 — 2026-10-01
+
+El usuario autoriza commit, push, PR, merge y cierre de PLU-75/rama. No autoriza iniciar11.5.
+11.4 contiene policy, lectura neutral, destinos y ViewModels; no se ha implementado ninguna pantalla11.5 ni su
+composición App. Se reutilizan el estilo y POST independientes, builds y GREEN recién registrados:
+fuente/configuración562 íntegra idéntica antes de entrega, hash `cb84502ae0f20bb078216ecf33b8d93b1598b344848ccc9c7103fec6b2060872`.
+La preparación de entrega solo añade documentación/changelog; validación Xcode adicional N/A para estos cambios.
+Inventario previsto:11 archivos Swift nuevos, cuatro documentos de progreso/spec/propuesta y CHANGELOG.
+Auditoría focal independiente viewmodels_delivery PASS, sin hallazgos: confirma alcance11.4 y ausencia de UI/App11.5,
+reuso válido de evidencia nativa reciente e inventario exacto. JSON completo718 idéntico antes/después,
+`efa9e4dd584675e0ad9592cc265a15a7826d0b7adc23db47f721510f11edbd5a`.
