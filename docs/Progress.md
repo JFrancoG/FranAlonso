@@ -4,18 +4,19 @@
 
 ## Estado actual
 
+- **11.2 / [PLU-73](https://linear.app/plusprojects/issue/PLU-73): In Progress**.
+  `codex/plu-73-sale-calculator`; 1.797/1.797, builds/PRE/POST PASS; Git pendiente. [Evidencia](progress/phase-11.md).
+
 - **11.1 / [PLU-72](https://linear.app/plusprojects/issue/PLU-72): Done**; PLU-71 sigue activa.
   [PR33](https://github.com/JFrancoG/FranAlonso/pull/33)/`794478e`, validado `8cc3181`; rama eliminada.
   1.753/1.753, builds y PRE/POST PASS. [Evidencia](progress/phase-11.md).
 
-- **Borrador textual16 / [PLU-47](https://linear.app/plusprojects/issue/PLU-47): Done funcional**,
-  [PR32](https://github.com/JFrancoG/FranAlonso/pull/32), merge `f1c781d`, validado `f727621`; rama eliminada.
-  ADR0030 tras09–10: inferencia local, propuesta reversible y guardado manual.
-  Fuente intacta:106/106 resultados (34 declaraciones), builds Develop/Production,
-  429 textos, siete previews y PRE/POST PASS;13/13 semánticos físicos en iPhone16.
-  Cancel actual Limitado; recuperación previa/tests reutilizados por impacto. [Evidencia](progress/phase-16.md).
-  [PLU-70](https://linear.app/plusprojects/issue/PLU-70) Backlog/Jesus Franco, [matriz](accessibility/evidence/16-service-draft-assistant.md):
-  recuperar tras feedback/estabilización, antes de uso real. Sin cierre16 ni live.
+- **Borrador16 / [PLU-47](https://linear.app/plusprojects/issue/PLU-47): Done funcional**,
+  [PR32](https://github.com/JFrancoG/FranAlonso/pull/32)/`f1c781d`, rama eliminada.
+  Local, reversible y guardado manual:106/106, builds, siete previews/PRE/POST;13/13 físicos iPhone16.
+  [Evidencia](progress/phase-16.md):429 textos, cancel Limitado y recuperación reutilizada; sin cierre16/live.
+  [PLU-70](https://linear.app/plusprojects/issue/PLU-70) Backlog/Jesus Franco:
+  recuperar tras feedback/estabilización, antes de uso real; [matriz](accessibility/evidence/16-service-draft-assistant.md).
 
 - **es/en y settings Xcode**: base de409 textos, ampliada a429 en PLU-47; iOS27; builds/tests/previews PASS.
   [Evidencia](progress/localization-en-es.md).

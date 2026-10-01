@@ -6,6 +6,10 @@ All notable changes to this project are documented in this file.
 
 ### Added
 
+- 2026-10-01 | ✨ feat(sales): complete deterministic sale calculations
+  Certifies decimal precision, line discounts and included tax before aggregating immutable sale snapshots.
+  Preserves ordinary fractional rounding and rejects overflow or silent monetary loss at coefficient boundaries.
+
 - 2026-10-01 | ✨ feat(sales): complete local draft lifecycle
   Creates, reads, updates and discards local sale drafts through the existing causal persistence layer.
   Preserves captured terms and rejects obsolete, conflicted, discarded or progressed snapshots.

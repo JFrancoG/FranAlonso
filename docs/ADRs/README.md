@@ -40,6 +40,7 @@ Los ADR se escriben antes de implementar una decisión no trivial y no se reescr
 | [0028](0028-client-signed-information-and-photo-authorization.md) | Información firmada y autorización opcional de fotografía | Aceptado |
 | [0029](0029-progressive-accessibility-validation.md) | Entrega funcional y validación progresiva de accesibilidad | Aceptado; orden de ejecución sustituido parcialmente por0030 |
 | [0030](0030-reusable-demo-and-early-foundation-models.md) | Demo reutilizable y adelanto textual de Foundation Models | Aceptado |
+| [0031](0031-sale-decimal-coefficient-certification.md) | Certificar la precisión decimal del calculador de ventas | Aceptado para implementación local de 11.2 |
 
 El propietario aceptó ADR 0030 el 29 de septiembre de 2026: base de demo 08.8a, catálogo09–10, adelanto textual
 acotado de16 y venta11–13; 08.9 se recupera después del feedback. Sustituye solo el orden de ejecución afectado de
