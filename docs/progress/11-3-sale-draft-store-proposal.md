@@ -1,7 +1,7 @@
 # 11.3 — Store cohesivo del borrador de venta
 
 2026-10-01. Usuario autoriza issue, rama e implementación local de11.3.
-[PLU-74](https://linear.app/plusprojects/issue/PLU-74), hija de PLU-71, Jesus Franco, In Progress.
+[PLU-74](https://linear.app/plusprojects/issue/PLU-74), hija de PLU-71, Jesus Franco; In Progress al presentar la propuesta.
 Rama `codex/plu-74-sale-draft-store`, base main/origin limpia `5fade88`.
 
 ## Autoridad y baseline
@@ -91,7 +91,7 @@ UI/previews/localización/accesibilidad/dispositivo N/A por ausencia de pantalla
 ## Gates y límites
 
 PRE independiente antes de código; usuario ya autoriza la implementación local concreta de11.3 dentro de spec.
-Commit/push/PR/merge/Done/eliminar rama no autorizados para este incremento. PLU-71 sigue In Progress.
+En la aprobación local, commit/push/PR/merge/Done/eliminar rama conservaban su gate. PLU-71 sigue In Progress.
 No iniciar11.4, integrar UI/selectores, descuentos globales11.7, pago11.8, stock12/documentos13 ni live.
 
 PRE independiente favorable por `draft_store_pre`, sin hallazgos bloqueantes; precisiones de firmas/ausencia/close
@@ -102,4 +102,6 @@ Implementación exacta de esta propuesta completada localmente; RED/GREEN y buil
 [phase11](phase-11.md#implementación-y-tdd-113). Fuente551 validada
 `90302546c9985a3aa461b7551c485bdae897872c07f26fc3586d558d2d844157`.
 POST independiente favorable en el gate funcional; P3 de estado documental corregido en la conciliación final.
-Issue/rama abiertas y entrega Git no autorizada para este incremento.
+Entrega completa autorizada posteriormente y realizada: [PR35](https://github.com/JFrancoG/FranAlonso/pull/35)
+MERGED como `d0a117e`, commit validado `16ba2c5`; PLU-74 Done y rama local/remota eliminada.
+La fuente551 conserva su huella GREEN; siguiente11.4 y live no iniciados. [Cierre](phase-11.md#entrega113--2026-10-01).

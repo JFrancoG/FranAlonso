@@ -96,7 +96,7 @@ UI/accesibilidad N/A (sin delta). Solo se reconcilia después la metadata de aud
 
 11.1 entregada y cerrada; no quedan gates abiertos dentro de su alcance aprobado.
 11.2 entregada y cerrada en PR34/PLU-73; GREEN/builds/PRE/POST PASS.
-11.3 implementada y validada localmente en PLU-74: 1.840/1.840, builds y PRE/POST favorables; entrega Git pendiente.
+11.3 entregada y cerrada en PR35/PLU-74; 1.840/1.840, builds y PRE/POST/entrega favorables.
 11.4–11.9 conservan sus propios gates.
 La demo completa necesita stock12 y documento13; fase11 y deuda accesible previa siguen abiertas.
 
@@ -341,3 +341,30 @@ Se reutilizan 1.840/1.840 variantes, builds Develop-for-testing/Production y aud
 Desde esa validación solo cambia metadata documental; nuevos builds/tests N/A para estos ajustes.
 Main/origin continúan en `5fade88`; nueve archivos exactos, sin cambios ajenos ni archivos staged al preflight.
 PLU-71 sigue activa; 11.4 conserva su propio gate. Esta entrega no activa live.
+
+## Entrega11.3 — 2026-10-01
+
+- Autorización completa del usuario: commit, push, PR, merge, cierre de issue y eliminación de rama.
+- Commit `16ba2c5dafe2cbae46be0e7c40a6023c9f45044e`,
+  `✨ feat(sales): coordinate accepted sale drafts`, publicado en origin.
+- [PR35](https://github.com/JFrancoG/FranAlonso/pull/35) MERGED;
+  merge `d0a117ee181c0b22c104d4080571a5afc74b6b16`, con dos padres y árbol idéntico al head validado:
+  `383d3614bece40c7484fed808f687f68265345fa`.
+  Antes de integrar: base `5fade88`, head exacto, CLEAN/MERGEABLE, nueve archivos previstos, sin reviews/checks pendientes.
+  GitHub sin workflows/checks, protección de main ni rulesets configurados; no se atribuye CI PASS.
+- GREEN 1.840/1.840, 26 declaraciones/43 variantes nuevas, builds Develop-for-testing/Production,
+  Source-style Audit y PRE/POST reutilizados por fuente551 idéntica.
+  Comprobación independiente focal de entrega por `draft_store_delivery`: sin hallazgos, PASS.
+  Inventario completo706 antes/después idéntico, certificado por el orquestador:
+  `d6faa5149801fc2beb4aad66bf594fe7ce8e78e1c00b6fa2c435731a2c1cdd75`.
+  Cero warnings Swift/Clang; aviso AppIntents conocido. UI/previews/accesibilidad/físico N/A.
+- Rama local/remota eliminada después de verificar ancestry contra main/origin, head remoto estable
+  y cero commits únicos. Ausencia local/remota comprobada; main actualizado por fast-forward, limpio y sincronizado.
+- PLU-74 Done leído de vuelta tras el merge; descripción y comentario conciliados con entrega y límites.
+  PLU-71 permanece In Progress, conserva historia11.1–11.2 y registra11.3 entregada;
+  siguiente11.4/WorkdayViewModel y SaleDraftViewModel pendiente de autorización.
+- Progress, spec11, propuesta y CHANGELOG conciliados con la entrega. Cierre documental publicado después
+  en main según el flujo reciente. Solo metadata: nuevos builds/tests N/A, fuente551 conserva SHA
+  `90302546c9985a3aa461b7551c485bdae897872c07f26fc3586d558d2d844157`.
+  Diff/enlaces nuevos y presupuesto Progress correctos; gobernanza conserva los seis enlaces históricos08.3 rotos.
+  Este cierre no activa live ni termina fase11 o la demo completa.

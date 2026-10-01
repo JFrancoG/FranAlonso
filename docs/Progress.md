@@ -4,8 +4,9 @@
 
 ## Estado actual
 
-- **11.3 / [PLU-74](https://linear.app/plusprojects/issue/PLU-74): In Progress**.
-  `codex/plu-74-sale-draft-store`; 1.840/1.840, builds/PRE/POST PASS; entrega pendiente. [Evidencia](progress/phase-11.md).
+- **11.3 / [PLU-74](https://linear.app/plusprojects/issue/PLU-74): Done**.
+  [PR35](https://github.com/JFrancoG/FranAlonso/pull/35)/`d0a117e`; rama eliminada; 1.840/1.840, builds/PRE/POST PASS.
+  [Evidencia](progress/phase-11.md); siguiente11.4 pendiente.
 
 - **11.1–11.2: Done (PLU-72/73)**; PLU-71 sigue activa.
   PR33/`794478e`, PR34/`ad5eeb5`; ramas eliminadas; 1.797/1.797, builds/PRE/POST PASS.

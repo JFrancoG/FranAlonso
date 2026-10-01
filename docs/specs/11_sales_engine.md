@@ -44,8 +44,9 @@ PRE/POST favorables; fuente validada `8cc3181` intacta. [Evidencia](../progress/
 11.2 entregada: [PLU-73](https://linear.app/plusprojects/issue/PLU-73) Done,
 [PR34](https://github.com/JFrancoG/FranAlonso/pull/34), merge `ad5eeb5`, validado `5ac7f45`; rama eliminada.
 [ADR 0031](../ADRs/0031-sale-decimal-coefficient-certification.md), TDD GREEN, builds y PRE/POST PASS.
-11.3 implementada y validada localmente en [PLU-74](https://linear.app/plusprojects/issue/PLU-74), In Progress;
-1.840/1.840 variantes, builds Develop/Production y PRE/estilo/POST favorables. Entrega Git pendiente.
+11.3 entregada: [PLU-74](https://linear.app/plusprojects/issue/PLU-74) Done,
+[PR35](https://github.com/JFrancoG/FranAlonso/pull/35), merge `d0a117e`, validado `16ba2c5`; rama eliminada.
+1.840/1.840 variantes, builds Develop/Production y PRE/estilo/POST/entrega favorables.
 11.4–11.9 conservan sus gates. La fase11 continúa abierta.
 
 Jornada local-first sin trabajo cerrado ocupando espacio, Histórico separado, snapshots monetarios inmutables, Store justificado y finalización idempotente.
