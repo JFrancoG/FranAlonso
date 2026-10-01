@@ -4,18 +4,14 @@
 
 ## Estado actual
 
-- **Adelanto textual16 / [PLU-47](https://linear.app/plusprojects/issue/PLU-47): In Progress**.
-  Autorizado tras09–10 según ADR0030; rama `codex/plu-47-foundation-models-service-draft`.
-  Adaptador local, propuesta reversible y guardado manual implementados; 106/106 resultados
-  (34 declaraciones), builds Develop/Production y 429 localizaciones PASS.
-  Dos sesiones y preflight acotado; guías de trabajo reconocible PRE/POST PASS.
-  PID1869/iPhone16:13/13 semánticos PASS, primera generación; Reject conserva el manual.
-  Cancel actual limitado por espejo; recuperación previa y tests reutilizados por impacto.
-  Fallos anteriores conservados; implementación local validada y registro revisado independientemente.
-  [Evidencia y límites](progress/phase-16.md).
-  Entrega Git autorizada en curso; sin cierre16. [PLU-70](https://linear.app/plusprojects/issue/PLU-70) Backlog,
-  Jesus Franco, [matriz](accessibility/evidence/16-service-draft-assistant.md): recuperar tras
-  feedback y estabilización, antes del primer candidato para uso real.
+- **Borrador textual16 / [PLU-47](https://linear.app/plusprojects/issue/PLU-47): Done funcional**,
+  [PR32](https://github.com/JFrancoG/FranAlonso/pull/32), merge `f1c781d`, validado `f727621`; rama eliminada.
+  ADR0030 tras09–10: inferencia local, propuesta reversible y guardado manual.
+  Fuente intacta:106/106 resultados (34 declaraciones), builds Develop/Production,
+  429 textos, siete previews y PRE/POST PASS;13/13 semánticos físicos en iPhone16.
+  Cancel actual Limitado; recuperación previa/tests reutilizados por impacto. [Evidencia](progress/phase-16.md).
+  [PLU-70](https://linear.app/plusprojects/issue/PLU-70) Backlog/Jesus Franco, [matriz](accessibility/evidence/16-service-draft-assistant.md):
+  recuperar tras feedback/estabilización, antes de uso real. Sin cierre16, inicio11.1 ni live.
 
 - **es/en y settings Xcode**: base de409 textos, ampliada a429 en PLU-47; iOS27; builds/tests/previews PASS.
   [Evidencia](progress/localization-en-es.md).

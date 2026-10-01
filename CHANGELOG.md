@@ -75,6 +75,9 @@ All notable changes to this project are documented in this file.
 
 ### Documentation
 
+- 2026-10-01 | 📝 docs(delivery): close service draft delivery
+  Records PR32, PLU-47 functional completion and verified branch cleanup while retaining PLU-70 accessibility debt.
+
 - 2026-09-30 | 📝 docs(delivery): close App maintenance
   Records PR31, PLU-69 completion and verified branch cleanup after the App and Firebase delivery.
 

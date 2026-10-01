@@ -133,18 +133,18 @@ la evidencia ni constituye por sí solo aprobación de entrega. Los pendientes n
 | 4.1.2 | Aplicable | TextField, Button y ProgressView nativos; etiquetas y estado habilitado derivan del estado presentado. | Limitado | Inspector, VoiceOver y Voice Control para nombre, rol, valor y disponibilidad real. | Deuda propia. |
 | 4.1.3 | Aplicable | La pantalla publica anuncios localizados al cambiar el mensaje del asistente; no se han escuchado en runtime. | Limitado | VoiceOver: carga, propuesta, aplicación, fallos, disponibilidad y transiciones sin mensaje; comprobar prioridades y duplicados. | Deuda propia; bloquea demo si impide comprender el resultado. |
 
-## Recuperación y puerta pendiente
+## Recuperación y puerta integral pendiente
 
 1. Mantener PLU-70 vinculada a PLU-47 y a este registro, con Jesús Franco como responsable; actualizarla con evidencia y
    hallazgos concretos sin cerrar sus pendientes por la entrega funcional.
-2. Completar la evidencia funcional exigida para la demo: previews representativos, recorrido con datos sintéticos e
-   inferencia real y revisiones independientes. Registrar defectos concretos sin convertirlos en resultados favorables.
+2. Conservar la evidencia funcional aceptada de previews, recorrido sintético con inferencia real y revisiones
+   independientes; Cancel actual continúa Limitado, con reuso por impacto. Revalidar ante cambios relevantes.
 3. Tras estabilización, completar Inspector, contraste y hit areas; VoiceOver, Voice Control, Switch Control y Full
    Keyboard Access; teclado software, AX 5, iPad/ventanas, orientación, RTL y preferencias aplicables.
 4. En cada comprobación registrar dispositivo, versión/build, idioma, preferencias, método, artefacto, resultado y
    revisor. Revalidar por impacto si cambia la sección, su copy, el foco o la composición del formulario.
 
-PLU-47 continúa In Progress, con implementación local y corpus semántico actual validados; entrega Git pendiente.
+PLU-47 está Done funcional tras [PR32](https://github.com/JFrancoG/FranAlonso/pull/32), merge `f1c781d`, validado `f727621`.
 Este registro no cierra ninguna subfase completa de fase 16 ni la validación integral. La cancelación física actual
 permanece limitada; recuperación previa y tests se reutilizan solo por impacto. Fase 16 conserva fallos por versión,
 alcance y límites de cada comprobación. PLU-70 mantiene su propietario y puerta anterior a uso real.

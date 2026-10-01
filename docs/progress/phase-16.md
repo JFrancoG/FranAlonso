@@ -2,10 +2,11 @@
 
 ## PLU-47 — Borrador textual de servicio — inicio 2026-09-30
 
-[PLU-47](https://linear.app/plusprojects/issue/PLU-47) In Progress. El propietario confirma «adelante con el borrador de
+[PLU-47](https://linear.app/plusprojects/issue/PLU-47) **Done funcional** tras [PR32](https://github.com/JFrancoG/FranAlonso/pull/32),
+merge `f1c781d`, validado `f727621`; rama eliminada. Inicio: el propietario confirma «adelante con el borrador de
 servicios de Foundation models». Rama `codex/plu-47-foundation-models-service-draft`, base limpia `main`/`e605a7c`.
-Reutiliza la issue de ADR0030; no empieza 11.1 ni cierra ninguna subfase completa de 16. Entrega Git y cierre pendientes
-de autorización separada. Autoridad: spec16, ADR0010/0011/0022/0029/0030, constitución y política Swift.
+Reutiliza la issue de ADR0030; no empieza 11.1 ni cierra ninguna subfase completa de 16. Entrega Git y cierre autorizados
+el01/10/2026 y completados según el registro final. Autoridad: spec16, ADR0010/0011/0022/0029/0030, constitución y política Swift.
 
 ## Propuesta inicial de implementación
 
@@ -1007,3 +1008,32 @@ Fuente540 verificada idéntica al POST/builds/tests/corpus aceptados: se reutili
 localización429, siete previews y auditorías recientes. Cambios posteriores solo de documentación/changelog.
 Main local/remoto alineados en e605a7c antes de publicar; sin cambios ajenos identificados. Entrega aún en curso;
 commit/PR/merge y sincronización definitiva se registrarán tras obtener evidencia Git real.
+
+## Cierre funcional de PLU-47 — 2026-10-01
+
+Commit [f727621](https://github.com/JFrancoG/FranAlonso/commit/f727621a451bc895fa0f332572e0ec10d6bad70e),
+`✨ feat(assistant): add on-device service drafts`, publicado en la rama autorizada. [PR32](https://github.com/JFrancoG/FranAlonso/pull/32)
+MERGED a12:14:36CEST mediante merge commit [f1c781d](https://github.com/JFrancoG/FranAlonso/commit/f1c781d421741a3bc50cc5aa14fc6f555bfa49ae).
+HEAD/base verificados antes del merge: f727621/e605a7c, CLEAN/MERGEABLE, cero checks/reviews pendientes y sin reglas
+de protección/workflows configurados. No se atribuye PASS aCI remota inexistente. El árbol completo de f1c781d coincide
+con f727621; main obtenido mediante fast-forward. Rama local/remota eliminada tras confirmar ancestro y cero commits
+únicos; ausencia remota verificada. PLU47 leído de vuelta **Done**; PLU70 **Backlog/JesusFranco** y PLU9 **Backlog**.
+Descripción/comentario de entrega reconciliados enPLU47; padre actualizado con alcance parcial, sin cerrar fase16.
+
+Auditoría previa a publicar:28paths staged/20Swift, cero hallazgos P0–P3, estilo0candidatos y juicio manual conforme;
+690 archivos PRE=POST `3c8f0f930ef3f9ae1da2ba56f20aa23e1bd5a351ab588d9c9f169631751160bf`.
+Fuente540 intacta respecto al POST y a la evidencia Xcode/física. Se reutilizan106/34, Develop/Production,429localizaciones,
+siete previews y13/13 semánticos. Cancel actual **Limitado**; reuso anterior de recuperación por impacto conservado,
+sin afirmar runtime nuevo delSDK/background/cierre en carrera ni garantía universal. Matriz55 intacta29Limitado/16N/A/
+10Pendiente enPLU70, recuperar tras feedback y estabilización antes del primer candidato para uso real.
+
+Registro documental de cierre actualiza Progress/spec16/matriz/esta fase y CHANGELOG según el flujo habitual delrepo.
+Build/tests nuevos **N/A** para estos cambios documentales; no cambia código/configuración y se verifica identidad
+de fuente. Gobernanza mantiene los seis enlaces históricos rotos08.3; diff/localización y revisión documental final
+se registran antes de publicar el cierre. Fases11–13 mantienen su puerta de inicio independiente; sin live.
+
+Revisión final del cierre documental **PASS, sin P0–P3**:cinco documentos, fuente540 intacta;690 archivos con
+inventario/hashes completos PRE=POST `3ceaf6955f0ff85a7a4e201af9a665a36e5054b87d0e2c70abfb2b5f38b3f6cb`.
+Progress7927bytes; diff-check PASS,429localizaciones/0errores y gobernanza limitada a los mismos seis enlaces08.3.
+Build/tests nuevos N/A razonado; publicación del metaregistro autorizada por el revisor. El cierre documental conserva
+Cancel Limitado, deudaPLU70 y fase16 pendiente; no se realiza nueva inferencia ni cambia fuente/configuración.
