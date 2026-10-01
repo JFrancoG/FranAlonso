@@ -6,6 +6,10 @@ All notable changes to this project are documented in this file.
 
 ### Added
 
+- 2026-10-01 | ✨ feat(sales): coordinate accepted sale drafts
+  Coordinates local draft creation, recovery, line edits, client association, discounts and durable discard.
+  Calculates before acceptance and publishes the accepted snapshot and amounts together; fences late results on close.
+
 - 2026-10-01 | ✨ feat(sales): complete deterministic sale calculations
   Certifies decimal precision, line discounts and included tax before aggregating immutable sale snapshots.
   Preserves ordinary fractional rounding and rejects overflow or silent monetary loss at coefficient boundaries.
