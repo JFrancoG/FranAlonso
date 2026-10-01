@@ -95,7 +95,7 @@ UI/accesibilidad N/A (sin delta). Solo se reconcilia después la metadata de aud
 ## Pendientes
 
 11.1 entregada y cerrada; no quedan gates abiertos dentro de su alcance aprobado.
-11.2–11.9 pendientes, cada una con su propio gate.
+11.2 implementada y validada localmente; GREEN/builds/PRE/POST PASS, entrega pendiente. 11.3–11.9 conservan sus gates.
 La demo completa necesita stock12 y documento13; fase11 y deuda accesible previa siguen abiertas.
 
 ## Entrega11.1 — 2026-10-01
@@ -116,3 +116,105 @@ La demo completa necesita stock12 y documento13; fase11 y deuda accesible previa
 - Progress, spec11 y CHANGELOG reconciliados; publicación documental posterior en main según el flujo reciente.
   `git diff --check` PASS y presupuesto Progress respetado; solo seis enlaces históricos08.3 siguen rotos.
   Este cierre no activa live ni declara terminada la fase11 o la demo completa.
+
+## 11.2 — Cálculo monetario
+
+[PLU-73](https://linear.app/plusprojects/issue/PLU-73): In Progress, Jesus Franco.
+Rama `codex/plu-73-sale-calculator`, base limpia/sincronizada `c800ccd`.
+Autorización de issue, rama e implementación local; sin entrega Git ni cierre autorizados.
+[Propuesta](11-2-sale-calculator-proposal.md): completar límites de Decimal sobre el calculador04.4,
+conservando precios IVA incluido, descuento por línea y snapshots. Sin descuento global11.7/UI/live.
+Baseline técnico reciente11.1 reutilizado por fuente idéntica; no acredita11.2.
+PRE inicial: P2 por restricción general de productos inexactos; sustituida por cotas dirigidas de descuento
+para preservar porcentajes válidos.699 archivos idénticos antes/después de esa pasada,
+SHA `3b31409e98eca382857355184909207de157917b2c21a9e5949d6849e5813692`.
+Reauditoría focal PRE favorable: P2 resuelto, sin nuevo ADR;699 archivos idénticos antes/después,
+SHA `35525f306997d1ced04773ac9a9299af743d22ff447dbe3420e1c39e08bf5d6d`.
+### TDD 11.2
+
+- Archivo nuevo `SaleCalculatorBoundaryTests.swift`: siete declaraciones, 39 variantes previstas;
+  oráculos literales EUR/USD, fracciones, empates con ambos signos, Int.max, overflow, precisión y payloads SaleDTO.
+- Build-for-testing Develop por Xcode MCP estable PASS, cero issues en log completo sin truncar
+  `FD776156-B0F8-4256-BDB2-D90557428DAA.txt`.
+- Primera ejecución descartada como RED: `Decimal(string: "1e164")` falla en el setup iOS.
+  Se conserva el valor exacto con significando de 38 dígitos y exponente 127, sin alterar las expectativas.
+- RED real: 0 PASS / 2 FAIL, sin skipped/notRun/expectedFailures; producción aún intacta.
+  Descuento 100 % sobre 10^164 lanza invalidAmount aunque el resultado cabe;
+  sumar ese importe y 0.01 no rechaza la pérdida del céntimo.
+  Summary MCP `9753A881-76BA-4189-938B-F4C35F161669.txt`, native cerrado y examinado:
+  `/Users/jesusf/Library/Developer/Xcode/DerivedData/FranAlonso-eehpkvodmpnqlchgeqriatcucsjf/Logs/Test/Test-FranAlonso-Develop-2026.10.01_15-07-46-+0200.xcresult`.
+  Fuente 547: `1eabb17f6e86a5f06e134b8ddc4dfccccd7de3864af0acfc89dbad3ce3328127`.
+- Primera implementación después del RED real: Develop-for-testing PASS (log `BuildProject-Log-20261001-151232.txt`).
+  Primera regresión completa: 1.790/1.792; ambos RED iniciales PASS, dos variantes cantidad FAIL.
+  Summary `95EB3F7B-F119-4FA4-9F10-E2690F84B016.txt`.
+  Diagnósticos RunCodeSnippet por Xcode MCP: NSDecimalMultiply plain/down/up retornan noError y mismo resultado
+  truncado en ese producto. NSDecimalAdd/Subtract también retornan noError tras perder precisión en un borde de coeficiente.
+  UInt128/public significand/exponent verificados en el target; no se atribuye GREEN a estos diagnósticos.
+- RED adicional de suma: 0/1 PASS, expected error ausente al agregar UInt128.max/100 y 0.01;
+  fixture de 39 dígitos conservado y comprobado. Summary `85716013-1516-4486-9466-A00891AE9232.txt`, native cerrado:
+  `/Users/jesusf/Library/Developer/Xcode/DerivedData/FranAlonso-eehpkvodmpnqlchgeqriatcucsjf/Logs/Test/Test-FranAlonso-Develop-2026.10.01_15-29-58-+0200.xcresult`.
+  Se propone certificado privado de coeficientes con operaciones nativas fijas de UInt128; revisión focal antes del ajuste.
+  PRE focal técnica sin hallazgos; P2 exige ADR antes del ajuste. Inventario 700 idéntico antes/después:
+  `dadd9d1fae0ff5527221002f2e0f786a2bf1b25f0937b3a7910e9d21c78df61c`.
+  [ADR 0031](../ADRs/0031-sale-decimal-coefficient-certification.md) registrado dentro de la autorización local de 11.2;
+  reauditoría documental favorable, P2 resuelto antes del ajuste; inventario 701 idéntico antes/después:
+  `572672ff3319ba162a8456bcb849e03f68143f76b034515fd6e1bffff14eae74`.
+  Suite nueva ampliada a diez declaraciones / 44 variantes (cancelación/signo/borrow).
+  Ajuste posterior al PRE aplicado; GREEN definitivo, builds y POST acreditados abajo.
+
+### Implementación y GREEN 11.2
+
+- Cambio acotado a `SaleCalculator.swift` y nuevo `SaleCalculatorBoundaryTests.swift`.
+  Certificado privado de coeficientes conforme a ADR 0031 para productos, sumas/restas y escalas;
+  descuento probado a escala monetaria, IVA por cociente exacto certificado o intervalo probado.
+  IVA residual e identidades por línea/agregado, monedas y orden/IDs conservados.
+  Sin cambios a Money, modelos, DTO, configuración, Store, UI, persistencia, sync o live.
+- Source-style Audit antes del GREEN: dos archivos, cero candidatos del helper; adjudicación manual sin hallazgos.
+  Cuatro argumentos permanecen verticales según política; llamadas Money largas no colapsan; líneas <=120.
+  Inicializadores del certificado en extensión, DocC semántico y cero opt-outs de concurrencia.
+- Build Develop-for-testing PASS, 16.742 s: `BuildProject-Log-20261001-155510.txt`.
+  Log MCP de warning sin issues/truncación: `089689C6-4C73-42E2-A853-C54E86B155BD.txt`.
+- GREEN por `RunAllTests` Xcode MCP estable, Develop/plan Develop, iPhone 17 Simulator/iOS 27.2:
+  **1.797/1.797 variantes PASS**, cero failed/skipped/notRun/expectedFailures; **1.149 declaraciones**.
+  Summary `81018973-6985-4BCC-9DF1-342A7A6A7342.txt`; native cerrado y summary/árbol examinados:
+  `/Users/jesusf/Library/Developer/Xcode/DerivedData/FranAlonso-eehpkvodmpnqlchgeqriatcucsjf/Logs/Test/Test-FranAlonso-Develop-2026.10.01_15-55-36-+0200.xcresult`.
+  El summary nativo cuenta 1.149 declaraciones; el árbol acredita 1.797 hojas PASS y cero runtime warnings.
+  **Diez declaraciones / 44 variantes nuevas PASS**, con todas las variantes EUR/USD y ambos signos presentes:
+  26 oráculos, cuatro cantidad/overflow, cuatro próximos al empate, dos payloads, dos cancelación, dos borrow
+  y cuatro casos no parametrizados (descuento extremo, suma extrema, borde de coeficiente y factor fiscal diminuto).
+  Todos los RED reales anteriores son GREEN; no se debilitó ningún oráculo para pasar.
+- Build Production PASS, 20.206 s: `BuildProject-Log-20261001-155619.txt`.
+  Log MCP sin issues/truncación: `FB6D2D74-AAF3-4FC7-AAE8-DCB2DB0260BC.txt`.
+  Logs completos Develop/Production examinados: cero warnings Swift/Clang y cero errores.
+  Único aviso de herramienta conocido: appintentsmetadataprocessor omite extracción por ausencia de dependencia;
+  dos apariciones Develop-for-testing y una Production. No se afirma silencio absoluto del log.
+- Fuente 547 idéntica antes/después de builds y tests:
+  `0e473095954d921d4329178ee6de2a72124bf1ae2d8a0d2abfaf7770c944b2ee`.
+  Archivo calculador SHA256 `a018db72cc6f4cacd96ca87ec9ca9ca70c0bc39fd24a95a958b19ce1583d3d4c`.
+  Esquema Develop/plan Develop/destino iPhone 11 restaurados.
+- UI, previews, recursos, localización, accesibilidad y dispositivo físico N/A por ausencia de delta de pantalla.
+  Governance conserva únicamente seis enlaces históricos rotos en evidencia08.3; enlaces nuevos y diff --check PASS.
+  Implementación y validación técnica local completadas, POST favorable; PLU-73 conserva In Progress.
+  Commit/push/PR/merge, cierre de issue/rama, live y 11.3 no se han autorizado ni realizado para este incremento.
+
+### Auditoría POST 11.2
+
+Revisor nuevo e independiente `calculator_post`: **sin hallazgos, POST favorable para implementación local**.
+Nueve archivos auditados; algoritmo, arquitectura, Domain/datos, pruebas, fuentes, estilo, evidencia y gobernanza.
+El revisor y su auxiliar operaron solo en lectura, sin builds/tests ni publicaciones.
+Inventario completo 701 tracked/untracked no ignorados idéntico antes/después, certificado por el orquestador:
+`17286ec0ff326f12370260535026eb499ab3c145f9d348bd10452d00d0cb1e42`.
+Resultados nativos y logs completos leídos independientemente; 44 variantes nuevas y 1.797 hojas PASS confirmadas.
+Los tests tienen oráculos deterministas seleccionados; no son prueba exhaustiva de todos los operandos Decimal.
+UI/accesibilidad N/A. Sin hallazgos aplazados nuevos; los seis enlaces históricos de 08.3 siguen fuera del cambio.
+Después del veredicto se actualiza únicamente metadata de estado/auditoría y entrega pendiente en docs y Linear.
+Fuente 547 conserva la huella GREEN; no se repiten builds/tests por esta conciliación documental.
+PLU-73 y PLU-71 In Progress; issue y rama abiertas, sin commit/push/PR/merge/cierre/live para 11.2.
+
+### Autorización de entrega 11.2 — 2026-10-01
+
+Después de completar el gate local, el usuario autoriza commit, push, PR, merge, cierre de PLU-73 y eliminación de rama.
+La fuente 547 coincide exactamente con GREEN y POST:
+`0e473095954d921d4329178ee6de2a72124bf1ae2d8a0d2abfaf7770c944b2ee`.
+Se reutilizan esas validaciones; desde entonces solo cambia metadata documental. Main/origin en `c800ccd`, sin drift.
+El cierre conserva PLU-71 activa y 11.3 pendiente de su propio inicio; no autoriza live.
