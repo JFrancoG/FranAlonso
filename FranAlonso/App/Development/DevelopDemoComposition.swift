@@ -43,7 +43,8 @@ struct DevelopDemoComposition {
             analyticsDataSource: DemoAnalyticsDataSource(),
             crashDataSource: DemoCrashDataSource(),
             authenticationRoot: root,
-            clientDocumentStorage: storage
+            clientDocumentStorage: storage,
+            serviceDraftInterpreter: FoundationModelsServiceDraftInterpreter()
         )
         return DevelopDemoComposition(
             applicationComposition: ApplicationComposition(

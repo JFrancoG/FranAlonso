@@ -6,6 +6,10 @@ All notable changes to this project are documented in this file.
 
 ### Added
 
+- 2026-10-01 | ✨ feat(assistant): add on-device service drafts
+  Adds local Foundation Models classification and literal extraction for the isolated Develop service demo.
+  Keeps proposals reversible, absent fields unchanged and persistence behind the existing visual Save action.
+
 - 2026-09-30 | ✨ feat(services): prepare sale selection
   Filters active offerings and selects immutable commercial snapshots from the current local catalogue.
 

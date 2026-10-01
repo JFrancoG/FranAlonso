@@ -9,6 +9,7 @@ struct ServiceFormScreen: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.locale) private var locale
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+    @Environment(\.scenePhase) private var scenePhase
     @State private var viewModel: ServiceFormViewModel?
     @State private var request: Request?
     @State private var productObservationRequestID = UUID()
@@ -142,6 +143,19 @@ struct ServiceFormScreen: View {
         )) {
             await viewModel?.observeProducts()
         }
+        .task(id: viewModel?.assistantRequestID) {
+            guard let viewModel, let requestID = viewModel.assistantRequestID else { return }
+            await viewModel.generateAssistantProposal(for: requestID)
+        }
+        .onChange(of: viewModel?.assistantState) { _, state in
+            guard let message = state?.message else { return }
+            announce(message)
+        }
+        .onChange(of: scenePhase) { _, phase in
+            if phase != .active {
+                viewModel?.interruptAssistant()
+            }
+        }
         .onChange(of: viewModel?.linkableProductsState) { _, state in
             guard state == .failed, viewModel?.draft.type == .product else { return }
             announce(.servicesFormProductsError)
@@ -205,7 +219,8 @@ struct ServiceFormScreen: View {
             },
             onDeactivate: {
                 showsDeactivationConfirmation = true
-            }
+            },
+            assistant: viewModel
         )
     }
 
@@ -272,4 +287,12 @@ struct ServiceFormScreen: View {
         ),
         makeViewModel: dependencies.makeServiceForm
     ) { _ in }
+}
+
+#Preview("Assistant create ES", traits: .modifier(AppPreviewModifier())) {
+    ServiceFormScreen(
+        destination: ServicePreviewFixtures.assistantDestination,
+        makeViewModel: ServicePreviewFixtures.makeAssistantForm
+    ) { _ in }
+    .environment(\.locale, Locale(identifier: "es"))
 }

@@ -3,7 +3,8 @@ extension AppDependencies {
     static func serviceFormFactory(
         persistenceActor: ServicePersistenceActor,
         observationSignal: ServiceObservationSignal,
-        productRepository: any ProductRepository
+        productRepository: any ProductRepository,
+        assistant: (any ServiceDraftInterpreter)? = nil
     ) -> ServiceFormFactory {
         let repository = DefaultServiceRepository(
             persistenceActor: persistenceActor,
@@ -24,7 +25,8 @@ extension AppDependencies {
                 deactivate: { id, context in
                     try await adapter.deactivate(id, in: context)
                 },
-                locale: locale
+                locale: locale,
+                assistant: assistant
             )
         }
     }

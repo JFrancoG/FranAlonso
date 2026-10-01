@@ -15,7 +15,9 @@ struct ServiceFormContent: View {
     let onRetryProducts: @MainActor () -> Void
     let onRetry: @MainActor () -> Void
     let onDeactivate: @MainActor () -> Void
+    var assistant: ServiceFormViewModel? = nil
     @FocusState private var focusedField: ServiceFormValidationField?
+    @FocusState private var isAssistantInputFocused: Bool
     @AccessibilityFocusState private var accessibleField: ServiceFormValidationField?
 
     var body: some View {
@@ -38,6 +40,24 @@ struct ServiceFormContent: View {
         default:
             Form {
                 feedback
+                if let assistant, assistant.canUseAssistant {
+                    ServiceDraftAssistantSection(
+                        input: Binding(get: { assistant.assistantInput }, set: { assistant.assistantInput = $0 }),
+                        inputFocus: $isAssistantInputFocused,
+                        state: assistant.assistantState,
+                        proposalName: assistant.assistantProposalName,
+                        proposalPrice: assistant.assistantProposalPrice,
+                        proposalTax: assistant.assistantProposalTax,
+                        proposalDiscount: assistant.assistantProposalDiscount,
+                        canEdit: canEdit && !isRequestPending,
+                        canRequest: assistant.canRequestAssistant && !isRequestPending,
+                        onRequest: assistant.requestAssistantProposal,
+                        onCancel: assistant.cancelAssistant,
+                        onApply: assistant.applyAssistantProposal,
+                        onReject: assistant.rejectAssistantProposal,
+                        onUndo: assistant.undoAssistantApplication
+                    )
+                }
                 nameSection
                 typeSection
                 if draft.type == .product {
@@ -91,6 +111,7 @@ struct ServiceFormContent: View {
                     Spacer()
                     Button {
                         focusedField = nil
+                        isAssistantInputFocused = false
                     } label: {
                         Text(.servicesFormKeyboardDone)
                             .frame(minWidth: 44, minHeight: 44)
@@ -353,4 +374,37 @@ struct ServiceFormContent: View {
         )
     }
     .environment(\.locale, Locale(identifier: "en"))
+}
+
+#Preview("Assistant create ES", traits: .modifier(AppPreviewModifier())) {
+    @Previewable @State var viewModel = ServicePreviewFixtures.makeAssistantForm(
+        destination: ServicePreviewFixtures.assistantDestination,
+        locale: Locale(identifier: "es")
+    )
+
+    NavigationStack {
+        ServiceFormContent(
+            draft: Binding(get: { viewModel.draft }, set: { viewModel.draft = $0 }),
+            state: .editing,
+            mode: .create,
+            isInactive: false,
+            canEdit: true,
+            canDeactivate: false,
+            isRequestPending: false,
+            validationAttemptID: nil,
+            linkableProductsState: .loaded([]),
+            onChangeType: viewModel.changeType,
+            onSelectProduct: viewModel.selectLinkedProduct,
+            onRetryProducts: {},
+            onRetry: {},
+            onDeactivate: {},
+            assistant: viewModel
+        )
+        .navigationTitle(Text(.servicesFormCreateTitle))
+        .task(id: viewModel.assistantRequestID) {
+            guard let requestID = viewModel.assistantRequestID else { return }
+            await viewModel.generateAssistantProposal(for: requestID)
+        }
+    }
+    .environment(\.locale, Locale(identifier: "es"))
 }

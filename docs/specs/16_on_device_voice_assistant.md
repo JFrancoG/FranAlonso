@@ -51,8 +51,9 @@ AVAudioEngine
 [fases 09](09_products_stock.md) y [10](10_services_catalog.md), cuando el formulario manual de `Service` y sus reglas
 estén estables y comprobados. Es alcance aprobado para planificación; esta sección no acredita implementación ni
 cierra subfases de la fase 16. Su ejecución requiere el inicio autorizado y la revisión previa correspondientes.
-[PLU-47](https://linear.app/plusprojects/issue/PLU-47), hija de PLU-9, permanece Backlog, responsable Jesus Franco;
-depende de la base [PLU-46](https://linear.app/plusprojects/issue/PLU-46) y de la entrega funcional de09–10.
+[PLU-47](https://linear.app/plusprojects/issue/PLU-47), hija de PLU-9, está In Progress desde el 30/09/2026,
+responsable Jesus Franco. Inicio autorizado tras la entrega funcional de la base [PLU-46](https://linear.app/plusprojects/issue/PLU-46)
+y de 09–10; propuesta revisada y evidencia en [fase 16](../progress/phase-16.md). La fase 16 completa continúa pendiente.
 
 ```text
 Descripción escrita con datos sintéticos

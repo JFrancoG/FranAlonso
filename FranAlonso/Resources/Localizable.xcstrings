@@ -1,6 +1,346 @@
 {
   "sourceLanguage" : "es",
   "strings" : {
+    "services.assistant.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Borrador con Apple Intelligence"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Draft with Apple Intelligence"
+          }
+        }
+      }
+    },
+    "services.assistant.input": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Descripción del servicio"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Service description"
+          }
+        }
+      }
+    },
+    "services.assistant.input.placeholder": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Corte y peinado, precio 35 euros"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Haircut and styling, price 35 euros"
+          }
+        }
+      }
+    },
+    "services.assistant.input.hint": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Describe un solo servicio profesional. Indica el precio y la moneda; añade IVA o descuento si los conoces. Para esta demo, usa datos ficticios."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Describe one professional service. Include the price and currency; add tax or a discount if known. Use fictional data for this demo."
+          }
+        }
+      }
+    },
+    "services.assistant.generate": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Generar propuesta"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Generate proposal"
+          }
+        }
+      }
+    },
+    "services.assistant.generating": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Preparando una propuesta en este dispositivo… Puedes seguir con el formulario manual."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Preparing a proposal on this device… You can continue with the manual form."
+          }
+        }
+      }
+    },
+    "services.assistant.cancel": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cancelar generación"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cancel generation"
+          }
+        }
+      }
+    },
+    "services.assistant.review": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Revisa los datos propuestos. Aplicar solo cambia los campos mostrados y no guarda el servicio. Los demás campos conservan sus valores."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Review the proposed details. Applying changes only the fields shown and does not save the service. Other fields keep their values."
+          }
+        }
+      }
+    },
+    "services.assistant.apply": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aplicar al borrador"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apply to draft"
+          }
+        }
+      }
+    },
+    "services.assistant.reject": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rechazar propuesta"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reject proposal"
+          }
+        }
+      }
+    },
+    "services.assistant.applied": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Propuesta aplicada al borrador. Revisa todos los campos antes de guardar. Puedes deshacerla hasta que vuelvas a editar."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Proposal applied to the draft. Review all fields before saving. You can undo it until you edit again."
+          }
+        }
+      }
+    },
+    "services.assistant.undo": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deshacer aplicación"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Undo application"
+          }
+        }
+      }
+    },
+    "services.assistant.error.clarification": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No se ha podido obtener una propuesta clara. Describe un único servicio con sus datos explícitos o completa el formulario manualmente."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A clear proposal could not be prepared. Describe a single service with explicit details, or complete the form manually."
+          }
+        }
+      }
+    },
+    "services.assistant.error.generation": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No se ha podido generar la propuesta. Vuelve a intentarlo o continúa con el formulario manual."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The proposal could not be generated. Try again or continue with the manual form."
+          }
+        }
+      }
+    },
+    "services.assistant.error.inputLength": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La descripción es demasiado larga. Acórtala a un solo servicio y sus datos, o completa el formulario manualmente."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The description is too long. Shorten it to one service and its details, or complete the form manually."
+          }
+        }
+      }
+    },
+    "services.assistant.unavailable.device": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apple Intelligence no está disponible en este dispositivo. Puedes completar el formulario manualmente."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apple Intelligence is not available on this device. You can complete the form manually."
+          }
+        }
+      }
+    },
+    "services.assistant.unavailable.disabled": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apple Intelligence está desactivado. Puedes activarlo en Ajustes o completar el formulario manualmente."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apple Intelligence is turned off. You can enable it in Settings or complete the form manually."
+          }
+        }
+      }
+    },
+    "services.assistant.unavailable.model": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "El modelo local todavía no está listo. Vuelve a intentarlo más tarde o completa el formulario manualmente."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The local model is not ready yet. Try again later or complete the form manually."
+          }
+        }
+      }
+    },
+    "services.assistant.unavailable.language": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "El modelo local no admite el idioma de este formulario. Puedes completarlo manualmente."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The local model does not support this form’s language. You can complete it manually."
+          }
+        }
+      }
+    },
+    "services.assistant.unavailable.general": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "El asistente no está disponible ahora. Vuelve a intentarlo o completa el formulario manualmente."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The assistant is not available right now. Try again or complete the form manually."
+          }
+        }
+      }
+    },
     "services.form.linkedProduct": {
       "extractionState": "manual",
       "localizations": {
