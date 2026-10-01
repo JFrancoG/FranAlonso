@@ -33,6 +33,31 @@ struct DefaultSaleRepository: SaleRepository {
         try await persistenceActor.persistPendingUpsert(sale, operationID: makeOperationID())
         await observationSignal.publishChange()
     }
+
+    func sale(id: SaleID) async throws -> Sale? {
+        try await persistenceActor.sale(id: id)
+    }
+
+    func createDraft(_ draft: Sale) async throws {
+        try await persistenceActor.createDraft(draft, operationID: makeOperationID())
+        await observationSignal.publishChange()
+    }
+
+    func updateDraft(_ expected: Sale, clientID: ClientID?, lines: [SaleLine]) async throws -> Sale {
+        let draft = try await persistenceActor.updateDraft(
+            expected,
+            clientID: clientID,
+            lines: lines,
+            operationID: makeOperationID()
+        )
+        await observationSignal.publishChange()
+        return draft
+    }
+
+    func discardDraft(_ id: SaleID) async throws {
+        try await persistenceActor.discardDraft(id, operationID: makeOperationID())
+        await observationSignal.publishChange()
+    }
 }
 
 extension DefaultSaleRepository {

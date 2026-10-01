@@ -251,6 +251,60 @@ struct AppDependenciesTests {
         var previewIterator = previewStream.makeAsyncIterator()
         #expect(try await previewIterator.next() == expectedSales)
     }
+
+    @Test
+    func `preview draft commands share the seeded sales repository`() async throws {
+        let seeded = try compositionSale()
+        let dependencies = AppDependencies.preview(sales: [seeded])
+        let newID = SaleID(rawValue: UUID(uuidString: "11000000-0000-0000-0000-000000000801")!)
+        let created = try await dependencies.createSaleDraft(
+            id: newID,
+            clientID: nil,
+            createdAt: Date(timeIntervalSinceReferenceDate: 3),
+            lines: seeded.lines
+        )
+        #expect(try await dependencies.getSaleDraft(id: seeded.id) == seeded)
+        let edited = try await dependencies.updateSaleDraft(created, clientID: nil, lines: [])
+        #expect(try await dependencies.getSaleDraft(id: newID) == edited)
+        let stream = await dependencies.observeSales()
+        var iterator = stream.makeAsyncIterator()
+        #expect(try await iterator.next() == [seeded, edited])
+
+        try await dependencies.discardSaleDraft(newID)
+        try await dependencies.discardSaleDraft(newID)
+        #expect(try await dependencies.getSaleDraft(id: newID) == nil)
+        #expect(try await dependencies.getSaleDraft(id: seeded.id) == seeded)
+    }
+
+#if FRANALONSO_AUTH_FIXTURE
+    @Test
+    @MainActor
+    func `local draft dependencies commit through the application container`() async throws {
+        let container = try ModelContainer.inMemory(for: .franAlonso)
+        let dependencies = AppDependencies.local(
+            modelContainer: container,
+            analyticsDataSource: CompositionAnalyticsDataSourceSpy(),
+            crashDataSource: CompositionCrashDataSourceSpy()
+        )
+        let seed = try compositionSale()
+        let created = try await dependencies.createSaleDraft(
+            id: seed.id,
+            clientID: nil,
+            createdAt: seed.createdAt,
+            lines: seed.lines
+        )
+        let edited = try await dependencies.updateSaleDraft(created, clientID: nil, lines: [])
+        #expect(try await dependencies.getSaleDraft(id: seed.id) == edited)
+        #expect(try SaleLocalDataSource().sale(id: seed.id, in: ModelContext(container)) == edited)
+        try await dependencies.discardSaleDraft(seed.id)
+        #expect(try await dependencies.getSaleDraft(id: seed.id) == nil)
+        #expect(try SaleLocalDataSource().sale(id: seed.id, in: ModelContext(container)) == nil)
+        let operations = try SaleLocalDataSource().pendingOperations(in: ModelContext(container))
+        #expect(operations.count == 3)
+        #expect(operations[1].predecessorOperationID == operations[0].operationID)
+        #expect(operations[2].predecessorOperationID == operations[1].operationID)
+    }
+#endif
 }
 
 private actor CompositionClientRepositoryFake: ClientRepository {
@@ -351,6 +405,16 @@ private actor CompositionServiceRepositoryFake: ServiceRepository {
 }
 
 private actor CompositionSaleRepositoryFake: SaleRepository {
+    func sale(id: SaleID) async throws -> Sale? { throw SaleDraftError.persistenceUnavailable }
+
+    func createDraft(_ draft: Sale) async throws { throw SaleDraftError.persistenceUnavailable }
+
+    func updateDraft(_ expected: Sale, clientID: ClientID?, lines: [SaleLine]) async throws -> Sale {
+        throw SaleDraftError.persistenceUnavailable
+    }
+
+    func discardDraft(_ id: SaleID) async throws { throw SaleDraftError.persistenceUnavailable }
+
     private var sales: [Sale]
     private var saves = 0
 

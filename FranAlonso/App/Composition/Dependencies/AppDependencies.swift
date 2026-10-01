@@ -19,6 +19,10 @@ struct AppDependencies {
     let makeServiceForm: ServiceFormFactory
     let observeSales: ObserveSalesUseCase
     let saveSale: SaveSaleUseCase
+    let createSaleDraft: CreateSaleDraftUseCase
+    let getSaleDraft: GetSaleDraftUseCase
+    let updateSaleDraft: UpdateSaleDraftUseCase
+    let discardSaleDraft: DiscardSaleDraftUseCase
     let telemetryReporter: TelemetryReporter
 
     /// Creates production dependencies over the supplied local source of truth.
@@ -343,6 +347,10 @@ extension AppDependencies {
             makeServiceForm: makeServiceForm,
             observeSales: ObserveSalesUseCase(repository: saleRepository),
             saveSale: SaveSaleUseCase(repository: saleRepository),
+            createSaleDraft: CreateSaleDraftUseCase(repository: saleRepository),
+            getSaleDraft: GetSaleDraftUseCase(repository: saleRepository),
+            updateSaleDraft: UpdateSaleDraftUseCase(repository: saleRepository),
+            discardSaleDraft: DiscardSaleDraftUseCase(repository: saleRepository),
             telemetryReporter: TelemetryReporter(
                 analyticsDataSource: analyticsDataSource,
                 crashDataSource: crashDataSource
