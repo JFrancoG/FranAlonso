@@ -4,6 +4,10 @@
 
 ## Estado actual
 
+- **11.1 / [PLU-72](https://linear.app/plusprojects/issue/PLU-72): In Progress**, hija dePLU-71.
+  Rama `codex/plu-72-sale-draft-lifecycle`;1.753/1.753 y builds PASS; PRE/POST PASS.
+  [Evidencia](progress/phase-11.md). Base05.10c, sin UI/live; entrega en curso.
+
 - **Borrador textual16 / [PLU-47](https://linear.app/plusprojects/issue/PLU-47): Done funcional**,
   [PR32](https://github.com/JFrancoG/FranAlonso/pull/32), merge `f1c781d`, validado `f727621`; rama eliminada.
   ADR0030 tras09–10: inferencia local, propuesta reversible y guardado manual.
@@ -11,7 +15,7 @@
   429 textos, siete previews y PRE/POST PASS;13/13 semánticos físicos en iPhone16.
   Cancel actual Limitado; recuperación previa/tests reutilizados por impacto. [Evidencia](progress/phase-16.md).
   [PLU-70](https://linear.app/plusprojects/issue/PLU-70) Backlog/Jesus Franco, [matriz](accessibility/evidence/16-service-draft-assistant.md):
-  recuperar tras feedback/estabilización, antes de uso real. Sin cierre16, inicio11.1 ni live.
+  recuperar tras feedback/estabilización, antes de uso real. Sin cierre16 ni live.
 
 - **es/en y settings Xcode**: base de409 textos, ampliada a429 en PLU-47; iOS27; builds/tests/previews PASS.
   [Evidencia](progress/localization-en-es.md).

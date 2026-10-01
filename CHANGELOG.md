@@ -6,6 +6,10 @@ All notable changes to this project are documented in this file.
 
 ### Added
 
+- 2026-10-01 | ✨ feat(sales): complete local draft lifecycle
+  Creates, reads, updates and discards local sale drafts through the existing causal persistence layer.
+  Preserves captured terms and rejects obsolete, conflicted, discarded or progressed snapshots.
+
 - 2026-10-01 | ✨ feat(assistant): add on-device service drafts
   Adds local Foundation Models classification and literal extraction for the isolated Develop service demo.
   Keeps proposals reversible, absent fields unchanged and persistence behind the existing visual Save action.

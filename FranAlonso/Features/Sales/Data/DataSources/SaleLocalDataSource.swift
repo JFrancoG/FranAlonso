@@ -7,6 +7,67 @@ private let saleSyncFeedID = "sales"
 struct SaleLocalDataSource {}
 
 extension SaleLocalDataSource {
+    /// Reads only a locally materialized snapshot, hiding pending and acknowledged discards.
+    func sale(id: SaleID, in context: ModelContext) throws -> Sale? {
+        try performDraftOperation {
+            guard try !hasDeletionState(for: id, in: context) else { return nil }
+            return try model(for: id, in: context)?.toDomain()
+        }
+    }
+
+    /// Accepts a new draft and causal upsert without reusing any previously known identity.
+    /// Checks and commit share this context without suspension; no cross-context CAS is promised.
+    func createDraft(_ draft: Sale, operationID: UUID, in context: ModelContext) throws {
+        try performDraftOperation {
+            try requireClean(context)
+            guard draft.status == .draft else { throw SaleDraftError.requiresDraft }
+            guard try model(for: draft.id, in: context) == nil,
+                  try pendingOperations(for: draft.id, in: context).isEmpty,
+                  try remoteState(for: draft.id, in: context) == nil,
+                  try conflict(for: draft.id, in: context) == nil else {
+                throw SaleDraftError.alreadyExists
+            }
+            try persistPendingUpsert(draft, operationID: operationID, in: context)
+        }
+    }
+
+    /// Replaces a matching local draft through the same causal write primitive as creation.
+    /// Missing, discarded, conflicted, progressed and obsolete snapshots are never overwritten.
+    func updateDraft(
+        _ expected: Sale,
+        clientID: ClientID?,
+        lines: [SaleLine],
+        operationID: UUID,
+        in context: ModelContext
+    ) throws -> Sale {
+        try performDraftOperation {
+            try requireClean(context)
+            guard try conflict(for: expected.id, in: context) == nil else { throw SaleDraftError.conflict }
+            guard try !hasDeletionState(for: expected.id, in: context) else { throw SaleDraftError.deleted }
+            guard let existing = try model(for: expected.id, in: context)?.toDomain() else {
+                throw SaleDraftError.notFound
+            }
+            guard existing.status == .draft else { throw SaleDraftError.requiresDraft }
+            guard existing == expected else { throw SaleDraftError.staleDraft }
+            let draft = try existing.replacingDraft(clientID: clientID, lines: lines)
+            try persistPendingUpsert(draft, operationID: operationID, in: context)
+            return draft
+        }
+    }
+
+    /// Discards only an unconflicted draft, retaining the existing durable tombstone semantics.
+    /// Absence and repetition are write-free; progressed history remains materialized.
+    func discardDraft(_ id: SaleID, operationID: UUID, in context: ModelContext) throws {
+        try performDraftOperation {
+            try requireClean(context)
+            guard try conflict(for: id, in: context) == nil else { throw SaleDraftError.conflict }
+            if let existing = try model(for: id, in: context)?.toDomain() {
+                guard existing.status == .draft else { throw SaleDraftError.requiresDraft }
+            }
+            try persistPendingDiscard(id, operationID: operationID, in: context)
+        }
+    }
+
     /// Fetches and maps the locally persisted sale snapshot.
     func fetchAll(in context: ModelContext) throws -> [Sale] {
         let descriptor = FetchDescriptor<SaleModel>(
@@ -514,6 +575,29 @@ extension SaleLocalDataSource {
 
     private func requireClean(_ context: ModelContext) throws {
         guard !context.hasChanges else { throw SaleLocalDataSourceError.contextHasUncommittedChanges }
+    }
+
+    private func performDraftOperation<Value>(
+        _ operation: () throws -> Value
+    ) throws -> Value {
+        try Task.checkCancellation()
+        do {
+            return try operation()
+        } catch let error as SaleDraftError {
+            throw error
+        } catch let error as SaleError {
+            throw error
+        } catch is CancellationError {
+            throw CancellationError()
+        } catch SaleLocalDataSourceError.syncConflictPending {
+            throw SaleDraftError.conflict
+        } catch SaleLocalDataSourceError.restoreRequiresExplicitResolution {
+            throw SaleDraftError.deleted
+        } catch SaleLocalDataSourceError.discardRequiresDraft {
+            throw SaleDraftError.requiresDraft
+        } catch {
+            throw SaleDraftError.persistenceUnavailable
+        }
     }
 
     private func model(for id: SaleID, in context: ModelContext) throws -> SaleModel? {

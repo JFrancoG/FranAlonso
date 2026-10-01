@@ -5,7 +5,7 @@ enum SaleError: Error, Equatable {
     /// The sale has no service lines and therefore cannot start.
     case emptySale
 
-    /// The proposed draft contains a progressed line or duplicate line identifiers.
+    /// The proposed draft contains progressed/duplicate lines or refreshes retained service terms.
     case invalidDraftState
 
     /// The requested line does not belong to the sale.
@@ -204,6 +204,33 @@ struct Sale: Identifiable, Codable, Equatable {
 }
 
 extension Sale {
+    /// Replaces editable draft content while retaining its identity and exact creation time.
+    ///
+    /// Retained line identities keep their captured service, name, price, tax and product link.
+    /// Quantity and discount may change; adding a different captured service requires a new line identity.
+    /// - Throws: `SaleDraftError.requiresDraft` for progressed sales, or `SaleError.invalidDraftState`
+    ///   for refreshed terms, duplicate identities or progressed replacement lines.
+    func replacingDraft(clientID: ClientID?, lines: [SaleLine]) throws -> Sale {
+        guard status == .draft else { throw SaleDraftError.requiresDraft }
+        let capturedLines = Dictionary(uniqueKeysWithValues: storedLines.map { ($0.id, $0) })
+        for line in lines {
+            guard let captured = capturedLines[line.id] else { continue }
+            guard line.serviceID == captured.serviceID,
+                  line.serviceName == captured.serviceName,
+                  line.unitPrice == captured.unitPrice,
+                  line.taxRate == captured.taxRate,
+                  line.linkedProductID == captured.linkedProductID else {
+                throw SaleError.invalidDraftState
+            }
+        }
+        return try Self.draft(
+            id: id,
+            clientID: clientID,
+            createdAt: createdAt,
+            lines: lines
+        )
+    }
+
     /// Creates a sale in the draft state from historical service-line snapshots.
     ///
     /// Every supplied line must be upcoming and line identifiers must be unique.

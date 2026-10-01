@@ -9,6 +9,42 @@ import SwiftData
 actor SalePersistenceActor {
     private let dataSource = SaleLocalDataSource()
 
+    /// Reads a detached local snapshot, returning nil for absent or discarded identities.
+    /// - Throws: A neutral local read error or cancellation after entering this actor.
+    func sale(id: SaleID) throws -> Sale? {
+        try dataSource.sale(id: id, in: modelContext)
+    }
+
+    /// Accepts a new draft and its causal operation without reusing a known identity.
+    /// - Throws: `SaleDraftError` or cancellation before local acceptance.
+    func createDraft(_ draft: Sale, operationID: UUID) throws {
+        try dataSource.createDraft(draft, operationID: operationID, in: modelContext)
+    }
+
+    /// Replaces a matching draft while preserving its identity, creation and retained service terms.
+    /// Validation and commit do not suspend; independent contexts have no global CAS guarantee.
+    /// - Throws: `SaleDraftError`, `SaleError`, or cancellation before local acceptance.
+    func updateDraft(
+        _ expected: Sale,
+        clientID: ClientID?,
+        lines: [SaleLine],
+        operationID: UUID
+    ) throws -> Sale {
+        try dataSource.updateDraft(
+            expected,
+            clientID: clientID,
+            lines: lines,
+            operationID: operationID,
+            in: modelContext
+        )
+    }
+
+    /// Discards an unconflicted draft and retains the durable tombstone; repetition is a no-op.
+    /// - Throws: `SaleDraftError` or cancellation before local acceptance.
+    func discardDraft(_ id: SaleID, operationID: UUID) throws {
+        try dataSource.discardDraft(id, operationID: operationID, in: modelContext)
+    }
+
     /// Fetches the current sale snapshot ordered by creation time and stable identity.
     ///
     /// - Returns: Domain values detached from this actor's persistent context.

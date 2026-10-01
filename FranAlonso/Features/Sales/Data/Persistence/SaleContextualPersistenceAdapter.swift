@@ -11,6 +11,42 @@ struct SaleContextualPersistenceAdapter {
     private let observationSignal: SaleObservationSignal
     private let makeOperationID: @Sendable () -> UUID
 
+    /// Accepts a new draft in the ephemeral caller context before invalidating observation.
+    /// Uses the same draft checks and causal write primitive as the context-free repository.
+    /// - Throws: `SaleDraftError` or cancellation before acceptance; does not retain the context.
+    func createDraft(_ draft: Sale, in context: ModelContext) async throws {
+        try dataSource.createDraft(draft, operationID: makeOperationID(), in: context)
+        await observationSignal.publishChange()
+    }
+
+    /// Replaces a matching draft in the caller context and returns the accepted snapshot.
+    /// Preserves identity, creation and retained terms, without cross-context CAS guarantees.
+    /// - Throws: `SaleDraftError`, `SaleError`, or cancellation before acceptance.
+    func updateDraft(
+        _ expected: Sale,
+        clientID: ClientID?,
+        lines: [SaleLine],
+        in context: ModelContext
+    ) async throws -> Sale {
+        let draft = try dataSource.updateDraft(
+            expected,
+            clientID: clientID,
+            lines: lines,
+            operationID: makeOperationID(),
+            in: context
+        )
+        await observationSignal.publishChange()
+        return draft
+    }
+
+    /// Discards an unconflicted draft and publishes only after local acceptance.
+    /// Progressed sales remain intact; repetition and absence keep the existing pending identity.
+    /// - Throws: `SaleDraftError` or cancellation before acceptance.
+    func discardDraft(_ id: SaleID, in context: ModelContext) async throws {
+        try dataSource.discardDraft(id, operationID: makeOperationID(), in: context)
+        await observationSignal.publishChange()
+    }
+
     /// Commits a sale and one pending upsert before invalidating local observation.
     ///
     /// - Parameters:
