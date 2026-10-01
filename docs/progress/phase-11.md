@@ -483,3 +483,169 @@ reuso válido de evidencia nativa reciente e inventario exacto. JSON completo718
   validación Xcode adicional N/A. Gobernanza conserva seis capturas08.3 históricas rotas, sin fallos nuevos.
 - 11.5 no está implementada: UI de Jornada/detalle, previews y composición App quedan para ese gate.
   Este cierre no activa live ni termina fase11, la demo completa o validación accesible de otras fases.
+
+
+## 11.5 — Jornada y detalle operativo local — 2026-10-01
+
+### Inicio, alcance y PRE
+
+Usuario autoriza issue, rama e implementación local. [PLU-76](https://linear.app/plusprojects/issue/PLU-76),
+In Progress/Jesus Franco, hija de PLU-71; rama `codex/plu-76-workday-screens` desde main/origin limpio
+`edc2f26b5835f7b2af1d3a364d1c78fe9e00d564`. [Propuesta](11-5-workday-screens-proposal.md) y PRE independiente
+workday_screens_pre PASS antes de código: JSON completo719 archivos idéntico antes/después,
+`bb9b3c0bd2134d9b9f5cc8134cacc21cff76562bcf2d65402bc7ff4c5f9ae491`.
+Fuentes primarias Apple, specs/ADR/código y alternativas revisados; perfil mantenimiento Swift6/SwiftUI.
+
+Dos Screens y cinco subviews sustituyen el placeholder Jornada. Tablero con próximas/en curso/pendientes de cierre,
+operaciones independientes antiguas, cliente opcional y pagadas awaitingDocument presentes. Sheet tipada con identidad
+por sesión y un único Store por detalle. Nueva sesión sin write, Create explícito sin cliente, cantidades acotadas,
+retirada confirmada y descarte separado confirmado. Cerrar conserva aceptaciones locales; readonly para estados
+progresados. Factories App comparten SalesRepository, actor y signal; cantidades/importes usan snapshots capturados.
+Resolución de nombres de cliente separada de la observación de ventas, con fences de generación/IDs/cancelación/cierre.
+Nuevo modo Develop workday: seis ventas y dos clientes sintéticos draft, sobre capas reales y memoria aislada;
+seed antes de exponer dependencias, gates fail-closed previos a Firebase. Otros modos conservan cero ventas.
+
+No selector11.6, descuentos11.7, inicio/progreso/pago11.8, histórico11.9, stock12, documento13, dependencia,
+unsafe, cambio de target/schema ni live. No es una venta completa ni validación física/AT.
+
+### TDD, estilo y validación técnica
+
+- RED compilable real:6 declaraciones/6 fallos, cero passes/skips/expected/runtimeWarnings, iPhone17 Simulator27.2.
+  Oráculos de cantidades, carga/nombres, labels y aislamiento del modo workday; no se sustituyen después por asserts de markup.
+- 18 declaraciones/28 variantes nuevas frente a baseline11.4. Tests Swift Testing de fachadas/presentación semántica,
+  cancelación/reemplazo de lectura y nombres, retries, readonly y aceptación local; composición usa SwiftData real,
+  observador real del mismo repositorio y lecturas con contexto distinto. Oráculos monetarios literales independientes.
+- Focal nativa69 declaraciones/99 variantes Passed; regresión completa1.231 declaraciones/1.934 variantes Passed.
+  Ambas en iPad Pro13-inch(M5) Simulator27.2, cero fallos, skipped, expected failures o runtimeWarnings.
+  El resumen MCP de la focal enumeró100; prevalece el conteo nativo cerrado99, sin inferir otra ejecución.
+  La regresión completa contiene las28 variantes nuevas. No se confunde lista de declaraciones con runs parametrizados.
+- Xcode MCP estable27.0: Develop-for-testing19.346s y Production21.066s PASS.
+  Logs completos: cero errores/warnings Swift/Clang, strict complete/default nonisolated y warnings-as-errors.
+  Extracción AppIntents conocida separada: dos avisos en Develop-for-testing, uno en Production.
+- Localización:56 claves nuevas ES/EN;409 en Localizable y485 entradas traducibles en los tres catálogos,
+  `validate_localizations.py` PASS/0 errores. Nombres/precios/impuestos capturados siguen siendo datos.
+- Estilo independiente22 Swift:0 candidatos/0 líneas mayores de120. Whole733 idéntico,
+  `5e48e1722b7fa6a36d14bbbc86e899d0516d80589f44928c0bc4738a07bb5db7`.
+  Preparación async de los previews recibió revisión focal PASS, whole733 idéntico,
+  `153224b144eedc9a2876a00026dcd76f67eb76650524888c35d9561f3e1a6faf`.
+
+Artefactos nativos cerrados y parseados:
+
+- RED: `/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RunSomeTests/Test-FranAlonso-Develop-2026.10.01_19-59-15-+0200.xcresult`.
+- Focal: `/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RunSomeTests/Test-FranAlonso-Develop-2026.10.01_20-24-20-+0200.xcresult`.
+- Regresión: `/Users/jesusf/Library/Developer/Xcode/DerivedData/FranAlonso-eehpkvodmpnqlchgeqriatcucsjf/Logs/Test/Test-FranAlonso-Develop-2026.10.01_20-30-40-+0200.xcresult`.
+  Se usa este bundle nativo completo: la copia MCP inicial no tenía Info.plist y no acreditaba cierre.
+- JSON completos: `/tmp/plu76-red-native-summary.json`, `/tmp/plu76-focused-green-summary.json`,
+  `/tmp/plu76-focused-green-tree.json`, `/tmp/plu76-all-green-summary.json`, `/tmp/plu76-all-green-tree.json`.
+- Develop: `/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/BuildProject/BuildProject-Log-20261001-202804.txt`.
+- Production: `/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/BuildProject/BuildProject-Log-20261001-203441.txt`.
+
+Fuente/configuración576 completa idéntica antes/después de la regresión:
+`38434c64c42689870d700d1d23e3439c824158f9a43c712e096f4180ba9cff45`.
+POST técnico independiente fresco workday_post_technical PASS, sin hallazgos P0–P2. Inspección de fuente, factories,
+VM/Store/UseCases/repos/actor/signal, auth, fixtures, tests y logs/JSON completos. Whole734 idéntico antes/después,
+`10e684b29fbb6888f58ee0de2106d428161edd4db7dbd900bd326d59074d6e44`.
+Previews/AT/smoke y cierre documental mantienen sus límites propios; la revisión no ejecutó ni publicó cambios.
+
+### Previews y accesibilidad progresiva
+
+17 renders Xcode MCP exitosos con snapshots inspeccionados. Dos anteriores sobre iPad Pro13-inch(M5)27.2 y15
+sobre iPhone18ProMax27.2, según renderedDestination real. Manifiesto `/tmp/plu76-previews-final.json` conserva
+path, definición, locale, variante y destino de cada imagen. Large/XXX Large/AX5 en ambos Screens, más contenidos
+preparados antes del render: vacío, varios clientes, draft con nombre de servicio largo, en curso, pendiente de cobro
+y pagada pendiente de documento. ES/EN, claro/oscuro y contraste aumentado representativos; no matriz exhaustiva.
+
+WorkdayScreen se captura en carga inicial; el Content preparado acredita filas/grupos y el smoke acredita su operación.
+SaleDraftScreen listo conserva fallback de nombre antes de terminar lookup en el snapshot; el Content preparado
+resuelve nombres y el runtime confirma Alba/Bruno. Textos largos envuelven sin elipsis observada; contenido inferior
+fuera del viewport requiere scroll, no se declara validado por una sola captura. IVA21% e importes24,20/20,00/4,20
+visibles; Locale del dispositivo y selección de lengua de preview se registran por separado.
+
+[Matriz11.5](../accessibility/evidence/11-5-workday-screens.md) conserva55 criterios A/AA con aplicabilidad/N/A razonados,
+Limitado/Pendiente, controles nativos, headers, nombres/roles/valores, 44pt solicitado y retorno declarativo sin timers.
+P2 de retirada sin confirmación en primera revisión UI corregido con confirmationDialog antes de mutar.
+[PLU-77](https://linear.app/plusprojects/issue/PLU-77), Backlog, Jesus Franco, relacionada con PLU-76/hijaPLU-71:
+retomar tras feedback de Fran y estabilización de cada flujo, antes del primer candidato para uso real y cierre integral.
+VoiceOver/foco/anuncios, VoiceControl/SwitchControl/FKA, Inspector, hit areas/contraste medidos, cuatro apariencias,
+RTL/orientaciones/ventanas/preferencias y dispositivo físico permanecen pendientes. No se absorbe deuda previa.
+
+### Smoke y corrección focal de hit testing
+
+Interacción Xcode nativa delegada mediante skill Apple device-interaction, sesión Workday Screens Smoke,
+iPhone17 Simulator27.2, Develop y único argumento --franalonso-demo-workday, login sintético/no red.
+Recorrido anterior al fix: crear/cerrar antes de aceptar no añade venta; Create explícito y Close conservan borrador vacío;
+reapertura mediante texto hijo, cancel/confirm descarte; cantidad1→2 y48,40€ persistida al reabrir, retirar cancelado conserva
+y confirmar deja cero; tres estados readonly sin edición/descarte/pago; nombres resueltos y tab roundtrip funcionan.
+
+Defecto observado: centro del Button plain de una fila vacía no responde, Text hijo sí; dos intentos con hitPoint.
+No se acepta como PASS de área operable. PRE focal independiente workday_ui_post aprueba contentShape interaction
+sobre el label después de frame/padding. Alternativa estilo automático amplía cambio visual y se descarta aquí.
+Whole734 read-only idéntico al hash técnico anterior. Se añade una línea en WorkdaySaleRow, única diferencia de los576
+archivos frente a GREEN: nuevo digest `5ee1d8dbf39acb1ddc01d5136b2b8d348b45cbdd802b6b48ecb82327ed0a074b`.
+Develop build focal9.899s PASS, cero Swift/Clang warnings; conocido AppIntents metadata1 separado:
+`/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/BuildProject/BuildProject-Log-20261001-205421.txt`.
+Renders focales de Row/Large y board/AX5 oscuro/contraste aumentado PASS, sin cambio visual observado.
+No se repite suite completa por una modificación exclusivamente de hit testing: se reutiliza GREEN de negocios/fachadas,
+se recompila y se retestea el defecto táctil. Retest final, build Production posterior y POST UI se registran a continuación.
+
+### Estado de cierre local
+
+PLU-76 y fasePLU-71 siguen In Progress. Entrega Git y cierre no autorizados; rama local activa, sin commit/push/PR/merge.
+Retest/POST y reconciliación final registrados a continuación; entrega Git permanece pendiente.
+
+
+### Retest y configuración final11.5
+
+Smoke workday_screens_pre final PASS: tras reinstalar el fix, primer toque en centro de fila vacía, centro Alba,
+espacio vacío derecho y centro readonly abre correctamente. No hallazgos funcionales/visuales observados restantes.
+Se reutiliza el resto del CRUD previo porque la única corrección afecta hit testing. Informe `/tmp/plu76-smoke-report.md`
+con31 juegos verificados de hierarchy/screenshot/log; PID14947 previo y17935 final. Root inspeccionó screenshots
+listos21_00_51_068,21_01_37_991,21_02_09_756. Conserva Falla anterior y límites de cancelación fuera del popover/AT.
+Base: `/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/DeviceInteractionSynthesize/`.
+
+Production posterior al fix: Xcode MCP/iPhone17 Simulator27.2,20.419s PASS, cero Swift/Clang warnings/errores,
+solo AppIntents metadata conocido1. Log completo:
+`/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/BuildProject/BuildProject-Log-20261001-210341.txt`.
+Fuente576 igual al fix antes/después de renders/retest/builds, `5ee1d8dbf39acb1ddc01d5136b2b8d348b45cbdd802b6b48ecb82327ed0a074b`.
+DeviceInteractionEndSession confirma Session stopped; Xcode restaurado y releído Develop/planDevelop/iPhone11.
+Sin pruebas físicas en11.5. POST UI final y reconciliación registrados a continuación.
+
+
+### POST UI y estado final local11.5
+
+workday_ui_post independiente PASS para gate funcional ADR0029, sin hallazgos abiertos accionables. Inspecciona17
+snapshots reales, Screens/subviews/factories/VM delegación,56claves ES/EN,55 criterios y31 juegos smoke; seis jerarquías
+y tres screenshots focales del fix. Sin ejecución Xcode ni escrituras. Root certifica JSON completo734 archivos idéntico
+antes/después, `e194eb3268e1c9a09ae01cec3993c0b2840f6517ba4fac779dff17ebf4f99642`.
+Matriz:37Aplicable (29Limitado/8Pendiente) y18N/A motivados; integral sigue pendiente en PLU-77.
+
+Inventario final:30 archivos afectados:22Swift (17producción/5tests), un catálogo de textos, su inventario,
+esquema Develop y cinco documentos. No archivo secret-sensitive ni cambio ajeno; staging vacío. `git diff --check` PASS,
+localización485/0errores; gobernanza solo las seis capturas históricas08.3 rotas, sin incidencias nuevas.
+Progress dentro de8192bytes. Regresión completa reutilizada para negocio/fachadas; la única diferencia posterior
+es contentShape, con PRE/POST UI, build Develop/Production y retest real favorable. Fuente576 final intacta.
+Documentación final no modifica fuente/configuración: Xcode adicional N/A razonado para esa reconciliación.
+
+PLU-76 y PLU-71 In Progress, PLU-77 Backlog/Jesus Franco; descripciones reconciliadas con implementación/evidencia
+y deuda propia. Sin bloqueos funcionales11.5. Rama `codex/plu-76-workday-screens` activa sobre `edc2f26`,
+no commit/push/PR/merge/cierre de issue o rama autorizados en este turno. 11.6 mantiene inicio propio, live inactivo.
+Xcode Develop/planDevelop/iPhone11 restaurado y sesión de interacción cerrada. La fase11 permanece abierta.
+
+Cleanup final: StopProject detiene exclusivamente PID17935, la segunda ejecución de esta tarea;
+DeviceInteraction ya estaba cerrado. No se dejó el debugger/app iniciados por la validación en ejecución.
+
+
+### Entrega autorizada11.5 — 2026-10-01
+
+El usuario autoriza commit, push, PR, merge y cierre de PLU-76/rama. Se prepara entrega funcional de demo según
+ADR0029; PLU-77 conserva validación integral propia, responsable y recuperación antes del uso real. PLU-71 continúa
+activa. No autoriza11.6 ni live. Reutilizadas evidencia TDD/regresión, builds Develop/Production,17previews,
+smoke/retest y PRE/estilo/POST técnico/UI recién aprobados: fuente/configuración576 completa idéntica a validación,
+`5ee1d8dbf39acb1ddc01d5136b2b8d348b45cbdd802b6b48ecb82327ed0a074b`.
+Preparación de entrega solo añade autorización/documentación y changelog, sin cambios ejecutables;
+Xcode adicional N/A para esta preparación. Inventario previsto31 archivos, de ellos22Swift.
+Revisión focal independiente workday_delivery_review PASS, sin P0–P2; PLU-76 sigue In Progress hasta integración.
+JSON completo734 idéntico antes/después, `291a6e07b161037e760759b09eed458b36f2a1ff532771ecb21f22914c3179cf`.
+Único P3 documental: frase de autorización obsoleta en matriz; corregida para reflejar entrega autorizada/en curso.
+Corrección de metadata, sin cambiar evidencia/aplicabilidad/resultado integral; verificación focal posterior PASS.
+Whole734 idéntico antes/después del retest documental: `c6e960c82b27240d9b89c5925daa1a9a15ebf774ada9efb1c9ab69888af36a41`.

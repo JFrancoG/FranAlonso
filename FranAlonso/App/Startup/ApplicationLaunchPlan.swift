@@ -48,6 +48,8 @@ enum ApplicationLaunchPlan: Equatable {
                 .demo(.clients)
             case "--franalonso-demo-clients-response-lost":
                 .demo(.clientsResponseLost)
+            case "--franalonso-demo-workday":
+                .demo(.workday)
             default:
                 .invalidFixtureConfiguration
             }

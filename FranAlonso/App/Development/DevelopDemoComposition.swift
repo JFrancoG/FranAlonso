@@ -6,6 +6,7 @@ struct DevelopDemoComposition {
     enum Configuration: Equatable {
         case clients
         case clientsResponseLost
+        case workday
     }
 
     let applicationComposition: ApplicationComposition
@@ -21,6 +22,9 @@ struct DevelopDemoComposition {
         try DevelopDemoScenario.clients.seed(in: container)
         try DevelopDemoProductScenario.seed(in: container)
         try DevelopDemoServiceScenario.seed(in: container)
+        if configuration == .workday {
+            try SalesPreviewFixtures.workday.seed(in: container.mainContext)
+        }
         let remote = InMemoryClientDocumentStorage.RemoteStore()
         let storage = InMemoryClientDocumentStorage(
             remote: remote,

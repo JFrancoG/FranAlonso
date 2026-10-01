@@ -4,12 +4,12 @@
 
 ## Estado actual
 
-- **11.4 / [PLU-75](https://linear.app/plusprojects/issue/PLU-75): Done**.
-  [PR36](https://github.com/JFrancoG/FranAlonso/pull/36)/`d9d1ed1`; rama eliminada; 1.906/1.906, builds/auditorías PASS.
-  [Evidencia](progress/phase-11.md); siguiente11.5 pendiente.
-- **11.1–11.3 / PLU-72/73/74: Done**; PLU-71 activa. PR33/`794478e`, PR34/`ad5eeb5`,
-  PR35/`d0a117e`; ramas eliminadas.
-  [Entregas anteriores y evidencia](progress/phase-11.md).
+- **11.5 / [PLU-76](https://linear.app/plusprojects/issue/PLU-76): In Progress**, Jesus Franco.
+  Rama `codex/plu-76-workday-screens`; [propuesta](progress/11-5-workday-screens-proposal.md), PRE PASS.
+  Jornada/detalle local:1.934 variantes, builds/previews/smoke y PRE/POST PASS. Entrega Git autorizada, en curso.
+  [PLU-77](https://linear.app/plusprojects/issue/PLU-77), Backlog/Jesus Franco: matriz integral11.5, antes de uso real.
+- **11.1–11.4 / PLU-72/73/74/75: Done**; PLU-71 activa, ramas eliminadas.
+  PR33–36;11.4 `d9d1ed1`,1.906/1.906 y builds/auditorías PASS. [Evidencia](progress/phase-11.md).
 
 - **Borrador16 / [PLU-47](https://linear.app/plusprojects/issue/PLU-47): Done funcional**,
   [PR32](https://github.com/JFrancoG/FranAlonso/pull/32)/`f1c781d`, rama eliminada.
@@ -18,7 +18,7 @@
   [PLU-70](https://linear.app/plusprojects/issue/PLU-70) Backlog/Jesus Franco:
   recuperar tras feedback/estabilización, antes de uso real; [matriz](accessibility/evidence/16-service-draft-assistant.md).
 
-- **es/en y settings Xcode**: base de409 textos, ampliada a429 en PLU-47; iOS27; builds/tests/previews PASS.
+- **es/en y Xcode**:485 textos; iOS27. Builds/tests/previews registrados por subfase.
   [Evidencia](progress/localization-en-es.md).
 - **[PLU-69](https://linear.app/plusprojects/issue/PLU-69): Done**, [PR31](https://github.com/JFrancoG/FranAlonso/pull/31).
   App ordenada, Firebase 12.19.2; 1.564 resultados/builds PASS. [Registro](progress/app-organization.md).
@@ -31,11 +31,10 @@
   Jesus Franco, tras feedback y antes de uso real. Cierre integral pendiente.
 - **[ADR0030](ADRs/0030-reusable-demo-and-early-foundation-models.md) aceptado y publicado** el29/09;
   orden excepcional y alcance canónico en [índice](specs/00_index.md). [Registro](progress/phase-08.md).
-- **08.8a / [PLU-46](https://linear.app/plusprojects/issue/PLU-46): Done funcional**, entrega y cierre autorizados.
-  [PR16](https://github.com/JFrancoG/FranAlonso/pull/16), merge `b334c04`, validado `0c76967` intacto; ramas eliminadas.
-  [Guía](progress/08-8a-demo-runbook.md) y [evidencia](progress/phase-08.md). Demo Debug-Develop: dos borradores,
-  capas reales, memoria y proveedores simulados; sin live/durabilidad.
-  Validación técnica, PRE/POST, previews y smoke PASS en [fase08](progress/phase-08.md).
+- **08.8a / [PLU-46](https://linear.app/plusprojects/issue/PLU-46): Done funcional**.
+  [PR16](https://github.com/JFrancoG/FranAlonso/pull/16), `b334c04`; validado `0c76967`, ramas eliminadas.
+  Demo Develop: dos borradores, capas reales y memoria; sin live/durabilidad. PRE/POST, técnica, previews y smoke PASS.
+  [Guía](progress/08-8a-demo-runbook.md), [evidencia](progress/phase-08.md).
 - **[PLU-48](https://linear.app/plusprojects/issue/PLU-48): Backlog**, evidencia accesible integral nueva del aviso/encuadre.
   Jesus Franco, hija dePLU-34 y relacionada conPLU-46; [matriz55](accessibility/evidence/08-8a-reusable-demo.md).
   Recuperar tras feedback y estabilización de este flujo, antes de uso real. PLU-44/45/38 conservan su deuda propia.

@@ -89,6 +89,10 @@
             isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
+            argument = "--franalonso-demo-workday"
+            isEnabled = "NO">
+         </CommandLineArgument>
+         <CommandLineArgument
             argument = "--franalonso-demo-clients-response-lost"
             isEnabled = "NO">
          </CommandLineArgument>

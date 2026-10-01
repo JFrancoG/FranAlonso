@@ -7,7 +7,8 @@ struct ApplicationLaunchPlanTests {
     @Test(
         arguments: [
             ("--franalonso-demo-clients", DevelopDemoComposition.Configuration.clients),
-            ("--franalonso-demo-clients-response-lost", .clientsResponseLost)
+            ("--franalonso-demo-clients-response-lost", .clientsResponseLost),
+            ("--franalonso-demo-workday", .workday)
         ]
     )
     func `an exact Develop gate selects the requested demo`(
@@ -23,7 +24,7 @@ struct ApplicationLaunchPlanTests {
         #expect(plan == .demo(configuration))
     }
 
-    @Test(arguments: [DevelopDemoComposition.Configuration.clients, .clientsResponseLost])
+    @Test(arguments: [DevelopDemoComposition.Configuration.clients, .clientsResponseLost, .workday])
     @MainActor
     func `a demo route invokes only its own composition factory`(
         configuration: DevelopDemoComposition.Configuration

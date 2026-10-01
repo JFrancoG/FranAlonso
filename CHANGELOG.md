@@ -6,6 +6,10 @@ All notable changes to this project are documented in this file.
 
 ### Added
 
+- 2026-10-01 | ✨ feat(sales): add workday and operational detail screens
+  Adds the operational workday board and contextual draft or read-only detail screens.
+  Preserves accepted edits on close, confirms removal and discard, and provides an isolated workday demo.
+
 - 2026-10-01 | ✨ feat(sales): coordinate workday and sale detail
   Projects operational sales and stable navigation sessions through observable presentation facades.
   Retains one accepted draft Store and provides read-only inspection without granting mutation capabilities.

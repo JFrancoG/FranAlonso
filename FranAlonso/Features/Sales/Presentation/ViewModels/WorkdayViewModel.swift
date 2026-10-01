@@ -16,14 +16,49 @@ final class WorkdayViewModel {
     private(set) var state: State = .idle
     private(set) var destination: SaleDraftDestination?
     private(set) var lastError: (any Error)?
+    private(set) var clientDisplayNames: [ClientID: String] = [:]
     private let observeSales: ObserveSalesUseCase
+    private let getClient: GetClientUseCase?
     private let policy = WorkdaySalesPolicy()
     private let makeID: @MainActor () -> UUID
     @ObservationIgnored private var observationGeneration: UUID?
+    @ObservationIgnored private var clientNamesGeneration: UUID?
 
     var selectedSaleID: SaleID? {
         guard let destination, destination.mode != .create else { return nil }
         return destination.saleID
+    }
+
+    var clientIDs: [ClientID] {
+        guard case let .content(board) = state else { return [] }
+        return Set(board.sales.compactMap(\.clientID)).sorted { $0.rawValue.uuidString < $1.rawValue.uuidString }
+    }
+
+    /// Resolves display labels in a caller-owned task separate from sales observation.
+    /// Missing, deactivated or unreadable clients retain their historical association without a display label.
+    /// Cancellation, changed client identities and close fence every suspended read.
+    func resolveClientNames() async {
+        let generation = UUID()
+        clientNamesGeneration = generation
+        let requestedIDs = clientIDs
+        clientDisplayNames = [:]
+        guard state != .closed, let getClient else { return }
+        var names: [ClientID: String] = [:]
+        for id in requestedIDs {
+            do {
+                try Task.checkCancellation()
+                let client = try await getClient(id)
+                try Task.checkCancellation()
+                guard clientNamesGeneration == generation, state != .closed, clientIDs == requestedIDs else { return }
+                names[id] = client.displayName
+            } catch {
+                guard !(error is CancellationError), !Task.isCancelled, clientNamesGeneration == generation,
+                      state != .closed, clientIDs == requestedIDs else { return }
+            }
+        }
+        guard !Task.isCancelled, clientNamesGeneration == generation,
+              state != .closed, clientIDs == requestedIDs else { return }
+        clientDisplayNames = names
     }
 
     /// Reserves one sale and presentation identity until the create session is dismissed.
@@ -70,12 +105,14 @@ final class WorkdayViewModel {
                 receivedSnapshot = true
                 let board = policy(sales)
                 state = board.isEmpty ? .empty : .content(board)
+                clientDisplayNames = clientDisplayNames.filter { clientIDs.contains($0.key) }
                 reconcileDestination(with: board)
             }
             try Task.checkCancellation()
             guard observationGeneration == generation else { return }
             if !receivedSnapshot {
                 state = .empty
+                clientDisplayNames = [:]
                 reconcileDestination(with: policy([]))
             }
         } catch {
@@ -92,6 +129,8 @@ final class WorkdayViewModel {
     /// Fences caller-owned work and ends navigation without owning or cancelling task handles.
     func close() {
         observationGeneration = nil
+        clientNamesGeneration = nil
+        clientDisplayNames = [:]
         destination = nil
         lastError = nil
         state = .closed
@@ -111,9 +150,11 @@ final class WorkdayViewModel {
 
     init(
         observe: ObserveSalesUseCase,
+        getClient: GetClientUseCase? = nil,
         makeID: @escaping @MainActor () -> UUID = { UUID() }
     ) {
         observeSales = observe
+        self.getClient = getClient
         self.makeID = makeID
     }
 }

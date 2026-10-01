@@ -1,6 +1,1014 @@
 {
   "sourceLanguage" : "es",
   "strings" : {
+    "sales.line.remove.title": {
+      "extractionState": "manual",
+      "comment": "Confirmation before permanently removing a captured service line from a draft sale.",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¿Retirar este servicio?"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Remove this service?"
+          }
+        }
+      }
+    },
+    "sales.line.remove.message": {
+      "extractionState": "manual",
+      "comment": "Confirmation before permanently removing a captured service line from a draft sale.",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "El servicio y sus condiciones guardadas se retirarán del borrador. Esta acción no se puede deshacer."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The service and its saved terms will be removed from the draft. This action cannot be undone."
+          }
+        }
+      }
+    },
+    "sales.workday.title": {
+      "extractionState": "manual",
+      "comment": "Workday and accepted sale detail. Interpolated values are service names, quantities or a localized tax percentage.",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jornada"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Workday"
+          }
+        }
+      }
+    },
+    "sales.workday.create": {
+      "extractionState": "manual",
+      "comment": "Workday and accepted sale detail. Interpolated values are service names, quantities or a localized tax percentage.",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nueva venta"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "New sale"
+          }
+        }
+      }
+    },
+    "sales.workday.loading": {
+      "extractionState": "manual",
+      "comment": "Workday and accepted sale detail. Interpolated values are service names, quantities or a localized tax percentage.",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cargando jornada"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Loading workday"
+          }
+        }
+      }
+    },
+    "sales.workday.empty.title": {
+      "extractionState": "manual",
+      "comment": "Workday and accepted sale detail. Interpolated values are service names, quantities or a localized tax percentage.",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sin operaciones pendientes"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No pending operations"
+          }
+        }
+      }
+    },
+    "sales.workday.empty.message": {
+      "extractionState": "manual",
+      "comment": "Workday and accepted sale detail. Interpolated values are service names, quantities or a localized tax percentage.",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Crea una venta para comenzar."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Create a sale to get started."
+          }
+        }
+      }
+    },
+    "sales.workday.upcoming": {
+      "extractionState": "manual",
+      "comment": "Workday and accepted sale detail. Interpolated values are service names, quantities or a localized tax percentage.",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Próximas"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Upcoming"
+          }
+        }
+      }
+    },
+    "sales.workday.inProgress": {
+      "extractionState": "manual",
+      "comment": "Workday and accepted sale detail. Interpolated values are service names, quantities or a localized tax percentage.",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "En curso"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "In progress"
+          }
+        }
+      }
+    },
+    "sales.workday.awaitingClosure": {
+      "extractionState": "manual",
+      "comment": "Workday and accepted sale detail. Interpolated values are service names, quantities or a localized tax percentage.",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pendientes de cierre"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Awaiting closure"
+          }
+        }
+      }
+    },
+    "sales.workday.section.empty": {
+      "extractionState": "manual",
+      "comment": "Workday and accepted sale detail. Interpolated values are service names, quantities or a localized tax percentage.",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sin operaciones"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No operations"
+          }
+        }
+      }
+    },
+    "sales.workday.error.title": {
+      "extractionState": "manual",
+      "comment": "Workday and accepted sale detail. Interpolated values are service names, quantities or a localized tax percentage.",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No se pudo cargar la jornada"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Workday could not be loaded"
+          }
+        }
+      }
+    },
+    "sales.workday.error.message": {
+      "extractionState": "manual",
+      "comment": "Workday and accepted sale detail. Interpolated values are service names, quantities or a localized tax percentage.",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reintenta para recuperar las operaciones locales."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Try again to recover local operations."
+          }
+        }
+      }
+    },
+    "sales.workday.openHint": {
+      "extractionState": "manual",
+      "comment": "Workday and accepted sale detail. Interpolated values are service names, quantities or a localized tax percentage.",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abre el detalle de esta operación."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Opens this operation’s details."
+          }
+        }
+      }
+    },
+    "sales.client.none": {
+      "extractionState": "manual",
+      "comment": "Workday and accepted sale detail. Interpolated values are service names, quantities or a localized tax percentage.",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sin cliente"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No client"
+          }
+        }
+      }
+    },
+    "sales.client.unavailable": {
+      "extractionState": "manual",
+      "comment": "Workday and accepted sale detail. Interpolated values are service names, quantities or a localized tax percentage.",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cliente no disponible"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Client unavailable"
+          }
+        }
+      }
+    },
+    "sales.status.draft": {
+      "extractionState": "manual",
+      "comment": "Workday and accepted sale detail. Interpolated values are service names, quantities or a localized tax percentage.",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Borrador"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Draft"
+          }
+        }
+      }
+    },
+    "sales.status.inProgress": {
+      "extractionState": "manual",
+      "comment": "Workday and accepted sale detail. Interpolated values are service names, quantities or a localized tax percentage.",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "En curso"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "In progress"
+          }
+        }
+      }
+    },
+    "sales.status.awaitingPayment": {
+      "extractionState": "manual",
+      "comment": "Workday and accepted sale detail. Interpolated values are service names, quantities or a localized tax percentage.",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pendiente de pago"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Awaiting payment"
+          }
+        }
+      }
+    },
+    "sales.status.awaitingDocument": {
+      "extractionState": "manual",
+      "comment": "Workday and accepted sale detail. Interpolated values are service names, quantities or a localized tax percentage.",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pagada · pendiente de documento"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Paid · awaiting document"
+          }
+        }
+      }
+    },
+    "sales.status.closed": {
+      "extractionState": "manual",
+      "comment": "Workday and accepted sale detail. Interpolated values are service names, quantities or a localized tax percentage.",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cerrada"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Closed"
+          }
+        }
+      }
+    },
+    "sales.status.voided": {
+      "extractionState": "manual",
+      "comment": "Workday and accepted sale detail. Interpolated values are service names, quantities or a localized tax percentage.",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anulada"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Voided"
+          }
+        }
+      }
+    },
+    "sales.line.upcoming": {
+      "extractionState": "manual",
+      "comment": "Workday and accepted sale detail. Interpolated values are service names, quantities or a localized tax percentage.",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Próximo"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Upcoming"
+          }
+        }
+      }
+    },
+    "sales.line.inProgress": {
+      "extractionState": "manual",
+      "comment": "Workday and accepted sale detail. Interpolated values are service names, quantities or a localized tax percentage.",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "En curso"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "In progress"
+          }
+        }
+      }
+    },
+    "sales.line.completed": {
+      "extractionState": "manual",
+      "comment": "Workday and accepted sale detail. Interpolated values are service names, quantities or a localized tax percentage.",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Terminado"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Completed"
+          }
+        }
+      }
+    },
+    "sales.lines.empty": {
+      "extractionState": "manual",
+      "comment": "Workday and accepted sale detail. Interpolated values are service names, quantities or a localized tax percentage.",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sin servicios"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No services"
+          }
+        }
+      }
+    },
+    "sales.lines.count %lld": {
+      "extractionState": "manual",
+      "comment": "Workday and accepted sale detail. Interpolated values are service names, quantities or a localized tax percentage.",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Servicios: %lld"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Services: %lld"
+          }
+        }
+      }
+    },
+    "sales.lines.title": {
+      "extractionState": "manual",
+      "comment": "Workday and accepted sale detail. Interpolated values are service names, quantities or a localized tax percentage.",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Servicios"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Services"
+          }
+        }
+      }
+    },
+    "sales.quantity %lld": {
+      "extractionState": "manual",
+      "comment": "Workday and accepted sale detail. Interpolated values are service names, quantities or a localized tax percentage.",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cantidad: %lld"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quantity: %lld"
+          }
+        }
+      }
+    },
+    "sales.quantity.for %@": {
+      "extractionState": "manual",
+      "comment": "Workday and accepted sale detail. Interpolated values are service names, quantities or a localized tax percentage.",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cantidad de %@"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quantity of %@"
+          }
+        }
+      }
+    },
+    "sales.line.remove": {
+      "extractionState": "manual",
+      "comment": "Workday and accepted sale detail. Interpolated values are service names, quantities or a localized tax percentage.",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Retirar servicio"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Remove service"
+          }
+        }
+      }
+    },
+    "sales.line.remove %@": {
+      "extractionState": "manual",
+      "comment": "Workday and accepted sale detail. Interpolated values are service names, quantities or a localized tax percentage.",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Retirar servicio %@"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Remove service %@"
+          }
+        }
+      }
+    },
+    "sales.line.tax %@": {
+      "extractionState": "manual",
+      "comment": "Workday and accepted sale detail. Interpolated values are service names, quantities or a localized tax percentage.",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "IVA: %@ %%"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "VAT: %@ %%"
+          }
+        }
+      }
+    },
+    "sales.totals.title": {
+      "extractionState": "manual",
+      "comment": "Workday and accepted sale detail. Interpolated values are service names, quantities or a localized tax percentage.",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Importes"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Amounts"
+          }
+        }
+      }
+    },
+    "sales.totals.subtotal": {
+      "extractionState": "manual",
+      "comment": "Workday and accepted sale detail. Interpolated values are service names, quantities or a localized tax percentage.",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Subtotal con IVA"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Subtotal including VAT"
+          }
+        }
+      }
+    },
+    "sales.totals.discount": {
+      "extractionState": "manual",
+      "comment": "Workday and accepted sale detail. Interpolated values are service names, quantities or a localized tax percentage.",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Descuento de servicios"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Service discounts"
+          }
+        }
+      }
+    },
+    "sales.totals.base": {
+      "extractionState": "manual",
+      "comment": "Workday and accepted sale detail. Interpolated values are service names, quantities or a localized tax percentage.",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Base imponible"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Taxable base"
+          }
+        }
+      }
+    },
+    "sales.totals.tax": {
+      "extractionState": "manual",
+      "comment": "Workday and accepted sale detail. Interpolated values are service names, quantities or a localized tax percentage.",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "IVA"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "VAT"
+          }
+        }
+      }
+    },
+    "sales.totals.total": {
+      "extractionState": "manual",
+      "comment": "Workday and accepted sale detail. Interpolated values are service names, quantities or a localized tax percentage.",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Total"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Total"
+          }
+        }
+      }
+    },
+    "sales.detail.title": {
+      "extractionState": "manual",
+      "comment": "Workday and accepted sale detail. Interpolated values are service names, quantities or a localized tax percentage.",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Detalle operativo"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Operation details"
+          }
+        }
+      }
+    },
+    "sales.draft.title": {
+      "extractionState": "manual",
+      "comment": "Workday and accepted sale detail. Interpolated values are service names, quantities or a localized tax percentage.",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Borrador de venta"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sale draft"
+          }
+        }
+      }
+    },
+    "sales.detail.readOnly": {
+      "extractionState": "manual",
+      "comment": "Workday and accepted sale detail. Interpolated values are service names, quantities or a localized tax percentage.",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Operación en consulta."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Operation displayed for review."
+          }
+        }
+      }
+    },
+    "sales.detail.loading": {
+      "extractionState": "manual",
+      "comment": "Workday and accepted sale detail. Interpolated values are service names, quantities or a localized tax percentage.",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cargando venta"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Loading sale"
+          }
+        }
+      }
+    },
+    "sales.detail.unavailable.title": {
+      "extractionState": "manual",
+      "comment": "Workday and accepted sale detail. Interpolated values are service names, quantities or a localized tax percentage.",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Venta no disponible"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sale unavailable"
+          }
+        }
+      }
+    },
+    "sales.detail.unavailable.message": {
+      "extractionState": "manual",
+      "comment": "Workday and accepted sale detail. Interpolated values are service names, quantities or a localized tax percentage.",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Esta operación ya no está disponible en esta sesión."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This operation is no longer available in this session."
+          }
+        }
+      }
+    },
+    "sales.create.message": {
+      "extractionState": "manual",
+      "comment": "Workday and accepted sale detail. Interpolated values are service names, quantities or a localized tax percentage.",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Crea un borrador sin cliente. Al cerrar conservarás los cambios guardados."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Create a draft without a client. Closing keeps saved changes."
+          }
+        }
+      }
+    },
+    "sales.create.accept": {
+      "extractionState": "manual",
+      "comment": "Workday and accepted sale detail. Interpolated values are service names, quantities or a localized tax percentage.",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Crear borrador"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Create draft"
+          }
+        }
+      }
+    },
+    "sales.close": {
+      "extractionState": "manual",
+      "comment": "Workday and accepted sale detail. Interpolated values are service names, quantities or a localized tax percentage.",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cerrar"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Close"
+          }
+        }
+      }
+    },
+    "sales.discard": {
+      "extractionState": "manual",
+      "comment": "Workday and accepted sale detail. Interpolated values are service names, quantities or a localized tax percentage.",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Descartar"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Discard"
+          }
+        }
+      }
+    },
+    "sales.discard.title": {
+      "extractionState": "manual",
+      "comment": "Workday and accepted sale detail. Interpolated values are service names, quantities or a localized tax percentage.",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¿Descartar el borrador?"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Discard this draft?"
+          }
+        }
+      }
+    },
+    "sales.discard.message": {
+      "extractionState": "manual",
+      "comment": "Workday and accepted sale detail. Interpolated values are service names, quantities or a localized tax percentage.",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Se retirará esta venta y sus servicios. Esta acción no se puede deshacer."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This sale and its services will be removed. This action cannot be undone."
+          }
+        }
+      }
+    },
+    "sales.keep": {
+      "extractionState": "manual",
+      "comment": "Workday and accepted sale detail. Interpolated values are service names, quantities or a localized tax percentage.",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Conservar"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keep"
+          }
+        }
+      }
+    },
+    "sales.retry": {
+      "extractionState": "manual",
+      "comment": "Workday and accepted sale detail. Interpolated values are service names, quantities or a localized tax percentage.",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reintentar"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Try again"
+          }
+        }
+      }
+    },
+    "sales.action.error.title": {
+      "extractionState": "manual",
+      "comment": "Workday and accepted sale detail. Interpolated values are service names, quantities or a localized tax percentage.",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No se pudo completar la acción"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The action could not be completed"
+          }
+        }
+      }
+    },
+    "sales.action.error.message": {
+      "extractionState": "manual",
+      "comment": "Workday and accepted sale detail. Interpolated values are service names, quantities or a localized tax percentage.",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Los cambios anteriores se conservan. Reintenta esta acción."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Previous changes are kept. Try this action again."
+          }
+        }
+      }
+    },
+    "sales.action.accepted": {
+      "extractionState": "manual",
+      "comment": "Workday and accepted sale detail. Interpolated values are service names, quantities or a localized tax percentage.",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cambios guardados"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Changes saved"
+          }
+        }
+      }
+    },
     "services.assistant.title": {
       "extractionState": "manual",
       "localizations": {

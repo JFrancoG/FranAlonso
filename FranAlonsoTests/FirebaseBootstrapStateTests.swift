@@ -22,7 +22,7 @@ struct FirebaseBootstrapStateTests {
     }
 
 #if FRANALONSO_AUTH_FIXTURE
-    @Test(arguments: [DevelopDemoComposition.Configuration.clients, .clientsResponseLost])
+    @Test(arguments: [DevelopDemoComposition.Configuration.clients, .clientsResponseLost, .workday])
     func `demo launch becomes ready without configuring Firebase`(configuration: DevelopDemoComposition.Configuration) {
         let delegate = AppDelegate()
         var configurationCalls = 0
