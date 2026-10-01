@@ -51,7 +51,12 @@ PRE/POST favorables; fuente validada `8cc3181` intacta. [Evidencia](../progress/
 [PR36](https://github.com/JFrancoG/FranAlonso/pull/36), merge `d9d1ed1`, validado `08898f7`; rama eliminada.
 [Propuesta](../progress/11-4-workday-viewmodels-proposal.md) PRE PASS.
 TDD GREEN: 38 declaraciones/66 variantes nuevas, regresión 1.906/1.906; builds Develop/Production y estilo/POST PASS.
-POST/entrega favorables y fuente intacta. 11.5 aún no implementada;11.5–11.9 conservan sus gates.
+POST/entrega favorables y fuente intacta.
+11.5 implementada localmente: [PLU-76](https://linear.app/plusprojects/issue/PLU-76) In Progress, Jesus Franco;
+rama `codex/plu-76-workday-screens`, [propuesta](../progress/11-5-workday-screens-proposal.md) con PRE PASS.
+Jornada/detalle, factories y demo aislada;1.934 variantes y builds PASS. Previews/smoke y retest focal PASS; POST técnico/UI PASS para gate funcional ADR0029.
+Deuda integral propia [PLU-77](https://linear.app/plusprojects/issue/PLU-77), Jesus Franco, antes de uso real.
+Entrega Git pendiente;11.6–11.9 conservan sus gates y live sigue inactivo.
 La fase11 continúa abierta.
 
 Jornada local-first sin trabajo cerrado ocupando espacio, Histórico separado, snapshots monetarios inmutables, Store justificado y finalización idempotente.

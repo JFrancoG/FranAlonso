@@ -7,6 +7,8 @@ struct AppDependencies {
     typealias ProductFormFactory = @MainActor @Sendable (ProductFormDestination) -> ProductFormViewModel
     typealias StockAdjustmentFactory = @MainActor @Sendable (StockAdjustmentDestination) -> StockAdjustmentViewModel
     typealias ClientConsentServicesFactory = @MainActor @Sendable () throws -> ClientConsentServices
+    typealias WorkdayFactory = @MainActor @Sendable () -> WorkdayViewModel
+    typealias SaleDraftFactory = @MainActor @Sendable (SaleDraftDestination) -> SaleDraftViewModel
 
     let observeClients: ObserveClientsUseCase
     let makeClientForm: ClientFormFactory
@@ -23,6 +25,8 @@ struct AppDependencies {
     let getSaleDraft: GetSaleDraftUseCase
     let updateSaleDraft: UpdateSaleDraftUseCase
     let discardSaleDraft: DiscardSaleDraftUseCase
+    let makeWorkday: WorkdayFactory
+    let makeSaleDraft: SaleDraftFactory
     let telemetryReporter: TelemetryReporter
 
     /// Creates production dependencies over the supplied local source of truth.
@@ -351,6 +355,8 @@ extension AppDependencies {
             getSaleDraft: GetSaleDraftUseCase(repository: saleRepository),
             updateSaleDraft: UpdateSaleDraftUseCase(repository: saleRepository),
             discardSaleDraft: DiscardSaleDraftUseCase(repository: saleRepository),
+            makeWorkday: Self.workdayFactory(saleRepository: saleRepository, clientRepository: clientRepository),
+            makeSaleDraft: Self.saleDraftFactory(saleRepository: saleRepository, clientRepository: clientRepository),
             telemetryReporter: TelemetryReporter(
                 analyticsDataSource: analyticsDataSource,
                 crashDataSource: crashDataSource

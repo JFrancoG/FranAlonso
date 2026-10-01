@@ -10,7 +10,12 @@ struct AppShellScreen: View {
 
         TabView(selection: $viewModel.selectedSection) {
             Tab(.appShellTabWorkday, systemImage: "calendar", value: AppSection.workday) {
-                unavailableSection(title: .appShellTabWorkday, systemImage: "calendar")
+                NavigationStack {
+                    WorkdayScreen(makeViewModel: dependencies.makeWorkday, makeSaleDraft: dependencies.makeSaleDraft)
+                        .toolbar {
+                            signOutToolbar
+                        }
+                }
             }
 
             Tab(.appShellTabHistory, systemImage: "clock.arrow.circlepath", value: AppSection.history) {
