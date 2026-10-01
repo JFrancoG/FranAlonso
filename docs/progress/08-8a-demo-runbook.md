@@ -1,4 +1,4 @@
-# Demo de clientes, productos, stock y servicios — 08.8a / 09 / 10.6
+# Demo de clientes, productos, stock y servicios — 08.8a / 09 / 10 / PLU-47
 
 ## Arranque
 
@@ -74,14 +74,36 @@ el vínculo no disponible y puede recuperarse eligiendo otro producto activo o c
 a comprobar la disponibilidad actual sin perder el borrador si falla. Si falla la lectura del catálogo, «Reintentar productos»
 recupera las opciones; no se afirma que el producto haya sido eliminado. Reiniciar restaura el escenario original.
 
+## Borrador de servicio con Foundation Models — PLU-47
+
+Solo en esta composición Develop, abrir Catálogo → Servicios → Nuevo servicio → Profesional.
+La sección «Borrador con Apple Intelligence» permite escribir una descripción sintética y generar una propuesta.
+Usar etiquetas explícitas y moneda: `Corte DEMO, precio 32,50 EUR, IVA 21 %, descuento 10 %` con locale español;
+en inglés usar punto decimal y las etiquetas `price`, `tax`, `discount`.
+
+1. Generar y revisar los campos propuestos; el formulario todavía conserva sus valores anteriores.
+2. Rechazar descarta la propuesta. Aplicar rellena únicamente los campos presentes y permite deshacer antes de otra edición.
+3. Completar o corregir el formulario y guardar con la acción habitual. Un impuesto ausente no se infiere:
+   debe completarse manualmente si el formulario sigue vacío.
+4. Cancelar una generación, cambiar de tipo o editar el formulario invalida cualquier respuesta tardía.
+   Ir a segundo plano limpia el asistente y conserva el borrador manual.
+
+El proveedor real usa el modelo local de Apple, sin red de fallback, tools ni almacenamiento del texto o la respuesta.
+Requiere dispositivo, Apple Intelligence, idioma y recursos compatibles; una versión de iOS por sí sola no lo garantiza.
+La ausencia del modelo o un error deja utilizable el formulario manual. Esta capacidad no está inyectada en el arranque
+normal, Production ni las previews; las previews usan un proveedor determinista. La inferencia física y el corpus real
+se acreditan solo con el ensayo correspondiente en [fase 16](phase-16.md), no con pruebas de dobles.
+
 ## Reinicio y límites de ambos recorridos
 
 Terminar el proceso y volver a lanzar recrea los dos borradores y dos productos con saldos8/2 y los dos servicios iniciales, vacía documentos/recibos y rearma el primer fallo del modo
 de recuperación. Ir a segundo plano o reabrir una pantalla no reinicia datos. Este reset no es recuperación durable.
 El storage normal continúa no disponible; esta demo no utiliza Firebase, Keychain, telemetría real ni motores live.
-No demuestra transporte, sincronización, persistencia entre procesos, fotografía, venta o Foundation Models. Los movimientos de stock de la demo solo viven durante ese proceso.
+No demuestra transporte, sincronización, persistencia entre procesos, fotografía ni venta. Los movimientos de stock de
+la demo solo viven durante ese proceso. PLU-47 añade únicamente el borrador textual anterior, no la fase 16 completa.
 
 Usar parámetros temporales de `DeviceInteractionInstallAndRun` al validar con Xcode MCP; no es necesario editar el esquema
 para cada recorrido. Cerrar la sesión de interacción al terminar y conservar ambos argumentos `NO` en el esquema.
-Resultados de validación y deuda accesible en [fase08](phase-08.md) y [fase09](phase-09.md) y [fase10](phase-10.md); diseño y límites en
+Resultados de validación y deuda accesible en [fase08](phase-08.md), [fase09](phase-09.md), [fase10](phase-10.md) y
+[fase16](phase-16.md); diseño y límites en
 [propuesta08.8a](08-8a-reusable-demo-proposal.md) y [ADR0030](../ADRs/0030-reusable-demo-and-early-foundation-models.md).

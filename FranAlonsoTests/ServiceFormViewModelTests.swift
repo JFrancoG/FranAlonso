@@ -273,7 +273,11 @@ struct ServiceFormFixture {
 }
 
 extension ServiceFormFixture {
-    init(mode: ServiceFormDestination.Mode, products: any ProductRepository = InMemoryProductRepository()) throws {
+    init(
+        mode: ServiceFormDestination.Mode,
+        products: any ProductRepository = InMemoryProductRepository(),
+        assistant: (any ServiceDraftInterpreter)? = nil
+    ) throws {
         let container = try ModelContainer.inMemory(for: .franAlonso)
         let reads = ServiceFormReadStub()
         let writes = ServiceFormWriteStub()
@@ -294,7 +298,8 @@ extension ServiceFormFixture {
                 deactivate: { id, _ in
                     try await writes.deactivate(id)
                 },
-                locale: Locale(identifier: "es_ES")
+                locale: Locale(identifier: "es_ES"),
+                assistant: assistant
             )
         )
     }

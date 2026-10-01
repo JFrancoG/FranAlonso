@@ -1,10 +1,23 @@
 # Project Progress
 
-Última actualización: 2026-09-30
+Última actualización: 2026-10-01
 
 ## Estado actual
 
-- **es/en y settings Xcode**:409 textos; iOS27; builds/tests/previews PASS.
+- **Adelanto textual16 / [PLU-47](https://linear.app/plusprojects/issue/PLU-47): In Progress**.
+  Autorizado tras09–10 según ADR0030; rama `codex/plu-47-foundation-models-service-draft`.
+  Adaptador local, propuesta reversible y guardado manual implementados; 106/106 resultados
+  (34 declaraciones), builds Develop/Production y 429 localizaciones PASS.
+  Dos sesiones y preflight acotado; guías de trabajo reconocible PRE/POST PASS.
+  PID1869/iPhone16:13/13 semánticos PASS, primera generación; Reject conserva el manual.
+  Cancel actual limitado por espejo; recuperación previa y tests reutilizados por impacto.
+  Fallos anteriores conservados; implementación local validada y registro revisado independientemente.
+  [Evidencia y límites](progress/phase-16.md).
+  Entrega Git autorizada en curso; sin cierre16. [PLU-70](https://linear.app/plusprojects/issue/PLU-70) Backlog,
+  Jesus Franco, [matriz](accessibility/evidence/16-service-draft-assistant.md): recuperar tras
+  feedback y estabilización, antes del primer candidato para uso real.
+
+- **es/en y settings Xcode**: base de409 textos, ampliada a429 en PLU-47; iOS27; builds/tests/previews PASS.
   [Evidencia](progress/localization-en-es.md).
 - **[PLU-69](https://linear.app/plusprojects/issue/PLU-69): Done**, [PR31](https://github.com/JFrancoG/FranAlonso/pull/31).
   App ordenada, Firebase 12.19.2; 1.564 resultados/builds PASS. [Registro](progress/app-organization.md).
@@ -13,31 +26,24 @@
   [Entrega y evidencia](progress/phase-10.md). Cierre integral pendiente: PLU-65/67 Backlog.
 - **Fase09 / [PLU-49](https://linear.app/plusprojects/issue/PLU-49): In Progress**.
   09.1–09.7 entregadas; PLU-58 Done, PR23/b40e1f6, cierre50ecc39 y rama eliminada. [Evidencia](progress/phase-09.md).
-  PRE/POST,1.346 resultados y builds PASS; aviso AppIntents conocido. PLU-54/57: Backlog accesible09.4/09.6,
-  Jesus Franco, tras feedback/estabilización y antes de uso real. La fase conserva su cierre integral pendiente.
+  PRE/POST, validación técnica y builds PASS. PLU-54/57: Backlog accesible09.4/09.6,
+  Jesus Franco, tras feedback y antes de uso real. Cierre integral pendiente.
 - **[ADR0030](ADRs/0030-reusable-demo-and-early-foundation-models.md) aceptado y publicado** el29/09;
   orden excepcional y alcance canónico en [índice](specs/00_index.md). [Registro](progress/phase-08.md).
 - **08.8a / [PLU-46](https://linear.app/plusprojects/issue/PLU-46): Done funcional**, entrega y cierre autorizados.
   [PR16](https://github.com/JFrancoG/FranAlonso/pull/16), merge `b334c04`, validado `0c76967` intacto; ramas eliminadas.
   [Guía](progress/08-8a-demo-runbook.md) y [evidencia](progress/phase-08.md). Demo Debug-Develop: dos borradores,
   capas reales, memoria y proveedores simulados; sin live/durabilidad.
-  Xcode MCP: **847 declaraciones /1.120 resultados PASS**, builds Develop/Production PASS con aviso AppIntents conocido.
-  PRE/POST y seis previews PASS; smoke de alta/edición/autenticación/recuperación sin refirma PASS.
-  Sesiones cerradas, Develop/iPhone11 restaurado, argumentos `NO`; sin checks remotos.
+  Validación técnica, PRE/POST, previews y smoke PASS en [fase08](progress/phase-08.md).
 - **[PLU-48](https://linear.app/plusprojects/issue/PLU-48): Backlog**, evidencia accesible integral nueva del aviso/encuadre.
   Jesus Franco, hija dePLU-34 y relacionada conPLU-46; [matriz55](accessibility/evidence/08-8a-reusable-demo.md).
   Recuperar tras feedback y estabilización de este flujo, antes de uso real. PLU-44/45/38 conservan su deuda propia.
-- **[PLU-47](https://linear.app/plusprojects/issue/PLU-47): Backlog**, adelanto de Foundation Models tras09–10.
-  Una descripción escrita propone un servicio profesional editable; inferencia local real y guardado manual habitual.
-  Hija dePLU-9, responsable Jesus Franco; alcance parcial en [spec16](specs/16_on_device_voice_assistant.md).
-  Resto de16 pendiente. Después siguen11–13 para venta completa; la demo se amplía al implementar cada capacidad.
 - **08.8 / [PLU-42](https://linear.app/plusprojects/issue/PLU-42): Done funcional**, entrega y cierre autorizados.
   [PR #15](https://github.com/JFrancoG/FranAlonso/pull/15) integrada en `0126c6b`; árbol validado `91eb3a7` intacto.
   Rama local/remota eliminadas; [propuesta](progress/08-8-client-activation-proposal.md).
   Alta recuperable tras recibo durable, reintento sin refirma ni segundo envío y conservación de edición concurrente.
-  Xcode MCP:1.094/1.094 resultados PASS; build9,323s, retest2/2 y restauración8,907s con aviso AppIntents previo.
-  PRE/POST, previews y smoke táctil PASS; harness temporal retirado byte a byte. Árbol integrado idéntico al validado;
-  sin checks remotos. Evidencia completa en [fase08](progress/phase-08.md); no acredita Storage real ni AT integral.
+  PRE/POST, validación técnica, previews y smoke PASS; [fase08](progress/phase-08.md).
+  No acredita Storage real ni AT integral.
 - **08.9 / [PLU-43](https://linear.app/plusprojects/issue/PLU-43): Backlog**, aplazada por ADR0030 hasta el feedback
   de la demo acordada. Responsable Jesus Franco; foto, autorización y detalle completos conservados. Retomar antes
   del cierre integral de fase08 y uso real. No bloquea09–10/venta sin foto; no equivale a una subfase terminada.
@@ -64,8 +70,7 @@
 - **08.4 / [PLU-38](https://linear.app/plusprojects/issue/PLU-38): In Progress**, integrada mediante
   [PR#11](https://github.com/JFrancoG/FranAlonso/pull/11), merge `c4d7b00`; DoD propia pendiente.
   Captura inmutable Codable, ViewModel, lienzo/edición y excepción de trayectoria ADR0027. Acceso temporal retirado.
-  Confirmados los recorridos físicos/manuales ya registrados, incluidos VoiceOver básico, Control por voz/botón,
-  teclado/FKA, bloqueo físico, AX5, rotación, ventana mínima y preferencias. No se repiten por rutina ni se amplía su alcance.
+  Recorridos físicos/manuales aceptados y límites en [fase08](progress/phase-08.md); no se repiten por rutina.
 
 ## Pendientes separados de08.4
 

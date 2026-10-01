@@ -21,6 +21,36 @@ struct ServicePreviewFixtures {
 }
 
 extension ServicePreviewFixtures {
+    static let assistantDestination = ServiceFormDestination(
+        id: UUID(uuid: (16, 3, 0, 0, 0, 0, 64, 0, 128, 0, 0, 0, 0, 0, 1, 1)),
+        serviceID: ServiceID(rawValue: UUID(uuid: (16, 3, 0, 0, 0, 0, 64, 0, 128, 0, 0, 0, 0, 0, 0, 1))),
+        mode: .create
+    )
+
+    /// Exercises the complete form with fixed interpretation and no model inference or accepted writes.
+    @MainActor
+    static func makeAssistantForm(destination: ServiceFormDestination, locale: Locale) -> ServiceFormViewModel {
+        let products = InMemoryProductRepository()
+        let viewModel = ServiceFormViewModel(
+            destination: destination,
+            getService: GetServiceUseCase(repository: InMemoryServiceRepository()),
+            observeLinkableProducts: ObserveLinkableProductsUseCase(repository: products),
+            create: { _, _, _ in
+                throw ServiceError.persistenceUnavailable
+            },
+            update: { _, _, _ in
+                throw ServiceError.persistenceUnavailable
+            },
+            deactivate: { _, _ in
+                throw ServiceError.persistenceUnavailable
+            },
+            locale: locale,
+            assistant: PreviewServiceDraftInterpreter()
+        )
+        viewModel.assistantInput = "Servicio profesional de corte y peinado, precio 35 euros"
+        return viewModel
+    }
+
     static let list250: [Service] = (1...250).map { index in
         do {
             return try Service(
@@ -73,4 +103,13 @@ extension ServicePreviewFixtures {
             preconditionFailure("The fixed service preview values must satisfy Domain invariants")
         }
     }()
+}
+
+private struct PreviewServiceDraftInterpreter: ServiceDraftInterpreter {
+    func availability(locale: Locale) async -> ServiceDraftAvailability { .available }
+
+    func interpret(_ description: String, locale: Locale) async throws -> ServiceDraftProposal {
+        try Task.checkCancellation()
+        return try ServiceDraftProposal(name: "Corte y peinado", price: Money(amount: 35, currency: .eur))
+    }
 }

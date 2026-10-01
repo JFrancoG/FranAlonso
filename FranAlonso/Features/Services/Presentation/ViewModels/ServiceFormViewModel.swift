@@ -40,6 +40,9 @@ final class ServiceFormViewModel {
     /// Correction clears local validation feedback only; persistence errors remain until retry.
     var draft = ServiceFormDraft() {
         didSet {
+            if draft != oldValue {
+                clearAssistant(clearInput: true)
+            }
             guard draft != oldValue, case .failed(.save, let error) = state,
                   error.isLocalValidation, (try? draft.prepareProfile(locale: locale)) != nil else { return }
             state = .editing
@@ -57,6 +60,16 @@ final class ServiceFormViewModel {
     @ObservationIgnored private var operationGeneration = UUID()
     @ObservationIgnored private var productObservationGeneration = UUID()
     private var baseline = ServiceFormDraft()
+    var assistantInput = "" {
+        didSet {
+            guard assistantInput != oldValue else { return }
+            clearAssistant(clearInput: false)
+        }
+    }
+    private(set) var assistantState: ServiceDraftAssistantState = .idle
+    private(set) var assistantRequestID: UUID?
+    private let assistant: (any ServiceDraftInterpreter)?
+    @ObservationIgnored private var assistantUndoDraft: ServiceFormDraft?
 
     /// Captures the numeric locale for the session without retaining a persistent context.
     init(
@@ -66,7 +79,8 @@ final class ServiceFormViewModel {
         create: @escaping SaveOperation,
         update: @escaping SaveOperation,
         deactivate: @escaping DeactivateOperation,
-        locale: Locale = .current
+        locale: Locale = .current,
+        assistant: (any ServiceDraftInterpreter)? = nil
     ) {
         self.destination = destination
         self.getService = getService
@@ -75,6 +89,7 @@ final class ServiceFormViewModel {
         self.update = update
         deactivateService = deactivate
         self.locale = locale
+        self.assistant = assistant
         state = destination.mode == .create ? .editing : .idle
     }
 
@@ -90,6 +105,136 @@ final class ServiceFormViewModel {
 
     /// Raw input participates in dirty tracking, including currently invalid numeric text.
     var hasUnsavedChanges: Bool { canEdit && draft != baseline }
+
+    var canUseAssistant: Bool { assistant != nil && destination.mode == .create && draft.type == .professional }
+
+    var canRequestAssistant: Bool {
+        canUseAssistant && canEdit && assistantState != .generating
+            && !assistantInput.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+    }
+
+    var assistantProposalName: String? { assistantProposal?.name }
+
+    var assistantProposalPrice: String? {
+        guard let price = assistantProposal?.price else { return nil }
+        return ServiceDecimalInput(locale: locale).format(price.amount) + " " + price.currency.rawValue
+    }
+
+    var assistantProposalTax: String? {
+        assistantProposal?.taxRate.map { ServiceDecimalInput(locale: locale).format($0.percentage) + "%" }
+    }
+
+    var assistantProposalDiscount: String? {
+        assistantProposal?.discount.map { ServiceDecimalInput(locale: locale).format($0.percentage) + "%" }
+    }
+
+    private var assistantProposal: ServiceDraftProposal? {
+        guard case .proposed(let proposal) = assistantState else { return nil }
+        return proposal
+    }
+
+    /// Starts an explicit interpretation owned by the caller's structured task.
+    /// Replacing an identity invalidates earlier work, even when input later returns to its original value.
+    func requestAssistantProposal() {
+        guard canUseAssistant, canEdit else { return }
+        clearAssistant(clearInput: false)
+        let input = assistantInput.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !input.isEmpty else {
+            assistantState = .failed(.clarification)
+            return
+        }
+        guard input.count <= 1_000 else {
+            assistantState = .failed(.inputTooLong)
+            return
+        }
+        assistantRequestID = UUID()
+        assistantState = .generating
+    }
+
+    /// Availability and responses never change the editable draft or invoke a persistence capability.
+    /// Cancellation or invalidation discards late responses without claiming to stop the model's physical work.
+    func generateAssistantProposal(for requestID: UUID) async {
+        guard assistantRequestID == requestID, let assistant, canUseAssistant, canEdit else { return }
+        let input = assistantInput
+        do {
+            try Task.checkCancellation()
+            let availability = await assistant.availability(locale: locale)
+            try Task.checkCancellation()
+            guard assistantRequestID == requestID else { return }
+            guard availability == .available else {
+                assistantState = .unavailable(availability)
+                assistantRequestID = nil
+                return
+            }
+            let proposal = try await assistant.interpret(input, locale: locale)
+            try Task.checkCancellation()
+            guard assistantRequestID == requestID, canUseAssistant, canEdit else { return }
+            assistantState = .proposed(proposal)
+            assistantRequestID = nil
+        } catch {
+            guard assistantRequestID == requestID else { return }
+            if error is CancellationError || Task.isCancelled {
+                clearAssistant(clearInput: true)
+            } else {
+                assistantState = .failed((error as? ServiceDraftAssistantError) ?? .generationFailed)
+                assistantRequestID = nil
+            }
+        }
+    }
+
+    /// Copies only reviewed, present fields. The existing Save action remains the sole persistence entry point.
+    func applyAssistantProposal() {
+        guard canUseAssistant, canEdit, let proposal = assistantProposal else { return }
+        let previousDraft = draft
+        var edited = draft
+        let numbers = ServiceDecimalInput(locale: locale)
+        if let name = proposal.name {
+            edited.name = name
+        }
+        if let price = proposal.price {
+            edited.priceText = numbers.format(price.amount)
+            edited.currency = price.currency
+        }
+        if let tax = proposal.taxRate {
+            edited.taxText = numbers.format(tax.percentage)
+        }
+        if let discount = proposal.discount {
+            edited.discountText = numbers.format(discount.percentage)
+        }
+        clearAssistant(clearInput: true)
+        draft = edited
+        assistantUndoDraft = previousDraft
+        assistantState = .applied
+    }
+
+    func rejectAssistantProposal() {
+        clearAssistant(clearInput: true)
+    }
+
+    func cancelAssistant() {
+        clearAssistant(clearInput: true)
+    }
+
+    /// Drops inference state on background or loss of the active scene, preserving manual edits.
+    func interruptAssistant() {
+        clearAssistant(clearInput: true)
+    }
+
+    /// Undo is available only until the next manual edit, interpretation or lifecycle interruption.
+    func undoAssistantApplication() {
+        guard canUseAssistant, canEdit, let previous = assistantUndoDraft else { return }
+        clearAssistant(clearInput: true)
+        draft = previous
+    }
+
+    private func clearAssistant(clearInput: Bool) {
+        assistantRequestID = nil
+        assistantState = .idle
+        assistantUndoDraft = nil
+        if clearInput, !assistantInput.isEmpty {
+            assistantInput = ""
+        }
+    }
 
     /// Observes active choices for the caller task without changing the draft or write feedback.
     /// A finite snapshot remains usable; completion without a snapshot requires an explicit retry.
@@ -178,6 +323,7 @@ final class ServiceFormViewModel {
     /// An accepted write remains successful when cancellation arrives during persistence.
     func save(in context: ModelContext) async {
         guard canEdit, !Task.isCancelled else { return }
+        clearAssistant(clearInput: true)
         let profile: ServiceProfile
         do {
             profile = try draft.prepareProfile(locale: locale)
@@ -224,6 +370,7 @@ final class ServiceFormViewModel {
 
     /// Clears presentation and fences responses without claiming to undo an accepted write.
     func close() {
+        clearAssistant(clearInput: true)
         operationGeneration = UUID()
         productObservationGeneration = UUID()
         linkableProductsState = .idle

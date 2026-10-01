@@ -58,7 +58,8 @@ struct AppDependencies {
         crashDataSource: any CrashDataSource,
         clientRepository: (any ClientRepository)? = nil,
         authenticationRoot: AuthenticationRootViewModel? = nil,
-        clientDocumentStorage: (any ClientDocumentStorage)? = nil
+        clientDocumentStorage: (any ClientDocumentStorage)? = nil,
+        serviceDraftInterpreter: (any ServiceDraftInterpreter)? = nil
     ) -> AppDependencies {
         let observationSignal = ClientObservationSignal()
         let productObservationSignal = ProductObservationSignal()
@@ -92,7 +93,8 @@ struct AppDependencies {
             analyticsDataSource: analyticsDataSource,
             crashDataSource: crashDataSource,
             clientRepository: clientRepository,
-            makeClientConsentServices: makeClientConsentServices
+            makeClientConsentServices: makeClientConsentServices,
+            serviceDraftInterpreter: serviceDraftInterpreter
         )
     }
 #endif
@@ -211,7 +213,8 @@ struct AppDependencies {
         analyticsDataSource: any AnalyticsDataSource,
         crashDataSource: any CrashDataSource,
         clientRepository injectedClientRepository: (any ClientRepository)?,
-        makeClientConsentServices: ClientConsentServicesFactory?
+        makeClientConsentServices: ClientConsentServicesFactory?,
+        serviceDraftInterpreter: (any ServiceDraftInterpreter)?
     ) -> AppDependencies {
         let clientRepository = injectedClientRepository ?? DefaultClientRepository(
             persistenceActor: persistenceActor,
@@ -252,7 +255,8 @@ struct AppDependencies {
             makeServiceForm: serviceFormFactory(
                 persistenceActor: servicePersistenceActor,
                 observationSignal: serviceObservationSignal,
-                productRepository: productRepository
+                productRepository: productRepository,
+                assistant: serviceDraftInterpreter
             ),
             saleRepository: saleRepository,
             analyticsDataSource: analyticsDataSource,
