@@ -1,5 +1,9 @@
 # 11.6 — Selector de servicios en el borrador de venta
 
+Estado actual02/10/2026: PLU-78 Done funcional segúnADR0029,
+[PR38](https://github.com/JFrancoG/FranAlonso/pull/38) MERGED (`fcb0a6e` → `9f38731`), árbol idéntico y rama eliminada.
+PLU-79 Backlog/Jesus Franco y fasePLU-71 activa. El registro inicial y las decisiones se conservan a continuación.
+
 2026-10-01. [PLU-78](https://linear.app/plusprojects/issue/PLU-78), In Progress/Jesus Franco;
 rama `codex/plu-78-sale-service-selection` desde main limpio/sincronizado `0d9b06f`.
 El usuario autoriza abrir issue/rama e implementar11.6. No entrega Git, cierre, siguiente subfase ni live.
@@ -180,3 +184,9 @@ PLU79 Backlog/Jesus Franco con validación integral antes del candidato real. Fu
 Entrega autorizada el02/10/2026: el usuario solicita commit, push, PR, merge y cierre dePLU78/rama.
 La preparación sólo actualiza documentación/changelog; fuente586 íntegra igual a validación final.
 DeudaPLU79 y fasePLU71 permanecen abiertas; no autoriza11.7 ni live.
+
+Entrega completada el02/10/2026: commit/push `fcb0a6e`, PR38 MERGED como `9f38731`, árbol y fuente586 idénticos.
+Rama local/remota eliminada tras verificar ancestry y ausencia de commits únicos. Revisión focal de entrega PASS,
+proof whole746 intacto `03cd4722a43626051376e394d9bf9639d7b98163ad512a1020b100bde2ecfb88`.
+PLU-78 Done funcional, fase11 In Progress, PLU-79 conserva matriz/recuperación antes del candidato real.
+Cierre documental en main, sin cambios ejecutables; evidencia y límites en [fase11](phase-11.md).

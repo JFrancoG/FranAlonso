@@ -3,8 +3,9 @@
 2026-10-01. Registro propio de [PLU-78](https://linear.app/plusprojects/issue/PLU-78), según
 [ADR 0022](../../ADRs/0022-native-ios-wcag22-accessibility.md),
 [ADR 0029](../../ADRs/0029-progressive-accessibility-validation.md) y la
-[matriz canónica](../WCAG22_AA_IOS.md). La implementación local y el gate funcional para demo no acreditan cierre
-integral ni entrega Git. No se trasladan resultados de 11.5 a este flujo.
+[matriz canónica](../WCAG22_AA_IOS.md). El gate funcional para demo no acredita cierre integral.
+Entrega Git en [PR38](https://github.com/JFrancoG/FranAlonso/pull/38), PLU-78 Done funcional el02/10/2026.
+No se trasladan resultados de 11.5 a este flujo.
 
 Deuda propia: [PLU-79](https://linear.app/plusprojects/issue/PLU-79), **Backlog**, responsable **Jesus Franco**, hija de
 fase 11/PLU-71 y relacionada con PLU-78. Recuperar la evidencia pendiente tras feedback de Fran y estabilización de
@@ -152,3 +153,8 @@ integral, entrega Git ni fase completa. Cierre del registro funcional:02/10/2026
 
 Entrega funcional Git autorizada el02/10/2026 y en preparación; conserva el dictamen funcional PASS, matriz55,
 PLU79/responsable y gate integral abierto. No se cambian resultados ni se atribuye nueva evidencia accesible.
+
+Entrega Git completada el02/10/2026: PR38 MERGED, `fcb0a6e` → `9f38731`, árbol/fuente586 idénticos;
+rama local/remota eliminada y PLU-78 Done funcional. Revisión independiente focal de entrega PASS.
+Este cierre sólo reconcilia metadata: matriz55, 45Limitado/10Pendiente, PLU-79 Backlog/Jesus Franco,
+su recuperación antes del candidato real y fase11 In Progress permanecen intactos.

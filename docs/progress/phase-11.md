@@ -1,6 +1,6 @@
 # Fase11 — Jornada y motor de ventas
 
-Última actualización: 2026-10-01.
+Última actualización: 2026-10-02.
 [PLU-71](https://linear.app/plusprojects/issue/PLU-71): In Progress, Jesus Franco.
 Autoridad: [spec11](../specs/11_sales_engine.md), constitución y ADR0011/0016/0018/0030.
 
@@ -97,7 +97,8 @@ UI/accesibilidad N/A (sin delta). Solo se reconcilia después la metadata de aud
 11.1 entregada y cerrada; no quedan gates abiertos dentro de su alcance aprobado.
 11.2 entregada y cerrada en PR34/PLU-73; GREEN/builds/PRE/POST PASS.
 11.3 entregada y cerrada en PR35/PLU-74; 1.840/1.840, builds y PRE/POST/entrega favorables.
-11.4–11.9 conservan sus propios gates.
+11.4–11.6 entregadas en PR36–38; 11.5/11.6 cierran su gate funcional según ADR0029.
+11.7–11.9 conservan sus propios gates; PLU-77/79 mantienen validación accesible integral.
 La demo completa necesita stock12 y documento13; fase11 y deuda accesible previa siguen abiertas.
 
 ## Entrega11.1 — 2026-10-01
@@ -873,3 +874,34 @@ Root y reviewer FULLJSON746 before/after íntegros iguales
 Informe `/tmp/plu78-delivery-independent-report.md`; proofs propios
 `/tmp/plu78-delivery-independent-before.json` y `/tmp/plu78-delivery-independent-after.json`.
 Fuente586 igual, bundles actuales/exports y logs finales verificados. Registro posterior sólo documental.
+
+### Entrega funcional 11.6 — 2026-10-02
+
+- Autorización completa del usuario: commit, push, PR, merge, cierre de issue y rama.
+- Commit `fcb0a6e7dec24dc8b574b123971865321243862f`,
+  `✨ feat(sales): add service selection to sale drafts`, publicado en origin.
+  Staging explícito de 24 rutas; índice igual al worktree en cada archivo y sin cambios ajenos.
+  Patch revisado, commit y diff publicado de PR idénticos:
+  SHA256 `b1966f569909014cdf930b0d243ba5c44646dfdc3c91aa8649a8a275cd224deb`.
+- [PR38](https://github.com/JFrancoG/FranAlonso/pull/38) MERGED en main;
+  merge `9f38731f766492da0d00699cd3010290e179aebb`, árbol idéntico al commit validado.
+  Head/base exactos, 24 archivos previstos y CLEAN/MERGEABLE antes de integrar;
+  no checks remotos ni reviews pendientes, main sin protección. No se atribuye CI PASS.
+  Linear y criterios releídos inmediatamente antes del merge, sin ampliaciones concurrentes.
+- Rama `codex/plu-78-sale-service-selection` local/remota eliminada después de probar ancestry,
+  cero commits únicos y worktree limpio; ausencia local/remota verificada tras fetch/prune.
+  Main actualizado por fast-forward y local/origin/main iguales en el merge.
+- Fuente/configuración586 FULLJSON idénticos después de integrar:
+  `b335eec849cf32f3baf861ca637da6780eaf6fc848cfe75cca850ffbc32f84d9`.
+  Se reutilizan RED/GREEN, regresión1245/1959, builds finales, 18 previews, smoke10/23 y auditorías PASS.
+  Los 2/1 avisos conocidos de metadatos AppIntents se conservan separados de Swift/Clang.
+- PLU-78 Done funcional por integración Linear/GitHub, leído de vuelta; descripción reconciliada.
+  PLU-71 permanece In Progress, con 11.6 entregada y siguiente gate11.7/descuentos sin iniciar.
+  PLU-79 sigue Backlog/Jesus Franco: matriz55, 45Limitado/10Pendiente, tras feedback y estabilización
+  por flujo antes del primer candidato real. Teclado en pantalla, AT, Inspector y evidencia física pendientes.
+  PLU-77/65/67 conservan su propia deuda; sin cierre integral, siguiente subfase ni live.
+
+Reconciliación posterior en main: seis documentos/changelog, sin código/configuración ni resultados accesibles nuevos.
+Xcode adicional N/A: fuente idéntica y validación reciente reutilizada. Progress dentro de8192bytes,
+diff whitespace PASS; gobernanza mantiene únicamente seis enlaces históricos de capturas08.3 rotos.
+Commit/push documental de cierre autorizado por la entrega completa; verificación final de main tras publicarlo.

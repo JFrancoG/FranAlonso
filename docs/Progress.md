@@ -4,11 +4,11 @@
 
 ## Estado actual
 
-- **11.6 / [PLU-78](https://linear.app/plusprojects/issue/PLU-78): In Progress**, Jesus Franco.
-  `codex/plu-78-sale-service-selection`: selector local/snapshots,1.959 variantes y builds PASS.
-  [Evidencia](progress/phase-11.md); previews/smoke/POST técnico/UI PASS para demo, entrega Git autorizada en curso.
+- **11.6 / [PLU-78](https://linear.app/plusprojects/issue/PLU-78): Done funcional**, Jesus Franco.
+  [PR38](https://github.com/JFrancoG/FranAlonso/pull/38), merge `9f38731`; rama local/remota eliminada.
+  Selector/snapshots:1.959 variantes, builds/previews/smoke y auditorías PASS. [Evidencia](progress/phase-11.md).
 - **11.1–11.5: Done funcional**, PLU-72–76/PR33–37; fasePLU-71 activa, ramas eliminadas.
-
+- Próximo gate de spec: **11.7 / descuentos**, pendiente de inicio.
 - [PLU-77](https://linear.app/plusprojects/issue/PLU-77)/[PLU-79](https://linear.app/plusprojects/issue/PLU-79):
   Backlog accesible11.5/11.6, Jesus Franco; tras estabilizar cada flujo, antes de uso real.
 

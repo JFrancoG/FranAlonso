@@ -99,6 +99,10 @@ All notable changes to this project are documented in this file.
 
 ### Documentation
 
+- 2026-10-02 | 📝 docs(delivery): close service selector delivery
+  Records PR38, PLU-78 completion and verified branch cleanup.
+  Retains PLU-79 integral accessibility validation and the active Phase 11 gate.
+
 - 2026-10-01 | 📝 docs(delivery): close workday screen delivery
   Records PR37, PLU-76 completion and verified branch cleanup; phase11 and accessibility debt PLU-77 remain open.
 
