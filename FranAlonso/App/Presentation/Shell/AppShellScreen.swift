@@ -11,7 +11,11 @@ struct AppShellScreen: View {
         TabView(selection: $viewModel.selectedSection) {
             Tab(.appShellTabWorkday, systemImage: "calendar", value: AppSection.workday) {
                 NavigationStack {
-                    WorkdayScreen(makeViewModel: dependencies.makeWorkday, makeSaleDraft: dependencies.makeSaleDraft)
+                    WorkdayScreen(
+                        makeViewModel: dependencies.makeWorkday,
+                        makeSaleDraft: dependencies.makeSaleDraft,
+                        makeServicePicker: dependencies.makeSaleServicePicker
+                    )
                         .toolbar {
                             signOutToolbar
                         }

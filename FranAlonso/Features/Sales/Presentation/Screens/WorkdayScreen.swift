@@ -3,6 +3,7 @@ import SwiftUI
 
 struct WorkdayScreen: View {
     let makeSaleDraft: @MainActor @Sendable (SaleDraftDestination) -> SaleDraftViewModel
+    let makeServicePicker: @MainActor @Sendable (SaleDraftViewModel) -> SaleServicePickerViewModel
     @Environment(\.locale) private var locale
     @AccessibilityFocusState private var focusedSale: SaleID?
     @AccessibilityFocusState private var createIsFocused: Bool
@@ -29,7 +30,11 @@ struct WorkdayScreen: View {
             }
         }
         .sheet(item: destination, onDismiss: restoreFocus) { destination in
-            SaleDraftScreen(destination: destination, makeViewModel: makeSaleDraft)
+            SaleDraftScreen(
+                destination: destination,
+                makeViewModel: makeSaleDraft,
+                makeServicePicker: makeServicePicker
+            )
                 .id(destination.id)
         }
         .task(id: observationRequestID) {
@@ -90,9 +95,11 @@ struct WorkdayScreen: View {
 extension WorkdayScreen {
     init(
         makeViewModel: @MainActor @Sendable () -> WorkdayViewModel,
-        makeSaleDraft: @escaping @MainActor @Sendable (SaleDraftDestination) -> SaleDraftViewModel
+        makeSaleDraft: @escaping @MainActor @Sendable (SaleDraftDestination) -> SaleDraftViewModel,
+        makeServicePicker: @escaping @MainActor @Sendable (SaleDraftViewModel) -> SaleServicePickerViewModel
     ) {
         self.makeSaleDraft = makeSaleDraft
+        self.makeServicePicker = makeServicePicker
         _viewModel = State(initialValue: makeViewModel())
     }
 }
@@ -100,6 +107,10 @@ extension WorkdayScreen {
 #Preview("Workday", traits: .modifier(SalesPreviewModifier())) {
     @Previewable @Environment(\.appDependencies) var dependencies
     NavigationStack {
-        WorkdayScreen(makeViewModel: dependencies.makeWorkday, makeSaleDraft: dependencies.makeSaleDraft)
+        WorkdayScreen(
+            makeViewModel: dependencies.makeWorkday,
+            makeSaleDraft: dependencies.makeSaleDraft,
+            makeServicePicker: dependencies.makeSaleServicePicker
+        )
     }
 }

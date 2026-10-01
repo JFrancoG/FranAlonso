@@ -6,6 +6,10 @@ All notable changes to this project are documented in this file.
 
 ### Added
 
+- 2026-10-02 | ✨ feat(sales): add service selection to sale drafts
+  Adds active catalogue search and type filters to editable sale drafts.
+  Freezes commercial terms before acceptance and preserves line identity during retry and cancellation.
+
 - 2026-10-01 | ✨ feat(sales): add workday and operational detail screens
   Adds the operational workday board and contextual draft or read-only detail screens.
   Preserves accepted edits on close, confirms removal and discard, and provides an isolated workday demo.
