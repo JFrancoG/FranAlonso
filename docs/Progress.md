@@ -4,12 +4,12 @@
 
 ## Estado actual
 
-- **11.2 / [PLU-73](https://linear.app/plusprojects/issue/PLU-73): Done**.
-  [PR34](https://github.com/JFrancoG/FranAlonso/pull/34)/`ad5eeb5`; rama eliminada; 1.797/1.797 y builds/PRE/POST PASS.
+- **11.3 / [PLU-74](https://linear.app/plusprojects/issue/PLU-74): In Progress**.
+  `codex/plu-74-sale-draft-store`; 1.840/1.840, builds/PRE/POST PASS; entrega pendiente. [Evidencia](progress/phase-11.md).
 
-- **11.1 / [PLU-72](https://linear.app/plusprojects/issue/PLU-72): Done**; PLU-71 sigue activa.
-  [PR33](https://github.com/JFrancoG/FranAlonso/pull/33)/`794478e`, validado `8cc3181`; rama eliminada.
-  1.753/1.753, builds y PRE/POST PASS. [Evidencia](progress/phase-11.md).
+- **11.1–11.2: Done (PLU-72/73)**; PLU-71 sigue activa.
+  PR33/`794478e`, PR34/`ad5eeb5`; ramas eliminadas; 1.797/1.797, builds/PRE/POST PASS.
+  [Evidencia y entregas](progress/phase-11.md).
 
 - **Borrador16 / [PLU-47](https://linear.app/plusprojects/issue/PLU-47): Done funcional**,
   [PR32](https://github.com/JFrancoG/FranAlonso/pull/32)/`f1c781d`, rama eliminada.

@@ -95,8 +95,9 @@ UI/accesibilidad N/A (sin delta). Solo se reconcilia después la metadata de aud
 ## Pendientes
 
 11.1 entregada y cerrada; no quedan gates abiertos dentro de su alcance aprobado.
-11.2 entregada y cerrada en PR34/PLU-73; GREEN/builds/PRE/POST PASS. Siguiente11.3/SaleDraftStore pendiente de inicio.
-11.3–11.9 conservan sus propios gates.
+11.2 entregada y cerrada en PR34/PLU-73; GREEN/builds/PRE/POST PASS.
+11.3 implementada y validada localmente en PLU-74: 1.840/1.840, builds y PRE/POST favorables; entrega Git pendiente.
+11.4–11.9 conservan sus propios gates.
 La demo completa necesita stock12 y documento13; fase11 y deuda accesible previa siguen abiertas.
 
 ## Entrega11.1 — 2026-10-01
@@ -244,3 +245,99 @@ El cierre conserva PLU-71 activa y 11.3 pendiente de su propio inicio; no autori
   `0e473095954d921d4329178ee6de2a72124bf1ae2d8a0d2abfaf7770c944b2ee`.
   Diff/enlaces nuevos y presupuesto Progress correctos; gobernanza conserva los seis enlaces históricos08.3 rotos.
   Este cierre no activa live ni termina la fase11 o la demo completa.
+
+
+## 11.3 — Estado cohesivo de borrador
+
+[PLU-74](https://linear.app/plusprojects/issue/PLU-74): In Progress, Jesus Franco.
+Rama `codex/plu-74-sale-draft-store`, base limpia/sincronizada `5fade88`.
+Usuario autoriza issue, rama e implementación local; entrega Git, cierre y live no autorizados.
+[Propuesta](11-3-sale-draft-store-proposal.md): Store MainActor observable, política pura Domain,
+mutaciones de snapshot, cálculo previo, aceptación11.1, busy exclusivo y cierre terminal.
+PRE independiente por `draft_store_pre`: favorable, sin hallazgos; precisiones registradas antes del código.
+702 archivos completos idénticos antes/después, SHA
+`f13bc3be7ca13fa5e432d3f2150882051b66e32dc9e347b56a4f9e62c49b202b`.
+Baseline de11.2 reutilizado por fuente547 idéntica; no acredita11.3. Implementación y GREEN nuevos abajo.
+UI/previews/accesibilidad/físico N/A por ausencia de delta; 11.4–11.9 siguen pendientes.
+
+### Implementación y TDD 11.3
+
+- Nuevos `SaleDraftEditingPolicy.swift` (Domain), `SaleDraftStore.swift` (Presentation),
+  `SaleDraftStoreTests.swift` y `SaleDraftStoreConcurrencyTests.swift`.
+  El Store MainActor observable publica un único `editing(Sale, SaleCalculation)` aceptado.
+  Crear/recuperar, añadir/quitar por identidad, cantidad, cliente y descuento de línea reutilizan UseCases11.1.
+  La política pura conserva orden, identidad, fecha y términos capturados; no agrupa servicios repetidos.
+  Todo candidato se calcula antes de persistir. Fallos, obsolescencia y cancelación previa conservan el último estado.
+  Busy exclusivo, ausencia válida, descarte durable idempotente y close terminal sin tasks propias ni reapertura tardía.
+  Un write ya aceptado sigue devolviendo éxito aunque el caller cancele o cierre el Store.
+  Sin UI/ViewModel11.4, composición App, selector11.6, descuento global11.7, pago, stock/documento, live o dependencia nueva.
+- Scaffold compilable después de corregir dos errores de preparación (inicializador de clase y `try` de fixture).
+  No son RED de comportamiento. RED focal real: **0/2 PASS**, ciclo de edición y cálculo inválido lanzan `noDraft`.
+  Summary `DB4C2B48-F1C4-4444-B3B5-3D8018E9738E.txt`; native cerrado y errores examinados:
+  `/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RunSomeTests/Test-FranAlonso-Develop-2026.10.01_17-04-00-+0200.xcresult`.
+  Fuente550 del RED: `2201b46dcd644b2ef784581d20bfbef2640ca63dbe3b15064f54425956513ebd`.
+- Primera regresión completa: **1.839/1.840**, único caso fallido por cuatro oráculos Decimal construidos desde
+  literales Double (19.08/39.08/36.08/32.67). El cálculo devuelve los importes previstos.
+  Summary `F9AE54FB-D7CF-4D8C-9F15-2482D2C43F1B.txt` y árbol nativo revisados.
+  Corrección exclusivamente en fixtures/oráculos: cadenas con `Decimal(string:locale:)` POSIX y `#require`;
+  valores previstos y comparaciones estrictas conservados, sin redondear resultados ni cambiar producción.
+- Source-style Audit independiente por `draft_store_pre` antes del GREEN: cuatro archivos revisados manualmente,
+  un candidato del helper correctamente vertical por tipo función MainActor. Ajustes P3 de layout corregidos
+  por los implementadores y comprobados en revisiones focales; sin hallazgos abiertos ni cambios de comportamiento.
+  Inventarios completos706 idénticos en cada pasada, certificados por el orquestador.
+  Última pasada después del ajuste de oráculos: `5a35173a7d1d7fac5aff95a4a04a30eae6b0653bec7cac9a93316da548a9e9ea`.
+  Style PASS no sustituye POST funcional.
+- Build final Develop-for-testing PASS, 11.015 s: `BuildProject-Log-20261001-171958.txt`.
+  MCP warnings sin issues/truncación: `761979C6-57FC-4270-8B0A-979B20B5F21A.txt`.
+  Build final Production PASS, 14.260 s: `BuildProject-Log-20261001-172013.txt`.
+  MCP warnings sin issues/truncación: `4E5FF6B7-A2FC-4E62-AB75-16037555DEB9.txt`.
+  Logs completos examinados: cero errores o warnings Swift/Clang. Aviso conocido AppIntents de extracción omitida,
+  dos apariciones Develop-for-testing y una Production; no se afirma silencio absoluto del log.
+- GREEN definitivo por `RunAllTests` Xcode MCP estable, Develop/plan Develop, iPhone17 Simulator/iOS27.2:
+  **1.840/1.840 variantes PASS**, cero failed/skipped/notRun/expectedFailures; **1.175 declaraciones**.
+  **26 declaraciones / 43 variantes nuevas PASS**: 16/28 de persistencia/edición y 10/15 de concurrencia.
+  Todos los RED reales son GREEN; no se debilitaron los oráculos.
+  Summary `20AC0FFB-6579-42C1-B3CD-D1C941B04D51.txt`; native cerrado, summary y árbol completos examinados:
+  `/Users/jesusf/Library/Developer/Xcode/DerivedData/FranAlonso-eehpkvodmpnqlchgeqriatcucsjf/Logs/Test/Test-FranAlonso-Develop-2026.10.01_17-21-04-+0200.xcresult`.
+  El path exportado temporal por MCP no tenía Info.plist; se verificó el bundle nativo cerrado de la misma ejecución,
+  no un resultado anterior. Summary nativo 1.175/1.175, árbol con 1.840 hojas PASS, cero runtime warnings.
+  Matrices EUR/USD, seis intenciones sin draft, cantidades inválidas, identidad ausente/duplicada/progresada,
+  cálculo/moneda preflight, causalidad/tombstone, recuperación/stale/retry y tracking de getters cubiertos.
+  Suspensiones explícitas sin sleeps acreditan cuatro solapamientos, cancelación antes/después de aceptación
+  y close durante lectura/write, sin reabrir presentación ni convertir éxito durable en fallo.
+- Fuente551 íntegra e idéntica antes/después de los builds finales y GREEN:
+  `90302546c9985a3aa461b7551c485bdae897872c07f26fc3586d558d2d844157`.
+  Xcode Develop/plan Develop/destino inicial iPhone11 restaurados y leídos de vuelta.
+  UI/previews/recursos/localización/accesibilidad/dispositivo físico N/A: no hay pantalla modificada.
+  Governance conserva los seis enlaces históricos de evidencia08.3; enlaces nuevos y diff --check correctos.
+  Validación local completada; POST funcional favorable. PLU-74 y PLU-71 In Progress, issue/rama abiertas.
+  Commit/push/PR/merge/Done/cierre de rama y live pendientes de autorización; 11.4 no iniciado.
+
+### Auditoría POST y conciliación 11.3
+
+Revisor nuevo e independiente `draft_store_post`: sin hallazgos funcionales, de arquitectura, datos o concurrencia;
+gate funcional favorable. Nueve archivos auditados y call paths directamente afectados; el revisor y el auxiliar
+de contraste de evidencia actuaron solo en lectura, sin builds/tests ni publicaciones.
+Inventario completo706 idéntico antes/después, certificado por el orquestador:
+`c6fbbddaf025d4dccb26487df8fbb6b7b365eb1db76a7b2e2ed7caabe66ca77d`.
+RED cerrado, GREEN 1.175 declaraciones/1.840 variantes y nuevas26/43 PASS, logs completos y huella fuente551
+cotejados independientemente; cero warnings Swift/Clang, aviso AppIntents conocido. UI/accesibilidad/físico N/A.
+
+Único P3 documental: el bloque Pendientes conservaba «TDD en curso». Corregido después del veredicto junto con
+Progress, spec, propuesta y las descripciones de PLU-74/71; ambos issues conservan In Progress y entrega Git pendiente.
+No se modifica fuente/configuración; no requiere nuevos builds/tests. Comprobación focal read-only favorable:
+sin hallazgos, P3 cerrado y gate local PASS. Inventario completo706 idéntico antes/después, certificado por el orquestador:
+`b1b548f314a8ee304800d8d1e8a099ef371b605c02a7e87393706ef4db0d2a6c`.
+El inventario551 conserva la huella GREEN; seis enlaces históricos08.3 siguen fuera del cambio.
+Main/origin permanecen en `5fade88`; rama74 solo local, sin commits nuevos ni archivos staged.
+No se realizan commit/push/PR/merge/Done, eliminación de rama, live o inicio11.4 para este incremento.
+
+### Autorización de entrega 11.3 — 2026-10-01
+
+Después del gate local PASS, el usuario autoriza commit, push, PR, merge, cierre de PLU-74 y eliminación de rama.
+La fuente551 coincide íntegramente con GREEN y POST:
+`90302546c9985a3aa461b7551c485bdae897872c07f26fc3586d558d2d844157`.
+Se reutilizan 1.840/1.840 variantes, builds Develop-for-testing/Production y auditorías PRE/estilo/POST favorables.
+Desde esa validación solo cambia metadata documental; nuevos builds/tests N/A para estos ajustes.
+Main/origin continúan en `5fade88`; nueve archivos exactos, sin cambios ajenos ni archivos staged al preflight.
+PLU-71 sigue activa; 11.4 conserva su propio gate. Esta entrega no activa live.
