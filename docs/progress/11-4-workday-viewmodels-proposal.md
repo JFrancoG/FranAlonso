@@ -1,6 +1,7 @@
 # Propuesta 11.4 — Fachadas de Jornada y detalle
 
-Estado: implementada y validada localmente; PRE/estilo/POST PASS. Entrega Git autorizada en curso.
+Estado: entregada, PLU-75 Done; [PR36](https://github.com/JFrancoG/FranAlonso/pull/36) integrada como `d9d1ed1`.
+Fuente validada `08898f7` intacta; rama local/remota eliminada; PRE/estilo/POST/entrega PASS.
 Autorización del usuario el 2026-10-01; [evidencia RED/GREEN y revisiones](phase-11.md).
 [PLU-75](https://linear.app/plusprojects/issue/PLU-75), hija de PLU-71; rama `codex/plu-75-workday-viewmodels`.
 Base limpia local/origin `b16621d474b340579039fe6bdd213a3c4981ec13`; 11.1–11.3 entregadas.

@@ -4,11 +4,12 @@
 
 ## Estado actual
 
-- **11.4 / [PLU-75](https://linear.app/plusprojects/issue/PLU-75): In Progress**.
-  Implementada localmente; 1.906/1.906, builds/PRE/estilo/POST PASS; entrega pendiente. [Evidencia](progress/phase-11.md).
+- **11.4 / [PLU-75](https://linear.app/plusprojects/issue/PLU-75): Done**.
+  [PR36](https://github.com/JFrancoG/FranAlonso/pull/36)/`d9d1ed1`; rama eliminada; 1.906/1.906, builds/auditorías PASS.
+  [Evidencia](progress/phase-11.md); siguiente11.5 pendiente.
 - **11.1–11.3 / PLU-72/73/74: Done**; PLU-71 activa. PR33/`794478e`, PR34/`ad5eeb5`,
   PR35/`d0a117e`; ramas eliminadas.
-  Última entrega:1.840/1.840, builds/PRE/POST PASS. [Entregas y evidencia](progress/phase-11.md).
+  [Entregas anteriores y evidencia](progress/phase-11.md).
 
 - **Borrador16 / [PLU-47](https://linear.app/plusprojects/issue/PLU-47): Done funcional**,
   [PR32](https://github.com/JFrancoG/FranAlonso/pull/32)/`f1c781d`, rama eliminada.

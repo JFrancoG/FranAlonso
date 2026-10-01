@@ -449,7 +449,7 @@ El import Foundation posterior a estilo no altera el resultado favorable.
 UI, previews, localización, accesibilidad y dispositivo físico: N/A por ausencia de pantallas o recursos modificados;
 no acredita ni resuelve evidencia de otras fases. Diff/secret-sensitive paths revisados, git diff --check PASS.
 Gobernanza conserva solo las seis capturas históricas08.3 rotas; enlaces nuevos y presupuesto Progress correctos.
-Documentación y Linear reconciliados: PLU-75 y fasePLU-71 In Progress. Implementación local validada, sin bloqueos
+Antes de la entrega, documentación y Linear reconciliados: PLU-75 y fasePLU-71 In Progress. Sin bloqueos
 funcionales11.4; entrega Git pendiente de autorización. No commit/push/PR/merge/cierre ni live;11.5 no iniciada.
 
 ### Entrega autorizada11.4 — 2026-10-01
@@ -463,3 +463,23 @@ Inventario previsto:11 archivos Swift nuevos, cuatro documentos de progreso/spec
 Auditoría focal independiente viewmodels_delivery PASS, sin hallazgos: confirma alcance11.4 y ausencia de UI/App11.5,
 reuso válido de evidencia nativa reciente e inventario exacto. JSON completo718 idéntico antes/después,
 `efa9e4dd584675e0ad9592cc265a15a7826d0b7adc23db47f721510f11edbd5a`.
+
+### Cierre de entrega11.4
+
+- Commit `08898f7e5e2e84a3a649d4345ef4344b6d45eb61`, `✨ feat(sales): coordinate workday and sale detail`,
+  publicado en origin con los16 archivos previstos. Diff publicado idéntico al revisado:
+  16 archivos, SHA256 `d9a997713138ed712b9c5a6e4e9f8879797cf720fe054adafc70f160da1247be`.
+- [PR36](https://github.com/JFrancoG/FranAlonso/pull/36) MERGED el2026-10-01, head exacto `08898f7`;
+  merge `d9d1ed1b833dc19bbe193224907762bf401dd130`. Main remoto era la base verificada;
+  antes del merge se releen criterios/estado/comentarios de PLU-75, sin ampliación o trabajo concurrente.
+  Mergeable/CLEAN, sin checks CI configurados; no se atribuye CI verde.
+- Árbol de merge idéntico al commit validado. Main actualizado fast-forward; fuente/configuración562 completa
+  idéntica a GREEN `cb84502ae0f20bb078216ecf33b8d93b1598b344848ccc9c7103fec6b2060872`.
+  Reutilizadas builds/pruebas/PRE/estilo/POST y revisión focal de entrega, sin cambios funcionales posteriores.
+- Antes de eliminar rama: merge-base confirma ancestro de main y cero commits únicos.
+  `codex/plu-75-workday-viewmodels` eliminada local/remota; consulta refs remotas confirma ausencia.
+- PLU-75 Done tras integración GitHub/Linear, descripción reconciliada; PLU-71 conserva In Progress y entrega11.4.
+  Progress/spec/propuesta/changelog recogen cierre y evidencia. Registro final solo documental;
+  validación Xcode adicional N/A. Gobernanza conserva seis capturas08.3 históricas rotas, sin fallos nuevos.
+- 11.5 no está implementada: UI de Jornada/detalle, previews y composición App quedan para ese gate.
+  Este cierre no activa live ni termina fase11, la demo completa o validación accesible de otras fases.

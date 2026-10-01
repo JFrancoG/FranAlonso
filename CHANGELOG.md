@@ -91,6 +91,9 @@ All notable changes to this project are documented in this file.
 
 ### Documentation
 
+- 2026-10-01 | 📝 docs(delivery): close workday facade delivery
+  Records PR36, PLU-75 completion and verified branch cleanup; phase11 remains active with 11.5 pending.
+
 - 2026-10-01 | 📝 docs(delivery): close draft store delivery
   Records PR35, PLU-74 completion and verified branch cleanup; phase11 remains active with 11.4 pending.
 
