@@ -1,0 +1,98 @@
+{
+  "data": {
+    "all_succeeded": true,
+    "steps": [
+      {
+        "kind": "interact",
+        "result": {
+          "appeared": [],
+          "appeared_count": 0,
+          "disappeared": [
+            "button|Cerrar|",
+            "heading|Detalle operativo|",
+            "heading|Servicios|",
+            "staticText|Tratamiento de hidrataci\u00f3n intensiva y peinado para ocasi\u00f3n especial, Terminado, 24,20\u00a0\u20ac, IVA: 21 %, Descuento: 10%|",
+            "staticText|Terminado|",
+            "staticText|24,20\u00a0\u20ac|",
+            "staticText|IVA: 21 %|",
+            "staticText|Descuento: 10%|",
+            "staticText|Cantidad: 1|",
+            "staticText|Champ\u00fa DEMO venta, Terminado, 20,00\u00a0\u20ac, IVA: 21 %, Sin descuento|",
+            "staticText|Champ\u00fa DEMO venta|",
+            "staticText|Terminado|",
+            "staticText|20,00\u00a0\u20ac|",
+            "staticText|IVA: 21 %|",
+            "staticText|Sin descuento|",
+            "staticText|Cantidad: 9|",
+            "heading|Descuento global|",
+            "staticText|Descuento: 20%|",
+            "staticText|Para toda la venta, incluidos los servicios que a\u00f1adas despu\u00e9s.|",
+            "heading|Importes|"
+          ],
+          "disappeared_count": 43,
+          "duration_ms": 1936,
+          "next_screen": "4eda8607",
+          "next_seq": 1188,
+          "previous_screen": "d5a740b3",
+          "screen_changed": true
+        }
+      },
+      {
+        "kind": "interact",
+        "result": {
+          "appeared": [],
+          "appeared_count": 0,
+          "disappeared": [],
+          "disappeared_count": 0,
+          "duration_ms": 3169,
+          "next_screen": "f4737b1c",
+          "next_seq": 1191,
+          "previous_screen": "4eda8607",
+          "screen_changed": true
+        }
+      },
+      {
+        "kind": "interact",
+        "result": {
+          "appeared": [
+            61,
+            62,
+            66,
+            67,
+            69,
+            70,
+            71,
+            72,
+            73,
+            74,
+            75,
+            76,
+            77,
+            78,
+            79,
+            80,
+            81,
+            82,
+            83,
+            84
+          ],
+          "appeared_count": 48,
+          "disappeared": [],
+          "disappeared_count": 0,
+          "duration_ms": 2264,
+          "next_screen": "28aa3719",
+          "next_seq": 1194,
+          "previous_screen": "f4737b1c",
+          "screen_changed": true
+        }
+      },
+      {
+        "kind": "elements",
+        "result": "rs/1 act screen=28aa3719 seq=1195 age=2ms count=80 udid=0B3A9F32-B9D5-4ED5-A13F-CB66F7917E75 keyboard=hidden\n1|staticText|Demo \u00b7 Datos de ejemplo, Los cambios se reinician al abrir la app, Hist\u00f3rico contiene muestras DEMO precargadas. No se han emitido documentos ni ejecutado cierres o compensaciones.||enabled\n2|staticText|Demo \u00b7 Datos de ejemplo||enabled\n3|staticText|Los cambios se reinician al abrir la app||enabled\n4|staticText|Hist\u00f3rico contiene muestras DEMO precargadas. No se han emitido documentos ni ejecutado cierres o compensaciones.||enabled\n5|heading|Jornada||enabled\n6|button|Cerrar sesi\u00f3n||enabled\n7|button|Nueva venta||enabled\n15|button|Cliente DEMO Alba, Borrador, Corte y peinado DEMO, Servicios: 1, 21 sept 2026, 16:15||enabled\n17|staticText|Borrador||enabled\n18|staticText|Corte y peinado DEMO||enabled\n19|staticText|Servicios: 1||enabled\n20|staticText|21 sept 2026, 16:15||enabled\n21|heading|En curso||enabled\n22|button|Sin cliente, En curso, Corte y peinado DEMO, Servicios: 1, 21 sept 2026, 16:17||enabled\n23|staticText|Sin cliente||enabled\n24|staticText|En curso||enabled\n25|staticText|Corte y peinado DEMO||enabled\n26|staticText|Servicios: 1||enabled\n27|staticText|21 sept 2026, 16:17||enabled\n28|heading|Pendientes de cierre||enabled\n29|button|Cliente DEMO Bruno, Pagada \u00b7 pendiente de documento, Tratamiento de hidrataci\u00f3n intensiva y peinado para ocasi\u00f3n especial, Servicios: 2, 21 sept 2026, 16:16||enabled\n30|staticText|Cliente DEMO Bruno||enabled\n31|staticText|Pagada \u00b7 pendiente de documento||enabled\n32|staticText|Tratamiento de hidrataci\u00f3n intensiva y peinado para ocasi\u00f3n especial||enabled\n33|staticText|Servicios: 2||enabled\n34|staticText|21 sept 2026, 16:16||enabled\n35|button|Cliente DEMO Alba, Pendiente de pago, Corte y peinado DEMO, Servicios: 1, 21 sept 2026, 16:18||enabled\n36|staticText|Cliente DEMO Alba||enabled\n37|staticText|Pendiente de pago||enabled\n38|staticText|Corte y peinado DEMO||enabled\n39|staticText|Servicios: 1||enabled\n40|staticText|21 sept 2026, 16:18||enabled\n41|button|Cliente DEMO Alba, Pagada \u00b7 pendiente de documento, Corte y peinado DEMO, Servicios: 1, 21 sept 2026, 16:19||enabled\n42|staticText|Cliente DEMO Alba||enabled\n43|staticText|Pagada \u00b7 pendiente de documento||enabled\n44|staticText|Corte y peinado DEMO||enabled\n45|staticText|Servicios: 1||enabled\n46|staticText|21 sept 2026, 16:19||enabled\n47|slider|Barra de desplazamiento vertical, 2 p\u00e1ginas|100\u00a0%|enabled\n48|slider|Barra de desplazamiento vertical, 2 p\u00e1ginas|100\u00a0%|enabled\n49|group|Barra de herramientas||enabled\n50|group|Barra de pesta\u00f1as||enabled\n51|radioButton|Jornada|1|enabled\n52|image|calendario||enabled\n53|radioButton|Hist\u00f3rico|0|enabled\n54|image|Reloj rodeado por una flecha circular girada 90\u00a0grados en sentido antihorario con punta triangular||enabled\n55|radioButton|Clientes|0|enabled\n56|image|Dos personas, con relleno||enabled\n57|radioButton|Cat\u00e1logo|0|enabled\n58|image|cuadr\u00edcula 2 por 2||enabled\n59|radioButton|Informes|0|enabled\n60|image|Gr\u00e1fico de barras con un eje X||enabled\n61|button|Cerrar||enabled\n62|heading|Detalle operativo||enabled\n63|staticText|Cliente DEMO Bruno||enabled\n64|staticText|Pagada \u00b7 pendiente de documento||enabled\n65|staticText|21 sept 2026, 16:16||enabled\n66|heading|Servicios||enabled\n67|staticText|Tratamiento de hidrataci\u00f3n intensiva y peinado para ocasi\u00f3n especial, Terminado, 24,20\u00a0\u20ac, IVA: 21 %, Descuento: 10%||enabled\n68|staticText|Tratamiento de hidrataci\u00f3n intensiva y peinado para ocasi\u00f3n especial||enabled\n69|staticText|Terminado||enabled\n70|staticText|24,20\u00a0\u20ac||enabled\n71|staticText|IVA: 21 %||enabled\n72|staticText|Descuento: 10%||enabled\n73|staticText|Cantidad: 1||enabled\n74|staticText|Champ\u00fa DEMO venta, Terminado, 20,00\u00a0\u20ac, IVA: 21 %, Sin descuento||enabled\n75|staticText|Champ\u00fa DEMO venta||enabled\n76|staticText|Terminado||enabled\n77|staticText|20,00\u00a0\u20ac||enabled\n78|staticText|IVA: 21 %||enabled\n79|staticText|Sin descuento||enabled\n80|genericElement|Stock insuficiente. Stock previsto: -1. Puedes continuar. Servicio: Champ\u00fa DEMO venta.||enabled\n81|staticText|Stock insuficiente. Stock previsto: -1. Puedes continuar.||enabled\n82|image|Advertencia||enabled\n83|staticText|Cantidad: 9||enabled\n84|heading|Descuento global||enabled\n85|staticText|Descuento: 20%||enabled\n111|slider|Barra de desplazamiento vertical, 3 p\u00e1ginas|0\u00a0%|enabled\n112|slider|Barra de desplazamiento vertical, 3 p\u00e1ginas|0\u00a0%|enabled\n113|group|Barra de herramientas||enabled\n!ambiguous|group|Barra de herramientas|49@201,519;113@201,468\n!ambiguous|slider|Barra de desplazamiento vertical, 2 p\u00e1ginas|47@384,509;48@384,509\n!ambiguous|slider|Barra de desplazamiento vertical, 3 p\u00e1ginas|111@384,472;112@384,472\n!ambiguous|staticText|21 sept 2026, 16:16|34@87,471;65@201,307\n!ambiguous|staticText|Cliente DEMO Alba|36@99,525;42@99,662\n!ambiguous|staticText|Cliente DEMO Bruno|30@104,369;63@201,209\n!ambiguous|staticText|Corte y peinado DEMO|18@110,29;25@110,221;38@110,568;44@110,705\n!ambiguous|staticText|IVA: 21 %|71@61,497;78@61,666\n!ambiguous|staticText|Pagada \u00b7 pendiente de documento|31@133,390;43@133,683;64@201,258\n!ambiguous|staticText|Servicios: 1|19@66,50;26@66,242;39@66,589;45@66,726\n!ambiguous|staticText|Terminado|69@66,454;76@66,623\n!ambiguous|staticText|Tratamiento de hidrataci\u00f3n intensiva y peinado para ocasi\u00f3n especial|32@189,421;68@195,423"
+      }
+    ],
+    "stopped_at": null
+  },
+  "ok": true,
+  "rs": "1"
+}

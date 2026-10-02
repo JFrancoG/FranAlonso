@@ -1,6 +1,240 @@
 {
   "sourceLanguage" : "es",
   "strings" : {
+  "sales.workflow.title": {
+    "comment": "Sale workflow and non-blocking stock confirmation.",
+    "extractionState": "manual",
+    "localizations": {
+      "es": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Servicios y pago"
+        }
+      },
+      "en": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Services and payment"
+        }
+      }
+    }
+  },
+  "sales.workflow.start": {
+    "comment": "Sale workflow and non-blocking stock confirmation.",
+    "extractionState": "manual",
+    "localizations": {
+      "es": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Iniciar venta"
+        }
+      },
+      "en": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Start sale"
+        }
+      }
+    }
+  },
+  "sales.workflow.startLine %@": {
+    "comment": "Sale workflow and non-blocking stock confirmation.",
+    "extractionState": "manual",
+    "localizations": {
+      "es": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Iniciar %@"
+        }
+      },
+      "en": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Start %@"
+        }
+      }
+    }
+  },
+  "sales.workflow.completeLine %@": {
+    "comment": "Sale workflow and non-blocking stock confirmation.",
+    "extractionState": "manual",
+    "localizations": {
+      "es": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Terminar %@"
+        }
+      },
+      "en": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Complete %@"
+        }
+      }
+    }
+  },
+  "sales.payment.chooseMethod": {
+    "comment": "Sale workflow and non-blocking stock confirmation.",
+    "extractionState": "manual",
+    "localizations": {
+      "es": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Selecciona un método"
+        }
+      },
+      "en": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Choose a method"
+        }
+      }
+    }
+  },
+  "sales.payment.register": {
+    "comment": "Sale workflow and non-blocking stock confirmation.",
+    "extractionState": "manual",
+    "localizations": {
+      "es": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Registrar pago"
+        }
+      },
+      "en": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Register payment"
+        }
+      }
+    }
+  },
+  "sales.payment.documentPending": {
+    "comment": "Sale workflow and non-blocking stock confirmation.",
+    "extractionState": "manual",
+    "localizations": {
+      "es": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Pago registrado. Pendiente de ticket o factura."
+        }
+      },
+      "en": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Payment recorded. Receipt or invoice pending."
+        }
+      }
+    }
+  },
+  "sales.payment.accepted": {
+    "comment": "Sale workflow and non-blocking stock confirmation.",
+    "extractionState": "manual",
+    "localizations": {
+      "es": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Pago registrado. La venta sigue en Jornada hasta emitir el documento."
+        }
+      },
+      "en": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Payment recorded. The sale stays in Workday until its document is issued."
+        }
+      }
+    }
+  },
+  "sales.stock.confirm.title": {
+    "comment": "Sale workflow and non-blocking stock confirmation.",
+    "extractionState": "manual",
+    "localizations": {
+      "es": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Revisar stock"
+        }
+      },
+      "en": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Review stock"
+        }
+      }
+    }
+  },
+  "sales.stock.confirm.message": {
+    "comment": "Sale workflow and non-blocking stock confirmation.",
+    "extractionState": "manual",
+    "localizations": {
+      "es": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "El stock previsto es insuficiente. Puedes cancelar para revisar la venta o continuar y registrar el pago."
+        }
+      },
+      "en": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Projected stock is insufficient. You can cancel to review the sale or continue and record payment."
+        }
+      }
+    }
+  },
+  "sales.stock.confirm.unknown": {
+    "comment": "Sale workflow and non-blocking stock confirmation.",
+    "extractionState": "manual",
+    "localizations": {
+      "es": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "No se ha podido comprobar el stock. Puedes cancelar y volver a intentarlo o continuar y registrar el pago."
+        }
+      },
+      "en": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Stock could not be checked. You can cancel and try again or continue and record payment."
+        }
+      }
+    }
+  },
+  "sales.stock.confirm.continue": {
+    "comment": "Sale workflow and non-blocking stock confirmation.",
+    "extractionState": "manual",
+    "localizations": {
+      "es": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Continuar y registrar pago"
+        }
+      },
+      "en": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Continue and record payment"
+        }
+      }
+    }
+  },
+  "sales.stock.confirm.cancel": {
+    "comment": "Sale workflow and non-blocking stock confirmation.",
+    "extractionState": "manual",
+    "localizations": {
+      "es": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Cancelar"
+        }
+      },
+      "en": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Cancel"
+        }
+      }
+    }
+  },
   "sales.stock.warning %@": {
     "comment": "Non-blocking sale stock warning. Parameter is the signed, locale-formatted projected physical stock.",
     "extractionState": "manual",

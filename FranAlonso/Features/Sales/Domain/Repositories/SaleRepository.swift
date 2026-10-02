@@ -2,6 +2,9 @@ import Foundation
 
 /// Access to sale snapshots materialized by the local source of truth.
 protocol SaleRepository: Sendable {
+    /// Accepts one work transition against the expected snapshot, with write-free exact replay.
+    /// Validation/commit share one context without suspension; no independent-context CAS is promised.
+    func advanceSale(_ expected: Sale, action: SaleProgressAction) async throws -> Sale
     /// Requests an observation stream backed by locally materialized sale snapshots.
     ///
     /// - Returns: A stream backed by locally materialized sale values.
@@ -55,6 +58,10 @@ protocol SaleRepository: Sendable {
 }
 
 extension SaleRepository {
+    /// Repositories without a work-acceptance capability fail closed rather than save unrestricted snapshots.
+    func advanceSale(_ expected: Sale, action: SaleProgressAction) async throws -> Sale {
+        throw SaleProgressError.persistenceUnavailable
+    }
     /// Replaces client and lines while preserving the expected sale's global term.
     func updateDraft(_ expected: Sale, clientID: ClientID?, lines: [SaleLine]) async throws -> Sale {
         try await updateDraft(

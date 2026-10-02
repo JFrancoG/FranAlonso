@@ -74,7 +74,7 @@ final class WorkdayViewModel {
         destination = SaleDraftDestination(
             id: makeID(),
             saleID: id,
-            mode: policy.category(of: sale) == .upcoming ? .editDraft : .inspect
+            mode: policy.category(of: sale) == .upcoming ? .editDraft : .operate
         )
     }
 
@@ -142,8 +142,7 @@ final class WorkdayViewModel {
             self.destination = nil
             return
         }
-        let mode: SaleDraftDestination.Mode = policy.category(of: sale) == .upcoming ? .editDraft : .inspect
-        if destination.mode != mode {
+        if destination.mode == .operate, sale.status == .draft {
             self.destination = nil
         }
     }

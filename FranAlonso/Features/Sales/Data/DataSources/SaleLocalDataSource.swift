@@ -7,6 +7,40 @@ private let saleSyncFeedID = "sales"
 struct SaleLocalDataSource {}
 
 extension SaleLocalDataSource {
+    /// Accepts work and its causal upsert together; replay does not rewrite or enqueue.
+    /// A clean context, deletion/conflict fences and full snapshot comparison precede mutation.
+    /// - Throws: Neutral progress errors, lifecycle validation or cancellation before acceptance.
+    func advanceSale(
+        _ expected: Sale,
+        action: SaleProgressAction,
+        operationID: UUID,
+        in context: ModelContext
+    ) throws -> Sale {
+        try Task.checkCancellation()
+        do {
+            try requireClean(context)
+            guard try conflict(for: expected.id, in: context) == nil else { throw SaleProgressError.conflict }
+            guard try !hasDeletionState(for: expected.id, in: context) else { throw SaleProgressError.deleted }
+            guard let current = try model(for: expected.id, in: context)?.toDomain() else {
+                throw SaleProgressError.notFound
+            }
+            let accepted = try SaleProgressAcceptancePolicy()(expected: expected, current: current, action: action)
+            if accepted != current {
+                try persistPendingUpsert(accepted, operationID: operationID, in: context)
+            }
+            return accepted
+        } catch let error as SaleProgressError {
+            throw error
+        } catch let error as SaleError {
+            throw error
+        } catch let error as SaleLineError {
+            throw error
+        } catch is CancellationError {
+            throw CancellationError()
+        } catch {
+            throw SaleProgressError.persistenceUnavailable
+        }
+    }
     /// Reads only a locally materialized snapshot, hiding pending and acknowledged discards.
     func sale(id: SaleID, in context: ModelContext) throws -> Sale? {
         try performDraftOperation {

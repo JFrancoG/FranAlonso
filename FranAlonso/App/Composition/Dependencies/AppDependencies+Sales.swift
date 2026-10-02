@@ -113,7 +113,9 @@ extension AppDependencies {
                 discard: DiscardSaleDraftUseCase(repository: saleRepository),
                 getSale: GetSaleUseCase(repository: saleRepository),
                 getClient: GetClientUseCase(repository: clientRepository),
-                getStock: stockRepository.map { GetSaleStockQuantitiesUseCase(repository: $0) }
+                getStock: stockRepository.map { GetSaleStockQuantitiesUseCase(repository: $0) },
+                advance: AdvanceSaleUseCase(repository: saleRepository),
+                registerPayment: RegisterSalePaymentUseCase(repository: saleRepository)
             )
         }
     }

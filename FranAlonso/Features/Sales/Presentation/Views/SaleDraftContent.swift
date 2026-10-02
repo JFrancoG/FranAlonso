@@ -15,6 +15,9 @@ struct SaleDraftContent: View {
     let discountIsFocused: AccessibilityFocusState<SaleLineID?>.Binding
     let onEditGlobalDiscount: @MainActor () -> Void
     let globalDiscountIsFocused: AccessibilityFocusState<Bool>.Binding
+    var onAdvance: @MainActor (SaleProgressAction) -> Void = { _ in }
+    var onPayment: @MainActor () -> Void = {}
+    var paymentIsFocused: AccessibilityFocusState<Bool>.Binding?
 
     var body: some View {
         Form {
@@ -31,6 +34,15 @@ struct SaleDraftContent: View {
                 )
                 if let calculation = viewModel.calculation {
                     SaleTotalsSection(calculation: calculation)
+                }
+                if let paymentIsFocused {
+                    SaleWorkflowSection(
+                        viewModel: viewModel,
+                        isWorking: isWorking,
+                        onAdvance: onAdvance,
+                        onPayment: onPayment,
+                        paymentIsFocused: paymentIsFocused
+                    )
                 }
             } else if viewModel.canCreate {
                 Section {
@@ -71,7 +83,7 @@ struct SaleDraftContent: View {
             }
             Text(sale.status.localizedTitle)
             Text(sale.createdAt, format: .dateTime.day().month().year().hour().minute())
-            if viewModel.isReadOnly {
+            if viewModel.destination.mode == .inspect {
                 Text("sales.detail.readOnly")
                     .font(.footnote)
             }

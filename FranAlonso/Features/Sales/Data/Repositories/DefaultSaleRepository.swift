@@ -5,6 +5,13 @@ import Foundation
 /// Saves complete after the sale and its pending remote operation are committed locally.
 /// Remote execution belongs to `SaleSyncEngine` and is intentionally not started here.
 struct DefaultSaleRepository: SaleRepository {
+    func advanceSale(_ expected: Sale, action: SaleProgressAction) async throws -> Sale {
+        let accepted = try await persistenceActor.advanceSale(expected, action: action, operationID: makeOperationID())
+        if accepted != expected {
+            await observationSignal.publishChange()
+        }
+        return accepted
+    }
     func registerPayment(
         _ expected: Sale,
         id paymentID: PaymentID,

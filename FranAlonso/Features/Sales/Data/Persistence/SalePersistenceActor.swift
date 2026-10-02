@@ -9,6 +9,16 @@ import SwiftData
 actor SalePersistenceActor {
     private let dataSource = SaleLocalDataSource()
 
+    /// Accepts or replays work in one non-suspending context-confined boundary.
+    func advanceSale(_ expected: Sale, action: SaleProgressAction, operationID: UUID) throws -> Sale {
+        try dataSource.advanceSale(
+            expected,
+            action: action,
+            operationID: operationID,
+            in: modelContext
+        )
+    }
+
     /// Reads a detached local snapshot, returning nil for absent or discarded identities.
     /// - Throws: A neutral local read error or cancellation after entering this actor.
     func sale(id: SaleID) throws -> Sale? {

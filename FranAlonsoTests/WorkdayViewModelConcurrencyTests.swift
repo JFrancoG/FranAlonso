@@ -49,7 +49,7 @@ struct WorkdayViewModelConcurrencyTests {
         #expect(board.awaitingClosure.map(\.id) == [current.id])
         #expect(model.selectedSaleID == current.id)
         #expect(model.destination == session)
-        #expect(model.destination?.mode == .inspect)
+        #expect(model.destination?.mode == .operate)
         #expect(model.lastError == nil)
         #expect(await repository.observationCount == 2)
     }

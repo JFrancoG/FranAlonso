@@ -5,6 +5,7 @@ import Observation
 enum SaleDraftStoreState: Equatable {
     case idle
     case editing(Sale, SaleCalculation)
+    case operating(Sale, SaleCalculation)
     case discarded(SaleID)
     case closed
 }
@@ -28,6 +29,8 @@ enum SaleDraftStoreOperation: Equatable {
     case load
     case update
     case discard
+    case advance
+    case payment
 }
 
 /// A rejected presentation-session intention, separate from commercial Domain errors.
@@ -53,6 +56,9 @@ final class SaleDraftStore {
     private let getDraft: GetSaleDraftUseCase
     private let updateDraft: UpdateSaleDraftUseCase
     private let discardDraft: DiscardSaleDraftUseCase
+    private let getSale: GetSaleUseCase?
+    private let advanceSale: AdvanceSaleUseCase?
+    private let registerPayment: RegisterSalePaymentUseCase?
     private let editingPolicy = SaleDraftEditingPolicy()
     private let calculator = SaleCalculator()
     @ObservationIgnored private var operationGeneration: UUID?
@@ -64,12 +70,75 @@ final class SaleDraftStore {
         return draft
     }
 
+    var sale: Sale? {
+        switch state {
+        case let .editing(sale, _), let .operating(sale, _): sale
+        default: nil
+        }
+    }
+
     var calculation: SaleCalculation? {
-        guard case let .editing(_, calculation) = state else { return nil }
-        return calculation
+        switch state {
+        case let .editing(_, calculation), let .operating(_, calculation): calculation
+        default: nil
+        }
     }
 
     var isBusy: Bool { operation != nil }
+
+    /// Recovers operational content without granting commercial draft editing.
+    func loadOperation(id: SaleID) async throws -> Sale? {
+        try await perform(.load) { generation in
+            guard let getSale else { throw SaleProgressError.persistenceUnavailable }
+            let recovered = try await getSale(id: id)
+            try Task.checkCancellation()
+            guard operationGeneration == generation else { throw CancellationError() }
+            guard let recovered, WorkdaySalesPolicy().category(of: recovered) != nil else {
+                clearStock()
+                state = .idle
+                return nil
+            }
+            let calculation = try calculator.calculate(sale: recovered, currency: currency)
+            publish(recovered, calculation: calculation, generation: generation)
+            await refreshStock()
+            return recovered
+        }
+    }
+
+    /// Serializes work acceptance with draft edits/payment; accepted success survives close/cancellation.
+    func advance(_ action: SaleProgressAction) async throws -> Sale {
+        try await perform(.advance) { generation in
+            guard let expected = sale else { throw SaleDraftStoreError.noDraft }
+            guard let advanceSale else { throw SaleProgressError.persistenceUnavailable }
+            let calculation = try calculator.calculate(sale: expected, currency: currency)
+            let accepted = try await advanceSale(expected, action: action)
+            publish(accepted, calculation: calculation, generation: generation)
+            await refreshStock()
+            return accepted
+        }
+    }
+
+    /// Consumes a frozen payment command through the existing guarded local payment boundary.
+    func pay(
+        _ expected: Sale,
+        id: PaymentID,
+        method: PaymentMethod,
+        paidAt: Date
+    ) async throws -> Sale {
+        try await perform(.payment) { generation in
+            guard sale == expected else { throw SalePaymentError.staleSale }
+            guard let registerPayment else { throw SalePaymentError.persistenceUnavailable }
+            let calculation = try calculator.calculate(sale: expected, currency: currency)
+            let accepted = try await registerPayment(
+                expected,
+                id: id,
+                method: method,
+                paidAt: paidAt
+            )
+            publish(accepted, calculation: calculation, generation: generation)
+            return accepted
+        }
+    }
 
     /// Calculates a new draft before local acceptance.
     /// Accepted writes retain success even after cancellation or close.
@@ -203,13 +272,13 @@ final class SaleDraftStore {
     private func publish(_ draft: Sale, calculation: SaleCalculation, generation: UUID) {
         guard operationGeneration == generation else { return }
         clearStock()
-        state = .editing(draft, calculation)
+        state = draft.status == .draft ? .editing(draft, calculation) : .operating(draft, calculation)
     }
 
     /// Refreshes advisory stock in the caller's task; the latest request for the accepted draft wins.
     /// Failure or cancellation never revokes an accepted sale or changes its acceptance error.
     func refreshStock() async {
-        guard let captured = draft else { return }
+        guard let captured = sale else { return }
         let generation = UUID()
         stockGeneration = generation
         stockError = nil
@@ -224,11 +293,11 @@ final class SaleDraftStore {
                 quantities = [:]
             }
             try Task.checkCancellation()
-            guard stockGeneration == generation, draft == captured else { return }
+            guard stockGeneration == generation, sale == captured else { return }
             let impacts = try analyzeStock(lines: captured.lines, availableQuantities: quantities)
             stockState = .ready(impacts)
         } catch {
-            guard stockGeneration == generation, draft == captured else { return }
+            guard stockGeneration == generation, sale == captured else { return }
             if error is CancellationError || Task.isCancelled {
                 stockState = .idle
                 stockError = nil
@@ -278,8 +347,14 @@ final class SaleDraftStore {
         get: GetSaleDraftUseCase,
         update: UpdateSaleDraftUseCase,
         discard: DiscardSaleDraftUseCase,
-        getStock: GetSaleStockQuantitiesUseCase? = nil
+        getStock: GetSaleStockQuantitiesUseCase? = nil,
+        getSale: GetSaleUseCase? = nil,
+        advance: AdvanceSaleUseCase? = nil,
+        registerPayment: RegisterSalePaymentUseCase? = nil
     ) {
+        self.getSale = getSale
+        advanceSale = advance
+        self.registerPayment = registerPayment
         self.getStock = getStock
         self.currency = currency
         createDraft = create

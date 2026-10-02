@@ -304,3 +304,106 @@ recuperación tras feedback/estabilización antes candidato real. PLU-85 In Prog
 Cierre documental en main siguiendo12.1–12.2: CHANGELOG/Progress/fase/registro accesible, diff-check y gobernanza.
 Xcode adicional N/A: solo documentos; seis enlacesDesktop08.3 históricos permanecen, sin nuevos fallos.
 Sin activación live, cierre integral de fase ni inicio12.4.
+
+## 12.4 — Confirmación no bloqueante (PLU-90), implementada y validada; entrega pendiente
+
+Autorización02/10 «abre issue y rama e implementa12.4» y ampliación «si, adelante»:
+[PLU-90](https://linear.app/plusprojects/issue/PLU-90), Jesus Franco, hija85. Rama
+`codex/plu-90-sale-stock-confirmation` desde main/origin-main limpios `a222513`.
+[Propuesta exacta](12-4-stock-confirmation-proposal.md), alternativas y fuentes Apple antes de código.
+PRE independiente stock_confirmation_scope_pre PASS sin hallazgos;828archivos SHA256 root antes/después idéntico
+`16dceb9336254cdecb446d512b8cb910a8f2dff0629df0b54127212591938e43`.
+
+### Comportamiento implementado
+
+Aceptación de progreso Domain/Data contra expected/current, replay sin cola extra, stale/conflicto/deleted rechazados
+y rollback local existente. Sin nueva persistencia/schema/SDK. Store único retiene snapshot y cálculo; transición
+iniciada revoca edición comercial. Jornada .operate conserva sesión; .inspect permanece sin mutaciones.
+Inicio/fin de servicios y selección de método conducen al pago11.8 pendiente de documento.
+Refresco advisory sin escritura; déficit y stock desconocido piden permiso explícito. Mostrar/cancelar/repetir no
+aceptan operaciones; Continuar consume identidad una vez. Comando ID/método/fecha congelados para retry; close,
+callbacks viejos y carga diferente quedan fenced. Éxito local tardío permanece éxito sin reabrir presentación.
+UI nativa con sheet scrollable, retorno de foco declarativo,13claves es/en y previews por View.
+
+### TDD, regresión y builds
+
+RED18:06:51 de compilación por APIs ausentes (no RED ejecutado):
+`/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/BuildProject/BuildProject-Log-20261002-180651.txt`.
+GREEN19/19ejecuciones17declaraciones, suites SaleWorkflow/ProgressAcceptance; bundle nativo cerrado18:18:37.
+Oráculos SwiftData frescos: venta/cola/movimientos, stale/dirty/conflicto/deleted/collision rollback/replay,
+cash/card,unknown/exacto0, cancel/repetir, retry mismaID/fecha, concurrencia/close/callback tardío.
+
+Regresión inicial123/130:7expectativas antiguas inspect/cierre al iniciar; ajustadas al contrato autorizado.
+Posterior32/32 navegación/workflow. Regresión final **295/295 ejecuciones,170declaraciones,16suites**
+(incluye38/38 recursos),02/10iPhone17Simulator27.2/Develop. Resumen
+`/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RunSomeTests/1139FC3B-A462-4316-8F90-D94B037464A4.txt`.
+Bundle nativo cerrado inspeccionado con xcresulttool:0failed/skipped/expected/notRun, runtimeWarnings[]:
+`/Users/jesusf/Library/Developer/Xcode/DerivedData/FranAlonso-eehpkvodmpnqlchgeqriatcucsjf/Logs/Test/Test-FranAlonso-Develop-2026.10.02_18-31-31-+0200.xcresult`.
+
+Builds Xcode MCP **Develop-for-testing PASS**18:37:37/25.040s, iPadPro13(M5);
+**Production PASS**18:33:26/23.765s, iPhone17. Swift6/complete/SDK y target27.0.
+Logs `BuildProject-Log-20261002-183737.txt` y `BuildProject-Log-20261002-183326.txt` en ActionArtifacts/BuildProject.
+GetBuildLog severitywarning0diagnósticos; logs completos conservan aviso conocido appintentsmetadataprocessor
+“Metadata extraction skipped, no AppIntents.framework dependency found”. No se afirma cero avisos absolutos.
+Sin xcodebuild/XCTest/XCUITest/UI tests nativos.
+
+### Accesibilidad y comprobaciones
+
+[Registro12.4](../accessibility/evidence/12-4-sale-stock-confirmation.md): matriz55,10PNG originales con
+manifest/hashes, es/en Large/XXX Large/AX5 y apariencias representativas. Host real iPhone18ProMax27.2;
+iPad privado de previews falla dyld/libSystem antes de código; workspace temporal iPhone17, luego restaurado
+a Develop/iPad original. Falla AX5 título nativo/placeholder Picker, ejecución integral pendiente.
+[PLU-91](https://linear.app/plusprojects/issue/PLU-91), Backlog/Jesus, deuda específica tras feedback/estabilización
+por flujo y antes del primer candidato real. PLU-89 permanece separada; no cierre integral de fase.
+Smoke táctil funcional PASS (inicio/fin, cash, cancelar/repetir/continuar, cerrar/reabrir);
+auditorías POST funcionales PASS tras correcciones. Source-style recall24Swift,6candidatos históricos
+closures/predicates fuera del cambio; adjudicación manual independiente PASS. Localización577entradas0error; diff --check PASS.
+Gobernanza conserva únicamente6enlaces Desktop históricos08.3; ninguna incidencia nueva.
+
+Sin commit/push/PR/merge/Done autorizados para12.4. Sin movimientos12.5, atomicidad12.6, sync/compensación12.7/12.8,
+documento13 ni live. PLU-85 y90 permanecen In Progress.
+
+### Correcciones de auditoría y regresión final
+
+POST técnica confirmation_post_standards inicial:2P2 recuperación y1P3 formato. Huella856archivos anterior/posterior
+idéntica `c2d8ca22b79ba484a27019a1b4de67f6191fbc42bff740c9be2f3d42442ab110`, root verificado tras final.
+Propuesta de corrección revisada read-only por ese especialista: lifecycle hasCreatedSale distingue reserva sin
+lectura de creación aceptada; load posterior recupera misma identidad, ausencia no reaparece como nueva creación.
+requiresDraft/staleDraft de edición requieren recarga igual que staleSale, conservando fencing/composición aprobados.
+RED real4/17failures en suiteWorkflow18:51:22,13casos previosPASS:
+`/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RunSomeTests/E188EB26-E106-4140-8613-426CD71B7870.txt`.
+Se corrigieron ambos defectos y if mutadores/calls4args nuevos con formato obligatorio.
+
+Regresión final **299/299 ejecuciones,173declaraciones,16suites**, Develop/iPadPro13(M5)Simulator27.2:
+`/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RunSomeTests/6FE7A583-45F4-456A-8D06-5D8FF083E9D6.txt`.
+Bundle nativo cerrado con finishTime,0failed/skipped, runtimeWarnings[]:
+`/Users/jesusf/Library/Developer/Xcode/DerivedData/FranAlonso-eehpkvodmpnqlchgeqriatcucsjf/Logs/Test/Test-FranAlonso-Develop-2026.10.02_18-52-51-+0200.xcresult`.
+Incluye23ejecuciones20declaraciones nuevas12.4; snapshots frescos recuperan cambio comercial/progreso externo;
+la sesión creada rechaza recrear después de ausencia persistente. Build-for-testing18:52:51/20.171sPASS;
+Production18:53:49/24.064sPASS en iPad original; diagwarning0Swift/Clang, aviso metadata conocido retenido.
+Revisión focal técnica y primera UI fresca sobre correcciones PASS. No se reutiliza auditoría12.3.
+
+### Dictámenes finales y frontera de entrega
+
+confirmation_post_standards focal: PASS sin hallazgos residuales;2P2+P3 iniciales corregidos y verificados.
+confirmation_post_accessibility_fresh, rol ios-accessibility-reviewer: PASS funcional ADR0029;2P2 AX5
+(selector/título truncados) conservados Falla en PLU-91. Diez previews,2PNG+4JSONruntime y hashes inspeccionados;
+matriz55/5flujos revisada, owner/trigger de deuda verificados en Linear. Sin AT/Inspector/habla/foco/ratio medido
+ni dispositivo físico; no acredita scrollAX5. Evidencia integral pendiente, fase12 abierta.
+Ambos revisores exclusivamente read-only con prohibición explícita de escribir/Git/publicar. Huella root856archivos
+ante/post idéntica `04b562137fd0907129d40ccd2cb09001f897d3a10d1ab2e0a3b085db3ca2fa46`,
+verificada tras ambos dictámenes antes de reconciliación documental.
+Build Develop-for-testing final18:54:50/26.553sPASS, log `BuildProject-Log-20261002-185450.txt`;
+Production final18:53:49PASS; workspace originalDevelop/iPadPro13(M5) restaurado.
+Snapshot local implementado y validado; PLU-90 In Progress hasta entrega autorizada, PLU-91 Backlog/Jesus.
+Sin commit/push/PR/merge/Done, sin live ni siguiente subfase.
+
+### Preparación de entrega autorizada
+
+Autorización02/10 «commit, push y entrega»: commit/push/PR e integración funcional siguiendo12.1–12.3.
+Preflight: el snapshot auditado de856archivos reproduce exactamente el SHA256 `04b562137fd0907129d40ccd2cb09001f897d3a10d1ab2e0a3b085db3ca2fa46`
+al revertir virtualmente solo la reconciliación documental posterior. Código/tests/recursos/config y capturas intactos;
+se reutilizan299/299, ambos builds finales y auditorías PASS. Recall precommit24Swift/6candidatos históricos,
+sin cambios respecto al dictamen manual independiente. CHANGELOG registra el comportamiento entregable.
+Sin cambios locales ajenos. PLU-90 sigue In Progress hasta merge; PLU-91 Backlog y PLU-85 In Progress.
+Sin live, cierre integral ni inicio12.5. Las menciones anteriores a falta de autorización son históricas.
