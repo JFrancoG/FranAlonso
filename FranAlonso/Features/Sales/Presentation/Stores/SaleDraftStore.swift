@@ -9,6 +9,19 @@ enum SaleDraftStoreState: Equatable {
     case closed
 }
 
+/// Advisory inventory projection, independent of the accepted monetary snapshot.
+enum SaleDraftStockState: Equatable {
+    case idle
+    case loading
+    case ready([StockImpact])
+    case failed
+}
+
+/// A physical draft requires an explicit quantity reader; absence never implies sufficient stock.
+enum SaleDraftStockError: Error, Equatable {
+    case readerUnavailable
+}
+
 /// The exclusive local operation currently owned by the draft session.
 enum SaleDraftStoreOperation: Equatable {
     case create
@@ -32,6 +45,10 @@ final class SaleDraftStore {
     private(set) var state: SaleDraftStoreState = .idle
     private(set) var operation: SaleDraftStoreOperation?
     private(set) var lastError: (any Error)?
+    private(set) var stockState: SaleDraftStockState = .idle
+    private(set) var stockError: (any Error)?
+    private let getStock: GetSaleStockQuantitiesUseCase?
+    private let analyzeStock = AnalyzeSaleStockImpactUseCase()
     private let createDraft: CreateSaleDraftUseCase
     private let getDraft: GetSaleDraftUseCase
     private let updateDraft: UpdateSaleDraftUseCase
@@ -39,6 +56,8 @@ final class SaleDraftStore {
     private let editingPolicy = SaleDraftEditingPolicy()
     private let calculator = SaleCalculator()
     @ObservationIgnored private var operationGeneration: UUID?
+
+    @ObservationIgnored private var stockGeneration: UUID?
 
     var draft: Sale? {
         guard case let .editing(draft, _) = state else { return nil }
@@ -78,6 +97,7 @@ final class SaleDraftStore {
                 lines: lines
             )
             publish(accepted, calculation: calculation, generation: generation)
+            await refreshStock()
             return accepted
         }
     }
@@ -90,11 +110,13 @@ final class SaleDraftStore {
             try Task.checkCancellation()
             guard operationGeneration == generation else { throw CancellationError() }
             guard let recovered else {
+                clearStock()
                 state = .idle
                 return nil
             }
             let calculation = try calculator.calculate(sale: recovered, currency: currency)
             publish(recovered, calculation: calculation, generation: generation)
+            await refreshStock()
             return recovered
         }
     }
@@ -145,6 +167,7 @@ final class SaleDraftStore {
             guard let draft else { throw SaleDraftStoreError.noDraft }
             try await discardDraft(draft.id)
             guard operationGeneration == generation else { return }
+            clearStock()
             state = .discarded(draft.id)
         }
     }
@@ -154,6 +177,7 @@ final class SaleDraftStore {
         operationGeneration = nil
         operation = nil
         lastError = nil
+        clearStock()
         state = .closed
     }
 
@@ -171,13 +195,54 @@ final class SaleDraftStore {
                 globalDiscount: edited.globalDiscount
             )
             publish(accepted, calculation: calculation, generation: generation)
+            await refreshStock()
             return accepted
         }
     }
 
     private func publish(_ draft: Sale, calculation: SaleCalculation, generation: UUID) {
         guard operationGeneration == generation else { return }
+        clearStock()
         state = .editing(draft, calculation)
+    }
+
+    /// Refreshes advisory stock in the caller's task; the latest request for the accepted draft wins.
+    /// Failure or cancellation never revokes an accepted sale or changes its acceptance error.
+    func refreshStock() async {
+        guard let captured = draft else { return }
+        let generation = UUID()
+        stockGeneration = generation
+        stockError = nil
+        stockState = .loading
+        do {
+            try Task.checkCancellation()
+            let quantities: [ProductID: Int]
+            if captured.lines.contains(where: { $0.linkedProductID != nil }) {
+                guard let getStock else { throw SaleDraftStockError.readerUnavailable }
+                quantities = try await getStock(lines: captured.lines)
+            } else {
+                quantities = [:]
+            }
+            try Task.checkCancellation()
+            guard stockGeneration == generation, draft == captured else { return }
+            let impacts = try analyzeStock(lines: captured.lines, availableQuantities: quantities)
+            stockState = .ready(impacts)
+        } catch {
+            guard stockGeneration == generation, draft == captured else { return }
+            if error is CancellationError || Task.isCancelled {
+                stockState = .idle
+                stockError = nil
+            } else {
+                stockError = error
+                stockState = .failed
+            }
+        }
+    }
+
+    private func clearStock() {
+        stockGeneration = nil
+        stockState = .idle
+        stockError = nil
     }
 
     private func perform<Result>(
@@ -212,8 +277,10 @@ final class SaleDraftStore {
         create: CreateSaleDraftUseCase,
         get: GetSaleDraftUseCase,
         update: UpdateSaleDraftUseCase,
-        discard: DiscardSaleDraftUseCase
+        discard: DiscardSaleDraftUseCase,
+        getStock: GetSaleStockQuantitiesUseCase? = nil
     ) {
+        self.getStock = getStock
         self.currency = currency
         createDraft = create
         getDraft = get

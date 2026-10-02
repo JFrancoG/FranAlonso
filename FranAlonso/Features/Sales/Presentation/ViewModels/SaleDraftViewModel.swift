@@ -61,6 +61,8 @@ final class SaleDraftViewModel {
     }
 
     var lastError: (any Error)? { isReadOnly ? inspectionError : store.lastError }
+    var stockState: SaleDraftStockState { store.stockState }
+    var stockError: (any Error)? { store.stockError }
     var isBusy: Bool { isReadOnly ? inspectionState == .loading : store.isBusy }
     var isReadOnly: Bool { destination.mode == .inspect }
     var isClosed: Bool { store.state == .closed }
@@ -282,6 +284,13 @@ final class SaleDraftViewModel {
         store.close()
     }
 
+    /// Revalidates the accepted draft's advisory inventory without changing commercial terms.
+    /// - Throws: A closed or read-only session rejection; stock failures remain in stockError.
+    func refreshStock() async throws {
+        try requireEditable()
+        await store.refreshStock()
+    }
+
     private func requireEditable() throws {
         guard !isClosed else { throw SaleDraftViewModelError.closed }
         guard !isReadOnly else { throw SaleDraftViewModelError.readOnly }
@@ -330,7 +339,8 @@ final class SaleDraftViewModel {
         update: UpdateSaleDraftUseCase,
         discard: DiscardSaleDraftUseCase,
         getSale: GetSaleUseCase,
-        getClient: GetClientUseCase? = nil
+        getClient: GetClientUseCase? = nil,
+        getStock: GetSaleStockQuantitiesUseCase? = nil
     ) {
         self.destination = destination
         self.createdAt = createdAt
@@ -341,7 +351,8 @@ final class SaleDraftViewModel {
             create: create,
             get: getDraft,
             update: update,
-            discard: discard
+            discard: discard,
+            getStock: getStock
         )
     }
 }
