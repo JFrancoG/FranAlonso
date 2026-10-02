@@ -4,9 +4,9 @@
 
 ## Estado actual
 
-- **11.9 / [PLU-83](https://linear.app/plusprojects/issue/PLU-83): In Progress**, Jesus Franco.
-  `codex/plu-83-sales-history`: Histórico/detalle terminal local; PRE/estilo,2180ejecuciones/builds/smoke PASS, POST técnico/UI funcional PASS.
-  [Evidencia](progress/phase-11.md). Entrega Git en curso, sin live; fasePLU-71 abierta.
+- **11.9 / [PLU-83](https://linear.app/plusprojects/issue/PLU-83): Done funcional**, Jesus Franco.
+  [PR41](https://github.com/JFrancoG/FranAlonso/pull/41)/`ab70985`; rama eliminada. Histórico/detalle terminal:
+  2180ejecuciones/builds/smoke/auditorías PASS. [Evidencia](progress/phase-11.md). FasePLU-71 abierta, sin live.
 - **11.1–11.8: Done funcional**, PLU-72–76/78/80/82, PR33–40 y ramas eliminadas.
 - **Deuda accesible11**: [PLU-77](https://linear.app/plusprojects/issue/PLU-77)/79/81/84 Backlog/Jesus;
   tras feedback/estabilización por flujo y antes del primer candidato real. [Matrices](progress/phase-11.md).

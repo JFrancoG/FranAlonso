@@ -129,4 +129,5 @@ POST técnico PASS y UI CORRECT→retest PASS funcional; informes `/tmp/plu83-po
 Cada revisión operacionalmente read-only ratificada mediante4FULL JSON iguales,795archivos; retests
 digest`e8bac25864134d472049f111431c507bb30c1446c41e5e6a59ac2366893824f3`.
 55filas:2Falla,20Limitado,12Pendiente,21Pasa (ausencias N/A incluidas); no evidencia AT/Inspector inventada.
-Gate sólo implementación funcional local demo, con deuda PLU-84 vigente; entrega Git autorizada en curso; PLU-83 In Progress hasta confirmar merge.
+Gate de entrega funcional demo ADR0029, con deuda PLU-84 vigente; entrega Git verificada en [PR41](https://github.com/JFrancoG/FranAlonso/pull/41); PLU-83 Done funcional.
+PLU-84/deuda integral y fase11 permanecen abiertas; esta entrega no cambia los resultados de la matriz.

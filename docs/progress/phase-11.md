@@ -1462,3 +1462,23 @@ Retest de entrega independiente PASS, `/tmp/plu83-delivery-retest-review.md`; cu
 idénticos `0ddda6afafc6bbbcbb5ba465b06ee6dc9f89d1622c0290b86849de48994a2325`, proofs
 `/tmp/plu83-delivery-retest-{root,reviewer}-{before,after}.json`. Gate de entrega autorizado satisfecho;
 merge/cierre se verifican antes de declarar Done. Sin cambios ejecutables tras evidencia validada.
+
+
+### Entrega11.9 verificada — PLU-83 Done funcional
+
+2026-10-02, Jesus Franco. Commit `e13e468e5ed745a8621530d0292a4659e2d4a45e`,
+[PR41](https://github.com/JFrancoG/FranAlonso/pull/41) MERGED a main,
+merge`ab709858ca3e50f60b07e24be48dfac144c0a3a6`. Árbol completo idéntico entre feature/merge;
+fuente/config628 igual a evidencia validada cb83a340...f70c, proof `/tmp/plu83-merged-source.json`.
+No checks remotos ni protección/reglas requeridas configurados; se acredita validación local/auditorías,
+no CI inexistente. PRhead coincide con commit publicado; merge sin bypass ni force.
+
+Rama `codex/plu-83-sales-history` eliminada local/remota tras verificar tip e13e468, ascendencia al main
+remoto y cero commits únicos. PLU-83 Done tras merge (integraciónLinear); plan previo preservado en
+comentario y descripción final reconciliada. FasePLU-71 In Progress, deuda84/48/77/79/81 abierta.
+PLU-84 Backlog/Jesus conserva2Falla/20Limitado/12Pendiente/21Pasa,55criterios; tras feedback/estabilización
+antes del primer candidato real. Cierre/compensación12.8/13.12, próximo desarrollo y live conservan gates.
+
+Cierre documental en main conforme al flujo establecido: Progress/spec/evidencia/changelog, sin cambios
+ejecutables. Xcode adicionalN/A razonado; tests/builds/revisiones aceptadas permanecen válidos.
+Diffcheck/localizaciones PASS; gobernanza sólo seis enlacesDesktop08.3 históricos, no corregidos aquí.
