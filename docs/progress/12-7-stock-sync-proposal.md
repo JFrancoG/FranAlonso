@@ -1,7 +1,8 @@
 # 12.7 — Propuesta de sincronización Stock
 
 Autorización humana: «abre issue y rama e implementa12.7». [PLU-94](https://linear.app/plusprojects/issue/PLU-94/127-synchronize-immutable-stock-movements)
-In Progress/Jesus Franco, hija PLU-85. Rama `codex/plu-94-stock-movement-sync` desde main/origin55691ba limpio.
+Done/Jesus Franco tras PR48 MERGED, hija PLU-85 In Progress. Rama histórica
+`codex/plu-94-stock-movement-sync` desde main/origin55691ba; eliminada tras integración.
 No existe issue12.7 anterior; no duplicación. Entrega Git12.7 autorizada después por «Commit, push y entrega»; sin live/12.8/cierre integral.
 
 ## Alcance aprobado
@@ -48,13 +49,13 @@ Validar esa frontera antes de activación. La implementación conserva los lími
 
 ## Estado actual
 
-Implementada en la rama local, sin commit/push. Transporte server-only inmutable con create+contador,
+Integrada en main: [PR48](https://github.com/JFrancoG/FranAlonso/pull/48),8050751 → 64b40ee. Transporte server-only inmutable con create+contador,
 replay/conflicto sin escritura; aceptación local indivisible con cursor/retry; motor single-flight y backoff durable.
 Schema 4 adoptado después de matriz raw 1/2/3→4, preservación y dos aperturas. Composición inactiva con writer Stock
 compartido y Products signal; los eventos de pago 12.6 convergen sin recalcular consumos ni alterar pendientes Sale.
 49 ejecuciones nuevas y regresión completa 2.319 PASS por Xcode MCP; 1.465 declaraciones nativas, todos los
 parámetros nuevos comprobados. Builds finales Develop/Production PASS, cero diagnósticos Swift/Clang. POST detectó un P2 en fixtures, corregido con Codable; focal PASS sin hallazgos.
-Lista para entrega autorizada por separado; PLU-94 sigue In Progress.
+Entrega autorizada completada; PLU-94 Done, fase PLU-85 abierta.
 UI/previews/accesibilidad 12.7 N/A: bootstrap solo añade construcción inactiva; deuda PLU-89/91 permanece abierta.
 
 
@@ -64,3 +65,13 @@ UI/previews/accesibilidad 12.7 N/A: bootstrap solo añade construcción inactiva
 26 Swift coinciden exactamente con el manifest final validado; ninguna adición ejecutable posterior. Se reutilizan
 2.319 ejecuciones/49 nuevas, builds Develop/Production y PRE/POST/focal por paridad. Sin cambios locales ajenos.
 Preparación de commit y PR; el resultado Git definitivo se registrará tras integración. Live y12.8 separados.
+
+
+## Entrega verificada
+
+PR48 MERGED02/10/2026 22:34Madrid:8050751673c160af522a366ebaa4704f172391be →
+64b40ee1806c365bc8722f400eac5675e104a590. Tree del merge idéntico al commit revisado y26Swift exactos
+al manifest final. Main fast-forward, ramas local/remota eliminadas tras ancestry, sin commits únicos.
+PLU-94 Done, PLU-85 In Progress;12.1–12.7 entregadas. Cierre documental sin cambio ejecutable.
+2.319ejecuciones/49nuevas, builds y auditorías reutilizados por paridad; UI12.7 N/A. No CI configurada.
+Sin live,12.8, cierre integral ni resolución de deuda89/91; límites técnicos conservados en phase-12.md.

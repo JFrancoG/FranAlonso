@@ -140,6 +140,9 @@ All notable changes to this project are documented in this file.
 
 ### Documentation
 
+- 2026-10-02 | 📝 docs: record immutable stock sync delivery
+  Records PR48 delivery, schema 4 evidence and PLU-94 closure while retaining phase 12 accessibility and live gates.
+
 - 2026-10-02 | 📝 docs: record atomic sale payment delivery
   Records PR47, the verified merge, PLU-93 Done and preserved native validation evidence for12.6.
   Keeps the parent phase, integral accessibility debt and subsequent subphase gates open.

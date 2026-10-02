@@ -782,3 +782,25 @@ Sin live, compensaciones12.8 ni cierre integral/accesible. PLU-89/91 y triggers 
 PRE/POST/focal sin cambios ejecutables posteriores. ADR0033 sigue aceptado; ningún cambio técnico al contrato.
 Changelog/propuesta/estado registran la nueva autorización. Preparación de commit, push, PR y merge, pendiente
 resultado definitivo. No siguiente subfase, live ni cierre integral; deuda89/91 conserva su gate anterior.
+
+
+### Entrega verificada 12.7
+
+[PR48](https://github.com/JFrancoG/FranAlonso/pull/48) MERGED02/10/2026 22:34Madrid, base main:
+commit `8050751673c160af522a366ebaa4704f172391be` → merge `64b40ee1806c365bc8722f400eac5675e104a590`.
+Tree completo del merge idéntico al commit revisado;26Swift exactos al manifest final validado. Main local
+fast-forward y origin/remoto confirmados; ramas codex/plu-94-stock-movement-sync local/remota eliminadas tras
+ancestry, sin commits únicos. PR CLEAN/MERGEABLE con head8050751 fijo antes del merge. Sin workflows/checks
+configurados ni protección de main: no se declara CI verde. Gates independientes del repositorio satisfechos.
+
+PLU-94 Done verificado después de merge; PLU-85 In Progress con12.1–12.7 entregadas. Descripciones reconciliadas,
+comentarios históricos conservados. PLU-89/91 Backlog/Jesus mantienen deuda integral, evidencia y trigger de feedback/
+estabilización antes del primer candidato real. UI/accesibilidad12.7 N/A; ninguna validación manual nueva implícita.
+12.8 requiere inicio autorizado propio. Motor Stock construido e inactivo; sin Rules/índices/tráfico live, contratos
+emulador, carga/contención real, CAS multiwriter ni atomicidad remota entre colecciones.
+
+Evidencia retenida:2.319ejecuciones/1.465declaraciones PASS,49nuevas/32declaraciones con todos los parámetros;
+Develop22:25:58/Production22:19:13, PRE/POST/focal PASS y P2 cerrado. Código integrado idéntico a8050751.
+Este cierre modifica solo CHANGELOG/Progress/fase/propuesta; Xcode adicional N/A razonado por documentación y
+paridad ejecutable. Localizaciones577/0 y diffcheck PASS; gobernanza conserva únicamente seis enlaces Desktop
+históricos08.3 y aviso AppIntents metadata conocido separado de Swift/Clang. No fallo físico de almacenamiento probado.
