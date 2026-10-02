@@ -568,3 +568,95 @@ revisado; no cambios de recursos/config/App/schema. Este cierre modifica solo CH
 Xcode adicional N/A por documentación, tests/auditorías ejecutables reutilizados por impacto.
 Governance conserva seis enlacesDesktop08.3 históricos, localizaciones577/0 y diffcheck PASS. La evidencia previa
 permanece limitada a las suites seleccionadas/Simulator; no se presenta como validación integral ni activación real.
+
+## 12.6 — Inicio autorizado
+
+2026-10-02: PLU-93 In Progress/Jesus, hija PLU-85; rama `codex/plu-93-atomic-sale-payment` desde main90f1eca9.
+[Propuesta](12-6-atomic-sale-payment-proposal.md): un save para pago/upsert/stock, rollback y replay recuperable.
+Baseline focal Xcode MCP Develop25 declaraciones PASS; PRE independiente pendiente, sin código12.6 todavía.
+Sin autorización de commit/push/PR/merge/Done/live/12.7/12.8; deuda89/91 intacta.
+
+PRE atomic_payment_12_6_pre PASS sin hallazgos.864archivos digest inicial/final
+`4904fe9c076433238dd64c43199432bcbe490c0cf074615c592342ebdbd26ade`, root comprobado tras dictamen.
+Baseline nativo cerrado20:27:25/25PASS, runtimeWarnings[]. Comienza TDD de propuesta aprobada; UI N/A.
+
+### 12.6 — Implementación y validación
+
+Pago real usa SalePaymentAcceptancePolicy y SaleStockMovementPolicy existentes. StockLocalDataSource prepara el lote
+sin escribir: replay compara payload completo antes de Product actual; comprueba historial/saldo total por Product,
+incluidas líneas repetidas. Append manual conserva su frontera de un evento y mismas reglas mediante preparación.
+SaleLocalDataSource comparte staging causal privado con persistPendingUpsert; solo pago recibe commit injectable
+`@Sendable`. Contexto limpio, autosave desactivado/restaurado, ningún await durante staging/save; un único save para
+venta/upsert/movimientos, rollback integral ante excepción/cancelación previa. No cambia schema3.0.0 ni payloads.
+Exact replay agrega solo eventos faltantes; paid/closed/voided/bytes/cola permanecen intactos. No barrido histórico,
+reservas, compensación ni CAS entre writers independientes. Saldo insuficiente permite valores negativos;
+Product inexistente/conflictivo, identidad divergente e historial/overflow son fallos técnicos neutrales de pago.
+Repository y contextual adapter publican Sales/Products tras aceptación durable; App inyecta Products compartida en
+runtime, live, demo e interactive preview. Preview finita de snapshots usa InMemorySaleRepository como doble Domain.
+No cambian Views, ViewModels, Stores, navegación, textos ni recursos; auditoría UI/previews/AT12.6 N/A.
+Deuda PLU-89/91 sigue Backlog/Jesus, tras feedback y estabilización, antes del primer candidato de uso real.
+
+TDD: RED real20:32:37:0 movimientos frente a3 y saldos0 frente a−5/−4; venta/cola sí guardadas bajo implementación
+anterior. GREEN inicial20:36; final15/15 nuevas20:48:28 (cuatro suites), xcresult nativo cerrado/0 runtimeWarnings.
+Pruebas: causal successor, consumos por línea capturada/profesional, saldo negativo, concurrencia sobre mismo writer;
+fallo injected después de staging venta/upsert/tres movimientos sin publicar ni persistir, rollback/retry; prefijo
+aceptado inmutable, recovery paid/closed/voided sin reescribir bytes/cola, replay sin save ni Product actual;
+colisión de segundo evento, Product ausente/conflictivo, overflow de lote, dirty context ajeno, cancelación antes del
+pago/en commit injection/después de aceptación; observación contextual y composiciones reales runtime/live/demo/preview.
+Disk file-backed: fallo injected anterior al save, liberación weak del container y dos aperturas aún unpaid/cola original;
+retry y dos aperturas con pago/cola/tres payloads idénticos, pendientesv2, sin save de replay. No prueba fallo de hardware.
+Fixture workflow12.4 siembra Product válido y actualiza oráculo tras pago0→1 conforme al nuevo contrato12.6; mostrar,
+cancelar y repetir aviso siguen0 y misma cola. No debilita aceptación ni reglas de confirmación no bloqueante.
+
+Regresión20:44:59:681 ejecuciones nativas PASS,595 declaraciones/88 suites; árbol:124 parametrizadas/210 runs.
+MCP informa682/596: incluye SaleCalculatorBoundaryTests/`Exact line oracles hold in each supported currency` privado,
+sin caso nativo ejecutado. Se reporta681, sin contar ese registro como evidencia. No se cambia test histórico ajeno.
+Develop build-for-testing20:47:58/25.575s y Production20:46:51/21.958s PASS, stable Xcode MCP, SDK27.0,
+iPadPro13(M5) Simulator27.2; Develop/destino originales restaurados. Swift6/complete y warnings-as-errors App/tests
+verificados. GetBuildLog warning0Swift/Clang; log completo conserva aviso baseline appintentsmetadataprocessor:
+Metadata extraction skipped, no AppIntents.framework dependency found. Sin afirmar cero avisos del toolchain completo.
+Bundles nativos bajo DerivedData/FranAlonso-eehpkvodmpnqlchgeqriatcucsjf/Logs/Test:
+`Test-FranAlonso-Develop-2026.10.02_20-48-28-+0200.xcresult` y
+`Test-FranAlonso-Develop-2026.10.02_20-44-59-+0200.xcresult`.
+
+Estilo:12Swift revisados manualmente; recall8candidatos:7construcciones preexistentes sin edición y nueva firma de
+commit closure vertical justificada por tipo/default effectful. Closures mutadoras nuevas multiline, llamada4args
+vertical, candidatas simples corregidas; nombres de tests largos son literales deliberados, no formato global.
+Localizaciones577/0errores; git diff --check PASS. Gobernanza solo6linksDesktop rotos preexistentes08.3; Progress
+compactado bajo8192bytes. Secret-sensitive paths fuera del diff; sin dependencia, unsafe, PII/log o activación live.
+POST técnico independiente pendiente sobre snapshot final. Issue PLU-93 In Progress; sin entrega Git autorizada.
+
+POST atomic_payment_12_6_post inspeccionó12Swift y evidencia nativa; sin defecto funcional adicional, dos P3:
+init de inyección en declaración primaria y closure noSave desindentada. Snapshot read-only868archivos
+`9df912364e62cb1f82741cb88aad49fed61c17556aff5fc20e16673f3c331425`, root comprobado tras dictamen.
+Corregidos: init en extensión, memberwise privado conserva misma closure @Sendable; indentación multiline.
+Revisión focal de estas dos correcciones pendiente antes de validación final, sin replantear alcance funcional.
+
+### 12.6 — POST resuelto y estado final local
+
+Focal atomic_payment_12_6_post PASS sin hallazgos nuevos, ambosP3 resueltos;2Swift/recall6adjudicados.
+Snapshot868archivos SHA256`da472ca70c8f3838131a9a592f619be108dfc781f82fa5ce5fbd345a5a9c5ebe` idéntico
+antes/después del revisor y root; verificaciones finales no alteraron el snapshot. Revisión funcional previa y681
+ejecuciones de regresión conservan validez: solo ubicación init/memberwise e indentación, sin cambio semántico.
+Validación corregida final: Production20:56:54/17.707s y Develop-for-testing20:57:22/27.833s PASS;
+GetBuildLog0Swift/Clang, aviso metadata conocido aún presente. Develop/iPadM5 originales restaurados.
+15/15 nuevas20:57:33 PASS; native bundle cerrado,0fallos/skips/runtimeWarnings:
+`Test-FranAlonso-Develop-2026.10.02_20-57-33-+0200.xcresult` bajo DerivedData citado arriba.
+Source hashes12Swift congelados en manifest temporal para conservar paridad con esta evidencia al entregar.
+Progress/Linear93 y parent85 reconciliados: implementación validada, In Progress, lista para entrega autorizada
+por separado; Git rama local sin commit/push/PR/merge/Done. No subfase12.7/12.8, live ni cierre integral.
+UI12.6N/A, deuda89/91Backlog/Jesus con trigger y límites anteriores conservados.
+
+### 12.6 — Entrega autorizada
+
+Autorización actual «commit, push y entrega» incluye el cierre Git/Linear establecido para esta subfase.
+11Swift coinciden literalmente con el manifest validado; AtomicSalePaymentTests solo pierde la línea vacía
+al EOF detectada al incluir el archivo nuevo en diffcheck, sin cambio semántico. Se reutilizan15/15 nuevas y681
+ejecuciones de regresión,
+builds finales y PRE/POST/focal sin cambios ejecutables posteriores. Revisión del diff y rutas explícitas;
+sin cambios locales ajenos. Preparación de commit/PR/integración, pendiente del resultado Git definitivo.
+12.7/12.8, cierre integral, live y deuda89/91 conservan sus gates propios.
+
+Focal independiente de la normalización EOF: PASS sin hallazgos; confirma11hashes idénticos y un LF final
+eliminado, sin impacto semántico y con reutilización de toda la evidencia ejecutable.868archivos read-only,
+digest inicial/final/root`0dcfc65c5e339e91ff2ea5846617a831355e4a23fd2319ec2c585d159f9c9153`.

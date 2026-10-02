@@ -6,6 +6,10 @@ All notable changes to this project are documented in this file.
 
 ### Added
 
+- 2026-10-02 | ✨ feat(sales): make local payment atomic
+  Commits payment, its causal upsert and captured stock consumptions in one local save with complete rollback.
+  Repairs missing immutable events on replay and publishes Sales/Products only after durable acceptance.
+
 - 2026-10-02 | ✨ feat(sales): add idempotent stock movements
   Creates one immutable consumption per product-linked sale line with stable identity and original payment trace.
   Retains manual payloads and accepted history across retry, cancellation and reopening; atomic payment follows in 12.6.

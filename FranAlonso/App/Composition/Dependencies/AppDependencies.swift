@@ -180,7 +180,8 @@ struct AppDependencies {
         )
         let saleRepository = DefaultSaleRepository(
             persistenceActor: salePersistenceActor,
-            observationSignal: saleObservationSignal
+            observationSignal: saleObservationSignal,
+            productObservationSignal: productObservationSignal
         )
 
         return AppDependencies(
@@ -244,7 +245,8 @@ struct AppDependencies {
         )
         let saleRepository = DefaultSaleRepository(
             persistenceActor: salePersistenceActor,
-            observationSignal: saleObservationSignal
+            observationSignal: saleObservationSignal,
+            productObservationSignal: productObservationSignal
         )
 
         return AppDependencies(

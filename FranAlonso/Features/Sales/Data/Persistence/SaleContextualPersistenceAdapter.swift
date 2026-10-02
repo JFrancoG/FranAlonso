@@ -9,6 +9,7 @@ import SwiftData
 struct SaleContextualPersistenceAdapter {
     private let dataSource: SaleLocalDataSource
     private let observationSignal: SaleObservationSignal
+    private let productObservationSignal: any ProductChangeSignaling
     private let makeOperationID: @Sendable () -> UUID
 
     /// Accepts a new draft in the ephemeral caller context before invalidating observation.
@@ -77,6 +78,7 @@ struct SaleContextualPersistenceAdapter {
             in: context
         )
         await observationSignal.publishChange()
+        await productObservationSignal.publishChange()
         return accepted
     }
 
@@ -106,12 +108,19 @@ extension SaleContextualPersistenceAdapter {
     /// - Parameters:
     ///   - dataSource: The context-confined Sales persistence primitive.
     ///   - observationSignal: The shared invalidation used by every local write route.
+    ///   - productObservationSignal: Invalidates stock readers after atomic payment acceptance.
     ///   - operationID: A deterministic operation-identity source, injectable for tests.
     init(
         dataSource: SaleLocalDataSource = SaleLocalDataSource(),
         observationSignal: SaleObservationSignal,
+        productObservationSignal: any ProductChangeSignaling = ProductObservationSignal(),
         operationID: @escaping @Sendable () -> UUID = { UUID() }
     ) {
-        self.init(dataSource: dataSource, observationSignal: observationSignal, makeOperationID: operationID)
+        self.init(
+            dataSource: dataSource,
+            observationSignal: observationSignal,
+            productObservationSignal: productObservationSignal,
+            makeOperationID: operationID
+        )
     }
 }
