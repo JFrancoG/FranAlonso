@@ -43,6 +43,7 @@ Los ADR se escriben antes de implementar una decisión no trivial y no se reescr
 | [0031](0031-sale-decimal-coefficient-certification.md) | Certificar la precisión decimal del calculador de ventas | Aceptado para implementación local de 11.2 |
 | [0032](0032-provisional-global-sale-discount.md) | Global provisional y snapshot comercial versionado | Aceptado para implementación local11.7 |
 | [0033](0033-immutable-stock-movement-sync.md) | Feed inmutable de Stock y metadata durable | Aceptado para implementación12.7 |
+| [0034](0034-sale-stock-compensation.md) | Anulación local y compensación Stock versionada | Aceptado para implementación12.8 |
 
 El propietario aceptó ADR 0030 el 29 de septiembre de 2026: base de demo 08.8a, catálogo09–10, adelanto textual
 acotado de16 y venta11–13; 08.9 se recupera después del feedback. Sustituye solo el orden de ejecución afectado de

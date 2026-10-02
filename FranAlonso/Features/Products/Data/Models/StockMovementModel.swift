@@ -29,7 +29,7 @@ final class StockMovementModel {
 }
 
 extension StockMovementModel {
-    /// Retains manual payload v1 and stores original sale consumption as v2 without changing the model shape.
+    /// Retains manual v1 and consumption v2; compensation v3 adds provenance without changing the model shape.
     convenience init(_ movement: StockMovement) throws {
         self.init(
             id: movement.id.rawValue,
@@ -49,7 +49,7 @@ extension StockMovementModel {
 
     /// Rejects unsupported or inconsistent storage before exposing a detached Domain value.
     func toDomain() throws -> StockMovement {
-        guard payloadVersion == 1 || payloadVersion == 2 else { throw StockError.storageFailure }
+        guard (1...3).contains(payloadVersion) else { throw StockError.storageFailure }
         do {
             let movement = try JSONDecoder().decode(StockMovement.self, from: payloadData)
             guard movement.origin.payloadVersion == payloadVersion,
@@ -68,6 +68,7 @@ private extension StockMovementOrigin {
         switch self {
         case .manual: 1
         case .sale: 2
+        case .saleReversal: 3
         }
     }
 }

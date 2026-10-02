@@ -73,6 +73,50 @@ extension StockLocalDataSource {
         }
     }
 
+    /// Prepares inverses only after verifying every original and both identities' conflict fences.
+    /// Catalogue eligibility does not govern compensation of immutable history; no Product is created or restored.
+    /// All touched histories and final balances are checked before returning unsaved rows to the owning transaction.
+    func prepareSaleReversal(
+        _ sale: Sale,
+        reversalID: SaleReversalID,
+        in context: ModelContext
+    ) throws -> [StockMovementModel] {
+        try performOperation {
+            guard !context.hasChanges else { throw StockError.storageFailure }
+            guard case let .voided(paymentID, _, _, _, _, _, _) = sale.status else {
+                throw SaleError.invalidSaleTransition
+            }
+            let originals = try SaleStockMovementPolicy()(sale: sale, paymentID: paymentID)
+            let inverses = try SaleStockReversalPolicy()(sale: sale, reversalID: reversalID)
+            var balances: [ProductID: [Int]] = [:]
+            var rows: [StockMovementModel] = []
+            for (original, inverse) in zip(originals, inverses) {
+                try Task.checkCancellation()
+                guard try !hasStockConflict(original.id, in: context),
+                      try !hasStockConflict(inverse.id, in: context),
+                      try model(id: original.id, in: context)?.toDomain() == original
+                else {
+                    throw StockError.identityConflict
+                }
+                if balances[original.productID] == nil {
+                    let history = try movements(for: original.productID, in: context).map(\.quantityDelta)
+                    _ = try StockQuantityPolicy().quantity(deltas: history)
+                    balances[original.productID] = history
+                }
+                if let existing = try model(id: inverse.id, in: context)?.toDomain() {
+                    guard existing == inverse else { throw StockError.identityConflict }
+                } else {
+                    rows.append(try StockMovementModel(inverse))
+                    balances[inverse.productID, default: []].append(inverse.quantityDelta)
+                }
+            }
+            for balance in balances.values {
+                _ = try StockQuantityPolicy().quantity(deltas: balance)
+            }
+            return rows
+        }
+    }
+
     /// Reads accepted history independently of subsequent Product metadata changes.
     func movement(id: StockMovementID, in context: ModelContext) throws -> StockMovement? {
         try performOperation {
@@ -91,6 +135,11 @@ extension StockLocalDataSource {
 }
 
 private extension StockLocalDataSource {
+    func hasStockConflict(_ id: StockMovementID, in context: ModelContext) throws -> Bool {
+        let rawID = id.rawValue
+        let descriptor = FetchDescriptor<StockSyncConflictModel>(predicate: #Predicate { $0.movementID == rawID })
+        return try context.fetchCount(descriptor) > 0
+    }
     func performOperation<Value>(
         _ operation: () throws -> Value
     ) throws -> Value {

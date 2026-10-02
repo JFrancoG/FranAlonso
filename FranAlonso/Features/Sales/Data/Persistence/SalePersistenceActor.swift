@@ -9,6 +9,22 @@ import SwiftData
 actor SalePersistenceActor {
     private let dataSource = SaleLocalDataSource()
 
+    /// Accepts a compensating void in the same context that owns Sale, causal queue and immutable ledger.
+    func voidSale(
+        _ expected: Sale,
+        reversalID: SaleReversalID,
+        voidedAt: Date,
+        operationID: UUID
+    ) throws -> Sale {
+        try dataSource.voidSale(
+            expected,
+            reversalID: reversalID,
+            voidedAt: voidedAt,
+            operationID: operationID,
+            in: modelContext
+        )
+    }
+
     /// Accepts or replays work in one non-suspending context-confined boundary.
     func advanceSale(_ expected: Sale, action: SaleProgressAction, operationID: UUID) throws -> Sale {
         try dataSource.advanceSale(

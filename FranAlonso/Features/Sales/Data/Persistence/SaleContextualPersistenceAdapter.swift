@@ -12,6 +12,26 @@ struct SaleContextualPersistenceAdapter {
     private let productObservationSignal: any ProductChangeSignaling
     private let makeOperationID: @Sendable () -> UUID
 
+    /// Accepts void and stock in the ephemeral caller context, then invalidates both observed sources.
+    /// Cancellation after commit does not undo acceptance; the context is never stored or sent across actors.
+    func voidSale(
+        _ expected: Sale,
+        reversalID: SaleReversalID,
+        voidedAt: Date,
+        in context: ModelContext
+    ) async throws -> Sale {
+        let accepted = try dataSource.voidSale(
+            expected,
+            reversalID: reversalID,
+            voidedAt: voidedAt,
+            operationID: makeOperationID(),
+            in: context
+        )
+        await observationSignal.publishChange()
+        await productObservationSignal.publishChange()
+        return accepted
+    }
+
     /// Accepts a new draft in the ephemeral caller context before invalidating observation.
     /// Uses the same draft checks and causal write primitive as the context-free repository.
     /// - Throws: `SaleDraftError` or cancellation before acceptance; does not retain the context.

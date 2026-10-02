@@ -6,6 +6,11 @@ All notable changes to this project are documented in this file.
 
 ### Added
 
+- 2026-10-03 | ✨ feat(sales): compensate stock on sale void
+  Commits a closed sale reversal, its causal upsert and immutable per-line inverses in one local save.
+  Preserves originals across replay, rollback and restart; concurrent reversal identities conflict without adding stock twice.
+  Adds compensation-only local v3 and remote v2 payloads while preserving historical formats and schema 4.
+
 - 2026-10-02 | ✨ feat(stock): synchronize immutable movements
   Adds an independent immutable Stock feed with durable cursor, conflicts, retries and exact payload acknowledgement.
   Preserves signed inventory and ledger bytes across replay, cancellation and schema 1/2/3→4 migration; sync stays inactive.

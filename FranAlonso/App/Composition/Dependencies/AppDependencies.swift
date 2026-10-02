@@ -27,6 +27,7 @@ struct AppDependencies {
     let getSaleDraft: GetSaleDraftUseCase
     let updateSaleDraft: UpdateSaleDraftUseCase
     let registerSalePayment: RegisterSalePaymentUseCase
+    let voidSale: VoidSaleUseCase
     let discardSaleDraft: DiscardSaleDraftUseCase
     let makeWorkday: WorkdayFactory
     let makeSalesHistory: SalesHistoryFactory
@@ -365,6 +366,7 @@ extension AppDependencies {
             getSaleDraft: GetSaleDraftUseCase(repository: saleRepository),
             updateSaleDraft: UpdateSaleDraftUseCase(repository: saleRepository),
             registerSalePayment: RegisterSalePaymentUseCase(repository: saleRepository),
+            voidSale: VoidSaleUseCase(repository: saleRepository),
             discardSaleDraft: DiscardSaleDraftUseCase(repository: saleRepository),
             makeWorkday: Self.workdayFactory(saleRepository: saleRepository, clientRepository: clientRepository),
             makeSalesHistory: Self.salesHistoryFactory(

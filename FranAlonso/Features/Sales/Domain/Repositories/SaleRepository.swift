@@ -2,6 +2,10 @@ import Foundation
 
 /// Access to sale snapshots materialized by the local source of truth.
 protocol SaleRepository: Sendable {
+    /// Accepts a closed sale and its inverse stock events atomically; exact replay never rewrites original history.
+    /// Caller retains reversal ID/date. Validation and commit do not suspend; no independent-context CAS.
+    /// - Throws: Reversal/lifecycle rejection or cancellation before local acceptance.
+    func voidSale(_ expected: Sale, reversalID: SaleReversalID, voidedAt: Date) async throws -> Sale
     /// Accepts one work transition against the expected snapshot, with write-free exact replay.
     /// Validation/commit share one context without suspension; no independent-context CAS is promised.
     func advanceSale(_ expected: Sale, action: SaleProgressAction) async throws -> Sale
@@ -59,6 +63,10 @@ protocol SaleRepository: Sendable {
 }
 
 extension SaleRepository {
+    /// Repositories without compensating acceptance fail closed instead of saving an unrestricted voided snapshot.
+    func voidSale(_ expected: Sale, reversalID: SaleReversalID, voidedAt: Date) async throws -> Sale {
+        throw SaleReversalError.persistenceUnavailable
+    }
     /// Repositories without a work-acceptance capability fail closed rather than save unrestricted snapshots.
     func advanceSale(_ expected: Sale, action: SaleProgressAction) async throws -> Sale {
         throw SaleProgressError.persistenceUnavailable
