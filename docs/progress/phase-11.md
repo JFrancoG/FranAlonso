@@ -1312,3 +1312,24 @@ Revisión independiente de entrega sin hallazgos PASS: `/tmp/plu82-delivery-revi
 cuatro FULL JSON idénticos775archivos,digest`d8f88f35971d9741b6b287b01a544e7d8168de7c9034ba1daacbbe03fdb8abc6`.
 Informe valida reutilización de fuente/evidencia y límites. Gate de entrega satisfecho; cierre operativo
 se realiza sólo tras merge definitivo y comprobación de árbol validado intacto.
+
+
+### Entrega11.8 verificada — PLU-82 Done funcional
+
+2026-10-02, Jesus Franco. Commit `fdbe120e8ac4939f0d2dd30184208c304c03b627`,
+[PR40](https://github.com/JFrancoG/FranAlonso/pull/40) MERGED a main,
+merge`f4d2f1f0fe982736e9d2559187f4c8910da9be9b`. Árbol Git completo idéntico entre feature/merge;
+fuente/config610 igual a la evidencia validada, proof `/tmp/plu82-merged-source.json`.
+No checks remotos ni reglas de rama requeridos configurados; validación local y auditorías explícitas,
+sin atribuir éxito a CI inexistente. PRhead coincide con commit publicado y merge sin bypass/force.
+
+Rama `codex/plu-82-sale-payment` eliminada local/remota después de verificar tipfdbe120, ascendencia
+al main remoto y cero commits únicos. PLU-82 Done tras merge (integración Linear), plan operativo
+previo conservado en comentario y descripción/nota de entrega reconciliadas. PLU-71 permanece
+In Progress, deuda77/79/81 Backlog/Jesus con sus triggers intactos. Siguiente11.9 conserva su gate,
+stock12/documento13/live separados. Esto acredita motor/persistencia/composición local del pago;
+no añade ni acredita nuevo flujo visual de cobro o interacción física.
+
+Cierre documental en main conforme al flujo establecido; sólo Progress/spec/changelog, Xcode adicional
+N/A razonado. Diffcheck/localizaciones PASS, gobernanza sólo los seis enlaces Desktop históricos08.3;
+no se declaran corregidos. Sin cambios ejecutables tras suite/builds/revisiones finales.

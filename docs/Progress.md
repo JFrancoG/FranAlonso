@@ -6,9 +6,9 @@
 
 - **11.1–11.7: Done funcional**, PLU-72–76/78/80, PR33–39; ramas eliminadas, fasePLU-71 activa.
   [Evidencia](progress/phase-11.md). Último merge11.7 `073a180`/PR39.
-- **11.8 / [PLU-82](https://linear.app/plusprojects/issue/PLU-82): In Progress**, Jesus Franco.
-  Rama `codex/plu-82-sale-payment`; [propuesta](progress/11-8-sale-payment-proposal.md), PRE PASS.
-  Pago local, TDD21/34 y regresión2.132/builds PASS; POST PASS. Sin entrega Git/live.
+- **11.8 / [PLU-82](https://linear.app/plusprojects/issue/PLU-82): Done funcional**, Jesus Franco.
+  [PR40](https://github.com/JFrancoG/FranAlonso/pull/40)/`f4d2f1f`; rama eliminada. Pago local,2.132 ejecuciones/builds/PRE/POST PASS.
+  [Evidencia](progress/phase-11.md). Siguiente11.9; fase abierta, sin live.
 - [PLU-77](https://linear.app/plusprojects/issue/PLU-77)/[PLU-79](https://linear.app/plusprojects/issue/PLU-79)/[PLU-81](https://linear.app/plusprojects/issue/PLU-81):
   Backlog accesible11.5–11.7/Jesus Franco; tras estabilizar cada flujo, antes de uso real.
 

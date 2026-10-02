@@ -77,10 +77,13 @@ Dirección global provisional recibida: acumulable con promociones para demo, pe
 Global provisional entregado: PRE/estilo y 1.310 declaraciones/2.098 ejecuciones PASS; builds Develop/Production.
 Smoke global y POST técnico/UI PASS para gate funcional demo ADR0029. Árbol integrado idéntico al commit validado;
 ratificación comercial y accesibilidad integral PLU-81 pendientes. Fuente/config606 intacta; sin live.
-La fase11 continúa abierta.11.8 [PLU-82](https://linear.app/plusprojects/issue/PLU-82) In Progress:
-[propuesta](../progress/11-8-sale-payment-proposal.md), PRE PASS; pago local implementado,
-TDD21/34 y regresión2.132/builds PASS; POST PASS. Sin UI nueva; la venta pagada permanece en Jornada pendiente de documento.
-Sin entrega Git ni live.
+11.8 entregada funcionalmente: [PLU-82](https://linear.app/plusprojects/issue/PLU-82) Done/Jesus Franco,
+[PR40](https://github.com/JFrancoG/FranAlonso/pull/40), commit validado`fdbe120`, merge`f4d2f1f`;
+árbol completo idéntico y rama local/remota eliminada. [Propuesta](../progress/11-8-sale-payment-proposal.md).
+RegisterSalePaymentUseCase con aceptación local/replay recuperable;21declaraciones/34ejecuciones nuevas,
+regresión1331declaraciones/2132ejecuciones nativas, builds y PRE/estilo/POST/entrega independientes PASS.
+Sin nueva UI de cobro; la venta pagada permanece en Jornada hasta documento. Fuente/config610 intacta.
+La fase11 y deuda77/79/81 siguen abiertas. Siguiente11.9/Histórico no iniciada; sin activación live.
 
 Jornada local-first sin trabajo cerrado ocupando espacio, Histórico separado, snapshots monetarios inmutables, Store justificado y finalización idempotente.
 

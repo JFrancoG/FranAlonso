@@ -107,6 +107,10 @@ All notable changes to this project are documented in this file.
 
 ### Documentation
 
+- 2026-10-02 | 📝 docs(delivery): close sale payment delivery
+  Records PR40, verified merge/source parity and the completed PLU-82 delivery.
+  Keeps phase11, existing accessibility work and the next history gate open.
+
 - 2026-10-02 | 📝 docs(delivery): close sale discount delivery
   Records PR 39 integration, functional PLU-80 closure and branch cleanup.
   Keeps commercial ratification and PLU-81 accessibility evidence pending; payment registration is next.
