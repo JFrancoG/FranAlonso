@@ -6,6 +6,10 @@ All notable changes to this project are documented in this file.
 
 ### Added
 
+- 2026-10-02 | ✨ feat(sales): analyze sale stock impact
+  Reuses the stock policy through a pure sale use case, preserving cumulative per-line projections and advisory warnings.
+  Propagates missing inventory, duplicate identity and overflow without reserving or changing physical stock.
+
 - 2026-10-02 | ✨ feat(sales): add sales history and terminal detail
   Separates closed and voided sales from Workday, with filters, captured-term search and original closure ordering.
   Preserves original amounts, payment/document references and compensating-void trace in read-only detail.
