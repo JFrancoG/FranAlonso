@@ -6,6 +6,11 @@ All notable changes to this project are documented in this file.
 
 ### Added
 
+- 2026-10-02 | ✨ feat(sales): add sales history and terminal detail
+  Separates closed and voided sales from Workday, with filters, captured-term search and original closure ordering.
+  Preserves original amounts, payment/document references and compensating-void trace in read-only detail.
+  Functional demo delivery retains integral accessibility work in PLU-84; no closure/stock/live writer added.
+
 - 2026-10-02 | ✨ feat(sales): register local sale payments
   Accepts cash or card with caller-retained payment identity and timestamp.
   Preserves commercial snapshots, later document/reversal metadata and durable recovery across exact retries.

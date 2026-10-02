@@ -83,7 +83,13 @@ ratificación comercial y accesibilidad integral PLU-81 pendientes. Fuente/confi
 RegisterSalePaymentUseCase con aceptación local/replay recuperable;21declaraciones/34ejecuciones nuevas,
 regresión1331declaraciones/2132ejecuciones nativas, builds y PRE/estilo/POST/entrega independientes PASS.
 Sin nueva UI de cobro; la venta pagada permanece en Jornada hasta documento. Fuente/config610 intacta.
-La fase11 y deuda77/79/81 siguen abiertas. Siguiente11.9/Histórico no iniciada; sin activación live.
+La fase11 y deuda77/79/81 siguen abiertas.11.9 iniciada por autorización independiente; sin activación live.
+11.9 implementada localmente: [PLU-83](https://linear.app/plusprojects/issue/PLU-83) In Progress/Jesus Franco,
+`codex/plu-83-sales-history`; Histórico/detail terminal read-only, filtros/orden/query, navegación/retry y trazas.
+PRE/estilo,1353declaraciones/2180ejecuciones nativas, builds Develop/Production y smoke12/12PASS; POST técnico/UI funcional PASS.
+[Matriz propia](../accessibility/evidence/11-9-sales-history.md)/[PLU-84](https://linear.app/plusprojects/issue/PLU-84)
+Backlog/Jesus, tras feedback/estabilización antes del primer candidato real. Cierre/compensación12.8/13.12
+conservan gates; muestras DEMO materializadas no acreditan esos flujos. Entrega Git autorizada en curso; PLU-83 In Progress hasta confirmar merge.
 
 Jornada local-first sin trabajo cerrado ocupando espacio, Histórico separado, snapshots monetarios inmutables, Store justificado y finalización idempotente.
 

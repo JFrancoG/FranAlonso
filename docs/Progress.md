@@ -4,13 +4,12 @@
 
 ## Estado actual
 
-- **11.1–11.7: Done funcional**, PLU-72–76/78/80, PR33–39; ramas eliminadas, fasePLU-71 activa.
-  [Evidencia](progress/phase-11.md). Último merge11.7 `073a180`/PR39.
-- **11.8 / [PLU-82](https://linear.app/plusprojects/issue/PLU-82): Done funcional**, Jesus Franco.
-  [PR40](https://github.com/JFrancoG/FranAlonso/pull/40)/`f4d2f1f`; rama eliminada. Pago local,2.132 ejecuciones/builds/PRE/POST PASS.
-  [Evidencia](progress/phase-11.md). Siguiente11.9; fase abierta, sin live.
-- [PLU-77](https://linear.app/plusprojects/issue/PLU-77)/[PLU-79](https://linear.app/plusprojects/issue/PLU-79)/[PLU-81](https://linear.app/plusprojects/issue/PLU-81):
-  Backlog accesible11.5–11.7/Jesus Franco; tras estabilizar cada flujo, antes de uso real.
+- **11.9 / [PLU-83](https://linear.app/plusprojects/issue/PLU-83): In Progress**, Jesus Franco.
+  `codex/plu-83-sales-history`: Histórico/detalle terminal local; PRE/estilo,2180ejecuciones/builds/smoke PASS, POST técnico/UI funcional PASS.
+  [Evidencia](progress/phase-11.md). Entrega Git en curso, sin live; fasePLU-71 abierta.
+- **11.1–11.8: Done funcional**, PLU-72–76/78/80/82, PR33–40 y ramas eliminadas.
+- **Deuda accesible11**: [PLU-77](https://linear.app/plusprojects/issue/PLU-77)/79/81/84 Backlog/Jesus;
+  tras feedback/estabilización por flujo y antes del primer candidato real. [Matrices](progress/phase-11.md).
 
 - **Borrador16 / [PLU-47](https://linear.app/plusprojects/issue/PLU-47): Done funcional**,
   [PR32](https://github.com/JFrancoG/FranAlonso/pull/32)/`f1c781d`; rama eliminada.
@@ -18,7 +17,7 @@
   [PLU-70](https://linear.app/plusprojects/issue/PLU-70) Backlog/Jesus Franco: recuperación accesible
   tras feedback/estabilización, antes de uso real; sin cierre16/live.
 
-- **es/en y Xcode**:528 textos; iOS27. Evidencia por subfase.
+- **es/en y Xcode**:561 textos; iOS27. Evidencia por subfase.
   [Evidencia](progress/localization-en-es.md).
 - **[PLU-69](https://linear.app/plusprojects/issue/PLU-69): Done**, [PR31](https://github.com/JFrancoG/FranAlonso/pull/31).
   App ordenada, Firebase 12.19.2; 1.564 resultados/builds PASS. [Registro](progress/app-organization.md).
@@ -33,7 +32,7 @@
   orden excepcional y alcance canónico en [índice](specs/00_index.md). [Registro](progress/phase-08.md).
 - **08.8a / [PLU-46](https://linear.app/plusprojects/issue/PLU-46): Done funcional**.
   [PR16](https://github.com/JFrancoG/FranAlonso/pull/16), `b334c04`; validado `0c76967`, ramas eliminadas.
-  Demo Develop: dos borradores, capas reales y memoria; sin live/durabilidad. PRE/POST, técnica, previews y smoke PASS.
+  Demo Develop: dos borradores, capas reales y memoria; sin live/durabilidad. Revisiones y validación PASS.
   [Guía](progress/08-8a-demo-runbook.md), [evidencia](progress/phase-08.md).
 - **[PLU-48](https://linear.app/plusprojects/issue/PLU-48): Backlog**, evidencia accesible integral nueva del aviso/encuadre.
   Jesus Franco, hija dePLU-34 y relacionada conPLU-46; [matriz55](accessibility/evidence/08-8a-reusable-demo.md).

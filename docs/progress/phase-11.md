@@ -1333,3 +1333,132 @@ no añade ni acredita nuevo flujo visual de cobro o interacción física.
 Cierre documental en main conforme al flujo establecido; sólo Progress/spec/changelog, Xcode adicional
 N/A razonado. Diffcheck/localizaciones PASS, gobernanza sólo los seis enlaces Desktop históricos08.3;
 no se declaran corregidos. Sin cambios ejecutables tras suite/builds/revisiones finales.
+
+## 11.9 — Inicio (2026-10-02)
+
+[PLU-83](https://linear.app/plusprojects/issue/PLU-83) In Progress/Jesus Franco;
+`codex/plu-83-sales-history`, base `73f5318` limpia. Issue/rama e implementación local autorizadas.
+[Propuesta](11-9-sales-history-proposal.md): Histórico/detail read-only closed/voided; observar
+cierre/anulación y conservar traza. Acciones compensatorias12.8 y cierre13.12 mantienen sus gates.
+PRE independiente PASS previo al código; implementación local y evidencia final abajo, sin entrega Git/live.
+
+
+### 11.9 — Implementación y validación local previa a POST
+
+PRE independiente PASS, `/tmp/plu83-pre-review.md`; cuatro FULL JSON íntegros idénticos776archivos,
+digest`276e8689db933c2ad0163f7853150dc676da04b72534268e24db52e363dac4b7`.
+Política terminal pura por cierre original (anulación posterior no reordena); SalesHistoryViewModel y
+SaleDetailViewModel Observable/MainActor con observación de la misma fuente local, generaciones,
+cancelación posterior a adquisición/valor y aislamiento de labels de cliente. Búsqueda sobre snapshot
+y referencia, filtro closed/voided, orden, navegación por sesión estable, error/retry y cierre de presentación.
+Sin Store extra ni writer histórico: pago/documento/compensación materializados se observan read-only;
+las acciones definitivas quedan en12.8/13.12. Mezcla monetaria incompatible falla, no inventa total.
+
+Histórico sustituye placeholder separado de Jornada; detalle Form mantiene líneas, descuentos/IVA/importes
+originales, pago, documento, cierre original y reversión/fecha propias. Factories App sobre repositorio común.
+Demo workday incluye3muestras históricas sintéticas precargadas (2cerradas/1anulada), banner explícito:
+no se ha ejecutado cierre/emisión/compensación real. Se conservan6operaciones y el demo clients anterior.
+Schema3/31modelos, DTO1/2 y gates live intactos; sin dependencia, unsafe, PII ni payload en logs nuevos.
+
+TDD RED compilado:14declaraciones/22ejecuciones,1PASS/21FAIL de stubs/no-ops.
+Bundle `ActionArtifacts/default/RunSomeTests/Test-FranAlonso-Develop-2026.10.02_11-48-47-+0200.xcresult`
+en `/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/`; GREEN focal14,concurrencia24 e integración2.
+GREEN parcial RunSomeTests no se usa como certificación final por bundle no cerrado.
+22declaraciones/48ejecuciones nuevas: filtros/orden/empates, query/navigation, unavailable/error/retry,
+generaciones/task/labels, observación local SwiftData y closed→voided/replay original inmutable.
+Regresión inicial2179/2180 detectó expectativa antigua de6ventas totales en WorkdayCompositionTests;
+corregida para comprobar9totales,6operativas y3terminales (2closed/1voided), conservando aislamiento/outbox.
+
+RunAllTests final cerrado: **1353declaraciones/2180ejecuciones PASS**,0fail/skips/notRun/expectedFailures,
+finishTime presente,0runtimeWarnings; iPadPro13M5 Simulator27.2/SDK27.0/Swift6estricto.
+Bundle `/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RunAllTests/Test-FranAlonso-Develop-2026.10.02_12-29-42-+0200.xcresult`.
+Exports `/tmp/plu83-final-native-{summary,tests}.json` corroboran declaraciones y ejecuciones separadas.
+Builds finales Develop-for-testing12.617s/Production22.783s PASS,0warnings Swift/Clang;
+notices metadata AppIntents skipped separados, sin dependencia AppIntents. Logs
+`/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/BuildProject/BuildProject-Log-20261002-122941.txt`
+y `BuildProject-Log-20261002-123040.txt` en mismo directorio. Xcode restaurado Develop/iPad/testplan original.
+Fuente/config628 idénticos antes/después: `eb4217ab12e946e103337ee4ab48c1b28caa676d911937f3793327d14a0bf4c1`,
+proofs `/tmp/plu83-final-source-{before,after}.json`.
+
+Estilo inicialP3 corregidos; retest independiente26Swift PASS, cuatro FULL JSON794 idénticos,
+digest`4e8ef5b9ceee1a8efa893a679e2bcc5cbccaa8d18ac9ab0a21d85765b9c057aa`;
+`/tmp/plu83-style-retest-review.md`. Cambio posterior Swift sólo expectativa/partición demo arriba;
+POST técnico revisará también este test. Recursos:33claves es/en e inventario exacto;561textos/0errores.
+
+Previews representativos Large/XXX/AX5, claro/oscuro inspeccionados; filtros corregidos por recorteAX5,
+título acortado y retestado AX5, referencias wrapping. Destino real render iPhone18ProMax/27.2 fallback;
+recuperación dyld en dispositivo privado de preview iPad documentada, no confundida con defecto del código.
+Smoke táctil Simulator iPhone17/27.2 **12/12PASS**, `/tmp/plu83-smoke-review.md`; sesión finalizada.
+[Matriz55criterios](../accessibility/evidence/11-9-sales-history.md) conserva límites/pendientes reales.
+[PLU-84](https://linear.app/plusprojects/issue/PLU-84) Backlog/Jesus Franco: evidencia integral propia
+AT/Inspector/foco/anuncios/contraste/AX5runtime/teclado/preferencias/ventanas/orientación/RTL,
+tras feedback y estabilización antes del primer candidato real. No absorbe77/79/81 ni cierrafase11.
+
+Diffcheck PASS; gobernanza sólo6enlaces Desktop preexistentes08.3, sin declarar PASS global.
+POST técnico/UI independientes pendientes. PLU-83 In Progress: entrega no autorizada;
+no commit/push/PR/merge/Done/eliminación de rama, siguiente fase ni live.
+
+
+### 11.9 — POST inicial y corrección focal de evidencia
+
+POST técnico independiente PASS/sin hallazgos, `/tmp/plu83-post-technical-review.md`; cuatroFULL JSON795
+idénticos `d8d6fb9f37ed8c30cbffaaf4f98415d560c6128fd7db880b5e8a2b2eff919ab1`, proofs completos
+`/tmp/plu83-post-technical-{root,reviewer}-{before,after}.json`. Incluye estilo del test demo final.
+POST UI independiente CORRECT focal: faltaba preview del aviso histórico=true en framing login/shell.
+CuatroFULL JSON795 idénticos mismo digest, `/tmp/plu83-post-ui-review.md` y proofs `post-ui-*`.
+Agente UI reutilizado del smoke, independiente del implementador; herramienta rechazó nuevo especialista
+por límite de threads. Actuó en rol read-only/UI con skill específica, no modificó código ni Xcode.
+Añadidos sólo3previews deterministas compartidos del nuevo aviso/login/shell; error de closure de preview
+corregido antes del render. Renders Large/XXX/AX5 completos: no bloqueo de viewport principal, pero
+aviso histórico visualmente cortado aAX5. Falla1.4.4/1.4.10 retenidas en PLU-84 para ADR0029; título/reset
+preexistentes siguen deuda PLU-48. P3 gap específico4.1.3 (sin anuncio explícito closed→voided) Limitado,
+registrado PLU-84 sin inventar fallo físico. [Matriz](../accessibility/evidence/11-9-sales-history.md).
+Retest UI focal y builds tras nuevo preview pendientes; resto del runtime no se ha modificado.
+
+Builds tras apéndice de previews: Develop-for-testing15.826s/Production17.574s PASS,0warnings Swift/Clang;
+logs `BuildProject-Log-20261002-125004.txt` y `BuildProject-Log-20261002-125119.txt` en directorio anterior.
+Fuente628 antes/después idéntica `cb83a3400b054b9e509d77d4f7728c6be8444a1b3c203bf5b79b4cc5fdb5f70c`,
+proofs `/tmp/plu83-preview-source-{before,after}.json`; únicoarchivo distinto de la suite certificada es
+DevelopDemoBanner.swift, sólo3previews añadidos.627archivos restantes idénticos, runtime del banner
+y todas las pruebas idénticos; se reutiliza suite1353/2180 cerrada, sin repeat general sin cambio semántico.
+Renders adicionales exactos `/tmp/plu83-banner-preview-evidence.json`; ShellLarge captura parte superior
+del banner fuera del viewport, no se declara PASS de esa captura ni fallo físico de la app por ella.
+Smoke runtime default conserva encuadre completo; variante retenida PLU-84. Xcode restaurado Develop/iPad.
+
+
+### 11.9 — Handoff local completo
+
+Retests técnico/UI independientes PASS funcional ADR0029; `/tmp/plu83-post-technical-retest-review.md` y
+`/tmp/plu83-post-ui-retest-review.md`. Cada conjunto4FULL JSON íntegros idénticos795archivos,
+digest`e8bac25864134d472049f111431c507bb30c1446c41e5e6a59ac2366893824f3`, proofs completos
+`/tmp/plu83-post-{technical,ui}-retest-{root,reviewer}-{before,after}.json`. Sin edición durante revisiones.
+El revisor UI ratifica aplazamiento concreto ADR0029 de2Falla/20Limitado/12Pendiente/21Pasa (55criterios).
+LoginXXX12:49:46 también captura banner fuera del borde superior; evidencia parcial retenida en PLU-84.
+Aviso íntegro en standalone/loginLarge y shellXXX, runtime default12/12; no PASS de todos los renders.
+Título/reset preexistentes conservanPLU-48; nuevo aviso/gap4.1.3 conservanPLU-84. Sin cierre integral/fase11.
+
+Últimos cambios tras retests sólo documentación/Linear: build adicional N/A razonado, fuente628
+cb83a340...f70c y restantes archivos de la evidencia certificada siguen intactos. PLU-83 In Progress
+por entrega pendiente; PLU-84 Backlog/Jesus y trigger antes de primer uso real conservados.
+Implementación local completa dentro de11.9; no commit/push/PR/merge/Done/eliminación de rama ni live.
+
+
+### Autorización de entrega11.9 — 2026-10-02
+
+Propietario solicita «commit, push y entrega»: cierre completo PR/merge/issue/rama según flujo
+establecido11.8. Se reutilizan PRE/estilo/POST técnico/UI y retests,1353declaraciones/2180ejecuciones
+nativas cerradas, smoke12/12 y builds finales. Fuente/config628 íntegra verificada contra handoff:
+cb83a3400b054b9e509d77d4f7728c6be8444a1b3c203bf5b79b4cc5fdb5f70c.
+Sin cambios ejecutables desde validación; sólo autorización/changelog/evidencia, Xcode adicionalN/A.
+PLU-83 continúa In Progress hasta confirmar merge; PLU-84 Backlog/Jesus conserva2Falla/20Limitado/12Pendiente,
+trigger tras feedback/estabilización antes primer candidato real. FasePLU-71/deudasprevias abiertas.
+Sin activación live ni autorización de fase12/cierre13. Revisión de entrega independiente pendiente.
+
+Revisión de entrega inicial CORRECT sóloP3decopyen spec11 y footer de matriz: autorización antigua
+corregida a entrega en curso, sin adelantar merge/Done. CuatroFULL JSON795 iguales2d589a8c...8c0d2,
+`/tmp/plu83-delivery-review.md`. Retest documental focal pendiente; source628 no cambia.
+
+Retest de entrega independiente PASS, `/tmp/plu83-delivery-retest-review.md`; cuatroFULL JSON795
+idénticos `0ddda6afafc6bbbcbb5ba465b06ee6dc9f89d1622c0290b86849de48994a2325`, proofs
+`/tmp/plu83-delivery-retest-{root,reviewer}-{before,after}.json`. Gate de entrega autorizado satisfecho;
+merge/cierre se verifican antes de declarar Done. Sin cambios ejecutables tras evidencia validada.

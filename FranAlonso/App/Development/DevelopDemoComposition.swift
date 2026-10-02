@@ -24,6 +24,7 @@ struct DevelopDemoComposition {
         try DevelopDemoServiceScenario.seed(in: container)
         if configuration == .workday {
             try SalesPreviewFixtures.workday.seed(in: container.mainContext)
+            try SalesPreviewFixtures.history.seed(in: container.mainContext)
         }
         let remote = InMemoryClientDocumentStorage.RemoteStore()
         let storage = InMemoryClientDocumentStorage(

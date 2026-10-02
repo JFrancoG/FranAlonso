@@ -24,7 +24,13 @@ struct AppShellScreen: View {
             }
 
             Tab(.appShellTabHistory, systemImage: "clock.arrow.circlepath", value: AppSection.history) {
-                unavailableSection(title: .appShellTabHistory, systemImage: "clock.arrow.circlepath")
+                NavigationStack {
+                    SalesHistoryScreen(
+                        makeViewModel: dependencies.makeSalesHistory,
+                        makeSaleDetail: dependencies.makeSaleDetail
+                    )
+                    .toolbar { signOutToolbar }
+                }
             }
 
             Tab(.appShellTabClients, systemImage: "person.2", value: AppSection.clients) {

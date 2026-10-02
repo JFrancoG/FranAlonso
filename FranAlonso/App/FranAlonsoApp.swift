@@ -42,7 +42,10 @@ private extension FranAlonsoApp {
 #if FRANALONSO_AUTH_FIXTURE
         if let demoConfiguration {
             VStack(spacing: 0) {
-                DevelopDemoBanner(simulatesResponseLoss: demoConfiguration == .clientsResponseLost)
+                DevelopDemoBanner(
+                    simulatesResponseLoss: demoConfiguration == .clientsResponseLost,
+                    includesHistoricalSamples: demoConfiguration == .workday
+                )
                 applicationRoot
             }
         } else {

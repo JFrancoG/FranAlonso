@@ -8,6 +8,8 @@ struct AppDependencies {
     typealias StockAdjustmentFactory = @MainActor @Sendable (StockAdjustmentDestination) -> StockAdjustmentViewModel
     typealias ClientConsentServicesFactory = @MainActor @Sendable () throws -> ClientConsentServices
     typealias WorkdayFactory = @MainActor @Sendable () -> WorkdayViewModel
+    typealias SalesHistoryFactory = @MainActor @Sendable () -> SalesHistoryViewModel
+    typealias SaleDetailFactory = @MainActor @Sendable (SaleDetailDestination) -> SaleDetailViewModel
     typealias SaleDraftFactory = @MainActor @Sendable (SaleDraftDestination) -> SaleDraftViewModel
 
     let observeClients: ObserveClientsUseCase
@@ -27,6 +29,8 @@ struct AppDependencies {
     let registerSalePayment: RegisterSalePaymentUseCase
     let discardSaleDraft: DiscardSaleDraftUseCase
     let makeWorkday: WorkdayFactory
+    let makeSalesHistory: SalesHistoryFactory
+    let makeSaleDetail: SaleDetailFactory
     let makeSaleDraft: SaleDraftFactory
     let telemetryReporter: TelemetryReporter
 
@@ -358,6 +362,11 @@ extension AppDependencies {
             registerSalePayment: RegisterSalePaymentUseCase(repository: saleRepository),
             discardSaleDraft: DiscardSaleDraftUseCase(repository: saleRepository),
             makeWorkday: Self.workdayFactory(saleRepository: saleRepository, clientRepository: clientRepository),
+            makeSalesHistory: Self.salesHistoryFactory(
+                saleRepository: saleRepository,
+                clientRepository: clientRepository
+            ),
+            makeSaleDetail: Self.saleDetailFactory(saleRepository: saleRepository, clientRepository: clientRepository),
             makeSaleDraft: Self.saleDraftFactory(saleRepository: saleRepository, clientRepository: clientRepository),
             telemetryReporter: TelemetryReporter(
                 analyticsDataSource: analyticsDataSource,

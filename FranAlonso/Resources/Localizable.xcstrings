@@ -1,6 +1,601 @@
 {
   "sourceLanguage" : "es",
   "strings" : {
+  "sales.history.title": {
+    "comment": "Sales history: title",
+    "extractionState": "manual",
+    "localizations": {
+      "es": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Histórico"
+        }
+      },
+      "en": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "History"
+        }
+      }
+    }
+  },
+  "sales.history.detail": {
+    "comment": "Sales history: detail",
+    "extractionState": "manual",
+    "localizations": {
+      "es": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Detalle"
+        }
+      },
+      "en": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Details"
+        }
+      }
+    }
+  },
+  "sales.history.search": {
+    "comment": "Sales history: search",
+    "extractionState": "manual",
+    "localizations": {
+      "es": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Buscar servicio o referencia de venta"
+        }
+      },
+      "en": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Search service or sale reference"
+        }
+      }
+    }
+  },
+  "sales.history.filter": {
+    "comment": "Sales history: filter",
+    "extractionState": "manual",
+    "localizations": {
+      "es": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Estado"
+        }
+      },
+      "en": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Status"
+        }
+      }
+    }
+  },
+  "sales.history.order": {
+    "comment": "Sales history: order",
+    "extractionState": "manual",
+    "localizations": {
+      "es": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Orden de cierre"
+        }
+      },
+      "en": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Closure order"
+        }
+      }
+    }
+  },
+  "sales.history.all": {
+    "comment": "Sales history: all",
+    "extractionState": "manual",
+    "localizations": {
+      "es": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Todas"
+        }
+      },
+      "en": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "All"
+        }
+      }
+    }
+  },
+  "sales.history.newest": {
+    "comment": "Sales history: newest",
+    "extractionState": "manual",
+    "localizations": {
+      "es": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Más recientes primero"
+        }
+      },
+      "en": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Newest first"
+        }
+      }
+    }
+  },
+  "sales.history.oldest": {
+    "comment": "Sales history: oldest",
+    "extractionState": "manual",
+    "localizations": {
+      "es": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Más antiguas primero"
+        }
+      },
+      "en": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Oldest first"
+        }
+      }
+    }
+  },
+  "sales.history.loading": {
+    "comment": "Sales history: loading",
+    "extractionState": "manual",
+    "localizations": {
+      "es": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Cargando histórico"
+        }
+      },
+      "en": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Loading history"
+        }
+      }
+    }
+  },
+  "sales.history.error.title": {
+    "comment": "Sales history: error.title",
+    "extractionState": "manual",
+    "localizations": {
+      "es": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "No se pudo cargar la venta"
+        }
+      },
+      "en": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Could not load sales"
+        }
+      }
+    }
+  },
+  "sales.history.error.message": {
+    "comment": "Sales history: error.message",
+    "extractionState": "manual",
+    "localizations": {
+      "es": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Comprueba los datos locales y vuelve a intentarlo."
+        }
+      },
+      "en": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Check the local data and try again."
+        }
+      }
+    }
+  },
+  "sales.history.empty.title": {
+    "comment": "Sales history: empty.title",
+    "extractionState": "manual",
+    "localizations": {
+      "es": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Sin ventas en este histórico"
+        }
+      },
+      "en": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "No sales in this history"
+        }
+      }
+    }
+  },
+  "sales.history.empty.message": {
+    "comment": "Sales history: empty.message",
+    "extractionState": "manual",
+    "localizations": {
+      "es": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Aquí aparecen las ventas cerradas y anuladas. Prueba a cambiar los filtros."
+        }
+      },
+      "en": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Closed and voided sales appear here. Try changing the filters."
+        }
+      }
+    }
+  },
+  "sales.history.reset": {
+    "comment": "Sales history: reset",
+    "extractionState": "manual",
+    "localizations": {
+      "es": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Restablecer filtros"
+        }
+      },
+      "en": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Reset filters"
+        }
+      }
+    }
+  },
+  "sales.history.operations": {
+    "comment": "Sales history: operations",
+    "extractionState": "manual",
+    "localizations": {
+      "es": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Ventas cerradas y anuladas"
+        }
+      },
+      "en": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Closed and voided sales"
+        }
+      }
+    }
+  },
+  "sales.history.openHint": {
+    "comment": "Sales history: openHint",
+    "extractionState": "manual",
+    "localizations": {
+      "es": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Abre el detalle y la trazabilidad de esta venta"
+        }
+      },
+      "en": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Opens this sale’s details and trace"
+        }
+      }
+    }
+  },
+  "sales.history.unavailable.title": {
+    "comment": "Sales history: unavailable.title",
+    "extractionState": "manual",
+    "localizations": {
+      "es": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Venta no disponible en Histórico"
+        }
+      },
+      "en": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Sale unavailable in History"
+        }
+      }
+    }
+  },
+  "sales.history.unavailable.message": {
+    "comment": "Sales history: unavailable.message",
+    "extractionState": "manual",
+    "localizations": {
+      "es": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Esta operación ya no está disponible aquí. Las ventas sin documento final permanecen en Jornada."
+        }
+      },
+      "en": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "This operation is no longer available here. Sales without a final document remain in Workday."
+        }
+      }
+    }
+  },
+  "sales.history.voided.message": {
+    "comment": "Sales history: voided.message",
+    "extractionState": "manual",
+    "localizations": {
+      "es": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Venta anulada. Se conservan el pago, el documento y los importes originales; la anulación tiene su propia referencia y fecha."
+        }
+      },
+      "en": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Voided sale. The original payment, document and amounts are retained; the reversal has its own reference and date."
+        }
+      }
+    }
+  },
+  "sales.history.originalAmounts": {
+    "comment": "Sales history: originalAmounts",
+    "extractionState": "manual",
+    "localizations": {
+      "es": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Importes originales de la venta, incluidos sus descuentos e IVA."
+        }
+      },
+      "en": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Original sale amounts, including discounts and VAT."
+        }
+      }
+    }
+  },
+  "sales.history.saleReference": {
+    "comment": "Sales history: saleReference",
+    "extractionState": "manual",
+    "localizations": {
+      "es": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Referencia de venta"
+        }
+      },
+      "en": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Sale reference"
+        }
+      }
+    }
+  },
+  "sales.history.documentReference": {
+    "comment": "Sales history: documentReference",
+    "extractionState": "manual",
+    "localizations": {
+      "es": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Referencia de documento"
+        }
+      },
+      "en": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Document reference"
+        }
+      }
+    }
+  },
+  "sales.history.paymentReference": {
+    "comment": "Sales history: paymentReference",
+    "extractionState": "manual",
+    "localizations": {
+      "es": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Referencia de pago"
+        }
+      },
+      "en": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Payment reference"
+        }
+      }
+    }
+  },
+  "sales.history.reversalReference": {
+    "comment": "Sales history: reversalReference",
+    "extractionState": "manual",
+    "localizations": {
+      "es": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Referencia de anulación"
+        }
+      },
+      "en": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Reversal reference"
+        }
+      }
+    }
+  },
+  "sales.history.createdAt": {
+    "comment": "Sales history: createdAt",
+    "extractionState": "manual",
+    "localizations": {
+      "es": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Creada"
+        }
+      },
+      "en": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Created"
+        }
+      }
+    }
+  },
+  "sales.history.closedAt": {
+    "comment": "Sales history: closedAt",
+    "extractionState": "manual",
+    "localizations": {
+      "es": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Cerrada"
+        }
+      },
+      "en": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Closed"
+        }
+      }
+    }
+  },
+  "sales.history.paidAt": {
+    "comment": "Sales history: paidAt",
+    "extractionState": "manual",
+    "localizations": {
+      "es": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Pagada"
+        }
+      },
+      "en": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Paid"
+        }
+      }
+    }
+  },
+  "sales.history.voidedAt": {
+    "comment": "Sales history: voidedAt",
+    "extractionState": "manual",
+    "localizations": {
+      "es": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Anulada"
+        }
+      },
+      "en": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Voided"
+        }
+      }
+    }
+  },
+  "sales.history.paymentMethod": {
+    "comment": "Sales history: paymentMethod",
+    "extractionState": "manual",
+    "localizations": {
+      "es": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Método de pago"
+        }
+      },
+      "en": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Payment method"
+        }
+      }
+    }
+  },
+  "sales.history.cash": {
+    "comment": "Sales history: cash",
+    "extractionState": "manual",
+    "localizations": {
+      "es": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Efectivo"
+        }
+      },
+      "en": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Cash"
+        }
+      }
+    }
+  },
+  "sales.history.card": {
+    "comment": "Sales history: card",
+    "extractionState": "manual",
+    "localizations": {
+      "es": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Tarjeta"
+        }
+      },
+      "en": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Card"
+        }
+      }
+    }
+  },
+  "sales.history.trace": {
+    "comment": "Sales history: trace",
+    "extractionState": "manual",
+    "localizations": {
+      "es": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Trazabilidad"
+        }
+      },
+      "en": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Trace"
+        }
+      }
+    }
+  },
+  "sales.history.demoSamples": {
+    "comment": "Sales history: demoSamples",
+    "extractionState": "manual",
+    "localizations": {
+      "es": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Histórico contiene muestras DEMO precargadas. No se han emitido documentos ni ejecutado cierres o compensaciones."
+        }
+      },
+      "en": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "History contains preloaded DEMO samples. No documents have been issued or closure or compensation flows executed."
+        }
+      }
+    }
+  },
+
     "sales.services.add": {
       "extractionState": "manual",
       "localizations": {

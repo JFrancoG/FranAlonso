@@ -3,6 +3,7 @@ import SwiftUI
 
 struct DevelopDemoBanner: View {
     let simulatesResponseLoss: Bool
+    var includesHistoricalSamples = false
 
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
@@ -10,6 +11,9 @@ struct DevelopDemoBanner: View {
                 .font(.headline)
             Text(.demoResetMessage)
                 .font(.subheadline)
+            if includesHistoricalSamples {
+                Text("sales.history.demoSamples").font(.subheadline)
+            }
             if simulatesResponseLoss {
                 Text(.demoResponseLostMessage)
                     .font(.subheadline)
@@ -46,6 +50,29 @@ struct DevelopDemoBanner: View {
 #Preview("Shell framing", traits: .modifier(AppPreviewModifier())) {
     VStack(spacing: 0) {
         DevelopDemoBanner(simulatesResponseLoss: false)
+        AppShellScreen(requestSignOut: {})
+    }
+}
+
+#Preview("Historical samples", traits: .modifier(SalesHistoryPreviewModifier())) {
+    DevelopDemoBanner(simulatesResponseLoss: false, includesHistoricalSamples: true)
+}
+
+#Preview("Historical login framing", traits: .modifier(SalesHistoryPreviewModifier())) {
+    VStack(spacing: 0) {
+        DevelopDemoBanner(simulatesResponseLoss: false, includesHistoricalSamples: true)
+        NavigationStack {
+            LoginScreen(
+                viewModel: LoginViewModel(signIn: AuthenticationPreviewFixtures.standard.makeSignInUseCase()),
+                onSignInSucceeded: { _ in }
+            )
+        }
+    }
+}
+
+#Preview("Historical shell framing", traits: .modifier(SalesHistoryPreviewModifier())) {
+    VStack(spacing: 0) {
+        DevelopDemoBanner(simulatesResponseLoss: false, includesHistoricalSamples: true)
         AppShellScreen(requestSignOut: {})
     }
 }
