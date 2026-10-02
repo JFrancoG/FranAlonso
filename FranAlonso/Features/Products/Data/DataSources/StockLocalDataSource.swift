@@ -20,17 +20,8 @@ extension StockLocalDataSource {
     func append(_ movement: StockMovement, in context: ModelContext) throws -> StockMovement {
         try performOperation {
             guard !context.hasChanges else { throw StockError.storageFailure }
-            if let existing = try model(id: movement.id, in: context)?.toDomain() {
-                guard existing == movement else { throw StockError.identityConflict }
-                return existing
-            }
-            try requireProduct(movement.productID, in: context)
-            guard try !hasProductConflict(movement.productID, in: context) else { throw StockError.productConflict }
-            let deltas = try movements(for: movement.productID, in: context).map(\.quantityDelta)
-            let policy = StockQuantityPolicy()
-            _ = try policy.quantity(deltas: deltas)
-            _ = try policy.quantity(deltas: deltas + [movement.quantityDelta])
-            let row = try StockMovementModel(movement)
+            let rows = try prepareAppend([movement], in: context)
+            guard let row = rows.first else { return movement }
             try Task.checkCancellation()
             context.insert(row)
             do {
@@ -40,6 +31,45 @@ extension StockLocalDataSource {
                 throw error
             }
             return movement
+        }
+    }
+
+    /// Prepares only missing immutable events without inserting or saving in the owning context.
+    /// A caller must retain confinement and commit the complete batch without suspension.
+    /// Equivalent identities precede Product eligibility; balances include every new event for each Product.
+    func prepareAppend(_ batch: [StockMovement], in context: ModelContext) throws -> [StockMovementModel] {
+        try performOperation {
+            guard !context.hasChanges else { throw StockError.storageFailure }
+            var identities: [StockMovementID: StockMovement] = [:]
+            var deltas: [ProductID: [Int]] = [:]
+            var rows: [StockMovementModel] = []
+            for movement in batch {
+                try Task.checkCancellation()
+                if let duplicate = identities[movement.id] {
+                    guard duplicate == movement else { throw StockError.identityConflict }
+                    continue
+                }
+                identities[movement.id] = movement
+                if let existing = try model(id: movement.id, in: context)?.toDomain() {
+                    guard existing == movement else { throw StockError.identityConflict }
+                    continue
+                }
+                if deltas[movement.productID] == nil {
+                    try requireProduct(movement.productID, in: context)
+                    guard try !hasProductConflict(movement.productID, in: context) else {
+                        throw StockError.productConflict
+                    }
+                    let history = try movements(for: movement.productID, in: context).map(\.quantityDelta)
+                    _ = try StockQuantityPolicy().quantity(deltas: history)
+                    deltas[movement.productID] = history
+                }
+                deltas[movement.productID, default: []].append(movement.quantityDelta)
+                rows.append(try StockMovementModel(movement))
+            }
+            for balance in deltas.values {
+                _ = try StockQuantityPolicy().quantity(deltas: balance)
+            }
+            return rows
         }
     }
 

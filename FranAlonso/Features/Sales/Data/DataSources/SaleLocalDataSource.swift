@@ -4,9 +4,20 @@ import SwiftData
 private let saleSyncFeedID = "sales"
 
 /// Performs context-confined Sales persistence without retaining live SwiftData state.
-struct SaleLocalDataSource {}
+struct SaleLocalDataSource {
+    private let commitPayment: @Sendable (ModelContext) throws -> Void
+}
 
 extension SaleLocalDataSource {
+    /// Injects only the payment commit boundary, without changing other Sales writes.
+    init(
+        paymentSave: @escaping @Sendable (ModelContext) throws -> Void = {
+            try $0.save()
+        }
+    ) {
+        self.init(commitPayment: paymentSave)
+    }
+
     /// Accepts work and its causal upsert together; replay does not rewrite or enqueue.
     /// A clean context, deletion/conflict fences and full snapshot comparison precede mutation.
     /// - Throws: Neutral progress errors, lifecycle validation or cancellation before acceptance.
@@ -108,7 +119,8 @@ extension SaleLocalDataSource {
         }
     }
 
-    /// Commits payment and its causal operation together; exact replay does not rewrite storage.
+    /// Commits payment, its causal operation and every captured consumption in one save.
+    /// Exact replay repairs missing events without rewriting the sale or its pending lineage.
     /// Checks and persistence share one clean context without suspension, not a cross-context CAS.
     /// - Throws: Neutral payment rejection, aggregate validation, or cancellation before acceptance.
     func registerPayment(
@@ -131,10 +143,29 @@ extension SaleLocalDataSource {
                 method: method,
                 paidAt: paidAt
             )
-            if accepted != current {
-                try persistPendingUpsert(accepted, operationID: operationID, in: context)
+            let movements = try SaleStockMovementPolicy()(sale: accepted, paymentID: paymentID)
+            let rows = try StockLocalDataSource().prepareAppend(movements, in: context)
+            let autosave = context.autosaveEnabled
+            context.autosaveEnabled = false
+            defer {
+                context.autosaveEnabled = autosave
             }
-            return accepted
+            do {
+                if accepted != current {
+                    try stagePendingUpsert(accepted, operationID: operationID, in: context)
+                }
+                for row in rows {
+                    context.insert(row)
+                }
+                try Task.checkCancellation()
+                if context.hasChanges {
+                    try commitPayment(context)
+                }
+                return accepted
+            } catch {
+                context.rollback()
+                throw error
+            }
         }
     }
 
@@ -174,45 +205,48 @@ extension SaleLocalDataSource {
     /// accidentally. A future explicit restore flow owns that separate state transition.
     func persistPendingUpsert(_ sale: Sale, operationID: UUID, in context: ModelContext) throws {
         try requireClean(context)
-
         do {
-            guard try conflict(for: sale.id, in: context) == nil else {
-                throw SaleLocalDataSourceError.syncConflictPending(sale.id)
-            }
-            guard try !hasDeletionState(for: sale.id, in: context) else {
-                throw SaleLocalDataSourceError.restoreRequiresExplicitResolution(sale.id)
-            }
-
-            let payload = try SaleDTO(sale)
-            let operations = try pendingOperations(for: sale.id, in: context)
-            let head = try pendingHead(from: operations, saleID: sale.id)
-            let headPayload: SaleDTO?
-            if case .upsert(let upsert) = head {
-                headPayload = upsert.sale
-            } else {
-                headPayload = nil
-            }
-
-            if headPayload != payload {
-                try ensureOperationIdentityAvailable(operationID, in: context)
-                context.insert(
-                    try SalePendingUpsertModel(
-                        saleID: sale.id.rawValue,
-                        operationID: operationID,
-                        predecessorOperationID: head?.operationID,
-                        base: try remoteBase(for: sale.id, in: context),
-                        payload: payload
-                    )
-                )
-            }
-
-            try materialize(sale, in: context)
-            _ = try fetchAll(in: context)
+            try stagePendingUpsert(sale, operationID: operationID, in: context)
             try saveChanges(in: context)
         } catch {
             context.rollback()
             throw error
         }
+    }
+
+    private func stagePendingUpsert(_ sale: Sale, operationID: UUID, in context: ModelContext) throws {
+        guard try conflict(for: sale.id, in: context) == nil else {
+            throw SaleLocalDataSourceError.syncConflictPending(sale.id)
+        }
+        guard try !hasDeletionState(for: sale.id, in: context) else {
+            throw SaleLocalDataSourceError.restoreRequiresExplicitResolution(sale.id)
+        }
+
+        let payload = try SaleDTO(sale)
+        let operations = try pendingOperations(for: sale.id, in: context)
+        let head = try pendingHead(from: operations, saleID: sale.id)
+        let headPayload: SaleDTO?
+        if case .upsert(let upsert) = head {
+            headPayload = upsert.sale
+        } else {
+            headPayload = nil
+        }
+
+        if headPayload != payload {
+            try ensureOperationIdentityAvailable(operationID, in: context)
+            context.insert(
+                try SalePendingUpsertModel(
+                    saleID: sale.id.rawValue,
+                    operationID: operationID,
+                    predecessorOperationID: head?.operationID,
+                    base: try remoteBase(for: sale.id, in: context),
+                    payload: payload
+                )
+            )
+        }
+
+        try materialize(sale, in: context)
+        _ = try fetchAll(in: context)
     }
 
     /// Removes an active draft and commits a durable tombstone operation atomically.

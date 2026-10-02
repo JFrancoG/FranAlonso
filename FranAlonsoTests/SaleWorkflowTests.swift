@@ -89,7 +89,7 @@ struct SaleWorkflowTests {
         #expect(try fixture.read() == paid)
         #expect(try fixture.operations().count == before + 1)
         #expect(WorkdaySalesPolicy()([paid]).awaitingClosure == [paid])
-        #expect(try fixture.movementCount() == 0)
+        #expect(try fixture.movementCount() == 1)
         await #expect(throws: SaleDraftViewModelError.invalidMode) {
             _ = try await fixture.model.registerPreparedPayment()
         }
@@ -328,7 +328,10 @@ private func workflowFixture(stock: Int?) async throws -> WorkflowFixture {
     try sale.start()
     try sale.startLine(id: sale.lines[0].id)
     try sale.completeLine(id: sale.lines[0].id)
-    try SaleLocalDataSource().upsert(sale, in: ModelContext(container))
+    let context = ModelContext(container)
+    context.insert(ProductModel(Product(id: productID, name: "Synthetic workflow product", status: .active)))
+    try context.save()
+    try SaleLocalDataSource().upsert(sale, in: context)
     let sales = WorkflowSaleRepository(base: DefaultSaleRepository(
         persistenceActor: SalePersistenceActor(modelContainer: container),
         observationSignal: SaleObservationSignal()

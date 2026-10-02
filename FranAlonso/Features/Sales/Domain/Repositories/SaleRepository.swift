@@ -40,8 +40,9 @@ protocol SaleRepository: Sendable {
         globalDiscount: SaleGlobalDiscount?
     ) async throws -> Sale
 
-    /// Accepts a stable payment without overwriting an obsolete commercial snapshot.
-    /// Exact replay preserves later document/reversal metadata and creates no pending operation.
+    /// Accepts payment and captured stock consumptions atomically in the local source.
+    /// Never overwrites an obsolete commercial snapshot.
+    /// Exact replay preserves later metadata and repairs missing consumptions without another sale operation.
     /// Checks and persistence do not suspend in the owning context; not cross-context CAS.
     /// - Throws: `SalePaymentError`, `SaleError`, or cancellation before acceptance.
     func registerPayment(

@@ -5,7 +5,7 @@ struct RegisterSalePaymentUseCase {
     private let saleRepository: any SaleRepository
 
     /// Caller retains the same identity and timestamp across cancellation, failure and replay.
-    /// Success means local acceptance, not remote convergence or final document issuance.
+    /// Success means atomic local payment and captured stock consumption, without remote convergence.
     /// - Throws: `SalePaymentError`, `SaleError`, or cancellation before acceptance.
     func callAsFunction(
         _ expected: Sale,

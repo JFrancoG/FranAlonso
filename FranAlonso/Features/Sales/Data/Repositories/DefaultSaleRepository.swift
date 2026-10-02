@@ -26,11 +26,13 @@ struct DefaultSaleRepository: SaleRepository {
             operationID: makeOperationID()
         )
         await observationSignal.publishChange()
+        await productObservationSignal.publishChange()
         return accepted
     }
 
     private let persistenceActor: SalePersistenceActor
     private let observationSignal: SaleObservationSignal
+    private let productObservationSignal: any ProductChangeSignaling
     private let makeOperationID: @Sendable () -> UUID
 
     func observeSales() async -> AsyncThrowingStream<[Sale], any Error> {
@@ -96,15 +98,18 @@ extension DefaultSaleRepository {
     /// - Parameters:
     ///   - persistenceActor: The actor that owns the context-free SwiftData route.
     ///   - observationSignal: The shared invalidation used by every local write route.
+    ///   - productObservationSignal: Invalidates stock readers after atomic payment acceptance.
     ///   - operationID: A deterministic operation-identity source, injectable for tests.
     init(
         persistenceActor: SalePersistenceActor,
         observationSignal: SaleObservationSignal,
+        productObservationSignal: any ProductChangeSignaling = ProductObservationSignal(),
         operationID: @escaping @Sendable () -> UUID = { UUID() }
     ) {
         self.init(
             persistenceActor: persistenceActor,
             observationSignal: observationSignal,
+            productObservationSignal: productObservationSignal,
             makeOperationID: operationID
         )
     }
