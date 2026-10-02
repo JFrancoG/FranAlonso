@@ -290,3 +290,17 @@ Swift/config/tests/PNG no cambiaron después de validación; se reutilizan build
 Cambios nuevos únicamente autorización/changelog/entrega; Xcode adicional N/A por alcance documental.
 PLU-89 conserva explícitamente validación integral/defectos aplazados, Jesus Franco, antes del candidato real.
 PLU-88 permanece In Progress hasta integración; PLU-85 abierta, sin live ni inicio12.4.
+
+### Entrega 12.3 verificada — 02/10
+
+[PR44](https://github.com/JFrancoG/FranAlonso/pull/44) MERGED02/10.
+Commit `d6d0b99dafd86e385843b1450aa15010483193ce` → merge `c845c83d18279e13a945ba66b35431c6e97035f6`.
+Árbol completo de origin/main idéntico al entregado; HEAD de PR y remoto verificados antes de merge.
+GitHub mergeable/CLEAN y sin checks configurados: no se presenta CI inexistente como PASS.
+Se reutiliza validación local cerrada indicada arriba; ningún cambio ejecutable posterior.
+Ramas local/remota eliminadas después de verificar inclusión y ausencia de commits únicos.
+PLU-88 Done funcionaldemo por ADR0029; PLU-89 Backlog/Jesus conserva42Limitado/11Pendiente/2Falla,
+recuperación tras feedback/estabilización antes candidato real. PLU-85 In Progress con12.1–12.3 entregadas.
+Cierre documental en main siguiendo12.1–12.2: CHANGELOG/Progress/fase/registro accesible, diff-check y gobernanza.
+Xcode adicional N/A: solo documentos; seis enlacesDesktop08.3 históricos permanecen, sin nuevos fallos.
+Sin activación live, cierre integral de fase ni inicio12.4.

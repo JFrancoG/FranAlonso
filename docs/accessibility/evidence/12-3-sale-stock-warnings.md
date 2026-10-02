@@ -1,7 +1,7 @@
 # 12.3 — Avisos visuales de stock
 
 2026-10-02, [PLU-88](https://linear.app/plusprojects/issue/PLU-88), Jesus Franco.
-Gate evaluado: implementación funcional para demo según ADR0029; sin entrega ni cierre integral.
+Gate evaluado: entrega funcional para demo según ADR0029, completada por PR44; sin cierre integral.
 [ADR0022](../../ADRs/0022-native-ios-wcag22-accessibility.md) /
 [ADR0029](../../ADRs/0029-progressive-accessibility-validation.md).
 Deuda específica [PLU-89](https://linear.app/plusprojects/issue/PLU-89), Backlog/Jesus Franco:
@@ -155,3 +155,10 @@ N/A solo describe ausencia justificada del mecanismo en este tramo y se reevalú
 | 3.3.8 | N/A | Este recorrido no incorpora autenticación. | Limitado | S/T/P parciales; métodos pendientes arriba. | 02/10/2026; configs S/T/P arriba. | Reevaluar si aparece mecanismo. | root registro parcial |
 | 4.1.2 | Aplicable | Label agrupado no interactivo, símbolo oculto; Inspector y controles AT pendientes. | Limitado | S/T/P parciales; métodos pendientes arriba. | 02/10/2026; configs S/T/P arriba. | Evidencia integral en PLU-89 antes de uso real. | root registro parcial |
 | 4.1.3 | Aplicable | Un mensaje propio por nueva identidad advertida, sin temporizadores; habla/foco runtime pendiente. | Pendiente | S/T/P parciales; métodos pendientes arriba. | 02/10/2026; configs S/T/P arriba. | Evidencia integral en PLU-89 antes de uso real. | root registro parcial |
+
+## Entrega funcional verificada
+
+[PR44](https://github.com/JFrancoG/FranAlonso/pull/44) MERGED02/10; d6d0b99 → c845c83, árbol integrado idéntico.
+PLU-88 Done funcionaldemo; PLU-89 Backlog/Jesus conserva toda la evidencia integral y hallazgos pendientes,
+con trigger tras feedback/estabilización y antes del primer candidato real. Matriz55 y resultados intactos.
+La fase12 permanece abierta. Este cierre no acredita AT, dispositivo físico, habla/foco ni accesibilidad integral.

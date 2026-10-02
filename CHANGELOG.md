@@ -124,6 +124,9 @@ All notable changes to this project are documented in this file.
 
 ### Documentation
 
+- 2026-10-02 | 📝 docs: record stock warning delivery
+  Records PR44 integration, PLU-88 functional demo closure and retained integral accessibility debt in PLU-89.
+
 - 2026-10-02 | 📝 docs: record sale draft stock delivery
   Records merged PR43, PLU-87 completion, preserved validation and the open Phase 12 gate.
 
