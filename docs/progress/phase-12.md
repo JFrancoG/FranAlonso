@@ -660,3 +660,25 @@ sin cambios locales ajenos. Preparación de commit/PR/integración, pendiente de
 Focal independiente de la normalización EOF: PASS sin hallazgos; confirma11hashes idénticos y un LF final
 eliminado, sin impacto semántico y con reutilización de toda la evidencia ejecutable.868archivos read-only,
 digest inicial/final/root`0dcfc65c5e339e91ff2ea5846617a831355e4a23fd2319ec2c585d159f9c9153`.
+
+### Entrega verificada 12.6
+
+[PR47](https://github.com/JFrancoG/FranAlonso/pull/47) MERGED02/10/2026 21:09Madrid, base main;
+commit `1490486cd2d622cbcbfe92b7b7a55044b08181c7` → merge `8c2152bf033d00764e083801cb9d6300135fb87b`.
+Tree completo del merge idéntico al commit revisado. Main local fast-forward y origin/remoto confirmados;
+ramas codex/plu-93-atomic-sale-payment local/remota eliminadas tras verificar ancestry, sin commits únicos.
+PR CLEAN/MERGEABLE con head1490486 fijo antes del merge; sin workflows/checks configurados ni protección de main,
+no se declara CI verde. Auditorías independientes del repositorio satisfechas, sin hallazgos abiertos.
+
+PLU-93 Done verificado tras merge; PLU-85 In Progress con12.1–12.6 entregadas. Descripciones reconciliadas con la
+aceptación atómica local ya conectada al pago;12.7 requiere inicio autorizado propio,12.8 separado. Comentarios
+históricos preservados. PLU-89/91 Backlog/Jesus mantienen deuda y trigger previos; UI/accesibilidad12.6 N/A.
+Sin cierre integral, live, sync remota, compensación ni CAS entre writers independientes.
+
+Evidencia retenida:15/15 nuevas finales20:57:33 y681ejecuciones nativas de regresión; builds Develop/Production,
+PRE/POST y focales PASS.11Swift exactos al manifest y un test solo con LF final removido/revisado independiente.
+Todo código integrado idéntico al commit1490486. Este cierre cambia solo CHANGELOG/Progress/fase/propuesta;
+Xcode adicional N/A por documentación, sin modificación ejecutable/configuración tras merge. Localizaciones577/0,
+diffcheck PASS; gobernanza conserva únicamente seis enlaces Desktop históricos08.3. Aviso metadata conocido
+permanece y no equivale a warning Swift/Clang. Evidencia limitada a suites seleccionadas/Simulator y fallo injected
+anterior al save, sin afirmar fallo físico de almacenamiento ni validación accesible integral.

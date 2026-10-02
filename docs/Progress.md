@@ -4,8 +4,8 @@
 
 ## Estado actual
 
-- **12.6/PLU-93: In Progress**, validada, [evidencia](progress/phase-12.md).
-  12.1–12.5 entregadas; fase/deuda89/91 abiertas.
+- **12.1–12.6: Done**, [PR47](https://github.com/JFrancoG/FranAlonso/pull/47).
+  Fase12 abierta;12.7/deuda89/91. [Evidencia](progress/phase-12.md).
 
 - **11.9 / [PLU-83](https://linear.app/plusprojects/issue/PLU-83): Done funcional**, Jesus Franco.
   [PR41](https://github.com/JFrancoG/FranAlonso/pull/41)/`ab70985`; rama eliminada. Histórico/detalle terminal:
@@ -20,7 +20,7 @@
   [PLU-70](https://linear.app/plusprojects/issue/PLU-70) Backlog/Jesus Franco: recuperación accesible
   tras feedback/estabilización, antes de uso real; sin cierre16/live.
 
-- **es/en y Xcode**:561 textos; iOS27. Evidencia por subfase.
+- **es/en y Xcode**:577 textos; iOS27. Evidencia por subfase.
   [Evidencia](progress/localization-en-es.md).
 - **[PLU-69](https://linear.app/plusprojects/issue/PLU-69): Done**, [PR31](https://github.com/JFrancoG/FranAlonso/pull/31).
   App ordenada, Firebase 12.19.2; 1.564 resultados/builds PASS. [Registro](progress/app-organization.md).

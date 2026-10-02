@@ -136,6 +136,10 @@ All notable changes to this project are documented in this file.
 
 ### Documentation
 
+- 2026-10-02 | 📝 docs: record atomic sale payment delivery
+  Records PR47, the verified merge, PLU-93 Done and preserved native validation evidence for12.6.
+  Keeps the parent phase, integral accessibility debt and subsequent subphase gates open.
+
 - 2026-10-02 | 📝 docs: record sale stock movement delivery
   Records merged PR46, PLU-92 completion and branch cleanup while preserving the validated implementation.
   Keeps Phase12, existing accessibility debt and the atomic payment gate open.

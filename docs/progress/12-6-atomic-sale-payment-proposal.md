@@ -1,8 +1,8 @@
 # 12.6 — Pago local atómico
 
-Autorización: abrir issue/rama e implementar12.6; no entrega Git ni Done/live/12.7/12.8.
+Autorización inicial: abrir issue/rama e implementar12.6; entrega posterior autorizada «commit, push y entrega».
 [PLU-93](https://linear.app/plusprojects/issue/PLU-93/126-make-local-sale-payment-atomic-with-stock-movements),
-Jesus Franco, In Progress, hija PLU-85. Rama `codex/plu-93-atomic-sale-payment`, base main `90f1eca9` limpia.
+Jesus Franco, Done, hija PLU-85 In Progress. Rama `codex/plu-93-atomic-sale-payment` desde main `90f1eca9`, eliminada.
 Autoridad: constitución, spec12, ADR0002/0003/0005/0006/0011/0016/0018 y política Swift.
 
 ## Frontera propuesta y alternativas
@@ -70,4 +70,7 @@ La atomicidad file-backed exige evidencia de fallo/reapertura, además de estas 
 
 PRE y POST independientes PASS; dos P3 de estilo corregidos y reauditoría focal PASS.
 Implementación y validación final en phase-12.md. Autorización posterior «commit, push y entrega» recibida;
-preparación del cierre Git/Linear establecido, pendiente del resultado definitivo. Sin ampliar a12.7/12.8/live.
+[PR47](https://github.com/JFrancoG/FranAlonso/pull/47) MERGED:1490486 → 8c2152b, tree idéntico al revisado.
+Main local/origin sincronizados y ramas eliminadas tras ancestry; PLU-93 Done, fase12 y deuda89/91 abiertas.
+Normalización de un LF final en test revisada read-only sin impacto semántico; evidencia ejecutable reutilizada.
+Cierre documental en phase-12.md, sin ampliar a12.7/12.8/live ni acreditar accesibilidad integral.
