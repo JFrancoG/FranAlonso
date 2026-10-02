@@ -1,0 +1,247 @@
+{
+  "data": {
+    "all_succeeded": true,
+    "steps": [
+      {
+        "kind": "interact",
+        "result": {
+          "appeared": [
+            86,
+            87,
+            89,
+            90,
+            91,
+            92,
+            103,
+            105,
+            109,
+            111,
+            112,
+            114,
+            115,
+            117,
+            118,
+            120,
+            121,
+            123
+          ],
+          "appeared_count": 18,
+          "disappeared": [
+            "genericElement|Stock insuficiente. Stock previsto: -1. Puedes continuar. Servicio: Champú DEMO venta.|",
+            "staticText|Stock insuficiente. Stock previsto: -1. Puedes continuar.|",
+            "incrementor|Cantidad: 9, Cantidad de Champú DEMO venta|",
+            "button|Cantidad: 9, Cantidad de Champú DEMO venta, Disminución||Decrement",
+            "button|Cantidad: 9, Cantidad de Champú DEMO venta, Aumento||Increment",
+            "staticText|Cantidad: 9|",
+            "staticText|Subtotal con IVA, 204,20 €|",
+            "staticText|204,20 €|",
+            "staticText|Descuento global, 40,36 €|",
+            "staticText|40,36 €|",
+            "staticText|Descuento total, 42,78 €|",
+            "staticText|42,78 €|",
+            "staticText|Base imponible, 133,41 €|",
+            "staticText|133,41 €|",
+            "staticText|IVA, 28,01 €|",
+            "staticText|28,01 €|",
+            "staticText|Total, 161,42 €|",
+            "staticText|161,42 €|"
+          ],
+          "disappeared_count": 18,
+          "duration_ms": 2405,
+          "next_screen": "33c79b97",
+          "next_seq": 316,
+          "previous_screen": "422d5a33",
+          "screen_changed": true
+        }
+      },
+      {
+        "kind": "interact",
+        "result": {
+          "appeared": [
+            86,
+            87,
+            89,
+            90,
+            91,
+            92,
+            103,
+            105,
+            109,
+            111,
+            112,
+            114,
+            115,
+            117,
+            118,
+            120,
+            121,
+            123
+          ],
+          "appeared_count": 18,
+          "disappeared": [
+            "genericElement|Stock insuficiente. Stock previsto: -2. Puedes continuar. Servicio: Champú DEMO venta.|",
+            "staticText|Stock insuficiente. Stock previsto: -2. Puedes continuar.|",
+            "incrementor|Cantidad: 10, Cantidad de Champú DEMO venta|",
+            "button|Cantidad: 10, Cantidad de Champú DEMO venta, Disminución||Decrement",
+            "button|Cantidad: 10, Cantidad de Champú DEMO venta, Aumento||Increment",
+            "staticText|Cantidad: 10|",
+            "staticText|Subtotal con IVA, 224,20 €|",
+            "staticText|224,20 €|",
+            "staticText|Descuento global, 44,36 €|",
+            "staticText|44,36 €|",
+            "staticText|Descuento total, 46,78 €|",
+            "staticText|46,78 €|",
+            "staticText|Base imponible, 146,63 €|",
+            "staticText|146,63 €|",
+            "staticText|IVA, 30,79 €|",
+            "staticText|30,79 €|",
+            "staticText|Total, 177,42 €|",
+            "staticText|177,42 €|"
+          ],
+          "disappeared_count": 18,
+          "duration_ms": 2366,
+          "next_screen": "422d5a33",
+          "next_seq": 319,
+          "previous_screen": "33c79b97",
+          "screen_changed": true
+        }
+      },
+      {
+        "kind": "interact",
+        "result": {
+          "appeared": [
+            86,
+            87,
+            88,
+            89,
+            100,
+            102,
+            106,
+            108,
+            109,
+            111,
+            112,
+            114,
+            115,
+            117,
+            118,
+            120
+          ],
+          "appeared_count": 16,
+          "disappeared": [
+            "genericElement|Stock insuficiente. Stock previsto: -1. Puedes continuar. Servicio: Champú DEMO venta.|",
+            "staticText|Stock insuficiente. Stock previsto: -1. Puedes continuar.|",
+            "image|Advertencia||exclamationmark.triangle.fill",
+            "incrementor|Cantidad: 9, Cantidad de Champú DEMO venta|",
+            "button|Cantidad: 9, Cantidad de Champú DEMO venta, Disminución||Decrement",
+            "button|Cantidad: 9, Cantidad de Champú DEMO venta, Aumento||Increment",
+            "staticText|Cantidad: 9|",
+            "staticText|Subtotal con IVA, 204,20 €|",
+            "staticText|204,20 €|",
+            "staticText|Descuento global, 40,36 €|",
+            "staticText|40,36 €|",
+            "staticText|Descuento total, 42,78 €|",
+            "staticText|42,78 €|",
+            "staticText|Base imponible, 133,41 €|",
+            "staticText|133,41 €|",
+            "staticText|IVA, 28,01 €|",
+            "staticText|28,01 €|",
+            "staticText|Total, 161,42 €|",
+            "staticText|161,42 €|"
+          ],
+          "disappeared_count": 19,
+          "duration_ms": 2403,
+          "next_screen": "c75535e8",
+          "next_seq": 322,
+          "previous_screen": "422d5a33",
+          "screen_changed": true
+        }
+      },
+      {
+        "kind": "elements",
+        "result": "rs/1 act screen=c75535e8 seq=323 age=2ms count=80 udid=0B3A9F32-B9D5-4ED5-A13F-CB66F7917E75 keyboard=hidden\n1|staticText|Demo · Datos de ejemplo, Los cambios se reinician al abrir la app, Histórico contiene muestras DEMO precargadas. No se han emitido documentos ni ejecutado cierres o compensaciones.||enabled\n2|staticText|Demo · Datos de ejemplo||enabled\n3|staticText|Los cambios se reinician al abrir la app||enabled\n4|staticText|Histórico contiene muestras DEMO precargadas. No se han emitido documentos ni ejecutado cierres o compensaciones.||enabled\n5|button|Cerrar sesión||enabled\n6|button|Nueva venta||enabled\n7|heading|Jornada||enabled\n8|heading|Próximas||enabled\n9|button|Sin cliente, Borrador, Corte y peinado DEMO, Servicios: 1, 21 sept 2026, 16:14||enabled\n10|staticText|Sin cliente||enabled\n11|staticText|Borrador||enabled\n12|staticText|Corte y peinado DEMO||enabled\n13|staticText|Servicios: 1||enabled\n14|staticText|21 sept 2026, 16:14||enabled\n15|button|Cliente DEMO Alba, Borrador, Corte y peinado DEMO, Servicios: 1, 21 sept 2026, 16:15||enabled\n16|staticText|Cliente DEMO Alba||enabled\n17|staticText|Borrador||enabled\n18|staticText|Corte y peinado DEMO||enabled\n19|staticText|Servicios: 1||enabled\n20|staticText|21 sept 2026, 16:15||enabled\n21|button|Cliente DEMO Bruno, Borrador, Tratamiento de hidratación intensiva y peinado para ocasión especial, Servicios: 2, 21 sept 2026, 16:16||enabled\n22|staticText|Cliente DEMO Bruno||enabled\n23|staticText|Borrador||enabled\n24|staticText|Tratamiento de hidratación intensiva y peinado para ocasión especial||enabled\n25|staticText|Servicios: 2||enabled\n26|staticText|21 sept 2026, 16:16||enabled\n27|heading|En curso||enabled\n28|button|Sin cliente, En curso, Corte y peinado DEMO, Servicios: 1, 21 sept 2026, 16:17||enabled\n29|staticText|Sin cliente||enabled\n30|staticText|En curso||enabled\n31|staticText|Corte y peinado DEMO||enabled\n47|slider|Barra de desplazamiento vertical, 2 páginas|0 %|enabled\n48|slider|Barra de desplazamiento vertical, 2 páginas|0 %|enabled\n49|group|Barra de herramientas||enabled\n50|group|Barra de pestañas||enabled\n51|radioButton|Jornada|1|enabled\n52|image|calendario||enabled\n53|radioButton|Histórico|0|enabled\n54|image|Reloj rodeado por una flecha circular girada 90 grados en sentido antihorario con punta triangular||enabled\n55|radioButton|Clientes|0|enabled\n56|image|Dos personas, con relleno||enabled\n57|radioButton|Catálogo|0|enabled\n58|image|cuadrícula 2 por 2||enabled\n59|radioButton|Informes|0|enabled\n60|image|Gráfico de barras con un eje X||enabled\n61|button|Cerrar||enabled\n62|heading|Borrador de venta||enabled\n63|button|Descartar||enabled\n74|incrementor|Cantidad: 1, Cantidad de Tratamiento de hidratación intensiva y peinado para ocasión especial|1|enabled\n75|button|Cantidad: 1, Cantidad de Tratamiento de hidratación intensiva y peinado para ocasión especial, Disminución|1|enabled\n76|button|Cantidad: 1, Cantidad de Tratamiento de hidratación intensiva y peinado para ocasión especial, Aumento|1|enabled\n77|staticText|Cantidad: 1||enabled\n78|button|Editar descuento de Tratamiento de hidratación intensiva y peinado para ocasión especial||enabled\n79|button|Retirar servicio Tratamiento de hidratación intensiva y peinado para ocasión especial||enabled\n80|staticText|Champú DEMO venta, Próximo, 20,00 €, IVA: 21 %, Sin descuento||enabled\n81|staticText|Champú DEMO venta||enabled\n82|staticText|Próximo||enabled\n83|staticText|20,00 €||enabled\n84|staticText|IVA: 21 %||enabled\n85|staticText|Sin descuento||enabled\n86|incrementor|Cantidad: 8, Cantidad de Champú DEMO venta|8|enabled\n87|button|Cantidad: 8, Cantidad de Champú DEMO venta, Disminución|8|enabled\n88|button|Cantidad: 8, Cantidad de Champú DEMO venta, Aumento|8|enabled\n89|staticText|Cantidad: 8||enabled\n90|button|Editar descuento de Champú DEMO venta||enabled\n91|button|Retirar servicio Champú DEMO venta||enabled\n92|button|Añadir servicio||enabled\n93|staticText|Añadir servicio||enabled\n94|image|Añadir||enabled\n95|heading|Descuento global||enabled\n96|staticText|Descuento: 20%||enabled\n97|staticText|Para toda la venta, incluidos los servicios que añadas después.||enabled\n98|button|Editar descuento global||enabled\n99|heading|Importes||enabled\n100|staticText|Subtotal con IVA, 184,20 €||enabled\n101|staticText|Subtotal con IVA||enabled\n102|staticText|184,20 €||enabled\n121|slider|Barra de desplazamiento vertical, 3 páginas|52 %|enabled\n122|slider|Barra de desplazamiento vertical, 3 páginas|52 %|enabled\n123|group|Barra de herramientas||enabled\n!ambiguous|group|Barra de herramientas|49@201,519;123@201,468\n!ambiguous|slider|Barra de desplazamiento vertical, 2 páginas|47@384,509;48@384,509\n!ambiguous|slider|Barra de desplazamiento vertical, 3 páginas|121@384,472;122@384,472\n!ambiguous|staticText|Borrador|11@61,366;17@61,503;23@61,640\n!ambiguous|staticText|Corte y peinado DEMO|12@110,387;18@110,525;31@110,872\n!ambiguous|staticText|Servicios: 1|13@66,409;19@66,546\n!ambiguous|staticText|Sin cliente|10@71,344;29@71,829"
+      },
+      {
+        "kind": "interact",
+        "result": {
+          "appeared": [
+            86,
+            87,
+            88,
+            89,
+            90,
+            91,
+            92,
+            103,
+            105,
+            109,
+            111,
+            112,
+            114,
+            115,
+            117,
+            118,
+            120,
+            121,
+            123
+          ],
+          "appeared_count": 19,
+          "disappeared": [
+            "incrementor|Cantidad: 8, Cantidad de Champú DEMO venta|",
+            "button|Cantidad: 8, Cantidad de Champú DEMO venta, Disminución||Decrement",
+            "button|Cantidad: 8, Cantidad de Champú DEMO venta, Aumento||Increment",
+            "staticText|Cantidad: 8|",
+            "staticText|Subtotal con IVA, 184,20 €|",
+            "staticText|184,20 €|",
+            "staticText|Descuento global, 36,36 €|",
+            "staticText|36,36 €|",
+            "staticText|Descuento total, 38,78 €|",
+            "staticText|38,78 €|",
+            "staticText|Base imponible, 120,19 €|",
+            "staticText|120,19 €|",
+            "staticText|IVA, 25,23 €|",
+            "staticText|25,23 €|",
+            "staticText|Total, 145,42 €|",
+            "staticText|145,42 €|"
+          ],
+          "disappeared_count": 16,
+          "duration_ms": 2627,
+          "next_screen": "422d5a33",
+          "next_seq": 327,
+          "previous_screen": "c75535e8",
+          "screen_changed": true
+        }
+      },
+      {
+        "kind": "interact",
+        "result": {
+          "appeared": [
+            128,
+            129,
+            130,
+            131,
+            132,
+            133,
+            134,
+            135
+          ],
+          "appeared_count": 8,
+          "disappeared": [],
+          "disappeared_count": 0,
+          "duration_ms": 1616,
+          "next_screen": "211476f9",
+          "next_seq": 330,
+          "previous_screen": "422d5a33",
+          "screen_changed": true
+        }
+      },
+      {
+        "kind": "elements",
+        "result": "rs/1 act screen=211476f9 seq=331 age=10ms count=94 udid=0B3A9F32-B9D5-4ED5-A13F-CB66F7917E75 keyboard=hidden\n1|staticText|Demo · Datos de ejemplo, Los cambios se reinician al abrir la app, Histórico contiene muestras DEMO precargadas. No se han emitido documentos ni ejecutado cierres o compensaciones.||enabled\n2|staticText|Demo · Datos de ejemplo||enabled\n3|staticText|Los cambios se reinician al abrir la app||enabled\n4|staticText|Histórico contiene muestras DEMO precargadas. No se han emitido documentos ni ejecutado cierres o compensaciones.||enabled\n5|button|Cerrar sesión||enabled\n6|button|Nueva venta||enabled\n7|heading|Jornada||enabled\n8|heading|Próximas||enabled\n9|button|Sin cliente, Borrador, Corte y peinado DEMO, Servicios: 1, 21 sept 2026, 16:14||enabled\n10|staticText|Sin cliente||enabled\n11|staticText|Borrador||enabled\n12|staticText|Corte y peinado DEMO||enabled\n13|staticText|Servicios: 1||enabled\n14|staticText|21 sept 2026, 16:14||enabled\n15|button|Cliente DEMO Alba, Borrador, Corte y peinado DEMO, Servicios: 1, 21 sept 2026, 16:15||enabled\n16|staticText|Cliente DEMO Alba||enabled\n17|staticText|Borrador||enabled\n18|staticText|Corte y peinado DEMO||enabled\n19|staticText|Servicios: 1||enabled\n20|staticText|21 sept 2026, 16:15||enabled\n21|button|Cliente DEMO Bruno, Borrador, Tratamiento de hidratación intensiva y peinado para ocasión especial, Servicios: 2, 21 sept 2026, 16:16||enabled\n22|staticText|Cliente DEMO Bruno||enabled\n23|staticText|Borrador||enabled\n24|staticText|Tratamiento de hidratación intensiva y peinado para ocasión especial||enabled\n25|staticText|Servicios: 2||enabled\n26|staticText|21 sept 2026, 16:16||enabled\n27|heading|En curso||enabled\n28|button|Sin cliente, En curso, Corte y peinado DEMO, Servicios: 1, 21 sept 2026, 16:17||enabled\n29|staticText|Sin cliente||enabled\n30|staticText|En curso||enabled\n31|staticText|Corte y peinado DEMO||enabled\n47|slider|Barra de desplazamiento vertical, 2 páginas|0 %|enabled\n48|slider|Barra de desplazamiento vertical, 2 páginas|0 %|enabled\n49|group|Barra de herramientas||enabled\n50|group|Barra de pestañas||enabled\n51|radioButton|Jornada|1|enabled\n52|image|calendario||enabled\n53|radioButton|Histórico|0|enabled\n54|image|Reloj rodeado por una flecha circular girada 90 grados en sentido antihorario con punta triangular||enabled\n55|radioButton|Clientes|0|enabled\n56|image|Dos personas, con relleno||enabled\n57|radioButton|Catálogo|0|enabled\n58|image|cuadrícula 2 por 2||enabled\n59|radioButton|Informes|0|enabled\n60|image|Gráfico de barras con un eje X||enabled\n61|button|Cerrar||enabled\n62|heading|Borrador de venta||enabled\n63|button|Descartar||enabled\n74|incrementor|Cantidad: 1, Cantidad de Tratamiento de hidratación intensiva y peinado para ocasión especial|1|enabled\n75|button|Cantidad: 1, Cantidad de Tratamiento de hidratación intensiva y peinado para ocasión especial, Disminución|1|enabled\n76|button|Cantidad: 1, Cantidad de Tratamiento de hidratación intensiva y peinado para ocasión especial, Aumento|1|enabled\n77|staticText|Cantidad: 1||enabled\n78|button|Editar descuento de Tratamiento de hidratación intensiva y peinado para ocasión especial||enabled\n79|button|Retirar servicio Tratamiento de hidratación intensiva y peinado para ocasión especial||enabled\n80|staticText|Champú DEMO venta, Próximo, 20,00 €, IVA: 21 %, Sin descuento||enabled\n81|staticText|Champú DEMO venta||enabled\n82|staticText|Próximo||enabled\n83|staticText|20,00 €||enabled\n84|staticText|IVA: 21 %||enabled\n85|staticText|Sin descuento||enabled\n86|genericElement|Stock insuficiente. Stock previsto: -1. Puedes continuar. Servicio: Champú DEMO venta.||enabled\n87|image|Advertencia||enabled\n88|staticText|Stock insuficiente. Stock previsto: -1. Puedes continuar.||enabled\n89|incrementor|Cantidad: 9, Cantidad de Champú DEMO venta|9|enabled\n90|button|Cantidad: 9, Cantidad de Champú DEMO venta, Disminución|9|enabled\n91|button|Cantidad: 9, Cantidad de Champú DEMO venta, Aumento|9|enabled\n92|staticText|Cantidad: 9||enabled\n93|button|Editar descuento de Champú DEMO venta||enabled\n94|button|Retirar servicio Champú DEMO venta||enabled\n95|button|Añadir servicio||enabled\n96|image|Añadir||enabled\n97|staticText|Añadir servicio||enabled\n98|heading|Descuento global||enabled\n99|staticText|Descuento: 20%||enabled\n100|staticText|Para toda la venta, incluidos los servicios que añadas después.||enabled\n101|button|Editar descuento global||enabled\n102|heading|Importes||enabled\n103|staticText|Subtotal con IVA, 204,20 €||enabled\n104|staticText|Subtotal con IVA||enabled\n105|staticText|204,20 €||enabled\n106|staticText|Descuentos de servicios, 2,42 €||enabled\n124|slider|Barra de desplazamiento vertical, 3 páginas|49 %|enabled\n125|slider|Barra de desplazamiento vertical, 3 páginas|49 %|enabled\n126|group|Barra de herramientas||enabled\n127|button|Cerrar||enabled\n128|heading|Descuento de línea||enabled\n129|heading|Champú DEMO venta||enabled\n130|staticText|Porcentaje (%)||enabled\n131|textField||Porcentaje (%)|enabled\n132|staticText|Introduce de 0 a 100. Vaciar el campo no retira el descuento.||enabled\n133|button|Aplicar||enabled\n134|slider|Barra de desplazamiento vertical, 1 página|0 %|enabled\n135|slider|Barra de desplazamiento vertical, 1 página|0 %|enabled\n136|group|Barra de herramientas||enabled\n!ambiguous|button|Cerrar|61@68,97;127@57,110\n!ambiguous|group|Barra de herramientas|49@201,519;126@201,436;136@201,473\n!ambiguous|slider|Barra de desplazamiento vertical, 1 página|134@384,477;135@384,477\n!ambiguous|slider|Barra de desplazamiento vertical, 2 páginas|47@384,509;48@384,509\n!ambiguous|slider|Barra de desplazamiento vertical, 3 páginas|124@369,439;125@369,439\n!ambiguous|staticText|Borrador|11@61,366;17@61,503;23@61,640\n!ambiguous|staticText|Corte y peinado DEMO|12@110,387;18@110,525;31@110,872\n!ambiguous|staticText|Servicios: 1|13@66,409;19@66,546\n!ambiguous|staticText|Sin cliente|10@71,344;29@71,829"
+      }
+    ],
+    "stopped_at": null
+  },
+  "ok": true,
+  "rs": "1"
+}

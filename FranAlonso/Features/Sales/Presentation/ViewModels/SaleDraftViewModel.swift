@@ -47,6 +47,7 @@ final class SaleDraftViewModel {
     @ObservationIgnored private var inspectionGeneration: UUID?
     @ObservationIgnored private var contentGeneration: UUID?
     @ObservationIgnored private var clientNameGeneration: UUID?
+    @ObservationIgnored private var announcedStockWarningIDs: Set<SaleLineID> = []
 
     var sale: Sale? {
         guard isReadOnly else { return store.draft }
@@ -63,6 +64,27 @@ final class SaleDraftViewModel {
     var lastError: (any Error)? { isReadOnly ? inspectionError : store.lastError }
     var stockState: SaleDraftStockState { store.stockState }
     var stockError: (any Error)? { store.stockError }
+
+    /// Only current editable deficits are presented; unknown stock never implies sufficiency.
+    var stockWarnings: [StockImpact] {
+        guard !isClosed, !isReadOnly, case let .ready(impacts) = stockState else { return [] }
+        return impacts.filter(\.requiresWarning)
+    }
+
+    func stockWarning(for id: SaleLineID) -> StockImpact? {
+        stockWarnings.first { $0.id == id }
+    }
+
+    /// Consumes one message for newly warned identities when the screen can actually communicate it.
+    /// Unknown states retain deduplication; an accepted ready snapshot without deficits rearms it.
+    func takeStockWarningAnnouncement() -> LocalizedStringResource? {
+        guard !isClosed, !isReadOnly, case .ready = stockState else { return nil }
+        let currentIDs = Set(stockWarnings.map(\.id))
+        let hasNewWarning = !currentIDs.subtracting(announcedStockWarningIDs).isEmpty
+        announcedStockWarningIDs = currentIDs
+        return hasNewWarning ? .salesStockWarningAnnouncement : nil
+    }
+
     var isBusy: Bool { isReadOnly ? inspectionState == .loading : store.isBusy }
     var isReadOnly: Bool { destination.mode == .inspect }
     var isClosed: Bool { store.state == .closed }

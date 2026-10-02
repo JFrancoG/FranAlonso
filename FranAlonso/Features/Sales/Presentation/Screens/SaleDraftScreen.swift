@@ -92,6 +92,11 @@ struct SaleDraftScreen: View {
         .task(id: viewModel.sale?.clientID) {
             await viewModel.resolveClientName()
         }
+        .onChange(of: viewModel.stockState) {
+            guard request == nil, viewModel.servicePickerDestination == nil,
+                  viewModel.discountDestination == nil else { return }
+            announceStockWarning()
+        }
         .onDisappear {
             request = nil
             viewModel.close()
@@ -216,11 +221,13 @@ struct SaleDraftScreen: View {
             guard viewModel.canEditGlobalDiscount else { return }
             globalDiscountIsFocused = true
         }
+        announceStockWarning()
     }
 
     private func restoreAddServiceFocus() {
         guard viewModel.servicePickerDestination == nil, viewModel.canAddServices else { return }
         addServiceIsFocused = true
+        announceStockWarning()
     }
 
     private func execute(_ current: Request) async {
@@ -244,6 +251,8 @@ struct SaleDraftScreen: View {
             request = nil
             if current.operation == .discard {
                 dismiss()
+            } else if let warning = viewModel.takeStockWarningAnnouncement() {
+                announce(warning)
             } else if current.operation != .load {
                 announce("sales.action.accepted")
             }
@@ -256,6 +265,11 @@ struct SaleDraftScreen: View {
         }
     }
 
+    private func announceStockWarning() {
+        guard let warning = viewModel.takeStockWarningAnnouncement() else { return }
+        announce(warning)
+    }
+
     private func announce(_ resource: LocalizedStringResource) {
         var resource = resource
         resource.locale = locale
@@ -264,6 +278,19 @@ struct SaleDraftScreen: View {
 }
 
 extension SaleDraftScreen {
+    /// Keeps the already prepared preview snapshot visible without an initial load task.
+    fileprivate init(
+        previewModel: SaleDraftViewModel,
+        makeServicePicker: @escaping @MainActor @Sendable (SaleDraftViewModel) -> SaleServicePickerViewModel,
+        makeDiscount: @escaping @MainActor @Sendable
+            (SaleDraftViewModel, SaleDiscountDestination, Locale) -> SaleDiscountViewModel
+    ) {
+        self.makeServicePicker = makeServicePicker
+        self.makeDiscount = makeDiscount
+        _viewModel = State(initialValue: previewModel)
+        _request = State(initialValue: nil)
+    }
+
     init(
         destination: SaleDraftDestination,
         makeViewModel: @MainActor @Sendable (SaleDraftDestination) -> SaleDraftViewModel,
@@ -315,4 +342,16 @@ extension SaleDraftScreen {
         makeServicePicker: dependencies.makeSaleServicePicker,
         makeDiscount: dependencies.makeSaleDiscount
     )
+}
+
+#Preview("Stock warnings", traits: .modifier(SaleStockPreviewModifier())) {
+    @Previewable @Environment(\.appDependencies) var dependencies
+    @Previewable @Environment(\.saleStockPreviewModel) var model
+    if let model {
+        SaleDraftScreen(
+            previewModel: model,
+            makeServicePicker: dependencies.makeSaleServicePicker,
+            makeDiscount: dependencies.makeSaleDiscount
+        )
+    }
 }

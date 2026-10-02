@@ -158,3 +158,135 @@ al main remoto. PLU-87 Done; PLU-85 In Progress con12.1–12.2 entregadas y12.3�
 Cierre documental en main siguiendo la entrega anterior: CHANGELOG/Progress/fase, validadores y diff-check;
 Xcode adicional N/A por ausencia de cambios al código/configuración. Gobernanza solo conserva seis links08.3 históricos.
 No activa live, no cierra fase12 ni inicia12.3.
+
+## 12.3 — Advertencia visual accesible
+
+[PLU-88](https://linear.app/plusprojects/issue/PLU-88), In Progress/Jesus Franco, hija PLU-85.
+Autorización02/10: «abre issue y rama e implementa12.3». Base limpia main/origin-main `a938332`;
+rama `codex/plu-88-sale-stock-warning-ui`. [Propuesta/PRE](12-3-stock-warning-proposal.md) PASS independiente,
+803archivos/huella antes-después idéntica `a2c49a5cadc7eb5fc45e544c5523cef980d79e5a24c72fdda541cd8b3a08b627`.
+La entrega12.2 no autoriza entrega12.3. Sin commit/push/PR/merge/cierre ni activación live.
+
+### Implementación y alcance
+
+SaleDraftViewModel proyecta solo impactos negativos actuales desde ready editable/no cerrado, por SaleLineID.
+No recalcula negocio ni duplica venta/cálculo/Store. Idle/loading/failed omiten avisos viejos sin afirmar suficiencia;
+inspect/close no comunican. Deduplicación efímera ObservationIgnored por identidad: nuevos avisos producen un
+mensaje; cambios de cantidad manteniendo déficit no repiten; ready sin déficit rearma; estados unknown conservan
+dedup. Consumo solo al poder comunicar, no mientras se difiere una operación/sheet.
+SaleDraftContent pasa impacto a SaleDraftLineRow; SaleStockWarningView presenta cantidad ya calculada, Label/
+símbolo decorativo y texto es/en con ErrorInk adaptativo en cuatro apariencias, wrapping/font semántico.
+Nombre accesible contiene mensaje visible y servicio; no acción ni rasgo bloqueante. Controles existentes disponibles.
+Screen usa Announcement moderno existente: una comunicación propia tras aceptar (warning nuevo o éxito),
+observación de stock sin request/sheets y retorno de selector/descuento. Sin nueva tarea/timer ni foco hacia el aviso.
+Se conservan las restauraciones existentes; orden efectivo de habla/foco requiere AT real.
+Tres claves/copy bilingüe y su inventario de tests compilados. Trait nuevo App/in-memory prepara async borrador
+con ledger real: stock1, qty1 exact0, qty2 del mismo producto→-2 y profesional sin vínculo. Fixtures históricas
+intactas. Constructor fileprivate de pantalla solo para su preview omite load inicial sobre modelo ya preparado;
+inicializador de producción conserva comportamiento. Cada View afectada tiene preview propio con trait.
+No cambios Domain/Data/Store/pago/movimientos/sync/config; confirmación no bloqueante corresponde a12.4.
+
+### Evidencia técnica
+
+Xcode MCP estable workspace-PfnUYLlMzY, SDK/target27.0, Swift6/nonisolated/strictcomplete/warnings-as-errors.
+Tests y builds en iPadPro13(M5) Simulator27.2, Develop/planDevelop; Production verificado y Develop/destino restaurados.
+
+- Baseline30/30 PASS. RED por proyección/consumo/copy ausentes antes de implementación:
+  `/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/BuildProject/BuildProject-Log-20261002-145137.txt`.
+- GREEN focal37/37: seis declaraciones nuevas/siete escenarios incluidos. Identidades/repetidos/profesional,
+  controles/total, loading/error/close/inspect, recuperación/readyexact0, dedup y mensajes es/en con contexto.
+  Resumen `/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RunSomeTests/5485ED30-8D6E-493C-B090-8E7271B07D20.txt`.
+- Regresión **191/191 PASS**, cero fallos/skips/expected failures/no ejecutados: stock/Store/VM/concurrencia,
+  semántica/selección/descuentos/navegación/composición/Apppreview. Sin ejecución de toda la app.
+  Resumen completo `/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RunSomeTests/AACA70D2-4920-47B9-99F4-E6F7B4DD746A.txt`.
+  Bundle nativo real cerrado inspeccionado con xcresulttool solo lectura:
+  `/Users/jesusf/Library/Developer/Xcode/DerivedData/FranAlonso-eehpkvodmpnqlchgeqriatcucsjf/Logs/Test/Test-FranAlonso-Develop-2026.10.02_15-00-14-+0200.xcresult`.
+  128declaraciones/34parametrizadas/97ejecuciones parametrizadas,191resultados por dispositivo; runtimeWarnings vacío.
+  xcresultBundlePath MCP en ActionArtifacts no existe; se contrastó DerivedData real.
+- Recursos compilados **38/38 PASS** tras actualizar inventario; catálogos564 es/en/0errores.
+  Resumen `/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RunSomeTests/AE42D380-0F55-4AFA-A160-747C97F1EAD4.txt`.
+  Bundle real cerrado DerivedData/Logs/Test `Test-FranAlonso-Develop-2026.10.02_15-03-20-+0200.xcresult`:
+  3declaraciones/38resultados por dispositivo, runtimeWarnings vacío, resultPassed.
+- Develop build-for-testing19,689s, final4,126s PASS; Production22,164s PASS.
+  Tras ajustar solo layout de llamadas nuevas, Develop18,441s y Production16,995s PASS; negocio/tests intactos,
+  previews anteriores reutilizados por igualdad semántica. Logs finales:
+  `/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/BuildProject/BuildProject-Log-20261002-150728.txt`
+  y `BuildProject-Log-20261002-150745.txt` en la misma carpeta.
+  Cero Swift/Clang/structured warnings; persiste metadata omitida de appintentsmetadataprocessor sin dependencia
+  AppIntents.framework en logs completos, también en baseline histórico. No cero avisos absolutos.
+- Diagnósticos MCP7Swift:0, success=true. Tests recuperados tras error transitorio SourceEditor(error5).
+- Recall lexical7Swift/0candidatos y revisión manual; solo formato del cambio. Diff-check PASS.
+  Gobernanza únicamente seis enlaces Desktop rotos preexistentes08.3, sin ampliación de alcance.
+
+### Evidencia visual y deuda
+
+[Registro completo55criterios y flujos](../accessibility/evidence/12-3-sale-stock-warnings.md).
+Diez PNG originales conservados en su manifest: pantallaLarge/XXX Large/AX5, componente mismas variantes,
+filaXXXL/AX5, contenidoLarge y cuarta apariencia. es/en/Light/Dark/contraste normal/aumentado representativos.
+Render host iPhone18ProMax27.2, destino workspaceiPhone17; iPad original falló dyld/libSystem antes del cambio.
+No limpieza destructiva de caches/simuladores ni modificación target. Modelo async preparado; captura inicial de
+pantalla mostró carga y se corrigió solo el constructor de preview para mostrar estado listo determinista.
+Aviso completo aisladoAX5; fila/formulario requieren scroll real; título nativo truncadoAX5 conserva **Falla**.
+Inspector/VoiceOver/VoiceControl/SwitchControl/FKA, habla/foco, scroll/superficies/contraste medido,
+orientación/ventanas/iPad/preferencias/RTL permanecen Pendiente/Limitado.
+Deuda nueva [PLU-89](https://linear.app/plusprojects/issue/PLU-89), Backlog/Jesus, vinculadaPLU-88 y fasePLU-85:
+recuperar tras feedback y estabilización de cada recorrido, siempre antes del primer candidato real.
+Deuda histórica11 separada; esta evidencia no valida accesibilidad integral ni cierra la fase.
+
+### Auditorías y estado
+
+POST técnica/estilo independiente stock_ui_post_standards: PASS sin hallazgos, recall7/0 más manual.
+La creación inicial de reviewerUI alcanzó el límite de agentes; una inspección complementaria con reviewerPRE12.1
+reutilizado no sustituyó el gate. Posteriormente se creó correctamente el hijo fresco
+stock_ui_post_standards/fresh_ui_post, rol ios-accessibility-reviewer: sin otros defectos de fuente/copy/previews.
+Único P2 documental compartido: afirmación de operabilidad de demo sin smoke; retirada, manteniendo pendiente
+la comprobación antes de entrega. No se acredita gate completo de entrega funcional ni accesibilidad integral.
+Read-only operacional probado porroot antes/después de ambos:817archivos,
+SHA256 `1e0302304a197859cdedd478e462beca677ec0f094a44c486ef0253cbbd3737f` idéntico.
+Revisión documental focal independiente posterior PASS: P2 corregido, sin hallazgos adicionales.
+Huella antes/después817archivos idéntica `f8b2ebf2e918522a67d130ea84a81e04f9458b7fad3f3c22578a7b9302630eaa`.
+Fuente/copy/previews favorables; el smoke pendiente de este POST se completó después, según registro siguiente.
+Swift/config/tests/PNG intactos, no requiere repetir validaciónXcode por el cierre documental de esta implementación.
+### Smoke táctil retomado — 02/10
+
+Usuario: «Ya está desbloqueado, termina las pruebas». Instalado el Develop ya validado por Xcode MCP en
+Simulator iPhone17/iOS27.2, bundle com.plusprojects.FranAlonso.develop, argumento --franalonso-demo-workday.
+Composición local real con ModelContainer in-memory, datos sintéticos y runtime nil; sin activación externa.
+Portrait/light, content_size extra-Small consultado con simctl ui; no se cambiaron preferencias del usuario.
+RocketSim: toques HID y swipes con guard de snapshot, lectura AX y cuatro PNG originales inspeccionados.
+CUA permitió omitir la propuesta de guardar credencial sintética; distribución del teclado requirió corregir
+@/guiones y verificar la entrada. CUA volvió a informar bloqueo del Mac; RocketSim continuó operativo y
+completó el recorrido. No se guardó credencial, ni se alteró la composición para evitar autenticación.
+
+PASS funcional focal: profesional sin aviso; físico qty1 sin aviso, qty8 exact0 sin aviso, qty9→-1 y qty10→-2;
+reducción10→9→8 retira aviso, aumento8→9 lo recupera. Stepper y edición funcionan con déficit, sin bloqueo.
+Descuento de línea10% aplicado: qty9/aviso-1 conservados; selector abierto/cancelado conserva estado.
+Añadir segunda línea del mismo producto qty1 publica impacto acumulado-2; primera mantiene-1.
+Cerrar/reabrir borrador conserva tres servicios, cantidades9/1 y descuento10%; avisos se recalculan al abrir.
+Solicitud de retirar segunda línea abierta y cancelada tocando fuera del popover: sin retirada, estado conservado.
+No se ejecutó pago/confirmación12.4 ni se acreditan movimientos por este smoke.
+
+[Evidencia runtime](../accessibility/evidence/12-3-sale-stock-warnings.md#smoke-táctil-funcional)
+y [manifest](../accessibility/evidence/assets/12-3/runtime/manifest.json): PNG originales, snapshots y transiciones
+JSON sin contexto del protocolo/token local. Es interacción táctil en Simulator, no prueba física ni AT/foco/habla.
+El bloqueo inicial queda resuelto para el gate funcional; accesibilidad integral/FallaAX5 permanecen en PLU-89.
+Swift/config/tests/previews intactos: se reutilizan191/191,38/38 y builds ya cerrados; no hay motivo de retestXcode.
+Revisión focal independiente fresh_ui_post PASS sin hallazgos:4PNG/5JSON,9/9 hashes correctos.
+Huella root antes/después827archivos idéntica:
+`08e5391c50e2f6553f628a3da40bccd54d05cbc2f377e99cb1c0448f505b7adc`.
+Gate funcionaldemo respaldado para esta configuración; registro integral mantiene42Limitado/11Pendiente/2Falla.
+Localizaciones564/0errores y diff-check PASS; gobernanza conserva solo seis enlaces históricos08.3.
+PLU-88 In Progress; PLU-85 abierta.
+Implementación y smoke completados; autorización de entrega recibida después, según registro siguiente.
+12.4–12.8 mantienen gates separados.
+
+### Preparación de entrega 12.3 — 02/10
+
+Entrega completa autorizada: «commit, push y entrega», siguiendo la integración de12.1–12.2.
+Snapshot revisado827archivos reproducido exactamente mediante reversión virtual de los únicos dos registros
+posteriores de auditoría: SHA25608e5391c50e2f6553f628a3da40bccd54d05cbc2f377e99cb1c0448f505b7adc.
+Swift/config/tests/PNG no cambiaron después de validación; se reutilizan buildsDevelop/Production,
+191/191,38/38,previews y smoke de esta sesión. Audit estilo pre-PR7Swift/0candidatos más manual sin hallazgos.
+Cambios nuevos únicamente autorización/changelog/entrega; Xcode adicional N/A por alcance documental.
+PLU-89 conserva explícitamente validación integral/defectos aplazados, Jesus Franco, antes del candidato real.
+PLU-88 permanece In Progress hasta integración; PLU-85 abierta, sin live ni inicio12.4.

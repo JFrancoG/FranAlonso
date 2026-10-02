@@ -6,6 +6,130 @@ import Testing
 @Suite("Sale draft advisory stock", .timeLimit(.minutes(1)))
 @MainActor
 struct SaleDraftStockTests {
+    @Test("Screen projects only negative current impacts by line identity and leaves editing available")
+    func projectsLineWarnings() async throws {
+        let sales = InMemorySaleRepository()
+        let stock = DraftStockRepository(quantities: [draftStockProduct(1): 1])
+        let model = draftStockModel(sales: sales, stock: stock)
+        _ = try await model.load()
+        _ = try await model.create(lines: [
+            draftStockLine(1, product: 1),
+            draftStockLine(2, product: 1, quantity: 2),
+            draftStockLine(3, product: nil)
+        ])
+        let warnedID = SaleLineID(rawValue: draftStockUUID(2))
+
+        #expect(model.stockWarnings.map(\.id) == [warnedID])
+        #expect(model.stockWarning(for: warnedID)?.projectedQuantity == -2)
+        #expect(model.stockWarning(for: SaleLineID(rawValue: draftStockUUID(1))) == nil)
+        #expect(model.stockWarning(for: SaleLineID(rawValue: draftStockUUID(3))) == nil)
+        #expect(model.stockWarning(for: SaleLineID(rawValue: draftStockUUID(99))) == nil)
+        #expect(model.canIncrease(for: warnedID))
+        #expect(model.canDecrease(for: warnedID))
+        #expect(model.canAddServices)
+        #expect(model.calculation?.total.amount == 4)
+        #expect(await stock.appendCount == 0)
+    }
+
+    @Test("Unknown refresh states hide stale warnings without rearming an already announced deficit")
+    func hidesUnknownWarnings() async throws {
+        let sales = InMemorySaleRepository()
+        let stock = DraftStockRepository(quantities: [draftStockProduct(1): 0])
+        let model = draftStockModel(sales: sales, stock: stock)
+        #expect(model.stockWarnings.isEmpty)
+        #expect(model.takeStockWarningAnnouncement() == nil)
+        _ = try await model.create(lines: [draftStockLine(1, product: 1)])
+        #expect(model.takeStockWarningAnnouncement() != nil)
+        let gate = DraftStockGate()
+        await stock.failNext()
+        await stock.holdNext(at: gate)
+        let refresh = Task {
+            try await model.refreshStock()
+        }
+        await gate.waitForEntry()
+        #expect(model.stockState == .loading)
+        #expect(model.stockWarnings.isEmpty)
+        #expect(model.takeStockWarningAnnouncement() == nil)
+        await gate.release()
+        try await refresh.value
+        #expect(model.stockState == .failed)
+        #expect(model.stockWarnings.isEmpty)
+        #expect(model.takeStockWarningAnnouncement() == nil)
+        try await model.refreshStock()
+        #expect(model.stockWarnings.count == 1)
+        #expect(model.takeStockWarningAnnouncement() == nil)
+        model.close()
+        #expect(model.stockWarnings.isEmpty)
+        #expect(model.takeStockWarningAnnouncement() == nil)
+    }
+
+    @Test("Warning announcement is deduplicated until a ready snapshot clears the deficit")
+    func rearmsOnlyAfterReadyRecovery() async throws {
+        let sales = InMemorySaleRepository()
+        let stock = DraftStockRepository(quantities: [draftStockProduct(1): 0])
+        let model = draftStockModel(sales: sales, stock: stock)
+        let id = SaleLineID(rawValue: draftStockUUID(1))
+        _ = try await model.create(lines: [draftStockLine(1, product: 1)])
+        #expect(model.takeStockWarningAnnouncement() != nil)
+        #expect(model.takeStockWarningAnnouncement() == nil)
+        _ = try await model.increaseQuantity(for: id)
+        #expect(model.stockWarning(for: id)?.projectedQuantity == -2)
+        #expect(model.takeStockWarningAnnouncement() == nil)
+        await stock.setQuantity(2, for: draftStockProduct(1))
+        try await model.refreshStock()
+        #expect(model.stockWarnings.isEmpty)
+        #expect(model.takeStockWarningAnnouncement() == nil)
+        _ = try await model.increaseQuantity(for: id)
+        #expect(model.takeStockWarningAnnouncement() != nil)
+        #expect(model.takeStockWarningAnnouncement() == nil)
+    }
+
+    @Test("Removing one warned identity lets a newly accepted warned line announce once")
+    func announcesNewIdentity() async throws {
+        let sales = InMemorySaleRepository()
+        let stock = DraftStockRepository(quantities: [draftStockProduct(1): 0])
+        let model = draftStockModel(sales: sales, stock: stock)
+        _ = try await model.create(lines: [draftStockLine(1, product: 1)])
+        #expect(model.takeStockWarningAnnouncement() != nil)
+        _ = try await model.removeLine(id: SaleLineID(rawValue: draftStockUUID(1)))
+        #expect(model.takeStockWarningAnnouncement() == nil)
+        _ = try await model.addLine(draftStockLine(2, product: 1))
+        #expect(model.stockWarnings.map(\.id) == [SaleLineID(rawValue: draftStockUUID(2))])
+        #expect(model.takeStockWarningAnnouncement() != nil)
+        #expect(model.takeStockWarningAnnouncement() == nil)
+    }
+
+    @Test("Inspection never publishes editable draft warnings or reads stock")
+    func inspectionOmitsWarnings() async throws {
+        let sales = InMemorySaleRepository()
+        let stock = DraftStockRepository(quantities: [draftStockProduct(1): -1])
+        let model = draftStockModel(sales: sales, stock: stock, mode: .inspect)
+        _ = try await model.load()
+        #expect(model.stockWarnings.isEmpty)
+        #expect(model.takeStockWarningAnnouncement() == nil)
+        #expect(await stock.reads.isEmpty)
+    }
+
+    @Test("Localized warnings retain signed stock, service context and permission to continue", arguments: ["es", "en"])
+    func localizesWarning(localeIdentifier: String) {
+        let locale = Locale(identifier: localeIdentifier)
+        var visible = LocalizedStringResource.salesStockWarning("-2")
+        var accessible = LocalizedStringResource.salesStockWarningFor("Synthetic service", "-2")
+        var announcement = LocalizedStringResource.salesStockWarningAnnouncement
+        visible.locale = locale
+        accessible.locale = locale
+        announcement.locale = locale
+        let visibleText = String(localized: visible)
+        let accessibleText = String(localized: accessible)
+        let announcementText = String(localized: announcement)
+        let continuation = localeIdentifier == "es" ? "Puedes continuar." : "You can continue."
+        #expect(visibleText.contains("-2"))
+        #expect(visibleText.contains(continuation))
+        #expect(accessibleText.contains(visibleText))
+        #expect(accessibleText.contains("Synthetic service"))
+        #expect(announcementText.contains(continuation))
+    }
+
     @Test("Domain reads each linked product once in first-occurrence order")
     func readsUniqueProducts() async throws {
         let stock = DraftStockRepository(quantities: [draftStockProduct(1): 3, draftStockProduct(2): -2])
@@ -409,6 +533,25 @@ private func draftStockStore(sales: InMemorySaleRepository, stock: DraftStockRep
         update: UpdateSaleDraftUseCase(repository: sales),
         discard: DiscardSaleDraftUseCase(repository: sales),
         getStock: stock.map { GetSaleStockQuantitiesUseCase(repository: $0) }
+    )
+}
+
+@MainActor
+private func draftStockModel(
+    sales: InMemorySaleRepository,
+    stock: DraftStockRepository,
+    mode: SaleDraftDestination.Mode = .create
+) -> SaleDraftViewModel {
+    SaleDraftViewModel(
+        destination: SaleDraftDestination(id: draftStockUUID(70), saleID: draftStockSaleID, mode: mode),
+        createdAt: draftStockDate,
+        currency: .eur,
+        create: CreateSaleDraftUseCase(repository: sales),
+        getDraft: GetSaleDraftUseCase(repository: sales),
+        update: UpdateSaleDraftUseCase(repository: sales),
+        discard: DiscardSaleDraftUseCase(repository: sales),
+        getSale: GetSaleUseCase(repository: sales),
+        getStock: GetSaleStockQuantitiesUseCase(repository: stock)
     )
 }
 

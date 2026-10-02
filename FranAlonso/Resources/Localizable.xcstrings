@@ -1,6 +1,60 @@
 {
   "sourceLanguage" : "es",
   "strings" : {
+  "sales.stock.warning %@": {
+    "comment": "Non-blocking sale stock warning. Parameter is the signed, locale-formatted projected physical stock.",
+    "extractionState": "manual",
+    "localizations": {
+      "es": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Stock insuficiente. Stock previsto: %@. Puedes continuar."
+        }
+      },
+      "en": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Insufficient stock. Projected stock: %@. You can continue."
+        }
+      }
+    }
+  },
+  "sales.stock.warning.for %@ %@": {
+    "comment": "Accessible stock warning. First parameter is the captured service name; second is signed projected stock. Preserve the visible warning text.",
+    "extractionState": "manual",
+    "localizations": {
+      "es": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Stock insuficiente. Stock previsto: %2$@. Puedes continuar. Servicio: %1$@."
+        }
+      },
+      "en": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Insufficient stock. Projected stock: %2$@. You can continue. Service: %1$@."
+        }
+      }
+    }
+  },
+  "sales.stock.warning.announcement": {
+    "comment": "Announced once when new warned sale lines appear; stock warnings never block editing.",
+    "extractionState": "manual",
+    "localizations": {
+      "es": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Hay servicios con stock insuficiente. Puedes continuar."
+        }
+      },
+      "en": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Some services have insufficient stock. You can continue."
+        }
+      }
+    }
+  },
   "sales.history.title": {
     "comment": "Sales history: title",
     "extractionState": "manual",

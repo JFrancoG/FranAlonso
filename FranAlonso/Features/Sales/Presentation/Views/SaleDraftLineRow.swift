@@ -3,6 +3,7 @@ import SwiftUI
 struct SaleDraftLineRow: View {
     let line: SaleLine
     let isReadOnly: Bool
+    let stockWarning: StockImpact?
     let onIncrease: (@MainActor () -> Void)?
     let onDecrease: (@MainActor () -> Void)?
     let onRemove: @MainActor () -> Void
@@ -30,6 +31,10 @@ struct SaleDraftLineRow: View {
             }
             .fixedSize(horizontal: false, vertical: true)
             .accessibilityElement(children: .combine)
+
+            if let stockWarning {
+                SaleStockWarningView(serviceName: line.serviceName, projectedQuantity: stockWarning.projectedQuantity)
+            }
 
             if isReadOnly {
                 Text(.salesQuantity(line.quantity))
@@ -68,11 +73,32 @@ struct SaleDraftLineRow: View {
         SaleDraftLineRow(
             line: SalesPreviewFixtures.workday.sales[2].lines[0],
             isReadOnly: false,
+            stockWarning: nil,
             onIncrease: {},
             onDecrease: nil,
             onRemove: {},
             onEditDiscount: {},
             discountIsFocused: $discountIsFocused
         )
+    }
+}
+
+#Preview("Stock warning line", traits: .modifier(SaleStockPreviewModifier())) {
+    @Previewable @Environment(\.saleStockPreviewModel) var model
+    @Previewable @AccessibilityFocusState var discountIsFocused: SaleLineID?
+    if let model, let warning = model.stockWarnings.first,
+       let line = model.sale?.lines.first(where: { $0.id == warning.id }) {
+        Form {
+            SaleDraftLineRow(
+                line: line,
+                isReadOnly: false,
+                stockWarning: warning,
+                onIncrease: {},
+                onDecrease: {},
+                onRemove: {},
+                onEditDiscount: {},
+                discountIsFocused: $discountIsFocused
+            )
+        }
     }
 }
