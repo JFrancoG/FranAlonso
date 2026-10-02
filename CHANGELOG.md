@@ -6,6 +6,10 @@ All notable changes to this project are documented in this file.
 
 ### Added
 
+- 2026-10-02 | ✨ feat(sales): add idempotent stock movements
+  Creates one immutable consumption per product-linked sale line with stable identity and original payment trace.
+  Retains manual payloads and accepted history across retry, cancellation and reopening; atomic payment follows in 12.6.
+
 - 2026-10-02 | ✨ feat(sales): confirm stock before sale payment
   Adds service progress and cash/card selection, with explicit continuation for deficit or unknown stock.
   Retains payment identity across retries and accepted sale recovery; integral accessibility remains in PLU-91.
