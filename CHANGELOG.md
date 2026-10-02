@@ -120,6 +120,9 @@ All notable changes to this project are documented in this file.
 
 ### Documentation
 
+- 2026-10-02 | 📝 docs: record sale draft stock delivery
+  Records merged PR43, PLU-87 completion, preserved validation and the open Phase 12 gate.
+
 - 2026-10-02 | 📝 docs: record sale stock impact delivery
   Records PR42, PLU-86 completion and branch cleanup while keeping Phase12 and later stock/payment gates open.
 

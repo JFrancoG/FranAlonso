@@ -69,7 +69,7 @@ Este cierre solo modifica documentación; Xcode adicional N/A porque la fuente/c
 
 ## 12.2 — Avisos de stock del Store
 
-[PLU-87](https://linear.app/plusprojects/issue/PLU-87), In Progress, Jesus Franco, hija PLU-85.
+[PLU-87](https://linear.app/plusprojects/issue/PLU-87), Done, Jesus Franco, hija PLU-85.
 Autorización02/10: «abre issue y rama e implementa12.2». Base limpia main/origin-main `a543125`;
 rama `codex/plu-87-sale-draft-stock-warnings`. [Propuesta/PRE](12-2-stock-store-proposal.md): PASS independiente.
 La entrega previa12.1 no extiende autorización a commit/push/PR/merge/cierre12.2.
@@ -140,8 +140,21 @@ Recall test1 archivo/0 candidatos más revisión manual. Huella focal antes/desp
 Solo documentación de resultado posterior; fuentes/config idénticas a las validadas y auditadas.
 PRE/POST/estilo PASS; no hallazgos abiertos para12.2.
 Entrega12.2 autorizada el02/10: «commit, push y entrega.».
-PLU-87 permanece In Progress hasta confirmar integración. Fase PLU-85 abierta;12.3–12.8 conservan sus gates.
+PLU-87 Done tras integración verificada. Fase PLU-85 abierta;12.3–12.8 conservan sus gates.
 Se reutiliza la validación de esta sesión: al iniciar entrega se reconstruyó virtualmente el snapshot documental
 anterior y su huella completa coincide exactamente con la auditada (802files/349877…): Swift/config/tests intactos.
 Cambios posteriores solo documentan autorización/changelog/entrega; Xcode adicional N/A por ausencia de cambios
 al código o configuración. Sin nuevas dependencias, excepción arquitectónica ni activación live.
+
+
+### Entrega definitiva12.2
+
+[PR43](https://github.com/JFrancoG/FranAlonso/pull/43) MERGED el02/10.
+Commit `463de375ebead1dce691b5c37534080273c691c7` → merge `cf05c9c525f2f43963480246c6201aaddafb9002`.
+Árbol completo de origin/main idéntico al commit entregado; ningún cambio Swift/config/tests tras validación.
+Checks/workflow runs remotos vacíos; main sin protección/reglas requeridas: no se acredita CI remota.
+Rama `codex/plu-87-sale-draft-stock-warnings` eliminada local/remota tras verificar ambos tips463de37 y ascendencia
+al main remoto. PLU-87 Done; PLU-85 In Progress con12.1–12.2 entregadas y12.3–12.8 pendientes.
+Cierre documental en main siguiendo la entrega anterior: CHANGELOG/Progress/fase, validadores y diff-check;
+Xcode adicional N/A por ausencia de cambios al código/configuración. Gobernanza solo conserva seis links08.3 históricos.
+No activa live, no cierra fase12 ni inicia12.3.
