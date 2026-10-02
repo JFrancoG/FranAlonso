@@ -145,6 +145,10 @@ All notable changes to this project are documented in this file.
 
 ### Documentation
 
+- 2026-10-03 | 📝 docs: record sale stock compensation delivery
+  Records PR49 merge, PLU-95 completion, verified source parity and branch cleanup.
+  Keeps phase 12 open with integral accessibility debt and separate live/financial gates.
+
 - 2026-10-02 | 📝 docs: record immutable stock sync delivery
   Records PR48 delivery, schema 4 evidence and PLU-94 closure while retaining phase 12 accessibility and live gates.
 

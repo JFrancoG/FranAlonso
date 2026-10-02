@@ -155,3 +155,25 @@ ni siguiente fase. Validación/auditoría recientes reutilizadas:24Swift iguales
 2368ejecuciones/1491declaraciones y nuevas49/26 PASS, buildsDevelop/Production, PRE/POST PASS.
 Revisión de estilo read-only repetida sin cambios/hallazgos nuevos;10candidatos de closures/predicados adjudicados.
 Cambios posteriores solo documentación/changelog; Xcode adicional N/A por paridad ejecutable literal.
+
+### Entrega verificada12.8
+
+Autorización «commit, push y entrega» completada. [PR49](https://github.com/JFrancoG/FranAlonso/pull/49)
+MERGED03/10/2026 01:24:37Madrid, main: feature `bd57d70b2adf44d88a4deff0145a6c45849f8b7e`
+→ merge `790bc12d1620dc34fc3bfe1389682ed546affa56`. Árbol completo idéntico al commit revisado;
+24Swift exactos al manifest probado/auditado. Main local fast-forward, ramas12.8 local/remota eliminadas
+tras ancestry, sin commits únicos. PR CLEAN/MERGEABLE con headbd57d70 fijado antes de merge.
+No workflows/checks remotos configurados ni protección de main; no se declara CI verde.
+
+PLU-95 Done verificado después de merge; PLU-85 In Progress con12.1–12.8 entregadas funcionalmente.
+Descripciones reconciliadas y comentarios históricos conservados. Fase12 no cierra integralmente:
+PLU-89/91 Backlog/Jesus retienen Falla/Pendiente/Limitado, evidencia y recuperación tras feedback/
+estabilización antes del primer candidato real. UI/accesibilidad12.8 N/A por ausencia de cambios de pantalla.
+
+Evidencia reutilizada por paridad literal:2368ejecuciones/1491declaraciones PASS, nuevas49/26 y todos los
+parámetros; buildsDevelop01:08:41/Production01:09:41, PRE/focal/POST y estilo PASS. Este cierre modifica
+solo CHANGELOG/Progress/fase/propuesta; Xcode adicional N/A por documentación sin efecto ejecutable.
+Localizaciones577/0, diffcheckPASS; solo6enlaces Desktop históricos08.3 y aviso AppIntents metadata.
+Sin activación live, cierre integral, siguiente fase, CASmultiwriter, atomicidad remota entre colecciones
+ni fallo físico de disco. Compensación Stock/trazabilidad entregadas; ajuste fiscal/devolución financiera
+permanecen fuera de este ámbito. ADR0034 aceptado, Schema4 y formatos históricos intactos.
