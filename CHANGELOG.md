@@ -116,6 +116,9 @@ All notable changes to this project are documented in this file.
 
 ### Documentation
 
+- 2026-10-02 | 📝 docs: record sale stock impact delivery
+  Records PR42, PLU-86 completion and branch cleanup while keeping Phase12 and later stock/payment gates open.
+
 - 2026-10-02 | 📝 docs: record sales history delivery
   Records merged PR41, functional PLU-83 closure, branch cleanup and retained PLU-84 accessibility work.
 

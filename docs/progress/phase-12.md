@@ -1,11 +1,11 @@
 # Fase 12 — Venta y stock
 
 Actualizado: 2026-10-02. [Spec](../specs/12_stock_sale_integration.md).
-[Fase PLU-85](https://linear.app/plusprojects/issue/PLU-85): abierta, sin cierre ni activación live.
+[Fase PLU-85](https://linear.app/plusprojects/issue/PLU-85): In Progress, sin cierre ni activación live.
 
 ## 12.1 — Análisis puro de impacto
 
-[PLU-86](https://linear.app/plusprojects/issue/PLU-86), In Progress, Jesus Franco.
+[PLU-86](https://linear.app/plusprojects/issue/PLU-86), Done, Jesus Franco.
 Rama `codex/plu-86-sale-stock-impact`, base limpia `0a9729c` en main/origin-main.
 Autorización: «Abre issue y rama e implementa la subfase 12.1».
 [Propuesta y revisión PRE](12-1-stock-impact-proposal.md): PASS independiente, huella idéntica.
@@ -51,7 +51,17 @@ Revisión documental focal posterior: PASS sin hallazgos; Progress8176≤8192byt
 Huella documental antes/después idéntica:799 archivos,
 SHA256 `1e8d67221418ce8a3e76cc46f29dcdd10945cdee90f624b3542802dbfc1f536c`.
 Swift intacto, no requiere repetir builds/tests. Gobernanza final solo conserva seis enlaces08.3 históricos.
-Entrega completa autorizada el02/10: «commit, push y entrega». Commit/push/PR/merge y cierre de issue/rama en curso.
+Entrega completa autorizada el02/10: «commit, push y entrega».
 Se reutiliza la validación de esta sesión: los dos Swift conservan sus hashes, con cambios posteriores solo documentales.
 Snapshots pueden quedar obsoletos:12.2 debe obtener/refrescar entradas sin mover la regla al Store.
 12.2–12.8, pago atómico, movimientos y sync conservan gates separados. El análisis no acredita stock live.
+
+### Entrega definitiva
+
+[PR42](https://github.com/JFrancoG/FranAlonso/pull/42) MERGED el02/10.
+Commit `01769e502f548c5cb5e42ca1353ee63333a0d323` → merge `029bc46b5cbc6bf1480cb61fc6241383ffe63b64`.
+Árbol completo integrado idéntico al commit revisado; ningún cambio Swift/config tras validación.
+Checks remotos y workflow runs vacíos, main sin reglas/protección requeridas: no se acredita CI remota.
+Rama `codex/plu-86-sale-stock-impact` eliminada local/remota tras verificar ambos tips y ascendencia al main remoto.
+PLU-86 Done; PLU-85 In Progress con12.1 entregada y12.2–12.8 pendientes. No se inicia12.2.
+Este cierre solo modifica documentación; Xcode adicional N/A porque la fuente/config validada sigue intacta.
