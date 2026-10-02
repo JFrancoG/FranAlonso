@@ -67,6 +67,15 @@ func saleSelectionCoordinator(
 }
 
 actor SaleSelectionControlledRepository: SaleRepository {
+    func registerPayment(
+        _ expected: Sale,
+        id paymentID: PaymentID,
+        method: PaymentMethod,
+        paidAt: Date
+    ) async throws -> Sale {
+        throw SalePaymentError.persistenceUnavailable
+    }
+
     enum AcceptancePhase { case before, after }
 
     private let backing: InMemorySaleRepository

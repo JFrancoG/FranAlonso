@@ -50,6 +50,15 @@ private enum RepositoryUseCaseTestError: Error, Equatable {
 }
 
 private actor SaleRepositoryFake: SaleRepository {
+    func registerPayment(
+        _ expected: Sale,
+        id paymentID: PaymentID,
+        method: PaymentMethod,
+        paidAt: Date
+    ) async throws -> Sale {
+        throw SalePaymentError.persistenceUnavailable
+    }
+
     func sale(id: SaleID) async throws -> Sale? { throw SaleDraftError.persistenceUnavailable }
 
     func createDraft(_ draft: Sale) async throws { throw SaleDraftError.persistenceUnavailable }

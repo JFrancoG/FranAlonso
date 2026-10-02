@@ -311,6 +311,15 @@ actor ScreenClientReadRepository: ClientRepository {
 }
 
 private actor SaleDraftScreenReadRepository: SaleRepository {
+    func registerPayment(
+        _ expected: Sale,
+        id paymentID: PaymentID,
+        method: PaymentMethod,
+        paidAt: Date
+    ) async throws -> Sale {
+        throw SalePaymentError.persistenceUnavailable
+    }
+
     private let backing: InMemorySaleRepository
     private let checkpoint: SaleDraftScreenCheckpoint
 

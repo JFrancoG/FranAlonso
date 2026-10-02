@@ -173,6 +173,15 @@ private struct WorkdayViewModelStreamPlan {
 }
 
 private actor WorkdayViewModelControlledRepository: SaleRepository {
+    func registerPayment(
+        _ expected: Sale,
+        id paymentID: PaymentID,
+        method: PaymentMethod,
+        paidAt: Date
+    ) async throws -> Sale {
+        throw SalePaymentError.persistenceUnavailable
+    }
+
     private var plans: [WorkdayViewModelStreamPlan]
     private(set) var observationCount = 0
 

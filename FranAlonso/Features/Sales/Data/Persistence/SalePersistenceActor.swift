@@ -58,6 +58,25 @@ actor SalePersistenceActor {
         )
     }
 
+    /// Accepts or exactly replays payment inside one non-suspending persistence boundary.
+    /// - Throws: `SalePaymentError`, `SaleError`, or cancellation before acceptance.
+    func registerPayment(
+        _ expected: Sale,
+        id paymentID: PaymentID,
+        method: PaymentMethod,
+        paidAt: Date,
+        operationID: UUID
+    ) throws -> Sale {
+        try dataSource.registerPayment(
+            expected,
+            id: paymentID,
+            method: method,
+            paidAt: paidAt,
+            operationID: operationID,
+            in: modelContext
+        )
+    }
+
     /// Discards an unconflicted draft and retains the durable tombstone; repetition is a no-op.
     /// - Throws: `SaleDraftError` or cancellation before local acceptance.
     func discardDraft(_ id: SaleID, operationID: UUID) throws {

@@ -1237,3 +1237,78 @@ conservan sus dependencias. Seis links históricosDesktop08.3 continúan pendien
 Cierre documental en main: Progress/spec11/registro accesible/changelog actualizados; build/tests N/A porque sólo
 documentan hechos de entrega, sin modificar fuente/config ni el gate validado. Verificar fuente606 y sincronización
 local/remota al terminar; la fase no se marcaDone ni se activa transporte live.
+
+
+## 11.8 — Registro local de pago (PLU-82), en curso
+
+2026-10-02. Jesus Franco. Autorizados issue, rama e implementación; sin entrega Git ni live.
+Rama `codex/plu-82-sale-payment`, base main `bc183d7`; [propuesta](11-8-sale-payment-proposal.md).
+Perfil maintenance. PRE independiente sin hallazgos, cuatro FULL JSON idénticos:771 archivos,
+digest `8751d36b79bad15a0f30d27303d2d98b8e8fda0da9ed5e3002113679efa3f662`.
+Informe `/tmp/plu82-pre-review.md`, proofs `/tmp/plu82-pre-{root,reviewer}-{before,after}.json`.
+
+TDD RED compilado:17 declaraciones/30 variantes fallidas por stubs cerrados, bundle nativo cerrado:
+`/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RunSomeTests/Test-FranAlonso-Develop-2026.10.02_10-42-16-+0200.xcresult`.
+Export `/tmp/plu82-red-native-summary.json`. Errores previos de imports/access corregidos antes del RED funcional.
+Caso de uso, política Domain, protocolo, Default/InMemory, actor/contextual y App compuestos;
+PaymentID/fecha explícitos, replay sin downgrade ni reescritura, contenido comercial protegido.
+Primer GREEN MCP17/17 declarado, pero bundle sinInfo.plist: no acredita validación nativa cerrada.
+Se usará RunAllTests para evidencia final; no se atribuye esa anomalía de lifecycle al cambio.
+
+Sin cambios Presentation/View/localización/recursos: previews/smoke/AT N/A para11.8, sin acreditar
+flujo visual de cobro. PLU-77/79/81 conservan su deuda y la fase sigue abierta. Schema3/31modelos,
+DTO1/2 y gates live intactos. Estilo, suite completa, builds finales y POST pendientes.
+
+
+### Validación final11.8 previa a POST
+
+Estilo: primer pase cuatro gruposP3 corregidos sin cambio semántico; retest PASS sobre19Swift.
+Cuatro FULL JSON idénticos775archivos,digest`94af1e9e9daaafd63e2a92abbf06b229299b949eda95b5c9e434a22331a4bbe2`;
+reports `/tmp/plu82-style-review.md` y `/tmp/plu82-style-retest-review.md`, proofs completos `/tmp/plu82-style-retest-*`.
+Después de corregir layout, Develop-for-testing25.489s y Production16.233s PASS, cero errores/warnings Swift/Clang;
+notices AppIntents metadata skipped2/1 separados (no dependencia AppIntents). Logs:
+`/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/BuildProject/BuildProject-Log-20261002-105217.txt`
+y `BuildProject-Log-20261002-105349.txt` en mismo directorio.
+
+RunAllTests final cerrado:1.331declaraciones/2.132ejecuciones PASS,0fallos/skips/notRun/expectedFailures;
+21declaraciones/34ejecuciones nuevas11.8, incluidas composición local, observación, cancelación posterior
+al commit, recuperación file-backed doble y v1 no-op sin reescritura. iPadPro13M5 Simulator27.2, SDK27.0,
+Swift6 completo. Bundle:
+`/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RunAllTests/Test-FranAlonso-Develop-2026.10.02_10-52-17-+0200.xcresult`.
+Exports `/tmp/plu82-final-native-{summary,tests}.json`; declaración/ejecución separadas, finishTime presente.
+Fuente/config610archivos idénticos antes/después builds/tests:
+`2bc25c4caf77bea9a8ce86a9e7c3a40f23974572e72d84a65782f56ef90bf7d3`,
+proofs `/tmp/plu82-final-source-{before,after}.json`. Xcode restaurado Develop/iPad.
+
+Diffcheck PASS; localizaciones528/0. Gobernanza detecta sólo los seis enlaces Desktop históricos08.3,
+igual a baseline, sin declarar PASS global. No paths secretos/PII/payload de negocio; fixtures sintéticas.
+POST técnico independiente pendiente; sin UI nueva no corresponde POST UI ni nuevos previews/AT.
+PLU-82 In Progress, entrega pendiente; fasePLU-71/deuda77/79/81 abiertas, live inactivo.
+
+
+### Handoff11.8 — implementación y validación local completas
+
+POST técnico independiente sin hallazgos PASS, informe `/tmp/plu82-post-review.md`.
+Cuatro FULL JSON íntegros idénticos775archivos:
+`c3467947893939f79bff9fc67b245312bfe1d19bc7975d4c8d5fcc36a9be9684`,
+proofs `/tmp/plu82-post-{root,reviewer}-{before,after}.json`.
+PRE, estilo corregido/retest, builds y suite nativa finales PASS; no cambios ejecutables después.
+Actualización posterior sólo documental, build adicional N/A razonado. La evidencia acredita motor,
+persistencia y composición local del pago, no un nuevo recorrido visual o interacción física.
+PLU-82 In Progress por entrega pendiente; fasePLU-71 y deuda77/79/81 abiertas. No se realizó
+commit/push/PR/merge/Done/eliminación de rama ni activación live.11.9 conserva su gate posterior.
+
+
+### Autorización de entrega11.8
+
+2026-10-02: propietario solicita «commit, push y entrega», cierre completo del flujo PR/merge/issue/rama
+conforme al contexto de entregas previas. Se reutilizan PRE/estilo/POST, suite cerrada y builds finales:
+fuente/config610 íntegra verificada antes de entrega, sin cambios ejecutables tras validación.
+Únicos cambios posteriores: autorización/changelog/cierre documental; Xcode adicional N/A razonado.
+PLU-82 permanece In Progress hasta confirmar merge; fasePLU-71 y deuda77/79/81 siguen abiertas.
+Sin ampliación a UI de cobro, documento/stock ni live;11.9 conserva su gate independiente.
+
+Revisión independiente de entrega sin hallazgos PASS: `/tmp/plu82-delivery-review.md`;
+cuatro FULL JSON idénticos775archivos,digest`d8f88f35971d9741b6b287b01a544e7d8168de7c9034ba1daacbbe03fdb8abc6`.
+Informe valida reutilización de fuente/evidencia y límites. Gate de entrega satisfecho; cierre operativo
+se realiza sólo tras merge definitivo y comprobación de árbol validado intacto.

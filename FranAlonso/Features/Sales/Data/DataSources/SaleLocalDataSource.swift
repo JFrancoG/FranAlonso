@@ -74,6 +74,36 @@ extension SaleLocalDataSource {
         }
     }
 
+    /// Commits payment and its causal operation together; exact replay does not rewrite storage.
+    /// Checks and persistence share one clean context without suspension, not a cross-context CAS.
+    /// - Throws: Neutral payment rejection, aggregate validation, or cancellation before acceptance.
+    func registerPayment(
+        _ expected: Sale,
+        id paymentID: PaymentID,
+        method: PaymentMethod,
+        paidAt: Date,
+        operationID: UUID,
+        in context: ModelContext
+    ) throws -> Sale {
+        try performPaymentOperation {
+            try requireClean(context)
+            guard try conflict(for: expected.id, in: context) == nil else { throw SalePaymentError.conflict }
+            guard try !hasDeletionState(for: expected.id, in: context) else { throw SalePaymentError.deleted }
+            guard let current = try model(for: expected.id, in: context)?.toDomain() else { throw SalePaymentError.notFound }
+            let accepted = try SalePaymentAcceptancePolicy()(
+                expected: expected,
+                current: current,
+                id: paymentID,
+                method: method,
+                paidAt: paidAt
+            )
+            if accepted != current {
+                try persistPendingUpsert(accepted, operationID: operationID, in: context)
+            }
+            return accepted
+        }
+    }
+
     /// Discards only an unconflicted draft, retaining the existing durable tombstone semantics.
     /// Absence and repetition are write-free; progressed history remains materialized.
     func discardDraft(_ id: SaleID, operationID: UUID, in context: ModelContext) throws {
@@ -616,6 +646,27 @@ extension SaleLocalDataSource {
             throw SaleDraftError.requiresDraft
         } catch {
             throw SaleDraftError.persistenceUnavailable
+        }
+    }
+
+    private func performPaymentOperation<Value>(
+        _ operation: () throws -> Value
+    ) throws -> Value {
+        try Task.checkCancellation()
+        do {
+            return try operation()
+        } catch let error as SalePaymentError {
+            throw error
+        } catch let error as SaleError {
+            throw error
+        } catch is CancellationError {
+            throw CancellationError()
+        } catch SaleLocalDataSourceError.syncConflictPending {
+            throw SalePaymentError.conflict
+        } catch SaleLocalDataSourceError.restoreRequiresExplicitResolution {
+            throw SalePaymentError.deleted
+        } catch {
+            throw SalePaymentError.persistenceUnavailable
         }
     }
 
