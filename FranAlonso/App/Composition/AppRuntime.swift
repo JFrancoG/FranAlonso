@@ -13,6 +13,7 @@ final class AppRuntime {
     private let observationSignal: ClientObservationSignal
     private let clientDocumentComposition: ClientDocumentComposition
     private let productPersistenceActor: ProductPersistenceActor
+    private let stockPersistenceActor: StockPersistenceActor
     private let productObservationSignal: ProductObservationSignal
     private let servicePersistenceActor: ServicePersistenceActor
     private let serviceObservationSignal: ServiceObservationSignal
@@ -23,11 +24,13 @@ final class AppRuntime {
     private let makeProductRemoteDataSource: (FirestoreEnvironment) -> any ProductRemoteDataSource
     private let makeServiceRemoteDataSource: (FirestoreEnvironment) -> any ServiceRemoteDataSource
     private let makeSaleRemoteDataSource: (FirestoreEnvironment) -> any SaleRemoteDataSource
+    private let makeStockRemoteDataSource: (FirestoreEnvironment) -> any StockRemoteDataSource
     private let makeAuthenticationRootViewModel: @MainActor (ModelContainer) -> AuthenticationRootViewModel
     private(set) var clientSyncEngine: ClientSyncEngine?
     private(set) var productSyncEngine: ProductSyncEngine?
     private(set) var serviceSyncEngine: ServiceSyncEngine?
     private(set) var saleSyncEngine: SaleSyncEngine?
+    private(set) var stockSyncEngine: StockSyncEngine?
     private(set) var authenticationRootViewModel: AuthenticationRootViewModel?
 
     /// Creates the shared local runtime for one explicit backend environment.
@@ -48,6 +51,9 @@ final class AppRuntime {
         },
         makeSaleRemoteDataSource: @escaping (FirestoreEnvironment) -> any SaleRemoteDataSource = {
             FirestoreSaleRemoteDataSource(environment: $0)
+        },
+        makeStockRemoteDataSource: @escaping (FirestoreEnvironment) -> any StockRemoteDataSource = {
+            FirestoreStockRemoteDataSource(environment: $0)
         },
         makeAuthenticationRootViewModel: @escaping @MainActor (
             ModelContainer
@@ -76,8 +82,9 @@ final class AppRuntime {
         )
         let productPersistenceActor = ProductPersistenceActor(modelContainer: modelContainer)
         let productObservationSignal = ProductObservationSignal()
+        let stockPersistenceActor = StockPersistenceActor(modelContainer: modelContainer)
         stockRepository = DefaultStockRepository(
-            persistenceActor: StockPersistenceActor(modelContainer: modelContainer),
+            persistenceActor: stockPersistenceActor,
             observationSignal: productObservationSignal
         )
         let servicePersistenceActor = ServicePersistenceActor(modelContainer: modelContainer)
@@ -90,6 +97,7 @@ final class AppRuntime {
         self.observationSignal = observationSignal
         self.clientDocumentComposition = clientDocumentComposition
         self.productPersistenceActor = productPersistenceActor
+        self.stockPersistenceActor = stockPersistenceActor
         self.productObservationSignal = productObservationSignal
         self.servicePersistenceActor = servicePersistenceActor
         self.serviceObservationSignal = serviceObservationSignal
@@ -100,6 +108,7 @@ final class AppRuntime {
         self.makeProductRemoteDataSource = makeProductRemoteDataSource
         self.makeServiceRemoteDataSource = makeServiceRemoteDataSource
         self.makeSaleRemoteDataSource = makeSaleRemoteDataSource
+        self.makeStockRemoteDataSource = makeStockRemoteDataSource
         self.makeAuthenticationRootViewModel = makeAuthenticationRootViewModel
         dependencies = .live(
             persistenceActor: persistenceActor,
@@ -179,4 +188,16 @@ final class AppRuntime {
             observationSignal: saleObservationSignal
         )
     }
+
+    /// Composes the inactive Stock engine with the repository's shared writer and Products signal.
+    /// No remote request or automatic sync trigger is created by this idempotent operation.
+    func activateStockSync(firebaseIsConfigured: Bool) {
+        guard firebaseIsConfigured, stockSyncEngine == nil else { return }
+        stockSyncEngine = StockSyncEngine(
+            persistenceActor: stockPersistenceActor,
+            remoteDataSource: makeStockRemoteDataSource(environment),
+            observationSignal: productObservationSignal
+        )
+    }
+
 }

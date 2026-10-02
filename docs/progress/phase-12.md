@@ -682,3 +682,103 @@ Xcode adicional N/A por documentación, sin modificación ejecutable/configuraci
 diffcheck PASS; gobernanza conserva únicamente seis enlaces Desktop históricos08.3. Aviso metadata conocido
 permanece y no equivale a warning Swift/Clang. Evidencia limitada a suites seleccionadas/Simulator y fallo injected
 anterior al save, sin afirmar fallo físico de almacenamiento ni validación accesible integral.
+
+## 12.7 — Inicio autorizado y decisión previa
+
+PLU-94 In Progress/Jesus, hija PLU-85; rama codex/plu-94-stock-movement-sync desde main55691ba limpio/sincronizado.
+[Propuesta](12-7-stock-sync-proposal.md) y [ADR0033](../ADRs/0033-immutable-stock-movement-sync.md) Propuesto:
+feed Stock independiente, transporte exacto/inmutable, conflictos/retry durables y migración3→4 con cuatro tablas.
+Contrato nuevo no cubierto por los ADR de feed anteriores; franalonso-start-subphase exige aprobación del propietario
+ante ADR no aprobado antes de código. Sin código12.7 todavía; PRE independiente pendiente. Baseline12.6 reutilizada
+por paridad, Xcode estable conectado/configuración verificada. No entrega Git/live/12.8 ni cierre integral.
+PLU-89/91 y fase12 abiertas, trigger accesible previo intacto; UI12.7 N/A mientras no cambie Presentation.
+
+PRE stock_sync_12_7_pre PASS sin hallazgos: propuesta/ADR/rutas reales y fuentes primarias contrastadas;
+870archivos digest inicial/final/root`21b9b8f0c0dd1dcd5188166ce0c26d3d56f82f82ee533398529ff6e86a2f47a9`.
+Gate técnico satisfecho; aprobación humana del nuevo ADR0033 pendiente antes de código. No confundir baseline12.6
+con implementación12.7. Compartir writer Stock no es CAS entre contextos pago/UI, motor inactivo y frontera live
+separada. Matriz3→4/transporte/retry/conflictos nuevos todavía no implementados ni validados.
+Governance conserva solo seis enlaces históricos08.3 y diffcheck PASS; no Xcode nuevo por documentos.
+
+ADR0033 aceptado por el propietario02/10: «si, aprobado». Gate PRE satisfecho; empieza implementación12.7/TDD,
+sin autorización de entrega Git ni tráfico live/12.8/cierre integral.
+
+
+### 12.7 — Implementación y validación autorizadas
+
+ADR 0033 aceptado por «si, aprobado». Vertical Stock/Data con transporte remoto propio versión 1, origen manual/sale
+y timestamp exacto; documentos inmutables y contador Stock separado. Plan puro create+counter indivisible,
+replay completo/conflicto sin escritura ni secuencia. Solo consultas server-only; sin tombstones/legacy Stock.
+Pull valida todo el lote, acepta ledger/conflicto/cursor/retry en un save, rollback y preservación de edits ajenos.
+Mantiene negativos, verifica overflow de historia/suma y retiene eventos aunque Product falte, sin restaurar Product/Sale.
+Ack exige payload completo; bytes originales no se cambian. Estado remoto durable impide republicar eventos aceptados
+aunque desaparezcan del proveedor. StockSyncEngine explícito single-flight con scopes, tres intentos externos y
+backoff/cancelación del kernel compartido; publica Products tras commit incluso si falla push posterior.
+
+StockSyncSchema 4 añade solo cuatro tablas; modelo/payloads Stock históricos intactos. Matriz raw 1/2/3→4 de
+22:03:57 PASS, cuatro casos nativos con finishTime: datos/metadata de las cuatro features, documentos firmados y
+borrador, ledger manual v1/sale v2 pendiente, bytes y dos aperturas con liberación weak. Store desconocido fail-closed.
+Schema.franAlonso adopta 4 después de esa matriz. AppRuntime comparte un Stock writer con repository/motor y
+Products signal; bootstrap construye tras Firebase sin invocar synchronize. Pago 12.6 converge sin recalcular sus
+consumos ni cambiar los pendientes Sale. No atomicidad remota entre colecciones ni CAS entre contextos independientes.
+
+TDD: RED nativo 21:50:20 por saldo/evento/cursor ausentes; GREEN 21:53:27. Transporte RED 21:59:53: cinco fallos
+por create/replay/conflicto/cursor/path; GREEN siete ejecuciones 22:02:02. Las pruebas de commit fallido son seams
+injected antes del save, sin afirmar fallo físico de disco. Reapertura comprobada con contenedores liberados.
+Pruebas parametrizadas seleccionadas pueden limitar argumentos en MCP; la evidencia final usa RunAllTests y árbol nativo.
+Final 22:18:11: **2.319 ejecuciones PASS, 1.465 declaraciones**, 49 ejecuciones nuevas/32 declaraciones en siete suites,
+0 fallos/skips/runtimeWarnings, finishTime cerrado y todos los parámetros nuevos verificados en el árbol nativo.
+Bundle: `/Users/jesusf/Library/Developer/Xcode/DerivedData/FranAlonso-eehpkvodmpnqlchgeqriatcucsjf/Logs/Test/Test-FranAlonso-Develop-2026.10.02_22-18-11-+0200.xcresult`.
+Finales Xcode MCP estable: Develop-for-testing22:18:00/23.584s y Production22:19:13/17.437s PASS;
+GetBuildLog0Swift/Clang en ambos. Aviso de toolchain AppIntents metadata conocido se declara separado de diagnósticos.
+Develop/iPad M5 original restaurado. Sin xcodebuild. Normalización de estilo solo en Swift nuevo; cambios históricos
+limitados a composición, schema, forwarding y transición pending aprobados. Recall 18 archivos nuevos: dos candidatos
+adjudicados, uno init con closure/default multilínea y uno descriptor de predicate colapsado; revisión manual por impacto.
+
+UI/previews/accesibilidad 12.7 N/A: no Views/VM/Stores/textos/recursos; la única línea bootstrap compone un engine inactivo.
+PLU-89/91 Backlog/Jesus conservan deuda y trigger tras feedback/estabilización, siempre antes del primer candidato real.
+Validación técnica local/Simulator y transporte injected; no contrato Rules/emulador, medición de contención ni tráfico live.
+Reglas, índices, datos remotos y compensación 12.8 fuera del alcance. Fase 12/cierre integral abiertos.
+POST técnico independiente pendiente; repo congelado para auditoría operacional read-only con hash de todos los archivos.
+Gobernanza conserva seis enlaces Desktop históricos08.3; localizaciones577/0; sin afirmar PASS global de gobernanza.
+Sin commit/push/PR/merge/Done; PLU-94 In Progress, entrega Git requiere autorización aparte.
+
+
+### 12.7 — POST y corrección focal
+
+POST independiente stock_sync_12_7_post: un P2 de ADR0004 en dos fixtures adversariales con JSONSerialization;
+sin otros hallazgos de producción, migración, concurrencia o tests. Digest inicial/final/root de 888 archivos idéntico:
+`89472ae5f3c730cd85d7b8f5419d260ce117df3eec62a412b1728df5e6dbc464`.
+Auditor confirmó logs completos, árbol nativo/49 casos nuevos y UI/accesibilidad N/A; gate pidió corregir el P2.
+
+Corrección limitada a StockMovementDTOTests: cuatro fixtures Codable tipadas con campos corruptos/ausentes explícitos,
+sin diccionarios Any ni JSONSerialization; preserva los 13 casos adversariales y dos round trips exactos.
+Producción/configuración no cambian: Production22:19:13 sigue válida por paridad literal. Develop-for-testing
+22:25:58/28.327s PASS, GetBuildLog0Swift/Clang. Recall del test corregido: un archivo, cero candidatos; inspección manual.
+RunAllTests22:26:10 vuelve a acreditar 2.319 ejecuciones/1.465 declaraciones PASS, 49 nuevas/32 declaraciones,
+0 fallos/skips/runtimeWarnings y finishTime cerrado; todos los 15 casos DTO (13 corruptos) presentes en árbol nativo.
+Bundle cerrado en el mismo directorio DerivedData: `Test-FranAlonso-Develop-2026.10.02_22-26-10-+0200.xcresult`.
+Se usa ejecución completa por la limitación de selección parametrizada MCP observada, sin ampliar funcionalidades.
+Revisión focal independiente de la corrección/estilo/documentación pendiente. Sin entrega Git/live ni cierre integral.
+
+
+Revisión focal independiente stock_sync_12_7_post PASS sin hallazgos: P2 cerrado. Fixture tipada completa,
+15 argumentos DTO PASS y estilo conforme, sin cambios de producción/configuración. Auditoría operacional read-only
+888 archivos, digest inicial/final/root idéntico:
+`c2f59efa1f99b5440f9d5b0c5a08d021093cf024d9963e74002546434c7e1e96`.
+Sin cambios ejecutables después de ese gate; solo reconciliación documental y operativa. Evidencia final 22:26:10 y
+build Develop22:25:58; Production22:19:13 conservada por paridad. PRE/POST/focal satisfechos.
+Implementación 12.7 lista para entrega autorizada por separado, PLU-94 In Progress/Jesus; PLU-85 In Progress.
+Localizaciones577/0, diffcheck tracked/untracked PASS y gobernanza solo seis enlaces Desktop históricos08.3.
+Git conserva rama local `codex/plu-94-stock-movement-sync` sin commit/push/PR/merge; ningún estado Done.
+Sin live, compensaciones12.8 ni cierre integral/accesible. PLU-89/91 y triggers previos intactos.
+
+
+### 12.7 — Entrega autorizada
+
+«Commit, push y entrega» autoriza el cierre Git/Linear establecido de 12.7. Verificación actual: HEAD/main/origin
+55691ba sincronizados, sin modificaciones locales ajenas ni PR previa. Los26Swift coinciden literalmente con
+/tmp/127-validated-swift-manifest.json; se reutilizan2.319ejecuciones/49nuevas, builds Develop/Production y
+PRE/POST/focal sin cambios ejecutables posteriores. ADR0033 sigue aceptado; ningún cambio técnico al contrato.
+Changelog/propuesta/estado registran la nueva autorización. Preparación de commit, push, PR y merge, pendiente
+resultado definitivo. No siguiente subfase, live ni cierre integral; deuda89/91 conserva su gate anterior.

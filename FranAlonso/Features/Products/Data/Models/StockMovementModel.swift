@@ -1,7 +1,7 @@
 import Foundation
 import SwiftData
 
-/// An immutable, versioned inventory event awaiting the future stock synchronization flow.
+/// An immutable, versioned inventory event with separate mutable synchronization acceptance.
 /// No persisted total accompanies the event; quantity is derived from accepted movements.
 @Model
 final class StockMovementModel {
@@ -38,6 +38,13 @@ extension StockMovementModel {
             payloadData: try JSONEncoder().encode(movement),
             isPendingSync: true
         )
+    }
+
+    /// Marks only transport acceptance; immutable business fields and payload bytes are untouched.
+    func acknowledgeSync() {
+        if isPendingSync {
+            isPendingSync = false
+        }
     }
 
     /// Rejects unsupported or inconsistent storage before exposing a detached Domain value.

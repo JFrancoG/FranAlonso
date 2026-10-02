@@ -6,6 +6,10 @@ All notable changes to this project are documented in this file.
 
 ### Added
 
+- 2026-10-02 | ✨ feat(stock): synchronize immutable movements
+  Adds an independent immutable Stock feed with durable cursor, conflicts, retries and exact payload acknowledgement.
+  Preserves signed inventory and ledger bytes across replay, cancellation and schema 1/2/3→4 migration; sync stays inactive.
+
 - 2026-10-02 | ✨ feat(sales): make local payment atomic
   Commits payment, its causal upsert and captured stock consumptions in one local save with complete rollback.
   Repairs missing immutable events on replay and publishes Sales/Products only after durable acceptance.

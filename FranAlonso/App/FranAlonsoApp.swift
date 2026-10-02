@@ -30,6 +30,7 @@ struct FranAlonsoApp: App {
                     runtime?.activateProductSync(firebaseIsConfigured: firebaseIsConfigured)
                     runtime?.activateServiceSync(firebaseIsConfigured: firebaseIsConfigured)
                     runtime?.activateSaleSync(firebaseIsConfigured: firebaseIsConfigured)
+                    runtime?.activateStockSync(firebaseIsConfigured: firebaseIsConfigured)
                 }
         }
         .modelContainer(modelContainer)
