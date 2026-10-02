@@ -1,0 +1,162 @@
+[
+  {
+    "key": "confirmLarge",
+    "source": "/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RenderPreview/Stock confirmation - 2026-10-02 at 18.24.21.png",
+    "destination": {
+      "deviceModelName": "iPhone 18 Pro Max",
+      "identifier": "06B2C3FF-929C-4164-8852-E5EF6DA24974",
+      "platformName": "iOS",
+      "systemVersion": "27.2"
+    },
+    "locale": "es",
+    "dynamicType": "Large",
+    "colorScheme": "Light",
+    "contrast": "Standard",
+    "file": "12-4-confirmLarge.png",
+    "sha256": "ea7704aef1347a19e1cdda4c72015d2cb99fd1a3347fc3bc1da51b926bc46e96"
+  },
+  {
+    "key": "confirmXXXL",
+    "source": "/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RenderPreview/Stock confirmation - 2026-10-02 at 18.24.26.png",
+    "destination": {
+      "deviceModelName": "iPhone 18 Pro Max",
+      "identifier": "06B2C3FF-929C-4164-8852-E5EF6DA24974",
+      "platformName": "iOS",
+      "systemVersion": "27.2"
+    },
+    "locale": "en",
+    "dynamicType": "XXX Large",
+    "colorScheme": "Dark",
+    "contrast": "Increased",
+    "file": "12-4-confirmXXXL.png",
+    "sha256": "876dfb77eb8bbd8c1863b25d68970cc406f7e72f423ee4fb9ee9bb4308d7d5a1"
+  },
+  {
+    "key": "confirmAX5",
+    "source": "/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RenderPreview/Stock confirmation - 2026-10-02 at 18.24.30.png",
+    "destination": {
+      "deviceModelName": "iPhone 18 Pro Max",
+      "identifier": "06B2C3FF-929C-4164-8852-E5EF6DA24974",
+      "platformName": "iOS",
+      "systemVersion": "27.2"
+    },
+    "locale": "es",
+    "dynamicType": "AX 5",
+    "colorScheme": "Light",
+    "contrast": "Increased",
+    "file": "12-4-confirmAX5.png",
+    "sha256": "919052a647b7c8ff7e2fd462d3d35b411df416fbbce215166d3f26970b3d911e"
+  },
+  {
+    "key": "unknownLarge",
+    "source": "/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RenderPreview/Stock unavailable - 2026-10-02 at 18.32.51.png",
+    "destination": {
+      "deviceModelName": "iPhone 18 Pro Max",
+      "identifier": "06B2C3FF-929C-4164-8852-E5EF6DA24974",
+      "platformName": "iOS",
+      "systemVersion": "27.2"
+    },
+    "locale": "en",
+    "dynamicType": "Large",
+    "colorScheme": "Dark",
+    "contrast": "Standard",
+    "file": "12-4-unknownLarge.png",
+    "sha256": "133cfc4ebc3f847a40eeca871e112a60032c9a4c87bbe8fc773c779f88a7df83"
+  },
+  {
+    "key": "paymentLarge",
+    "source": "/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RenderPreview/Operational payment - 2026-10-02 at 18.35.13.png",
+    "destination": {
+      "deviceModelName": "iPhone 18 Pro Max",
+      "identifier": "06B2C3FF-929C-4164-8852-E5EF6DA24974",
+      "platformName": "iOS",
+      "systemVersion": "27.2"
+    },
+    "locale": "es",
+    "dynamicType": "Large",
+    "colorScheme": "Light",
+    "contrast": "Standard",
+    "file": "12-4-paymentLarge.png",
+    "sha256": "dd91225b587cdb8ae1c07f21382898176bd88cf8a171b89cab44db622aa1d830"
+  },
+  {
+    "key": "paymentXXXL",
+    "source": "/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RenderPreview/Operational payment - 2026-10-02 at 18.30.25.png",
+    "destination": {
+      "deviceModelName": "iPhone 18 Pro Max",
+      "identifier": "06B2C3FF-929C-4164-8852-E5EF6DA24974",
+      "platformName": "iOS",
+      "systemVersion": "27.2"
+    },
+    "locale": "en",
+    "dynamicType": "XXX Large",
+    "colorScheme": "Dark",
+    "contrast": "Increased",
+    "file": "12-4-paymentXXXL.png",
+    "sha256": "935fee29ea3eb08354029ecfc7d00be627439610bb0e9ce0f6feb208aa7d1075"
+  },
+  {
+    "key": "paymentAX5",
+    "source": "/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RenderPreview/Operational payment - 2026-10-02 at 18.32.14.png",
+    "destination": {
+      "deviceModelName": "iPhone 18 Pro Max",
+      "identifier": "06B2C3FF-929C-4164-8852-E5EF6DA24974",
+      "platformName": "iOS",
+      "systemVersion": "27.2"
+    },
+    "locale": "es",
+    "dynamicType": "AX 5",
+    "colorScheme": "Light",
+    "contrast": "Increased",
+    "file": "12-4-paymentAX5.png",
+    "sha256": "b32f5dae7785c3b96bf0b2b35e01fa963dcb6b29098065bad546b844e6190184"
+  },
+  {
+    "key": "workflowLarge",
+    "source": "/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RenderPreview/Workflow - 2026-10-02 at 18.34.41.png",
+    "destination": {
+      "deviceModelName": "iPhone 18 Pro Max",
+      "identifier": "06B2C3FF-929C-4164-8852-E5EF6DA24974",
+      "platformName": "iOS",
+      "systemVersion": "27.2"
+    },
+    "locale": "es",
+    "dynamicType": "Large",
+    "colorScheme": "Light",
+    "contrast": "Standard",
+    "file": "12-4-workflowLarge.png",
+    "sha256": "a861c793d30b2dfa288b7a7e47ae9957a74d9df1403fde0516ba898e946b0a46"
+  },
+  {
+    "key": "workflowXXXL",
+    "source": "/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RenderPreview/Workflow - 2026-10-02 at 18.34.45.png",
+    "destination": {
+      "deviceModelName": "iPhone 18 Pro Max",
+      "identifier": "06B2C3FF-929C-4164-8852-E5EF6DA24974",
+      "platformName": "iOS",
+      "systemVersion": "27.2"
+    },
+    "locale": "en",
+    "dynamicType": "XXX Large",
+    "colorScheme": "Light",
+    "contrast": "Standard",
+    "file": "12-4-workflowXXXL.png",
+    "sha256": "c27a047905eafdb5e4287faa45014d95429a8d6824f468ca8dd13481177dca74"
+  },
+  {
+    "key": "workflowAX5",
+    "source": "/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RenderPreview/Workflow - 2026-10-02 at 18.34.12.png",
+    "destination": {
+      "deviceModelName": "iPhone 18 Pro Max",
+      "identifier": "06B2C3FF-929C-4164-8852-E5EF6DA24974",
+      "platformName": "iOS",
+      "systemVersion": "27.2"
+    },
+    "locale": "es",
+    "dynamicType": "AX 5",
+    "colorScheme": "Dark",
+    "contrast": "Standard",
+    "file": "12-4-workflowAX5.png",
+    "sha256": "46a2c1ded9502a808a5f892e72354bf02516098e53131bfae4a03925b43bddad"
+  }
+]

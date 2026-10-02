@@ -16,7 +16,7 @@ struct SalesPreviewModifier: PreviewModifier {
         for (index, sale) in SalesPreviewFixtures.workday.sales.enumerated() {
             let destination = SalesPreviewFixtures.destination(
                 index: index,
-                mode: sale.status == .draft ? .editDraft : .inspect
+                mode: sale.status == .draft ? .editDraft : .operate
             )
             let model = context.dependencies.makeSaleDraft(destination)
             _ = try await model.load()

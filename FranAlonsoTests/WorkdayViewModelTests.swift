@@ -85,11 +85,11 @@ struct WorkdayViewModelTests {
         #expect(model.destination == session)
         #expect(model.selectedSaleID == original.id)
         #expect(session?.id == viewModelUUID(500))
-        #expect(session?.mode == (stage == .draft ? .editDraft : .inspect))
+        #expect(session?.mode == (stage == .draft ? .editDraft : .operate))
     }
 
     @Test
-    func `progressing a selected draft invalidates its edit session and ignores delayed dismissal`() async throws {
+    func `progressing retains its session and delayed dismissal cannot close its replacement`() async throws {
         let draft = try viewModelSale()
         let working = try viewModelSale(stage: .inProgress)
         let repository = ViewModelSaleRepository(sales: [draft])
@@ -105,13 +105,14 @@ struct WorkdayViewModelTests {
 
         await model.load()
 
-        #expect(model.destination == nil)
-        #expect(model.selectedSaleID == nil)
+        #expect(model.destination == previousSession)
+        #expect(model.selectedSaleID == draft.id)
+        model.finishSession(previousSession.id)
         model.openSale(working.id)
         let currentSession = try #require(model.destination)
         model.finishSession(previousSession.id)
         #expect(model.destination == currentSession)
-        #expect(currentSession.mode == .inspect)
+        #expect(currentSession.mode == .operate)
     }
 
     @Test

@@ -1,6 +1,15 @@
 import Foundation
 /// An actor-isolated Sales repository for previews and deterministic tests.
 actor InMemorySaleRepository: SaleRepository {
+    func advanceSale(_ expected: Sale, action: SaleProgressAction) throws -> Sale {
+        try Task.checkCancellation()
+        guard let index = sales.firstIndex(where: { $0.id == expected.id }) else {
+            throw knownIDs.contains(expected.id) ? SaleProgressError.deleted : .notFound
+        }
+        let accepted = try SaleProgressAcceptancePolicy()(expected: expected, current: sales[index], action: action)
+        sales[index] = accepted
+        return accepted
+    }
     func registerPayment(
         _ expected: Sale,
         id paymentID: PaymentID,

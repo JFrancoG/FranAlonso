@@ -1,0 +1,39 @@
+{
+  "device": "iPhone17",
+  "udid": "0B3A9F32-B9D5-4ED5-A13F-CB66F7917E75",
+  "iOS": "27.2",
+  "scheme": "Develop",
+  "fixture": "--franalonso-demo-workday",
+  "data": "synthetic in-memory",
+  "appearance": "Light",
+  "orientation": "Portrait",
+  "dynamicType": "extra-Small unchanged",
+  "date": "2026-10-02",
+  "method": "RocketSim HID taps and swipes; AX snapshots; original PNG",
+  "artifacts": [
+    {
+      "file": "progress.json",
+      "sha256": "7d0ccad70f9b11ce865ef3af8b67cf04fc37c1aae56665eec1238771213898ba"
+    },
+    {
+      "file": "confirmation.json",
+      "sha256": "b797c5be43302ffa629a0c2cc8b9a6877e04ec8beaeb9cac4ce69fd5b521d5da"
+    },
+    {
+      "file": "cancel-repeat-pay.json",
+      "sha256": "bc56aa2e4a7854cd1dc7a09c20e44eb94ac15951bf45b95a9fddc2fb70ad3df0"
+    },
+    {
+      "file": "confirmation.png",
+      "sha256": "8e6d94aea154fbb64cf09eb7f3904af00fad43dde89b1ca0b888025c2fd82a25"
+    },
+    {
+      "file": "paid.png",
+      "sha256": "4247b23aaf83624bddf7be4db04a83af75ecbf4a6e4bc1a9f0e9af65ee6cbeb8"
+    },
+    {
+      "file": "reopened.json",
+      "sha256": "62dea608c0ae306e7f56700b7124f6b45367b3ecc6f0534259a69e602b76c4fa"
+    }
+  ]
+}

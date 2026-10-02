@@ -1,0 +1,100 @@
+{
+  "data": {
+    "all_succeeded": true,
+    "steps": [
+      {
+        "kind": "interact",
+        "result": {
+          "appeared": [],
+          "appeared_count": 0,
+          "disappeared": [
+            "button|Cancelar|",
+            "heading|Revisar stock|",
+            "staticText|El stock previsto es insuficiente. Puedes cancelar para revisar la venta o continuar y registrar el pago.|",
+            "button|Continuar y registrar pago|",
+            "button|Cancelar|",
+            "slider|Barra de desplazamiento vertical, 1 p\u00e1gina|",
+            "slider|Barra de desplazamiento vertical, 1 p\u00e1gina|"
+          ],
+          "disappeared_count": 7,
+          "duration_ms": 2223,
+          "next_screen": "a74a88ed",
+          "next_seq": 1171,
+          "previous_screen": "6fbc8a1b",
+          "screen_changed": true
+        }
+      },
+      {
+        "kind": "elements",
+        "result": "rs/1 act screen=a74a88ed seq=1172 age=2ms count=79 udid=0B3A9F32-B9D5-4ED5-A13F-CB66F7917E75 keyboard=hidden\n1|staticText|Demo \u00b7 Datos de ejemplo, Los cambios se reinician al abrir la app, Hist\u00f3rico contiene muestras DEMO precargadas. No se han emitido documentos ni ejecutado cierres o compensaciones.||enabled\n2|staticText|Demo \u00b7 Datos de ejemplo||enabled\n3|staticText|Los cambios se reinician al abrir la app||enabled\n4|staticText|Hist\u00f3rico contiene muestras DEMO precargadas. No se han emitido documentos ni ejecutado cierres o compensaciones.||enabled\n5|button|Cerrar sesi\u00f3n||enabled\n6|button|Nueva venta||enabled\n7|heading|Jornada||enabled\n8|heading|Pr\u00f3ximas||enabled\n9|button|Sin cliente, Borrador, Corte y peinado DEMO, Servicios: 1, 21 sept 2026, 16:14||enabled\n10|staticText|Sin cliente||enabled\n11|staticText|Borrador||enabled\n12|staticText|Corte y peinado DEMO||enabled\n13|staticText|Servicios: 1||enabled\n14|staticText|21 sept 2026, 16:14||enabled\n15|button|Cliente DEMO Alba, Borrador, Corte y peinado DEMO, Servicios: 1, 21 sept 2026, 16:15||enabled\n16|staticText|Cliente DEMO Alba||enabled\n17|staticText|Borrador||enabled\n18|staticText|Corte y peinado DEMO||enabled\n19|staticText|Servicios: 1||enabled\n20|staticText|21 sept 2026, 16:15||enabled\n21|heading|En curso||enabled\n22|button|Sin cliente, En curso, Corte y peinado DEMO, Servicios: 1, 21 sept 2026, 16:17||enabled\n23|staticText|Sin cliente||enabled\n24|staticText|En curso||enabled\n25|staticText|Corte y peinado DEMO||enabled\n26|staticText|Servicios: 1||enabled\n27|staticText|21 sept 2026, 16:17||enabled\n28|heading|Pendientes de cierre||enabled\n29|button|Cliente DEMO Bruno, Pendiente de pago, Tratamiento de hidrataci\u00f3n intensiva y peinado para ocasi\u00f3n especial, Servicios: 2, 21 sept 2026, 16:16||enabled\n30|staticText|Cliente DEMO Bruno||enabled\n47|slider|Barra de desplazamiento vertical, 2 p\u00e1ginas|0\u00a0%|enabled\n48|slider|Barra de desplazamiento vertical, 2 p\u00e1ginas|0\u00a0%|enabled\n49|group|Barra de herramientas||enabled\n50|group|Barra de pesta\u00f1as||enabled\n51|radioButton|Jornada|1|enabled\n52|image|calendario||enabled\n53|radioButton|Hist\u00f3rico|0|enabled\n54|image|Reloj rodeado por una flecha circular girada 90\u00a0grados en sentido antihorario con punta triangular||enabled\n55|radioButton|Clientes|0|enabled\n56|image|Dos personas, con relleno||enabled\n57|radioButton|Cat\u00e1logo|0|enabled\n58|image|cuadr\u00edcula 2 por 2||enabled\n59|radioButton|Informes|0|enabled\n60|image|Gr\u00e1fico de barras con un eje X||enabled\n61|button|Cerrar||enabled\n62|heading|Detalle operativo||enabled\n84|heading|Descuento global||enabled\n85|staticText|Descuento: 20%||enabled\n86|staticText|Para toda la venta, incluidos los servicios que a\u00f1adas despu\u00e9s.||enabled\n87|heading|Importes||enabled\n88|staticText|Subtotal con IVA, 204,20\u00a0\u20ac||enabled\n89|staticText|Subtotal con IVA||enabled\n90|staticText|204,20\u00a0\u20ac||enabled\n91|staticText|Descuentos de servicios, 2,42\u00a0\u20ac||enabled\n92|staticText|Descuentos de servicios||enabled\n93|staticText|2,42\u00a0\u20ac||enabled\n94|staticText|Descuento global, 40,36\u00a0\u20ac||enabled\n95|staticText|Descuento global||enabled\n96|staticText|40,36\u00a0\u20ac||enabled\n97|staticText|Descuento total, 42,78\u00a0\u20ac||enabled\n98|staticText|Descuento total||enabled\n99|staticText|42,78\u00a0\u20ac||enabled\n100|staticText|Base imponible, 133,41\u00a0\u20ac||enabled\n101|staticText|Base imponible||enabled\n102|staticText|133,41\u00a0\u20ac||enabled\n103|staticText|IVA, 28,01\u00a0\u20ac||enabled\n104|staticText|IVA||enabled\n105|staticText|28,01\u00a0\u20ac||enabled\n106|staticText|Total, 161,42\u00a0\u20ac||enabled\n107|staticText|Total||enabled\n108|staticText|161,42\u00a0\u20ac||enabled\n109|heading|Servicios y pago||enabled\n110|popUpButton|M\u00e9todo de pago, Efectivo||enabled\n111|staticText|Efectivo||enabled\n112|staticText|M\u00e9todo de pago||enabled\n113|button|Registrar pago||enabled\n114|slider|Barra de desplazamiento vertical, 3 p\u00e1ginas|95\u00a0%|enabled\n115|slider|Barra de desplazamiento vertical, 3 p\u00e1ginas|95\u00a0%|enabled\n116|group|Barra de herramientas||enabled\n!ambiguous|group|Barra de herramientas|49@201,519;116@201,468\n!ambiguous|slider|Barra de desplazamiento vertical, 2 p\u00e1ginas|47@384,509;48@384,509\n!ambiguous|slider|Barra de desplazamiento vertical, 3 p\u00e1ginas|114@384,472;115@384,472\n!ambiguous|staticText|Borrador|11@61,366;17@61,503\n!ambiguous|staticText|Corte y peinado DEMO|12@110,387;18@110,525;25@110,716\n!ambiguous|staticText|Servicios: 1|13@66,409;19@66,546;26@66,737\n!ambiguous|staticText|Sin cliente|10@71,344;23@71,673"
+      },
+      {
+        "kind": "interact",
+        "result": {
+          "appeared": [
+            117,
+            118,
+            119,
+            124,
+            125,
+            126,
+            127
+          ],
+          "appeared_count": 7,
+          "disappeared": [],
+          "disappeared_count": 0,
+          "duration_ms": 2268,
+          "next_screen": "6fbc8a1b",
+          "next_seq": 1175,
+          "previous_screen": "a74a88ed",
+          "screen_changed": true
+        }
+      },
+      {
+        "kind": "interact",
+        "result": {
+          "appeared": [
+            29,
+            107
+          ],
+          "appeared_count": 2,
+          "disappeared": [
+            "button|Cliente DEMO Bruno, Pendiente de pago, Tratamiento de hidrataci\u00f3n intensiva y peinado para ocasi\u00f3n especial, Servicios: 2, 21 sept 2026, 16:16|",
+            "genericElement|Stock insuficiente. Stock previsto: -1. Puedes continuar. Servicio: Champ\u00fa DEMO venta.|",
+            "image|Advertencia||exclamationmark.triangle.fill",
+            "staticText|Stock insuficiente. Stock previsto: -1. Puedes continuar.|",
+            "popUpButton|M\u00e9todo de pago, Efectivo|",
+            "staticText|Efectivo|",
+            "staticText|M\u00e9todo de pago|",
+            "button|Registrar pago|",
+            "slider|Barra de desplazamiento vertical, 3 p\u00e1ginas|",
+            "slider|Barra de desplazamiento vertical, 3 p\u00e1ginas|",
+            "button|Cancelar|",
+            "heading|Revisar stock|",
+            "staticText|El stock previsto es insuficiente. Puedes cancelar para revisar la venta o continuar y registrar el pago.|",
+            "genericElement|Stock insuficiente. Stock previsto: -1. Puedes continuar. Servicio: Champ\u00fa DEMO venta.|",
+            "image|Advertencia||exclamationmark.triangle.fill",
+            "staticText|Stock insuficiente. Stock previsto: -1. Puedes continuar.|",
+            "button|Continuar y registrar pago|",
+            "button|Cancelar|",
+            "slider|Barra de desplazamiento vertical, 1 p\u00e1gina|",
+            "slider|Barra de desplazamiento vertical, 1 p\u00e1gina|"
+          ],
+          "disappeared_count": 20,
+          "duration_ms": 2220,
+          "next_screen": "d5a740b3",
+          "next_seq": 1178,
+          "previous_screen": "6fbc8a1b",
+          "screen_changed": true
+        }
+      },
+      {
+        "kind": "elements",
+        "result": "rs/1 act screen=d5a740b3 seq=1179 age=2ms count=79 udid=0B3A9F32-B9D5-4ED5-A13F-CB66F7917E75 keyboard=hidden\n1|staticText|Demo \u00b7 Datos de ejemplo, Los cambios se reinician al abrir la app, Hist\u00f3rico contiene muestras DEMO precargadas. No se han emitido documentos ni ejecutado cierres o compensaciones.||enabled\n2|staticText|Demo \u00b7 Datos de ejemplo||enabled\n3|staticText|Los cambios se reinician al abrir la app||enabled\n4|staticText|Hist\u00f3rico contiene muestras DEMO precargadas. No se han emitido documentos ni ejecutado cierres o compensaciones.||enabled\n5|button|Cerrar sesi\u00f3n||enabled\n6|button|Nueva venta||enabled\n7|heading|Jornada||enabled\n8|heading|Pr\u00f3ximas||enabled\n9|button|Sin cliente, Borrador, Corte y peinado DEMO, Servicios: 1, 21 sept 2026, 16:14||enabled\n10|staticText|Sin cliente||enabled\n11|staticText|Borrador||enabled\n12|staticText|Corte y peinado DEMO||enabled\n13|staticText|Servicios: 1||enabled\n14|staticText|21 sept 2026, 16:14||enabled\n15|button|Cliente DEMO Alba, Borrador, Corte y peinado DEMO, Servicios: 1, 21 sept 2026, 16:15||enabled\n16|staticText|Cliente DEMO Alba||enabled\n17|staticText|Borrador||enabled\n18|staticText|Corte y peinado DEMO||enabled\n19|staticText|Servicios: 1||enabled\n20|staticText|21 sept 2026, 16:15||enabled\n21|heading|En curso||enabled\n22|button|Sin cliente, En curso, Corte y peinado DEMO, Servicios: 1, 21 sept 2026, 16:17||enabled\n23|staticText|Sin cliente||enabled\n24|staticText|En curso||enabled\n25|staticText|Corte y peinado DEMO||enabled\n26|staticText|Servicios: 1||enabled\n27|staticText|21 sept 2026, 16:17||enabled\n28|heading|Pendientes de cierre||enabled\n29|button|Cliente DEMO Bruno, Pagada \u00b7 pendiente de documento, Tratamiento de hidrataci\u00f3n intensiva y peinado para ocasi\u00f3n especial, Servicios: 2, 21 sept 2026, 16:16||enabled\n30|staticText|Cliente DEMO Bruno||enabled\n47|slider|Barra de desplazamiento vertical, 2 p\u00e1ginas|0\u00a0%|enabled\n48|slider|Barra de desplazamiento vertical, 2 p\u00e1ginas|0\u00a0%|enabled\n49|group|Barra de herramientas||enabled\n50|group|Barra de pesta\u00f1as||enabled\n51|radioButton|Jornada|1|enabled\n52|image|calendario||enabled\n53|radioButton|Hist\u00f3rico|0|enabled\n54|image|Reloj rodeado por una flecha circular girada 90\u00a0grados en sentido antihorario con punta triangular||enabled\n55|radioButton|Clientes|0|enabled\n56|image|Dos personas, con relleno||enabled\n57|radioButton|Cat\u00e1logo|0|enabled\n58|image|cuadr\u00edcula 2 por 2||enabled\n59|radioButton|Informes|0|enabled\n60|image|Gr\u00e1fico de barras con un eje X||enabled\n61|button|Cerrar||enabled\n62|heading|Detalle operativo||enabled\n74|staticText|Champ\u00fa DEMO venta, Terminado, 20,00\u00a0\u20ac, IVA: 21 %, Sin descuento||enabled\n79|staticText|Sin descuento||enabled\n80|staticText|Cantidad: 9||enabled\n81|heading|Descuento global||enabled\n82|staticText|Descuento: 20%||enabled\n83|staticText|Para toda la venta, incluidos los servicios que a\u00f1adas despu\u00e9s.||enabled\n84|heading|Importes||enabled\n85|staticText|Subtotal con IVA, 204,20\u00a0\u20ac||enabled\n86|staticText|Subtotal con IVA||enabled\n87|staticText|204,20\u00a0\u20ac||enabled\n88|staticText|Descuentos de servicios, 2,42\u00a0\u20ac||enabled\n89|staticText|Descuentos de servicios||enabled\n90|staticText|2,42\u00a0\u20ac||enabled\n91|staticText|Descuento global, 40,36\u00a0\u20ac||enabled\n92|staticText|Descuento global||enabled\n93|staticText|40,36\u00a0\u20ac||enabled\n94|staticText|Descuento total, 42,78\u00a0\u20ac||enabled\n95|staticText|Descuento total||enabled\n96|staticText|42,78\u00a0\u20ac||enabled\n97|staticText|Base imponible, 133,41\u00a0\u20ac||enabled\n98|staticText|Base imponible||enabled\n99|staticText|133,41\u00a0\u20ac||enabled\n100|staticText|IVA, 28,01\u00a0\u20ac||enabled\n101|staticText|IVA||enabled\n102|staticText|28,01\u00a0\u20ac||enabled\n103|staticText|Total, 161,42\u00a0\u20ac||enabled\n104|staticText|Total||enabled\n105|staticText|161,42\u00a0\u20ac||enabled\n106|heading|Servicios y pago||enabled\n107|staticText|Pago registrado. Pendiente de ticket o factura.||enabled\n108|slider|Barra de desplazamiento vertical, 2 p\u00e1ginas|94\u00a0%|enabled\n109|slider|Barra de desplazamiento vertical, 2 p\u00e1ginas|94\u00a0%|enabled\n110|group|Barra de herramientas||enabled\n!ambiguous|group|Barra de herramientas|49@201,519;110@201,468\n!ambiguous|slider|Barra de desplazamiento vertical, 2 p\u00e1ginas|47@384,509;48@384,509;108@384,472;109@384,472\n!ambiguous|staticText|Borrador|11@61,366;17@61,503\n!ambiguous|staticText|Corte y peinado DEMO|12@110,387;18@110,525;25@110,716\n!ambiguous|staticText|Servicios: 1|13@66,409;19@66,546;26@66,737\n!ambiguous|staticText|Sin cliente|10@71,344;23@71,673"
+      }
+    ],
+    "stopped_at": null
+  },
+  "ok": true,
+  "rs": "1"
+}

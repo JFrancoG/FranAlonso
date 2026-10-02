@@ -9,7 +9,7 @@ enum SaleDraftViewModelError: Error, Equatable {
     case quantityLimit
 }
 
-/// Projects one accepted draft Store and owns the separate read-only operational inspection session.
+/// Projects one accepted sale Store for editing and work; explicit inspection remains a separate read-only session.
 @Observable @MainActor
 final class SaleDraftViewModel {
     /// Load lifecycle without another sale snapshot; a new create session is ready before it has a persisted sale.
@@ -36,12 +36,28 @@ final class SaleDraftViewModel {
     private(set) var inspectionState: InspectionState = .idle
     private(set) var servicePickerDestination: SaleServicePickerDestination?
     private(set) var discountDestination: SaleDiscountDestination?
+    private(set) var selectedPaymentMethod: PaymentMethod?
+    private(set) var stockConfirmation: SaleStockConfirmation?
+    private(set) var isPreparingPayment = false
     private let store: SaleDraftStore
     private let getSale: GetSaleUseCase
     private let getClient: GetClientUseCase?
     private let createdAt: Date
     private let policy = WorkdaySalesPolicy()
     private let calculator = SaleCalculator()
+    private let hasWorkflow: Bool
+    private let makePaymentID: @MainActor () -> UUID
+    private let paymentDate: @MainActor () -> Date
+    private struct PaymentCommand {
+        let expected: Sale
+        let id: PaymentID
+        let method: PaymentMethod
+        let paidAt: Date
+    }
+    @ObservationIgnored private var hasCreatedSale = false
+    @ObservationIgnored private var pendingPayment: PaymentCommand?
+    @ObservationIgnored private var paymentIsConfirmed = false
+    @ObservationIgnored private var paymentGeneration: UUID?
     private var inspectionError: (any Error)?
     private var resolvedClient: (id: ClientID, name: String)?
     @ObservationIgnored private var inspectionGeneration: UUID?
@@ -50,24 +66,24 @@ final class SaleDraftViewModel {
     @ObservationIgnored private var announcedStockWarningIDs: Set<SaleLineID> = []
 
     var sale: Sale? {
-        guard isReadOnly else { return store.draft }
+        guard destination.mode == .inspect else { return store.sale }
         guard case let .content(sale, _) = inspectionState else { return nil }
         return sale
     }
 
     var calculation: SaleCalculation? {
-        guard isReadOnly else { return store.calculation }
+        guard destination.mode == .inspect else { return store.calculation }
         guard case let .content(_, calculation) = inspectionState else { return nil }
         return calculation
     }
 
-    var lastError: (any Error)? { isReadOnly ? inspectionError : store.lastError }
+    var lastError: (any Error)? { destination.mode == .inspect ? inspectionError : store.lastError }
     var stockState: SaleDraftStockState { store.stockState }
     var stockError: (any Error)? { store.stockError }
 
     /// Only current editable deficits are presented; unknown stock never implies sufficiency.
     var stockWarnings: [StockImpact] {
-        guard !isClosed, !isReadOnly, case let .ready(impacts) = stockState else { return [] }
+        guard !isClosed, destination.mode != .inspect, case let .ready(impacts) = stockState else { return [] }
         return impacts.filter(\.requiresWarning)
     }
 
@@ -78,15 +94,18 @@ final class SaleDraftViewModel {
     /// Consumes one message for newly warned identities when the screen can actually communicate it.
     /// Unknown states retain deduplication; an accepted ready snapshot without deficits rearms it.
     func takeStockWarningAnnouncement() -> LocalizedStringResource? {
-        guard !isClosed, !isReadOnly, case .ready = stockState else { return nil }
+        guard !isClosed, destination.mode != .inspect, case .ready = stockState else { return nil }
         let currentIDs = Set(stockWarnings.map(\.id))
         let hasNewWarning = !currentIDs.subtracting(announcedStockWarningIDs).isEmpty
         announcedStockWarningIDs = currentIDs
         return hasNewWarning ? .salesStockWarningAnnouncement : nil
     }
 
-    var isBusy: Bool { isReadOnly ? inspectionState == .loading : store.isBusy }
-    var isReadOnly: Bool { destination.mode == .inspect }
+    var isBusy: Bool {
+        isPreparingPayment || (destination.mode == .inspect ? inspectionState == .loading : store.isBusy)
+    }
+    var isReadOnly: Bool { destination.mode == .inspect || destination.mode == .operate ||
+        (sale != nil && sale?.status != .draft) }
     var isClosed: Bool { store.state == .closed }
     var clientDisplayName: String? {
         guard !isClosed, resolvedClient?.id == sale?.clientID else { return nil }
@@ -94,7 +113,7 @@ final class SaleDraftViewModel {
     }
 
     var canCreate: Bool {
-        destination.mode == .create && contentState == .ready && store.state == .idle && !isBusy
+        destination.mode == .create && !hasCreatedSale && contentState == .ready && store.state == .idle && !isBusy
     }
 
     var canAddServices: Bool {
@@ -194,10 +213,11 @@ final class SaleDraftViewModel {
     }
 
     /// Loads editable content through the one Store, or reads operational content without granting mutation capability.
-    /// Create sessions load no snapshot; their stable identity and timestamp are used only by explicit creation.
+    /// Reserved create sessions read no snapshot; after acceptance, reload recovers the same stable identity.
     /// - Throws: Draft rejection, read/calculation failure, cancellation, or a closed presentation session.
     func load() async throws -> Sale? {
         guard !isClosed else { throw SaleDraftViewModelError.closed }
+        invalidatePayment()
         let generation = UUID()
         contentGeneration = generation
         contentState = .loading
@@ -206,15 +226,23 @@ final class SaleDraftViewModel {
             let recovered: Sale?
             switch destination.mode {
             case .create:
-                recovered = store.draft
+                if hasWorkflow, hasCreatedSale {
+                    recovered = try await store.loadOperation(id: destination.saleID)
+                } else {
+                    recovered = store.draft
+                }
             case .editDraft:
-                recovered = try await store.load(id: destination.saleID)
+                recovered = hasWorkflow ? try await store.loadOperation(id: destination.saleID) :
+                    try await store.load(id: destination.saleID)
             case .inspect:
                 recovered = try await inspect()
+            case .operate:
+                recovered = try await store.loadOperation(id: destination.saleID)
             }
             try Task.checkCancellation()
             guard contentGeneration == generation, !isClosed else { throw CancellationError() }
-            contentState = recovered != nil || destination.mode == .create ? .ready : .unavailable
+            let isReservedCreation = destination.mode == .create && !hasCreatedSale
+            contentState = recovered != nil || isReservedCreation ? .ready : .unavailable
             return recovered
         } catch {
             if contentGeneration == generation, !isClosed {
@@ -228,13 +256,14 @@ final class SaleDraftViewModel {
     /// - Throws: A mode/session rejection or Store validation and local acceptance errors.
     func create(clientID: ClientID? = nil, lines: [SaleLine] = []) async throws -> Sale {
         try requireEditable()
-        guard destination.mode == .create else { throw SaleDraftViewModelError.invalidMode }
+        guard destination.mode == .create, !hasCreatedSale else { throw SaleDraftViewModelError.invalidMode }
         let accepted = try await store.create(
             id: destination.saleID,
             clientID: clientID,
             createdAt: createdAt,
             lines: lines
         )
+        hasCreatedSale = true
         if !isClosed {
             contentState = .ready
         }
@@ -294,6 +323,7 @@ final class SaleDraftViewModel {
 
     /// Ends presentation, fences late inspection reads and closes the Store without discarding accepted data.
     func close() {
+        invalidatePayment()
         servicePickerDestination = nil
         discountDestination = nil
         inspectionGeneration = nil
@@ -306,16 +336,18 @@ final class SaleDraftViewModel {
         store.close()
     }
 
-    /// Revalidates the accepted draft's advisory inventory without changing commercial terms.
+    /// Revalidates the accepted sale's advisory inventory without changing commercial terms.
     /// - Throws: A closed or read-only session rejection; stock failures remain in stockError.
     func refreshStock() async throws {
-        try requireEditable()
+        guard !isClosed else { throw SaleDraftViewModelError.closed }
+        guard destination.mode != .inspect else { throw SaleDraftViewModelError.readOnly }
         await store.refreshStock()
     }
 
     private func requireEditable() throws {
         guard !isClosed else { throw SaleDraftViewModelError.closed }
         guard !isReadOnly else { throw SaleDraftViewModelError.readOnly }
+        guard !isPreparingPayment, stockConfirmation == nil else { throw SaleDraftStoreError.operationInProgress }
     }
 
     private func currentQuantity(for id: SaleLineID) throws -> Int {
@@ -362,8 +394,15 @@ final class SaleDraftViewModel {
         discard: DiscardSaleDraftUseCase,
         getSale: GetSaleUseCase,
         getClient: GetClientUseCase? = nil,
-        getStock: GetSaleStockQuantitiesUseCase? = nil
+        getStock: GetSaleStockQuantitiesUseCase? = nil,
+        advance: AdvanceSaleUseCase? = nil,
+        registerPayment: RegisterSalePaymentUseCase? = nil,
+        makePaymentID: @escaping @MainActor () -> UUID = { UUID() },
+        paymentDate: @escaping @MainActor () -> Date = { Date() }
     ) {
+        hasWorkflow = advance != nil && registerPayment != nil
+        self.makePaymentID = makePaymentID
+        self.paymentDate = paymentDate
         self.destination = destination
         self.createdAt = createdAt
         self.getSale = getSale
@@ -374,7 +413,171 @@ final class SaleDraftViewModel {
             get: getDraft,
             update: update,
             discard: discard,
-            getStock: getStock
+            getStock: getStock,
+            getSale: getSale,
+            advance: advance,
+            registerPayment: registerPayment
         )
+    }
+}
+
+extension SaleDraftViewModel {
+    var requiresReloadAfterActionError: Bool {
+        let draftError = lastError as? SaleDraftError
+        return lastError as? SaleProgressError == .staleSale || lastError as? SalePaymentError == .staleSale
+            || draftError == .requiresDraft || draftError == .staleDraft
+    }
+    var showsWorkflow: Bool { hasWorkflow && destination.mode != .inspect && sale != nil && !isClosed }
+    var awaitsDocument: Bool {
+        guard showsWorkflow, case .awaitingDocument = sale?.status else { return false }
+        return true
+    }
+
+    func title(for action: SaleProgressAction) -> LocalizedStringResource {
+        switch action {
+        case .start: return "sales.workflow.start"
+        case let .startLine(id):
+            return .salesWorkflowStartLine(sale?.lines.first { $0.id == id }?.serviceName ?? "")
+        case let .completeLine(id):
+            return .salesWorkflowCompleteLine(sale?.lines.first { $0.id == id }?.serviceName ?? "")
+        }
+    }
+
+    var confirmationWarnings: [SaleStockConfirmation.Warning] {
+        stockWarnings.compactMap { impact in
+            guard let line = sale?.lines.first(where: { $0.id == impact.id }) else { return nil }
+            return SaleStockConfirmation.Warning(
+                id: impact.id,
+                serviceName: line.serviceName,
+                projectedQuantity: impact.projectedQuantity
+            )
+        }
+    }
+    /// Available work intentions come from the aggregate's state; Views only render these intentions.
+    var progressActions: [SaleProgressAction] {
+        guard hasWorkflow, destination.mode != .inspect, !isClosed, !isBusy, stockConfirmation == nil,
+              servicePickerDestination == nil, discountDestination == nil, let sale else { return [] }
+        switch sale.status {
+        case .draft: return sale.lines.isEmpty ? [] : [.start]
+        case .inProgress:
+            return sale.lines.compactMap { line in
+                switch line.status {
+                case .upcoming: .startLine(line.id)
+                case .inProgress: .completeLine(line.id)
+                case .completed: nil
+                }
+            }
+        default: return []
+        }
+    }
+
+    var showsPayment: Bool { hasWorkflow && destination.mode != .inspect && sale?.status == .awaitingPayment }
+    var canRegisterPayment: Bool {
+        showsPayment && !isBusy && stockConfirmation == nil && selectedPaymentMethod != nil
+    }
+
+    /// Advances only eligible work, revoking any prior payment review before accepting a transition.
+    func advance(_ action: SaleProgressAction) async throws -> Sale {
+        guard progressActions.contains(action) else { throw SaleDraftViewModelError.invalidMode }
+        invalidatePayment()
+        return try await store.advance(action)
+    }
+
+    /// Changing a method invalidates a prepared command rather than mutating its frozen metadata.
+    func selectPaymentMethod(_ method: PaymentMethod?) {
+        guard showsPayment, !isBusy, stockConfirmation == nil else { return }
+        if selectedPaymentMethod != method {
+            invalidatePayment()
+            selectedPaymentMethod = method
+        }
+    }
+
+    /// Refreshes advisory inventory in the caller's task; presentation itself never mutates business data.
+    /// Returns true for sufficient stock or a previously confirmed retry; unknown stock requires explicit consent.
+    func preparePayment() async throws -> Bool {
+        guard canRegisterPayment, let expected = sale, let method = selectedPaymentMethod else {
+            throw SaleDraftViewModelError.invalidMode
+        }
+        if paymentIsConfirmed, let pendingPayment, pendingPayment.expected == expected,
+           pendingPayment.method == method {
+            return true
+        }
+        invalidatePayment()
+        let generation = UUID()
+        paymentGeneration = generation
+        isPreparingPayment = true
+        defer {
+            if paymentGeneration == generation {
+                isPreparingPayment = false
+            }
+        }
+        await store.refreshStock()
+        try Task.checkCancellation()
+        guard !isClosed, paymentGeneration == generation, sale == expected else { throw CancellationError() }
+        let command = PaymentCommand(
+            expected: expected,
+            id: PaymentID(rawValue: makePaymentID()),
+            method: method,
+            paidAt: paymentDate()
+        )
+        pendingPayment = command
+        let warnings = confirmationWarnings
+        let unavailable: Bool
+        if case .ready = stockState {
+            unavailable = false
+        } else {
+            unavailable = true
+        }
+        if warnings.isEmpty && !unavailable {
+            paymentIsConfirmed = true
+            return true
+        }
+        stockConfirmation = SaleStockConfirmation(
+            id: command.id.rawValue,
+            warnings: warnings,
+            stockUnavailable: unavailable
+        )
+        return false
+    }
+
+    /// Consumes only the matching live review; duplicate callbacks and obsolete snapshots cannot pay.
+    func confirmPayment(_ id: UUID) -> Bool {
+        guard stockConfirmation?.id == id, let command = pendingPayment, command.expected == sale,
+              !isClosed, !isBusy, command.method == selectedPaymentMethod else { return false }
+        stockConfirmation = nil
+        paymentIsConfirmed = true
+        return true
+    }
+
+    /// Explicit cancel and interactive sheet dismissal revoke only the matching unconfirmed intention.
+    func cancelPaymentConfirmation(_ id: UUID) {
+        guard stockConfirmation?.id == id else { return }
+        invalidatePayment()
+    }
+
+    /// Uses the same identity/time on failure and retry; successful local acceptance consumes the command.
+    /// Late accepted success is returned without reopening a closed Store or presentation.
+    func registerPreparedPayment() async throws -> Sale {
+        guard !isClosed, !isBusy, paymentIsConfirmed, let command = pendingPayment else {
+            throw SaleDraftViewModelError.invalidMode
+        }
+        let accepted = try await store.pay(
+            command.expected,
+            id: command.id,
+            method: command.method,
+            paidAt: command.paidAt
+        )
+        if pendingPayment?.id == command.id {
+            invalidatePayment()
+        }
+        return accepted
+    }
+
+    private func invalidatePayment() {
+        pendingPayment = nil
+        paymentIsConfirmed = false
+        stockConfirmation = nil
+        paymentGeneration = nil
+        isPreparingPayment = false
     }
 }

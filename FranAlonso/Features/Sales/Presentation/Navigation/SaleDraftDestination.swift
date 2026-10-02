@@ -6,6 +6,7 @@ struct SaleDraftDestination: Identifiable, Equatable {
         case create
         case editDraft
         case inspect
+        case operate
     }
 
     let id: UUID
