@@ -40,6 +40,25 @@ extension SaleLocalDataSource {
         operationID: UUID,
         in context: ModelContext
     ) throws -> Sale {
+        try updateDraft(
+            expected,
+            clientID: clientID,
+            lines: lines,
+            globalDiscount: expected.globalDiscount,
+            operationID: operationID,
+            in: context
+        )
+    }
+
+    /// Accepts an explicit complete draft candidate at the existing local commit boundary.
+    func updateDraft(
+        _ expected: Sale,
+        clientID: ClientID?,
+        lines: [SaleLine],
+        globalDiscount: SaleGlobalDiscount?,
+        operationID: UUID,
+        in context: ModelContext
+    ) throws -> Sale {
         try performDraftOperation {
             try requireClean(context)
             guard try conflict(for: expected.id, in: context) == nil else { throw SaleDraftError.conflict }
@@ -49,7 +68,7 @@ extension SaleLocalDataSource {
             }
             guard existing.status == .draft else { throw SaleDraftError.requiresDraft }
             guard existing == expected else { throw SaleDraftError.staleDraft }
-            let draft = try existing.replacingDraft(clientID: clientID, lines: lines)
+            let draft = try existing.replacingDraft(clientID: clientID, lines: lines, globalDiscount: globalDiscount)
             try persistPendingUpsert(draft, operationID: operationID, in: context)
             return draft
         }

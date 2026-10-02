@@ -14,7 +14,7 @@ struct FirestoreSaleRemoteDataSourceTests {
         )
     }
 
-    @Test("A live write contains payload v1 nested lines exact dates and sync metadata")
+    @Test("A new live write contains payload v2 nested lines exact dates and sync metadata")
     func liveWriteContainsCompleteSaleSnapshot() throws {
         let record = try firestoreSaleRecord(progressed: false, sequence: 9)
 
@@ -25,7 +25,7 @@ struct FirestoreSaleRemoteDataSourceTests {
         let status = try #require(fields["status"] as? [String: Any])
         let sync = try #require(fields["_sync"] as? [String: Any])
 
-        #expect(fields["payloadVersion"] as? Int == 1)
+        #expect(fields["payloadVersion"] as? Int == 2)
         #expect(fields["id"] as? String == record.id)
         #expect(fields["_deleted"] as? Bool == false)
         #expect(fields["createdAt"] as? String == "3ff0000000000000")
@@ -64,7 +64,7 @@ struct FirestoreSaleRemoteDataSourceTests {
         let expected = try firestoreSaleRecord(progressed: false, sequence: 9)
         let dto = try #require(expected.liveSale)
         let document = FirestoreSaleDocumentDTO(
-            payloadVersion: 2,
+            payloadVersion: 3,
             id: dto.id,
             isDeleted: false,
             clientID: dto.clientID,

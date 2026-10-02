@@ -195,7 +195,12 @@ private actor WorkdayViewModelControlledRepository: SaleRepository {
         throw SaleDraftError.persistenceUnavailable
     }
 
-    func updateDraft(_ expected: Sale, clientID: ClientID?, lines: [SaleLine]) throws -> Sale {
+    func updateDraft(
+        _ expected: Sale,
+        clientID: ClientID?,
+        lines: [SaleLine],
+        globalDiscount: SaleGlobalDiscount?
+    ) throws -> Sale {
         throw SaleDraftError.persistenceUnavailable
     }
 

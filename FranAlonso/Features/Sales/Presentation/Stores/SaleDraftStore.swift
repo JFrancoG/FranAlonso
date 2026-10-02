@@ -70,7 +70,7 @@ final class SaleDraftStore {
                 createdAt: createdAt,
                 lines: lines
             )
-            let calculation = try calculator.calculate(lines: candidate.lines, currency: currency)
+            let calculation = try calculator.calculate(sale: candidate, currency: currency)
             let accepted = try await createDraft(
                 id: id,
                 clientID: clientID,
@@ -93,7 +93,7 @@ final class SaleDraftStore {
                 state = .idle
                 return nil
             }
-            let calculation = try calculator.calculate(lines: recovered.lines, currency: currency)
+            let calculation = try calculator.calculate(sale: recovered, currency: currency)
             publish(recovered, calculation: calculation, generation: generation)
             return recovered
         }
@@ -123,10 +123,16 @@ final class SaleDraftStore {
         try await edit { try editingPolicy.settingClient(id, in: $0) }
     }
 
-    /// Accepts a validated line discount or its removal; global discount policy is outside this session.
+    /// Accepts a validated line discount or its removal while retaining the global term.
     /// - Throws: Session, Domain/calculation or local acceptance errors; prior accepted content remains on failure.
     func setDiscount(_ discount: Discount?, for id: SaleLineID) async throws -> Sale {
         try await edit { try editingPolicy.settingDiscount(discount, for: id, in: $0) }
+    }
+
+    /// Accepts an independent sale-wide discount or its removal through the common edit boundary.
+    /// - Throws: Session, Domain/calculation or local acceptance errors; prior accepted content remains on failure.
+    func setGlobalDiscount(_ discount: Discount?) async throws -> Sale {
+        try await edit { try editingPolicy.settingGlobalDiscount(discount, in: $0) }
     }
 
     /// Accepts a durable discard and clears the projection. Repeating an accepted discard has no additional effect.
@@ -157,8 +163,13 @@ final class SaleDraftStore {
         try await perform(.update) { generation in
             guard let expected = draft else { throw SaleDraftStoreError.noDraft }
             let edited = try candidate(expected)
-            let calculation = try calculator.calculate(lines: edited.lines, currency: currency)
-            let accepted = try await updateDraft(expected, clientID: edited.clientID, lines: edited.lines)
+            let calculation = try calculator.calculate(sale: edited, currency: currency)
+            let accepted = try await updateDraft(
+                expected,
+                clientID: edited.clientID,
+                lines: edited.lines,
+                globalDiscount: edited.globalDiscount
+            )
             publish(accepted, calculation: calculation, generation: generation)
             return accepted
         }

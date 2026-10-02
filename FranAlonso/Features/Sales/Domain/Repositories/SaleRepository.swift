@@ -28,10 +28,27 @@ protocol SaleRepository: Sendable {
     /// Checks and persistence share one context without suspension. Snapshot equality detects
     /// obsolete copies visible in that context; this is not CAS across independent contexts.
     /// - Throws: `SaleDraftError`, `SaleError` for invalid lines, or cancellation before acceptance.
-    func updateDraft(_ expected: Sale, clientID: ClientID?, lines: [SaleLine]) async throws -> Sale
+    func updateDraft(
+        _ expected: Sale,
+        clientID: ClientID?,
+        lines: [SaleLine],
+        globalDiscount: SaleGlobalDiscount?
+    ) async throws -> Sale
 
     /// Discards only a draft through the existing durable tombstone path.
     /// Absence and repetition are no-ops; conflicts and progressed sales are retained.
     /// - Throws: `SaleDraftError` for rejection, or cancellation before acceptance.
     func discardDraft(_ id: SaleID) async throws
+}
+
+extension SaleRepository {
+    /// Replaces client and lines while preserving the expected sale's global term.
+    func updateDraft(_ expected: Sale, clientID: ClientID?, lines: [SaleLine]) async throws -> Sale {
+        try await updateDraft(
+            expected,
+            clientID: clientID,
+            lines: lines,
+            globalDiscount: expected.globalDiscount
+        )
+    }
 }

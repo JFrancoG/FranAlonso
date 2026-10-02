@@ -35,6 +35,7 @@ final class SaleDraftViewModel {
     private(set) var contentState: ContentState = .idle
     private(set) var inspectionState: InspectionState = .idle
     private(set) var servicePickerDestination: SaleServicePickerDestination?
+    private(set) var discountDestination: SaleDiscountDestination?
     private let store: SaleDraftStore
     private let getSale: GetSaleUseCase
     private let getClient: GetClientUseCase?
@@ -74,6 +75,7 @@ final class SaleDraftViewModel {
 
     var canAddServices: Bool {
         !isClosed && !isReadOnly && !isBusy && contentState == .ready && store.draft != nil
+            && discountDestination == nil
     }
 
     /// Opens selection only over an accepted editable draft; repeated requests retain the active sheet identity.
@@ -86,6 +88,35 @@ final class SaleDraftViewModel {
     func finishServicePicker(_ id: UUID) {
         guard servicePickerDestination?.id == id else { return }
         servicePickerDestination = nil
+    }
+
+    /// Grants editing only for a current line of an accepted editable draft, outside service selection.
+    func canEditDiscount(for id: SaleLineID) -> Bool {
+        !isClosed && !isReadOnly && !isBusy && contentState == .ready && servicePickerDestination == nil
+            && store.draft?.lines.contains(where: { $0.id == id }) == true
+    }
+
+    /// Retains one editor identity; presentation itself does not mutate commercial terms.
+    func presentLineDiscount(for id: SaleLineID) {
+        guard canEditDiscount(for: id), discountDestination == nil else { return }
+        discountDestination = SaleDiscountDestination(id: UUID(), target: .line(id))
+    }
+
+    var canEditGlobalDiscount: Bool {
+        !isClosed && !isReadOnly && !isBusy && contentState == .ready && servicePickerDestination == nil
+            && store.draft != nil
+    }
+
+    /// Opens a global editor without changing either captured discount term.
+    func presentGlobalDiscount() {
+        guard canEditGlobalDiscount, discountDestination == nil else { return }
+        discountDestination = SaleDiscountDestination(id: UUID(), target: .global)
+    }
+
+    /// Ends only the matching nested editor, leaving the accepted parent Store alive.
+    func finishDiscount(_ id: UUID) {
+        guard discountDestination?.id == id else { return }
+        discountDestination = nil
     }
 
     func canIncrease(for id: SaleLineID) -> Bool {
@@ -221,6 +252,12 @@ final class SaleDraftViewModel {
         return try await store.setDiscount(discount, for: id)
     }
 
+    /// Delegates the editor's frozen percentage; Domain selects and captures the provisional policy.
+    func setGlobalDiscount(_ discount: Discount?) async throws -> Sale {
+        try requireEditable()
+        return try await store.setGlobalDiscount(discount)
+    }
+
     /// Discards only through the Store's durable draft contract.
     /// - Throws: A mode/session rejection or the Store's preacceptance failure.
     func discard() async throws {
@@ -234,6 +271,7 @@ final class SaleDraftViewModel {
     /// Ends presentation, fences late inspection reads and closes the Store without discarding accepted data.
     func close() {
         servicePickerDestination = nil
+        discountDestination = nil
         inspectionGeneration = nil
         contentGeneration = nil
         clientNameGeneration = nil
@@ -268,7 +306,7 @@ final class SaleDraftViewModel {
                 inspectionState = .unavailable
                 return nil
             }
-            let calculation = try calculator.calculate(lines: recovered.lines, currency: store.currency)
+            let calculation = try calculator.calculate(sale: recovered, currency: store.currency)
             inspectionState = .content(recovered, calculation)
             return recovered
         } catch {

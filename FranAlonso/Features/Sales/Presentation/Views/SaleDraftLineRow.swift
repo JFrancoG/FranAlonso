@@ -6,6 +6,8 @@ struct SaleDraftLineRow: View {
     let onIncrease: (@MainActor () -> Void)?
     let onDecrease: (@MainActor () -> Void)?
     let onRemove: @MainActor () -> Void
+    let onEditDiscount: @MainActor () -> Void
+    let discountIsFocused: AccessibilityFocusState<SaleLineID?>.Binding
     @Environment(\.locale) private var locale
 
     var body: some View {
@@ -18,6 +20,13 @@ struct SaleDraftLineRow: View {
                 Text(line.unitPrice.amount, format: .currency(code: line.unitPrice.currency.rawValue).locale(locale))
                 Text(.salesLineTax(line.taxRate.percentage.formatted(.number.locale(locale))))
                     .font(.caption)
+                if let discount = line.discount {
+                    Text(.salesDiscountValue(discount.percentage.formatted(
+                        .number.locale(locale).grouping(.never).precision(.significantDigits(1...38))
+                    )))
+                } else {
+                    Text("sales.discount.none")
+                }
             }
             .fixedSize(horizontal: false, vertical: true)
             .accessibilityElement(children: .combine)
@@ -33,10 +42,19 @@ struct SaleDraftLineRow: View {
                 .accessibilityLabel(Text(.salesQuantityFor(line.serviceName)))
                 .accessibilityValue(Text(line.quantity, format: .number))
 
+                Button(action: onEditDiscount) {
+                    Text("sales.discount.edit")
+                        .frame(minHeight: 44)
+                }
+                .buttonStyle(.borderless)
+                .accessibilityLabel(Text(.salesDiscountEdit(line.serviceName)))
+                .accessibilityFocused(discountIsFocused, equals: line.id)
+
                 Button(role: .destructive, action: onRemove) {
                     Text("sales.line.remove")
                         .frame(minHeight: 44)
                 }
+                .buttonStyle(.borderless)
                 .accessibilityLabel(Text(.salesLineRemove(line.serviceName)))
             }
         }
@@ -45,13 +63,16 @@ struct SaleDraftLineRow: View {
 }
 
 #Preview("Editable line", traits: .modifier(SalesPreviewModifier())) {
+    @Previewable @AccessibilityFocusState var discountIsFocused: SaleLineID?
     Form {
         SaleDraftLineRow(
             line: SalesPreviewFixtures.workday.sales[2].lines[0],
             isReadOnly: false,
             onIncrease: {},
             onDecrease: nil,
-            onRemove: {}
+            onRemove: {},
+            onEditDiscount: {},
+            discountIsFocused: $discountIsFocused
         )
     }
 }

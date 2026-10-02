@@ -905,3 +905,314 @@ Reconciliación posterior en main: seis documentos/changelog, sin código/config
 Xcode adicional N/A: fuente idéntica y validación reciente reutilizada. Progress dentro de8192bytes,
 diff whitespace PASS; gobernanza mantiene únicamente seis enlaces históricos de capturas08.3 rotos.
 Commit/push documental de cierre autorizado por la entrega completa; verificación final de main tras publicarlo.
+
+### Inicio 11.7 — 2026-10-02
+
+Usuario autoriza issue/rama e implementación local11.7. [PLU-80](https://linear.app/plusprojects/issue/PLU-80),
+In Progress/Jesus Franco, hijaPLU71; `codex/plu-80-sale-discounts` desde main limpio/sincronizado`ea78dc6`.
+[Propuesta](11-7-sale-discounts-proposal.md): política global no definida por04/11; consulta al propietario pendiente.
+Exploración independiente confirma riesgos de DTOv2/schema4 y replay antiguos si se elige global persistente.
+PRE parcial independiente PASS para mostrar/editar descuento DE LÍNEA sobre Store/fachada actuales sin Domain/Data/schema.
+WholeJSON747 before/after/root idénticos`5fb9e30eb37fd46db73926606f252eb895bf873b937ccc2702c51feed2556473`;
+contrato congelado de comando/retry/cierre y parsing neutral reutilizado. TDD/validación/POST aún pendientes.
+11.7 no completada; política global y su PRE propio pendientes. Sin entrega Git, siguiente subfase, cierre ni live.
+
+### TDD parcial11.7 — editor de línea
+
+XcodeMCP Develop/iPadPro13M5: build-for-testingRED28.11s PASS;18declaraciones/40variantes RED funcional
+(39Failed/1Passed;17/18declaraciones fallan) por requestID/estado/aceptación ausentes, no por setup.
+Bundle nativo cerrado conInfo.plist y summary/tree exportados a `/tmp/plu80-red-native-{summary,tests}.json`:
+`/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RunSomeTests/Test-FranAlonso-Develop-2026.10.02_01-34-44-+0200.xcresult`.
+GREEN inicial build25.16s; focal27declaraciones incluidos9ServiceFormDraft,33ejecuciones registradas PASS.
+La exportación focal conserva sólo una parte de argumentos paramétricos: no acredita todas las variantes nuevas;
+la regresión completa final deberá comprobarlas. Bundlecerrado/exports `/tmp/plu80-green-native-{summary,tests}.json`:
+`/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RunSomeTests/Test-FranAlonso-Develop-2026.10.02_01-40-20-+0200.xcresult`.
+Ambos builds ceroSwift/Clangwarnings/errores;2avisos conocidosAppIntents en cada uno separados.
+Parser extraído con cuerpo idéntico salvo nombre y aliasServices; testsRED intactos.
+Estilo independiente, validación final/previews/smoke y POST pendientes; global/completitud11.7 pendientes.
+
+Estilo independiente17Swift: hallazgo único de llamada119columnas corregido; retestPASS con0candidatos,
+restantes14Swiftidénticos. Se corrigieron sólo fixtures de2Views para capturarLocale delCanvas también enEN.
+WholeJSON757 before/after/root iguales`60d1823ea49318f938095aed96a3742d469f9afecd846f885f26790303f564ba`;
+informe `/tmp/plu80-line-style-retest-report.md`. Cambios posteriores aGREEN: formato y fixtures/previews,
+sin comportamiento de aceptación. Regresión/builds finales pendientes.
+
+
+### Validación técnica final parcial11.7 — 2026-10-02
+
+Fuente/configuración595 FULLJSON antes/después de validación iguales
+`885dd7f229d74449846b1a0b56767f90228c385096046f80090972cc2dd6427d`;
+`/tmp/plu80-before-final-validation-source.json` y `/tmp/plu80-after-final-validation-source.json`.
+Build-for-testingDevelop13.602s y Production20.727s PASS, ceroSwift/Clangwarnings/errores;
+2/1avisos conocidosAppIntents separados. Logs completos:
+`/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/BuildProject/BuildProject-Log-20261002-015211.txt`
+y `BuildProject-Log-20261002-015944.txt` en el mismo directorio.
+RunAll cerrado1263declaraciones/1999ejecuciones PASS, incluidas18declaraciones/40variantes nuevas;
+0failed/skip/expectedFailure/runtimeWarnings/testFailures nativos. Export íntegro
+`/tmp/plu80-regression-native-{summary,tests}.json`, nodos nuevos `/tmp/plu80-new-regression-nodes.json`;
+bundle conInfo.plist cerrado:
+`/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RunAllTests/Test-FranAlonso-Develop-2026.10.02_01-52-19-+0200.xcresult`.
+Esto resuelve la limitación de argumentos del focal anterior. Console conserva avisos internosCrashlytics
+sobreXCTestCore y errores esperados de pruebas negativas de persistencia/migración; no se declara consola vacía.
+
+13previews de editor/error/borrador, inspeccionadas porroot con0errores y destino real
+ iPadPro13M5Simulator27.2, SDK27.0. Manifiesto `/tmp/plu80-preview-manifest.json`:
+discovery1; editorESLightLarge/XXX/AX5, editorENDarkLarge/XXX/AX5, errorESLightLarge/XXX/AX5,
+borradorESLightLarge/XXX/AX5. Nombre largo, label, instrucciones y acciones con wrapping.
+El overrideEN cambia idioma, no prueba región/separador inglés; gramáticas locales cubiertas por tests.
+En capturaESAX5 el toolbarCerrar no aparece; enENAX5sí. No concluir ausencia/alcanzabilidad runtime.
+BorradorAX5 requiere desplazamiento vertical; no se acredita su recorrido exhaustivo por captura.
+
+POST técnico independiente parcial PASS, sin hallazgos. FULLJSON757 before/after/root íntegramente iguales
+`508faf3ac922ccce5fa3b8cb2e383fca6a705cb415ee4b804cadfd19e91cc25e`;
+informe `/tmp/plu80-post-tech-report.md`, proofs `/tmp/plu80-post-tech-{before,after}.json`
+y `/tmp/plu80-post-tech-root-after.json`. Scope17Swift y16strings; sin modificaciónDomain/Data/schema/global.
+Smoke y POSTUI permanecen en curso; no se declara gate funcional ni11.7completada.
+[PLU-81](https://linear.app/plusprojects/issue/PLU-81), Backlog/Jesus Franco, deuda propia accesible11.7,
+recuperar tras feedback/estabilización del recorrido antes del primer candidato real; matriz55 propia.
+Localización521/0errores y diff whitespacePASS. Gobernanza sólo6capturas históricas08.3rotas, exit1;
+no resultado globalPASS ni reparación fuera de alcance. Sin commit/push/PR/merge/cierre/live.
+
+### HallazgoUI y PRE focal11.7 — 2026-10-02
+
+Smoke inicial9/9checks de negocio/26capturas conserva P2 de primera apertura:08editor→09padre sin gesto→10retry.
+POSTUI independiente: correct before proceeding, no gate funcionalPASS. Log07→08 registra intento de presentar
+PlatformAlertController mientras ya existe PresentationHostingController; logs08=09, causa de dispatch no demostrada.
+Defecto funcional enPLU-80; no transferirlo como deuda integralPLU-81. Informe `/tmp/plu80-post-ui-report.md`;
+smoke `/tmp/plu80-smoke-report.md` y manifest,104artefactos copiados/SHAverificados. RuntimeRunningPID4710,
+StopProject confirmado; EndSession informa sesión inexistente,Develop/planDevelop/iPadPro13M5 restaurados.
+
+PRE técnico focal independiente PASS para SOLOdos `.buttonStyle(.borderless)` en Editar descuento/Retirar servicio
+ de SaleDraftLineRow: preservar Stepper NATIVO,closures,rol/labels/foco/44pt y capas. Alternativasplain/menu/fila aparte
+más amplias descartadas; APIAppleprimaryCupertinoiOS13+,target27. Automatic contextual es hipótesis,runtimeGREEN
+ debe probar independencia real. Sources/provenance en `/tmp/plu80-line-button-pre-report.md`.
+RootFULLJSON757 UI/PREbefore/after íntegramente iguales
+`2dae23d8b01d2b9a68ffd769a1be3f7a88833c0f089053854c725d27313a87c6`.
+TDDautomático adicionalN/Arazonado: sólo modificadores de estilo/routingUI, sin contratoVMnuevo; no tests miméticos
+ de presencia del modifier ni harnessUIprohibido. REDmanual conservado; requierecoldGREEN abrir/permanecer/cerrar,
+Aplicar/reabrir/Retirar descuento y Retirar servicio→confirmación propia→cancelar conservando venta; inspeccionar logs,
+builds/previewsparentLarge/XXX/AX5 y POSTUIfocal. Hasta entonces P2 sigueabierto/globalpendiente.
+
+Corrección aplicada después delPRE: exactamente2modifiers; delta source595 únicamenteSaleDraftLineRow,
+otros594files y16Swift afectados antes idénticos. Nuevo sourceFULLJSON595
+`7b114f62fb147ebb6d694dda456fab4d7699836a804ebaeef37e04144c9fd432`,
+`/tmp/plu80-{before,after}-button-fix-source.json`. POST técnico/estilo focalPASS, sin hallazgos;
+proof757root/reviewerbefore/after íntegros iguales
+`1e6c82731c846aa5422b4d973374b3cb93ab2b5396f6cb6a3d140f4cbe4d2fec`;
+informe `/tmp/plu80-button-fix-post-tech-report.md`.
+
+Builds corregidos XcodeMCPDevelop18.155s/Production18.752s PASS, ceroSwift/Clangwarnings/errores;
+2/1metadatanoticesAppIntents separados. Logs BuildProject-Log-20261002-022841.txt /-023111.txt
+ bajo ActionArtifacts/default/BuildProject. GetBuildLogwarnings0issues/truncatedfalse;
+logcompleto conserva únicoavisoAppIntents, no ceroavisos de todaslasherramientas.
+RunAll corregido cerrado1263declaraciones/1999ejecuciones PASS; mismas18declaraciones/40variantes nuevas
+queRED, todasPassed,0fail/skip/expectedFailure/runtimeWarningsnativos. Exports
+`/tmp/plu80-corrected-regression-native-{summary,tests}.json` y18nodos `/tmp/plu80-corrected-new-regression-nodes.json`;
+Info.plist cerrado de bundle
+`/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RunAllTests/Test-FranAlonso-Develop-2026.10.02_02-29-22-+0200.xcresult`.
+Retest3previews padreESLightLarge/XXX/AX5,0errores, render/inspecciónroot de wrappers/acciones;
+`/tmp/plu80-corrected-preview-manifest.json`; demás previews iniciales reutilizadas por source/tipo sin cambios.
+Coldsmoke y POSTUIfocal pendientes; P2 aún no declarado corregido. Política global pendiente de respuesta.
+
+
+GREENmanual corregido:9/9checks,22capturas/88artefactos nativos copiados/SHAverificados,
+phone17Simulator27.2/Develop/demoESportrait402×874pt/textoestándar,02/10/2026.
+Primera apertura al primer toque permanece en dosrecapturas sin gesto; Cerrar conserva nil/24,20€.
+Retirarservicio muestra sólo su confirmación; cancelar conserva fila. Stepper1→2→1 da48,40→24,20sinotrosdestinos.
+12,5 aplica/reabre21,17€ (descuento3,03€,base17,50€,IVA3,67€); retirarDESCUENTOvuelve nil/24,20sinretirarservicio.
+Source de cálculo intacta:3,025redondeado3,03antesderestar; oráculo21,18inicial incorrecto, no ajustarpolítica.
+0matchesPlatformAlert/alreadyPresentingen22logs, ruido de frameworks/haptics persistente; no ceroavisosglobales.
+No demuestra ejecución de dosclosuresni causa original; prueba independencia observable del binario corregido.
+PopoverDismissRegionhitPointno cerró confirmación; una recaptura/fallbackexterior la canceló, sin confirmar borrado.
+No nuevaspruebas101/0/readonly: iniciales aceptadas y source afectada enreadonly no renderiza esosButtons.
+Informe `/tmp/plu80-corrected-smoke-report.md`, manifest `/tmp/plu80-corrected-smoke-manifest.json`.
+Runtime22Running/PID13389; StopProject propio confirmado,EndSession informa inexistente, destinoDevelop/iPadPro13M5
+restaurado; sin edición persistente de argumentos/scheme, clave temporal eliminada. AT/durabilidaddisco no probados.
+Source595wholeJSONantes/despuésvalidacióncorregida íntegros iguales7b114f62…;
+`/tmp/plu80-corrected-validation-source-after.json`. POSTUIfocal pendiente para disponerP2; globalpendiente.
+
+### POST UI focal y estado parcial 11.7 — 2026-10-02
+
+Revisión independiente `ios-accessibility-reviewer`: PASS exclusivamente para el gate funcional parcial
+del editor de descuento de línea, según ADR0029. El P2 de primera apertura queda resuelto por el GREEN
+observado; sin nuevos hallazgos P0–P3. Se preserva el RED histórico y no se afirma una causa demostrada
+ni estabilidad universal. Informe `/tmp/plu80-ui-retest-report.md`.
+
+El revisor inspeccionó las dos modificaciones borderless, tres previews parentales, jerarquías/logs y capturas
+focales. Revisor y raíz verificaron los 88 artefactos, 88 rutas únicas y cero discrepancias SHA256.
+Los cuatro FULLJSON antes/después de raíz y revisor son íntegramente iguales: 757 archivos,
+`c3cb973314395f62be1a7bb67fd1dc1f271881386863be059bec3728b9e94bcc`;
+`/tmp/plu80-ui-retest-{root-before,before,after,root-after}.json`.
+
+Fuente/config595 final conserva FULLJSON idéntico al binario validado
+`7b114f62fb147ebb6d694dda456fab4d7699836a804ebaeef37e04144c9fd432`;
+`/tmp/plu80-local-final-source.json`. Xcode conserva scheme/plan FranAlonso-Develop; destino iPad restaurado
+y sesiones de interacción propias detenidas. Build, tests y renders adicionales tras reconciliar sólo docs: N/A,
+sin cambio de fuente/configuración. RunAll corregido conserva cinco repeticiones del mismo aviso interno
+Crashlytics/XCTTerminateHandler y sondas negativas SwiftData; runtimeWarnings nativos vacíos.
+
+PLU-80 permanece In Progress/Jesus Franco, rama `codex/plu-80-sale-discounts`: editor de línea implementado
+y validado, descuento global pendiente de decisión del propietario y PRE correspondiente. No cierre completo
+11.7, entrega Git, 11.8 ni live. PLU-81 Backlog/Jesus Franco conserva los 55 criterios propios, 45 Limitado y
+10 Pendiente, tras feedback/estabilización de este recorrido y antes del primer candidato para uso real.
+El defecto funcional resuelto pertenece a PLU-80; no se transfiere a la deuda integral.
+
+Reconciliación final local/Linear verificada: PLU-80 y PLU-71 In Progress, PLU-81 Backlog, todos con Jesus Franco;
+evidencia final añadida sin sustituir descripciones previas. Localización 521/0 y diffcheck PASS.
+Governance devuelve exit1 exclusivamente por seis enlaces históricos a capturas Desktop en08.3, ya presentes
+en la baseline; no se declara PASS global ni se corrigen archivos ajenos. Progress8191bytes, dentro del límite8192.
+24 rutas locales, ninguna staged; HEAD permanece `ea78dc69865af9a51750c3c6db6464eb15011a07`.
+Fuente/config595 FULLJSON después de reconciliar docs idéntico7b114f62…;
+`/tmp/plu80-local-final-source-after-docs.json`. No cambios ejecutables posteriores a la validación.
+
+### Continuación global provisional 11.7 — 2026-10-02
+
+El propietario pide la solución menor para la demo: global independiente y acumulable con promociones de catálogo,
+para preguntar a Fran y ratificar la política a la vuelta. Nueva propuesta `11-7-global-discount-proposal.md` y
+ADR0032: término/política V1 guardados, cálculo sucesivo por etapa/línea y codec comercial2 en linesData existente.
+Schema3/31tablas sin cambios; DTO1/2 con replay exacto por versión y tombstone1, sin downgrade/live.
+No sustituir la promoción de línea ni recalcular históricos con una política futura.
+
+PRE técnico nuevo read-only PASS, sin hallazgos P0–P3 ni excepciones arquitectónicas/unsafe/dependencias/live.
+Informe `/tmp/plu80-global-pre-report.md`; cuatro FULLJSON759 root/reviewer before/after idénticos,
+`2bff3d3833898cfd2c6d4f9b2c5599f6a2ac703897d614f5a8076ec55c230054`.
+Fuente595 de línea antes de este tramo aún7b114f62… idéntica, configuración y workspace estable comprobados.
+ADR0032 aceptado para implementación técnica local dentro del alcance humano; política comercial definitiva pendiente.
+PhaseA de tests/stubs comienza después del PRE. RED/GREEN y validación global siguen sin ejecutar.
+
+
+### GREEN global y validación técnica — 2026-10-02
+
+TDD: PhaseA compilable BuildForTesting 13,713s PASS. RED focal 47 declaraciones / 99 ejecuciones,
+32 declaraciones Failed (56 variantes) y 15 Passed (43), sin skips ni preparación fallida.
+Bundle cerrado `RunSomeTests/Test-FranAlonso-Develop-2026.10.02_08-31-26-+0200.xcresult`.
+Exports nativos `/tmp/plu80-global-red-native-summary.json` y `-tests.json`. Los fallos prueban ausencia de
+cálculo/global, destino y codecs2; después se implementó el GREEN aprobado.
+
+El editor único SaleDiscountViewModel/Screen/Content sirve línea y global. Un destino identificado excluye
+editores concurrentes y selección; el comando congelado Discount? conserva task identity y retry.
+La sección global muestra porcentaje/ausencia y alcance; desgloses separados más agregado. La inspección calcula
+la venta completa sin dar capacidad de edición. Store conserva la aceptación existente y valida antes de escribir.
+Domain fija lineThenGlobalV1 y aplica promoción → global → IVA por línea, reutilizando el certificado ADR0031.
+SaleDTO y payload local1/2 estrictos; Firestore reenvía la versión capturada, tombstones1. Sin @Model/schema/migración
+nueva ni wrappers causales nuevos. Lectura v1 no reescribe; aceptar una edición escribe2. Sin soporte downgrade ni
+promesa de coexistencia con writers binarios viejos. La ratificación comercial por Fran sigue pendiente.
+
+Estilo independiente: 4 P3 en tests corregidos sin modificar oráculos. Retest PASS sobre las 7 construcciones
+corregidas de 5 archivos; cuatro FULL JSON de 770 archivos idénticos, digest b6b35794c1fc…8352632.
+Informes `/tmp/plu80-global-style-report.md` y `-style-retest-report.md`; el primer proof fue4d118c5e…c9de8.
+La regresión detectó un fixture histórico que inyectaba versión local2 como inválida; ahora2 es válida.
+Corrección mínima: poison3 y precondición explícita unsupportedLinesVersion(3), conservando las assertions de
+rollback, fila y cola. No cambió código funcional ni se ocultó un fallo de integridad.
+
+Tres intentos RunSomeTests GREEN retornaron resultados parciales sin cerrar Info.plist (incluido un aislado puro
+Calculator); no se cuentan como evidencia final ni se atribuye la causa a un deadlock. RunAllTests confirmó el
+recorrido completo: primer run 1.309/1.310 declaraciones y 2.095/2.098 variantes, sólo el fixture anterior falló.
+RunAll final cerrado, Info.plist verificado: 1.310/1.310 declaraciones, 2.098/2.098 ejecuciones, sin fallos, skips,
+expectedFailures ni runtimeWarnings nativos. Incluye las 47 declaraciones / 99 ejecuciones nuevas Passed y sus
+argumentos, así como las regresiones de schema1/2/3, línea y rollback. Develop / iPad Pro13M5 Simulator27.2, SDK27.0.
+Bundle `/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RunAllTests/Test-FranAlonso-Develop-2026.10.02_08-55-48-+0200.xcresult`.
+Exports `/tmp/plu80-global-final-native-summary.json`, `-native-tests.json`, `-final-new-nodes.json`.
+
+Builds finales Develop-for-testing 3,341s y Production21,110s PASS. Logs completos
+`BuildProject-Log-20261002-085643.txt` / `BuildProject-Log-20261002-085757.txt`: sin errores ni warnings Swift/Clang;
+avisos AppIntents de extracción omitida separados. Consola conserva sondas negativas SwiftData/migración esperadas
+y ruido interno de frameworks; no se afirma ausencia de todos los avisos del entorno.
+Fuente/config606 archivada `/tmp/plu80-global-final-source-proof.json`; las previews sólo requieren producción,
+sin cambio de fuente después de los renders. Localización528 textos /0errores,23 claves nuevas frente aHEAD:
+16 de línea y7 de global; sólo el label agregado anterior cambia a Descuento total/Total discounts.
+
+20 renders globales /0errores e inspección root de cada PNG, manifiesto `/tmp/plu80-global-preview-manifest.json`
+con SHA256. Editor ESLight /ENDark Large/XXX/AX5; error global ES en los tres tamaños; borrador y readonly;
+sección global propia y desgloses AX5. Dos Screen de borrador sólo capturaron Loading: no prueban contenido;
+se renderizó el Content cargado determinista XXX/AX5 para cubrir ese impacto. En AX5ES el toolbar Cerrar no
+aparece en la captura global; permanece a verificar runtime/AT en PLU-81. Contenido global/total bajo fold requiere
+scroll; overrideEN no acredita región. Sin ratios/Inspector ni matriz AT/física integral.
+
+Smoke global nuevo en curso, con sesión iPhone17 Simulator27.2 Develop / demo sintética ES aislada. POST global
+independiente técnico/UI pendiente. PLU-80/71 In Progress; PLU-81 Backlog propio,45 Limitado/10 Pendiente,
+recuperación tras feedback/estabilización antes del primer candidato real. Governance exit1 sólo por seis enlaces
+Desktop históricos08.3; diffcheck y localizaciones PASS. Sin commit/push/PR/merge/cierre/11.8 ni live.
+
+### Smoke global y POST técnico final — 2026-10-02
+
+Smoke focal:9 comprobaciones PASS, sin fallo funcional observado. Apertura global20 y dos recapturas idénticas;
+Cerrar conserva; aplicar25 mantiene línea10 (total16,33€); retirar global conserva promoción (21,78€);
+retirar línea recupera24,20€;101 rechazado/corregido20; añadir Champú sin promoción conserva global20
+(subtotal44,20€, total35,36€). Inspección en curso conserva línea10/global20, total17,42€, sin acciones de edición.
+Falta caso UI de nueva línea con promoción de catálogo: fixture ofrece sólo discount:nil. Domain/Store lo cubren,
+sin sustituir esa ejecución runtime. Tamaño estándar ES Simulator, sin AT/física ni acreditación AX5.
+
+Informe `/tmp/plu80-global-smoke-report.md`; manifest `/tmp/plu80-global-smoke-manifest.json`:
+36capturas/144copias exactas, original/copia SHA256 y tamaños iguales verificados independientemente por root.
+`/tmp/plu80-global-smoke-root-verification.json`. Root inspeccionó los PNG10/16/19/22/27/32/36.
+Proceso93907 Running durante toda la interacción, sin fallback de coordenadas ni activación de otra app.
+StopProject detuvo93907; EndSession posterior devuelve Session doesn't exist anymore. Archivo de credencial temporal
+propio eliminado y Develop/iPadPro13M5 restaurado. Los paths públicos de evidencia redactan la clave de sesión.
+Logs conservan ruido UIKit/teclado/haptics/AXSimulator sin crash, constraints ni diagnóstico de fuente FranAlonso;
+no se afirma ausencia de todos los avisos de frameworks.
+
+POST técnico independiente fresco PASS, sin hallazgos P0–P3. Informe `/tmp/plu80-global-post-report.md`.
+Cuatro FULLJSON770 root/reviewer before/after iguales:
+`2b0601d40381ab967e05fbd0fa24f8e0335d579b86ed316cb43d3e53c2de80d0`.
+Fuente/config606 iguales al proof del RunAll final, digest
+`7ba47495872f25bfb0603f158476d668658ec7e08310ec87287447dff53235df`;
+reexport nativo independiente de summary/tests idéntico al de root. Auditoría incluye corrección del poison3,
+fixtures históricos1 literales, codecs1/2, política guardada, contratos causales y límites de downgrade.
+
+Dos recapturas DraftScreen cargadas en XXX/AX5,0errores, inspección root:22renders totales. Las dos Loading
+anteriores no se borran ni se cuentan como contenido. Nombre largo completo y promoción visibles; global/importes
+bajo fold en AX5 y toolbar ausente de esa captura permanecen limitados. POST UI global aún pendiente;
+no cambia gate integral, estados Linear, ratificación comercial ni autorización de entrega.
+
+### POST UI y reconciliación local final — 2026-10-02
+
+POST UI fresco independiente inspeccionó22/22previews y144/144copias del smoke. Informe
+`/tmp/plu80-global-ui-post-report.md`: único P3 en copy de indisponibilidad compartido, global pedía revisar «la línea».
+Cuatro FULLJSON770 root/reviewer before/after iguales, digest
+`4ba21c40471f3c92705c7a449026b3cdf64bb160847dec3849ed38512c17dd2c`.
+Corrección mínima de2valores ES/EN en sales.discount.unavailable.message, sin Swift/tests/config/keys/oráculos:
+«Cierra este editor y revisa el borrador de venta.» / «Close this editor and review the sale draft.».
+
+Catálogo528/0 y diffcheck PASS; builds por impacto Develop-for-testing21,841s y Production18,958s PASS.
+Logs completos `BuildProject-Log-20261002-093451.txt` (14.335líneas) y `-093522.txt` (16.592líneas),
+0errores/warnings Swift/Clang;2/1avisos AppIntents de metadata omitida separados. Fuente/config606 actual
+`/tmp/plu80-global-after-copy-source-proof.json`, digest
+`d788ebbd0aaa49ece0630a5cdef47b09b882190282f33674c9f9e6114fa330d4`:
+sólo Localizable.xcstrings difiere frente al RunAll, otras605rutas/hashes idénticos. Se reutilizan1310/2098tests,
+22previews y9checks por impacto; no se repiten pruebas de comportamiento por un copy neutral más corto.
+
+Retest independiente focal `/tmp/plu80-global-ui-copy-retest-report.md`: P3resuelto, sin nuevosP0–P3;
+PASS final UI para gate funcional demo ADR0029. Cuatro FULLJSON770 completos idénticos,
+`8af22ceae27c644c0b6c58d4c3cfc734151c8b820cea9883dd0d5cfbb657a1c4`.
+El mensaje se acredita estáticamente, no con lector. AX5ES Cerrar/toolbar, scroll/teclado/AT, Inspector/ratios,
+dispositivo físico y matriz exhaustiva siguen limitados o pendientes; caso UI de añadir promoción sin fixture
+sigue sin ejecutar. Matriz55 mantiene45Limitado/10Pendiente, PLU-81Backlog/JesusFranco y recuperación tras
+feedback/estabilización antes del primer candidato real; PLU-77/79 independientes.
+
+Implementación local11.7 validada funcionalmente para demo: PRE/estilo/POST técnico/UI PASS, TDD y regresión
+nativa cerrada, builds/previews/smoke favorables. Política V1 provisional y ratificación comercial por Fran pendiente.
+PLU-80/71 siguen InProgress y PLU-81Backlog; esta reconciliación sólo documenta evidencia, no cierra trabajo
+operativo ni autoriza entregaGit,11.8 o live. Los cambios documentales posteriores no requieren otro build (N/A:
+no fuente/config); mantener equivalencia FULLJSON606 con el proof de copy validado y comprobar estado final.
+
+Reconciliación verificada: notas finales de PLU-80/81/71 persistidas y releídas, estados InProgress/Backlog/InProgress
+y propietarioJesusFranco conservados. Progress8.173bytes ≤8.192,69rutas locales/0staged, rama
+codex/plu-80-sale-discounts y HEADea78dc69865af9a51750c3c6db6464eb15011a07 intactos. Fuente/config606
+FULLJSON posterior a docs idéntico al proof de copy validado:
+`/tmp/plu80-global-local-final-source-after-docs.json`, digestd788ebbd…330d4. Localización528/0 y diffcheckPASS;
+governance exit1 sólo por6linksDesktop08.3 históricos. XcodeDevelop/iPadPro13M5 restaurado; credencial temporal
+propia eliminada. No cambios ejecutables tras builds/retest ni entregaGit/cierre operativo/11.8/live.
+
+### Preparación de entrega autorizada11.7 — 2026-10-02
+
+El propietario autoriza expresamente commit, push, PR, merge, cierre de PLU-80 y eliminación de rama.
+Preflight Git: HEAD/main/origin-main ea78dc6,69rutas del alcance aprobado,0staged, sin cambios ajenos.
+FULLJSON770 de todo el repo idéntico al estado local final revisado; fuente/config606 idéntica al proof validado
+d788ebbd…330d4. Se reutilizan TDD, RunAll1310/2098, builds,22previews, smoke y PRE/estilo/POST técnico/UI
+independientes recientes: no se ha modificado ningún Swift, test ni configuración. Sólo changelog/autorización
+y evidencia documental de entrega; nuevos builds/tests N/A razonado por ausencia de impacto ejecutable.
+PLU-80 permanece InProgress hasta verificar merge; fasePLU-71 abierta y PLU-81Backlog/JesusFranco con55criterios
+45Limitado/10Pendiente, trasfeedback/estabilización antesprimerusoreal. Ratificación Fran sigue pendiente.
+Siguiente subfase normativa11.8: RegisterSalePaymentUseCase, efectivo/tarjeta, PaymentID estable y recuperación;
+el pago no retira de Jornada una venta pendiente de documento. No se inicia11.8 ni se activa live con esta entrega.

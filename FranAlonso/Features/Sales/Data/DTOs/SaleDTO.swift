@@ -1,7 +1,7 @@
 /// A versioned Sale aggregate independent of Domain and backend SDK types.
 struct SaleDTO: Codable, Equatable {
-    /// The sole payload shape supported by this checkpoint.
-    static let currentPayloadVersion = 1
+    /// New writes use v2; historical v1 snapshots retain their own version on replay.
+    static let currentPayloadVersion = 2
 
     let payloadVersion: Int
     let id: String
@@ -9,6 +9,24 @@ struct SaleDTO: Codable, Equatable {
     let createdAt: SaleTimestampDTO
     let lines: [SaleLineDTO]
     let status: SaleStatusDTO
+    let globalDiscount: SaleGlobalDiscountDTO?
+}
+
+/// The validated sale-wide percentage and the historical calculation order it selects.
+struct SaleGlobalDiscountDTO: Codable, Equatable {
+    let percentage: CanonicalDecimalDTO
+    let policy: SaleGlobalDiscountPolicyDTO
+}
+
+/// The stable calculation policy carried by a commercial transport snapshot.
+enum SaleGlobalDiscountPolicyDTO: String, Codable, Equatable {
+    case lineThenGlobalV1
+}
+
+/// The local2 commercial envelope stored in the existing ordered-line payload column.
+struct SaleCommercialPayloadDTO: Codable {
+    let lines: [SaleLineDTO]
+    let globalDiscount: SaleGlobalDiscountDTO?
 }
 
 /// A versioned snapshot of one ordered Sale service line.
@@ -246,6 +264,26 @@ enum SaleStatusDTO: Equatable {
 }
 
 extension SaleDTO {
+    /// Creates a snapshot without a global term, preserving existing v1 construction callers.
+    init(
+        payloadVersion: Int,
+        id: String,
+        clientID: String?,
+        createdAt: SaleTimestampDTO,
+        lines: [SaleLineDTO],
+        status: SaleStatusDTO
+    ) {
+        self.init(
+            payloadVersion: payloadVersion,
+            id: id,
+            clientID: clientID,
+            createdAt: createdAt,
+            lines: lines,
+            status: status,
+            globalDiscount: nil
+        )
+    }
+
     private enum CodingKeys: String, CodingKey, CaseIterable, Hashable {
         case payloadVersion
         case id
@@ -253,25 +291,103 @@ extension SaleDTO {
         case createdAt
         case lines
         case status
+        case globalDiscount
     }
 
     init(from decoder: any Decoder) throws {
-        let strictContainer = try decoder.container(keyedBy: SaleDynamicCodingKey.self)
-        let allowedKeys = Set(CodingKeys.allCases.map(\.rawValue))
-        guard Set(strictContainer.allKeys.map(\.stringValue)).isSubset(of: allowedKeys) else {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        let payloadVersion = try container.decode(Int.self, forKey: .payloadVersion)
+        guard payloadVersion == 1 || payloadVersion == 2 else {
             throw DecodingError.dataCorrupted(
-                .init(codingPath: decoder.codingPath, debugDescription: "Unexpected Sale payload key.")
+                .init(codingPath: decoder.codingPath, debugDescription: "Unsupported Sale payload version.")
             )
         }
-
-        let container = try decoder.container(keyedBy: CodingKeys.self)
+        let allowedKeys = CodingKeys.allCases.filter { payloadVersion == 2 || $0 != .globalDiscount }
+        try requireSalePayloadKeys(
+            required: ["payloadVersion", "id", "createdAt", "lines", "status"],
+            allowed: allowedKeys.map(\.rawValue),
+            decoder: decoder,
+            description: "Sale payload does not match its declared version."
+        )
         self.init(
-            payloadVersion: try container.decode(Int.self, forKey: .payloadVersion),
+            payloadVersion: payloadVersion,
             id: try container.decode(String.self, forKey: .id),
             clientID: try container.decodeIfPresent(String.self, forKey: .clientID),
             createdAt: try container.decode(SaleTimestampDTO.self, forKey: .createdAt),
             lines: try container.decode([SaleLineDTO].self, forKey: .lines),
-            status: try container.decode(SaleStatusDTO.self, forKey: .status)
+            status: try container.decode(SaleStatusDTO.self, forKey: .status),
+            globalDiscount: try container.decodeIfPresent(SaleGlobalDiscountDTO.self, forKey: .globalDiscount)
+        )
+    }
+
+    func encode(to encoder: any Encoder) throws {
+        guard payloadVersion == 1 || payloadVersion == 2,
+              payloadVersion == 2 || globalDiscount == nil else {
+            throw EncodingError.invalidValue(
+                self,
+                .init(codingPath: encoder.codingPath, debugDescription: "Sale payload does not match its version.")
+            )
+        }
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(payloadVersion, forKey: .payloadVersion)
+        try container.encode(id, forKey: .id)
+        try container.encodeIfPresent(clientID, forKey: .clientID)
+        try container.encode(createdAt, forKey: .createdAt)
+        try container.encode(lines, forKey: .lines)
+        try container.encode(status, forKey: .status)
+        if payloadVersion == 2 {
+            try container.encodeIfPresent(globalDiscount, forKey: .globalDiscount)
+        }
+    }
+}
+
+extension SaleGlobalDiscountDTO {
+    private enum CodingKeys: String, CodingKey, CaseIterable {
+        case percentage
+        case policy
+    }
+
+    init(from decoder: any Decoder) throws {
+        try requireExactSalePayloadKeys(
+            CodingKeys.allCases.map(\.rawValue),
+            decoder: decoder,
+            description: "Sale global discount payload does not match v2."
+        )
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        let percentage = try container.decode(CanonicalDecimalDTO.self, forKey: .percentage)
+        do {
+            _ = try Discount(percentage: percentage.decimal)
+        } catch {
+            throw DecodingError.dataCorruptedError(
+                forKey: .percentage,
+                in: container,
+                debugDescription: "A global discount percentage must be in the closed range 0...100."
+            )
+        }
+        self.init(
+            percentage: percentage,
+            policy: try container.decode(SaleGlobalDiscountPolicyDTO.self, forKey: .policy)
+        )
+    }
+}
+
+extension SaleCommercialPayloadDTO {
+    private enum CodingKeys: String, CodingKey, CaseIterable {
+        case lines
+        case globalDiscount
+    }
+
+    init(from decoder: any Decoder) throws {
+        try requireSalePayloadKeys(
+            required: [CodingKeys.lines.rawValue],
+            allowed: CodingKeys.allCases.map(\.rawValue),
+            decoder: decoder,
+            description: "Local sale commercial payload does not match v2."
+        )
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.init(
+            lines: try container.decode([SaleLineDTO].self, forKey: .lines),
+            globalDiscount: try container.decodeIfPresent(SaleGlobalDiscountDTO.self, forKey: .globalDiscount)
         )
     }
 }

@@ -3,6 +3,8 @@ import SwiftUI
 
 struct SaleDraftScreen: View {
     let makeServicePicker: @MainActor @Sendable (SaleDraftViewModel) -> SaleServicePickerViewModel
+    let makeDiscount: @MainActor @Sendable
+        (SaleDraftViewModel, SaleDiscountDestination, Locale) -> SaleDiscountViewModel
     private enum Operation: Equatable {
         case load
         case create
@@ -25,6 +27,9 @@ struct SaleDraftScreen: View {
     @State private var confirmsDiscard = false
     @State private var removalID: SaleLineID?
     @AccessibilityFocusState private var addServiceIsFocused: Bool
+    @AccessibilityFocusState private var discountIsFocused: SaleLineID?
+    @AccessibilityFocusState private var globalDiscountIsFocused: Bool
+    @State private var returnDiscountTarget: SaleDiscountDestination.Target?
 
     var body: some View {
         NavigationStack {
@@ -74,6 +79,12 @@ struct SaleDraftScreen: View {
             }
             .id(destination.id)
         }
+        .sheet(item: discountDestination, onDismiss: restoreDiscountFocus) { destination in
+            SaleDiscountScreen {
+                makeDiscount(viewModel, destination, locale)
+            }
+            .id(destination.id)
+        }
         .task(id: request) {
             guard let request else { return }
             await execute(request)
@@ -105,7 +116,11 @@ struct SaleDraftScreen: View {
                 onRemove: { removalID = $0 },
                 onRetry: retry,
                 onAddService: presentServicePicker,
-                addServiceIsFocused: $addServiceIsFocused
+                addServiceIsFocused: $addServiceIsFocused,
+                onEditDiscount: presentLineDiscount,
+                discountIsFocused: $discountIsFocused,
+                onEditGlobalDiscount: presentGlobalDiscount,
+                globalDiscountIsFocused: $globalDiscountIsFocused
             )
         case .unavailable, .closed:
             UnavailableStateView(
@@ -158,8 +173,49 @@ struct SaleDraftScreen: View {
     }
 
     private func presentServicePicker() {
+        globalDiscountIsFocused = false
         addServiceIsFocused = false
+        discountIsFocused = nil
         viewModel.presentServicePicker()
+    }
+
+    private var discountDestination: Binding<SaleDiscountDestination?> {
+        let sessionID = viewModel.discountDestination?.id
+        return Binding {
+            viewModel.discountDestination
+        } set: { destination in
+            guard destination == nil, let sessionID else { return }
+            viewModel.finishDiscount(sessionID)
+        }
+    }
+
+    private func presentLineDiscount(_ id: SaleLineID) {
+        returnDiscountTarget = .line(id)
+        globalDiscountIsFocused = false
+        discountIsFocused = nil
+        addServiceIsFocused = false
+        viewModel.presentLineDiscount(for: id)
+    }
+
+    private func presentGlobalDiscount() {
+        returnDiscountTarget = .global
+        globalDiscountIsFocused = false
+        discountIsFocused = nil
+        addServiceIsFocused = false
+        viewModel.presentGlobalDiscount()
+    }
+
+    private func restoreDiscountFocus() {
+        guard viewModel.discountDestination == nil, let target = returnDiscountTarget else { return }
+        returnDiscountTarget = nil
+        switch target {
+        case let .line(id):
+            guard viewModel.canEditDiscount(for: id) else { return }
+            discountIsFocused = id
+        case .global:
+            guard viewModel.canEditGlobalDiscount else { return }
+            globalDiscountIsFocused = true
+        }
     }
 
     private func restoreAddServiceFocus() {
@@ -211,9 +267,12 @@ extension SaleDraftScreen {
     init(
         destination: SaleDraftDestination,
         makeViewModel: @MainActor @Sendable (SaleDraftDestination) -> SaleDraftViewModel,
-        makeServicePicker: @escaping @MainActor @Sendable (SaleDraftViewModel) -> SaleServicePickerViewModel
+        makeServicePicker: @escaping @MainActor @Sendable (SaleDraftViewModel) -> SaleServicePickerViewModel,
+        makeDiscount: @escaping @MainActor @Sendable
+            (SaleDraftViewModel, SaleDiscountDestination, Locale) -> SaleDiscountViewModel
     ) {
         self.makeServicePicker = makeServicePicker
+        self.makeDiscount = makeDiscount
         _viewModel = State(initialValue: makeViewModel(destination))
     }
 }
@@ -223,7 +282,8 @@ extension SaleDraftScreen {
     SaleDraftScreen(
         destination: SalesPreviewFixtures.destination(index: 2, mode: .editDraft),
         makeViewModel: dependencies.makeSaleDraft,
-        makeServicePicker: dependencies.makeSaleServicePicker
+        makeServicePicker: dependencies.makeSaleServicePicker,
+        makeDiscount: dependencies.makeSaleDiscount
     )
 }
 
@@ -232,7 +292,8 @@ extension SaleDraftScreen {
     SaleDraftScreen(
         destination: SalesPreviewFixtures.destination(index: 3, mode: .inspect),
         makeViewModel: dependencies.makeSaleDraft,
-        makeServicePicker: dependencies.makeSaleServicePicker
+        makeServicePicker: dependencies.makeSaleServicePicker,
+        makeDiscount: dependencies.makeSaleDiscount
     )
 }
 
@@ -241,7 +302,8 @@ extension SaleDraftScreen {
     SaleDraftScreen(
         destination: SalesPreviewFixtures.destination(index: 4, mode: .inspect),
         makeViewModel: dependencies.makeSaleDraft,
-        makeServicePicker: dependencies.makeSaleServicePicker
+        makeServicePicker: dependencies.makeSaleServicePicker,
+        makeDiscount: dependencies.makeSaleDiscount
     )
 }
 
@@ -250,6 +312,7 @@ extension SaleDraftScreen {
     SaleDraftScreen(
         destination: SalesPreviewFixtures.destination(index: 5, mode: .inspect),
         makeViewModel: dependencies.makeSaleDraft,
-        makeServicePicker: dependencies.makeSaleServicePicker
+        makeServicePicker: dependencies.makeSaleServicePicker,
+        makeDiscount: dependencies.makeSaleDiscount
     )
 }

@@ -13,6 +13,9 @@ enum SaleMappingError: Error, Equatable {
 
     /// Line progress and aggregate lifecycle do not describe one valid Sale history.
     case invalidLifecycle
+
+    /// A historical v1 snapshot cannot carry a term introduced by payload v2.
+    case globalDiscountRequiresVersionTwo
 }
 
 /// The exact aggregate field whose transported identifier could not be reconstructed.
@@ -28,7 +31,7 @@ enum SaleIdentifierLocation: Equatable {
 }
 
 extension SaleDTO {
-    /// Creates the exact v1 transport snapshot for a validated Domain Sale.
+    /// Creates a v2 commercial snapshot for a validated Domain Sale.
     ///
     /// - Parameter sale: The aggregate whose identity, order, values, and dates are preserved.
     /// - Throws: Canonical decimal or timestamp errors when a value is not transportable.
@@ -39,18 +42,22 @@ extension SaleDTO {
             clientID: sale.clientID?.rawValue.uuidString,
             createdAt: try SaleTimestampDTO(sale.createdAt),
             lines: try sale.lines.map(SaleLineDTO.init),
-            status: try SaleStatusDTO(sale.status)
+            status: try SaleStatusDTO(sale.status),
+            globalDiscount: try sale.globalDiscount.map(SaleGlobalDiscountDTO.init)
         )
     }
 
     /// Reconstructs a Sale by replaying its validated Domain factories and transitions.
     ///
-    /// - Returns: The exact Domain aggregate represented by this v1 payload.
+    /// - Returns: The exact Domain aggregate represented by this v1 or v2 payload.
     /// - Throws: `SaleMappingError` for unsupported versions, invalid identifiers,
     ///   monetary normalization, or an incoherent lifecycle. Domain errors propagate.
     func toDomain() throws -> Sale {
-        guard payloadVersion == Self.currentPayloadVersion else {
+        guard payloadVersion == 1 || payloadVersion == 2 else {
             throw SaleMappingError.unsupportedPayloadVersion(payloadVersion)
+        }
+        guard payloadVersion == 2 || globalDiscount == nil else {
+            throw SaleMappingError.globalDiscountRequiresVersionTwo
         }
 
         let saleID = SaleID(rawValue: try saleUUID(id, location: .sale))
@@ -64,7 +71,8 @@ extension SaleDTO {
             id: saleID,
             clientID: clientID,
             createdAt: createdAt.date,
-            lines: upcomingLines
+            lines: upcomingLines,
+            globalDiscount: try globalDiscount?.toDomain()
         )
 
         switch status {
@@ -142,6 +150,25 @@ extension SaleDTO {
                 try sale.completeLine(id: lineID)
             }
         }
+    }
+}
+
+extension SaleGlobalDiscountDTO {
+    /// Captures the canonical percentage and its immutable historical policy.
+    init(_ term: SaleGlobalDiscount) throws {
+        let policy: SaleGlobalDiscountPolicyDTO = switch term.policy {
+        case .lineThenGlobalV1: .lineThenGlobalV1
+        }
+        self.init(percentage: try CanonicalDecimalDTO(term.discount.percentage), policy: policy)
+    }
+
+    /// Revalidates the exact percentage while restoring the persisted calculation policy.
+    /// - Throws: `DiscountError` if an internally constructed DTO violates Domain's range.
+    func toDomain() throws -> SaleGlobalDiscount {
+        let policy: SaleGlobalDiscountPolicy = switch self.policy {
+        case .lineThenGlobalV1: .lineThenGlobalV1
+        }
+        return SaleGlobalDiscount(discount: try Discount(percentage: percentage.decimal), policy: policy)
     }
 }
 

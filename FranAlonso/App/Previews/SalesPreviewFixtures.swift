@@ -32,14 +32,16 @@ extension SalesPreviewFixtures {
                     quantity: 1,
                     unitPrice: Money(amount: Decimal(string: "24.20")!, currency: .eur),
                     taxRate: TaxRate(percentage: 21),
-                    discount: nil,
+                    discount: [3, 4].contains(index) ? Discount(percentage: 10) : nil,
                     linkedProductID: nil
                 )
                 var sale = try Sale.draft(
                     id: SaleID(rawValue: uuid(index)),
                     clientID: [1, 4].contains(index) ? nil : (index == 3 ? brunoID : albaID),
                     createdAt: Date(timeIntervalSince1970: 1_790_000_000 + Double(index) * 60),
-                    lines: [line]
+                    lines: [line],
+                    globalDiscount: [3, 4].contains(index) ?
+                        SaleGlobalDiscount(discount: Discount(percentage: 20), policy: .lineThenGlobalV1) : nil
                 )
                 if index >= 4 {
                     try sale.start()
@@ -69,7 +71,7 @@ extension SalesPreviewFixtures {
 
     static func calculation(for sale: Sale) -> SaleCalculation {
         do {
-            return try SaleCalculator().calculate(lines: sale.lines, currency: .eur)
+            return try SaleCalculator().calculate(sale: sale, currency: .eur)
         } catch {
             preconditionFailure("Fixed workday amounts must satisfy Domain invariants")
         }

@@ -339,10 +339,15 @@ actor ViewModelSaleRepository: SaleRepository {
         sales[draft.id] = draft
     }
 
-    func updateDraft(_ expected: Sale, clientID: ClientID?, lines: [SaleLine]) throws -> Sale {
+    func updateDraft(
+        _ expected: Sale,
+        clientID: ClientID?,
+        lines: [SaleLine],
+        globalDiscount: SaleGlobalDiscount?
+    ) throws -> Sale {
         guard let current = sales[expected.id] else { throw SaleDraftError.notFound }
         guard current == expected else { throw SaleDraftError.staleDraft }
-        let updated = try current.replacingDraft(clientID: clientID, lines: lines)
+        let updated = try current.replacingDraft(clientID: clientID, lines: lines, globalDiscount: globalDiscount)
         writeCount += 1
         sales[updated.id] = updated
         return updated

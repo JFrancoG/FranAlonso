@@ -30,10 +30,29 @@ actor SalePersistenceActor {
         lines: [SaleLine],
         operationID: UUID
     ) throws -> Sale {
+        try updateDraft(
+            expected,
+            clientID: clientID,
+            lines: lines,
+            globalDiscount: expected.globalDiscount,
+            operationID: operationID
+        )
+    }
+
+    /// Accepts the complete candidate without dropping an explicitly supplied global term.
+    /// - Throws: `SaleDraftError`, `SaleError`, or cancellation before local acceptance.
+    func updateDraft(
+        _ expected: Sale,
+        clientID: ClientID?,
+        lines: [SaleLine],
+        globalDiscount: SaleGlobalDiscount?,
+        operationID: UUID
+    ) throws -> Sale {
         try dataSource.updateDraft(
             expected,
             clientID: clientID,
             lines: lines,
+            globalDiscount: globalDiscount,
             operationID: operationID,
             in: modelContext
         )

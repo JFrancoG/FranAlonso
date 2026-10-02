@@ -48,7 +48,7 @@ struct SaleDTOConversionTests {
     func unsupportedPayloadVersionsFail() throws {
         let valid = try SaleDTO(saleDTODraft())
         let unsupported = SaleDTO(
-            payloadVersion: 2,
+            payloadVersion: 3,
             id: valid.id,
             clientID: valid.clientID,
             createdAt: valid.createdAt,
@@ -56,7 +56,7 @@ struct SaleDTOConversionTests {
             status: valid.status
         )
 
-        #expect(throws: SaleMappingError.unsupportedPayloadVersion(2)) {
+        #expect(throws: SaleMappingError.unsupportedPayloadVersion(3)) {
             _ = try unsupported.toDomain()
         }
     }

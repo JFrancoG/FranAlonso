@@ -94,7 +94,12 @@ actor SaleSelectionControlledRepository: SaleRepository {
         try await backing.discardDraft(id)
     }
 
-    func updateDraft(_ expected: Sale, clientID: ClientID?, lines: [SaleLine]) async throws -> Sale {
+    func updateDraft(
+        _ expected: Sale,
+        clientID: ClientID?,
+        lines: [SaleLine],
+        globalDiscount: SaleGlobalDiscount?
+    ) async throws -> Sale {
         updateAttempts.append(lines)
         let held = updateHold
         updateHold = nil
@@ -105,7 +110,12 @@ actor SaleSelectionControlledRepository: SaleRepository {
             shouldFailUpdate = false
             throw SaleDraftError.persistenceUnavailable
         }
-        let accepted = try await backing.updateDraft(expected, clientID: clientID, lines: lines)
+        let accepted = try await backing.updateDraft(
+            expected,
+            clientID: clientID,
+            lines: lines,
+            globalDiscount: globalDiscount
+        )
         if held?.1 == .after {
             await held?.0.block()
         }

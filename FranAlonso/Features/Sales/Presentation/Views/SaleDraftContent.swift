@@ -11,6 +11,10 @@ struct SaleDraftContent: View {
     let onRetry: @MainActor () -> Void
     let onAddService: @MainActor () -> Void
     let addServiceIsFocused: AccessibilityFocusState<Bool>.Binding
+    let onEditDiscount: @MainActor (SaleLineID) -> Void
+    let discountIsFocused: AccessibilityFocusState<SaleLineID?>.Binding
+    let onEditGlobalDiscount: @MainActor () -> Void
+    let globalDiscountIsFocused: AccessibilityFocusState<Bool>.Binding
 
     var body: some View {
         Form {
@@ -18,6 +22,13 @@ struct SaleDraftContent: View {
             if let sale = viewModel.sale {
                 clientSection(sale)
                 linesSection(sale)
+                SaleGlobalDiscountSection(
+                    discount: sale.globalDiscount,
+                    isReadOnly: viewModel.isReadOnly,
+                    canEdit: !isWorking && viewModel.canEditGlobalDiscount,
+                    onEdit: onEditGlobalDiscount,
+                    isFocused: globalDiscountIsFocused
+                )
                 if let calculation = viewModel.calculation {
                     SaleTotalsSection(calculation: calculation)
                 }
@@ -78,7 +89,9 @@ struct SaleDraftContent: View {
                     isReadOnly: viewModel.isReadOnly,
                     onIncrease: increaseAction(for: line.id),
                     onDecrease: decreaseAction(for: line.id),
-                    onRemove: { onRemove(line.id) }
+                    onRemove: { onRemove(line.id) },
+                    onEditDiscount: { onEditDiscount(line.id) },
+                    discountIsFocused: discountIsFocused
                 )
                 .disabled(isWorking)
             }
@@ -111,6 +124,8 @@ struct SaleDraftContent: View {
 #Preview("Accepted draft", traits: .modifier(SalesPreviewModifier())) {
     @Previewable @Environment(\.salesPreviewModels) var models
     @Previewable @AccessibilityFocusState var addServiceIsFocused: Bool
+    @Previewable @AccessibilityFocusState var discountIsFocused: SaleLineID?
+    @Previewable @AccessibilityFocusState var globalDiscountIsFocused: Bool
     if let model = models[SalesPreviewFixtures.workday.sales[2].id] {
         SaleDraftContent(
             viewModel: model,
@@ -122,7 +137,11 @@ struct SaleDraftContent: View {
             onRemove: { _ in },
             onRetry: {},
             onAddService: {},
-            addServiceIsFocused: $addServiceIsFocused
+            addServiceIsFocused: $addServiceIsFocused,
+            onEditDiscount: { _ in },
+            discountIsFocused: $discountIsFocused,
+            onEditGlobalDiscount: {},
+            globalDiscountIsFocused: $globalDiscountIsFocused
         )
     }
 }
@@ -130,6 +149,8 @@ struct SaleDraftContent: View {
 #Preview("In progress content", traits: .modifier(SalesPreviewModifier())) {
     @Previewable @Environment(\.salesPreviewModels) var models
     @Previewable @AccessibilityFocusState var addServiceIsFocused: Bool
+    @Previewable @AccessibilityFocusState var discountIsFocused: SaleLineID?
+    @Previewable @AccessibilityFocusState var globalDiscountIsFocused: Bool
     if let model = models[SalesPreviewFixtures.workday.sales[3].id] {
         SaleDraftContent(
             viewModel: model,
@@ -141,7 +162,11 @@ struct SaleDraftContent: View {
             onRemove: { _ in },
             onRetry: {},
             onAddService: {},
-            addServiceIsFocused: $addServiceIsFocused
+            addServiceIsFocused: $addServiceIsFocused,
+            onEditDiscount: { _ in },
+            discountIsFocused: $discountIsFocused,
+            onEditGlobalDiscount: {},
+            globalDiscountIsFocused: $globalDiscountIsFocused
         )
     }
 }
@@ -149,6 +174,8 @@ struct SaleDraftContent: View {
 #Preview("Awaiting payment content", traits: .modifier(SalesPreviewModifier())) {
     @Previewable @Environment(\.salesPreviewModels) var models
     @Previewable @AccessibilityFocusState var addServiceIsFocused: Bool
+    @Previewable @AccessibilityFocusState var discountIsFocused: SaleLineID?
+    @Previewable @AccessibilityFocusState var globalDiscountIsFocused: Bool
     if let model = models[SalesPreviewFixtures.workday.sales[4].id] {
         SaleDraftContent(
             viewModel: model,
@@ -160,7 +187,11 @@ struct SaleDraftContent: View {
             onRemove: { _ in },
             onRetry: {},
             onAddService: {},
-            addServiceIsFocused: $addServiceIsFocused
+            addServiceIsFocused: $addServiceIsFocused,
+            onEditDiscount: { _ in },
+            discountIsFocused: $discountIsFocused,
+            onEditGlobalDiscount: {},
+            globalDiscountIsFocused: $globalDiscountIsFocused
         )
     }
 }
@@ -168,6 +199,8 @@ struct SaleDraftContent: View {
 #Preview("Awaiting document content", traits: .modifier(SalesPreviewModifier())) {
     @Previewable @Environment(\.salesPreviewModels) var models
     @Previewable @AccessibilityFocusState var addServiceIsFocused: Bool
+    @Previewable @AccessibilityFocusState var discountIsFocused: SaleLineID?
+    @Previewable @AccessibilityFocusState var globalDiscountIsFocused: Bool
     if let model = models[SalesPreviewFixtures.workday.sales[5].id] {
         SaleDraftContent(
             viewModel: model,
@@ -179,7 +212,11 @@ struct SaleDraftContent: View {
             onRemove: { _ in },
             onRetry: {},
             onAddService: {},
-            addServiceIsFocused: $addServiceIsFocused
+            addServiceIsFocused: $addServiceIsFocused,
+            onEditDiscount: { _ in },
+            discountIsFocused: $discountIsFocused,
+            onEditGlobalDiscount: {},
+            globalDiscountIsFocused: $globalDiscountIsFocused
         )
     }
 }

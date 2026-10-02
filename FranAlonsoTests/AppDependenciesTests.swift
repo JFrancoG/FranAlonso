@@ -409,7 +409,12 @@ private actor CompositionSaleRepositoryFake: SaleRepository {
 
     func createDraft(_ draft: Sale) async throws { throw SaleDraftError.persistenceUnavailable }
 
-    func updateDraft(_ expected: Sale, clientID: ClientID?, lines: [SaleLine]) async throws -> Sale {
+    func updateDraft(
+        _ expected: Sale,
+        clientID: ClientID?,
+        lines: [SaleLine],
+        globalDiscount: SaleGlobalDiscount?
+    ) async throws -> Sale {
         throw SaleDraftError.persistenceUnavailable
     }
 

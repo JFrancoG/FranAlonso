@@ -6,6 +6,10 @@ All notable changes to this project are documented in this file.
 
 ### Added
 
+- 2026-10-02 | ✨ feat(sales): add global and line sale discounts
+  Adds an exact localized editor with independent line promotions and a provisional global discount.
+  Preserves the captured calculation policy and historical payload versions without a SwiftData schema change.
+
 - 2026-10-02 | ✨ feat(sales): add service selection to sale drafts
   Adds active catalogue search and type filters to editable sale drafts.
   Freezes commercial terms before acceptance and preserves line identity during retry and cancellation.
