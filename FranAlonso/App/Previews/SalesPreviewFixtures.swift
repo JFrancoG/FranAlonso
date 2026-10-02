@@ -96,3 +96,58 @@ extension SalesPreviewFixtures {
         UUID(uuid: (11, 5, 0, 0, 0, 0, 64, 0, 128, 0, 0, 0, 0, 0, 0, value))
     }
 }
+
+
+extension SalesPreviewFixtures {
+    /// Already-materialized synthetic history for read-only demos;
+    /// never evidence of document generation or compensation.
+    static let history: SalesPreviewFixtures = {
+        do {
+            var sales: [Sale] = []
+            for index in UInt8(1)...3 {
+                let line = try SaleLine.upcoming(
+                    id: SaleLineID(rawValue: uuid(100 + index)),
+                    serviceID: ServiceID(rawValue: uuid(90)),
+                    serviceName: index == 2 ?
+                        "Muestra histórica DEMO — Tratamiento de hidratación intensiva y peinado para ocasión especial" :
+                        "Muestra histórica DEMO — Corte y peinado",
+                    quantity: 1,
+                    unitPrice: Money(amount: Decimal(string: "24.20")!, currency: .eur),
+                    taxRate: TaxRate(percentage: 21),
+                    discount: index == 2 ? Discount(percentage: 10) : nil,
+                    linkedProductID: nil
+                )
+                var sale = try Sale.draft(
+                    id: SaleID(rawValue: uuid(110 + index)),
+                    clientID: index == 3 ? nil : (index == 2 ? brunoID : albaID),
+                    createdAt: Date(timeIntervalSince1970: 1_790_000_000 + Double(index) * 60),
+                    lines: [line],
+                    globalDiscount: index == 2 ?
+                        SaleGlobalDiscount(discount: Discount(percentage: 20), policy: .lineThenGlobalV1) : nil
+                )
+                try sale.start()
+                try sale.startLine(id: line.id)
+                try sale.completeLine(id: line.id)
+                try sale.registerPayment(
+                    id: PaymentID(rawValue: uuid(120 + index)),
+                    method: index == 2 ? .card : .cash,
+                    paidAt: Date(timeIntervalSince1970: 1_790_001_000 + Double(index) * 60)
+                )
+                try sale.close(
+                    documentID: BillingDocumentID(rawValue: uuid(130 + index)),
+                    closedAt: Date(timeIntervalSince1970: 1_790_001_100 + Double(index) * 60)
+                )
+                if index == 2 {
+                    try sale.void(
+                        reversalID: SaleReversalID(rawValue: uuid(140 + index)),
+                        voidedAt: Date(timeIntervalSince1970: 1_790_002_000)
+                    )
+                }
+                sales.append(sale)
+            }
+            return SalesPreviewFixtures(sales: sales)
+        } catch {
+            preconditionFailure("Fixed historical DEMO samples must satisfy Domain invariants")
+        }
+    }()
+}

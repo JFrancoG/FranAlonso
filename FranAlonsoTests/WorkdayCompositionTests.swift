@@ -22,8 +22,14 @@ struct WorkdayCompositionTests {
         let workday = try DevelopDemoComposition.make(configuration: .workday).applicationComposition
         let context = ModelContext(workday.modelContainer)
         let sales = try SaleLocalDataSource().fetchAll(in: context)
+        let history = SalesHistoryPolicy()(sales)
+        let operational = sales.filter { SalesHistoryPolicy().closureDate(of: $0) == nil }
 
-        #expect(sales.count == 6)
+        #expect(sales.count == 9)
+        #expect(operational.count == 6)
+        #expect(history.count == 3)
+        #expect(SalesHistoryPolicy()(history, filter: .closed).count == 2)
+        #expect(SalesHistoryPolicy()(history, filter: .voided).count == 1)
         #expect(sales.filter { $0.status == .draft }.count == 3)
         #expect(sales.filter { $0.status == .inProgress }.count == 1)
         #expect(sales.filter { $0.status == .awaitingPayment }.count == 1)
@@ -31,8 +37,8 @@ struct WorkdayCompositionTests {
             if case .awaitingDocument = $0.status { return true }
             return false
         }.count == 1)
-        #expect(sales.filter { $0.clientID == nil }.count == 2)
-        #expect(Set(sales.compactMap(\.clientID)).count == 2)
+        #expect(operational.filter { $0.clientID == nil }.count == 2)
+        #expect(Set(operational.compactMap(\.clientID)).count == 2)
         #expect(try context.fetchCount(FetchDescriptor<SalePendingUpsertModel>()) == 0)
         #expect(try context.fetchCount(FetchDescriptor<SalePendingDiscardModel>()) == 0)
         #expect(workday.runtime == nil)

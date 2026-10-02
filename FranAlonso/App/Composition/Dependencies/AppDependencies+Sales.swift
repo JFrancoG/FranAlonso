@@ -1,6 +1,33 @@
 import Foundation
 
 extension AppDependencies {
+    /// Historical screens observe the same local source without obtaining draft/payment mutation capabilities.
+    static func salesHistoryFactory(
+        saleRepository: any SaleRepository,
+        clientRepository: any ClientRepository
+    ) -> SalesHistoryFactory {
+        {
+            SalesHistoryViewModel(
+                observe: ObserveSalesUseCase(repository: saleRepository),
+                getClient: GetClientUseCase(repository: clientRepository)
+            )
+        }
+    }
+
+    /// Creates an independent live terminal inspection for each presentation identity.
+    static func saleDetailFactory(
+        saleRepository: any SaleRepository,
+        clientRepository: any ClientRepository
+    ) -> SaleDetailFactory {
+        { destination in
+            SaleDetailViewModel(
+                destination: destination,
+                observe: ObserveSalesUseCase(repository: saleRepository),
+                getClient: GetClientUseCase(repository: clientRepository)
+            )
+        }
+    }
+
     /// Applies an editor's frozen percentage through the parent's retained draft acceptance capability.
     /// Ending either presentation revokes the capability without creating another sale Store.
     @MainActor

@@ -107,3 +107,11 @@ para cada recorrido. Cerrar la sesión de interacción al terminar y conservar a
 Resultados de validación y deuda accesible en [fase08](phase-08.md), [fase09](phase-09.md), [fase10](phase-10.md) y
 [fase16](phase-16.md); diseño y límites en
 [propuesta08.8a](08-8a-reusable-demo-proposal.md) y [ADR0030](../ADRs/0030-reusable-demo-and-early-foundation-models.md).
+
+## Histórico de muestra (11.9)
+
+`--franalonso-demo-workday` incluye tres muestras históricas ya materializadas (dos cerradas y una anulada),
+con nombres/referencias DEMO. El aviso de la demo indica esta frontera: no se han emitido documentos,
+ni ejecutado CloseSaleUseCase13.12 ni compensaciones12.8. Histórico permite únicamente consultar,
+filtrar/ordenar/buscar y ver importes/trazabilidad. La venta pagada sin documento sigue en Jornada.
+Las muestras no acreditan el flujo completo de venta ni emisión fiscal; sin numeración de negocio ni correo real.
