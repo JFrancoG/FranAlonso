@@ -6,6 +6,10 @@ All notable changes to this project are documented in this file.
 
 ### Added
 
+- 2026-10-02 | ✨ feat(sales): register local sale payments
+  Accepts cash or card with caller-retained payment identity and timestamp.
+  Preserves commercial snapshots, later document/reversal metadata and durable recovery across exact retries.
+
 - 2026-10-02 | ✨ feat(sales): add global and line sale discounts
   Adds an exact localized editor with independent line promotions and a provisional global discount.
   Preserves the captured calculation policy and historical payload versions without a SwiftData schema change.

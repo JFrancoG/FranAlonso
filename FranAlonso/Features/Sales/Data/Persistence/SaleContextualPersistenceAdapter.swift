@@ -58,6 +58,28 @@ struct SaleContextualPersistenceAdapter {
         return draft
     }
 
+    /// Accepts a stable payment in the ephemeral caller context before publishing.
+    /// Exact replay retains later lifecycle metadata; cancellation after commit does not undo acceptance.
+    /// - Throws: `SalePaymentError`, `SaleError`, or cancellation before acceptance.
+    func registerPayment(
+        _ expected: Sale,
+        id paymentID: PaymentID,
+        method: PaymentMethod,
+        paidAt: Date,
+        in context: ModelContext
+    ) async throws -> Sale {
+        let accepted = try dataSource.registerPayment(
+            expected,
+            id: paymentID,
+            method: method,
+            paidAt: paidAt,
+            operationID: makeOperationID(),
+            in: context
+        )
+        await observationSignal.publishChange()
+        return accepted
+    }
+
     /// Discards an unconflicted draft and publishes only after local acceptance.
     /// Progressed sales remain intact; repetition and absence keep the existing pending identity.
     /// - Throws: `SaleDraftError` or cancellation before acceptance.

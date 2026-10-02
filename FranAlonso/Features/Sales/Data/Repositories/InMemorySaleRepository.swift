@@ -1,5 +1,27 @@
+import Foundation
 /// An actor-isolated Sales repository for previews and deterministic tests.
 actor InMemorySaleRepository: SaleRepository {
+    func registerPayment(
+        _ expected: Sale,
+        id paymentID: PaymentID,
+        method: PaymentMethod,
+        paidAt: Date
+    ) async throws -> Sale {
+        try Task.checkCancellation()
+        guard let index = sales.firstIndex(where: { $0.id == expected.id }) else {
+            throw knownIDs.contains(expected.id) ? SalePaymentError.deleted : .notFound
+        }
+        let accepted = try SalePaymentAcceptancePolicy()(
+            expected: expected,
+            current: sales[index],
+            id: paymentID,
+            method: method,
+            paidAt: paidAt
+        )
+        sales[index] = accepted
+        return accepted
+    }
+
     private var sales: [Sale]
     private var knownIDs: Set<SaleID>
 

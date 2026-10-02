@@ -1,3 +1,5 @@
+import Foundation
+
 /// Access to sale snapshots materialized by the local source of truth.
 protocol SaleRepository: Sendable {
     /// Requests an observation stream backed by locally materialized sale snapshots.
@@ -33,6 +35,17 @@ protocol SaleRepository: Sendable {
         clientID: ClientID?,
         lines: [SaleLine],
         globalDiscount: SaleGlobalDiscount?
+    ) async throws -> Sale
+
+    /// Accepts a stable payment without overwriting an obsolete commercial snapshot.
+    /// Exact replay preserves later document/reversal metadata and creates no pending operation.
+    /// Checks and persistence do not suspend in the owning context; not cross-context CAS.
+    /// - Throws: `SalePaymentError`, `SaleError`, or cancellation before acceptance.
+    func registerPayment(
+        _ expected: Sale,
+        id paymentID: PaymentID,
+        method: PaymentMethod,
+        paidAt: Date
     ) async throws -> Sale
 
     /// Discards only a draft through the existing durable tombstone path.

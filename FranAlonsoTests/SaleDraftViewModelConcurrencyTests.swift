@@ -250,6 +250,15 @@ private enum SaleDraftViewModelAcceptancePhase: Equatable {
 }
 
 private actor SaleDraftViewModelControlledRepository: SaleRepository {
+    func registerPayment(
+        _ expected: Sale,
+        id paymentID: PaymentID,
+        method: PaymentMethod,
+        paidAt: Date
+    ) async throws -> Sale {
+        throw SalePaymentError.persistenceUnavailable
+    }
+
     private let backing: InMemorySaleRepository
     private var readHold: (checkpoint: SaleDraftViewModelCheckpoint, outcome: SaleDraftViewModelObsoleteRead)?
     private var writeHold: (

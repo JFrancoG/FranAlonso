@@ -293,6 +293,15 @@ func makeSaleDraftViewModel(
 }
 
 actor ViewModelSaleRepository: SaleRepository {
+    func registerPayment(
+        _ expected: Sale,
+        id paymentID: PaymentID,
+        method: PaymentMethod,
+        paidAt: Date
+    ) async throws -> Sale {
+        throw SalePaymentError.persistenceUnavailable
+    }
+
     private var sales: [SaleID: Sale]
     private var observationShouldFail = false
     private var readShouldFail = false

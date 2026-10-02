@@ -11,6 +11,40 @@ import Testing
 @Suite("Application dependency composition")
 struct AppDependenciesTests {
 #if FRANALONSO_AUTH_FIXTURE
+    @Test("Local composition accepts payment and publishes a pending document sale")
+    @MainActor
+    func localCompositionAcceptsPayment() async throws {
+        let container = try ModelContainer.inMemory(for: .franAlonso)
+        let dependencies = AppDependencies.local(
+            modelContainer: container,
+            analyticsDataSource: CompositionAnalyticsDataSourceSpy(),
+            crashDataSource: CompositionCrashDataSourceSpy()
+        )
+        var original = try SaleGlobalDiscountDataFixture.domain(globalPercentage: 20)
+        try original.start()
+        let line = try #require(original.lines.first)
+        try original.startLine(id: line.id)
+        try original.completeLine(id: line.id)
+        try SaleLocalDataSource().upsert(original, in: ModelContext(container))
+        let stream = await dependencies.observeSales()
+        var iterator = stream.makeAsyncIterator()
+        #expect(try await iterator.next() == [original])
+        let paymentID = PaymentID(rawValue: UUID(uuidString: "83000000-0000-0000-0000-000000000020")!)
+        let paidAt = Date(timeIntervalSinceReferenceDate: 2)
+        let accepted = try await dependencies.registerSalePayment(
+            original,
+            id: paymentID,
+            method: .cash,
+            paidAt: paidAt
+        )
+        #expect(accepted.status == .awaitingDocument(paymentID: paymentID, method: .cash, paidAt: paidAt))
+        #expect(try await iterator.next() == [accepted])
+        #expect(WorkdaySalesPolicy()([accepted]).awaitingClosure == [accepted])
+        let pending = try SaleLocalDataSource().pendingUpserts(in: ModelContext(container))
+        #expect(pending.count == 1)
+        #expect(try pending.first?.sale.toDomain() == accepted)
+    }
+
     @Test("Local dependencies use the SwiftData source of truth with injected telemetry")
     @MainActor
     func localDependenciesUseSwiftDataWithInjectedTelemetry() async throws {
@@ -405,6 +439,15 @@ private actor CompositionServiceRepositoryFake: ServiceRepository {
 }
 
 private actor CompositionSaleRepositoryFake: SaleRepository {
+    func registerPayment(
+        _ expected: Sale,
+        id paymentID: PaymentID,
+        method: PaymentMethod,
+        paidAt: Date
+    ) async throws -> Sale {
+        throw SalePaymentError.persistenceUnavailable
+    }
+
     func sale(id: SaleID) async throws -> Sale? { throw SaleDraftError.persistenceUnavailable }
 
     func createDraft(_ draft: Sale) async throws { throw SaleDraftError.persistenceUnavailable }
