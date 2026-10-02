@@ -6,6 +6,10 @@ All notable changes to this project are documented in this file.
 
 ### Added
 
+- 2026-10-02 | ✨ feat(sales): refresh sale draft stock warnings
+  Reads each linked product once and refreshes advisory impacts after accepted draft changes or explicit refresh.
+  Fences stale results and keeps accepted sales intact when inventory reading fails or is cancelled.
+
 - 2026-10-02 | ✨ feat(sales): analyze sale stock impact
   Reuses the stock policy through a pure sale use case, preserving cumulative per-line projections and advisory warnings.
   Propagates missing inventory, duplicate identity and overflow without reserving or changing physical stock.

@@ -208,7 +208,8 @@ struct AppDependencies {
             ),
             saleRepository: saleRepository,
             analyticsDataSource: analyticsDataSource,
-            crashDataSource: crashDataSource
+            crashDataSource: crashDataSource,
+            stockRepository: stockRepository
         )
     }
 
@@ -273,7 +274,8 @@ struct AppDependencies {
             ),
             saleRepository: saleRepository,
             analyticsDataSource: analyticsDataSource,
-            crashDataSource: crashDataSource
+            crashDataSource: crashDataSource,
+            stockRepository: stockRepository
         )
     }
 #endif
@@ -342,7 +344,8 @@ extension AppDependencies {
         makeServiceForm: @escaping ServiceFormFactory,
         saleRepository: any SaleRepository,
         analyticsDataSource: any AnalyticsDataSource,
-        crashDataSource: any CrashDataSource
+        crashDataSource: any CrashDataSource,
+        stockRepository: (any StockRepository)? = nil
     ) {
         self.init(
             observeClients: ObserveClientsUseCase(repository: clientRepository),
@@ -367,7 +370,11 @@ extension AppDependencies {
                 clientRepository: clientRepository
             ),
             makeSaleDetail: Self.saleDetailFactory(saleRepository: saleRepository, clientRepository: clientRepository),
-            makeSaleDraft: Self.saleDraftFactory(saleRepository: saleRepository, clientRepository: clientRepository),
+            makeSaleDraft: Self.saleDraftFactory(
+                saleRepository: saleRepository,
+                clientRepository: clientRepository,
+                stockRepository: stockRepository
+            ),
             telemetryReporter: TelemetryReporter(
                 analyticsDataSource: analyticsDataSource,
                 crashDataSource: crashDataSource

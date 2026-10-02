@@ -65,3 +65,83 @@ Checks remotos y workflow runs vacíos, main sin reglas/protección requeridas: 
 Rama `codex/plu-86-sale-stock-impact` eliminada local/remota tras verificar ambos tips y ascendencia al main remoto.
 PLU-86 Done; PLU-85 In Progress con12.1 entregada y12.2–12.8 pendientes. No se inicia12.2.
 Este cierre solo modifica documentación; Xcode adicional N/A porque la fuente/config validada sigue intacta.
+
+
+## 12.2 — Avisos de stock del Store
+
+[PLU-87](https://linear.app/plusprojects/issue/PLU-87), In Progress, Jesus Franco, hija PLU-85.
+Autorización02/10: «abre issue y rama e implementa12.2». Base limpia main/origin-main `a543125`;
+rama `codex/plu-87-sale-draft-stock-warnings`. [Propuesta/PRE](12-2-stock-store-proposal.md): PASS independiente.
+La entrega previa12.1 no extiende autorización a commit/push/PR/merge/cierre12.2.
+
+### Implementación
+
+`GetSaleStockQuantitiesUseCase` lee cada producto vinculado una vez por refresco, por orden de primera aparición,
+mediante StockRepository existente; comprueba cancelación antes/después de las lecturas suspendidas.
+Snapshot local secuencial, no atómico multi-producto y sin reserva, observaciones ni movimientos.
+`SaleDraftStore` conserva venta/cálculo aceptados; proyecta por separado stockState idle/loading/ready/failed y
+stockError. Create/load/edit aceptados invalidan avisos anteriores y refrescan en la tarea estructurada del caller,
+delegando la regla a AnalyzeSaleStockImpactUseCase. Cantidad/eliminación/alta recalculan productos repetidos.
+Stock conocido cero/negativo no bloquea; ausencia de lector/cantidad, overflow o fallo de lectura quedan en failed.
+El error advisory no contamina lastError ni revoca el éxito durable. Cancelación advisory deja idle sin error.
+Refresh público usa generación independiente y snapshot original: resultado/error obsoleto no sustituye el actual;
+close/discard/ausencia invalidan la proyección. Edición rechazada conserva avisos del último borrador aceptado.
+La edición conserva exclusión hasta completar el análisis; refresh manual no introduce operación de escritura.
+ViewModel solo proyecta estado/delega refresh editable. Composición live/local/demo y preview interactivo inyectan
+el mismo repositorio stock local. Constructores históricos/preview finito conservan capacidad opcional explícita:
+con líneas físicas y sin lector -> failed/readerUnavailable; sin físicas -> ready([]), nunca stock inventado.
+Sin modificación de View/texto/catálogo/configuración, sin pago/movimientos/sync ni activación live.
+
+### Evidencia Xcode MCP
+
+Service estable `workspace-PfnUYLlMzY`, Develop/planDevelop; Simulator iPadPro13(M5)27.2, SDK27.0,
+iOS27/Swift6/nonisolated/strict complete/warnings-as-errors. Production verificado y Develop/destino restaurados.
+
+- Baseline Store/concurrencia:49/49 PASS.
+- RED antes de código: APIs UseCase/estado/refresh ausentes; fallo esperado de compilación de tests.
+  Log `/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/BuildProject/BuildProject-Log-20261002-135703.txt`.
+- GREEN inicial16/16; final16 declaraciones/18 escenarios nuevos incluidos en regresión **153/153 PASS**,
+  0 fallos/skips/expected failures/no ejecutados: Stock/Store/concurrencia/ViewModel/composición/demo/política/semántica.
+  Oráculos literales independientes, barreras deterministas sin sleeps para latest-wins con éxito/error,
+  edición/discard/close/cancelación tras aceptar. Recarga usa stock actual; refresh no reescribe venta;
+  composición in-memorySwiftData verifica libro real compartido, cantidades actuales y solo movimientos explícitos.
+  Resumen completo (MCP trunca inline a100):
+  `/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RunSomeTests/30DF811C-B43A-40E9-8F5F-C20CA9887947.txt`.
+  Resultado nativo cerrado real inspeccionado con xcresulttool (solo lectura):
+  `/Users/jesusf/Library/Developer/Xcode/DerivedData/FranAlonso-eehpkvodmpnqlchgeqriatcucsjf/Logs/Test/Test-FranAlonso-Develop-2026.10.02_14-03-30-+0200.xcresult`.
+  107 declaraciones,24 parametrizadas/70 ejecuciones,153 resultados por dispositivo; runtimeWarnings vacíos.
+  El xcresultBundlePath devuelto por MCP en ActionArtifacts no existe: se contrastó el bundle real de DerivedData.
+- Develop build-for-testing22,128s + final incremental3,674s PASS; Production21,103s PASS.
+  Logs `/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/BuildProject/BuildProject-Log-20261002-140157.txt`,
+  `BuildProject-Log-20261002-140359.txt` y `BuildProject-Log-20261002-140434.txt` en la misma carpeta.
+  Cero warnings Swift/Clang o estructurados; persiste aviso histórico appintentsmetadataprocessor de metadata
+  omitida por ausencia de AppIntents.framework. No se declara cero avisos absolutos.
+- Diagnósticos MCP de los6 Swift:0 cada uno, success=true. Dos fallos transitorios SourceEditor(error5) pasaron al reintentar.
+- Catálogos561 es/en,0 errores; diff-check PASS. Gobernanza solo conserva seis links Desktop rotos08.3 históricos.
+- Estilo recall6 archivos/1 candidato: firma edit con función aislada, previa al cambio; vertical preserva lectura.
+  Inspección manual del diff y archivo nuevo, sin cambios oportunistas a estilo histórico.
+- UI/previews/auditoría accesible N/A: no cambia pantalla ni presentación de avisos, asignada a12.3.
+  Esta evidencia no valida VoiceOver ni la deuda previa ADR0029 y no cierra fase12.
+
+### Auditoría y pendiente
+
+POST independiente: sin hallazgos funcionales/arquitectura/datos/concurrencia. Un P3 lexical en7 closures
+con efectos de tests (Task/finish/continuations) corregido expandiendo solo layout. Huella primera pasada
+antes/después idéntica:802 archivos, SHA256 `1aaa2cf3d83a3ab3781e1fa843b65b12f20ad1bbd1deea72bdbc90ffba7439dc`.
+Tras corrección, focal18/18 PASS (16 declaraciones/2 parametrizadas/4ejecuciones), native runtimeWarnings vacíos,
+Develop build-for-testing3,926s y diagnóstico tests0 PASS. Código/config Production intactos desde validación;
+no se repite Production ni regresión completa porque solo cambió whitespace en tests.
+Resumen `/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RunSomeTests/9426CAB4-B851-4191-87CF-C91E674059CC.txt`.
+Native real cerrado `/Users/jesusf/Library/Developer/Xcode/DerivedData/FranAlonso-eehpkvodmpnqlchgeqriatcucsjf/Logs/Test/Test-FranAlonso-Develop-2026.10.02_14-10-43-+0200.xcresult`.
+Build log `/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/BuildProject/BuildProject-Log-20261002-141133.txt`.
+Re-auditoría lexical/documental focal independiente: sin hallazgos, P3 resuelto, POST PASS.
+Recall test1 archivo/0 candidatos más revisión manual. Huella focal antes/después idéntica:
+802 archivos, SHA256 `349877866fafa698adcef8d3d748e31afdcd7610125db949ff2b78adc940a9ff`.
+Solo documentación de resultado posterior; fuentes/config idénticas a las validadas y auditadas.
+PRE/POST/estilo PASS; no hallazgos abiertos para12.2.
+Entrega12.2 autorizada el02/10: «commit, push y entrega.».
+PLU-87 permanece In Progress hasta confirmar integración. Fase PLU-85 abierta;12.3–12.8 conservan sus gates.
+Se reutiliza la validación de esta sesión: al iniciar entrega se reconstruyó virtualmente el snapshot documental
+anterior y su huella completa coincide exactamente con la auditada (802files/349877…): Swift/config/tests intactos.
+Cambios posteriores solo documentan autorización/changelog/entrega; Xcode adicional N/A por ausencia de cambios
+al código o configuración. Sin nuevas dependencias, excepción arquitectónica ni activación live.

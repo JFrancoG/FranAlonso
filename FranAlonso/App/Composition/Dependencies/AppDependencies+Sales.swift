@@ -99,7 +99,8 @@ extension AppDependencies {
     /// Inspection reads and accepted edits share the existing repository and observation signal.
     static func saleDraftFactory(
         saleRepository: any SaleRepository,
-        clientRepository: any ClientRepository
+        clientRepository: any ClientRepository,
+        stockRepository: (any StockRepository)? = nil
     ) -> SaleDraftFactory {
         { destination in
             SaleDraftViewModel(
@@ -111,7 +112,8 @@ extension AppDependencies {
                 update: UpdateSaleDraftUseCase(repository: saleRepository),
                 discard: DiscardSaleDraftUseCase(repository: saleRepository),
                 getSale: GetSaleUseCase(repository: saleRepository),
-                getClient: GetClientUseCase(repository: clientRepository)
+                getClient: GetClientUseCase(repository: clientRepository),
+                getStock: stockRepository.map { GetSaleStockQuantitiesUseCase(repository: $0) }
             )
         }
     }
