@@ -1,0 +1,58 @@
+{
+  "date": "2026-10-02",
+  "device": "iPhone 17",
+  "udid": "0B3A9F32-B9D5-4ED5-A13F-CB66F7917E75",
+  "runtime": "iOS 27.2",
+  "app": "Develop --franalonso-demo-workday",
+  "appearance": "light",
+  "contentSize": "extra-Small (simctl ui read-only)",
+  "orientation": "portrait",
+  "method": "RocketSim HID taps/swipes; CUA only auth input recovery. PNG originals; JSON protocol context removed, no preview token retained.",
+  "artifacts": [
+    {
+      "file": "deficit-minus-one.png",
+      "sha256": "db763d32c80974620f7b716212e98c91eecc92609c6ac5244214869d05474092",
+      "bytes": 307880
+    },
+    {
+      "file": "discount-return.png",
+      "sha256": "bd556cdc13a91d33806adcdcf30a93f06702da0a2e854ae5c6255a3b4cc97a9d",
+      "bytes": 308998
+    },
+    {
+      "file": "exact-zero.json",
+      "sha256": "9aa54357c53b58484b188684966cd147ad6bb3b0ad81364e96c3fb952f63eb1c",
+      "bytes": 5973
+    },
+    {
+      "file": "exact-zero.png",
+      "sha256": "df627e73aca32183f58b1e4ae44fa74f437007cb380702a28678afc503ed6c0c",
+      "bytes": 303825
+    },
+    {
+      "file": "quantity-editor-transition.json",
+      "sha256": "855621aaa0d85528fa79a76000dde4636f0645d2ff17134e63352c831e534945",
+      "bytes": 18702
+    },
+    {
+      "file": "reopen-transition.json",
+      "sha256": "0b06ac8e190ef57e346aa80d9a6b7bbd44fff7f6ebe3481cc41c15efe8d5b01a",
+      "bytes": 8081
+    },
+    {
+      "file": "reopened.json",
+      "sha256": "feaf8c324dccb8a8b904d0eded34fa35287520daf7e5c3de3038ac6943917ae9",
+      "bytes": 6790
+    },
+    {
+      "file": "repeated-product.json",
+      "sha256": "5e5e6351e8bcb9931f98bad63e12e37426ab18ac05a9304a429d079d5ae8d2cd",
+      "bytes": 7259
+    },
+    {
+      "file": "repeated-product.png",
+      "sha256": "1f61c2b05e904411e341674698bfe1625bd00a2199003b9112a700622477933c",
+      "bytes": 316623
+    }
+  ]
+}

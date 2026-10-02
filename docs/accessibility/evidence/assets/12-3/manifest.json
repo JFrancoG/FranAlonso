@@ -1,0 +1,112 @@
+[
+  {
+    "key": "123screenLarge",
+    "source": "/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RenderPreview/Stock warnings - 2026-10-02 at 14.56.54.png",
+    "destination": {
+      "deviceModelName": "iPhone 18 Pro Max",
+      "identifier": "06B2C3FF-929C-4164-8852-E5EF6DA24974",
+      "platformName": "iOS",
+      "systemVersion": "27.2"
+    },
+    "file": "12-3-screenLarge.png"
+  },
+  {
+    "key": "123screenXXXL",
+    "source": "/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RenderPreview/Stock warnings - 2026-10-02 at 14.57.14.png",
+    "destination": {
+      "deviceModelName": "iPhone 18 Pro Max",
+      "identifier": "06B2C3FF-929C-4164-8852-E5EF6DA24974",
+      "platformName": "iOS",
+      "systemVersion": "27.2"
+    },
+    "file": "12-3-screenXXXL.png"
+  },
+  {
+    "key": "123screenAX5",
+    "source": "/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RenderPreview/Stock warnings - 2026-10-02 at 14.57.30.png",
+    "destination": {
+      "deviceModelName": "iPhone 18 Pro Max",
+      "identifier": "06B2C3FF-929C-4164-8852-E5EF6DA24974",
+      "platformName": "iOS",
+      "systemVersion": "27.2"
+    },
+    "file": "12-3-screenAX5.png"
+  },
+  {
+    "key": "123warningLarge",
+    "source": "/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RenderPreview/Stock warning - 2026-10-02 at 14.57.56.png",
+    "destination": {
+      "deviceModelName": "iPhone 18 Pro Max",
+      "identifier": "06B2C3FF-929C-4164-8852-E5EF6DA24974",
+      "platformName": "iOS",
+      "systemVersion": "27.2"
+    },
+    "file": "12-3-warningLarge.png"
+  },
+  {
+    "key": "123warningXXXL",
+    "source": "/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RenderPreview/Stock warning - 2026-10-02 at 14.58.01.png",
+    "destination": {
+      "deviceModelName": "iPhone 18 Pro Max",
+      "identifier": "06B2C3FF-929C-4164-8852-E5EF6DA24974",
+      "platformName": "iOS",
+      "systemVersion": "27.2"
+    },
+    "file": "12-3-warningXXXL.png"
+  },
+  {
+    "key": "123warningAX5",
+    "source": "/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RenderPreview/Stock warning - 2026-10-02 at 14.58.05.png",
+    "destination": {
+      "deviceModelName": "iPhone 18 Pro Max",
+      "identifier": "06B2C3FF-929C-4164-8852-E5EF6DA24974",
+      "platformName": "iOS",
+      "systemVersion": "27.2"
+    },
+    "file": "12-3-warningAX5.png"
+  },
+  {
+    "key": "123warningDarkHC",
+    "source": "/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RenderPreview/Stock warning - 2026-10-02 at 14.59.25.png",
+    "destination": {
+      "deviceModelName": "iPhone 18 Pro Max",
+      "identifier": "06B2C3FF-929C-4164-8852-E5EF6DA24974",
+      "platformName": "iOS",
+      "systemVersion": "27.2"
+    },
+    "file": "12-3-warningDarkHC.png"
+  },
+  {
+    "key": "123rowXXXL",
+    "source": "/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RenderPreview/Stock warning line - 2026-10-02 at 14.59.18.png",
+    "destination": {
+      "deviceModelName": "iPhone 18 Pro Max",
+      "identifier": "06B2C3FF-929C-4164-8852-E5EF6DA24974",
+      "platformName": "iOS",
+      "systemVersion": "27.2"
+    },
+    "file": "12-3-rowXXXL.png"
+  },
+  {
+    "key": "123rowAX5",
+    "source": "/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RenderPreview/Stock warning line - 2026-10-02 at 14.58.29.png",
+    "destination": {
+      "deviceModelName": "iPhone 18 Pro Max",
+      "identifier": "06B2C3FF-929C-4164-8852-E5EF6DA24974",
+      "platformName": "iOS",
+      "systemVersion": "27.2"
+    },
+    "file": "12-3-rowAX5.png"
+  },
+  {
+    "key": "123contentLarge",
+    "source": "/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RenderPreview/Stock warnings content - 2026-10-02 at 14.59.10.png",
+    "destination": {
+      "deviceModelName": "iPhone 18 Pro Max",
+      "identifier": "06B2C3FF-929C-4164-8852-E5EF6DA24974",
+      "platformName": "iOS",
+      "systemVersion": "27.2"
+    },
+    "file": "12-3-contentLarge.png"
+  }
+]

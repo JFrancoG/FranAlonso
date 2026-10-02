@@ -4,8 +4,8 @@
 
 ## Estado actual
 
-- **12.1–12.2 / PLU-86–87: Done**, [PR43](https://github.com/JFrancoG/FranAlonso/pull/43).
-  153/153, builds/auditorías PASS. [Evidencia](progress/phase-12.md).
+- **12.3 / PLU-88: In Progress**,191/191+38/38, builds/POST y smoke PASS.
+  Deuda PLU-89.12.1–12.2 Done/PR43. [Evidencia](progress/phase-12.md).
 
 - **11.9 / [PLU-83](https://linear.app/plusprojects/issue/PLU-83): Done funcional**, Jesus Franco.
   [PR41](https://github.com/JFrancoG/FranAlonso/pull/41)/`ab70985`; rama eliminada. Histórico/detalle terminal:

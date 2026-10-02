@@ -6,6 +6,10 @@ All notable changes to this project are documented in this file.
 
 ### Added
 
+- 2026-10-02 | ✨ feat(sales): display accessible stock warnings
+  Shows localized, non-blocking per-line projected stock warnings with adaptive red text and a decorative symbol.
+  Deduplicates current warning announcements; functional demo delivery retains integral accessibility work in PLU-89.
+
 - 2026-10-02 | ✨ feat(sales): refresh sale draft stock warnings
   Reads each linked product once and refreshes advisory impacts after accepted draft changes or explicit refresh.
   Fences stale results and keeps accepted sales intact when inventory reading fails or is cancelled.

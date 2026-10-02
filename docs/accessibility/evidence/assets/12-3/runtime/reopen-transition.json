@@ -1,0 +1,84 @@
+{
+  "data": {
+    "all_succeeded": true,
+    "steps": [
+      {
+        "kind": "interact",
+        "result": {
+          "appeared": [],
+          "appeared_count": 0,
+          "disappeared": [
+            "button|Cerrar|",
+            "heading|Borrador de venta|",
+            "button|Descartar|",
+            "heading|Servicios|",
+            "staticText|Tratamiento de hidratación intensiva y peinado para ocasión especial, Próximo, 24,20 €, IVA: 21 %, Descuento: 10%|",
+            "staticText|Próximo|",
+            "staticText|24,20 €|",
+            "staticText|IVA: 21 %|",
+            "staticText|Descuento: 10%|",
+            "incrementor|Cantidad: 1, Cantidad de Tratamiento de hidratación intensiva y peinado para ocasión especial|",
+            "button|Cantidad: 1, Cantidad de Tratamiento de hidratación intensiva y peinado para ocasión especial, Disminución||Decrement",
+            "button|Cantidad: 1, Cantidad de Tratamiento de hidratación intensiva y peinado para ocasión especial, Aumento||Increment",
+            "staticText|Cantidad: 1|",
+            "button|Editar descuento de Tratamiento de hidratación intensiva y peinado para ocasión especial|",
+            "button|Retirar servicio Tratamiento de hidratación intensiva y peinado para ocasión especial|",
+            "staticText|Champú DEMO venta, Próximo, 20,00 €, IVA: 21 %, Descuento: 10%|",
+            "staticText|Champú DEMO venta|",
+            "staticText|Próximo|",
+            "staticText|20,00 €|",
+            "staticText|IVA: 21 %|"
+          ],
+          "disappeared_count": 76,
+          "duration_ms": 2012,
+          "next_screen": "0b64d66c",
+          "next_seq": 372,
+          "previous_screen": "aa9c08aa",
+          "screen_changed": true
+        }
+      },
+      {
+        "kind": "interact",
+        "result": {
+          "appeared": [
+            61,
+            62,
+            63,
+            67,
+            68,
+            70,
+            71,
+            72,
+            73,
+            74,
+            75,
+            76,
+            77,
+            78,
+            79,
+            80,
+            81,
+            82,
+            83,
+            84
+          ],
+          "appeared_count": 54,
+          "disappeared": [],
+          "disappeared_count": 0,
+          "duration_ms": 2357,
+          "next_screen": "1e6efa8e",
+          "next_seq": 375,
+          "previous_screen": "0b64d66c",
+          "screen_changed": true
+        }
+      },
+      {
+        "kind": "elements",
+        "result": "rs/1 act screen=1e6efa8e seq=376 age=2ms count=76 udid=0B3A9F32-B9D5-4ED5-A13F-CB66F7917E75 keyboard=hidden\n1|staticText|Demo · Datos de ejemplo, Los cambios se reinician al abrir la app, Histórico contiene muestras DEMO precargadas. No se han emitido documentos ni ejecutado cierres o compensaciones.||enabled\n2|staticText|Demo · Datos de ejemplo||enabled\n3|staticText|Los cambios se reinician al abrir la app||enabled\n4|staticText|Histórico contiene muestras DEMO precargadas. No se han emitido documentos ni ejecutado cierres o compensaciones.||enabled\n5|button|Cerrar sesión||enabled\n6|button|Nueva venta||enabled\n7|heading|Jornada||enabled\n8|heading|Próximas||enabled\n9|button|Sin cliente, Borrador, Corte y peinado DEMO, Servicios: 1, 21 sept 2026, 16:14||enabled\n10|staticText|Sin cliente||enabled\n11|staticText|Borrador||enabled\n12|staticText|Corte y peinado DEMO||enabled\n13|staticText|Servicios: 1||enabled\n14|staticText|21 sept 2026, 16:14||enabled\n15|button|Cliente DEMO Alba, Borrador, Corte y peinado DEMO, Servicios: 1, 21 sept 2026, 16:15||enabled\n16|staticText|Cliente DEMO Alba||enabled\n17|staticText|Borrador||enabled\n18|staticText|Corte y peinado DEMO||enabled\n19|staticText|Servicios: 1||enabled\n20|staticText|21 sept 2026, 16:15||enabled\n21|button|Cliente DEMO Bruno, Borrador, Tratamiento de hidratación intensiva y peinado para ocasión especial, Servicios: 3, 21 sept 2026, 16:16||enabled\n22|staticText|Cliente DEMO Bruno||enabled\n23|staticText|Borrador||enabled\n24|staticText|Tratamiento de hidratación intensiva y peinado para ocasión especial||enabled\n25|staticText|Servicios: 3||enabled\n26|staticText|21 sept 2026, 16:16||enabled\n27|heading|En curso||enabled\n28|button|Sin cliente, En curso, Corte y peinado DEMO, Servicios: 1, 21 sept 2026, 16:17||enabled\n29|staticText|Sin cliente||enabled\n30|staticText|En curso||enabled\n31|staticText|Corte y peinado DEMO||enabled\n47|slider|Barra de desplazamiento vertical, 2 páginas|0 %|enabled\n48|slider|Barra de desplazamiento vertical, 2 páginas|0 %|enabled\n49|group|Barra de herramientas||enabled\n50|group|Barra de pestañas||enabled\n51|radioButton|Jornada|1|enabled\n52|image|calendario||enabled\n53|radioButton|Histórico|0|enabled\n54|image|Reloj rodeado por una flecha circular girada 90 grados en sentido antihorario con punta triangular||enabled\n55|radioButton|Clientes|0|enabled\n56|image|Dos personas, con relleno||enabled\n57|radioButton|Catálogo|0|enabled\n58|image|cuadrícula 2 por 2||enabled\n59|radioButton|Informes|0|enabled\n60|image|Gráfico de barras con un eje X||enabled\n61|button|Cerrar||enabled\n62|button|Descartar||enabled\n63|heading|Borrador de venta||enabled\n64|staticText|Cliente DEMO Bruno||enabled\n65|staticText|Borrador||enabled\n66|staticText|21 sept 2026, 16:16||enabled\n67|heading|Servicios||enabled\n68|staticText|Tratamiento de hidratación intensiva y peinado para ocasión especial, Próximo, 24,20 €, IVA: 21 %, Descuento: 10%||enabled\n69|staticText|Tratamiento de hidratación intensiva y peinado para ocasión especial||enabled\n70|staticText|Próximo||enabled\n71|staticText|24,20 €||enabled\n72|staticText|IVA: 21 %||enabled\n73|staticText|Descuento: 10%||enabled\n74|incrementor|Cantidad: 1, Cantidad de Tratamiento de hidratación intensiva y peinado para ocasión especial|1|enabled\n75|button|Cantidad: 1, Cantidad de Tratamiento de hidratación intensiva y peinado para ocasión especial, Disminución|1|enabled\n76|button|Cantidad: 1, Cantidad de Tratamiento de hidratación intensiva y peinado para ocasión especial, Aumento|1|enabled\n77|staticText|Cantidad: 1||enabled\n78|button|Editar descuento de Tratamiento de hidratación intensiva y peinado para ocasión especial||enabled\n79|button|Retirar servicio Tratamiento de hidratación intensiva y peinado para ocasión especial||enabled\n80|staticText|Champú DEMO venta, Próximo, 20,00 €, IVA: 21 %, Descuento: 10%||enabled\n81|staticText|Champú DEMO venta||enabled\n82|staticText|Próximo||enabled\n83|staticText|20,00 €||enabled\n84|staticText|IVA: 21 %||enabled\n85|staticText|Descuento: 10%||enabled\n86|genericElement|Stock insuficiente. Stock previsto: -1. Puedes continuar. Servicio: Champú DEMO venta.||enabled\n87|staticText|Stock insuficiente. Stock previsto: -1. Puedes continuar.||enabled\n88|image|Advertencia||enabled\n117|slider|Barra de desplazamiento vertical, 3 páginas|0 %|enabled\n118|slider|Barra de desplazamiento vertical, 3 páginas|0 %|enabled\n119|group|Barra de herramientas||enabled\n!ambiguous|group|Barra de herramientas|49@201,519;119@201,468\n!ambiguous|slider|Barra de desplazamiento vertical, 2 páginas|47@384,509;48@384,509\n!ambiguous|slider|Barra de desplazamiento vertical, 3 páginas|117@384,472;118@384,472\n!ambiguous|staticText|21 sept 2026, 16:16|26@87,721;66@201,307\n!ambiguous|staticText|Borrador|11@61,366;17@61,503;23@61,640;65@201,258\n!ambiguous|staticText|Cliente DEMO Bruno|22@104,618;64@201,209\n!ambiguous|staticText|Corte y peinado DEMO|12@110,387;18@110,525;31@110,872\n!ambiguous|staticText|Descuento: 10%|73@89,518;85@89,827\n!ambiguous|staticText|IVA: 21 %|72@61,497;84@61,805\n!ambiguous|staticText|Próximo|70@59,454;82@59,763\n!ambiguous|staticText|Servicios: 1|13@66,409;19@66,546\n!ambiguous|staticText|Sin cliente|10@71,344;29@71,829\n!ambiguous|staticText|Tratamiento de hidratación intensiva y peinado para ocasión especial|24@189,671;69@195,423"
+      }
+    ],
+    "stopped_at": null
+  },
+  "ok": true,
+  "rs": "1"
+}

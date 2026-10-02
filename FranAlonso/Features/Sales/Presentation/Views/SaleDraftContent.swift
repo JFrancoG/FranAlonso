@@ -87,6 +87,7 @@ struct SaleDraftContent: View {
                 SaleDraftLineRow(
                     line: line,
                     isReadOnly: viewModel.isReadOnly,
+                    stockWarning: viewModel.stockWarning(for: line.id),
                     onIncrease: increaseAction(for: line.id),
                     onDecrease: decreaseAction(for: line.id),
                     onRemove: { onRemove(line.id) },
@@ -202,6 +203,31 @@ struct SaleDraftContent: View {
     @Previewable @AccessibilityFocusState var discountIsFocused: SaleLineID?
     @Previewable @AccessibilityFocusState var globalDiscountIsFocused: Bool
     if let model = models[SalesPreviewFixtures.workday.sales[5].id] {
+        SaleDraftContent(
+            viewModel: model,
+            isWorking: false,
+            hasActionError: false,
+            onCreate: {},
+            onIncrease: { _ in },
+            onDecrease: { _ in },
+            onRemove: { _ in },
+            onRetry: {},
+            onAddService: {},
+            addServiceIsFocused: $addServiceIsFocused,
+            onEditDiscount: { _ in },
+            discountIsFocused: $discountIsFocused,
+            onEditGlobalDiscount: {},
+            globalDiscountIsFocused: $globalDiscountIsFocused
+        )
+    }
+}
+
+#Preview("Stock warnings content", traits: .modifier(SaleStockPreviewModifier())) {
+    @Previewable @Environment(\.saleStockPreviewModel) var model
+    @Previewable @AccessibilityFocusState var addServiceIsFocused: Bool
+    @Previewable @AccessibilityFocusState var discountIsFocused: SaleLineID?
+    @Previewable @AccessibilityFocusState var globalDiscountIsFocused: Bool
+    if let model {
         SaleDraftContent(
             viewModel: model,
             isWorking: false,
