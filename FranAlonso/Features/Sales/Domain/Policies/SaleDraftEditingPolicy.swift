@@ -51,6 +51,13 @@ struct SaleDraftEditingPolicy {
         )
     }
 
+    /// Sets the provisional V1 sale-wide term, or removes it, without changing captured line promotions.
+    /// - Throws: `SaleDraftError.requiresDraft` if the sale has progressed.
+    func settingGlobalDiscount(_ discount: Discount?, in draft: Sale) throws -> Sale {
+        let term = discount.map { SaleGlobalDiscount(discount: $0, policy: .lineThenGlobalV1) }
+        return try draft.replacingDraft(clientID: draft.clientID, lines: draft.lines, globalDiscount: term)
+    }
+
     private func lineIndex(id: SaleLineID, in draft: Sale) throws -> Int {
         guard draft.status == .draft else { throw SaleDraftError.requiresDraft }
         guard let index = draft.lines.firstIndex(where: { $0.id == id }) else { throw SaleError.lineNotFound }

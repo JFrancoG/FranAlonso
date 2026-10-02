@@ -5,12 +5,12 @@
 ## Estado actual
 
 - **11.6 / [PLU-78](https://linear.app/plusprojects/issue/PLU-78): Done funcional**, Jesus Franco.
-  [PR38](https://github.com/JFrancoG/FranAlonso/pull/38), merge `9f38731`; rama local/remota eliminada.
-  Selector/snapshots:1.959 variantes, builds/previews/smoke y auditorías PASS. [Evidencia](progress/phase-11.md).
+  [PR38](https://github.com/JFrancoG/FranAlonso/pull/38)/`9f38731`; rama eliminada. [Evidencia](progress/phase-11.md).
 - **11.1–11.5: Done funcional**, PLU-72–76/PR33–37; fasePLU-71 activa, ramas eliminadas.
-- Próximo gate de spec: **11.7 / descuentos**, pendiente de inicio.
-- [PLU-77](https://linear.app/plusprojects/issue/PLU-77)/[PLU-79](https://linear.app/plusprojects/issue/PLU-79):
-  Backlog accesible11.5/11.6, Jesus Franco; tras estabilizar cada flujo, antes de uso real.
+- **11.7 / [PLU-80](https://linear.app/plusprojects/issue/PLU-80): In Progress**, Jesus Franco;
+  `codex/plu-80-sale-discounts`: global provisional; 2.098 tests, smoke y POST PASS para demo.
+- [PLU-77](https://linear.app/plusprojects/issue/PLU-77)/[PLU-79](https://linear.app/plusprojects/issue/PLU-79)/[PLU-81](https://linear.app/plusprojects/issue/PLU-81):
+  Backlog accesible11.5–11.7/Jesus Franco; tras estabilizar cada flujo, antes de uso real.
 
 - **Borrador16 / [PLU-47](https://linear.app/plusprojects/issue/PLU-47): Done funcional**,
   [PR32](https://github.com/JFrancoG/FranAlonso/pull/32)/`f1c781d`; rama eliminada.
@@ -18,7 +18,7 @@
   [PLU-70](https://linear.app/plusprojects/issue/PLU-70) Backlog/Jesus Franco: recuperación accesible
   tras feedback/estabilización, antes de uso real; sin cierre16/live.
 
-- **es/en y Xcode**:505 textos; iOS27. Builds/tests/previews registrados por subfase.
+- **es/en y Xcode**:528 textos; iOS27. Evidencia por subfase.
   [Evidencia](progress/localization-en-es.md).
 - **[PLU-69](https://linear.app/plusprojects/issue/PLU-69): Done**, [PR31](https://github.com/JFrancoG/FranAlonso/pull/31).
   App ordenada, Firebase 12.19.2; 1.564 resultados/builds PASS. [Registro](progress/app-organization.md).

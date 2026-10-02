@@ -36,6 +36,7 @@ struct Sale: Identifiable, Codable, Equatable {
     let id: SaleID
     let clientID: ClientID?
     let createdAt: Date
+    let globalDiscount: SaleGlobalDiscount?
     private var storedLines: [SaleLine]
     private var storedStatus: SaleStatus
 
@@ -200,6 +201,7 @@ struct Sale: Identifiable, Codable, Equatable {
         case createdAt
         case lines
         case status
+        case globalDiscount
     }
 }
 
@@ -211,6 +213,12 @@ extension Sale {
     /// - Throws: `SaleDraftError.requiresDraft` for progressed sales, or `SaleError.invalidDraftState`
     ///   for refreshed terms, duplicate identities or progressed replacement lines.
     func replacingDraft(clientID: ClientID?, lines: [SaleLine]) throws -> Sale {
+        try replacingDraft(clientID: clientID, lines: lines, globalDiscount: globalDiscount)
+    }
+
+    /// Replaces the complete draft terms; an explicit `nil` removes the global discount.
+    /// - Throws: `SaleDraftError.requiresDraft` or `SaleError.invalidDraftState` for invalid draft content.
+    func replacingDraft(clientID: ClientID?, lines: [SaleLine], globalDiscount: SaleGlobalDiscount?) throws -> Sale {
         guard status == .draft else { throw SaleDraftError.requiresDraft }
         let capturedLines = Dictionary(uniqueKeysWithValues: storedLines.map { ($0.id, $0) })
         for line in lines {
@@ -227,7 +235,8 @@ extension Sale {
             id: id,
             clientID: clientID,
             createdAt: createdAt,
-            lines: lines
+            lines: lines,
+            globalDiscount: globalDiscount
         )
     }
 
@@ -241,6 +250,7 @@ extension Sale {
     ///   - clientID: The optional identifier of the client associated with the sale.
     ///   - createdAt: The timestamp at which the draft was created.
     ///   - lines: The service-line snapshots to include in the draft.
+    ///   - globalDiscount: The independent historical term, including an explicit zero percentage.
     /// - Returns: A sale whose status is `SaleStatus.draft`.
     /// - Throws: `SaleError.invalidTimestamp` if `createdAt` is not finite, or
     ///   `SaleError.invalidDraftState` if a line is not upcoming or line identifiers
@@ -249,7 +259,8 @@ extension Sale {
         id: SaleID,
         clientID: ClientID?,
         createdAt: Date,
-        lines: [SaleLine]
+        lines: [SaleLine],
+        globalDiscount: SaleGlobalDiscount? = nil
     ) throws -> Sale {
         try ensureFinite(createdAt)
         guard lines.allSatisfy({ $0.status == .upcoming }),
@@ -261,6 +272,7 @@ extension Sale {
             id: id,
             clientID: clientID,
             createdAt: createdAt,
+            globalDiscount: globalDiscount,
             storedLines: lines,
             storedStatus: .draft
         )
@@ -278,6 +290,7 @@ extension Sale {
             id: try container.decode(SaleID.self, forKey: .id),
             clientID: try container.decodeIfPresent(ClientID.self, forKey: .clientID),
             createdAt: createdAt,
+            globalDiscount: try container.decodeIfPresent(SaleGlobalDiscount.self, forKey: .globalDiscount),
             storedLines: lines,
             storedStatus: status
         )
@@ -290,6 +303,7 @@ extension Sale {
         try container.encode(createdAt, forKey: .createdAt)
         try container.encode(lines, forKey: .lines)
         try container.encode(status, forKey: .status)
+        try container.encodeIfPresent(globalDiscount, forKey: .globalDiscount)
     }
 
     private static func ensurePersistedStateIsConsistent(

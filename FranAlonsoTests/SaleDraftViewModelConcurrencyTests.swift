@@ -295,13 +295,23 @@ private actor SaleDraftViewModelControlledRepository: SaleRepository {
         }
     }
 
-    func updateDraft(_ expected: Sale, clientID: ClientID?, lines: [SaleLine]) async throws -> Sale {
+    func updateDraft(
+        _ expected: Sale,
+        clientID: ClientID?,
+        lines: [SaleLine],
+        globalDiscount: SaleGlobalDiscount?
+    ) async throws -> Sale {
         calls.append(.update)
         let held = takeWriteHold(.update)
         if held?.phase == .beforeAcceptance {
             await held?.checkpoint.block()
         }
-        let accepted = try await backing.updateDraft(expected, clientID: clientID, lines: lines)
+        let accepted = try await backing.updateDraft(
+            expected,
+            clientID: clientID,
+            lines: lines,
+            globalDiscount: globalDiscount
+        )
         if held?.phase == .afterAcceptance {
             await held?.checkpoint.block()
         }

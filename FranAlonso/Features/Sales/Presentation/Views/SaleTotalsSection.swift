@@ -7,6 +7,8 @@ struct SaleTotalsSection: View {
     var body: some View {
         Section {
             amountRow("sales.totals.subtotal", value: calculation.subtotal)
+            amountRow("sales.totals.lineDiscount", value: calculation.lineDiscountAmount)
+            amountRow("sales.totals.globalDiscount", value: calculation.globalDiscountAmount)
             amountRow("sales.totals.discount", value: calculation.discountAmount)
             amountRow("sales.totals.base", value: calculation.taxableBase)
             amountRow("sales.totals.tax", value: calculation.taxAmount)

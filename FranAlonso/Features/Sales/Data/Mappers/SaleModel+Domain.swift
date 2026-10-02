@@ -28,30 +28,43 @@ extension SaleModel {
             closedAtCanonical: metadata.closedAt,
             reversalID: metadata.reversalID,
             voidedAtCanonical: metadata.voidedAt,
-            linesPayloadVersion: 1,
-            linesData: try JSONEncoder().encode(dto.lines)
+            linesPayloadVersion: 2,
+            linesData: try JSONEncoder().encode(
+                SaleCommercialPayloadDTO(lines: dto.lines, globalDiscount: dto.globalDiscount)
+            )
         )
     }
 
-    /// Reconstructs Domain through the exact v1 DTO and its validating transitions.
+    /// Reads local1 arrays or local2 envelopes without rewriting their persisted bytes.
     ///
     /// - Returns: The Sale represented by the flattened root and ordered line snapshot.
     /// - Throws: `SaleModelPayloadError` for unsupported or incoherent persisted metadata.
     func toDomain() throws -> Sale {
-        guard linesPayloadVersion == 1 else { throw SaleModelPayloadError.unsupportedLinesVersion(linesPayloadVersion) }
-        let lines = try JSONDecoder().decode([SaleLineDTO].self, from: linesData)
+        let payload: SaleCommercialPayloadDTO
+        switch linesPayloadVersion {
+        case 1:
+            payload = SaleCommercialPayloadDTO(
+                lines: try JSONDecoder().decode([SaleLineDTO].self, from: linesData),
+                globalDiscount: nil
+            )
+        case 2:
+            payload = try JSONDecoder().decode(SaleCommercialPayloadDTO.self, from: linesData)
+        default:
+            throw SaleModelPayloadError.unsupportedLinesVersion(linesPayloadVersion)
+        }
         let canonicalCreatedAt = try SaleTimestampDTO(canonicalString: createdAtCanonical)
         guard createdAt.timeIntervalSinceReferenceDate.bitPattern
                 == canonicalCreatedAt.date.timeIntervalSinceReferenceDate.bitPattern else {
             throw SaleModelPayloadError.invalidLifecycleMetadata
         }
         let dto = SaleDTO(
-            payloadVersion: SaleDTO.currentPayloadVersion,
+            payloadVersion: linesPayloadVersion,
             id: id.uuidString,
             clientID: clientID?.uuidString,
             createdAt: canonicalCreatedAt,
-            lines: lines,
-            status: try statusDTO()
+            lines: payload.lines,
+            status: try statusDTO(),
+            globalDiscount: payload.globalDiscount
         )
         return try dto.toDomain()
     }

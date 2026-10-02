@@ -39,7 +39,12 @@ actor InMemorySaleRepository: SaleRepository {
         sales.append(draft)
     }
 
-    func updateDraft(_ expected: Sale, clientID: ClientID?, lines: [SaleLine]) async throws -> Sale {
+    func updateDraft(
+        _ expected: Sale,
+        clientID: ClientID?,
+        lines: [SaleLine],
+        globalDiscount: SaleGlobalDiscount?
+    ) async throws -> Sale {
         try Task.checkCancellation()
         guard let index = sales.firstIndex(where: { $0.id == expected.id }) else {
             throw knownIDs.contains(expected.id) ? SaleDraftError.deleted : .notFound
@@ -47,7 +52,7 @@ actor InMemorySaleRepository: SaleRepository {
         let existing = sales[index]
         guard existing.status == .draft else { throw SaleDraftError.requiresDraft }
         guard existing == expected else { throw SaleDraftError.staleDraft }
-        let draft = try existing.replacingDraft(clientID: clientID, lines: lines)
+        let draft = try existing.replacingDraft(clientID: clientID, lines: lines, globalDiscount: globalDiscount)
         sales[index] = draft
         return draft
     }

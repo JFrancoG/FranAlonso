@@ -285,7 +285,10 @@ struct SaleDraftLifecycleTests {
                 lines: []
             )
         )
-        poison.linesPayloadVersion = 2
+        poison.linesPayloadVersion = 3
+        #expect(throws: SaleModelPayloadError.unsupportedLinesVersion(3)) {
+            _ = try poison.toDomain()
+        }
         context.insert(poison)
         try context.save()
         let beforeOperations = try fixture.operations()

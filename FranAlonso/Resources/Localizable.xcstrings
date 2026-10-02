@@ -978,13 +978,13 @@
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Descuento de servicios"
+            "value": "Descuento total"
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Service discounts"
+            "value": "Total discounts"
           }
         }
       }
@@ -7646,6 +7646,420 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Complete registration"
+          }
+        }
+      }
+    },
+    "sales.discount.title": {
+      "extractionState": "manual",
+      "comment": "Manual sale line-discount editing; percentages remain exact and removal is explicit.",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Descuento de línea"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Line discount"
+          }
+        }
+      }
+    },
+    "sales.discount.edit": {
+      "extractionState": "manual",
+      "comment": "Manual sale line-discount editing; percentages remain exact and removal is explicit.",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Editar descuento"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Edit discount"
+          }
+        }
+      }
+    },
+    "sales.discount.edit %@": {
+      "extractionState": "manual",
+      "comment": "Manual sale line-discount editing; percentages remain exact and removal is explicit.",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Editar descuento de %@"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Edit discount for %@"
+          }
+        }
+      }
+    },
+    "sales.discount.value %@": {
+      "extractionState": "manual",
+      "comment": "Manual sale line-discount editing; percentages remain exact and removal is explicit.",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Descuento: %@%%"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Discount: %@%%"
+          }
+        }
+      }
+    },
+    "sales.discount.none": {
+      "extractionState": "manual",
+      "comment": "Manual sale line-discount editing; percentages remain exact and removal is explicit.",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sin descuento"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No discount"
+          }
+        }
+      }
+    },
+    "sales.discount.field": {
+      "extractionState": "manual",
+      "comment": "Manual sale line-discount editing; percentages remain exact and removal is explicit.",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Porcentaje (%)"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Percentage (%)"
+          }
+        }
+      }
+    },
+    "sales.discount.instructions": {
+      "extractionState": "manual",
+      "comment": "Manual sale line-discount editing; percentages remain exact and removal is explicit.",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Introduce de 0 a 100. Vaciar el campo no retira el descuento."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enter 0 to 100. Clearing the field does not remove the discount."
+          }
+        }
+      }
+    },
+    "sales.discount.apply": {
+      "extractionState": "manual",
+      "comment": "Manual sale line-discount editing; percentages remain exact and removal is explicit.",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aplicar"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apply"
+          }
+        }
+      }
+    },
+    "sales.discount.remove": {
+      "extractionState": "manual",
+      "comment": "Manual sale line-discount editing; percentages remain exact and removal is explicit.",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Retirar descuento"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Remove discount"
+          }
+        }
+      }
+    },
+    "sales.discount.error.input": {
+      "extractionState": "manual",
+      "comment": "Manual sale line-discount editing; percentages remain exact and removal is explicit.",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Introduce un porcentaje válido entre 0 y 100."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enter a valid percentage from 0 to 100."
+          }
+        }
+      }
+    },
+    "sales.discount.error.title": {
+      "extractionState": "manual",
+      "comment": "Manual sale line-discount editing; percentages remain exact and removal is explicit.",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No se pudo cambiar el descuento"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Could not change the discount"
+          }
+        }
+      }
+    },
+    "sales.discount.error.message": {
+      "extractionState": "manual",
+      "comment": "Manual sale line-discount editing; percentages remain exact and removal is explicit.",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "El descuento anterior se conserva. Puedes reintentar este cambio o editar el porcentaje."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The previous discount is preserved. Retry this change or edit the percentage."
+          }
+        }
+      }
+    },
+    "sales.discount.applying": {
+      "extractionState": "manual",
+      "comment": "Manual sale line-discount editing; percentages remain exact and removal is explicit.",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aplicando descuento…"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Applying discount…"
+          }
+        }
+      }
+    },
+    "sales.discount.accepted": {
+      "extractionState": "manual",
+      "comment": "Manual sale line-discount editing; percentages remain exact and removal is explicit.",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Descuento actualizado"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Discount updated"
+          }
+        }
+      }
+    },
+    "sales.discount.unavailable.title": {
+      "extractionState": "manual",
+      "comment": "Manual sale line-discount editing; percentages remain exact and removal is explicit.",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No se puede editar el descuento"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Discount cannot be edited"
+          }
+        }
+      }
+    },
+    "sales.discount.unavailable.message": {
+      "extractionState": "manual",
+      "comment": "Manual sale line-discount editing; percentages remain exact and removal is explicit.",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cierra este editor y revisa el borrador de venta."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Close this editor and review the sale draft."
+          }
+        }
+      }
+    },
+    "sales.discount.global.title": {
+      "extractionState": "manual",
+      "comment": "Sale global discount is independent from line promotions; V1 applies it afterwards.",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Descuento global"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Global discount"
+          }
+        }
+      }
+    },
+    "sales.discount.global.instructions": {
+      "extractionState": "manual",
+      "comment": "Sale global discount is independent from line promotions; V1 applies it afterwards.",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Introduce un porcentaje entre 0 y 100. Se aplica después del descuento de cada servicio y conserva sus promociones."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enter a percentage from 0 to 100. It applies after each service discount and preserves its promotions."
+          }
+        }
+      }
+    },
+    "sales.discount.global.edit": {
+      "extractionState": "manual",
+      "comment": "Sale global discount is independent from line promotions; V1 applies it afterwards.",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Editar descuento global"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Edit global discount"
+          }
+        }
+      }
+    },
+    "sales.discount.global.none": {
+      "extractionState": "manual",
+      "comment": "Sale global discount is independent from line promotions; V1 applies it afterwards.",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sin descuento global"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No global discount"
+          }
+        }
+      }
+    },
+    "sales.discount.global.scope": {
+      "extractionState": "manual",
+      "comment": "Sale global discount is independent from line promotions; V1 applies it afterwards.",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Para toda la venta, incluidos los servicios que añadas después."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "For the whole sale, including services you add later."
+          }
+        }
+      }
+    },
+    "sales.totals.lineDiscount": {
+      "extractionState": "manual",
+      "comment": "Sale global discount is independent from line promotions; V1 applies it afterwards.",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Descuentos de servicios"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Service discounts"
+          }
+        }
+      }
+    },
+    "sales.totals.globalDiscount": {
+      "extractionState": "manual",
+      "comment": "Sale global discount is independent from line promotions; V1 applies it afterwards.",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Descuento global"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Global discount"
           }
         }
       }

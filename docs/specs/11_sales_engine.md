@@ -64,7 +64,18 @@ Entrega/árbol integrado verificados;11.7–11.9 conservan sus gates y live sigu
 Selección activa10.7 con Store existente, captura inmutable y retry de la misma unidad/ID; sin schema/Data/stock/live.
 1.245 declaraciones/1.959 ejecuciones PASS; builds y muestraLarge/XXX/AX5. Previews/smoke y POST técnico/UI PASS para gate funcional ADR0029;
 Revisión de entrega PASS; árbol integrado y fuente586 idénticos. Deuda integral [PLU-79](https://linear.app/plusprojects/issue/PLU-79)
-Backlog/Jesus Franco, tras feedback/estabilización y antes del primer candidato real. Próximo gate11.7 pendiente de inicio.
+Backlog/Jesus Franco, tras feedback/estabilización y antes del primer candidato real.
+11.7 iniciada: [PLU-80](https://linear.app/plusprojects/issue/PLU-80), In Progress/Jesus Franco,
+rama `codex/plu-80-sale-discounts`; [propuesta](../progress/11-7-sale-discounts-proposal.md).
+Editor de línea local: PRE/estilo/POST técnico/UI PASS; 1.263 declaraciones/1.999 ejecuciones y builds Develop/Production.
+Smoke corregido 9/9 PASS, incluido retest de primera apertura. Gate funcional parcial ADR0029;
+deuda integral propia [PLU-81](https://linear.app/plusprojects/issue/PLU-81), Backlog/Jesus Franco,
+tras feedback y estabilización del recorrido, antes del primer candidato real.
+Dirección global provisional recibida: acumulable con promociones para demo, pendiente de ratificación por Fran.
+[Propuesta global](../progress/11-7-global-discount-proposal.md)/[ADR0032](../ADRs/0032-provisional-global-sale-discount.md)
+Global local implementado: PRE/estilo y 1.310 declaraciones/2.098 ejecuciones PASS; builds Develop/Production.
+Smoke global y POST técnico/UI PASS para gate funcional demo ADR0029. Implementación local validada;
+ratificación comercial y accesibilidad integral PLU-81 pendientes. Sin cierre operativo11.7, entrega Git ni live.
 La fase11 continúa abierta.
 
 Jornada local-first sin trabajo cerrado ocupando espacio, Histórico separado, snapshots monetarios inmutables, Store justificado y finalización idempotente.

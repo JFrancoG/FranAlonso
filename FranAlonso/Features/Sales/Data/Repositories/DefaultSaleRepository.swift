@@ -43,11 +43,17 @@ struct DefaultSaleRepository: SaleRepository {
         await observationSignal.publishChange()
     }
 
-    func updateDraft(_ expected: Sale, clientID: ClientID?, lines: [SaleLine]) async throws -> Sale {
+    func updateDraft(
+        _ expected: Sale,
+        clientID: ClientID?,
+        lines: [SaleLine],
+        globalDiscount: SaleGlobalDiscount?
+    ) async throws -> Sale {
         let draft = try await persistenceActor.updateDraft(
             expected,
             clientID: clientID,
             lines: lines,
+            globalDiscount: globalDiscount,
             operationID: makeOperationID()
         )
         await observationSignal.publishChange()

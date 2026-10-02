@@ -357,7 +357,7 @@ private func insertServiceRows(in context: ModelContext) throws -> PhaseFiveBase
 
 private func insertSaleRows(in context: ModelContext) throws -> PhaseFiveBaselineSaleMigrationFixture {
     let sale = try representativeSale()
-    let payload = try SaleDTO(sale)
+    let payload = try JSONDecoder().decode(SaleDTO.self, from: phaseFiveHistoricalSalePayload)
     let upsertOperationID = phaseFiveMigrationUUID("84000000-0000-0000-0000-000000000002")
     let upsert = SalePendingUpsert(
         saleID: sale.id.rawValue,
@@ -384,25 +384,60 @@ private func insertSaleRows(in context: ModelContext) throws -> PhaseFiveBaselin
         lastRecoverableCategory: .unavailable
     )
 
-    context.insert(try SaleModel(sale))
     context.insert(
-        try SalePendingUpsertModel(
-            saleID: upsert.saleID,
-            operationID: upsert.operationID,
-            base: upsert.base,
-            payload: upsert.sale
+        SaleModel(
+            id: sale.id.rawValue,
+            clientID: sale.clientID?.rawValue,
+            createdAt: sale.createdAt,
+            createdAtCanonical: "3e8091f16677e7af",
+            statusKindRawValue: "draft",
+            paymentID: nil,
+            paymentMethodRawValue: nil,
+            paidAtCanonical: nil,
+            documentID: nil,
+            closedAtCanonical: nil,
+            reversalID: nil,
+            voidedAtCanonical: nil,
+            linesPayloadVersion: 1,
+            linesData: phaseFiveHistoricalSaleLines
         )
     )
     context.insert(
-        try SalePendingDiscardModel(
+        SalePendingUpsertModel(
+            saleID: upsert.saleID,
+            operationID: upsert.operationID,
+            predecessorOperationID: nil,
+            baseVersion: 1,
+            baseData: Data(#"{"versioned":{"_0":40}}"#.utf8),
+            payloadVersion: 1,
+            payloadData: phaseFiveHistoricalSalePayload
+        )
+    )
+    context.insert(
+        SalePendingDiscardModel(
             saleID: discard.saleID,
             operationID: discard.operationID,
             predecessorOperationID: discard.predecessorOperationID,
-            base: discard.base
+            baseVersion: 1,
+            baseData: Data(#"{"versioned":{"_0":41}}"#.utf8)
         )
     )
-    context.insert(try SaleRemoteStateModel(record: record))
-    context.insert(try SaleSyncConflictModel(operation: .upsert(upsert), reason: .baseChanged, remoteRecord: record))
+    context.insert(
+        SaleRemoteStateModel(saleID: sale.id.rawValue, recordVersion: 1, recordData: phaseFiveHistoricalSaleRecord)
+    )
+    context.insert(
+        SaleSyncConflictModel(
+            saleID: sale.id.rawValue,
+            operationID: upsertOperationID,
+            predecessorOperationID: nil,
+            operationKindRawValue: "upsert",
+            reasonRawValue: "baseChanged",
+            payloadVersion: 1,
+            baseData: Data(#"{"versioned":{"_0":40}}"#.utf8),
+            localSaleData: phaseFiveHistoricalSalePayload,
+            remoteRecordData: phaseFiveHistoricalSaleRecord
+        )
+    )
     context.insert(SaleSyncCursorModel(feedID: "sales", changeSequence: 42))
     context.insert(SaleSyncRetryModel(retry))
 
@@ -588,3 +623,8 @@ private func representativeSale() throws -> Sale {
 private func phaseFiveMigrationUUID(_ value: String) -> UUID {
     UUID(uuidString: value)!
 }
+
+// Published historical bytes stay independent of current SaleDTO/SaleModel writers.
+private let phaseFiveHistoricalSaleLines = Data(#"[{"discount":{"percentage":"10"},"id":"84000000-0000-0000-0000-000000000010","quantity":2,"serviceID":"84000000-0000-0000-0000-000000000011","serviceName":"Baseline sale snapshot","status":"upcoming","taxRate":{"percentage":"21"},"unitPrice":{"amount":"29.95","currency":"EUR"}}]"#.utf8)
+private let phaseFiveHistoricalSalePayload = Data(#"{"clientID":"84000000-0000-0000-0000-000000000012","createdAt":"3e8091f16677e7af","id":"84000000-0000-0000-0000-000000000001","lines":[{"discount":{"percentage":"10"},"id":"84000000-0000-0000-0000-000000000010","quantity":2,"serviceID":"84000000-0000-0000-0000-000000000011","serviceName":"Baseline sale snapshot","status":"upcoming","taxRate":{"percentage":"21"},"unitPrice":{"amount":"29.95","currency":"EUR"}}],"payloadVersion":1,"status":{"kind":"draft"}}"#.utf8)
+private let phaseFiveHistoricalSaleRecord = Data(#"{"changeSequence":42,"content":{"live":{"_0":{"clientID":"84000000-0000-0000-0000-000000000012","createdAt":"3e8091f16677e7af","id":"84000000-0000-0000-0000-000000000001","lines":[{"discount":{"percentage":"10"},"id":"84000000-0000-0000-0000-000000000010","quantity":2,"serviceID":"84000000-0000-0000-0000-000000000011","serviceName":"Baseline sale snapshot","status":"upcoming","taxRate":{"percentage":"21"},"unitPrice":{"amount":"29.95","currency":"EUR"}}],"payloadVersion":1,"status":{"kind":"draft"}}}},"version":{"versioned":{"lastOperationID":"84000000-0000-0000-0000-000000000002","revision":41}}}"#.utf8)

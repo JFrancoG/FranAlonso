@@ -28,10 +28,29 @@ struct SaleContextualPersistenceAdapter {
         lines: [SaleLine],
         in context: ModelContext
     ) async throws -> Sale {
+        try await updateDraft(
+            expected,
+            clientID: clientID,
+            lines: lines,
+            globalDiscount: expected.globalDiscount,
+            in: context
+        )
+    }
+
+    /// Accepts a complete commercial draft candidate, including explicit global removal.
+    /// - Throws: `SaleDraftError`, `SaleError`, or cancellation before acceptance.
+    func updateDraft(
+        _ expected: Sale,
+        clientID: ClientID?,
+        lines: [SaleLine],
+        globalDiscount: SaleGlobalDiscount?,
+        in context: ModelContext
+    ) async throws -> Sale {
         let draft = try dataSource.updateDraft(
             expected,
             clientID: clientID,
             lines: lines,
+            globalDiscount: globalDiscount,
             operationID: makeOperationID(),
             in: context
         )

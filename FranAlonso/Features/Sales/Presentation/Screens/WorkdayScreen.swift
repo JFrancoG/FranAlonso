@@ -4,6 +4,8 @@ import SwiftUI
 struct WorkdayScreen: View {
     let makeSaleDraft: @MainActor @Sendable (SaleDraftDestination) -> SaleDraftViewModel
     let makeServicePicker: @MainActor @Sendable (SaleDraftViewModel) -> SaleServicePickerViewModel
+    let makeDiscount: @MainActor @Sendable
+        (SaleDraftViewModel, SaleDiscountDestination, Locale) -> SaleDiscountViewModel
     @Environment(\.locale) private var locale
     @AccessibilityFocusState private var focusedSale: SaleID?
     @AccessibilityFocusState private var createIsFocused: Bool
@@ -33,7 +35,8 @@ struct WorkdayScreen: View {
             SaleDraftScreen(
                 destination: destination,
                 makeViewModel: makeSaleDraft,
-                makeServicePicker: makeServicePicker
+                makeServicePicker: makeServicePicker,
+                makeDiscount: makeDiscount
             )
                 .id(destination.id)
         }
@@ -96,10 +99,13 @@ extension WorkdayScreen {
     init(
         makeViewModel: @MainActor @Sendable () -> WorkdayViewModel,
         makeSaleDraft: @escaping @MainActor @Sendable (SaleDraftDestination) -> SaleDraftViewModel,
-        makeServicePicker: @escaping @MainActor @Sendable (SaleDraftViewModel) -> SaleServicePickerViewModel
+        makeServicePicker: @escaping @MainActor @Sendable (SaleDraftViewModel) -> SaleServicePickerViewModel,
+        makeDiscount: @escaping @MainActor @Sendable
+            (SaleDraftViewModel, SaleDiscountDestination, Locale) -> SaleDiscountViewModel
     ) {
         self.makeSaleDraft = makeSaleDraft
         self.makeServicePicker = makeServicePicker
+        self.makeDiscount = makeDiscount
         _viewModel = State(initialValue: makeViewModel())
     }
 }
@@ -110,7 +116,8 @@ extension WorkdayScreen {
         WorkdayScreen(
             makeViewModel: dependencies.makeWorkday,
             makeSaleDraft: dependencies.makeSaleDraft,
-            makeServicePicker: dependencies.makeSaleServicePicker
+            makeServicePicker: dependencies.makeSaleServicePicker,
+            makeDiscount: dependencies.makeSaleDiscount
         )
     }
 }

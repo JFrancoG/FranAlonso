@@ -234,6 +234,7 @@ struct FirestoreSaleWriteDTO: Encodable {
     private let createdAt: SaleTimestampDTO?
     private let lines: [SaleLineDTO]?
     private let status: SaleStatusDTO?
+    private let globalDiscount: SaleGlobalDiscountDTO?
     private let syncMetadata: FirestoreSaleSyncWriteDTO
 
     private enum CodingKeys: String, CodingKey {
@@ -244,6 +245,7 @@ struct FirestoreSaleWriteDTO: Encodable {
         case createdAt
         case lines
         case status
+        case globalDiscount
         case syncMetadata = "_sync"
     }
 }
@@ -264,24 +266,26 @@ extension FirestoreSaleWriteDTO {
         case .live(let sale):
             _ = try sale.toDomain()
             self.init(
-                payloadVersion: SaleDTO.currentPayloadVersion,
+                payloadVersion: sale.payloadVersion,
                 id: sale.id,
                 isDeleted: false,
                 clientID: sale.clientID,
                 createdAt: sale.createdAt,
                 lines: sale.lines,
                 status: sale.status,
+                globalDiscount: sale.globalDiscount,
                 syncMetadata: syncMetadata
             )
         case .tombstone(let saleID):
             self.init(
-                payloadVersion: SaleDTO.currentPayloadVersion,
+                payloadVersion: 1,
                 id: saleID.uuidString,
                 isDeleted: true,
                 clientID: nil,
                 createdAt: nil,
                 lines: nil,
                 status: nil,
+                globalDiscount: nil,
                 syncMetadata: syncMetadata
             )
         }
@@ -302,6 +306,7 @@ struct FirestoreSaleDocumentDTO: Decodable {
     let createdAt: SaleTimestampDTO?
     let lines: [SaleLineDTO]?
     let status: SaleStatusDTO?
+    let globalDiscount: SaleGlobalDiscountDTO?
     let syncMetadata: FirestoreSaleSyncMetadataDTO?
 
     private enum CodingKeys: String, CodingKey {
@@ -312,6 +317,7 @@ struct FirestoreSaleDocumentDTO: Decodable {
         case createdAt
         case lines
         case status
+        case globalDiscount
         case syncMetadata = "_sync"
     }
 
@@ -327,7 +333,7 @@ struct FirestoreSaleDocumentDTO: Decodable {
         let changeSequence = try validatedChangeSequence()
 
         if isDeleted == true {
-            guard payloadVersion == SaleDTO.currentPayloadVersion else {
+            guard payloadVersion == 1 else {
                 throw saleDocumentDecodingError(
                     codingPath: [SaleDocumentCodingKey.payloadVersion],
                     description: "A Sale tombstone requires payload version 1."
@@ -339,7 +345,7 @@ struct FirestoreSaleDocumentDTO: Decodable {
                     description: "A tombstone requires authoritative sync metadata."
                 )
             }
-            guard clientID == nil, createdAt == nil, lines == nil, status == nil else {
+            guard clientID == nil, createdAt == nil, lines == nil, status == nil, globalDiscount == nil else {
                 throw saleDocumentDecodingError(
                     codingPath: [SaleDocumentCodingKey.isDeleted],
                     description: "A Sale tombstone cannot carry business fields."
@@ -358,7 +364,7 @@ struct FirestoreSaleDocumentDTO: Decodable {
 
     private func validatedLiveSale() throws -> SaleDTO {
         guard let payloadVersion else { throw missingSaleField(.payloadVersion) }
-        guard payloadVersion == SaleDTO.currentPayloadVersion else {
+        guard payloadVersion == 1 || payloadVersion == 2 else {
             throw saleDocumentDecodingError(
                 codingPath: [SaleDocumentCodingKey.payloadVersion],
                 description: "The Sale payload version is unsupported."
@@ -373,7 +379,8 @@ struct FirestoreSaleDocumentDTO: Decodable {
             clientID: clientID,
             createdAt: createdAt,
             lines: lines,
-            status: status
+            status: status,
+            globalDiscount: globalDiscount
         )
         do {
             _ = try sale.toDomain()
@@ -426,9 +433,36 @@ struct FirestoreSaleDocumentDTO: Decodable {
 }
 
 extension FirestoreSaleDocumentDTO {
+    /// Constructs the historical projection without a global term for existing callers.
+    init(
+        payloadVersion: Int?,
+        id: String,
+        isDeleted: Bool?,
+        clientID: String?,
+        createdAt: SaleTimestampDTO?,
+        lines: [SaleLineDTO]?,
+        status: SaleStatusDTO?,
+        syncMetadata: FirestoreSaleSyncMetadataDTO?
+    ) {
+        self.init(
+            payloadVersion: payloadVersion,
+            id: id,
+            isDeleted: isDeleted,
+            clientID: clientID,
+            createdAt: createdAt,
+            lines: lines,
+            status: status,
+            globalDiscount: nil,
+            syncMetadata: syncMetadata
+        )
+    }
+
     init(from decoder: any Decoder) throws {
         let strictContainer = try decoder.container(keyedBy: FirestoreSaleDynamicCodingKey.self)
-        let allowedKeys: Set<String> = [
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        let payloadVersion = try container.decodeIfPresent(Int.self, forKey: .payloadVersion)
+        let isDeleted = try container.decodeIfPresent(Bool.self, forKey: .isDeleted)
+        var allowedKeys: Set<String> = [
             CodingKeys.payloadVersion.rawValue,
             CodingKeys.id.rawValue,
             CodingKeys.isDeleted.rawValue,
@@ -438,6 +472,16 @@ extension FirestoreSaleDocumentDTO {
             CodingKeys.status.rawValue,
             CodingKeys.syncMetadata.rawValue
         ]
+        if isDeleted == true {
+            allowedKeys = [
+                CodingKeys.payloadVersion.rawValue,
+                CodingKeys.id.rawValue,
+                CodingKeys.isDeleted.rawValue,
+                CodingKeys.syncMetadata.rawValue
+            ]
+        } else if payloadVersion == 2 {
+            allowedKeys.insert(CodingKeys.globalDiscount.rawValue)
+        }
         guard Set(strictContainer.allKeys.map(\.stringValue))
                 .isSubset(of: allowedKeys) else {
             throw saleDocumentDecodingError(
@@ -446,15 +490,15 @@ extension FirestoreSaleDocumentDTO {
             )
         }
 
-        let container = try decoder.container(keyedBy: CodingKeys.self)
         self.init(
-            payloadVersion: try container.decodeIfPresent(Int.self, forKey: .payloadVersion),
+            payloadVersion: payloadVersion,
             id: try container.decode(String.self, forKey: .id),
-            isDeleted: try container.decodeIfPresent(Bool.self, forKey: .isDeleted),
+            isDeleted: isDeleted,
             clientID: try container.decodeIfPresent(String.self, forKey: .clientID),
             createdAt: try container.decodeIfPresent(SaleTimestampDTO.self, forKey: .createdAt),
             lines: try container.decodeIfPresent([SaleLineDTO].self, forKey: .lines),
             status: try container.decodeIfPresent(SaleStatusDTO.self, forKey: .status),
+            globalDiscount: try container.decodeIfPresent(SaleGlobalDiscountDTO.self, forKey: .globalDiscount),
             syncMetadata: try container.decodeIfPresent(FirestoreSaleSyncMetadataDTO.self, forKey: .syncMetadata)
         )
     }

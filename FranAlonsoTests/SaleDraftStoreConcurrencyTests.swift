@@ -5,6 +5,138 @@ import Testing
 @Suite("Sale draft store concurrency", .timeLimit(.minutes(1)))
 @MainActor
 struct SaleDraftStoreConcurrencyTests {
+    @Test
+    func `an inexact global residual rejects the candidate before any local update`() async throws {
+        let original = try globalDiscountSale(
+            lines: [
+                globalDiscountLine(
+                    price: "10000000000000000000000000000000000000e127",
+                    lineDiscount: nil
+                )
+            ],
+            percentage: nil
+        )
+        let repository = ControlledDraftStoreRepository(sales: [original])
+        let store = concurrentStore(repository: repository)
+        _ = try await store.load(id: original.id)
+        let priorCalculation = store.calculation
+
+        await #expect(throws: MoneyError.invalidAmount) {
+            try await store.setGlobalDiscount(Discount(percentage: globalDiscountDecimal("1e-100")))
+        }
+        #expect(await repository.calls == [.load])
+        #expect(store.draft == original)
+        #expect(store.calculation == priorCalculation)
+        #expect(try await repository.current(id: original.id) == original)
+        #expect((store.lastError as? MoneyError) == .invalidAmount)
+    }
+
+    @Test
+    func `a failed global update preserves the snapshot and explicit retry accepts the same percentage`() async throws {
+        let original = try globalDiscountSale(lines: [globalDiscountLine()], percentage: nil)
+        let repository = ControlledDraftStoreRepository(sales: [original])
+        let store = concurrentStore(repository: repository)
+        _ = try await store.load(id: original.id)
+        let priorCalculation = store.calculation
+        await repository.failNextWrite(.persistenceUnavailable)
+
+        await #expect(throws: SaleDraftError.persistenceUnavailable) {
+            try await store.setGlobalDiscount(Discount(percentage: 20))
+        }
+        #expect(store.draft == original)
+        #expect(store.calculation == priorCalculation)
+        #expect(try await repository.current(id: original.id) == original)
+        _ = try await store.setGlobalDiscount(Discount(percentage: 20))
+        #expect(store.draft?.globalDiscount?.discount.percentage == 20)
+        #expect(store.calculation?.total.amount == 72)
+        #expect(store.lastError == nil)
+        #expect(await repository.calls == [.load, .update, .update])
+    }
+
+    @Test
+    func `global cancellation before acceptance retains the captured terms and accepted projection`() async throws {
+        let original = try globalDiscountSale(lines: [globalDiscountLine()], percentage: "10")
+        let repository = ControlledDraftStoreRepository(sales: [original])
+        let store = concurrentStore(repository: repository)
+        _ = try await store.load(id: original.id)
+        let priorCalculation = store.calculation
+        let checkpoint = DraftStoreCheckpoint()
+        await repository.holdNext(.update, phase: .beforeAcceptance, at: checkpoint)
+        let pending = Task {
+            try await store.setGlobalDiscount(Discount(percentage: 20))
+        }
+        await checkpoint.waitForEntry()
+        pending.cancel()
+        await checkpoint.release()
+
+        await #expect(throws: CancellationError.self) {
+            try await pending.value
+        }
+        #expect(store.draft == original)
+        #expect(store.calculation == priorCalculation)
+        #expect(try await repository.current(id: original.id) == original)
+        #expect(store.lastError == nil)
+        #expect(store.operation == nil)
+    }
+
+    @Test(arguments: [false, true])
+    func `global durable success wins over caller cancellation and closing fences only publication`(
+        closed: Bool
+    ) async throws {
+        let original = try globalDiscountSale(lines: [globalDiscountLine()], percentage: nil)
+        let repository = ControlledDraftStoreRepository(sales: [original])
+        let store = concurrentStore(repository: repository)
+        _ = try await store.load(id: original.id)
+        let checkpoint = DraftStoreCheckpoint()
+        await repository.holdNext(.update, phase: .afterAcceptance, at: checkpoint)
+        let pending = Task {
+            try await store.setGlobalDiscount(Discount(percentage: 20))
+        }
+        await checkpoint.waitForEntry()
+        #expect(try await repository.current(id: original.id)?.globalDiscount?.discount.percentage == 20)
+        if closed {
+            store.close()
+        }
+        pending.cancel()
+        await checkpoint.release()
+
+        let accepted = try await pending.value
+        #expect(accepted.globalDiscount?.discount.percentage == 20)
+        #expect(accepted.lines == original.lines)
+        #expect(try await repository.current(id: original.id) == accepted)
+        #expect(store.lastError == nil)
+        #expect(store.operation == nil)
+        if closed {
+            #expect(store.state == .closed)
+            #expect(store.calculation == nil)
+        } else {
+            #expect(store.draft == accepted)
+            #expect(store.calculation?.total.amount == 72)
+        }
+    }
+
+    @Test
+    func `a global request while another edit is accepting performs no second write`() async throws {
+        let original = try globalDiscountSale(lines: [globalDiscountLine()])
+        let repository = ControlledDraftStoreRepository(sales: [original])
+        let store = concurrentStore(repository: repository)
+        _ = try await store.load(id: original.id)
+        let checkpoint = DraftStoreCheckpoint()
+        await repository.holdNext(.update, phase: .beforeAcceptance, at: checkpoint)
+        let pending = Task {
+            try await store.setQuantity(2, for: original.lines[0].id)
+        }
+        await checkpoint.waitForEntry()
+        await #expect(throws: SaleDraftStoreError.operationInProgress) {
+            try await store.setGlobalDiscount(Discount(percentage: 30))
+        }
+        #expect(await repository.calls == [.load, .update])
+        await checkpoint.release()
+        _ = try await pending.value
+        #expect(store.draft?.globalDiscount?.discount.percentage == 20)
+        #expect(store.calculation?.total.amount == 144)
+    }
+
     @Test(arguments: [DraftStoreOverlappingCall.create, .load, .update, .discard])
     func `active update rejects overlapping operations without replacing accepted state`(
         call: DraftStoreOverlappingCall
@@ -398,14 +530,24 @@ private actor ControlledDraftStoreRepository: SaleRepository {
         }
     }
 
-    func updateDraft(_ expected: Sale, clientID: ClientID?, lines: [SaleLine]) async throws -> Sale {
+    func updateDraft(
+        _ expected: Sale,
+        clientID: ClientID?,
+        lines: [SaleLine],
+        globalDiscount: SaleGlobalDiscount?
+    ) async throws -> Sale {
         calls.append(.update)
         let held = takeHold(for: .update)
         if held?.phase == .beforeAcceptance {
             await held?.checkpoint.block()
         }
         try takeWriteFailure()
-        let accepted = try await backing.updateDraft(expected, clientID: clientID, lines: lines)
+        let accepted = try await backing.updateDraft(
+            expected,
+            clientID: clientID,
+            lines: lines,
+            globalDiscount: globalDiscount
+        )
         if held?.phase == .afterAcceptance {
             await held?.checkpoint.block()
         }

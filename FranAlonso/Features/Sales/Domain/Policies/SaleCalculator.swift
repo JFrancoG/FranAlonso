@@ -20,6 +20,8 @@ struct SaleLineCalculation: Identifiable, Equatable {
     let id: SaleLineID
     private let storedSubtotal: Money
     private let storedDiscountAmount: Money
+    private let storedLineDiscountAmount: Money
+    private let storedGlobalDiscountAmount: Money
     private let storedTaxableBase: Money
     private let storedTaxAmount: Money
     private let storedTotal: Money
@@ -30,6 +32,14 @@ struct SaleLineCalculation: Identifiable, Equatable {
 
     var discountAmount: Money {
         storedDiscountAmount
+    }
+
+    var lineDiscountAmount: Money {
+        storedLineDiscountAmount
+    }
+
+    var globalDiscountAmount: Money {
+        storedGlobalDiscountAmount
     }
 
     var taxableBase: Money {
@@ -54,6 +64,8 @@ struct SaleCalculation: Equatable {
     let lineCalculations: [SaleLineCalculation]
     private let storedSubtotal: Money
     private let storedDiscountAmount: Money
+    private let storedLineDiscountAmount: Money
+    private let storedGlobalDiscountAmount: Money
     private let storedTaxableBase: Money
     private let storedTaxAmount: Money
     private let storedTotal: Money
@@ -64,6 +76,14 @@ struct SaleCalculation: Equatable {
 
     var discountAmount: Money {
         storedDiscountAmount
+    }
+
+    var lineDiscountAmount: Money {
+        storedLineDiscountAmount
+    }
+
+    var globalDiscountAmount: Money {
+        storedGlobalDiscountAmount
     }
 
     var taxableBase: Money {
@@ -83,25 +103,31 @@ extension SaleLineCalculation {
     /// Creates a line projection only when currencies and arithmetic identities agree.
     ///
     /// - Throws: `SaleCalculatorError.inconsistentBreakdown` when components use
-    ///   different currencies, the discount does not reconcile with the total,
+    ///   different currencies, both discounts do not reconcile with the total,
     ///   or taxable base plus tax does not equal the total; `MoneyError.invalidAmount`
     ///   when an identity cannot be checked with exact decimal arithmetic.
     fileprivate init(
         id: SaleLineID,
         subtotal: Money,
-        discountAmount: Money,
+        lineDiscountAmount: Money,
+        globalDiscountAmount: Money,
         taxableBase: Money,
         taxAmount: Money,
         total: Money
     ) throws {
         let currency = subtotal.currency
-        guard discountAmount.currency == currency,
+        guard lineDiscountAmount.currency == currency,
+              globalDiscountAmount.currency == currency,
               taxableBase.currency == currency,
               taxAmount.currency == currency,
               total.currency == currency else {
             throw SaleCalculatorError.inconsistentBreakdown
         }
 
+        let discountAmount = try Money(
+            amount: lineDiscountAmount.amount.addingExactly(globalDiscountAmount.amount),
+            currency: currency
+        )
         guard try subtotal.amount.subtractingExactly(discountAmount.amount) == total.amount,
               try taxableBase.amount.addingExactly(taxAmount.amount) == total.amount else {
             throw SaleCalculatorError.inconsistentBreakdown
@@ -111,6 +137,8 @@ extension SaleLineCalculation {
             id: id,
             storedSubtotal: subtotal,
             storedDiscountAmount: discountAmount,
+            storedLineDiscountAmount: lineDiscountAmount,
+            storedGlobalDiscountAmount: globalDiscountAmount,
             storedTaxableBase: taxableBase,
             storedTaxAmount: taxAmount,
             storedTotal: total
@@ -134,6 +162,8 @@ extension SaleCalculation {
         let zero = try Money(amount: .zero, currency: currency)
         var subtotal = zero
         var discountAmount = zero
+        var lineDiscountAmount = zero
+        var globalDiscountAmount = zero
         var taxableBase = zero
         var taxAmount = zero
         var total = zero
@@ -154,6 +184,14 @@ extension SaleCalculation {
                 amount: discountAmount.amount.addingExactly(lineCalculation.discountAmount.amount),
                 currency: currency
             )
+            lineDiscountAmount = try Money(
+                amount: lineDiscountAmount.amount.addingExactly(lineCalculation.lineDiscountAmount.amount),
+                currency: currency
+            )
+            globalDiscountAmount = try Money(
+                amount: globalDiscountAmount.amount.addingExactly(lineCalculation.globalDiscountAmount.amount),
+                currency: currency
+            )
             taxableBase = try Money(
                 amount: taxableBase.amount.addingExactly(lineCalculation.taxableBase.amount),
                 currency: currency
@@ -165,7 +203,8 @@ extension SaleCalculation {
             total = try Money(amount: total.amount.addingExactly(lineCalculation.total.amount), currency: currency)
         }
 
-        guard try subtotal.amount.subtractingExactly(discountAmount.amount) == total.amount,
+        guard try lineDiscountAmount.amount.addingExactly(globalDiscountAmount.amount) == discountAmount.amount,
+              try subtotal.amount.subtractingExactly(discountAmount.amount) == total.amount,
               try taxableBase.amount.addingExactly(taxAmount.amount) == total.amount else {
             throw SaleCalculatorError.inconsistentBreakdown
         }
@@ -174,6 +213,8 @@ extension SaleCalculation {
             lineCalculations: lineCalculations,
             storedSubtotal: subtotal,
             storedDiscountAmount: discountAmount,
+            storedLineDiscountAmount: lineDiscountAmount,
+            storedGlobalDiscountAmount: globalDiscountAmount,
             storedTaxableBase: taxableBase,
             storedTaxAmount: taxAmount,
             storedTotal: total
@@ -183,6 +224,25 @@ extension SaleCalculation {
 
 /// A pure policy for deriving sale totals from tax-inclusive line snapshots.
 struct SaleCalculator {
+    /// Reconstructs the monetary projection from the complete historical commercial snapshot.
+    ///
+    /// V1 rounds the captured line promotion, then the global discount on that line's
+    /// residual, before extracting included tax. An absent global term adds no discount;
+    /// the explicit currency also determines every zero amount in an empty result.
+    /// - Throws: Currency, precision or monetary reconciliation errors from the calculation policy.
+    func calculate(sale: Sale, currency: Currency) throws -> SaleCalculation {
+        switch sale.globalDiscount?.policy {
+        case .lineThenGlobalV1:
+            return try calculate(
+                lines: sale.lines,
+                globalPercentage: sale.globalDiscount?.discount.percentage ?? .zero,
+                currency: currency
+            )
+        case nil:
+            return try calculate(lines: sale.lines, currency: currency)
+        }
+    }
+
     /// Calculates discounted totals and extracts included tax for each line.
     ///
     /// Each line subtotal, discount, taxable base, and tax amount is normalized
@@ -202,6 +262,12 @@ struct SaleCalculator {
     ///   rounded components do not reconcile, or `MoneyError.invalidAmount` if
     ///   decimal arithmetic cannot be represented as a monetary value.
     func calculate(lines: [SaleLine], currency: Currency) throws -> SaleCalculation {
+        try calculate(lines: lines, globalPercentage: .zero, currency: currency)
+    }
+}
+
+private extension SaleCalculator {
+    func calculate(lines: [SaleLine], globalPercentage: Decimal, currency: Currency) throws -> SaleCalculation {
         var lineCalculations: [SaleLineCalculation] = []
 
         lineCalculations.reserveCapacity(lines.count)
@@ -214,8 +280,13 @@ struct SaleCalculator {
             let subtotalAmount = try line.unitPrice.amount.multipliedExactly(by: Decimal(line.quantity))
             let lineSubtotal = try Money(amount: subtotalAmount, currency: currency)
             let lineDiscount = try discountAmount(for: lineSubtotal, percentage: line.discount?.percentage ?? .zero)
-            let lineTotal = try Money(
+            let residual = try Money(
                 amount: lineSubtotal.amount.subtractingExactly(lineDiscount.amount),
+                currency: currency
+            )
+            let globalDiscount = try discountAmount(for: residual, percentage: globalPercentage)
+            let lineTotal = try Money(
+                amount: residual.amount.subtractingExactly(globalDiscount.amount),
                 currency: currency
             )
             let lineTaxableBase = try taxableBase(for: lineTotal, percentage: line.taxRate.percentage)
@@ -228,7 +299,8 @@ struct SaleCalculator {
                 try SaleLineCalculation(
                     id: line.id,
                     subtotal: lineSubtotal,
-                    discountAmount: lineDiscount,
+                    lineDiscountAmount: lineDiscount,
+                    globalDiscountAmount: globalDiscount,
                     taxableBase: lineTaxableBase,
                     taxAmount: lineTax,
                     total: lineTotal
@@ -238,9 +310,7 @@ struct SaleCalculator {
 
         return try SaleCalculation(lineCalculations: lineCalculations, currency: currency)
     }
-}
 
-private extension SaleCalculator {
     /// Certifies discount rounding after exact percentage scaling.
     ///
     /// Foundation's directed candidates must round to the same minor-unit amount,

@@ -21,16 +21,16 @@ struct SaleLocalPersistenceTests {
         #expect(model.paymentID != nil)
         #expect(model.documentID != nil)
         #expect(model.reversalID != nil)
-        #expect(model.linesPayloadVersion == 1)
-        #expect(try JSONDecoder().decode([SaleLineDTO].self, from: model.linesData).count == 2)
+        #expect(model.linesPayloadVersion == 2)
+        #expect(reconstructed.lines.count == 2)
     }
 
     @Test("An unsupported lines payload version fails before Domain reconstruction")
     func unsupportedLinesPayloadVersionFailsClosed() throws {
         let model = try SaleModel(persistentSale(status: .draft))
-        model.linesPayloadVersion = 2
+        model.linesPayloadVersion = 3
 
-        #expect(throws: SaleModelPayloadError.unsupportedLinesVersion(2)) {
+        #expect(throws: SaleModelPayloadError.unsupportedLinesVersion(3)) {
             _ = try model.toDomain()
         }
     }

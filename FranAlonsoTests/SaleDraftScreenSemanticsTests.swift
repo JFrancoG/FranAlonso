@@ -332,8 +332,18 @@ private actor SaleDraftScreenReadRepository: SaleRepository {
         try await backing.createDraft(draft)
     }
 
-    func updateDraft(_ expected: Sale, clientID: ClientID?, lines: [SaleLine]) async throws -> Sale {
-        try await backing.updateDraft(expected, clientID: clientID, lines: lines)
+    func updateDraft(
+        _ expected: Sale,
+        clientID: ClientID?,
+        lines: [SaleLine],
+        globalDiscount: SaleGlobalDiscount?
+    ) async throws -> Sale {
+        try await backing.updateDraft(
+            expected,
+            clientID: clientID,
+            lines: lines,
+            globalDiscount: globalDiscount
+        )
     }
 
     func discardDraft(_ id: SaleID) async throws {

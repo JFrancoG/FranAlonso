@@ -128,6 +128,10 @@ func preservedPayloads(in context: ModelContext) throws -> [String: ClientDocume
     let saleDiscard = try documentMigrationOnly(SalePendingDiscardModel.self, in: context)
     let saleRemote = try documentMigrationOnly(SaleRemoteStateModel.self, in: context)
     let saleConflict = try documentMigrationOnly(SaleSyncConflictModel.self, in: context)
+    #expect(sale.linesPayloadVersion == 1)
+    #expect(try saleUpsert.decodePayload().payloadVersion == 1)
+    #expect(try saleRemote.decodeRecord().liveSale?.payloadVersion == 1)
+    #expect(try saleConflict.decodeLocalSale()?.payloadVersion == 1)
 
     return [
         "clients.upsert.base": .init(bytes: clientUpsert.baseData, version: clientUpsert.baseVersion),
