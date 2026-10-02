@@ -5,6 +5,14 @@ enum StockMovementOrigin: Codable, Equatable {
     case manual(reference: StockMovementID)
     /// Original sale-line consumption; payment metadata is part of the immutable conflict payload.
     case sale(saleID: SaleID, lineID: SaleLineID, paymentID: PaymentID)
+    /// The unique inverse of one original consumption; a different reversal is conflicting payload.
+    case saleReversal(
+        saleID: SaleID,
+        lineID: SaleLineID,
+        paymentID: PaymentID,
+        reversalID: SaleReversalID,
+        originalMovementID: StockMovementID
+    )
 }
 
 /// An immutable signed change in physical units, independent of prices and product availability.
@@ -42,6 +50,14 @@ extension StockMovement {
         origin: StockMovementOrigin
     ) throws {
         guard quantityDelta != 0 else { throw StockError.invalidDelta }
+        if case let .saleReversal(saleID, lineID, _, _, originalID) = origin {
+            guard quantityDelta > 0 else { throw StockError.invalidDelta }
+            guard id == .saleReversal(saleID: saleID, lineID: lineID),
+                  originalID == .saleConsumption(saleID: saleID, lineID: lineID)
+            else {
+                throw StockError.identityConflict
+            }
+        }
         let normalizedReason = reason.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !normalizedReason.isEmpty else { throw StockError.invalidReason }
         guard occurredAt.timeIntervalSinceReferenceDate.isFinite else { throw StockError.invalidDate }

@@ -37,7 +37,7 @@ extension StockMovementDTO {
     /// Captures every conflict-relevant field without reducing timestamp precision.
     init(_ movement: StockMovement) throws {
         self.init(
-            payloadVersion: 1,
+            payloadVersion: StockMovementOriginDTO(movement.origin).transportVersion,
             id: movement.id.rawValue.uuidString,
             productID: movement.productID.rawValue.uuidString,
             quantityDelta: Int64(movement.quantityDelta),
@@ -49,7 +49,7 @@ extension StockMovementDTO {
 
     /// Revalidates the signed event and rejects noncanonical identity, text or unsupported transport.
     func toDomain() throws -> StockMovement {
-        guard payloadVersion == 1, let delta = Int(exactly: quantityDelta) else {
+        guard payloadVersion == origin.transportVersion, let delta = Int(exactly: quantityDelta) else {
             throw StockSyncError.invalidPayload
         }
         let movement = try StockMovement(
@@ -69,8 +69,17 @@ extension StockMovementDTO {
 enum StockMovementOriginDTO: Codable, Equatable {
     case manual(reference: String)
     case sale(saleID: String, lineID: String, paymentID: String)
+    case saleReversal(
+        saleID: String,
+        lineID: String,
+        paymentID: String,
+        reversalID: String,
+        originalMovementID: String
+    )
 
-    private enum CodingKeys: String, CodingKey { case kind, reference, saleID, lineID, paymentID }
+    private enum CodingKeys: String, CodingKey {
+        case kind, reference, saleID, lineID, paymentID, reversalID, originalMovementID
+    }
 }
 
 extension StockMovementOriginDTO {
@@ -84,6 +93,14 @@ extension StockMovementOriginDTO {
                 lineID: lineID.rawValue.uuidString,
                 paymentID: paymentID.rawValue.uuidString
             )
+        case let .saleReversal(saleID, lineID, paymentID, reversalID, originalMovementID):
+            self = .saleReversal(
+                saleID: saleID.rawValue.uuidString,
+                lineID: lineID.rawValue.uuidString,
+                paymentID: paymentID.rawValue.uuidString,
+                reversalID: reversalID.rawValue.uuidString,
+                originalMovementID: originalMovementID.rawValue.uuidString
+            )
         }
     }
 
@@ -96,6 +113,14 @@ extension StockMovementOriginDTO {
                 saleID: SaleID(rawValue: try stockSyncUUID(saleID)),
                 lineID: SaleLineID(rawValue: try stockSyncUUID(lineID)),
                 paymentID: PaymentID(rawValue: try stockSyncUUID(paymentID))
+            )
+        case let .saleReversal(saleID, lineID, paymentID, reversalID, originalMovementID):
+            return .saleReversal(
+                saleID: SaleID(rawValue: try stockSyncUUID(saleID)),
+                lineID: SaleLineID(rawValue: try stockSyncUUID(lineID)),
+                paymentID: PaymentID(rawValue: try stockSyncUUID(paymentID)),
+                reversalID: SaleReversalID(rawValue: try stockSyncUUID(reversalID)),
+                originalMovementID: StockMovementID(rawValue: try stockSyncUUID(originalMovementID))
             )
         }
     }
@@ -112,6 +137,18 @@ extension StockMovementOriginDTO {
                 saleID: try c.decode(String.self, forKey: .saleID),
                 lineID: try c.decode(String.self, forKey: .lineID),
                 paymentID: try c.decode(String.self, forKey: .paymentID)
+            )
+        case "saleReversal":
+            try stockSyncKeys(
+                decoder,
+                allowed: ["kind", "saleID", "lineID", "paymentID", "reversalID", "originalMovementID"]
+            )
+            self = .saleReversal(
+                saleID: try c.decode(String.self, forKey: .saleID),
+                lineID: try c.decode(String.self, forKey: .lineID),
+                paymentID: try c.decode(String.self, forKey: .paymentID),
+                reversalID: try c.decode(String.self, forKey: .reversalID),
+                originalMovementID: try c.decode(String.self, forKey: .originalMovementID)
             )
         default:
             throw StockSyncError.invalidPayload
@@ -130,6 +167,22 @@ extension StockMovementOriginDTO {
             try c.encode(saleID, forKey: .saleID)
             try c.encode(lineID, forKey: .lineID)
             try c.encode(paymentID, forKey: .paymentID)
+        case let .saleReversal(saleID, lineID, paymentID, reversalID, originalMovementID):
+            try c.encode("saleReversal", forKey: .kind)
+            try c.encode(saleID, forKey: .saleID)
+            try c.encode(lineID, forKey: .lineID)
+            try c.encode(paymentID, forKey: .paymentID)
+            try c.encode(reversalID, forKey: .reversalID)
+            try c.encode(originalMovementID, forKey: .originalMovementID)
+        }
+    }
+}
+
+private extension StockMovementOriginDTO {
+    var transportVersion: Int {
+        switch self {
+        case .manual, .sale: 1
+        case .saleReversal: 2
         }
     }
 }

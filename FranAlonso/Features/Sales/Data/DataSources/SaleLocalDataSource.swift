@@ -6,16 +6,84 @@ private let saleSyncFeedID = "sales"
 /// Performs context-confined Sales persistence without retaining live SwiftData state.
 struct SaleLocalDataSource {
     private let commitPayment: @Sendable (ModelContext) throws -> Void
+    private let commitReversal: @Sendable (ModelContext) throws -> Void
 }
 
 extension SaleLocalDataSource {
-    /// Injects only the payment commit boundary, without changing other Sales writes.
+    /// Preserves the payment injection and its existing trailing-closure contract.
     init(
         paymentSave: @escaping @Sendable (ModelContext) throws -> Void = {
             try $0.save()
         }
     ) {
-        self.init(commitPayment: paymentSave)
+        self.init(commitPayment: paymentSave, commitReversal: { try $0.save() })
+    }
+
+    /// Injects both commits explicitly, avoiding an ambiguous or silently redirected payment trailing closure.
+    init(
+        reversalSave: @escaping @Sendable (ModelContext) throws -> Void,
+        paymentSave: @escaping @Sendable (ModelContext) throws -> Void
+    ) {
+        self.init(commitPayment: paymentSave, commitReversal: reversalSave)
+    }
+
+    /// Accepts void, causal successor and all inverses in a single non-suspending local save.
+    /// Exact replay may repair missing inverses but never rewrites Sale, original events or causal lineage.
+    /// Rejecting a dirty context happens before rollback; cancellation after commit does not undo acceptance.
+    func voidSale(
+        _ expected: Sale,
+        reversalID: SaleReversalID,
+        voidedAt: Date,
+        operationID: UUID,
+        in context: ModelContext
+    ) throws -> Sale {
+        try Task.checkCancellation()
+        do {
+            try requireClean(context)
+            guard try conflict(for: expected.id, in: context) == nil else { throw SaleReversalError.conflict }
+            guard try !hasDeletionState(for: expected.id, in: context) else { throw SaleReversalError.deleted }
+            guard let current = try model(for: expected.id, in: context)?.toDomain() else {
+                throw SaleReversalError.notFound
+            }
+            let accepted = try SaleReversalAcceptancePolicy()(
+                expected: expected,
+                current: current,
+                reversalID: reversalID,
+                voidedAt: voidedAt
+            )
+            let rows = try StockLocalDataSource().prepareSaleReversal(accepted, reversalID: reversalID, in: context)
+            let autosave = context.autosaveEnabled
+            context.autosaveEnabled = false
+            defer {
+                context.autosaveEnabled = autosave
+            }
+            do {
+                if accepted != current {
+                    try stagePendingUpsert(accepted, operationID: operationID, in: context)
+                }
+                for row in rows {
+                    context.insert(row)
+                }
+                try Task.checkCancellation()
+                if context.hasChanges {
+                    try commitReversal(context)
+                }
+                return accepted
+            } catch {
+                context.rollback()
+                throw error
+            }
+        } catch let error as SaleReversalError {
+            throw error
+        } catch let error as SaleError {
+            throw error
+        } catch is StockError {
+            throw SaleReversalError.stockIntegrity
+        } catch is CancellationError {
+            throw CancellationError()
+        } catch {
+            throw SaleReversalError.persistenceUnavailable
+        }
     }
 
     /// Accepts work and its causal upsert together; replay does not rewrite or enqueue.

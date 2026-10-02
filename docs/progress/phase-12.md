@@ -804,3 +804,87 @@ Develop22:25:58/Production22:19:13, PRE/POST/focal PASS y P2 cerrado. Código in
 Este cierre modifica solo CHANGELOG/Progress/fase/propuesta; Xcode adicional N/A razonado por documentación y
 paridad ejecutable. Localizaciones577/0 y diffcheck PASS; gobernanza conserva únicamente seis enlaces Desktop
 históricos08.3 y aviso AppIntents metadata conocido separado de Swift/Clang. No fallo físico de almacenamiento probado.
+
+
+## 12.8 — Inicio autorizado y propuesta
+
+Autorización «abre issue y rama e implementa12.8». [PLU-95](https://linear.app/plusprojects/issue/PLU-95/128-compensate-stock-when-voiding-a-paid-sale),
+In Progress/Jesus, hija PLU-85 In Progress. Rama `codex/plu-95-sale-stock-compensation` desde main/origin/remoto
+`392d7ac4bf3a381f1e79cd08f5f6fbce94b92e9a`, clean antes de preparación, sin trabajo local ajeno.
+Consulta de todas las hijas activas/archivadas confirmó ausencia de12.8 anterior; issue creada sin duplicación.
+
+[Propuesta12.8](12-8-stock-compensation-proposal.md) y [ADR0034 propuesto](../ADRs/0034-sale-stock-compensation.md)
+precisan closed→voided, origen compensatorio, ID estable única por consumo original, aceptación local conjunta y
+compatibilidad local3/remoto2 exclusiva para compensaciones. Originales1/2 y transporte1 históricos intactos;
+Schema4 sin cambio, motores inactivos. No UI, ajuste fiscal/devolución financiera, CAS multiwriter ni live.
+Pendiente PRE independiente y aprobación del ADR antes de código, conforme al stop explícito de start-subphase.
+
+Baseline12.7 conservada:26Swift idénticos al manifest validado, native summary final cerrado1465/1465PASS
+(2319ejecuciones registradas), 0fallos/skips; builds Develop22:25:58/Production22:19:13 y0Swift/Clang.
+MCP estable/proyecto/scheme y target27/SDK27/Swift6/complete/nonisolated/warnings-as-errors verificados.
+Xcode adicional N/A durante esta preparación documental; no tests nuevos ni evidencia12.8 implementada.
+Fuentes actuales RFC9562/Firestore y docs Apple completas Cupertino consultadas; PRE revisará aplicabilidad.
+DeudaPLU-89/91 y recuperación feedback/estabilización antes del primer candidato real permanecen abiertas.
+Sin commit/push/PR/merge/Done ni cierre de fase. Estado operativo pendiente reconciliar tras PRE.
+
+PRE stock_compensation_12_8_pre: un P1 de identidad que incluía reversalID y permitía duplicar restitución entre
+dos writers offline. Corregido: nueva namespace por venta/línea, reversalID en payload conflictivo, nunca en ID;
+añadido test de dos dispositivos, orden/replay y reinicio con un único +q remoto y conflicto durable.
+No otros hallazgos. Auditoría operacional890archivos con digest inicial/final/root idéntico:
+`1f83a4629d1561e1137302af7c9733a292a70e412356e473fb1f160616777f39`. Pendiente focal read-only de la corrección.
+
+Focal stock_compensation_12_8_pre PASS sin hallazgos, P1 cerrado en la propuesta.890archivos read-only, huella
+inicial/final/root idéntica `3365991f61f254f06bbf482f0f2b973e35afee32a1427ce214e6e8678af94311`.
+PRE técnico satisfecho, condicionado a aprobación ADR0034 antes de código. Issue95 y parent85 reconciliados,
+ambos In Progress; entrega y live sin autorización. Propuesta/ADR son los únicos contenidos nuevos, junto al índice
+y registro de estado: implementación/RED/GREEN12.8 pendientes, sin tests/builds nuevos.
+Gobernanza sin errores nuevos: solo6enlaces Desktop históricos08.3; localizaciones577/0, diffcheckPASS,
+Progress bajo8192bytes. La aprobación solicitada se limita al diseño0034 y la implementación/validación12.8.
+
+### 12.8 — Aprobación, implementación y validación03/10
+
+ADR0034 aceptado por «si, aprobada» tras PRE/focal PASS. Implementación Domain/Data/App completada conforme a
+[propuesta12.8](12-8-stock-compensation-proposal.md): void cerrado + causal upsert + todas las inversas en un único
+save local; ID única por consumo, originales inmutables, replay exacto y recuperación de prefijo. Originales
+ausentes/divergentes/corruptos/conflictivos bloquean todo; Product ausente/inactivo/conflictivo no se restaura.
+Payload local3/remoto2 solo compensación, manual1/consumo2/remoto1 y Schema4/plan intactos.
+
+RED00:45:02 storageFailure al leer payload3 válido con producción anterior. GREEN focal15/15 y ampliado41/41.
+Regresión01:06:50:3fallos históricos de pago por trailing closure ligado al nuevo parámetro default de reversión.
+Corregido en producción manteniendo init(paymentSave:) original y nueva inyección de ambos commits explícita;
+tests históricos intactos. Regresión final01:08:46:2368ejecuciones/1491declaraciones PASS,0fallos/skips/notRun/
+expectedFailures/runtimeWarnings. Nuevas49/26; native summary cerrado y todos los parámetros comprobados.
+Builds Develop01:08:41/Production01:09:41 PASS,0Swift/Clang; aviso AppIntents metadata histórico separado.
+MCP estable, iPadPro13(M5)/Simulator27.2/SDK27; Develop restaurado. Bundle, logs y límites en propuesta.
+
+Reopen file-backed tras rollback/retry y éxito con liberación real/segunda apertura; bytes/queue conservados.
+Dos dispositivos offline: misma ID, payload conflictivo, una sola compensación remota y conflictos durables.
+Sales/Stock engines reales con dobles remotos, reorder/replay/retry/cancelación probados; motor live inactivo.
+Sin UI/preview/localización/pantalla nueva: auditoría accesible N/A12.8. PLU-89/91 Backlog/Jesus retienen deuda,
+evidencia y trigger feedback/estabilización antes del primer candidato real; no cierre integral/fase12.
+Estilo24Swift scoped/script/manual; localizaciones577/0, diffcheckPASS; gobernanza solo6enlaces históricos08.3.
+POST independiente pendiente. PLU-95/85 In Progress; rama local sin commit/push/PR/merge/Done autorizado.
+
+### POST independiente y preparación de entrega12.8
+
+stock_compensation_12_8_post, agente fresco ios-standards-reviewer, PASS funcional sin hallazgosP0–P3.
+Auditó24Swift/diff/rutas afectadas y autoridad/docs; verificó RED, native2368/1491 y nuevas49/26, argumentos,
+builds/diagnósticos y manifest24Swift sin discrepancias. ID literal recalculada independientemente.
+Revisión operacional read-only:903archivos, digest inicial/final/auditor/root idéntico
+`6dca85fe409d1c10337042ef4b845b6d73f34343cf9421133ae18a4b6c451d48`.
+UI/accesibilidad12.8 N/A; deuda89/91 preservada, sin cierre integral/fase12. Fuentes Apple/Cupertino,
+RFC9562 y transaccionesFirestore contrastadas con los límites locales/remotos aceptados0034.
+Registro final solo documental; Swift conserva paridad literal con el código probado y auditado, sin necesidad
+de repetir Xcode. PLU-95/85 In Progress/Jesus reconciliados con POST PASS y entrega pendiente.
+Rama codex/plu-95-sale-stock-compensation sin commit/push/PR/merge/Done/live autorizado.12.8 preparada
+para la siguiente autorización de entrega; fase12 y deuda accesible integral permanecen abiertas.
+
+### Autorización de entrega03/10/2026
+
+El propietario solicita «commit, push y entrega». Autoriza la entrega completa12.8 según el recorrido establecido:
+commit de alcance exacto, push de rama, PR/revisión/merge, reconciliación Done de PLU-95 y limpieza de rama.
+El resultado Git definitivo sigue pendiente; PLU-95/85 aún In Progress. No autoriza cierre integral/fase12, live
+ni siguiente fase. Validación/auditoría recientes reutilizadas:24Swift iguales al manifest probado/auditado,
+2368ejecuciones/1491declaraciones y nuevas49/26 PASS, buildsDevelop/Production, PRE/POST PASS.
+Revisión de estilo read-only repetida sin cambios/hallazgos nuevos;10candidatos de closures/predicados adjudicados.
+Cambios posteriores solo documentación/changelog; Xcode adicional N/A por paridad ejecutable literal.

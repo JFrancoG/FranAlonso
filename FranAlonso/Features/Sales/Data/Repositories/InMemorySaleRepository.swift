@@ -1,6 +1,21 @@
 import Foundation
 /// An actor-isolated Sales repository for previews and deterministic tests.
 actor InMemorySaleRepository: SaleRepository {
+    /// Domain-only double; production ledger atomicity belongs to the SwiftData implementations.
+    func voidSale(_ expected: Sale, reversalID: SaleReversalID, voidedAt: Date) throws -> Sale {
+        try Task.checkCancellation()
+        guard let index = sales.firstIndex(where: { $0.id == expected.id }) else {
+            throw knownIDs.contains(expected.id) ? SaleReversalError.deleted : .notFound
+        }
+        let accepted = try SaleReversalAcceptancePolicy()(
+            expected: expected,
+            current: sales[index],
+            reversalID: reversalID,
+            voidedAt: voidedAt
+        )
+        sales[index] = accepted
+        return accepted
+    }
     func advanceSale(_ expected: Sale, action: SaleProgressAction) throws -> Sale {
         try Task.checkCancellation()
         guard let index = sales.firstIndex(where: { $0.id == expected.id }) else {
