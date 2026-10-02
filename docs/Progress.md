@@ -7,8 +7,8 @@
 - **11.6 / [PLU-78](https://linear.app/plusprojects/issue/PLU-78): Done funcional**, Jesus Franco.
   [PR38](https://github.com/JFrancoG/FranAlonso/pull/38)/`9f38731`; rama eliminada. [Evidencia](progress/phase-11.md).
 - **11.1–11.5: Done funcional**, PLU-72–76/PR33–37; fasePLU-71 activa, ramas eliminadas.
-- **11.7 / [PLU-80](https://linear.app/plusprojects/issue/PLU-80): In Progress**, Jesus Franco;
-  `codex/plu-80-sale-discounts`: global provisional; 2.098 tests, smoke y POST PASS para demo.
+- **11.7 / [PLU-80](https://linear.app/plusprojects/issue/PLU-80): Done funcional**, Jesus Franco;
+  [PR39](https://github.com/JFrancoG/FranAlonso/pull/39)/`073a180`; rama eliminada. Siguiente:11.8/pago.
 - [PLU-77](https://linear.app/plusprojects/issue/PLU-77)/[PLU-79](https://linear.app/plusprojects/issue/PLU-79)/[PLU-81](https://linear.app/plusprojects/issue/PLU-81):
   Backlog accesible11.5–11.7/Jesus Franco; tras estabilizar cada flujo, antes de uso real.
 

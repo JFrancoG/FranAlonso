@@ -149,3 +149,8 @@ Sólo el catálogo cambió tras RunAll; otras605rutas de fuente/config exactas. 
 21,841s/Production18,958s PASS,0errores/warnings Swift/Clang; avisos AppIntents separados. Catálogo528/0.
 El mensaje corregido no se verificó con AT. Las55filas mantienen45Limitado/10Pendiente y PLU-81Backlog/JesusFranco,
 recuperación tras feedback/estabilización antes del primer candidato real. PASS funcional no acredita integral.
+
+Entrega funcional autorizada y verificada el2026-10-02: PLU-80Done tras
+[PR39](https://github.com/JFrancoG/FranAlonso/pull/39), merge073a180 y commit validado08e7550 con árbol idéntico.
+Rama local/remota eliminada. PLU-81Backlog/JesusFranco conserva55criterios45Limitado/10Pendiente y su disparador;
+el cierre funcional no resuelve AT/AX5 ni ratificación comercial. FasePLU-71 continúa InProgress.

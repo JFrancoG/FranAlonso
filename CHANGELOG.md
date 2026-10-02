@@ -103,6 +103,10 @@ All notable changes to this project are documented in this file.
 
 ### Documentation
 
+- 2026-10-02 | 📝 docs(delivery): close sale discount delivery
+  Records PR 39 integration, functional PLU-80 closure and branch cleanup.
+  Keeps commercial ratification and PLU-81 accessibility evidence pending; payment registration is next.
+
 - 2026-10-02 | 📝 docs(delivery): close service selector delivery
   Records PR38, PLU-78 completion and verified branch cleanup.
   Retains PLU-79 integral accessibility validation and the active Phase 11 gate.

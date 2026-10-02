@@ -1216,3 +1216,24 @@ PLU-80 permanece InProgress hasta verificar merge; fasePLU-71 abierta y PLU-81Ba
 45Limitado/10Pendiente, trasfeedback/estabilización antesprimerusoreal. Ratificación Fran sigue pendiente.
 Siguiente subfase normativa11.8: RegisterSalePaymentUseCase, efectivo/tarjeta, PaymentID estable y recuperación;
 el pago no retira de Jornada una venta pendiente de documento. No se inicia11.8 ni se activa live con esta entrega.
+
+### Entrega11.7 verificada — 2026-10-02
+
+Commit `08e7550f9bf032948d6f74e4ab422e102349ff60`, ✨ feat(sales): add global and line sale discounts,
+70rutas del alcance aprobado, push a origin/codex/plu-80-sale-discounts. Todos los606blobs fuente/config del índice
+coincidían con el proof validado d788ebbd…330d4, sin config/secretos/cambios ajenos incluidos.
+[PR39](https://github.com/JFrancoG/FranAlonso/pull/39) creada, adjuntada a Codex y revisada: diff remoto idéntico
+al local, MERGEABLE/CLEAN, sin checks remotos ni review requerida publicados. No se atribuye PASS de CI inexistente.
+Merge autorizado normal `073a1808d36fd8130b1f9c6e409e9396fafcf71b`; PR MERGED y árbol completo idéntico al
+commit validado. main actualizado ff-only; antes de borrar rama se comprobaron tip remoto/local08e7550,
+ancestría en origin/main y ausencia de commits únicos. Rama local/remota codex/plu-80-sale-discounts eliminada.
+
+LinearPLU-80Done tras el merge, descripción y evidencia de entrega reconciliadas. PLU-71InProgress y
+PLU-81Backlog/JesusFranco conservan deuda integral propia55criterios45Limitado10Pendiente, recuperada trasfeedback
+y estabilización antes del primer candidato real.11.7cerrada funcionalmente para demo ADR0029; Fran ratificará
+la regla provisional después.11.8/pago es el siguiente gate y no está iniciado;12/stock y13/documento/cierre
+conservan sus dependencias. Seis links históricosDesktop08.3 continúan pendientes, sin ampliar este cambio.
+
+Cierre documental en main: Progress/spec11/registro accesible/changelog actualizados; build/tests N/A porque sólo
+documentan hechos de entrega, sin modificar fuente/config ni el gate validado. Verificar fuente606 y sincronización
+local/remota al terminar; la fase no se marcaDone ni se activa transporte live.
