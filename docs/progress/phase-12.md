@@ -427,3 +427,121 @@ Localización577/0 y diff-check PASS; gobernanza solo seis enlacesDesktop08.3 pr
 Cierre documental directo en main siguiendo12.1–12.3: CHANGELOG,Progress,fase12 y registro accesible actualizados.
 Xcode adicional N/A por cuatro documentos únicamente; no modifica evidencia original ni criterios de validación.
 Sin cierre integral, activación live, movimientos/atomicidad/sync posteriores ni inicio12.5.
+
+## 12.5 — Movimientos idempotentes (PLU-92), preparación
+
+Autorización02/10 «abre issue y rama e implementa12.5». [PLU-92](https://linear.app/plusprojects/issue/PLU-92),
+Jesus Franco, hija85; rama `codex/plu-92-sale-stock-movements`, base main/origin-main `eb82ccb` limpia/sincronizada.
+[Propuesta exacta](12-5-sale-stock-movements-proposal.md): identidad venta/línea, origen pago y payloadv2,
+reutilizar append durable con progreso parcial/retry; no conectar dos escrituras al pago antes de12.6 atómica.
+PRE independiente previo a ejecutables. Xcode MCP estable usable Develop/iPadM5; baseline299/299 de12.4,
+builds finales y diag0Swift/Clang, aviso AppIntents conocido. No UI nuevo; PLU89/91/fase85 abiertas.
+Sin commit/push/PR/merge/Done, sin12.6/live.
+
+PRE sale_stock_12_5_proposal independiente PASS sin hallazgos antes de ejecutables;857archivos SHA256 idéntico
+`833f42014a5513974d43c275f4d86ed1b085e2810f964481a1ffb95fff4a37c4`, verificado root tras dictamen.
+Baseline focal Xcode MCP27/27,22declaracionesStockDomain/Persistence,19:20:40Develop/iPadM5:
+`/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RunSomeTests/979FD653-D4D2-4AF0-B4CC-FAC620F8B2C4.txt`.
+No amplía alcance ni exige ADR: capacidad idempotente desconectada hasta12.6atómica; TDD autorizado12.5 comienza.
+
+
+### Implementación y validación 12.5
+
+Política pura SaleStockMovementPolicy: delta negativo por línea vinculada, pago/fecha capturados, profesionales omitidos.
+ID venta/línea SHA256/UUIDv8 reproducible y origen tipado con paymentID; otro pago con misma identidad falla por conflicto.
+CreateSaleStockMovementsUseCase acepta cada línea mediante el ledger existente; fallo/cancelación conserva el prefijo,
+retry completa pendientes y la aceptación final prevalece sobre cancelación tardía. No atomicidad del conjunto ni CAS
+entre writers independientes. Sin conectar pago/App/UI: integración atómica reservada12.6. Datos manualesv1 siguen
+legibles y byte-exactos; nuevos salev2, versiones incoherentes/desconocidas fallan cerrado, esquema3.0.0 intacto.
+
+TDD: primer RED de compilación19:28:19 por APIs ausentes, sin ejecución de tests RED acreditada.
+Log `BuildProject-Log-20261002-192819.txt`; primer GREEN10/10 a19:34:11.
+La ampliación de recuperación dio16/17 a19:36:57: el oráculo de quantity tras borrar Product era incorrecto respecto al
+contrato publicado (quantity exige producto presente; replay sí conserva historial). Se corrigió solo ese oráculo;
+17/17 a19:37:29 y después de ajuste de legibilidad a19:40:23. No se cambió comportamiento ajeno de quantity.
+Vectores UUID literales independientes Python/hashlib; cantidades/conteos literales. Ejecución producción real
+UseCase→DefaultStockRepository→StockPersistenceActor→SwiftData: reintentos, conflictos, profesionales, fallo parcial,
+cancelación antes/entre/después, dos callers/sharedwriter, manualv1 histórico, versiones erróneas, catálogo posterior.
+Store file-backed reabierto dos veces con weak lifetime comprobado: payloads/IDs/fechas/pending/conteos conservados.
+
+Regresión seleccionada: **304ejecuciones reales/265declaraciones/30suites PASS**,0failed/skipped/expected,
+bundle nativo cerrado con finishTime y runtimeWarnings[]:
+`/Users/jesusf/Library/Developer/Xcode/DerivedData/FranAlonso-eehpkvodmpnqlchgeqriatcucsjf/Logs/Test/Test-FranAlonso-Develop-2026.10.02_19-38-26-+0200.xcresult`.
+Resumen MCP `7E831ECD-044A-42C8-90D1-095E6A623CE2.txt` informó305/266; el árbol nativo demuestra que la declaración
+LocalizationResourceTests/login resources display the approved copy, sin casos ejecutados, es la diferencia.
+No se presenta como ejecutada. Sin cambios de localización/UI. Se seleccionaron30suites de stock/persistencia/schema,
+venta/draft/pago/workflow/composición y regresión previa afectada, no toda la suite del proyecto.
+
+**17tests nuevos/3suites PASS** finales, bundle nativo cerrado (la copia ActionArtifacts carece de Info.plist):
+`/Users/jesusf/Library/Developer/Xcode/DerivedData/FranAlonso-eehpkvodmpnqlchgeqriatcucsjf/Logs/Test/Test-FranAlonso-Develop-2026.10.02_19-40-23-+0200.xcresult`.
+Resumen MCP `2ACCAF92-7E37-4989-8FE0-5FC60EEE7DF9.txt`. iPadPro13(M5)Simulator27.2; framework/testing Swift6.
+Build Production19:39:40/25.743s y Develop-for-testing19:40:23/31.426s PASS por Xcode MCP estable:
+`BuildProject-Log-20261002-193940.txt` y `BuildProject-Log-20261002-194023.txt` en ActionArtifacts/default/BuildProject.
+Diag Swift/Clang0errors/0warnings; logs completos conservan únicamente aviso metadata AppIntents conocido.
+Workspace originalDevelop/iPadPro13(M5) restaurado. No xcodebuild/XCTest/XCUITest/UItests.
+
+Estilo manual/recall8Swift:0candidatos; nombres semánticos de tests y literal JSONv1 independiente exceden120 preferidas,
+sin reformatear código histórico ni introducir llamadas/firma4args en horizontal. Diffcheck limpio.
+Localizaciones577entradas/0errores. Governance exit1 solo6enlacesDesktop08.3 históricos, sin nuevos hallazgos;
+no se acredita validator global verde. Sin secretos/PII/logging nuevo, recursos/config/schema/App intactos.
+Accesibilidad/previews/UI auditoría N/A: ningún consumidor/vista/localización modificado; PLU-89/91 continúan Backlog.
+POST técnico independiente pendiente sobre este snapshot; no commit/push/PR/merge/Done/live/12.6 autorizados.
+
+
+### Auditoría final 12.5 y estado operativo
+
+POST independiente sale_stock_12_5_post (ios-standards-reviewer): PASS sin hallazgos. Inspeccionó11archivos/rutas,
+contrato/persistencia/estilo y logs/bundles nativos; confirmó17/17 y304ejecuciones reales, límites y baselines.
+Read-only explícito sin ediciones/Git/publicación/build/tests nuevos. Huella863archivos antes/después idéntica
+`212964d3faa690d3720f2fc006e1a032d217dec939c28b6ee4a40ae2b87b473d`, root volvió a comprobar tras dictamen,
+antes de esta reconciliación documental. No hallazgos para corregir ni auditoría accesible aplicable12.5.
+
+Implementada/validada/lista para entrega autorizada. PLU-92 y parentPLU-85 In Progress;12.1–12.4 entregadas.
+Rama codex/plu-92-sale-stock-movements, HEAD/base eb82ccb, cambios de esta subfase sin staging/commit/push/PR/merge.
+Sin Done, live, conexión visual al pago ni inicio12.6. PLU-89/91 permanecen Backlog, cierre integral de fase pendiente.
+Esta reconciliación solo documental reutiliza builds/test/auditoría de ejecutables intactos; no exige nuevos builds.
+
+
+### Autorización y preflight de entrega 12.5
+
+02/10, instrucción «commit y push, y entrega»: autoriza el cierre de entrega12.5 por el flujo establecido,
+commit/push de rama, PR/merge y reconciliación de Linear; no live ni inicio12.6. Estado previo In Progress hasta merge.
+Preflight: main/origin-main eb82ccb sin divergencia, sin PR duplicada ni cambios ajenos; GitHub main sin protección,
+sin workflows configurados. Se reutilizan17/17 nuevos y304ejecuciones nativas, builds Develop/Production y PRE/POST:
+código/tests/config/recursos no cambian después del dictamen. Recall precommit8Swift/0candidatos y auditoría manual
+sin nuevos hallazgos; literal histórico/nombres semánticos conservan excepciones preferidas de120columnas.
+CHANGELOG actualizado. Solo metadatos de entrega nuevos; sin repetir tests/builds o auditorías de ejecutables intactos.
+
+
+Precommit detectó dos bloques nuevos de tests con efecto en una línea (if cancel y defer cleanup): se expandieron
+solo esos bloques conforme a políticaSwift. Producción/recursos/config sin cambios. Repetido Develop-for-testing
+19:57:48/13.407s PASS, `BuildProject-Log-20261002-195748.txt`; warning Swift/Clang0, aviso metadata conocido.
+17/17 nuevos repetidos19:58:02, resumen `1168DE1F-3C16-4B47-9AA0-1B53B906868D.txt`, bundle nativo cerrado
+`/Users/jesusf/Library/Developer/Xcode/DerivedData/FranAlonso-eehpkvodmpnqlchgeqriatcucsjf/Logs/Test/Test-FranAlonso-Develop-2026.10.02_19-58-02-+0200.xcresult`.
+Se reutiliza regresión304/Production porque los únicos cambios ejecutables son whitespace de dos bloques en tests;
+recall focal2Swift/0candidatos, revisión técnica focal independiente pendiente. No altera semántica ni alcance12.5.
+
+
+Revisión focal sale_stock_12_5_post: dos bloques corregidos, P3 adicional de closure yield cancel en una línea.
+Huella863/872c93de2299acd1633e76bde775d61d2e0d6f4935174621463bc51dcd9eaa76 idéntica root/revisor.
+Se expandió yield y dos closures #expect con await adyacentes; solo whitespace en RecoveryTests, producción intacta.
+Develop-for-testing20:01:45/13.363s PASS, log `BuildProject-Log-20261002-200145.txt`; diagSwift/Clang0warnings,
+aviso AppIntentsmetadata histórico. 17/17 nuevos finales, resumen `BD810597-6ED3-4AAE-8889-C684AE73AD7B.txt`,
+bundle nativo20:01:45 cerrado sin fallos/skips/runtimeWarnings, en misma ruta DerivedData/Logs/Test ya registrada.
+Revisión focal de estilo de los ocho archivos Swift pendiente sobre este nuevo snapshot; sin alteración semántica.
+
+
+Auditoría manual focal completa8Swift encontró únicamente P3 pendiente de llamada4args horizontal en reapertura.
+Huella863/8353299a68f9ad529d080f85ba79a37c4274dc1d9fc8fc1699480f805990899a idéntica root/revisor.
+Se expandió esa única llamada, un argumento por línea. Tuplas UUID/literal JSON/nombres largos adjudicados expresamente.
+Build Develop-for-testing20:05:39/13.163s PASS (`BuildProject-Log-20261002-200539.txt`), Swift/Clang0warnings;
+17/17 finales repetidos, resumen `CB576B80-C291-4F66-8151-261E770A1DFA.txt`, bundle nativo20:05:39 cerrado,
+0fallos/skips/runtimeWarnings. Producción/semántica intactas; regresión304 y Production conservan validez.
+Comprobación focal de la llamada corregida pendiente; demás ámbito mantiene revisión previa.
+
+
+Dictamen focal final sale_stock_12_5_post PASS sin hallazgos: llamada4args corregida sin cambio semántico;
+se mantiene revisión de8Swift/arquitectura. Huella863archivos antes/después/root idéntica
+`4311f73e4062f12bdf08072ccc78ecc15a0321fc9e89caccff1f027b3518047f`, comprobada antes de reconciliación.
+Todos los P3 de formato resueltos;17/17finales/buildDevelop20:05:39 PASS, Production/regresión304 reutilizadas.
+Alcance autorizado de entrega12.5 listo para commit/PR; sin live ni12.6. Accesibilidad N/A, deuda previa intacta.

@@ -29,12 +29,12 @@ final class StockMovementModel {
 }
 
 extension StockMovementModel {
-    /// Creates the first payload version without changing any Product synchronization state.
+    /// Retains manual payload v1 and stores original sale consumption as v2 without changing the model shape.
     convenience init(_ movement: StockMovement) throws {
         self.init(
             id: movement.id.rawValue,
             productID: movement.productID.rawValue,
-            payloadVersion: 1,
+            payloadVersion: movement.origin.payloadVersion,
             payloadData: try JSONEncoder().encode(movement),
             isPendingSync: true
         )
@@ -42,15 +42,25 @@ extension StockMovementModel {
 
     /// Rejects unsupported or inconsistent storage before exposing a detached Domain value.
     func toDomain() throws -> StockMovement {
-        guard payloadVersion == 1 else { throw StockError.storageFailure }
+        guard payloadVersion == 1 || payloadVersion == 2 else { throw StockError.storageFailure }
         do {
             let movement = try JSONDecoder().decode(StockMovement.self, from: payloadData)
-            guard movement.id.rawValue == id, movement.productID.rawValue == productID else {
+            guard movement.origin.payloadVersion == payloadVersion,
+                  movement.id.rawValue == id, movement.productID.rawValue == productID else {
                 throw StockError.storageFailure
             }
             return movement
         } catch {
             throw StockError.storageFailure
+        }
+    }
+}
+
+private extension StockMovementOrigin {
+    var payloadVersion: Int {
+        switch self {
+        case .manual: 1
+        case .sale: 2
         }
     }
 }

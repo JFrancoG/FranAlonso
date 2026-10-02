@@ -3,6 +3,8 @@ import Foundation
 /// The explicit source of an inventory adjustment; manual retries retain their reference.
 enum StockMovementOrigin: Codable, Equatable {
     case manual(reference: StockMovementID)
+    /// Original sale-line consumption; payment metadata is part of the immutable conflict payload.
+    case sale(saleID: SaleID, lineID: SaleLineID, paymentID: PaymentID)
 }
 
 /// An immutable signed change in physical units, independent of prices and product availability.
