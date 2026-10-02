@@ -86,3 +86,11 @@ deltas/cantidades/conteos literales de la spec, no expected calculado por policy
 
 PRE independiente requerido antes de código; resolver hallazgos válidos. No nueva decisión arquitectónica:
 ID derivado y origen versionado concretan spec12/ADR0006 dentro de fronteras existentes, sin ampliar12.6.
+
+
+## Estado tras entrega
+
+La propuesta conserva el alcance revisado. Autorización posterior «commit y push, y entrega» completada:
+[PR46](https://github.com/JFrancoG/FranAlonso/pull/46), commit523a19a → mergee76486f, árbol revisado idéntico.
+PLU-92 Done; fasePLU-85 In Progress. Evidencia y correcciones de formato en [fase12](phase-12.md).
+Capacidad local sin consumidor de pago hasta12.6 atómica; accesibilidad N/A12.5, deuda89/91 intacta, sin live.

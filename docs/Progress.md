@@ -4,8 +4,8 @@
 
 ## Estado actual
 
-- **12.5 / PLU-92: In Progress**, implementada:17nuevas/304regresión PASS; builds/PRE/POST PASS.
-  12.1–12.4 entregadas. [Fase12](progress/phase-12.md).
+- **12.1–12.5: Done funcional**, [PR46](https://github.com/JFrancoG/FranAlonso/pull/46).
+  Fase12 abierta;12.6/deuda89/91. [Evidencia](progress/phase-12.md).
 
 - **11.9 / [PLU-83](https://linear.app/plusprojects/issue/PLU-83): Done funcional**, Jesus Franco.
   [PR41](https://github.com/JFrancoG/FranAlonso/pull/41)/`ab70985`; rama eliminada. Histórico/detalle terminal:

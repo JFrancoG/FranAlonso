@@ -545,3 +545,26 @@ se mantiene revisión de8Swift/arquitectura. Huella863archivos antes/después/ro
 `4311f73e4062f12bdf08072ccc78ecc15a0321fc9e89caccff1f027b3518047f`, comprobada antes de reconciliación.
 Todos los P3 de formato resueltos;17/17finales/buildDevelop20:05:39 PASS, Production/regresión304 reutilizadas.
 Alcance autorizado de entrega12.5 listo para commit/PR; sin live ni12.6. Accesibilidad N/A, deuda previa intacta.
+
+
+### Entrega verificada 12.5
+
+Autorización «commit y push, y entrega» completada por el flujo establecido.
+[PR46](https://github.com/JFrancoG/FranAlonso/pull/46) MERGED02/10/2026 20:08Madrid, base main;
+commit `523a19ad72d806aabf5757d3fbfa487c5219fc1f` → merge `e76486fdb065c806161ff278225424e121b8388e`.
+Tree completo del merge idéntico al commit revisado. Remote main confirmado e76486f y main local fast-forward;
+ramas codex/plu-92-sale-stock-movements local/remota eliminadas tras confirmar ancestry, sin commits únicos.
+PR revisada CLEAN/MERGEABLE con head523a19a fijo; sin workflows/checks configurados ni reviews remotas requeridas,
+no se declara CI verde. Auditorías independientes del repositorio satisfechas y todos los P3 de formato resueltos.
+
+PLU-92 Done (integración GitHub/Linear y reconciliación verificada tras merge). PLU-85 In Progress con12.1–12.5
+entregadas; siguiente12.6 requiere autorización propia. PLU-89/91 Backlog/Jesus conservan deuda/trigger previos,
+accesibilidad12.5 N/A por ausencia de consumidores/UI nuevos; no cierre integral, sync/compensación ni live.
+Descripciones operativas reconciliadas; se conserva historia de decisiones y validación en esta fase/propuesta.
+
+Validación retenida:17/17nuevas finales20:05:39 y304ejecuciones nativas de regresión, Develop/Production PASS;
+PRE/POST y focal final PASS con hash read-only verificado. Manifest ocho Swift del árbol integrado idéntico al
+revisado; no cambios de recursos/config/App/schema. Este cierre modifica solo CHANGELOG/Progress/fase/propuesta;
+Xcode adicional N/A por documentación, tests/auditorías ejecutables reutilizados por impacto.
+Governance conserva seis enlacesDesktop08.3 históricos, localizaciones577/0 y diffcheck PASS. La evidencia previa
+permanece limitada a las suites seleccionadas/Simulator; no se presenta como validación integral ni activación real.
