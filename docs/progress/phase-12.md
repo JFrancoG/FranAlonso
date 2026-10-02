@@ -305,7 +305,7 @@ Cierre documental en main siguiendo12.1–12.2: CHANGELOG/Progress/fase/registro
 Xcode adicional N/A: solo documentos; seis enlacesDesktop08.3 históricos permanecen, sin nuevos fallos.
 Sin activación live, cierre integral de fase ni inicio12.4.
 
-## 12.4 — Confirmación no bloqueante (PLU-90), implementada y validada; entrega pendiente
+## 12.4 — Confirmación no bloqueante (PLU-90), Done funcional para demo
 
 Autorización02/10 «abre issue y rama e implementa12.4» y ampliación «si, adelante»:
 [PLU-90](https://linear.app/plusprojects/issue/PLU-90), Jesus Franco, hija85. Rama
@@ -360,7 +360,7 @@ auditorías POST funcionales PASS tras correcciones. Source-style recall24Swift,
 closures/predicates fuera del cambio; adjudicación manual independiente PASS. Localización577entradas0error; diff --check PASS.
 Gobernanza conserva únicamente6enlaces Desktop históricos08.3; ninguna incidencia nueva.
 
-Sin commit/push/PR/merge/Done autorizados para12.4. Sin movimientos12.5, atomicidad12.6, sync/compensación12.7/12.8,
+Al terminar implementación, entrega aún no autorizada. Sin movimientos12.5, atomicidad12.6, sync/compensación12.7/12.8,
 documento13 ni live. PLU-85 y90 permanecen In Progress.
 
 ### Correcciones de auditoría y regresión final
@@ -395,7 +395,7 @@ ante/post idéntica `04b562137fd0907129d40ccd2cb09001f897d3a10d1ab2e0a3b085db3ca
 verificada tras ambos dictámenes antes de reconciliación documental.
 Build Develop-for-testing final18:54:50/26.553sPASS, log `BuildProject-Log-20261002-185450.txt`;
 Production final18:53:49PASS; workspace originalDevelop/iPadPro13(M5) restaurado.
-Snapshot local implementado y validado; PLU-90 In Progress hasta entrega autorizada, PLU-91 Backlog/Jesus.
+Snapshot previo a autorización de entrega: implementado y validado; PLU-90 In Progress, PLU-91 Backlog/Jesus.
 Sin commit/push/PR/merge/Done, sin live ni siguiente subfase.
 
 ### Preparación de entrega autorizada
@@ -407,3 +407,23 @@ se reutilizan299/299, ambos builds finales y auditorías PASS. Recall precommit2
 sin cambios respecto al dictamen manual independiente. CHANGELOG registra el comportamiento entregable.
 Sin cambios locales ajenos. PLU-90 sigue In Progress hasta merge; PLU-91 Backlog y PLU-85 In Progress.
 Sin live, cierre integral ni inicio12.5. Las menciones anteriores a falta de autorización son históricas.
+
+### Entrega definitiva 12.4
+
+[PR45](https://github.com/JFrancoG/FranAlonso/pull/45) MERGED02/10/2026 17:08:39UTC a main.
+Commit `74fb8442d5a36cf5c5028a9aa79a07e611a5df8a` → merge `4973e37ca750fdebbaa5978c3135850fa6717c90`.
+Árbol completo integrado idéntico al commit validado; main/origin-main sincronizados y limpios tras merge.
+PR revisada:49archivos previstos, head remoto/local idéntico, MERGEABLE/CLEAN; ningún check ni review obligatorio,
+main sin protección requerida. No se acredita CI remota. Merge normal con comprobación del head esperado, sin force.
+Rama `codex/plu-90-sale-stock-confirmation` eliminada local/remota tras verificar ascendencia y cero commits únicos.
+
+Linear reconciliado tras merge: PLU-90 Done funcionaldemo; PLU-91 Backlog/Jesus retiene toda deuda y trigger;
+PLU-85 In Progress con12.1–12.4 entregadas,12.5–12.8 pendientes. Descripciones operativas actuales y evidencia
+vinculadas; decisión de ampliación y recuperación RED/GREEN preservadas en propuesta/fase y comentario de cierre.
+Se reutilizan299/299ejecuciones, ambos builds finales y auditorías independientes: código/tests/recursos/config
+intactos y árbol integrado idéntico. Source-style recall precommit24Swift/6candidatos históricos sin cambios.
+Localización577/0 y diff-check PASS; gobernanza solo seis enlacesDesktop08.3 preexistentes, sin nueva incidencia.
+
+Cierre documental directo en main siguiendo12.1–12.3: CHANGELOG,Progress,fase12 y registro accesible actualizados.
+Xcode adicional N/A por cuatro documentos únicamente; no modifica evidencia original ni criterios de validación.
+Sin cierre integral, activación live, movimientos/atomicidad/sync posteriores ni inicio12.5.

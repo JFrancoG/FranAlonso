@@ -1,7 +1,7 @@
 # 12.4 — Progreso de venta y confirmación de stock
 
 02/10/2026, [PLU-90](https://linear.app/plusprojects/issue/PLU-90), Jesus Franco.
-Gate: implementación funcional para demo, ADR0029; entrega Git pendiente de autorización.
+Gate: entrega funcional para demo por [PR45](https://github.com/JFrancoG/FranAlonso/pull/45), ADR0029.
 [ADR0022](../../ADRs/0022-native-ios-wcag22-accessibility.md) /
 [ADR0029](../../ADRs/0029-progressive-accessibility-validation.md).
 Deuda específica [PLU-91](https://linear.app/plusprojects/issue/PLU-91), Backlog/Jesus Franco.
@@ -135,3 +135,11 @@ y Falla/Pendiente/Limitado en PLU-91. No aprobación integral. Revisor UI inspec
 55criterios/5flujos y estado/deuda en Linear. Huella root856archivos antes/después idéntica
 `04b562137fd0907129d40ccd2cb09001f897d3a10d1ab2e0a3b085db3ca2fa46`, sin cambios por revisores.
 Reconciliación documental posterior registra estos dictámenes; no cambia ejecutables ni evidencia validada.
+
+## Entrega funcional
+
+Autorización02/10 «commit, push y entrega». PR45 MERGED: `74fb844` → `4973e37`, árbol integrado idéntico al
+validado y ramas local/remota eliminadas tras comprobar ascendencia y cero commits únicos. PLU-90 Done funcional,
+PLU-91 Backlog/Jesus y fasePLU-85 In Progress. Matriz, fallosAX5, pendientes y trigger de recuperación intactos.
+No checks remotos configurados; no se acredita CI. Cierre documental posterior en main, sin cambios ejecutables;
+Xcode adicional N/A. Se reutilizan299/299, builds finales, previews/smoke y auditorías. Sin live ni12.5.

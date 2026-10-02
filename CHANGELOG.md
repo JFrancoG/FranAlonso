@@ -128,6 +128,9 @@ All notable changes to this project are documented in this file.
 
 ### Documentation
 
+- 2026-10-02 | 📝 docs: record sale confirmation delivery
+  Records PR45 integration, PLU-90 functional demo closure and retained integral accessibility debt in PLU-91.
+
 - 2026-10-02 | 📝 docs: record stock warning delivery
   Records PR44 integration, PLU-88 functional demo closure and retained integral accessibility debt in PLU-89.
 
