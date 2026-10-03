@@ -149,6 +149,10 @@ All notable changes to this project are documented in this file.
 
 ### Documentation
 
+- 2026-10-03 | 📝 docs: record billing domain delivery
+  Records PR50 integration, PLU-96 completion and branch cleanup with exact tested source parity.
+  Keeps phase 13 open and preserves the independent numbering, final-document and live gates.
+
 - 2026-10-03 | 📝 docs: record sale stock compensation delivery
   Records PR49 merge, PLU-95 completion, verified source parity and branch cleanup.
   Keeps phase 12 open with integral accessibility debt and separate live/financial gates.

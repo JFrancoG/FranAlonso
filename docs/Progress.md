@@ -4,8 +4,8 @@
 
 ## Estado actual
 
-- **13.1 / [PLU-96](https://linear.app/plusprojects/issue/PLU-96): In Progress**.
-  Implementada;2393ejecuciones/builds y PRE/POST PASS. Entrega en curso. [Evidencia](progress/phase-13.md).
+- **13.1 / [PLU-96](https://linear.app/plusprojects/issue/PLU-96): Done**.
+  [PR50](https://github.com/JFrancoG/FranAlonso/pull/50),2393tests/builds/PRE/POST PASS. [Evidencia](progress/phase-13.md).
 - **12.1–12.8 Done**, [PR49](https://github.com/JFrancoG/FranAlonso/pull/49);
   fase12 abierta/deuda89–91. [Evidencia](progress/phase-12.md).
 

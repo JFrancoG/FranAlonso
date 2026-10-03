@@ -9,6 +9,8 @@ Constitución, spec13, ADR0008/0003/0004/0011/0030 y política Swift gobiernan e
 Esa autorización inicial no incluía commit, push, PR, merge, Done, live ni13.2.
 Autorización posterior03/10/2026: «commit, push y entrega»; recorrido y resultado en [fase13](phase-13.md).
 13.2 y live mantienen sus gates propios.
+Entrega verificada mediante [PR50](https://github.com/JFrancoG/FranAlonso/pull/50), merge `646fe84`;
+PLU-96 Done, rama local/remota eliminada. Código probado/auditado intacto; fase13 permanece abierta.
 
 ## Propuesta concreta
 

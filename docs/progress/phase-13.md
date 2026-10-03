@@ -1,11 +1,12 @@
 # Fase13 — Facturación, PDF, correo y numeración
 
-## 13.1 / PLU-96 — Implementada; entrega autorizada en curso
+## 13.1 / PLU-96 — Entregada; Done
 
 03/10/2026: autorización «Abre issue y rama e implementa la subfase13.1».
-[PLU-96](https://linear.app/plusprojects/issue/PLU-96), In Progress/Jesus Franco;
+[PLU-96](https://linear.app/plusprojects/issue/PLU-96), Done/Jesus Franco tras la entrega verificada más abajo;
 `codex/plu-96-billing-domain-states`, baseline `38b49f4` en main/origin/main sin cambios locales.
-[Propuesta y límites](13-1-billing-domain-proposal.md). Issue y rama creadas; entrega Git autorizada más adelante.
+[Propuesta y límites](13-1-billing-domain-proposal.md). [PR50](https://github.com/JFrancoG/FranAlonso/pull/50)
+integrada; rama local/remota eliminada. Fase13 abierta,13.2 conserva autorización propia.
 
 ## Puerta de inicio
 
@@ -74,7 +75,7 @@ UI/previews/localización/accesibilidad13.1 N/A: solo Domain sin pantalla ni tex
 Gobernanza repetida: únicamente6enlaces históricos rotos08.3, idénticos al baseline; diffcheckPASS.
 Primera POST:1P2 de comparación de relojes, corregido debajo; sin otros hallazgos. Reauditoría focal PASS.
 La deuda accesible previa mantiene sus issues/responsables/trigger.
-Fase13 abierta; solo13.1 autorizada. Entrega Git, Done, live y13.2–13.13 conservan gates separados.
+Fase13 abierta; solo13.1 autorizada. Entrega13.1 verificada debajo; live y13.2–13.13 conservan gates separados.
 
 ## P2 corregido y validación definitiva
 
@@ -111,7 +112,7 @@ Manifest siguiente corresponde exclusivamente al código definitivo probado. Rea
 manifest5Swift y ambos logs. P2 resuelto; sin hallazgosP0–P3 restantes. Revisión operacional read-only908archivos,
 digest inicial/final/root idéntico `5995db168f7d5f1e4aabf3495eaf7d7e31da9796546e7212f4e3e345a4450878`.
 Actualización posterior exclusivamente documental: paridad literal de5Swift probados/auditados; Xcode adicionalN/A.
-PLU-96 permanece In Progress/Jesus; documentación y descripción reconciliadas. Rama local lista para entrega;
+Tras POST, PLU-96 permanecía In Progress/Jesus; documentación y descripción reconciliadas. Rama local lista para entrega;
 sin commit/push/PR/merge/Done en ese momento. Fase13 abierta,13.2 y live conservan sus gates.
 
 ## Autorización de entrega03/10/2026
@@ -122,6 +123,22 @@ Resultado Git definitivo pendiente; PLU-96 aún In Progress. No autoriza13.2, ci
 Se reutilizan2393ejecuciones/1505declaraciones, Billing34/22, buildsDevelop/Production y PRE/POST PASS:
 los5Swift conservan SHA256 exactos del manifest probado/auditado. Estilo scoped repetido:5Swift/0candidatos,
 sin cambios posteriores de código ni hallazgos nuevos. Solo documentación/changelog; Xcode adicionalN/A.
+
+## Entrega verificada13.1
+
+[PR50](https://github.com/JFrancoG/FranAlonso/pull/50) MERGED03/10/2026 02:36:39Madrid:
+feature `ad7c344b59bf0e24289cde52e9404a00b444d4f5` → merge `646fe84ac5705c3ac2126bd6595200a70426d56a`.
+Árbol completo del merge idéntico al head revisado;5Swift exactos al manifest probado/auditado.
+PR CLEAN/MERGEABLE con head fijado antes de merge; sin workflows/checks remotos ni protección de main.
+No se declara CI verde. Main local fast-forward; ramas local/remota eliminadas tras ancestry y0commits únicos.
+
+PLU-96 pasó automáticamente a Done tras el merge; estado verificado y descripción/comentario de entrega reconciliados.
+Proyecto In Progress, sin parent/milestone13 existente; no se cierra fase13.13.2 es el siguiente gate independiente.
+UI/previews/localización/accesibilidad13.1 N/A; deuda previa conserva issues/responsables/trigger.
+Se reutiliza la validación literal anterior:2393/2393, Billing34/22, buildsDevelop/Production, PRE/POST y estilo PASS.
+Este cierre cambia solo documentación/changelog: Xcode adicionalN/A. Diffcheck/enlaces del alcance PASS;
+gobernanza conserva únicamente6enlaces Desktop históricos08.3, y AppIntents mantiene sus avisos conocidos.
+Sin backend, PDF, persistencia Billing, correo, cierre13.12, live ni implementación13.2.
 
 ## Manifest Swift definitivo probado
 
