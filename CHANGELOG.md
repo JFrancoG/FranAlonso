@@ -159,6 +159,10 @@ All notable changes to this project are documented in this file.
 
 ### Documentation
 
+- 2026-10-03 | 📝 docs: record atomic billing delivery
+  Records PR52 merge, PLU-98 completion and verified branch cleanup for subphase13.3.
+  Reuses the exact tested Billing sources and preserves phase, backend and accessibility validation boundaries.
+
 - 2026-10-03 | 📝 docs: record billing reservation delivery
   Records PR51 integration, PLU-97 completion, exact tested source parity and verified branch cleanup.
   Preserves the observed Stock test intermittence and the separate Firestore, final-document and live gates.

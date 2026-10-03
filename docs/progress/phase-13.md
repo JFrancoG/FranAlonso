@@ -1,9 +1,10 @@
 # Fase13 — Facturación, PDF, correo y numeración
 
-## 13.3 / PLU-98 — Implementada; entrega pendiente / In Progress
+## 13.3 / PLU-98 — Entregada; Done
 
 03/10/2026: «abre issue y rama e implementa 13.3». [PLU-98](https://linear.app/plusprojects/issue/PLU-98)
-In Progress / Jesus Franco; rama `codex/plu-98-atomic-billing-reservation` desde main/origin `965827a` limpio.
+Done / Jesus Franco tras [PR52](https://github.com/JFrancoG/FranAlonso/pull/52);
+rama `codex/plu-98-atomic-billing-reservation` eliminada, baseline main/origin `965827a` limpio.
 [Propuesta exacta, fuentes y compatibilidad](13-3-billing-transaction-proposal.md). PRE independiente PASS antes
 de código, sin hallazgos P0–P3:913archivos, digest inicial/final/revisor/root
 `9594a8cd6327c921e1d9607fdfdb7d3fa7bc396814b5f7ded3eba807caa8f756`.
@@ -81,10 +82,9 @@ UI/previews/localización/accesibilidad N/A: solo Data/tests, sin pantallas ni r
 y recuperación tras feedback/estabilización, antes del primer candidato real. Sin App/composición/demo ni tráfico.
 13.4 Store/VM,13.10 SwiftData, PDF/Storage/correo, cierre13.12 y ajuste13.13 siguen fuera. Backend/Rules reales,
 conservación de contadores, permisos/writers y tamaño/contención requieren puerta live separada; esta evidencia
-no acredita emisión fiscal o integración real. Fase13 y proyecto abiertos; PLU-98 In Progress, implementación
-validada con PRE/POST/estilo PASS, pendiente de autorización de entrega Git/Done. Sin commit/push/PR/merge/activación.
-PLU-98 y snapshot del proyecto reconciliados con esta evidencia, sin cambiar In Progress. Registro posterior
-de dictámenes/estado exclusivamente documental; Xcode adicional N/A por paridad literal del manifest probado.
+no acredita emisión fiscal o integración real. Snapshot tras implementación y antes de entrega: PLU-98 In Progress,
+validada con PRE/POST/estilo PASS y pendiente de autorización Git/Done. El resultado definitivo aparece abajo;
+fase13/proyecto siguen abiertos. Registro de dictámenes/estado documental: Xcode N/A por paridad literal.
 
 ### Manifest Swift 13.3 probado
 
@@ -110,6 +110,34 @@ Confirmó6hashes y8históricos exactos, nativo2493/1534/66/18, dos logs, estilo 
 PLU-98 In Progress / Jesus Franco; sin comentarios concurrentes ni parent/milestone13 existentes, proyecto In Progress.
 Avisos AppIntents, seis enlaces Desktop históricos08.3, intermitencia Stock no corregida y límite DYLD del diagnóstico
 adicional conservados. No servidor/Rules reales, UI, materialización SwiftData, PDF/correo, cierre13.12 ni activación.
+
+### Entrega verificada 13.3
+
+[PR52](https://github.com/JFrancoG/FranAlonso/pull/52) MERGED03/10/2026 11:49:58 Madrid:
+feature `e18b92a7d50b5eda8d21024f86de82af40573f52` → merge `9bdc2216d06ee66ec5ffb047fc6f06e4d1198e23`.
+Árbol completo del merge idéntico al head revisado; seis Swift nuevos y ocho históricos byte-exact al manifest.
+Revisión independiente PR PASS sin hallazgosP0–P3: diff remoto/local de diez archivos idéntico,92200bytes,
+SHA256 `c474fc32ca162315c3686629521e63b73059d51c31e3e9d1e06f1899f43eab18`.
+919archivos, huella inicial/final/revisor/root `1d03381768ab39bcb5ff90b598bbf4cb3db397c35e56203c5ff38a514e75b280`.
+Dictamen publicado COMMENTED con cuenta propietaria, sin atribuir aprobación a otro colaborador humano.
+Head protegido con match-head-commit, CLEAN/MERGEABLE. Sin checks/workflows remotos ni protección/rulesets;
+no se declara CI verde. Main local fast-forward al merge; ramas local/remota eliminadas tras ancestry y cero
+commits únicos, y HEAD remoto de feature verificado antes de borrarlo.
+
+PLU-98 pasó automáticamente a Done tras merge; completedAt09:50:00.070 UTC verificado. Proyecto In Progress,
+sin parent/milestone13 existente. Fase13 abierta;13.4 exige autorización propia. Deuda accesible previa mantiene
+responsables y recuperación tras feedback/estabilización, antes del primer candidato real. UI/accesibilidad13.3 N/A.
+Se reutilizan2493/2493ejecuciones,1534declaraciones,66/66casos nuevos, ambos builds y PRE/POST/estilo PASS.
+Este cierre cambia únicamente Progress,phase13 y CHANGELOG: Xcode adicional N/A por paridad literal de14Swift.
+Avisos AppIntents/enlaces históricos, intermitencia Stock sin diagnóstico y límite DYLD conservados. Sin server/Rules
+reales, composición/tráfico, SwiftData13.10, PDF/correo, cierre13.12, live ni implementación13.4.
+Descripción/comentario de entrega PLU-98 y snapshot de proyecto se reconcilian con este resultado definitivo.
+
+Reauditoría final documental PASS sin hallazgosP0–P3:919archivos, huella inicial/final/revisor/root
+`2392bc00f47a84f011e9502b7ec5a7271c7a43868b388b3463c252b9abb3193d`.
+Confirmó Git/PR/review/árbol `c913428aca95de0739a369be776cced72d11486d`, ancestry/ramas eliminadas,
+PLU-98 Done/proyecto In Progress y tres documentos. Reconciliación externa prevista tras este commit documental.
+Este registro posterior del dictamen no altera ningún Swift; Xcode N/A por paridad literal.
 
 ## 13.2 / PLU-97 — Entregada; Done
 

@@ -4,8 +4,8 @@
 
 ## Estado actual
 
-- **13.3 / [PLU-98](https://linear.app/plusprojects/issue/PLU-98): In Progress**, implementada:2493/2493, builds/PRE/POST/estilo PASS.
-  [Evidencia](progress/phase-13.md); entrega autorizada en curso, sin live.
+- **13.3 / [PLU-98](https://linear.app/plusprojects/issue/PLU-98): Done**, [PR52](https://github.com/JFrancoG/FranAlonso/pull/52).
+  2493/2493, builds/PRE/POST/estilo PASS. [Evidencia](progress/phase-13.md); fase13 abierta, sin live.
 - **13.1–13.2 Done**, PLU-96/97, PR50/51;2427/builds/auditorías PASS. Intermitencia Stock sin corregir.
 - **12.1–12.8 Done**, [PR49](https://github.com/JFrancoG/FranAlonso/pull/49);
   fase12 abierta/deuda89–91. [Evidencia](progress/phase-12.md).
