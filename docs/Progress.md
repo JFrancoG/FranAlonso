@@ -4,8 +4,8 @@
 
 ## Estado actual
 
-- **13.2 / [PLU-97](https://linear.app/plusprojects/issue/PLU-97): In Progress**.
-  Implementada:34 nuevos/2427 global PASS, builds/PRE/POST. Entrega pendiente. [Evidencia](progress/phase-13.md).
+- **13.2 / [PLU-97](https://linear.app/plusprojects/issue/PLU-97): Done**.
+  [PR51](https://github.com/JFrancoG/FranAlonso/pull/51);2427/builds/PRE/POST PASS. [Evidencia](progress/phase-13.md).
   Intermitencia histórica Stock registrada; causa sin corregir.
 - **13.1/PLU-96 Done**, [PR50](https://github.com/JFrancoG/FranAlonso/pull/50).
 - **12.1–12.8 Done**, [PR49](https://github.com/JFrancoG/FranAlonso/pull/49);

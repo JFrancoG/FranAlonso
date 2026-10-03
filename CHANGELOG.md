@@ -154,6 +154,10 @@ All notable changes to this project are documented in this file.
 
 ### Documentation
 
+- 2026-10-03 | 📝 docs: record billing reservation delivery
+  Records PR51 integration, PLU-97 completion, exact tested source parity and verified branch cleanup.
+  Preserves the observed Stock test intermittence and the separate Firestore, final-document and live gates.
+
 - 2026-10-03 | 📝 docs: record billing domain delivery
   Records PR50 integration, PLU-96 completion and branch cleanup with exact tested source parity.
   Keeps phase 13 open and preserves the independent numbering, final-document and live gates.

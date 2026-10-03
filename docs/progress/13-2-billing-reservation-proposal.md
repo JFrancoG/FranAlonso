@@ -4,9 +4,10 @@
 
 03/10/2026: «abre issue y rama e implementa 13.2». Baseline main `ee97380` limpio/sincronizado,
 13.1 entregada por PR50/PLU-96 Done. Spec13, constitución y ADR0003/0004/0008/0011/0030;
-política Swift y skills de inicio/implementación/TDD/Xcode. No autoriza entregaGit, Done,13.3 ni live.
-[PLU-97](https://linear.app/plusprojects/issue/PLU-97), In Progress/Jesus Franco;
-`codex/plu-97-billing-document-reservation` creada desde ese baseline.
+política Swift y skills de inicio/implementación/TDD/Xcode. La autorización inicial excluía entrega Git/Done;
+la posterior «commit, push y entrega» permitió el cierre registrado en fase 13. Sin 13.3 ni live.
+[PLU-97](https://linear.app/plusprojects/issue/PLU-97), Done / Jesus Franco tras [PR51](https://github.com/JFrancoG/FranAlonso/pull/51);
+`codex/plu-97-billing-document-reservation` creada desde ese baseline y eliminada tras verificar integración.
 
 ## Propuesta concreta
 
@@ -77,4 +78,5 @@ suite definitiva 2427/2427 PASS, incluidos los 34 nuevos desde 11 declaraciones 
 Builds Develop/Production PASS; PRE, estilo y POST de código/evidencia sin hallazgos.
 La intermitencia histórica de Stock, el control reversible sin código 13.2 y su restauración exacta se registran en
 [fase 13](phase-13.md). El test histórico pasó en la ejecución definitiva; no se afirma una corrección de su causa.
-La implementación real Firestore y sus pruebas atómicas permanecen en 13.3. Entrega Git/Done no autorizados.
+La implementación real Firestore y sus pruebas atómicas permanecen en 13.3.
+Entrega posterior autorizada y verificada: PR51 MERGED, PLU-97 Done y ramas local/remota eliminadas.

@@ -1,9 +1,10 @@
 # Fase13 — Facturación, PDF, correo y numeración
 
-## 13.2 / PLU-97 — Implementada; entrega pendiente
+## 13.2 / PLU-97 — Entregada; Done
 
 03/10/2026: «abre issue y rama e implementa 13.2». [PLU-97](https://linear.app/plusprojects/issue/PLU-97)
-In Progress / Jesus Franco; rama `codex/plu-97-billing-document-reservation`, base `ee97380` main/origin limpio.
+Done / Jesus Franco tras [PR51](https://github.com/JFrancoG/FranAlonso/pull/51);
+rama `codex/plu-97-billing-document-reservation` eliminada, base `ee97380` main/origin limpio.
 [Propuesta exacta](13-2-billing-reservation-proposal.md). PRE independiente PASS sin hallazgos antes de código:
 909 archivos, digest inicial/final/revisor/root `944ec711df66681414ada01a85be93be70b35fc44fd6312a5e00b0a41c8de620`.
 Baseline 13.1 reutilizado inicialmente por paridad literal: 2393 ejecuciones, Billing 34/22, ambos builds y
@@ -87,7 +88,7 @@ completos, Stock Passed, ambos logs y los tres documentos. La causa de su interm
 Sin imports UI/persistencia/SDK, opt-outs, GCD, JSONSerialization, dependencias o cambios de target en el alcance.
 Gobernanza: únicamente seis enlaces Desktop históricos rotos de 08.3, conservados; diffcheck PASS.
 No hay cambio de código posterior al manifest. Actualizaciones documentales adicionales: Xcode N/A por paridad.
-PLU-97 conserva In Progress hasta verificar la entrega autorizada más abajo.
+PLU-97 permaneció In Progress hasta la entrega autorizada y verificada más abajo.
 
 ### Manifest Swift 13.2 probado
 
@@ -113,6 +114,33 @@ Confirmó ocho Swift exactos y audit de estilo de los tres nuevos: cero candidat
 Resultado Git definitivo pendiente. El propietario reconectó Linear tras la reautenticación requerida;
 PLU-97 In Progress / Jesus Franco, sin comentarios concurrentes ni parent/milestone13 y proyecto In Progress.
 No se declara Done hasta comprobar entrega y estado. La intermitencia observada en Stock sigue sin corrección.
+
+### Entrega verificada 13.2
+
+[PR51](https://github.com/JFrancoG/FranAlonso/pull/51) MERGED 03/10/2026 10:04:19 Madrid:
+feature `09b5e193dd35d6bc0b3df49f920d895a98d85acd` → merge `29b4b8a9a6aa9f8e00898d110a06126dc573b567`.
+Árbol completo integrado idéntico al head revisado; tres Swift nuevos y cinco históricos exactos al manifest probado.
+Revisión independiente de PR PASS sin hallazgos P0–P3: diff remoto/commit local idénticos, siete archivos previstos;
+912 archivos, digest inicial/final/root `2ffe7e98ca0f6d97ac24ddba2ca4b26547d9e1ac34b7c7691fbe11ebc48cce49`.
+Dictamen registrado como COMMENTED en GitHub, sin atribuir aprobación a otro colaborador.
+Head fijado con match-head-commit antes de merge; CLEAN/MERGEABLE, sin checks/workflows remotos ni protección/rulesets.
+No se declara CI verde. Main local fast-forward; ramas local/remota eliminadas tras ancestry y cero commits únicos.
+
+PLU-97 pasó automáticamente a Done tras el merge; estado verificado con completedAt 08:04:20 UTC.
+Proyecto In Progress; sin parent/milestone de fase 13 existentes. Fase 13 permanece abierta y 13.3 requiere su propio inicio.
+Reconciliación de descripción/comentario de entrega y snapshot de proyecto basada en este resultado verificado.
+UI/previews/localización/accesibilidad 13.2 N/A; deuda previa conserva responsables y condiciones de recuperación.
+Se reutilizan 2427/2427 ejecuciones, 1516 declaraciones, 34 casos nuevos, ambos builds y PRE/POST/estilo PASS.
+Este cierre modifica solo documentación/changelog: Xcode adicional N/A por paridad literal de los ocho Swift.
+Intermitencia del test histórico de Stock sin corrección ni causa atribuida; avisos AppIntents conocidos conservados.
+Diffcheck y enlaces del alcance PASS; gobernanza mantiene únicamente seis enlaces Desktop históricos rotos de 08.3.
+Sin backend real, persistencia Billing, PDF/correo, cierre 13.12, live ni implementación 13.3.
+
+Reauditoría final documental PASS sin hallazgos P0–P3: 912 archivos, huella inicial/final/root
+`ebef4124d6ec654bd42621ab5d7129d436de6b64417e2bccd496d0e8a9d0f67f`.
+Verificó PR/merge, tres árboles idénticos, ancestry/ramas eliminadas, PLU-97 Done y los cuatro documentos.
+Descripción y comentario de entrega reconciliados; snapshot de proyecto actualizado sin cambiar In Progress.
+Registro posterior de este resultado exclusivamente documental; ocho Swift probados intactos, Xcode N/A.
 
 ## 13.1 / PLU-96 — Entregada; Done
 
