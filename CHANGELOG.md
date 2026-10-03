@@ -6,6 +6,10 @@ All notable changes to this project are documented in this file.
 
 ### Added
 
+- 2026-10-03 | ✨ feat(billing): model paid requests and local states
+  Separates immutable paid-sale requests, confirmed numbered records and recoverable pending/failed states.
+  Preserves request identity and snapshots across retries and replay; rejects conflicting allocations without comparing clocks.
+
 - 2026-10-03 | ✨ feat(sales): compensate stock on sale void
   Commits a closed sale reversal, its causal upsert and immutable per-line inverses in one local save.
   Preserves originals across replay, rollback and restart; concurrent reversal identities conflict without adding stock twice.

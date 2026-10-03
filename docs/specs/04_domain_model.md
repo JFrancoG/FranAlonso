@@ -54,10 +54,10 @@ Definir entidades, value objects, políticas, contratos y casos de uso puros, si
   identidad de línea duplicada o un desbordamiento producen errores tipados.
   Los impactos no son `Codable`: se recalculan contra el inventario vigente.
   Los movimientos idempotentes y sus compensaciones permanecen en 09 y 12.
-- `BillingDocument` representa una instantánea inmutable de ticket o factura
-  vinculada a una venta. `pendingNumber` conserva un
-  `BillingDocumentRequestID` estable sin inventar numeración definitiva;
-  `numbered` conserva ese mismo identificador junto al resultado de la autoridad.
+- Desde13.1, `BillingDocumentRequest` conserva el snapshot inmutable de una venta pagada y un
+  `BillingDocumentRequestID` estable. `BillingDocumentLocalState.pendingNumber/failed` conserva esa
+  solicitud sin número definitivo; `BillingDocument` representa exclusivamente el registro numerado
+  confirmado por la autoridad. Sustituye el modelo preparatorio04.6 sin persistencia Billing publicada.
 - `BillingDocumentNumber` exige un entero positivo y queda ligado a una
   `BillingDocumentSeries`. Ticket y factura tienen series independientes aunque
   compartan el mismo valor numérico. Domain no expone incremento, reserva ni
