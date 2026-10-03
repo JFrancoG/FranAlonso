@@ -1,3 +1,4 @@
+import Foundation
 import Testing
 @testable import FranAlonso
 
@@ -382,6 +383,7 @@ private actor LocalAuthorizationFake {
     private let gate: AuthorizationGate?
     private let error: LocalPrincipalAuthorizationError?
     private(set) var sessions: [AuthenticationSession] = []
+    private var nextGate: AuthorizationGate?
 
     init(gate: AuthorizationGate? = nil, error: LocalPrincipalAuthorizationError? = nil) {
         self.gate = gate
@@ -390,10 +392,17 @@ private actor LocalAuthorizationFake {
 
     func authorize(_ session: AuthenticationSession) async throws {
         sessions.append(session)
+        let pendingGate = nextGate
+        nextGate = nil
         await gate?.wait()
+        await pendingGate?.wait()
         if let error {
             throw error
         }
+    }
+
+    func blockNextAuthorization(using gate: AuthorizationGate) {
+        nextGate = gate
     }
 }
 
@@ -482,4 +491,118 @@ private func waitUntil(
     }
 
     Issue.record("Expected authentication-root transition did not occur")
+}
+
+extension AuthenticationRootViewModelTests {
+    @Test("Revocation while the durable authorizer is suspended invalidates a billing capability")
+    func billingRevocationDuringAuthorization() async throws {
+        let repository = AuthenticationRootRepositoryFake()
+        let authorization = LocalAuthorizationFake()
+        let root = makeRootViewModel(repository: repository, authorization: authorization)
+        let session = AuthenticationSession(id: "billing-principal")
+        let observation = startRootObservation(root)
+        defer {
+            observation.cancel()
+        }
+        await repository.waitUntilObserved()
+        root.registerRecentSignIn(session)
+        await repository.emit(session)
+        await waitUntil { root.sessionViewModel.sessionEventRevision == 1 }
+        root.sessionEventDidChange()
+        await root.authorizeLocalAccessIfNeeded()
+        let access = try root.makeBillingAssetAccess()
+        let gate = AuthorizationGate()
+        await authorization.blockNextAuthorization(using: gate)
+        let operation = Task {
+            try await access.validate()
+        }
+        await gate.waitUntilBlocked()
+        root.retryObservation()
+        await gate.release()
+        await #expect(throws: BillingAssetError.unauthorized) {
+            try await operation.value
+        }
+        await cancelRootObservation(observation)
+    }
+
+    @Test("Billing assets require a currently authorized protected root")
+    func billingAssetsRequireProtectedRoot() throws {
+        let root = makeRootViewModel(
+            repository: AuthenticationRootRepositoryFake(),
+            authorization: LocalAuthorizationFake()
+        )
+        #expect(throws: BillingAssetError.unauthorized) {
+            try root.makeBillingAssetAccess()
+        }
+        #expect(throws: BillingAssetError.unauthorized) {
+            try AppDependencies.billingAssets(root: root)
+        }
+    }
+
+    @Test("Billing capabilities recheck the durable authorizer and compose without importing an image")
+    func billingAssetsWithAuthorizedRoot() async throws {
+        let repository = AuthenticationRootRepositoryFake()
+        let authorization = LocalAuthorizationFake()
+        let root = makeRootViewModel(repository: repository, authorization: authorization)
+        let session = AuthenticationSession(id: "billing-principal")
+        let observation = startRootObservation(root)
+        defer {
+            observation.cancel()
+        }
+        await repository.waitUntilObserved()
+        root.registerRecentSignIn(session)
+        await repository.emit(session)
+        await waitUntil { root.sessionViewModel.sessionEventRevision == 1 }
+        root.sessionEventDidChange()
+        await root.authorizeLocalAccessIfNeeded()
+        let directory = FileManager.default.temporaryDirectory.appending(path: UUID().uuidString)
+        defer {
+            try? FileManager.default.removeItem(at: directory)
+        }
+        let assets = try AppDependencies.billingAssets(root: root, privateDirectory: directory)
+        #expect(!FileManager.default.fileExists(atPath: directory.path))
+        #expect(try await assets.signature.loadSignature() == nil)
+        #expect(await authorization.sessions == [session, session, session])
+        let data = try await assets.templates.loadTemplate(for: .ticket)
+        #expect(data.starts(with: Data("%PDF-".utf8)))
+        await cancelRootObservation(observation)
+    }
+
+    @Test("Billing capabilities stay revoked after root invalidation", arguments: ["retry", "logout", "other", "same"])
+    func staleBillingCapability(trigger: String) async throws {
+        let repository = AuthenticationRootRepositoryFake()
+        let authorization = LocalAuthorizationFake()
+        let root = makeRootViewModel(repository: repository, authorization: authorization)
+        let session = AuthenticationSession(id: "billing-principal")
+        let observation = startRootObservation(root)
+        defer {
+            observation.cancel()
+        }
+        await repository.waitUntilObserved()
+        root.registerRecentSignIn(session)
+        await repository.emit(session)
+        await waitUntil { root.sessionViewModel.sessionEventRevision == 1 }
+        root.sessionEventDidChange()
+        await root.authorizeLocalAccessIfNeeded()
+        let access = try root.makeBillingAssetAccess()
+        try await access.validate()
+        switch trigger {
+        case "retry": root.retryObservation()
+        case "logout": await root.signOut()
+        case "other":
+            await repository.emit(AuthenticationSession(id: "billing-other"))
+            await waitUntil { root.sessionViewModel.sessionEventRevision == 2 }
+            root.sessionEventDidChange()
+        default:
+            root.registerRecentSignIn(session)
+            await root.authorizeLocalAccessIfNeeded()
+        }
+        await #expect(throws: BillingAssetError.unauthorized) {
+            try await access.validate()
+        }
+        if trigger == "same" {
+            try await root.makeBillingAssetAccess().validate()
+        }
+        await cancelRootObservation(observation)
+    }
 }

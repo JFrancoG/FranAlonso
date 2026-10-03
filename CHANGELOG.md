@@ -6,6 +6,11 @@ All notable changes to this project are documented in this file.
 
 ### Added
 
+- 2026-10-03 | ✨ feat(billing): load validated billing assets
+  Validates unchanged A4 PDF templates and optional private PNG/JPEG signatures under protected shell authorization.
+  Preserves accepted signatures across failed replacement, reopening and interleaved repository instances.
+  Keeps complete file protection and backup exclusion mandatory; physical protection remains to be verified.
+
 - 2026-10-03 | ✨ feat(billing): add fiscal document selection
   Adds ticket/invoice selection, validated immutable fiscal recipients and protected local client prefill.
   Preserves legacy requests, ticket privacy and paid sales on cancel; preparation allocates no document number.
