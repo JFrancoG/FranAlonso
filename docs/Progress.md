@@ -4,8 +4,8 @@
 
 ## Estado actual
 
-- **13.4 / [PLU-99](https://linear.app/plusprojects/issue/PLU-99): In Progress**, Store/VM; entrega autorizada;
-  2523/2523, builds/PRE/POST/estilo PASS. [Evidencia](progress/phase-13.md); sin live.
+- **13.4 / [PLU-99](https://linear.app/plusprojects/issue/PLU-99): Done**, [PR53](https://github.com/JFrancoG/FranAlonso/pull/53).
+  2523/2523, builds/auditorías PASS; rama eliminada. [Evidencia](progress/phase-13.md); fase13 abierta, sin live.
 - **13.1–13.3 Done**, PLU96–98/PR50–52; Stock intermitente sin corregir.
 - **12.1–12.8 Done**, [PR49](https://github.com/JFrancoG/FranAlonso/pull/49);
   fase12 abierta/deuda89–91. [Evidencia](progress/phase-12.md).

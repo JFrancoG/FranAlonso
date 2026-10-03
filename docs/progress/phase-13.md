@@ -1,16 +1,39 @@
 # Fase13 — Facturación, PDF, correo y numeración
 
-## 13.4 — Entrega autorizada en curso
+## 13.4 / PLU-99 — Entregada; Done
 
-03/10/2026: «commit, push y entrega» autoriza el circuito establecido de commit/push,
-PR/revisión/merge, Done y limpieza verificada. PLU-99 sigue In Progress hasta merge confirmado.
-Se conserva exactamente el manifest de cinco Swift y toda configuración/código histórico; se reutilizan
-2523/2523 ejecuciones, builds Develop/Production y PRE/POST/estilo independientes de la sección siguiente.
-Solo metadatos de entrega y CHANGELOG adicionales; no cambia ningún resultado de validación.
-Fase13/proyecto y deuda accesible previa siguen abiertos;13.5 y live requieren gates separados.
-Las autorizaciones iniciales limitadas conservadas debajo describen el snapshot de implementación previo.
+03/10/2026: «commit, push y entrega» autoriza el circuito establecido completo.
+[PR53](https://github.com/JFrancoG/FranAlonso/pull/53) MERGED a main;
+feature `7498ccd6e8d385767f57c17641c41291bc5ef4f3` → merge `268efd3b18e21983de2e67e3198edabb7d83b137`.
+Árbol completo integrado idéntico al feature validado, tree `fd312337a8fbd218e32d96afaf8a24ee3cc03399`.
+Rama `codex/plu-99-billing-document-state` eliminada local/remota después de comprobar
+ascendencia, head remoto exacto y cero commits únicos; main/origin/main sincronizados al merge.
+[PLU-99](https://linear.app/plusprojects/issue/PLU-99) Done verificado tras actualización explícita
+03/10/2026 11:21:23 UTC; no se atribuye ese cambio a automatización GitHub–Linear.
 
-## 13.4 / PLU-99 — Implementación local; In Progress
+Revisión independiente final de entrega PASS sin hallazgosP0–P3, nueve archivos previstos;
+freeze925 inicial/final/revisor/root `d9503ba0945cb074fe8f4887e4c755df07a7e901df3d44dbe966e7637d423949`.
+Rerevisión remota focal PASS: diff PR/local idéntico SHA256
+`80c6d57cf6e754739ec2bf7eff0aa9442559531eed45dfda90fd1f832bfdbc35`, mismo head/base;
+CLEAN/MERGEABLE antes del merge, sin protección/rulesets/workflows/checks remotos configurados.
+Revisión GitHub COMMENTED desde cuenta propietaria basada en agente read-only; no representa
+aprobación humana distinta. Se integró con match-head7498ccd, sin force-push.
+
+Se reutilizan2523/2523 ejecuciones /1550declaraciones,16nuevas/30casos completos, ambos builds y
+PRE/POST/estilo por identidad exacta de los cinco Swift y toda fuente/configuración histórica.
+El revisor relee bundle xcresult completo y logs, sin nuevos builds/tests por metadatos de entrega.
+Cierre documental limitado a Progress/phase13/CHANGELOG; Xcode nuevo N/A por ausencia de cambios ejecutables.
+Auditoría documental final focal PASS sin hallazgosP0–P3 sobre tres documentos:
+925archivos, huella inicial/final/revisor/root
+`332925a77efa3c9bb3dcee43e64c58002e5a2a47a611df460229346f1da7ffd9`.
+Después del freeze solo se registra este resultado; fuentes/configuración mantienen el manifest validado.
+AppIntents, intermitencia Stock y seis enlaces históricos08.3 conservan sus límites descritos debajo.
+UI/accesibilidad N/A; deuda previa mantiene responsable/recuperación antes del primer candidato real.
+Fase13/proyecto abiertos, sin parent/milestone13;13.1–13.4 entregadas.13.5 selección/formulario fiscal
+es el siguiente gate separado con propuesta/PRE/autorización propias, sin iniciar; live permanece inactivo.
+Los snapshots de implementación y autorizaciones iniciales conservados debajo son históricos.
+
+## 13.4 — Historial de implementación local
 
 03/10/2026: «abre issue y rama e implementa13.4».
 [PLU-99](https://linear.app/plusprojects/issue/PLU-99), Jesus Franco, In Progress;
