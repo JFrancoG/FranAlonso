@@ -154,6 +154,10 @@ All notable changes to this project are documented in this file.
 
 ### Maintenance
 
+- 2026-10-03 | 📝 docs(billing): record 13.6 delivery
+  Records PR55 integration, PLU-102 functional closure and verified branch cleanup.
+  Retains the prior Stock test failure, pending physical protection and open phase/accessibility work.
+
 - 2026-09-30 | 📦 build(xcode): apply recommended settings
   Records Xcode 27.2 upgrade checks and enables the nonlocalized-text analyzer in all four configurations.
 
