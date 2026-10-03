@@ -1,6 +1,46 @@
 # Fase13 — Facturación, PDF, correo y numeración
 
-## 13.8 / PLU-104 — Preparación de entrega funcional autorizada
+## 13.8 / PLU-104 — Entregada funcionalmente; Done
+
+03/10/2026: «commit, push y entrega» autoriza el circuito establecido completo.
+[PR57](https://github.com/JFrancoG/FranAlonso/pull/57) **MERGED** a main a21:21:40UTC;
+feature `b80f079e2c125fb42eebb69f3686f296aac72387` → merge `e93033949123f64f3dcf2526161bb7bf8acbf751`.
+Árbol integrado completo idéntico al feature validado, tree `4df459f8c24817d52e298ddcc9c56dad2c38dc70`;
+13Swift y recursos conservan hashes probados, manifest
+`c7962b6bdd1cb8952bd2e8bd508ed08dec1b10aee7a954d5ed7cad183b9b6908`.
+[PLU-104](https://linear.app/plusprojects/issue/PLU-104) **Done** verificado tras merge;
+completed21:21:42.117UTC, sin mutación manual de estado. Issue/proyecto reconciliados con evidencia.
+Rama `codex/plu-104-billing-ticket-invoice-rendering` eliminada local/remota tras confirmar ascendencia,
+head remoto exacto y0commits únicos. Main/origin/main sincronizados al merge y checkout limpio antes
+del registro documental final; solo CHANGELOG/Progress/phase13 posteriores, sin cambios ejecutables.
+
+Preparación de entrega independiente PASS:1010archivos inicial/final/revisor/root idénticos
+`8f51c41bbbcd62618737fa88f4aafd67b298ad12600e970a003332bca566e79a`.
+Revisión remota focal independiente `billing_13_8_delivery` PASS sinP0–P3:20paths/head/base/body exactos.
+DiffGH/local101055bytes idénticos SHA256
+`9f2da82d188f3365dcc189b15e813577b5e33d3f6aa6ed52f5a3e39137f86505`.
+Freeze1010inicial/final/revisor/root idénticos
+`b3e8f8ed545e60b87edbcfce277ba3edaca6501441a42ccfcad495fdd0d6b17b`.
+ReviewGitHub COMMENTED desde cuenta propietariaJFrancoG, sustentada por revisor independiente;
+no representa aprobación humana de otra cuenta. CLEAN/MERGEABLE y criterios/Linear/comments/head/base
+releídos inmediatamente antes del merge con expected-head exacto. Sin force-push;
+0checks/rules/workflows y main sin protección configurada: no acredita CI.
+
+Reutilizados59casos nuevos completos/13grupos,148focales/28grupos y2744globales PASS,
+TDD/bothbuilds/13Swift0diagnósticos y auditoríasPRE/POST/PDF/estilo por identidad de fuentes/recursos.
+Xcode nuevo N/A para cierre documental.619textos/0errores;2/1AppIntents y6linksDesktop08.3 históricos.
+Stock118 pasa una vez con fuente intacta, sin declararlo corregido/estable.27páginas inspeccionadas,
+UI/previews N/A sin alcanceSwiftUI; no AT manual, PDF-UA, fiscalidad ni protección física acreditados.
+PLU-101 Backlog/Jesus/feedback-estabilización antes de primer uso real; límite físico13.6 separado.
+Sin nuevos aplazamientos. Fase13/proyecto **In Progress**,13.1–13.8 entregadas funcionalmente;
+sin parent/milestone13. Siguiente gate separado13.9 Storage: sin autorización/inicio. Live inactivo.
+
+Revisión focal final del registro documental `billing_13_8_delivery` PASS sinP0–P3;
+solo CHANGELOG/Progress/phase13,1010archivos inicial/final/revisor/root idénticos
+`573eebe86e182e38197977efbc11ab4533182df22d6256257ece6b636b559e7a`.
+Tras freeze solo se registra este dictamen y se publica el cierre documental; fuentes probadas intactas.
+
+## 13.8 — Historial de preparación de entrega
 
 03/10/2026: «commit, push y entrega» autoriza el circuito establecido de commit/push/PR/revisión/merge,
 cierre funcional dePLU-104 y eliminación segura de la rama integrada. Fase13/proyecto siguen abiertos;

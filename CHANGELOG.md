@@ -187,6 +187,10 @@ All notable changes to this project are documented in this file.
 
 ### Documentation
 
+- 2026-10-03 | 📝 docs(billing): record 13.8 delivery
+  Records PR57 merge, automatic PLU-104 completion and safe feature-branch cleanup with validated source identity.
+  Retains phase 13, accessibility debt and separate physical-protection, fiscal, live and next-subphase gates.
+
 - 2026-10-03 | 📝 docs(billing): record 13.7 delivery
   Records PR56 integration, PLU-103 completion and safe branch cleanup with the validated renderer unchanged.
   Preserves the open phase, physical-protection and accessibility limits and the separate 13.8/live gates.
