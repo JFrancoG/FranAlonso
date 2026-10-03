@@ -6,6 +6,11 @@ All notable changes to this project are documented in this file.
 
 ### Added
 
+- 2026-10-03 | ✨ feat(billing): add deterministic PDF rendering
+  Renders complete planned A4 pages with confirmed headers, selectable text and an optional proportional signature.
+  Rejects invalid resources and text overflow without returning partial bytes; drawing remains outside MainActor.
+  Keeps commercial and fiscal projection, real-template review and live composition behind their separate gates.
+
 - 2026-10-03 | ✨ feat(billing): load validated billing assets
   Validates unchanged A4 PDF templates and optional private PNG/JPEG signatures under protected shell authorization.
   Preserves accepted signatures across failed replacement, reopening and interleaved repository instances.
