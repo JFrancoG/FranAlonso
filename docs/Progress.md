@@ -4,8 +4,10 @@
 
 ## Estado actual
 
-- **12.1–12.8: Done**, [PR49](https://github.com/JFrancoG/FranAlonso/pull/49).
-  Fase12 abierta; deuda89/91. [Evidencia](progress/phase-12.md).
+- **13.1 / [PLU-96](https://linear.app/plusprojects/issue/PLU-96): In Progress**.
+  Implementada;2393ejecuciones/builds y PRE/POST PASS. Entrega en curso. [Evidencia](progress/phase-13.md).
+- **12.1–12.8 Done**, [PR49](https://github.com/JFrancoG/FranAlonso/pull/49);
+  fase12 abierta/deuda89–91. [Evidencia](progress/phase-12.md).
 
 - **11.9 / [PLU-83](https://linear.app/plusprojects/issue/PLU-83): Done funcional**, Jesus Franco.
   [PR41](https://github.com/JFrancoG/FranAlonso/pull/41)/`ab70985`; rama eliminada. Histórico/detalle terminal:
@@ -84,10 +86,9 @@
 
 ## Plan y fuentes
 
-[Índice](specs/00_index.md), specs de fase, ADR0028/0029/0030 y [fase08](progress/phase-08.md) conservan autoridad y evidencia.
-Información inicial firmada y autorización fotográfica opcional siguen separadas. Borradores jurídicos pendientes de
-revisión antes del uso real. Sin activación live, foto real08.9 ni cierre administrativo de08.4.
-El vault Obsidian es este repositorio. Gobernanza conserva seis enlaces históricos rotos de capturas08.3.
+[Índice](specs/00_index.md), specs y ADR rigen. [Fase08](progress/phase-08.md): información firmada y
+autorización fotográfica separadas; revisión jurídica pendiente antes de uso real. Sin live/foto08.9/cierre08.4.
+Vault=repo; gobernanza:6enlaces históricos rotos08.3.
 
 ## Entregas anteriores
 
