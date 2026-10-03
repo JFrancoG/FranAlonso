@@ -4,11 +4,10 @@
 
 ## Estado actual
 
-- **13.7 / [PLU-103](https://linear.app/plusprojects/issue/PLU-103): In Progress**.
-  Motor PDF implementado;51nuevos/238afectados/global2685, builds y POST PASS.
-  Entrega autorizada; sin live. [Evidencia](progress/phase-13.md).
-- **13.1–13.6 Done funcional**, PR55/PLU-102; límites físicos/Stock118 en evidencia.
-  PLU-101 Backlog/Jesus antes de uso real.
+- **13.1–13.7 Done funcional**, [PR56](https://github.com/JFrancoG/FranAlonso/pull/56), PLU-103.
+  51nuevos/238afectados/global2685, builds/auditorías PASS. [Evidencia](progress/phase-13.md).
+  Fase13 abierta; PLU-101 Backlog/Jesus, tras feedback/estabilización y antes de uso real.
+  Rama eliminada; límites físicos/Stock118 conservados. Sin live ni inicio13.8.
 - **12.1–12.8 Done**, [PR49](https://github.com/JFrancoG/FranAlonso/pull/49);
   fase12 abierta/deuda89–91. [Evidencia](progress/phase-12.md).
 

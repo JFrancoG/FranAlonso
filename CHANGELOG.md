@@ -182,6 +182,10 @@ All notable changes to this project are documented in this file.
 
 ### Documentation
 
+- 2026-10-03 | 📝 docs(billing): record 13.7 delivery
+  Records PR56 integration, PLU-103 completion and safe branch cleanup with the validated renderer unchanged.
+  Preserves the open phase, physical-protection and accessibility limits and the separate 13.8/live gates.
+
 - 2026-10-03 | 📝 docs: record fiscal form delivery
   Records PR54 integration, PLU-100 functional completion, exact tested source parity and verified branch cleanup.
   Keeps PLU-101 accessibility work and phase13 open while preserving the final inherited Stock suite failure.
