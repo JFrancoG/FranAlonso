@@ -6,6 +6,11 @@ All notable changes to this project are documented in this file.
 
 ### Added
 
+- 2026-10-04 | ✨ feat(billing): store PDFs idempotently
+  Binds each confirmed document to its exact prepared PDF at a stable private principal/document path.
+  Replays one immutable simulated remote acceptance and rejects changed bindings without overwriting bytes.
+  Preserves revocable authorization, neutral errors and recovery; production Storage and durable state remain gated.
+
 - 2026-10-03 | ✨ feat(billing): render tickets and invoices
   Projects confirmed paid snapshots with captured terms and exact complete-sale calculations on unchanged A4 templates.
   Paginates every description and line, repeats confirmed headers and invoice recipients, and keeps totals/signature final-only.
