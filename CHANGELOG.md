@@ -6,6 +6,10 @@ All notable changes to this project are documented in this file.
 
 ### Added
 
+- 2026-10-03 | ✨ feat(billing): coordinate document state
+  Coordinates one observable reservation state and a ViewModel facade without duplicate mutable projections.
+  Preserves sealed requests, explicit retries, cancellation recovery and terminal close while fencing stale results.
+
 - 2026-10-03 | ✨ feat(billing): reserve documents atomically
   Allocates the request binding, immutable document and family counter together in one Firestore transaction.
   Replays confirmed paid requests without writes and recovers interrupted or cancelled responses without another number.
