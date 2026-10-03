@@ -168,6 +168,10 @@ All notable changes to this project are documented in this file.
 
 ### Documentation
 
+- 2026-10-03 | 📝 docs: record fiscal form delivery
+  Records PR54 integration, PLU-100 functional completion, exact tested source parity and verified branch cleanup.
+  Keeps PLU-101 accessibility work and phase13 open while preserving the final inherited Stock suite failure.
+
 - 2026-10-03 | 📝 docs: record billing state delivery
   Records PR53 integration, PLU-99 completion, exact tested source parity and verified branch cleanup.
   Keeps phase13 open with separate fiscal-form, persistent-document and live gates.

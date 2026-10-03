@@ -1,6 +1,43 @@
 # Fase13 — Facturación, PDF, correo y numeración
 
-## 13.5 / PLU-100 — Entrega autorizada; pendiente de Git
+## 13.5 / PLU-100 — Entregada funcionalmente; Done
+
+03/10/2026: «commit, push y entrega» autoriza el circuito establecido completo.
+[PR54](https://github.com/JFrancoG/FranAlonso/pull/54) MERGED a main a15:07:34UTC;
+feature `8f3e5c4f922315a130ecbfecaa0060186a3de65f` → merge `a5565f39783bf341d6ad79421a1c7482adeb8182`.
+Árbol completo del merge idéntico al feature auditado, tree `dcc4430764588de81d336570bcc5d1c7eb5fdeb9`.
+[PLU-100](https://linear.app/plusprojects/issue/PLU-100) Done verificado tras merge, updated15:07:36UTC;
+no se ejecutó una mutación manual de estado. Rama `codex/plu-100-billing-selection-form` eliminada local/remota
+tras comprobar ascendencia, head remoto exacto y cero commits únicos; main/origin/main sincronizados al merge.
+
+Revisiones finales independientes de estándares y accesibilidad focal por metadata PASS, sin hallazgosP0–P3;
+freeze973 inicial/final/revisores/root `a1f93379e54b0ee3ccc4963b86aedf09dd77fc5e6d0b51677876abb5eb7b2fcd`.
+Después del freeze solo se registró el resultado enphase13;32Swift/catálogo/artefactos conservaron sus hashes.
+Revisión remota focal independiente PASS sobre65paths: diff PR/local idéntico SHA256
+`34f3645dbff55d741fe50a57bef037645e6f1bc850012caffab5301d6a746212`; head8f3e5c4/base76835cb.
+Freeze973 inicial/final/revisor/root `2cad4041a36161fd2b9998d05c4187d965b9efc5e62414e0b46d08151df0d48a`.
+Antes del merge CLEAN/MERGEABLE; sin protección/rulesets/workflows/checks remotos configurados. ReviewGitHub
+COMMENTED desde cuenta propietaria, basada en agente read-only, sin representar aprobación humana distinta.
+Merge con match-head8f3e5c4, sin force-push. Criterios dePLU-100/deuda releídos antes de integrar/cerrar.
+
+Se reutilizan por identidad exacta59casos nuevos completos/28declaraciones y155pruebas afectadas PASS,
+Develop-for-testing11.15s/Production18.983s PASS, PRE/POST/estilo y evidenciaUI funcional descritos debajo.
+**La suite global final sigue fallando:2581/2582 en tres ejecuciones, único falloStockSyncDurabilityTests118**;
+fuente histórica intacta/focalStock1/1PASS, sin atribuir causa ni declarar regresión global verde.2/1avisosAppIntents,
+607textos/0errores y seis links históricos08.3 conservan sus límites. No se modifica Stock fuera del alcance.
+Cierre documental limitado a Progress/phase13/CHANGELOG; Xcode nuevo N/A, sin cambios ejecutables/configuración.
+Auditoría documental final focal PASS, sin hallazgosP0–P3 sobre esos tres archivos; Progress8182bytes.
+973archivos, huella inicial/final/revisor/root idéntica
+`cb0e3523572e9803ef7e29673565abc6e1be2f48075e422806953cb3f990b3fe`.
+Después del freeze solo se registra este dictamen; toda fuente/configuración/artefactos conserva identidad.
+
+Entrega funcional de demo ADR0029; [PLU-101](https://linear.app/plusprojects/issue/PLU-101) Backlog/Jesus Franco,
+recuperación integral tras feedback y estabilización de cada recorrido, antes del primer candidato para uso real.
+PLU-91/deuda previa y resultados Falla/Pendiente/Limitado intactos. Fase13/proyecto abiertos, sin parent/milestone13;
+13.1–13.5 entregadas funcionalmente. Siguiente gate separado13.6: carga validada de plantillas y firma privada
+opcional, sin iniciar/autorización; live inactivo. Los snapshots de implementación/autorizaciones debajo son históricos.
+
+## 13.5 — Historial de preparación de entrega
 
 03/10/2026: «commit, push y entrega» autoriza el circuito establecido de commit/push/PR/revisión/merge,
 cierre funcional en Linear y eliminación segura de rama. Se entrega el ámbito funcional para demo conforme
