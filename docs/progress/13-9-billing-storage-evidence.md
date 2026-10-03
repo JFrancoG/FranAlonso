@@ -1,7 +1,8 @@
 # 13.9 — PDF Storage validation evidence
 
-Local implementation PLU-105; authorization03/10/2026, validation04/10 Europe/Madrid.
-No Git delivery, Done, actual Firebase Storage, live activation or13.10.
+Historical implementation validation for PLU-105; authorization03/10/2026, validation04/10 Europe/Madrid.
+This snapshot predates Git delivery and Done; the current delivery is recorded in the phase record.
+Actual Firebase Storage, live activation and13.10 remain outside this evidence.
 [Proposal and primary sources](13-9-billing-storage-proposal.md), [phase record](phase-13.md).
 
 ## PRE and RED

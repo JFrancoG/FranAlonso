@@ -1,6 +1,44 @@
 # Fase13 — Facturación, PDF, correo y numeración
 
-## 13.9 — Preparación de entrega04/10/2026
+## 13.9 / PLU-105 — Entregada funcionalmente; Done
+
+04/10/2026 Europe/Madrid: «commit, push y entrega» autoriza el circuito establecido completo.
+[PR58](https://github.com/JFrancoG/FranAlonso/pull/58) **MERGED** a main el03/10 a23:25:39UTC;
+feature `6837cbb6639fc8595363806e17eee3cfab15e184` → merge `fe1dfd42bb8cfdcb853aea35376ddec8a418e249`.
+Árbol integrado completo idéntico al feature validado, tree `64c092d6f749c83de80926d34b81b0b470a2efc7`;
+10Swift conservan hashes probados, manifest
+`b4c39c49c049f35a275e556a6301bbb0a9a6b4b8dfafd3caf7c6162925d33fdb`.
+[PLU-105](https://linear.app/plusprojects/issue/PLU-105) **Done** automático verificado tras merge;
+completed23:25:41.125UTC, sin mutación manual de estado. Issue/proyecto reconciliados con entrega y evidencia.
+Rama `codex/plu-105-billing-pdf-storage` eliminada local/remota tras confirmar ascendencia,
+head remoto exacto y0commits únicos. Main/origin/main sincronizados al merge y checkout limpio antes
+del registro documental final; solo CHANGELOG/Progress/phase13 y encuadre histórico de evidencia posteriores.
+
+Revisión remota focal independiente `billing_13_9_delivery` PASS/Sin hallazgosP0–P3:
+15paths/head/base/body exactos. DiffGH/local65385bytes idénticos SHA256
+`0871bf9d1ffd9dc178816ce6eb4b0133ddab618670498b465dcded2c0db53efc`.
+Freeze1022files inicial/final/revisor/root idénticos
+`ad7935968c008d9b516929e66fae1211870d540cf7d6770e8d9494d671f3e062`.
+CLEAN/MERGEABLE y criterios/Linear/comments/head/base releídos inmediatamente antes del merge con
+expected-head exacto. Sin force-push.0checks/rules/workflows y main sin protección: no acredita CI.
+La auditoría independiente no representa aprobación humana de otra cuenta GitHub.
+
+Reutilizados por identidad de fuentes: TDD43nuevos completos/8grupos,181focales/globalúnico2787 PASS,
+bothbuilds/10Swift0diagnósticos y PRE/POST/estilo PASS. Xcode nuevo N/A para cierre documental.
+619textos/0errores;2/1AppIntents y6linksDesktop08.3 históricos. Stock118 pasa una vez intacto,
+sin declararlo corregido/estable. UI/previews/accesibilidad nueva N/A; renderer/output13.8 intactos.
+Solo remoto simulado: no FirebaseStorage/Rules/backend/permisos reales ni reinicio durable13.10 acreditados.
+PLU-101 Backlog/Jesus/feedback-estabilización antes del primer uso real; límite físico13.6 separado.
+Sin nuevos aplazamientos, Store/schema/correo/cierre ni live. Fase13/proyecto **In Progress**;
+13.1–13.9 entregadas funcionalmente, sin parent/milestone13. Siguiente gate separado13.10, sin autorización/inicio.
+Los registros inferiores de implementación y preparación son históricos.
+
+Revisión focal final del registro documental `billing_13_9_delivery` PASS/Sin hallazgosP0–P3;
+solo los4documentos citados,1022files inicial/final/revisor/root idénticos
+`cee7d2186bf6a1e9a87c9d2442d9ccf132aaa1186dc1a0463e0acb40a65b7197`.
+Tras freeze solo se registra este dictamen y se publica el cierre documental; fuentes probadas intactas.
+
+## 13.9 — Historial de preparación de entrega04/10/2026
 
 «commit, push y entrega» autoriza el circuito establecido: commit/push, PR/revisión/integración,
 reconciliación Done tras Git definitivo y limpieza de la rama integrada; no live ni13.10.
@@ -14,7 +52,7 @@ Revisión independiente de preparación `billing_13_9_delivery` PASS/Sin hallazg
 freeze inicial/final root/revisor `d8ff9e9a24a3f29f654fae2c86c95166ab0cb8e138a44d6a56eb118f58d44015`.
 Solo se registra el resultado después del freeze; Swift conserva identidad. El registro inferior es histórico.
 
-## 13.9 / PLU-105 — In Progress; implementación local
+## 13.9 / PLU-105 — Historial de implementación local
 
 Autorización03/10/2026 «abre issue y rama e implementa13.9». Issue In Progress/Jesus Franco,
 rama `codex/plu-105-billing-pdf-storage` desde main/origin/main`b12ca46` limpio/0divergencia.
