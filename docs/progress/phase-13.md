@@ -1,5 +1,49 @@
 # Fase13 — Facturación, PDF, correo y numeración
 
+## 13.9 — Preparación de entrega04/10/2026
+
+«commit, push y entrega» autoriza el circuito establecido: commit/push, PR/revisión/integración,
+reconciliación Done tras Git definitivo y limpieza de la rama integrada; no live ni13.10.
+main/origin/main`b12ca46`,0divergencia; ninguna PR13.9 previa. PLU-105/Jesus In Progress antes de publicar.
+Validación reutilizada por identidad exacta de10Swift, manifest
+`b4c39c49c049f35a275e556a6301bbb0a9a6b4b8dfafd3caf7c6162925d33fdb`:
+43nuevos/181focales/global2787, buildsDevelop/Production, diagnósticos y PRE/POST/estilo PASS.
+Solo se preparan metadatos de entrega y CHANGELOG; Xcode nuevo N/A.2/1AppIntents y6linksDesktop08.3
+históricos conservados. UI N/A; PLU-101/protección13.6/Stock118 vigentes. Fase13/proyecto abiertos.
+Revisión independiente de preparación `billing_13_9_delivery` PASS/Sin hallazgosP0–P3;1022files,
+freeze inicial/final root/revisor `d8ff9e9a24a3f29f654fae2c86c95166ab0cb8e138a44d6a56eb118f58d44015`.
+Solo se registra el resultado después del freeze; Swift conserva identidad. El registro inferior es histórico.
+
+## 13.9 / PLU-105 — In Progress; implementación local
+
+Autorización03/10/2026 «abre issue y rama e implementa13.9». Issue In Progress/Jesus Franco,
+rama `codex/plu-105-billing-pdf-storage` desde main/origin/main`b12ca46` limpio/0divergencia.
+[Propuesta, alternativas y fuentes](13-9-billing-storage-proposal.md). Swift6/strict complete/defaultnonisolated,
+deploymentiOS27/SDK27.0 verificados por Xcode MCP; Develop/iPadPro13M5 arm64 Simulator27.2.
+
+PRE independiente `billing_13_9_pre` PASS/Sin hallazgosP0–P3 antes de código;1011archivos,
+root/revisor inicial/final idénticos `b8f43f97cd0608ad26dcc702a2dd366ac5753c04433033b868776604ce7a79d1`.
+Contrato Storage neutral, ruta privada estable por principal/documentID, comparación atómica del documento completo
+y PDF preparado, recibo correlacionado y remoto simulado compartido para recuperación. Reintento con mismos bytes;
+sin rerender ni nueva reserva. Composición inactiva y default indisponible.10Swift nuevos,7producción/3tests+fixtures;
+fuentes/config/recursos anteriores intactos. RED42fallos/43casos→GREEN43/43; focal181/181/global2787/2787,
+22declaraciones nuevas/8grupos completos; global1683declaraciones/364grupos. Builds finalesDevelop4.203s/Production18.203s
+PASS;0diagnósticos en10Swift,0Swift/Clangwarnings y2/1avisosAppIntents conocidos. Incremental, sin clean-build.
+Estilo10files/0candidatos,619textos/0errores; gobernanza conserva solo6linksDesktop08.3. POST técnico independiente
+PASS, freeze1022files `5de3d17858557ccf61b6e7c9dc569a46c6f220cc15887488e24c3b7317f84fe3`.
+UnP3 de guard compactado tras freeze; solo whitespace, resto9Swift intactos. Retest43/43/builds/diagnóstico0;
+focal181/global2787 y POST retenidos por identidad semántica, sin nueva ejecución global/auditoría técnica.
+Re-auditoría focal de estilo PASS/Sin hallazgos; freeze1022files
+`6a0a0def5e06ded3db0710d99dadee8ad9ce5d57cce6de040a704e599693998e`, revisor/root inicial/final idénticos.
+Implementación local lista; issue In Progress y entrega pendiente. [Artefactos y manifest definitivo](13-9-billing-storage-evidence.md), SHA256Swift
+`b4c39c49c049f35a275e556a6301bbb0a9a6b4b8dfafd3caf7c6162925d33fdb`.
+
+Sin SwiftData/Store/UI13.10, correo/cierre, backend Storage/Rules/deploy ni live. UI/previews/accesibilidad nueva N/A;
+no cambia renderer ni output visual13.8. PLU-101 Backlog/Jesus/feedback-estabilización antes de uso real,
+protección física13.6 limitada/pending y Stock118 histórico permanecen intactos. Sin nuevos aplazamientos.
+Commit/push/PR/merge/Done no autorizados. Fase13/proyecto In Progress,13.1–13.8 entregadas funcionalmente.
+Los estados de13.8 y subfases anteriores debajo son históricos.
+
 ## 13.8 / PLU-104 — Entregada funcionalmente; Done
 
 03/10/2026: «commit, push y entrega» autoriza el circuito establecido completo.

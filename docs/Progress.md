@@ -1,13 +1,13 @@
 # Project Progress
 
-Última actualización: 2026-10-03
+Última actualización: 2026-10-04
 
 ## Estado actual
 
-- **13.1–13.8 Done funcional**, [PLU-104](https://linear.app/plusprojects/issue/PLU-104),
-  [PR57](https://github.com/JFrancoG/FranAlonso/pull/57)/`e930339`.
-  59nuevos/148focales/global2744, builds/auditorías PASS; [evidencia](progress/phase-13.md).
-  Fase13 abierta; deudaPLU-101/protección13.6/Stock118 vigentes. Sin live ni inicio13.9.
+- **13.9 / [PLU-105](https://linear.app/plusprojects/issue/PLU-105): In Progress**, rama
+  `codex/plu-105-billing-pdf-storage`; entrega autorizada, en preparación.43nuevos/global2787 PASS. [Evidencia](progress/phase-13.md).
+  13.1–13.8 Done funcional/PR57. Fase13 abierta; deudaPLU-101/protección13.6/Stock118 vigentes.
+  Sin merge/Done todavía; live/13.10 separados.
 - **12.1–12.8 Done**, [PR49](https://github.com/JFrancoG/FranAlonso/pull/49);
   fase12 abierta/deuda89–91. [Evidencia](progress/phase-12.md).
 
