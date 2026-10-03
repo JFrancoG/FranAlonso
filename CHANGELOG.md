@@ -6,6 +6,11 @@ All notable changes to this project are documented in this file.
 
 ### Added
 
+- 2026-10-03 | ✨ feat(billing): reserve documents atomically
+  Allocates the request binding, immutable document and family counter together in one Firestore transaction.
+  Replays confirmed paid requests without writes and recovers interrupted or cancelled responses without another number.
+  Uses exact Codable transport and a resolved server timestamp; live composition and Rules remain gated.
+
 - 2026-10-03 | ✨ feat(billing): add idempotent document reservation
   Adds a provider-independent atomic reservation contract and one-attempt use case for immutable paid requests.
   Preserves full correlation, neutral failures and cancellation with explicit recovery after a lost response.

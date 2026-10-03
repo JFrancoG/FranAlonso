@@ -1,5 +1,116 @@
 # Fase13 — Facturación, PDF, correo y numeración
 
+## 13.3 / PLU-98 — Implementada; entrega pendiente / In Progress
+
+03/10/2026: «abre issue y rama e implementa 13.3». [PLU-98](https://linear.app/plusprojects/issue/PLU-98)
+In Progress / Jesus Franco; rama `codex/plu-98-atomic-billing-reservation` desde main/origin `965827a` limpio.
+[Propuesta exacta, fuentes y compatibilidad](13-3-billing-transaction-proposal.md). PRE independiente PASS antes
+de código, sin hallazgos P0–P3:913archivos, digest inicial/final/revisor/root
+`9594a8cd6327c921e1d9607fdfdb7d3fa7bc396814b5f7ded3eba807caa8f756`.
+Ocho Swift13.1/13.2 byte-exact contra965827a y sus manifests históricos; configuración/dependencias intactas.
+
+### Implementación y TDD 13.3
+
+Cuatro Swift nuevos en Billing/Data: DTO versionados exactos, política y seam transaccional, Repository genérico,
+actor Firebase. Tres claves en una transacción: asociación requestID→documentID, documento inmutable y contador
+independiente ticket/invoice. Reads antes de cualquier write; la política de producción se recalcula por intento.
+Replay de request íntegro validado retorna número/fecha originales sin writes, incluso con contador corrupto.
+Conflicto de contenido/identidad no consume número; huérfanos, versiones, fechas/pago/números y overflow fallan
+cerrado. Solo primera creación escribe los tres registros juntos. No reparación ni numeración local.
+
+Venta reutiliza SaleDTO v2/SaleTimestampDTO exactos; no se cambia Sales. Los envelopes Billing rechazan claves
+desconocidas. El actor usa runTransaction async del SDK12.19.2 aprobado y provider obligatorio Sendable de cliente
+ya configurado, sin default, SDK retenido en estado, cambios de configuración, fresh-instance promise ni opt-outs.
+Bloque SDK síncrono obligatorio, sin efectos de aplicación; resultado Data Codable nuevo mediante sending Any?.
+@ServerTimestamp<Date> nil genera el transform en el commit. Lectura server posterior exige snapshot existente,
+sin cache/writes pendientes, fecha resuelta y versión/request/serie/número exactos al plan confirmado. Ningún reloj
+local decide issuedAt. Pérdida de respuesta/cancelación después de commit se recupera con el mismo request;
+Repository no reintenta automáticamente y solo expone errores neutrales/CancellationError. Sin logs ni payloads.
+
+Dos Swift Testing nuevos:18declaraciones/66ejecuciones. Fake con transporte Codable, snapshot/versiones y barrera
+determinista fuerza contención/intentos obsoletos y reejecuta la política real; commits completos sin await entre writes.
+Interrupción previa/postcommit, cancelación posterior con éxito/error tardío, replay tras recrear Repository,
+identidades, independencia, corrupción y precisión (decimal mayor que2^53, orden de líneas, pago y bits de fechas).
+Codec SDK real Encoder/Decoder local: sentinel es serverTimestamp, solo fecha resuelta confirma, metadata/path y
+campos extra inválidos rechazan. Sin bootstrap Firebase ni red. El fake no acredita servidor/Rules reales.
+
+RED compilable inicial:15/15 FAIL, unavailable intencional; `RunSomeTests/138EFFDF-A57B-4E94-BA3A-1A6619D400C7.txt`.
+RED de campos desconocidos:4/4 FAIL, junto con7casos core PASS; `RunSomeTests/CF21FFA9-AFA3-49E9-8FCD-5E1DD6EE41F7.txt`.
+RED codec SDK:10/10 FAIL por stub unavailable; `RunSomeTests/74FB37AD-38C8-4118-8918-143FAA5F893F.txt`.
+GREEN focal:47/47 PASS, selección parcial de argumentos por Xcode; `RunSomeTests/5F9AF095-D8C9-44E5-89A3-1E7EC59D81D3.txt`.
+No se atribuye cobertura66 al focal. Primer global11:01:02:2493/2493 PASS, incluidos66nuevos, confirmado nativamente;
+`RunAllTests/DEB0EF12-707D-4691-987A-1D5908FA8468.txt`. Después se normalizaron únicamente cinco bloques de estilo.
+
+### Validación definitiva 13.3
+
+MCP Xcode27.0 estable (27A266), workspace-PfnUYLlMzY; Develop/plan Develop inicial restaurados,
+iPad Pro13(M5) Simulator27.2/SDK27.0. Target27.0, Swift6 complete/default nonisolated, warnings como errores.
+Build-for-testing Develop11:05:39 /28.706s PASS, `BuildProject-Log-20261003-110539.txt`;
+Production11:07:26 /28.572s PASS, `BuildProject-Log-20261003-110726.txt`.
+Cero diagnósticos estructurados Swift/Clang; logs completos solo los dos avisos conocidos AppIntents por build.
+Builds incrementales; no clean-build ni cero warnings globales. Sin tests nativos UI/XCTest ni xcodebuild.
+
+RunAllTests definitivo11:05:57: **2493/2493ejecuciones PASS**, **1534/1534declaraciones**, cero
+failed/skipped/expected/notRun. Summary `RunAllTests/72BF9DA2-C01B-4FDC-B091-EB64DC8D542F.txt`.
+Bundle `Test-FranAlonso-Develop-2026.10.03_11-05-57-+0200.xcresult`: copia ActionArtifacts sin Info.plist;
+se leyó el original íntegro en DerivedData/FranAlonso-eehpkvodmpnqlchgeqriatcucsjf/Logs/Test por xcresulttool.
+Confirmó2493ejecuciones/1534declaraciones,18/18declaraciones y66/66ejecuciones nuevas con todos los grupos:
+2/2/4/1/2/3/2/4/13/6/6/1/6/1/1/1/9/2. También Stock histórico PASS, sin corregir su intermitencia previamente registrada.
+
+### Auditorías y gobernanza 13.3
+
+Estilo independiente:6Swift, script1candidato (init actor válido por parámetro closure), pase manual detectó3P3
+en5bloques. Corregidos dos bodies de closures throwing/await en fixture y tres if del helper SDK a multiline;
+misma lógica/expectativas. Auditoría inicial read-only:919archivos, digest inicial/final/root
+`7ee40785cca0023b75c198851476cea0ddfa38491abbf6484836ddb6834196fc`.
+Reauditoría de estilo PASS:6Swift leídos completos,5bloques corregidos, único candidato lexical justificado.
+POST independiente PASS sin hallazgosP0–P3:revisó autoridad,6Swift/3docs,SDK fijado, provider/configure-before-use,
+puente NSError/Swift, paths/transacción/DTOs, TDD, counts nativos completos, dos logs, manifests y límites.
+Ambas auditorías operacionales read-only:919archivos, huella inicial/final/revisor/root idéntica
+`cbd22b7ed26a3c70da1ceb9593194a4f38ab94cef2bcc519dca6f70277a3ef2d`.
+
+Diagnóstico adicional RunCodeSnippet11:12:47 no ejecutó código: DYLD no pudo cargar `/usr/lib/libSystem.B.dylib`
+en dispositivo privado de Previews. `RunCodeSnippet/RunCodeSnippet-ErrorDetails-20261003-111247.txt`.
+No cuenta como prueba runtime de bridge ni como preview; no se altera entorno para corregirlo en este alcance.
+SDK/Swift contrastados estáticamente: NSError original conservado y camino de transacción inspeccionado sin log
+del Status. No hay hallazgo demostrado ni modificación de producción por esa hipótesis.
+Gobernanza conserva únicamente seis enlaces Desktop históricos rotos08.3; diffcheck PASS. Scope exacto9archivos
+(6Swift+3docs), sin secretos/PII/logs, dependencias, target/settings, Rules/índices/deploy ni cambios históricos.
+
+UI/previews/localización/accesibilidad N/A: solo Data/tests, sin pantallas ni recursos; deuda previa conserva dueño
+y recuperación tras feedback/estabilización, antes del primer candidato real. Sin App/composición/demo ni tráfico.
+13.4 Store/VM,13.10 SwiftData, PDF/Storage/correo, cierre13.12 y ajuste13.13 siguen fuera. Backend/Rules reales,
+conservación de contadores, permisos/writers y tamaño/contención requieren puerta live separada; esta evidencia
+no acredita emisión fiscal o integración real. Fase13 y proyecto abiertos; PLU-98 In Progress, implementación
+validada con PRE/POST/estilo PASS, pendiente de autorización de entrega Git/Done. Sin commit/push/PR/merge/activación.
+PLU-98 y snapshot del proyecto reconciliados con esta evidencia, sin cambiar In Progress. Registro posterior
+de dictámenes/estado exclusivamente documental; Xcode adicional N/A por paridad literal del manifest probado.
+
+### Manifest Swift 13.3 probado
+
+```text
+BillingDocumentRecordDTO.swift 5ca6fb658c4ae6c6dc9425e971a00dc079171d7a295cf3badf966e6e2fa9ce04
+BillingTransactionDataSource.swift 2e8e0f588d196ddbbdafdc31c8b3b1b2299f242865569abf441fb7d4abe3d2ff
+FirebaseBillingTransactionDataSource.swift 7f4b3413b19e0a4190b4965a50285f16d085f5631c32d27b6ca915837a5c6c20
+FirestoreBillingDocumentReservationRepository.swift 12630a822c54321213ac43b8b14cb95e739ddef3af1587f9a178cc73ac452000
+BillingTransactionFixtures.swift 2bb4d999f399494715baeac32f127cfb3d0eed08dda386a7681f06186772d712
+FirestoreBillingDocumentReservationTests.swift 214b70a4a20fe324d1f5e2f55e1e224e6d4bab31c28c19b0c1033ccaa2b751ab
+```
+
+### Autorización de entrega 13.3
+
+03/10/2026: el propietario solicita «commit, push y entrega». Autoriza el mismo recorrido completo establecido
+para13.1/13.2: commit del alcance exacto, push, PR/revisión/merge, reconciliación PLU-98 Done y limpieza de rama
+tras verificar ancestry. No autoriza13.4, cierre de fase13 ni live.
+Se reutilizan2493/2493ejecuciones,1534declaraciones,66/66casos nuevos, ambos builds y PRE/POST/estilo PASS:
+los seis Swift nuevos y ocho históricos mantienen los bytes/hashes exactos probados. Solo documentación/changelog
+de entrega adicional: Xcode N/A por paridad literal. Revisión focal previa a entrega PASS sin hallazgosP0–P3:
+919archivos, huella inicial/final/revisor/root `a71bd67cfa426e4ce7319fad522e8a7454d1fcd417b14c84dd35b111de3cfc3e`.
+Confirmó6hashes y8históricos exactos, nativo2493/1534/66/18, dos logs, estilo y4documentos. Resultado Git pendiente.
+PLU-98 In Progress / Jesus Franco; sin comentarios concurrentes ni parent/milestone13 existentes, proyecto In Progress.
+Avisos AppIntents, seis enlaces Desktop históricos08.3, intermitencia Stock no corregida y límite DYLD del diagnóstico
+adicional conservados. No servidor/Rules reales, UI, materialización SwiftData, PDF/correo, cierre13.12 ni activación.
+
 ## 13.2 / PLU-97 — Entregada; Done
 
 03/10/2026: «abre issue y rama e implementa 13.2». [PLU-97](https://linear.app/plusprojects/issue/PLU-97)
