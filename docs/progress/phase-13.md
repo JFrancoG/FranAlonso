@@ -1,5 +1,119 @@
 # Fase13 — Facturación, PDF, correo y numeración
 
+## 13.2 / PLU-97 — Implementada; entrega pendiente
+
+03/10/2026: «abre issue y rama e implementa 13.2». [PLU-97](https://linear.app/plusprojects/issue/PLU-97)
+In Progress / Jesus Franco; rama `codex/plu-97-billing-document-reservation`, base `ee97380` main/origin limpio.
+[Propuesta exacta](13-2-billing-reservation-proposal.md). PRE independiente PASS sin hallazgos antes de código:
+909 archivos, digest inicial/final/revisor/root `944ec711df66681414ada01a85be93be70b35fc44fd6312a5e00b0a41c8de620`.
+Baseline 13.1 reutilizado inicialmente por paridad literal: 2393 ejecuciones, Billing 34/22, ambos builds y
+PRE/POST PASS. Los cinco Swift de 13.1 conservan exactamente el manifest histórico incluido al final.
+Esa solicitud no autorizaba entrega Git/Done. La autorización posterior de entrega se registra abajo;
+13.3 y live conservan gates propios. Fase 13 abierta; deuda accesible previa intacta.
+
+### Implementación y TDD 13.2
+
+Nuevo contrato `BillingDocumentReservationRepository: Sendable`: reserva atómica número/documento, replay del
+request íntegro, conflicto de identidades/contenido y series independientes para ticket/factura. Errores neutrales.
+Nuevo `ReserveBillingDocumentUseCase` genérico: una llamada por intento, correlación completa de la respuesta,
+cancelación antes y después del contacto, propagación de errores neutrales y traducción del fallo desconocido.
+El llamante conserva el request para recuperar explícitamente un commit cuya respuesta se perdió. No genera
+identidades, fechas o números; no cachea, reintenta automáticamente, muta estado local ni cierra la venta.
+La autoridad real, transacción e idempotencia Firestore pertenecen a 13.3; el doble actor no las acredita.
+
+Tests escritos primero, 11 declaraciones / 34 ejecuciones: replay tras recrear UseCase, series intercaladas,
+nueve variantes de conflicto, identidad de documento reutilizada, diez variantes de respuesta mal correlacionada,
+cuatro errores neutrales, error desconocido, respuesta perdida y cancelación previa/postcommit/nativa.
+Gates deterministas sin sleeps; se drenan tareas y continuations también en RED.
+Dos fallos de setup se corrigieron antes del RED ejecutable: initializer del actor en extensión y ambigüedad de
+macro Swift Testing para arrays de enteros. Esta última se resolvió conservando cuatro oráculos individuales
+41/42/91/92; no se retiraron expectativas ni tests históricos.
+
+RED compilable 03:01:58: **34/34 FAIL**, por el stub que devuelve unavailable;
+summary `RunSomeTests/AFE343DA-2D50-4A15-9612-A813564B9C5E.txt`.
+GREEN focal 03:02:57: **13/13 PASS**, selección parcial de argumentos por Xcode;
+summary `RunSomeTests/44FF0F32-7366-4B03-9670-D843AAE6E567.txt`.
+No se atribuye cobertura completa al GREEN parcial; la matriz completa se verificó en la suite global.
+Estos bundles focales no quedaron disponibles para lectura nativa; se conserva la evidencia MCP/summary completa.
+
+### Validación definitiva 13.2
+
+Xcode MCP oficial estable, Xcode 27.0 (27A266), `workspace-PfnUYLlMzY`; Develop/plan Develop,
+iPad Pro 13-inch (M5) Simulator 27.2 / SDK 27.0. Target 27.0, Swift 6 complete/default nonisolated;
+warnings Swift/Clang como errores. Configuración y archivos históricos sin cambios.
+Build-for-testing Develop 03:21:12 / 24.212 s PASS (`BuildProject-Log-20261003-032112.txt`);
+Production 03:09:34 / 31.277 s PASS (`BuildProject-Log-20261003-030934.txt`).
+Cero diagnósticos estructurados Swift/Clang; logs completos: únicamente dos avisos conocidos AppIntents por build.
+Builds incrementales; no se afirma clean-build ni cero warnings globales. Scheme/plan/destino inicial conservados.
+
+RunAllTests definitivo 03:21:12: **2427/2427 ejecuciones PASS**, 1516 declaraciones;
+cero failed/skipped/expected/notRun. Summary `RunAllTests/F29C6B05-EBBC-44C5-8072-81F12FB90B87.txt`, bundle
+`RunAllTests/Test-FranAlonso-Develop-2026.10.03_03-21-12-+0200.xcresult` en ActionArtifacts/default.
+xcresulttool confirma 1516/1516 declaraciones y 2427/2427 ejecuciones; nueva suite 11/11 declaraciones,
+34/34 ejecuciones y todos los grupos parametrizados completos (10/9/2/4/2/2).
+UI/previews/localización/accesibilidad 13.2 N/A: solo Domain, sin pantallas ni texto visible.
+Sin acreditación de backend real, durabilidad Billing, PDF, correo, cierre 13.12 o live.
+
+### Intermitencia histórica de Stock observada
+
+Primer RunAllTests 03:06:12: 2426/2427 PASS; 34/34 nuevos PASS. Único fallo en
+`StockSyncDurabilityTests.swift:118`: weak ModelContainer no nil después de un acknowledge/reopen.
+Summary `RunAllTests/54F69667-5D94-4A05-93B4-759F2B9C4A56.txt`; bundle nativo confirma 1515/1516 declaraciones.
+Se reprodujo focalmente en Develop y Production, sin modificar ese test ni sus helpers o producción Stock.
+
+Abrir el worktree baseline exacto `ee97380` necesitó autorización nativa Xcode: no se abrió ni se ejecutó allí;
+checkout limpio archivado. Alternativa aceptada previamente por el revisor: excluir temporalmente de compilación
+solo los tres Swift nuevos mediante `#if false`, build Develop 03:20:23 / 28.879 s PASS y mismo test 0/1 PASS,
+fallando otra vez en la línea 118 (`RunSomeTests/7223FD1A-7938-4809-B53B-C497266CF0F2.txt`).
+Control de aislamiento funcional: demuestra que el fallo puede aparecer sin ejecutar las incorporaciones 13.2;
+no representa un checkout baseline exacto ni demuestra la causa de la retención.
+Restauración en finally de los bytes exactos; huella completa 912 archivos volvió al digest POST de abajo.
+La ejecución definitiva posterior pasó también ese test, sin alterar ninguna expectativa.
+Se registra la intermitencia; no se declara corregida, no se omite el test y su diagnóstico queda separado de 13.2.
+
+### Estilo, POST y gobernanza 13.2
+
+Estilo independiente: tres Swift; script cero candidatos, pase manual detectó un patrón en dos closures
+`try await` en línea. Normalizadas a multiline sin cambiar comportamiento ni expectativas; reauditoría focal PASS
+antes de builds definitivos. Huella inicial 912 archivos `17323b4a8e5ffcd739a52434d967d5b482a2d7c211b2a449278f0c9c817b2282`;
+tras corrección, inicial/final/root `f49069b3cabcdec6d5be0ff1f04d6159b20307ca73e494a9fb761ff55544bd57`.
+POST independiente `billing_13_2_post`: código/evidencia PASS, sin hallazgos P0–P3, huella operacional read-only
+912 archivos inicial/final/root idéntica al digest anterior. Verificó PRE, RED/GREEN, primera regresión con fallo
+histórico, builds completos y manifest. Reauditoría documental/de validación final PASS sin hallazgos P0–P3:
+912 archivos, huella inicial/final/revisor/root
+`ba18be5eb8873fe66b18c7542a106c0ecb0814edf8d2d929b75121202e599b2e`.
+Verificó el control y restauración exacta, 2427/2427 ejecuciones / 1516 declaraciones finales, los 34 nuevos
+completos, Stock Passed, ambos logs y los tres documentos. La causa de su intermitencia continúa sin diagnosticar.
+Sin imports UI/persistencia/SDK, opt-outs, GCD, JSONSerialization, dependencias o cambios de target en el alcance.
+Gobernanza: únicamente seis enlaces Desktop históricos rotos de 08.3, conservados; diffcheck PASS.
+No hay cambio de código posterior al manifest. Actualizaciones documentales adicionales: Xcode N/A por paridad.
+PLU-97 conserva In Progress hasta verificar la entrega autorizada más abajo.
+
+### Manifest Swift 13.2 probado
+
+SHA256 de los únicos tres Swift nuevos; todas las directivas del control temporal retiradas:
+
+```text
+BillingDocumentReservationRepository.swift 00f9422f0cbc1ecbe86a7aad907911000b0af4c3930942053e0a8eaecfd11116
+ReserveBillingDocumentUseCase.swift ad757cccab7c127c4e7bb818e6b7bc2b524969e4184808e22477dca6987a9098
+ReserveBillingDocumentUseCaseTests.swift 4e6b8654c71f6c095880d1b2adcb62a1477d710bbf486ec2533bb89461c8c899
+```
+
+### Autorización de entrega 13.2
+
+03/10/2026: el propietario solicita «commit, push y entrega». Autoriza el mismo recorrido completo establecido
+para 13.1: commit del alcance exacto, push, PR/revisión/merge, reconciliación PLU-97 Done y limpieza de rama
+tras comprobar ancestry. No autoriza 13.3, cierre de fase 13 ni live.
+Se reutilizan 2427/2427 ejecuciones, 1516 declaraciones, 34/34 casos nuevos y ambos builds/PRE/POST/estilo PASS:
+los tres Swift 13.2 y cinco Swift 13.1 mantienen los hashes exactos probados/auditados.
+Solo se añade documentación/changelog de entrega: Xcode adicional N/A por paridad literal.
+Revisión focal previa a entrega PASS sin hallazgos P0–P3: 912 archivos, huella inicial/final/root
+`50774cfbf5bc5a0ce4d2117fd88702896d1d8c5ac076d01e7ca7705429d87631`.
+Confirmó ocho Swift exactos y audit de estilo de los tres nuevos: cero candidatos, pase manual PASS.
+Resultado Git definitivo pendiente. El propietario reconectó Linear tras la reautenticación requerida;
+PLU-97 In Progress / Jesus Franco, sin comentarios concurrentes ni parent/milestone13 y proyecto In Progress.
+No se declara Done hasta comprobar entrega y estado. La intermitencia observada en Stock sigue sin corrección.
+
 ## 13.1 / PLU-96 — Entregada; Done
 
 03/10/2026: autorización «Abre issue y rama e implementa la subfase13.1».

@@ -4,14 +4,16 @@
 
 ## Estado actual
 
-- **13.1 / [PLU-96](https://linear.app/plusprojects/issue/PLU-96): Done**.
-  [PR50](https://github.com/JFrancoG/FranAlonso/pull/50),2393tests/builds/PRE/POST PASS. [Evidencia](progress/phase-13.md).
+- **13.2 / [PLU-97](https://linear.app/plusprojects/issue/PLU-97): In Progress**.
+  Implementada:34 nuevos/2427 global PASS, builds/PRE/POST. Entrega pendiente. [Evidencia](progress/phase-13.md).
+  Intermitencia histórica Stock registrada; causa sin corregir.
+- **13.1/PLU-96 Done**, [PR50](https://github.com/JFrancoG/FranAlonso/pull/50).
 - **12.1–12.8 Done**, [PR49](https://github.com/JFrancoG/FranAlonso/pull/49);
   fase12 abierta/deuda89–91. [Evidencia](progress/phase-12.md).
 
-- **11.9 / [PLU-83](https://linear.app/plusprojects/issue/PLU-83): Done funcional**, Jesus Franco.
-  [PR41](https://github.com/JFrancoG/FranAlonso/pull/41)/`ab70985`; rama eliminada. Histórico/detalle terminal:
-  2180ejecuciones/builds/smoke/auditorías PASS. [Evidencia](progress/phase-11.md). FasePLU-71 abierta, sin live.
+- **11.9 / [PLU-83](https://linear.app/plusprojects/issue/PLU-83): Done funcional**,
+  [PR41](https://github.com/JFrancoG/FranAlonso/pull/41)/`ab70985`; [evidencia](progress/phase-11.md).
+  FasePLU-71 abierta, sin live.
 - **11.1–11.8: Done funcional**, PLU-72–76/78/80/82, PR33–40 y ramas eliminadas.
 - **Deuda accesible11**: [PLU-77](https://linear.app/plusprojects/issue/PLU-77)/79/81/84 Backlog/Jesus;
   tras feedback/estabilización por flujo y antes del primer candidato real. [Matrices](progress/phase-11.md).
@@ -25,7 +27,7 @@
 - **es/en y Xcode**:577 textos; iOS27. Evidencia por subfase.
   [Evidencia](progress/localization-en-es.md).
 - **[PLU-69](https://linear.app/plusprojects/issue/PLU-69): Done**, [PR31](https://github.com/JFrancoG/FranAlonso/pull/31).
-  App ordenada, Firebase 12.19.2; 1.564 resultados/builds PASS. [Registro](progress/app-organization.md).
+  [Registro y validación](progress/app-organization.md).
 - **Fase10 / [PLU-59](https://linear.app/plusprojects/issue/PLU-59): In Progress**.
   10.1–10.7 entregadas funcionalmente; PLU-68 Done, [PR30](https://github.com/JFrancoG/FranAlonso/pull/30).
   [Entrega y evidencia](progress/phase-10.md). Cierre integral pendiente: PLU-65/67 Backlog.

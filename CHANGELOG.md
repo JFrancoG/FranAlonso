@@ -6,6 +6,11 @@ All notable changes to this project are documented in this file.
 
 ### Added
 
+- 2026-10-03 | ✨ feat(billing): add idempotent document reservation
+  Adds a provider-independent atomic reservation contract and one-attempt use case for immutable paid requests.
+  Preserves full correlation, neutral failures and cancellation with explicit recovery after a lost response.
+  Leaves real remote atomicity and persistence to the next billing subphases.
+
 - 2026-10-03 | ✨ feat(billing): model paid requests and local states
   Separates immutable paid-sale requests, confirmed numbered records and recoverable pending/failed states.
   Preserves request identity and snapshots across retries and replay; rejects conflicting allocations without comparing clocks.
