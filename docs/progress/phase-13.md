@@ -1,5 +1,100 @@
 # Fase13 — Facturación, PDF, correo y numeración
 
+## 13.4 — Entrega autorizada en curso
+
+03/10/2026: «commit, push y entrega» autoriza el circuito establecido de commit/push,
+PR/revisión/merge, Done y limpieza verificada. PLU-99 sigue In Progress hasta merge confirmado.
+Se conserva exactamente el manifest de cinco Swift y toda configuración/código histórico; se reutilizan
+2523/2523 ejecuciones, builds Develop/Production y PRE/POST/estilo independientes de la sección siguiente.
+Solo metadatos de entrega y CHANGELOG adicionales; no cambia ningún resultado de validación.
+Fase13/proyecto y deuda accesible previa siguen abiertos;13.5 y live requieren gates separados.
+Las autorizaciones iniciales limitadas conservadas debajo describen el snapshot de implementación previo.
+
+## 13.4 / PLU-99 — Implementación local; In Progress
+
+03/10/2026: «abre issue y rama e implementa13.4».
+[PLU-99](https://linear.app/plusprojects/issue/PLU-99), Jesus Franco, In Progress;
+rama `codex/plu-99-billing-document-state` desde main/origin/main limpio `8256d3b`.
+[Propuesta exacta y fuentes](13-4-billing-presentation-proposal.md), spec13/ADR0008/0011.
+PRE independiente PASS sin hallazgosP0–P3 antes de código:920archivos,
+huella inicial/final/root `ed7bc5e954faef3b46254793de2fef5c934b22f081db719ba7c3541852a32ee5`.
+No nuevo ADR/dependencias/configuración; Swift histórico Billing13.1–13.3 y Sales/App intactos.
+
+### Implementación13.4
+
+Dos Swift nuevos en Presentation: BillingDocumentStore y BillingViewModel @Observable @MainActor,
+genéricos por el Repository aprobado. VM instancia Store privado; todos sus estados/proyecciones leen
+Store mediante getters, sin copia/lastError mutable, Task interna ni efectos en init.
+Única máquina selection/allocation(BillingDocumentLocalState)/reserving(request)/closed(snapshot retenido).
+Una sesión sella request validada sin generar ID/fecha ni I/O; misma request no-op, otra/busy/closed rechazan.
+Reserve usa UseCase13.2 y un intento explícito; numbered devuelve el mismo documento sin otro contacto.
+Errores neutrales conservan request; invalidResponse se presenta unavailable, sin payloads/logs.
+Cancelación previa/al volver del await deja pendingNumber aun desde failed. CancelReservation cerca
+publicación; no cancela task del caller ni promete rollback remoto. Tokens privados impiden que éxito,
+catch o defer antiguos contaminen un reintento activo. Close terminal retiene request/documento y no cierra venta.
+
+Tres Swift Testing nuevos:16declaraciones/30casos. Seam Repository real con planes consumidos antes
+de suspender y gates compartidos, sin sleeps/red. Incluye pipeline real Store→UseCase→Repository13.3→
+ledger transaccional histórico para respuesta perdida, cancelación postcommit y replay con un solo commit.
+Doble gate completa éxito/error antiguos mientras el nuevo sigue bloqueado, sin cancelar la task antigua
+(para comprobar fencing Store); Observation confirmation demuestra tracking real de getters VM.
+También familias, request sellada, errores privados/respuesta ajena, no auto retry, busy, precontact cancel
+desde pending/failed, numbered monotónico, close selection/pending/failed/numbered y delegación fachada.
+Fixtures sintéticas; el fake no acredita backend/Rules ni reinicio durable13.10.
+
+### TDD y validación13.4
+
+RED compilable11/11 FAIL por stub noRequest y falta de invalidación Observation:
+`RunSomeTests/481D6E82-61C5-45FD-B322-FEB4EB94006D.txt`; build-for-testing27.002s PASS.
+GREEN focal25/25 PASS, selección parametrizada parcial de16declaraciones:
+`RunSomeTests/3C5E7C2D-1D56-4A0D-92C9-367EB6600CD0.txt`.
+Primer global2523/2523 PASS12:29:08 antes de dos cambios puramente de layout.
+
+Estilo independiente:5Swift/693líneas, recall1candidato,2P3 en tests corregidos:
+ledger init horizontal117columnas y atributoTest95columnas. Freeze925
+`26504356a949ef52fd6344a98c3fe384e6899356b8ab2c43e57a6dcfbca573de` antes/después/root.
+Reauditoría focal PASS sin hallazgos; resto del Audit vigente, recall0candidatos;925archivos,
+huella inicial/final/root `6d639a7896a7f71c5d563a16e7c12a11f76e021839f70c19b90f38dcb1d16eb1`.
+
+Build-for-testing Develop definitivo12:31:37 /13.086s PASS,
+`BuildProject-Log-20261003-123137.txt`; Production12:32:52 /33.143s PASS,
+`BuildProject-Log-20261003-123252.txt`. Logs completos: dos avisos AppIntents conocidos por build,
+cero diagnósticos estructurados Swift/Clang; incrementales, sin claim clean-build/cero warnings globales.
+Xcode MCP27.0 estable Service, workspace-PfnUYLlMzY; target27/Swift6 strict complete/default nonisolated,
+SDK27.0/Simulator27.2 iPadPro13(M5). Develop/plan/destino inicial restaurados, sin archivos temporales de esquema.
+
+Global12:31:45:2522/2523 PASS, fallo histórico StockSyncDurabilityTests línea118,
+weak ModelContainer todavía vivo; no se tocó Stock ni se atribuye corrección/causa.
+Retest focal1/1 PASS, `RunSomeTests/29B5435C-7753-4EDD-B581-556A9DADC8CE.txt`.
+Global definitivo12:33:45: **2523/2523ejecuciones PASS**, **1550declaraciones**,
+cero failed/skipped/expected/notRun. Summary `RunAllTests/F22EED90-EA36-4C74-AF0C-613762AB27E8.txt`.
+Bundle ActionArtifacts íntegro `Test-FranAlonso-Develop-2026.10.03_12-33-45-+0200.xcresult`;
+xcresulttool confirma2523ejecuciones/1550declaraciones,16declaraciones nuevas/30casos completos y
+runtimeWarnings vacío. Export `/tmp/franalonso-13-4-final-summary.json` y `...-tests.json`.
+
+### Auditoría y límites13.4
+
+POST independiente de estándares PASS sin hallazgosP0–P3:8archivos (5Swift/3docs),pipeline
+Domain/Data,contratos,token/catch/defer,oráculos,fuentes Apple,evidencia nativa completa y límites.
+925archivos,huella inicial/final/revisor/root idéntica
+`5272c60c1a76797928d3c782bf93eb0feefcd1ddd97308933312b42e9304a4a3`.
+Solo se registra este resultado después del audit; fuentes/config mantienen el manifest validado.
+Implementación local lista; PLU-99 In Progress hasta una entrega Git autorizada.
+Diffcheck PASS; validador de gobernanza solo conserva seis enlaces históricos08.3 a Desktop
+(exit1), sin nuevos problemas; no se declara PASS global de gobernanza. Progress conserva el límite≤8192bytes.
+UI/previews/accesibilidad N/A: no Views/pantalla/texto/navegación visible tocados. Deuda previa y
+responsable/recuperación antes de uso real permanecen intactos; no se acredita matriz accesible nueva.
+No composición App, formulario/modelo fiscal13.5, plantillas/firma, PDF/Storage/correo, SwiftData13.10,
+cierre13.12, Rules/deploy/bootstrap ni live. Nada se cierra de fase/proyecto; entrega Git/Done no autorizada.
+
+### Manifest13.4 — Fuente definitiva validada
+
+- `BillingDocumentStore.swift`: `7ec497a8aa9ba633f2f9774ba7a294b3de37c59353abbd411112d8f515334bb5`.
+- `BillingViewModel.swift`: `e705b3174e469e93aa96fe7045ce0114ceda7f9cfec12dc06acb85f25bfd07ca`.
+- `BillingDocumentStoreTests.swift`: `e40846723e9a253953265a6128dc8f31449b36966ecd6aa7caf72a7ad6def19b`.
+- `BillingViewModelTests.swift`: `d6117a74e7b5ecc8709c574f2180e867238da967fa33227e536c583291c5f54b`.
+- `BillingPresentationFixtures.swift`: `8213bd2cf6b792bf5e1cb38a1e920ec493c135f55b5b83cf010e6d9a2c52c2ff`.
+
 ## 13.3 / PLU-98 — Entregada; Done
 
 03/10/2026: «abre issue y rama e implementa 13.3». [PLU-98](https://linear.app/plusprojects/issue/PLU-98)
