@@ -1,5 +1,129 @@
 # Fase13 — Facturación, PDF, correo y numeración
 
+## 13.7 / PLU-103 — Entrega autorizada en preparación
+
+03/10/2026: «commit, push y entrega» autoriza el circuito establecido de commit/push/PR/revisión/merge,
+cierre dePLU-103 y eliminación segura de rama integrada. Fase13/proyecto permanecen abiertos;
+sin live ni inicio13.8. Issue In Progress antes de publicar; main/origin/main siguen7db053d,0divergencia.
+Sin PR13.7 existente. GitHub permite merge commit; main sin protección/rulesets/workflows configurados.
+Eso no acredita CI. Preservar aceptación y deuda previa antes del merge que puede automatizar el cierre.
+
+Los11Swift mantienen hashes finales y manifest probado
+`db5aaa41ad192c27b46826256f587a515cf820ef0664773c8205313d0276b38a`.
+Se reutilizan51casos nuevos completos/12grupos,238afectados y2685globales PASS, RED51/51,
+buildsDevelop/Production y revisionesPRE/POST/PDF/estilo independientes. No cambios ejecutables,
+configuración ni recursos después; Xcode nuevo N/A para metadatos de entrega.
+0diagnósticosSwift/Clang,2/1avisosAppIntents conocidos;607textos/0errores y6linksDesktop08.3 históricos.
+Stock118 histórico no corregido; PASS global único no acredita estabilidad. Cancelación durante render
+solo revisada estáticamente. PDF-UA/fiscalidad/protección física/AT no acreditados; UI N/A sin alcanceSwiftUI.
+13.8 conserva mapping comercial/fiscal/partición/revisión visual real; PLU-101/deuda previa permanecen
+Backlog/Jesus/feedback/estabilización antes de uso real. Sin nuevos aplazamientos ni transferencia de privacidad.
+Revisión independiente focal `billing_13_7_delivery` **PASS**, sin hallazgosP0–P3;
+997archivos inicial/final/revisor/root idénticos
+`2e009323a57dcba7180902054a5b6aa88afe1a6ba5de1f76ea34765648c1b62e`.
+Tras freeze solo se registra el dictamen;11Swift/configuración/recursos conservan identidad probada.
+Revisión remota del diff/head exactos pendiente antes de integrar.
+
+## 13.7 — Historial de implementación local
+
+03/10/2026: «abre issue y rama e implementa13.7» autoriza apertura e implementación local.
+[PLU-103](https://linear.app/plusprojects/issue/PLU-103) In Progress, Jesus Franco, relacionado conPLU-102;
+rama `codex/plu-103-billing-pdf-renderer` desde main/origin/main `7db053d` limpio.
+[Propuesta exacta](13-7-billing-pdf-renderer-proposal.md): motor de páginas/campos íntegros con encabezados
+confirmados, template A4 y firma opcional, actor fuera de MainActor. Determinismo semántico, no bytes Quartz.
+13.8 conserva composición financiera/fiscal/partición y revisión visual real. PRE independiente PASS sin hallazgosP0–P3;987archivos,
+huella root/revisor inicial/final idéntica `adb894bc623af15d0e27ecbe74f8d076881f2e1274de1b77657e4d3331cf76af`.
+
+### Implementación y TDD
+
+Domain: portSendable async, plan efímero validado, geometríaA4/campos/páginas/firma opcional; sin importsUI/Data.
+Número definitivo y fechaUTC del documento confirmado en todas las páginas; plan explícito íntegro y
+ordenado, texto Unicode seleccionable/extractable. Actor Data con CoreGraphics/CoreText/ImageIO locales,
+sin reloj/FS/red/auth/caché; checks de cancelación y cierre del contexto antes de publicar Data.
+Rango UTF16 visible completo y bounds reales de glifos obligatorios; overflow/layout/recursos inválidos
+fallan sin bytes parciales, recorte ni reducción implícita. Firma aspect-fit solo en última página.
+Shared validator extrae13.6 sin alterar reglas; factoryApp concreta inactiva.11Swift, sin UI/assets/configuración.
+Límites:1...100páginas,1...200campos/página,20.000UTF16/campo,200.000total, font6...24pt,
+fecha0001...9999; template≤1MiB y firma≤2MiB/4.194.304px conservan políticas13.6.
+
+RED compilable20:36:49 **0/51PASS**,22declaraciones, comportamiento ausente y guards aún sin implementar;
+summary `RunSomeTests/F39197A2-E175-4F0E-AA4A-B3DEE98EEA08.txt`.
+Dos builds anteriores detectaron try faltante en macros de fixtures, corregido sin expectativas; no son RED.
+Primer GREEN20:38:55 **33/35PASS**, selección parcial de argumentos: fecha0001 desplazada dos días y
+oráculo raster magenta fallido. Diagnóstico Swift Testing20:44:30 conserva ambos fallos y demuestra
+que FormatStyle/ISO8601/Calendar actuales dan0001-01-03; RGB calibrado da[255,64,255] y también falla
+un rectángulo dibujado por el oráculo independiente. Fixture/oráculo fijan DeviceRGB explícito, sin
+cambiar umbral/presencia/proporciones; focal firma1/1PASS (`52AB6844-B103-4D9C-9DDA-7A15496E1E3C.txt`).
+RunCodeSnippet20:41:46 fue inconcluso: preview dyld no cargó libSystem.B.dylib; no fue fallo del producto.
+
+PRE focal fecha `billing_13_7_pre` PASS antes del cambio;997archivos inicial/final/root idénticos
+`af57e491442f5732a5dd170c6dad70b9b96e20e0b5114579b2a2368063440868`.
+DateFormatter vigente local al actor, en_US_POSIX/GMT/yyyy-MM-dd y corte gregoriano0001 explícito;
+FormatStyle no expone corte equivalente. Razón/API documentadas, sin opt-out/ADR/dependencia nueva.
+GREEN fecha+firma5/5PASS, `RunSomeTests/4CC20E3B-2E3C-4713-A561-37467C4451C3.txt`.
+
+### Validación completa
+
+**RunAllTests20:51:45:2685/2685PASS**,1635declaraciones,0failed/skipped/expected/notRun;
+summary `RunAllTests/791655B7-6F06-4BB1-9EC5-FA11430AFB0C.txt` en
+`/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/`.
+Bundle nativo válido: `/Users/jesusf/Library/Developer/Xcode/DerivedData/FranAlonso-eehpkvodmpnqlchgeqriatcucsjf/Logs/Test/Test-FranAlonso-Develop-2026.10.03_20-51-45-+0200.xcresult`.
+xcresulttool confirma **22declaraciones/51casos nuevos completos PASS**,12grupos parametrizados
+de2/2/4/2/4/2/2/5/5/4/2/7 argumentos completos; no se infiere cobertura total de focal parcial.
+Billing+AuthenticationRoot+ClientSignedDocument **138declaraciones/238casos completos PASS**;
+templates13.6 **13declaraciones/20casos PASS**. Incluye100páginas, contenido Unicode ordenado,
+metadata/encabezados/repetición semántica entre actores, límites/overlap/overflow, ausencia/firma final
+y proporciones, fallo recuperable/cancelación sin sleeps y callerMainActor usando el port real.
+
+Tras global solo wrapping horizontal de una llamada CTFontCreateWithName, sin cambio semántico;
+fuente final build-for-testingDevelop20:53:02 **12.81sPASS** y Production20:54:11 **28.243sPASS**.
+Logs `BuildProject-Log-20261003-205302.txt` / `BuildProject-Log-20261003-205411.txt`, carpeta
+ActionArtifacts/default/BuildProject anterior:0errores/diagnósticosSwift/Clang; únicamente2/1avisos
+AppIntents metadata conocidos. Builds incrementales, sin afirmar clean-build ni cero warnings globales.
+Focal finalUnicode/firma/callerMainActor **3/3PASS**, summary
+`RunSomeTests/FFC270E5-7EB0-44CE-90C7-BDD54357F198.txt`.
+Develop/planDevelop/iPadPro13(M5) inicial restaurados; SDK27.0/Simulator27.2.
+Una única ejecución global13.7; Stock118 pasa aquí, fuente intacta SHA256
+`98fc8bac80f10492150b8120d7391d627ac53bb9902e915d66437246ef1f4590`.
+El fallo histórico13.6 sigue registrado; este PASS no acredita corrección ni estabilidad de su lifetime.
+
+Localización607es/en/0errores; governance exit1 solo6links Desktop08.3 históricos; diff--checkPASS.
+Ticket/invoice bundle conservan SHA256 `4d4efabdb58501a19274b40794ed3a8fb935112017ba67d1496b3df7d612ad14`
+y `7180f83a5ecdfc1e0126e40f8ac5182e5961405a3f02025360a9e8fd12073b80`.
+Sin firmas/PII/payload real, plist privado ni material sensible nuevo en Git/logs.
+
+### Auditoría y gates
+
+POST independiente `billing_13_7_post`: sin hallazgosP0–P2; P3 de tres llamadas nuevas con cuatro
+argumentos horizontales en motor/Rectangle/TextField. Scanner0candidatos no detecta esta categoría;
+revisión manual de11Swift lo identificó. Solo wrapping vertical corregido, sin argumento/behavior cambiado.
+Originales de esos tres archivos reconstruyen sus SHA256 auditados; los8Swift restantes byte-idénticos.
+Manifest auditado11Swift `7d00892829c4fc73c8d67a12eb134dac4d739e0b808569422e53f7c82f4f6543`.
+Nueva compilación final Develop-for-testing21:07:56 **12.703sPASS** y Production21:08:17 **19.806sPASS**;
+logs completos `BuildProject-Log-20261003-210756.txt`/`BuildProject-Log-20261003-210817.txt`,0errores/
+diagnósticosSwift/Clang y2/1avisosAppIntents conocidos. Develop/plan/destino inicial restaurados.
+Matriz completa20:51:45 reutilizada por identidad semántica; tests/expectativas permanecen byte-idénticos.
+Diagnósticos Xcode de11Swift success=true/0issues; estilo11Swift/0candidatos, sin líneas>120.
+Reauditoría focal independiente `billing_13_7_post` **PASS**, sin hallazgosP0–P3 restantes;
+solo ámbito de ese hallazgo, sin repetir auditoría funcional/AT.997archivos inicial/final/root idénticos
+`390fba825ac9833a5c95c5569aa0d2af7c4890bf9c97997b0c79175e2957236c`.
+Manifest final11Swift `db5aaa41ad192c27b46826256f587a515cf820ef0664773c8205313d0276b38a`.
+Tras freeze solo se registran dictámenes y paridad Linear; fuentes/configuración/recursos intactos.
+
+Revisor independiente `billing_13_7_post_accessibility`: PASS PDF focal, sin hallazgosP0–P3;
+puertaUI **N/A: sin alcanceSwiftUI**, no previews/Inspector/runtimeAT manual ejecutados.
+Ambos revisores/root comprobaron997archivos inicial/final idénticos
+`485a1197a231384692c4e2cf21fcd20dd38059133d2dc35c90cda4ea9e86f611`.
+Cancelación previa probada; cancelación durante el render revisada estáticamente, sin afirmar prueba runtime.
+UI/previews/AT nuevos N/A para este motor sin pantallas; no se afirma taggedPDF/PDF-UA/fiscalidad.
+13.8 debe mapear snapshots, particionar ventas completas y revisar visualmente templates reales.
+Protección física privada13.6 sigue limitada/pendiente; deudaPLU-101 Backlog/Jesus tras feedback y
+estabilización antes del primer candidato real. No aplazamientos nuevos ni transferencia de privacidad.
+Paridad Linear verificada tras actualización19:12:04/05UTC: PLU-103/proyecto In Progress,
+descripciones con implementación/validación/dictámenes/límites; rama exacta preservada, deuda previa vinculada.
+Sin parent/milestone13. HEAD permanece7db053d y staging vacío; implementación local lista para entrega.
+Sin commit/push/PR/merge/Done/live/13.8 autorizados.
+
 ## 13.6 / PLU-102 — Entregada funcionalmente; Done
 
 03/10/2026: «commit, push y entrega» autoriza el circuito establecido completo.

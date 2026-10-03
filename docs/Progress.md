@@ -4,9 +4,11 @@
 
 ## Estado actual
 
-- **13.1–13.6 Done funcional**, [PR55](https://github.com/JFrancoG/FranAlonso/pull/55), PLU-102.
-  52nuevos/181afectados/builds/auditorías PASS; global2633/2634(Stock). [Evidencia](progress/phase-13.md).
-  Fase13 abierta; PLU-101 Backlog/Jesus, integral tras feedback/estabilización y antes de uso real.
+- **13.7 / [PLU-103](https://linear.app/plusprojects/issue/PLU-103): In Progress**.
+  Motor PDF implementado;51nuevos/238afectados/global2685, builds y POST PASS.
+  Entrega autorizada; sin live. [Evidencia](progress/phase-13.md).
+- **13.1–13.6 Done funcional**, PR55/PLU-102; límites físicos/Stock118 en evidencia.
+  PLU-101 Backlog/Jesus antes de uso real.
 - **12.1–12.8 Done**, [PR49](https://github.com/JFrancoG/FranAlonso/pull/49);
   fase12 abierta/deuda89–91. [Evidencia](progress/phase-12.md).
 
@@ -71,7 +73,7 @@
 - **08.6 / PLU-40: Done**, [PR#13](https://github.com/JFrancoG/FranAlonso/pull/13), merge `7ac0fb5`;
   persistencia recuperable, migración1→2 y Storage neutral/fake.1.020 resultados PASS, build6,993s, PRE/POST favorables.
 - **08.5 / PLU-39: Done**, [PR#12](https://github.com/JFrancoG/FranAlonso/pull/12), merge `943cd84`;
-  catálogo versionado, snapshot/firma inmutable y PDF de texto real. TDD, regresión43/43, catálogo8/8 y build12,132s.
+  catálogo/snapshot/firma inmutables y PDF textual; regresión43/43, catálogo8/8, build12,132s.
 - **08.4 / [PLU-38](https://linear.app/plusprojects/issue/PLU-38): In Progress**, integrada mediante
   [PR#11](https://github.com/JFrancoG/FranAlonso/pull/11), merge `c4d7b00`; DoD propia pendiente.
   Captura inmutable Codable, ViewModel, lienzo/edición y excepción de trayectoria ADR0027. Acceso temporal retirado.
@@ -89,7 +91,7 @@
 
 [Índice](specs/00_index.md), specs y ADR rigen. [Fase08](progress/phase-08.md): información firmada y
 autorización fotográfica separadas; revisión jurídica pendiente antes de uso real. Sin live/foto08.9/cierre08.4.
-Vault=repo; gobernanza:6enlaces históricos rotos08.3.
+Vault=repo;6links históricos rotos08.3.
 
 ## Entregas anteriores
 

@@ -1,5 +1,4 @@
 import Foundation
-import PDFKit
 
 /// Loads immutable billing template bytes from an explicitly selected resource bundle.
 ///
@@ -9,7 +8,6 @@ import PDFKit
 /// Reads are bounded to one MiB and keep PDFKit state within this actor's operation.
 actor BundleBillingDocumentTemplateRepository: BillingDocumentTemplateRepository {
     private let bundle: Bundle
-    private static let maximumByteCount = 1_048_576
 
     init(bundle: Bundle) {
         self.bundle = bundle
@@ -32,38 +30,15 @@ actor BundleBillingDocumentTemplateRepository: BillingDocumentTemplateRepository
 
         let data: Data
         do {
-            data = try BillingAssetFileReader.read(url, maximumByteCount: Self.maximumByteCount)
+            data = try BillingAssetFileReader.read(url, maximumByteCount: BillingPDFTemplateValidator.maximumByteCount)
         } catch {
             try Task.checkCancellation()
             throw BillingAssetError.templateUnavailable
         }
         try Task.checkCancellation()
-        guard !data.isEmpty, data.count <= Self.maximumByteCount else { throw BillingAssetError.invalidTemplate }
-        guard data.starts(with: "%PDF-".utf8), hasCompleteTerminator(data) else {
-            throw BillingAssetError.invalidTemplate
-        }
-        guard let document = PDFDocument(data: data), !document.isEncrypted, !document.isLocked,
-              document.pageCount == 1, let page = document.page(at: 0), page.rotation == 0
-        else { throw BillingAssetError.invalidTemplate }
-
-        let bounds = page.bounds(for: .mediaBox)
-        guard bounds.origin.x.isFinite, bounds.origin.y.isFinite, bounds.width.isFinite, bounds.height.isFinite,
-              bounds.origin == .zero, abs(bounds.width - 595.2756) <= 0.5, abs(bounds.height - 841.8898) <= 0.5
-        else { throw BillingAssetError.invalidTemplate }
+        try BillingPDFTemplateValidator.validate(data)
 
         try Task.checkCancellation()
         return data
-    }
-}
-
-private extension BundleBillingDocumentTemplateRepository {
-    func hasCompleteTerminator(_ data: Data) -> Bool {
-        var end = data.endIndex
-        while end > data.startIndex {
-            let previous = data.index(before: end)
-            guard [0, 9, 10, 12, 13, 32].contains(data[previous]) else { break }
-            end = previous
-        }
-        return data[..<end].suffix(5).elementsEqual("%%EOF".utf8)
     }
 }
