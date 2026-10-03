@@ -1,5 +1,160 @@
 # Fase13 — Facturación, PDF, correo y numeración
 
+## 13.6 / PLU-102 — Preparación de entrega autorizada
+
+03/10/2026: «commit, push y entrega» autoriza el circuito establecido de commit/push/PR/revisión/merge,
+cierre funcional en Linear y eliminación segura de rama. Fase13/proyecto y deuda previa permanecen abiertos;
+13.7 y live conservan autorización separada. PLU-102 In Progress hasta verificar integración y cierre.
+Se reutilizan por identidad exacta14Swift y configuración los52casos nuevos completos/35declaraciones,
+181casos afectados y builds Develop/Production, PRE/POST/estilo PASS descritos debajo. El único cambio posterior
+es documentación de entrega/CHANGELOG; Xcode nuevo N/A por ausencia de código/configuración adicional.
+Global final2633/2634 conserva fallo histórico Stock118, fuente intacta; no se declara regresión global verde.
+2/1avisos AppIntents y6links Desktop08.3 previos conservan sus límites. Firma opcional ausente funciona sin
+lectura privada y default productivo deniega nil/none; protección física sigue limitada/pendiente antes de uso real.
+UI/previews/accesibilidad nueva N/A; PLU-101/deuda previa conservan dueño/feedback/estabilización y puerta real.
+Entrega funcional de alcance13.6, sin afirmar seguridad integral/fiscalidad/uso real ni introducir aplazamientos nuevos.
+Revisión final focal de documentación y gates de entrega independiente PASS, sin hallazgosP0–P3;
+986archivos inicial/final/revisor/root idénticos
+`38af5bd2d217f266704bb3a1c96f9d26e82f7170abc391f1047540b83c524e3b`.
+Tras freeze solo se registra dictamen;14Swift/configuración/recursos conservan identidad probada.
+Revisión remota del head exacto pendiente antes de integrar.
+
+## 13.6 — Historial de implementación local
+
+03/10/2026: «abre issue y rama e implementa13.6».
+[PLU-102](https://linear.app/plusprojects/issue/PLU-102) In Progress/Jesus Franco;
+`codex/plu-102-billing-template-assets` desde main/origin/main limpio `d867fb1`.
+[Propuesta y fuentes](13-6-billing-template-assets-proposal.md). Perfil maintenance, iOS27/Swift6
+complete/nonisolated, capas actuales; sin configuración/dependencia/unsafe/live nuevos.
+
+### Autoridad y PRE
+
+PRE independiente `billing_13_6_pre` PASS sin hallazgosP0–P3 antes del código;974archivos,
+huella inicial/final/root `4646a427e010f6842f38eb7418349d3b7f5ba1fe782ee01ac204250de64071b9`.
+Verificador por limitación de Simulator revisado antes del código: PRE focal PASS,985archivos
+inicial/final/root `32ea0aa7b3bf170da049cf85f9dc01cc4cd886897deff8b8c88fbf6bcdadb4ef`.
+Corrección de recuperación revisada antes del código por `billing_13_6_post`: PRE focal PASS,985archivos
+inicial/final/root `e1a4210bd97fa60c37deebcce15dec28b966b525336a76bed5bc216364cd2de7`.
+Fuentes Apple completas PDFKit/ImageIO/protección/backup/reemplazo y URLResourceValues.fileProtection;
+web JS/Markdown no siempre extraíble, disponibilidad confirmada compilando SDK27.0.
+SE-0306 fundamenta reentrancia y commit síncrono aislado.
+
+### Implementación
+
+Domain: contratos de plantilla y firma opcional, capacidad de principal con validación async y fallos neutrales.
+Data: actor bundle y adaptador privado inmutable; coordinador actor compartido posee todo su filesystem.
+FileHandle acotado, PDFKit e ImageIO locales sin cruzar actores. PDF≤1MiB, cabecera/EOF, no cifrado/locked,
+una página A4 portrait sin rotación, origen0/tolerancia0.5pt; bytes conservados. Imagen PNG/JPEG≤2MiB,
+una imagen, ejes≤4096/área≤4194304, estado completo y decode efectivo.
+Ausencia devuelve nil tras reautorizar, sin crear directorio; formato/lectura/metadatos fallidos son recuperables.
+Caché por SHA256 del principal, fuera de bundle, rechazo de symlinks, .complete y exclusión de backup.
+Importación valida antes de mutar, candidato protegido, reautoriza antes del commit síncrono entre instancias.
+Copia privada `.previous-signature` de bytes anteriores vigentes DESPUÉS de la última await; reemplazo,
+metadata nueva/verificación final y eliminación de copia solo tras aceptación. Error intenta restaurar;
+si no puede verificar restauración, copia protegida sigue autoritativa para carga y recuperación al importar.
+No usa ubicaciones de NSError ni permite que archivo desplazado se convierta en ausencia. Cancelación/
+revocación previas conservan la versión anterior. Restauración conserva bytes acotados del recurso previo,
+incluso corrupto; toda carga valida imagen y una importación válida permite reparar corrupción existente.
+Root captura identidad/revisiones vigentes y cerca authorizer durable antes/después; logout, otro principal,
+retry y mismo UID reautorizado revocan capacidad antigua. App compone adapters inactivos, sin consumidor UI.
+
+Simulator informa nil tanto protectionKey como URLResourceValues.fileProtection pese a solicitar .complete;
+logs diagnósticos18:22:29/18:23:34 muestran backup=true y rechazo correcto signatureUnavailable.
+Solo fixtures inyectan verificador de protección y fallo síncrono de reemplazo para recuperación; formatos,
+filesystem/backup/auth/symlinks siguen reales. App usa defaults: .complete obligatorio, nil/none denegados,
+FileManager real. Test del default falla cerrado; no bypass de Simulator en producción.
+Los dobles no acreditan clase/bloqueo/copia física: protección en dispositivo queda limitada/pendiente.
+No firma real ni payload privado en repo/logs.
+
+### TDD y validación exacta
+
+Primer build detectó acceso de enum fixture privado, corregido sin expectativas. RED compilable18:18:26:
+35ejecuciones,4PASS/31FAIL por behavior ausente; templates20/17FAIL/3PASS. Summary
+`RunSomeTests/F355973B-A22F-4FC6-AEA8-72A24CAAF1D8.txt`. GREEN focal18:30:44:33/33,
+selección parcial de parámetros por Xcode: no acredita matriz completa.
+Global18:33:08:2630/2631, fixture0 Quartz generaba1página válida. Fixture a PDF /Count0:
+PDFKit rechaza árbol vacío; oráculo permite nil o0 para ese caso, exige2 exacto para multipágina;
+rejection invalidTemplate/producción intactos. Global18:37:17:2629/2631, oráculo0 inicial y Stock118.
+Global anterior a corrección:18:39:37 **2631/2631PASS**,32declaraciones/49casos nuevos completos;
+summary `RunAllTests/98F6C3F6-D372-4C10-BC49-3FF4398D4C15.txt`. Es histórico, no resultado final.
+
+POST inicial detectó P2 conservación tras replaceItemAt y P3 estilo sobre freeze985
+`75f0ba418c48c264928d4022494e80a6888eb3ba5bf98a5a3fd05ab2b4701ba1`.
+Corrección de P2 con PRE focal arriba: tres tests primero RED19:18:58 **0/3PASS**, luego GREEN19:23:28
+**3/3PASS**, sin cambiar expectativas. Summaries `RunSomeTests/985D0FB0-79D8-4452-9148-388981D67BD6.txt`
+y `RunSomeTests/C9DB79CE-33AD-440D-97BD-3601B951A986.txt`. Cubren original desplazado, rollback
+sin verificación, reapertura y éxito de segunda instancia mientras primera espera autorización.
+P3 corregidos solo en código nuevo/tocado: firmas/efectos multilinea, inicializadores de struct en extensión.
+
+**RunAllTests completo de comportamiento19:24:25:2633/2634PASS**,1613declaraciones, único fallo StockSyncDurabilityTests118
+(lifetime == nil),0skipped/expected/notRun. Summary `RunAllTests/27EE73B7-83D4-41D2-B7BA-BFBA993CAC0C.txt`.
+Bundle nativo `Test-FranAlonso-Develop-2026.10.03_19-24-25-+0200.xcresult` en
+`/Users/jesusf/Library/Developer/Xcode/DerivedData/FranAlonso-eehpkvodmpnqlchgeqriatcucsjf/Logs/Test/`.
+Ruta copiada devuelta por MCP en ActionArtifacts carece Info.plist; xcresulttool leyó bundle nativo válido.
+Confirma **35declaraciones nuevas/52casos completos PASS**: templates13/20, firma18/25, Root4/7;
+12grupos parametrizados completos. Billing+AuthenticationRoot **111declaraciones/181casos PASS**.
+Ausencia/corrupto/válido, límites/metadata/symlinks, aislamiento, reintento/reapertura, revocación tardía,
+cancelación prepublicación, root real suspendido y recuperación multinstancia; sin sleeps/XCTest/UI tests.
+Stock ya observado en13.5 y global18:37:17; fuente intacta SHA256
+`98fc8bac80f10492150b8120d7391d627ac53bb9902e915d66437246ef1f4590`. No corregido ni atribuido;
+no se repite la suite para sustituir el fallo por una ejecución verde. Regresión global no se declara PASS.
+
+Build-for-testing Develop19:25:06/4.168s PASS, `BuildProject-Log-20261003-192506.txt`;
+Production19:25:54/23.771s PASS, `BuildProject-Log-20261003-192554.txt`.
+Logs completos:0errores/diagnósticos Swift/Clang; únicamente2/1avisos AppIntents metadata conocidos.
+Builds incrementales; sin afirmar clean-build o cero warnings globales. Develop/planDevelop/iPadPro13(M5)
+inicial restaurados; Simulator27.2, SDK27.0. No protección física ni fiscalidad acreditadas.
+
+### Auditoría y límites
+
+14Swift tocados; script estilo señala2firmas nuevas con tipos función que deben seguir verticales y
+1waitUntil histórico intacto. POST funcional final `billing_13_6_post` PASS sin hallazgos funcionales nuevos;
+P2 corregido,986archivos inicial/final/root idénticos
+`cf75a736c49d6c6288558ad5a0aa8bd70196cea48c2ce802971c9cac873210c6`.
+Estilo en ese freeze encontró solo P3 wrapping híbrido de @Test; ajuste exacto a argumento por línea.
+Fuera del freeze solo ese formato y metadatos: reconstrucción del atributo previo coincide con su SHA256
+anterior; ningún argumento/expectativa/behavior cambió. Se reutiliza matriz completa19:24:25 por identidad
+semántica; manifest funcional14Swift digest `fbbfb391890f8c4ede20fea27b834d9f75f5ffd196d4d5ea91c84406165a302e`.
+Build-for-testing adicional19:37:27/29.529s PASS, log `BuildProject-Log-20261003-193727.txt` completo:
+0errores/diagnósticosSwift/Clang,2avisosAppIntents conocidos. Focal19:37:46 1/1PASS, summary
+`RunSomeTests/204E9A7A-AB3C-4050-9AD7-E63F7D8AEE1B.txt`: Xcode selecciona solo caso12bytes,
+no se afirma cobertura completa por ese focal. Todos los3argumentos constan completos en native19:24:25.
+Production ya probado y fuentes productivas byte-idénticas; no build repetido por formato solo de test.
+Reauditoría focal final de estilo `billing_13_5_post_standards` PASS, sin hallazgosP0–P3 pendientes;
+986archivos inicial/final/root idénticos
+`69b7ffe69e96b5e5bda8f708d3b474634051a2fb7bfe64f2155182edfea6ea49`.
+Atributo exacto verificado,13Swift restantes conservan identidad y revisión manual;14Swift sin líneas>120.
+Tras ambas auditorías solo se registra su dictamen en phase13/Progress y se reconcilia Linear;
+fuentes/configuración/recursos preservan hashes probados. Sin entrega Git ni cambio a Done.
+UI/previews/localización/accesibilidad nueva N/A: no Views/textos/recursos visuales cambiados;
+PDF/catálogo bytes intactos, App no conecta consumidores ni cambia rutas/estados del shell.
+PLU-101 y deuda previa conservan dueño y recuperación tras feedback/estabilización, antes de uso real.
+607textos es/en/0errores; gobernanza solo6enlaces Desktop históricos08.3; diffcheckPASS, Progress≤8192B.
+Sin renderer13.7, render13.8, nuevos números/Storage/correo/SwiftData13.10/cierre13.12, ni live.
+Entrega Git/Done no autorizada; issue/proyecto In Progress y fase13 abierta.
+
+### Manifest Swift probado
+
+14Swift, digest del manifest SHA256
+`3500f614414c4e1552a440f71de63f15dee56366cbf3e88e2e9114b268234468`:
+
+```text
+a924b738fa38a8070d6dc6a42ab4ec2d4be01bd6b49aa9c846c3ae1f99c7c83b  FranAlonso/App/Composition/Dependencies/AppDependencies+BillingAssets.swift
+a90d441941c7ff037d8d06759dec8c41cc35ff6513fd46729a3b3d4a2e021363  FranAlonso/App/Presentation/Authentication/AuthenticationRootViewModel.swift
+5cfc5bc46c4b0977aa49eabd7cefe799abc1bdb2d0521e05cfaade0c8558b018  FranAlonso/Features/Billing/Data/Repositories/BundleBillingDocumentTemplateRepository.swift
+6983e94dd31196734ba8b55d5a03e84e1ce981f5bd163fd3c469f0af5faeb358  FranAlonso/Features/Billing/Data/Repositories/ProtectedLocalBillingSignatureRepository.swift
+97e7b89d338259245a7ad72a3aabbfe31db0794552c4a0d8c844c919cac0f89e  FranAlonso/Features/Billing/Data/Support/BillingAssetFileReader.swift
+8f254a8d9d15f8c8f69834db757c934d683ec1fca2ae4768102187389d9140bc  FranAlonso/Features/Billing/Data/Support/BillingSignatureCacheCoordinator.swift
+d52d48ffb08ce4f4d109bd814d75db78fb95401dba99bb1caaea92c73fc94226  FranAlonso/Features/Billing/Data/Support/BillingSignatureImageValidator.swift
+e005a2148fe05c8a24b70b47c979190b7c67d4852abd780c18430370ace5e095  FranAlonso/Features/Billing/Domain/Repositories/BillingBusinessSignatureRepository.swift
+ee82134156310ab9880588a0d6778479f221939ee97c352cef31a8414d0c8865  FranAlonso/Features/Billing/Domain/Repositories/BillingDocumentTemplateRepository.swift
+70add571d3bd921a81fc047f7c5d4de7f1f618bb0290d440e9dd8ae6022db90b  FranAlonso/Features/Billing/Domain/Services/BillingAssetAccess.swift
+8cf80e3c61cadda0368628840cd68bb19e0e6f23189f24069389dbb683b1db0b  FranAlonso/Features/Billing/Domain/ValueObjects/BillingAssetError.swift
+fb91a6904eb179c4b9df21a754caa55a6107bc6e8a317a225860e2591948e2eb  FranAlonsoTests/AuthenticationRootViewModelTests.swift
+2ac0dab51fd45d032e4ad2f944f19e69b0a22442d151edf91999a695ce3da8c6  FranAlonsoTests/BillingBusinessSignatureRepositoryTests.swift
+1bfd7b6964c51a160560beff42d6c4ab148e9f095bc36d002be71d2a133d2edd  FranAlonsoTests/BillingDocumentTemplateRepositoryTests.swift
+```
+
 ## 13.5 / PLU-100 — Entregada funcionalmente; Done
 
 03/10/2026: «commit, push y entrega» autoriza el circuito establecido completo.

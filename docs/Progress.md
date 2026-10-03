@@ -4,10 +4,9 @@
 
 ## Estado actual
 
-- **13.1–13.5 Done funcional**, [PR54](https://github.com/JFrancoG/FranAlonso/pull/54).
-  PLU-100:59nuevos/155focales/builds PASS; global2581/2582(Stock). [Evidencia](progress/phase-13.md).
-  Fase13 abierta; [PLU-101](https://linear.app/plusprojects/issue/PLU-101) Backlog/Jesus: integral tras feedback
-  y estabilización, antes de uso real.
+- **13.6 / [PLU-102](https://linear.app/plusprojects/issue/PLU-102): In Progress**, entrega autorizada.
+  52nuevos/181afectados/builds PASS; global2633/2634 (Stock118 previo); POST/estilo PASS. [Evidencia](progress/phase-13.md).
+  Fase13 abierta;13.1–13.5 Done. PLU-101 Backlog/Jesus, integral tras feedback y antes de uso real.
 - **12.1–12.8 Done**, [PR49](https://github.com/JFrancoG/FranAlonso/pull/49);
   fase12 abierta/deuda89–91. [Evidencia](progress/phase-12.md).
 

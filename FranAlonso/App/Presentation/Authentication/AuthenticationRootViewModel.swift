@@ -219,6 +219,29 @@ final class AuthenticationRootViewModel {
         guard protectedAccessIdentity == identity else { throw ClientDocumentAccessError.sessionExpired }
     }
 
+    /// Captures authorization for private billing assets during this protected shell lifetime.
+    func makeBillingAssetAccess() throws -> BillingAssetAccess {
+        guard let identity = protectedAccessIdentity, case let .authenticated(session) = state else {
+            throw BillingAssetError.unauthorized
+        }
+        return BillingAssetAccess(principalID: session.id) { [weak self, authorizeLocalPrincipalUseCase] in
+            guard let self else { throw BillingAssetError.unauthorized }
+            try await self.validateBillingAssetAccess(identity)
+            do {
+                try await authorizeLocalPrincipalUseCase(session: session)
+            } catch is CancellationError {
+                throw CancellationError()
+            } catch {
+                throw BillingAssetError.unauthorized
+            }
+            try await self.validateBillingAssetAccess(identity)
+        }
+    }
+
+    private func validateBillingAssetAccess(_ identity: ProtectedAccessIdentity) throws {
+        guard protectedAccessIdentity == identity else { throw BillingAssetError.unauthorized }
+    }
+
     private var authorizationRequest: (
         session: AuthenticationSession,
         evidence: AccessEvidence,
