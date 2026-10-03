@@ -294,7 +294,7 @@ enum BillingTransactionCorruption {
             globalDiscount: original.sale.globalDiscount
         )
         let transportedRequest = BillingDocumentRequestDTO(
-            payloadVersion: self == .requestVersion ? 2 : 1,
+            payloadVersion: self == .requestVersion ? 3 : 1,
             id: self == .requestIdentity ? "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa" : original.id,
             documentID: self == .documentIdentity
                 ? "bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb" : original.documentID,

@@ -1,0 +1,2152 @@
+{
+  "version": 1,
+  "date": "2026-10-03",
+  "scheme": "FranAlonso-Develop",
+  "workspaceSelectedDestination": "iPhone 17",
+  "sourceState": "Final Swift after same-value field and accepted-prefill validation reconciliation; explicit labels unchanged",
+  "scope": "13.5 selection/form/error/prepared plus paid sale entry and detail",
+  "baseCommit": "76835cb660fb0e727dd408290ac123297065414a",
+  "previewCount": 20,
+  "method": "Xcode MCP RenderPreview; original PNG copied byte-for-byte without editing",
+  "privacy": "Synthetic in-memory demo fixtures only. Manifest contains configuration, paths and hashes; no account, token, business payload or real recipient. Preview source paths are local ActionArtifacts references.",
+  "limits": [
+    "Initial frames only: scrolling, actual focus, speech and assistive operation are not proven.",
+    "Representative configurations do not exhaust all appearance/device/localization combinations.",
+    "Rendered host iPhone 18 Pro Max iOS 27.2 differs from workspace iPhone 17.",
+    "Historical SaleDraftScreen AX5 title truncation remains PLU-91.",
+    "New flow exhaustive evidence remains PLU-101; no integral or legal conformance claim."
+  ],
+  "swiftSourceManifest": [
+    {
+      "path": "FranAlonso/App/Composition/Dependencies/AppDependencies+Billing.swift",
+      "sha256": "04825cfc47fe01b3634329ccd5e7a742473cb035819ebb802ab5831c6df0859a"
+    },
+    {
+      "path": "FranAlonso/App/Composition/Dependencies/AppDependencies.swift",
+      "sha256": "09539a98da2ef0164e7d0bf4b9968be117fd2b01410a317ec7c011ab9b4998e3"
+    },
+    {
+      "path": "FranAlonso/App/Presentation/Shell/AppShellScreen.swift",
+      "sha256": "ac6975d59227610808a81506e84720194c425126a87d86b1357567caeedf1d58"
+    },
+    {
+      "path": "FranAlonso/App/Previews/BillingPreviewFixtures.swift",
+      "sha256": "8b9cbc2e43b67764580ceb03f97043aacde5188697afad0c714bf55addb1e328"
+    },
+    {
+      "path": "FranAlonso/App/Previews/BillingPreviewModifier.swift",
+      "sha256": "ff1e3e1a5907e1904525a3da8f3a1b655dd0495f30c9c268200be01f813f610e"
+    },
+    {
+      "path": "FranAlonso/Features/Billing/Data/DTOs/BillingDocumentRecordDTO.swift",
+      "sha256": "e60d11de10f1a3bafb8237a2623b1ddf3d310263c3b9443326a94396f2ce73c1"
+    },
+    {
+      "path": "FranAlonso/Features/Billing/Data/Repositories/UnavailableBillingDocumentReservationRepository.swift",
+      "sha256": "cbe9e5aec89b936d71c6b29bcad045eeb05b702eade94d5f43a8cf67bf10be62"
+    },
+    {
+      "path": "FranAlonso/Features/Billing/Domain/Entities/BillingDocumentRequest.swift",
+      "sha256": "0f40e6243ed40877cab9e42f82544f54a142d5269b49ceaf70d668cfb66515f9"
+    },
+    {
+      "path": "FranAlonso/Features/Billing/Domain/UseCases/PrepareBillingDocumentRequestUseCase.swift",
+      "sha256": "51ee3048e5d65109655ebebe32d17d859d03ba778c26365920baee3264b7e514"
+    },
+    {
+      "path": "FranAlonso/Features/Billing/Domain/ValueObjects/BillingFiscalRecipient.swift",
+      "sha256": "0613b293483644f0ac404ccb35160043ef1ec01ccd1e19777f4c00f0cd4aa5c2"
+    },
+    {
+      "path": "FranAlonso/Features/Billing/Domain/ValueObjects/BillingFiscalRecipientInput.swift",
+      "sha256": "7c16630587e055a59fea2e95ec866f55b846e6eed313fa54f6268ad4c32119ca"
+    },
+    {
+      "path": "FranAlonso/Features/Billing/Presentation/Extensions/BillingFiscalField+Presentation.swift",
+      "sha256": "bd6390d58622a07f2a725dffdc693bcdcdda7d03c635b4c0eea8a79af0e05378"
+    },
+    {
+      "path": "FranAlonso/Features/Billing/Presentation/Screens/BillingScreen.swift",
+      "sha256": "6c0adf287fab3fffee8e643cfe402ed6721e66983223146942a8621a105a43c4"
+    },
+    {
+      "path": "FranAlonso/Features/Billing/Presentation/ViewModels/BillingFormIssue.swift",
+      "sha256": "640c1644dcdfec0f30acf6ec39780307df9e76210e06f593b1df84aecb6da4b5"
+    },
+    {
+      "path": "FranAlonso/Features/Billing/Presentation/ViewModels/BillingViewModel.swift",
+      "sha256": "2b6fa4a085a23ef5f2e733187f621ca38aef81f0fd4948620f32f73a13e23f39"
+    },
+    {
+      "path": "FranAlonso/Features/Billing/Presentation/Views/BillingFiscalFields.swift",
+      "sha256": "8aae7c6e275af9caba6783aa5c7306be21beba6075df596963300ed2a2c7094f"
+    },
+    {
+      "path": "FranAlonso/Features/Billing/Presentation/Views/BillingPreparedContent.swift",
+      "sha256": "4cf65df532b3a067dffd5f27ce3acd775fe4f6e4ff01966e0b598ae7b449ed47"
+    },
+    {
+      "path": "FranAlonso/Features/Billing/Presentation/Views/BillingSelectionContent.swift",
+      "sha256": "e2ecd70f3a87c5ab50e4b1021c4501df2dc0bd35e32e718e7915d29653bce55b"
+    },
+    {
+      "path": "FranAlonso/Features/Sales/Presentation/Navigation/BillingDocumentDestination.swift",
+      "sha256": "fb430c5a1e1f6d436e7e46196ab2446b537ac0b0831ac9ea68a9779b105a28b9"
+    },
+    {
+      "path": "FranAlonso/Features/Sales/Presentation/Screens/SaleDraftScreen.swift",
+      "sha256": "02988d82a0a10c9d208d152c5ec2ceb50dc537f2e560306dc8e2884c32b75a26"
+    },
+    {
+      "path": "FranAlonso/Features/Sales/Presentation/Screens/WorkdayScreen.swift",
+      "sha256": "98fc5c747d3f1bbcdca5c7a4b0777b183947c24c354e64eb52701357eb2c44ee"
+    },
+    {
+      "path": "FranAlonso/Features/Sales/Presentation/ViewModels/SaleDraftViewModel.swift",
+      "sha256": "7e9ed4394981b24183b2684881313399e9a36c025a112e8292d60a99a4e746be"
+    },
+    {
+      "path": "FranAlonso/Features/Sales/Presentation/Views/SaleDraftContent.swift",
+      "sha256": "3ae662558f64a585c6d6887ba2831abc22e3e41479a5b57ea54fd27e205e96b8"
+    },
+    {
+      "path": "FranAlonso/Features/Sales/Presentation/Views/SaleWorkflowSection.swift",
+      "sha256": "52ad024d1e22d6107bb5a38a80d1c60395b96e35d23d36f2b03031a2957f31bc"
+    },
+    {
+      "path": "FranAlonsoTests/BillingFiscalRecipientTests.swift",
+      "sha256": "4c52abb410365990ec0afa80a96fe96eecd11070cc1a12d661717834ea69a1c6"
+    },
+    {
+      "path": "FranAlonsoTests/BillingFiscalRequestDTOTests.swift",
+      "sha256": "419834d38d2c0bb86fd8c3f447e91aa7691009a5a2b81e76df9de511e7fa39d7"
+    },
+    {
+      "path": "FranAlonsoTests/BillingFiscalRequestTransactionTests.swift",
+      "sha256": "e6e1fad21a48c50cc186c56e3cf434b36ce4fe0bd6e131dc553598841cbab301"
+    },
+    {
+      "path": "FranAlonsoTests/BillingFormPresentationFixtures.swift",
+      "sha256": "04d1d4bdac8a10a65910481b1ff761f77c5607e89b4d50320600141085170d8a"
+    },
+    {
+      "path": "FranAlonsoTests/BillingSelectionViewModelTests.swift",
+      "sha256": "afe5fa7be81f2005b8e81aa7cfb53131f7f0af04341a719fb66c91404109d2ad"
+    },
+    {
+      "path": "FranAlonsoTests/BillingTransactionFixtures.swift",
+      "sha256": "60e3bca23b73c1c9a78140229e61ec2d4e6049c49fe46df79feaa19fb1dc41d9"
+    },
+    {
+      "path": "FranAlonsoTests/FirestoreBillingDocumentReservationTests.swift",
+      "sha256": "31042afa9b16c9e03e3e9621d815a870c0b7fbfdda27590b40b2df6af228a057"
+    },
+    {
+      "path": "FranAlonsoTests/SaleBillingNavigationTests.swift",
+      "sha256": "6de652c3f8666b574e81aa568c56ac8f62137d50613c5a5586151d04ad6b1f1c"
+    }
+  ],
+  "catalog": {
+    "path": "FranAlonso/Resources/Localizable.xcstrings",
+    "sha256": "eb68af1cd8428a230e18d41f068e26bb535d36937cb80595c20809863cc0743a"
+  },
+  "entries": [
+    {
+      "label": "selection-Large-es-Light",
+      "artifact": "selection-Large-es-Light.png",
+      "sha256": "93919e679f2887f96009fa8a0ffb4d5cc59cf751b2f7d72a2499952363a93c68",
+      "bytes": 97007,
+      "dimensions": {
+        "width": 690,
+        "height": 1500
+      },
+      "originalPath": "/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RenderPreview/Ticket selection - 2026-10-03 at 14.33.42.png",
+      "configuration": {
+        "label": "selection-Large-es-Light",
+        "index": 0,
+        "type": "Large",
+        "lang": "es",
+        "color": "Light Appearance",
+        "contrast": "Standard Contrast"
+      },
+      "source": {
+        "repositoryPath": "FranAlonso/Features/Billing/Presentation/Screens/BillingScreen.swift",
+        "reportedPath": "FranAlonso/FranAlonso/Features/Billing/Presentation/Screens/BillingScreen.swift",
+        "line": 71,
+        "sha256": "6c0adf287fab3fffee8e643cfe402ed6721e66983223146942a8621a105a43c4"
+      },
+      "renderedDestination": {
+        "deviceModelName": "iPhone 18 Pro Max",
+        "identifier": "06B2C3FF-929C-4164-8852-E5EF6DA24974",
+        "platformName": "iOS",
+        "systemVersion": "27.2"
+      },
+      "displayName": "Ticket selection",
+      "supportedLocalizations": [
+        "es",
+        "en"
+      ],
+      "supportedPreviewVariantOverrides": {
+        "Color Scheme": [
+          "Light Appearance",
+          "Dark Appearance"
+        ],
+        "Contrast": [
+          "Standard Contrast",
+          "Increased Contrast"
+        ],
+        "Control Borders": [
+          "Hidden",
+          "Shown"
+        ],
+        "Dynamic Type": [
+          "X Small",
+          "Small",
+          "Medium",
+          "Large",
+          "X Large",
+          "XX Large",
+          "XXX Large",
+          "AX 1",
+          "AX 2",
+          "AX 3",
+          "AX 4",
+          "AX 5"
+        ],
+        "Orientation": [
+          "Portrait",
+          "Landscape Left",
+          "Landscape Right"
+        ]
+      },
+      "renderErrors": [],
+      "visualObservation": "Large y XXX Large muestran selección completa. AX 5 requiere scroll; valor del selector se ajusta. La captura no demuestra toda la operación tras scroll.",
+      "observationReviewer": "root: 18 PNG inspected; documentary agent records reported observations",
+      "captureSourceState": "18 original representative renders 2026-10-03 14:33-14:37 Europe/Madrid, before setter equality guard/explicit labels and before delayed prefill correction.",
+      "reuseByImpact": "Root: final guard changes interaction and label changes semantics without intended layout change. Original representative capture reused by impact; final error Large/AX5 recaptures recorded separately.",
+      "sourceManifestBinding": "previewSourceManifestAtCapture",
+      "reuseAfterPrefillCorrection": "Reused by impact: no layout/labels/static fixture/navigation change; no render after delayed prefill correction attributed."
+    },
+    {
+      "label": "selection-XXXL-en-Dark",
+      "artifact": "selection-XXXL-en-Dark.png",
+      "sha256": "e50df3ce38fba6f5a41ab2b84a963cf91cea090d411dc0649ae72d73e02a19ab",
+      "bytes": 122140,
+      "dimensions": {
+        "width": 690,
+        "height": 1500
+      },
+      "originalPath": "/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RenderPreview/Ticket selection - 2026-10-03 at 14.33.46.png",
+      "configuration": {
+        "label": "selection-XXXL-en-Dark",
+        "index": 0,
+        "type": "XXX Large",
+        "lang": "en",
+        "color": "Dark Appearance",
+        "contrast": "Increased Contrast"
+      },
+      "source": {
+        "repositoryPath": "FranAlonso/Features/Billing/Presentation/Screens/BillingScreen.swift",
+        "reportedPath": "FranAlonso/FranAlonso/Features/Billing/Presentation/Screens/BillingScreen.swift",
+        "line": 71,
+        "sha256": "6c0adf287fab3fffee8e643cfe402ed6721e66983223146942a8621a105a43c4"
+      },
+      "renderedDestination": {
+        "deviceModelName": "iPhone 18 Pro Max",
+        "identifier": "06B2C3FF-929C-4164-8852-E5EF6DA24974",
+        "platformName": "iOS",
+        "systemVersion": "27.2"
+      },
+      "displayName": "Ticket selection",
+      "supportedLocalizations": [
+        "es",
+        "en"
+      ],
+      "supportedPreviewVariantOverrides": {
+        "Color Scheme": [
+          "Light Appearance",
+          "Dark Appearance"
+        ],
+        "Contrast": [
+          "Standard Contrast",
+          "Increased Contrast"
+        ],
+        "Control Borders": [
+          "Hidden",
+          "Shown"
+        ],
+        "Dynamic Type": [
+          "X Small",
+          "Small",
+          "Medium",
+          "Large",
+          "X Large",
+          "XX Large",
+          "XXX Large",
+          "AX 1",
+          "AX 2",
+          "AX 3",
+          "AX 4",
+          "AX 5"
+        ],
+        "Orientation": [
+          "Portrait",
+          "Landscape Left",
+          "Landscape Right"
+        ]
+      },
+      "renderErrors": [],
+      "visualObservation": "Large y XXX Large muestran selección completa. AX 5 requiere scroll; valor del selector se ajusta. La captura no demuestra toda la operación tras scroll.",
+      "observationReviewer": "root: 18 PNG inspected; documentary agent records reported observations",
+      "captureSourceState": "18 original representative renders 2026-10-03 14:33-14:37 Europe/Madrid, before setter equality guard/explicit labels and before delayed prefill correction.",
+      "reuseByImpact": "Root: final guard changes interaction and label changes semantics without intended layout change. Original representative capture reused by impact; final error Large/AX5 recaptures recorded separately.",
+      "sourceManifestBinding": "previewSourceManifestAtCapture",
+      "reuseAfterPrefillCorrection": "Reused by impact: no layout/labels/static fixture/navigation change; no render after delayed prefill correction attributed."
+    },
+    {
+      "label": "selection-AX5-es-Dark",
+      "artifact": "selection-AX5-es-Dark.png",
+      "sha256": "63fb5689930331b028916af6853cd11cbfb36391d12c2262b1b1b703a5197a78",
+      "bytes": 186956,
+      "dimensions": {
+        "width": 690,
+        "height": 1500
+      },
+      "originalPath": "/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RenderPreview/Ticket selection - 2026-10-03 at 14.33.51.png",
+      "configuration": {
+        "label": "selection-AX5-es-Dark",
+        "index": 0,
+        "type": "AX 5",
+        "lang": "es",
+        "color": "Dark Appearance",
+        "contrast": "Standard Contrast"
+      },
+      "source": {
+        "repositoryPath": "FranAlonso/Features/Billing/Presentation/Screens/BillingScreen.swift",
+        "reportedPath": "FranAlonso/FranAlonso/Features/Billing/Presentation/Screens/BillingScreen.swift",
+        "line": 71,
+        "sha256": "6c0adf287fab3fffee8e643cfe402ed6721e66983223146942a8621a105a43c4"
+      },
+      "renderedDestination": {
+        "deviceModelName": "iPhone 18 Pro Max",
+        "identifier": "06B2C3FF-929C-4164-8852-E5EF6DA24974",
+        "platformName": "iOS",
+        "systemVersion": "27.2"
+      },
+      "displayName": "Ticket selection",
+      "supportedLocalizations": [
+        "es",
+        "en"
+      ],
+      "supportedPreviewVariantOverrides": {
+        "Color Scheme": [
+          "Light Appearance",
+          "Dark Appearance"
+        ],
+        "Contrast": [
+          "Standard Contrast",
+          "Increased Contrast"
+        ],
+        "Control Borders": [
+          "Hidden",
+          "Shown"
+        ],
+        "Dynamic Type": [
+          "X Small",
+          "Small",
+          "Medium",
+          "Large",
+          "X Large",
+          "XX Large",
+          "XXX Large",
+          "AX 1",
+          "AX 2",
+          "AX 3",
+          "AX 4",
+          "AX 5"
+        ],
+        "Orientation": [
+          "Portrait",
+          "Landscape Left",
+          "Landscape Right"
+        ]
+      },
+      "renderErrors": [],
+      "visualObservation": "Large y XXX Large muestran selección completa. AX 5 requiere scroll; valor del selector se ajusta. La captura no demuestra toda la operación tras scroll.",
+      "observationReviewer": "root: 18 PNG inspected; documentary agent records reported observations",
+      "captureSourceState": "18 original representative renders 2026-10-03 14:33-14:37 Europe/Madrid, before setter equality guard/explicit labels and before delayed prefill correction.",
+      "reuseByImpact": "Root: final guard changes interaction and label changes semantics without intended layout change. Original representative capture reused by impact; final error Large/AX5 recaptures recorded separately.",
+      "sourceManifestBinding": "previewSourceManifestAtCapture",
+      "reuseAfterPrefillCorrection": "Reused by impact: no layout/labels/static fixture/navigation change; no render after delayed prefill correction attributed."
+    },
+    {
+      "label": "invoice-Large-es-Light",
+      "artifact": "invoice-Large-es-Light.png",
+      "sha256": "e95509e5b8a2118b2d66eb12c170894e1e175225e00628771131587cfd4dfa98",
+      "bytes": 182963,
+      "dimensions": {
+        "width": 690,
+        "height": 1500
+      },
+      "originalPath": "/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RenderPreview/Invoice form - 2026-10-03 at 14.34.10.png",
+      "configuration": {
+        "label": "invoice-Large-es-Light",
+        "index": 1,
+        "type": "Large",
+        "lang": "es",
+        "color": "Light Appearance",
+        "contrast": "Standard Contrast"
+      },
+      "source": {
+        "repositoryPath": "FranAlonso/Features/Billing/Presentation/Screens/BillingScreen.swift",
+        "reportedPath": "FranAlonso/FranAlonso/Features/Billing/Presentation/Screens/BillingScreen.swift",
+        "line": 75,
+        "sha256": "6c0adf287fab3fffee8e643cfe402ed6721e66983223146942a8621a105a43c4"
+      },
+      "renderedDestination": {
+        "deviceModelName": "iPhone 18 Pro Max",
+        "identifier": "06B2C3FF-929C-4164-8852-E5EF6DA24974",
+        "platformName": "iOS",
+        "systemVersion": "27.2"
+      },
+      "displayName": "Invoice form",
+      "supportedLocalizations": [
+        "es",
+        "en"
+      ],
+      "supportedPreviewVariantOverrides": {
+        "Color Scheme": [
+          "Light Appearance",
+          "Dark Appearance"
+        ],
+        "Contrast": [
+          "Standard Contrast",
+          "Increased Contrast"
+        ],
+        "Control Borders": [
+          "Hidden",
+          "Shown"
+        ],
+        "Dynamic Type": [
+          "X Small",
+          "Small",
+          "Medium",
+          "Large",
+          "X Large",
+          "XX Large",
+          "XXX Large",
+          "AX 1",
+          "AX 2",
+          "AX 3",
+          "AX 4",
+          "AX 5"
+        ],
+        "Orientation": [
+          "Portrait",
+          "Landscape Left",
+          "Landscape Right"
+        ]
+      },
+      "renderErrors": [],
+      "visualObservation": "Large muestra nombre, identificación fiscal, dirección y código postal; ciudad y provincia quedan bajo el primer frame. AX 5 muestra cabecera e instrucciones; entrada completa tras scroll pendiente.",
+      "observationReviewer": "root: 18 PNG inspected; documentary agent records reported observations",
+      "captureSourceState": "18 original representative renders 2026-10-03 14:33-14:37 Europe/Madrid, before setter equality guard/explicit labels and before delayed prefill correction.",
+      "reuseByImpact": "Root: final guard changes interaction and label changes semantics without intended layout change. Original representative capture reused by impact; final error Large/AX5 recaptures recorded separately.",
+      "sourceManifestBinding": "previewSourceManifestAtCapture",
+      "reuseAfterPrefillCorrection": "Reused by impact: no layout/labels/static fixture/navigation change; no render after delayed prefill correction attributed."
+    },
+    {
+      "label": "invoice-XXXL-en-Dark",
+      "artifact": "invoice-XXXL-en-Dark.png",
+      "sha256": "ee5bf2b8bb1d7e64b870f0587422c0106d17694ff49ae1a2b79950619d255f3f",
+      "bytes": 244240,
+      "dimensions": {
+        "width": 690,
+        "height": 1500
+      },
+      "originalPath": "/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RenderPreview/Invoice form - 2026-10-03 at 14.34.15.png",
+      "configuration": {
+        "label": "invoice-XXXL-en-Dark",
+        "index": 1,
+        "type": "XXX Large",
+        "lang": "en",
+        "color": "Dark Appearance",
+        "contrast": "Increased Contrast"
+      },
+      "source": {
+        "repositoryPath": "FranAlonso/Features/Billing/Presentation/Screens/BillingScreen.swift",
+        "reportedPath": "FranAlonso/FranAlonso/Features/Billing/Presentation/Screens/BillingScreen.swift",
+        "line": 75,
+        "sha256": "6c0adf287fab3fffee8e643cfe402ed6721e66983223146942a8621a105a43c4"
+      },
+      "renderedDestination": {
+        "deviceModelName": "iPhone 18 Pro Max",
+        "identifier": "06B2C3FF-929C-4164-8852-E5EF6DA24974",
+        "platformName": "iOS",
+        "systemVersion": "27.2"
+      },
+      "displayName": "Invoice form",
+      "supportedLocalizations": [
+        "es",
+        "en"
+      ],
+      "supportedPreviewVariantOverrides": {
+        "Color Scheme": [
+          "Light Appearance",
+          "Dark Appearance"
+        ],
+        "Contrast": [
+          "Standard Contrast",
+          "Increased Contrast"
+        ],
+        "Control Borders": [
+          "Hidden",
+          "Shown"
+        ],
+        "Dynamic Type": [
+          "X Small",
+          "Small",
+          "Medium",
+          "Large",
+          "X Large",
+          "XX Large",
+          "XXX Large",
+          "AX 1",
+          "AX 2",
+          "AX 3",
+          "AX 4",
+          "AX 5"
+        ],
+        "Orientation": [
+          "Portrait",
+          "Landscape Left",
+          "Landscape Right"
+        ]
+      },
+      "renderErrors": [],
+      "visualObservation": "Large muestra nombre, identificación fiscal, dirección y código postal; ciudad y provincia quedan bajo el primer frame. AX 5 muestra cabecera e instrucciones; entrada completa tras scroll pendiente.",
+      "observationReviewer": "root: 18 PNG inspected; documentary agent records reported observations",
+      "captureSourceState": "18 original representative renders 2026-10-03 14:33-14:37 Europe/Madrid, before setter equality guard/explicit labels and before delayed prefill correction.",
+      "reuseByImpact": "Root: final guard changes interaction and label changes semantics without intended layout change. Original representative capture reused by impact; final error Large/AX5 recaptures recorded separately.",
+      "sourceManifestBinding": "previewSourceManifestAtCapture",
+      "reuseAfterPrefillCorrection": "Reused by impact: no layout/labels/static fixture/navigation change; no render after delayed prefill correction attributed."
+    },
+    {
+      "label": "invoice-AX5-es-Light",
+      "artifact": "invoice-AX5-es-Light.png",
+      "sha256": "863c37b744773b7e6399a76d241fd51e45b1b866b9fe1f3547220f815dd620b2",
+      "bytes": 185710,
+      "dimensions": {
+        "width": 690,
+        "height": 1500
+      },
+      "originalPath": "/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RenderPreview/Invoice form - 2026-10-03 at 14.34.19.png",
+      "configuration": {
+        "label": "invoice-AX5-es-Light",
+        "index": 1,
+        "type": "AX 5",
+        "lang": "es",
+        "color": "Light Appearance",
+        "contrast": "Increased Contrast"
+      },
+      "source": {
+        "repositoryPath": "FranAlonso/Features/Billing/Presentation/Screens/BillingScreen.swift",
+        "reportedPath": "FranAlonso/FranAlonso/Features/Billing/Presentation/Screens/BillingScreen.swift",
+        "line": 75,
+        "sha256": "6c0adf287fab3fffee8e643cfe402ed6721e66983223146942a8621a105a43c4"
+      },
+      "renderedDestination": {
+        "deviceModelName": "iPhone 18 Pro Max",
+        "identifier": "06B2C3FF-929C-4164-8852-E5EF6DA24974",
+        "platformName": "iOS",
+        "systemVersion": "27.2"
+      },
+      "displayName": "Invoice form",
+      "supportedLocalizations": [
+        "es",
+        "en"
+      ],
+      "supportedPreviewVariantOverrides": {
+        "Color Scheme": [
+          "Light Appearance",
+          "Dark Appearance"
+        ],
+        "Contrast": [
+          "Standard Contrast",
+          "Increased Contrast"
+        ],
+        "Control Borders": [
+          "Hidden",
+          "Shown"
+        ],
+        "Dynamic Type": [
+          "X Small",
+          "Small",
+          "Medium",
+          "Large",
+          "X Large",
+          "XX Large",
+          "XXX Large",
+          "AX 1",
+          "AX 2",
+          "AX 3",
+          "AX 4",
+          "AX 5"
+        ],
+        "Orientation": [
+          "Portrait",
+          "Landscape Left",
+          "Landscape Right"
+        ]
+      },
+      "renderErrors": [],
+      "visualObservation": "Large muestra nombre, identificación fiscal, dirección y código postal; ciudad y provincia quedan bajo el primer frame. AX 5 muestra cabecera e instrucciones; entrada completa tras scroll pendiente.",
+      "observationReviewer": "root: 18 PNG inspected; documentary agent records reported observations",
+      "captureSourceState": "18 original representative renders 2026-10-03 14:33-14:37 Europe/Madrid, before setter equality guard/explicit labels and before delayed prefill correction.",
+      "reuseByImpact": "Root: final guard changes interaction and label changes semantics without intended layout change. Original representative capture reused by impact; final error Large/AX5 recaptures recorded separately.",
+      "sourceManifestBinding": "previewSourceManifestAtCapture",
+      "reuseAfterPrefillCorrection": "Reused by impact: no layout/labels/static fixture/navigation change; no render after delayed prefill correction attributed."
+    },
+    {
+      "label": "error-Large-es-Light",
+      "artifact": "error-Large-es-Light.png",
+      "sha256": "deb38fa70be4d2981f4af0cd4613ae3473be1c1abab2b1dc746fb5f7221ad746",
+      "bytes": 186196,
+      "dimensions": {
+        "width": 690,
+        "height": 1500
+      },
+      "originalPath": "/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RenderPreview/Invoice error - 2026-10-03 at 14.35.02.png",
+      "configuration": {
+        "label": "error-Large-es-Light",
+        "index": 2,
+        "type": "Large",
+        "lang": "es",
+        "color": "Light Appearance",
+        "contrast": "Standard Contrast"
+      },
+      "source": {
+        "repositoryPath": "FranAlonso/Features/Billing/Presentation/Screens/BillingScreen.swift",
+        "reportedPath": "FranAlonso/FranAlonso/Features/Billing/Presentation/Screens/BillingScreen.swift",
+        "line": 79,
+        "sha256": "6c0adf287fab3fffee8e643cfe402ed6721e66983223146942a8621a105a43c4"
+      },
+      "renderedDestination": {
+        "deviceModelName": "iPhone 18 Pro Max",
+        "identifier": "06B2C3FF-929C-4164-8852-E5EF6DA24974",
+        "platformName": "iOS",
+        "systemVersion": "27.2"
+      },
+      "displayName": "Invoice error",
+      "supportedLocalizations": [
+        "es",
+        "en"
+      ],
+      "supportedPreviewVariantOverrides": {
+        "Color Scheme": [
+          "Light Appearance",
+          "Dark Appearance"
+        ],
+        "Contrast": [
+          "Standard Contrast",
+          "Increased Contrast"
+        ],
+        "Control Borders": [
+          "Hidden",
+          "Shown"
+        ],
+        "Dynamic Type": [
+          "X Small",
+          "Small",
+          "Medium",
+          "Large",
+          "X Large",
+          "XX Large",
+          "XXX Large",
+          "AX 1",
+          "AX 2",
+          "AX 3",
+          "AX 4",
+          "AX 5"
+        ],
+        "Orientation": [
+          "Portrait",
+          "Landscape Left",
+          "Landscape Right"
+        ]
+      },
+      "renderErrors": [],
+      "visualObservation": "Large/es muestra el mensaje de identificación fiscal obligatorio. En AX 5 el campo y error quedan fuera del primer frame; desplazamiento y foco real pendientes.",
+      "observationReviewer": "root: 18 PNG inspected; documentary agent records reported observations",
+      "captureSourceState": "18 original representative renders 2026-10-03 14:33-14:37 Europe/Madrid, before setter equality guard/explicit labels and before delayed prefill correction.",
+      "reuseByImpact": "Root: final guard changes interaction and label changes semantics without intended layout change. Original representative capture reused by impact; final error Large/AX5 recaptures recorded separately.",
+      "sourceManifestBinding": "previewSourceManifestAtCapture",
+      "reuseAfterPrefillCorrection": "Reused by impact: no layout/labels/static fixture/navigation change; no render after delayed prefill correction attributed."
+    },
+    {
+      "label": "error-XXXL-en-Dark",
+      "artifact": "error-XXXL-en-Dark.png",
+      "sha256": "a07ac86d4d904c14756469ad5811c2fd39355c9007f1859d1ae335ce3de215bd",
+      "bytes": 233257,
+      "dimensions": {
+        "width": 690,
+        "height": 1500
+      },
+      "originalPath": "/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RenderPreview/Invoice error - 2026-10-03 at 14.35.06.png",
+      "configuration": {
+        "label": "error-XXXL-en-Dark",
+        "index": 2,
+        "type": "XXX Large",
+        "lang": "en",
+        "color": "Dark Appearance",
+        "contrast": "Increased Contrast"
+      },
+      "source": {
+        "repositoryPath": "FranAlonso/Features/Billing/Presentation/Screens/BillingScreen.swift",
+        "reportedPath": "FranAlonso/FranAlonso/Features/Billing/Presentation/Screens/BillingScreen.swift",
+        "line": 79,
+        "sha256": "6c0adf287fab3fffee8e643cfe402ed6721e66983223146942a8621a105a43c4"
+      },
+      "renderedDestination": {
+        "deviceModelName": "iPhone 18 Pro Max",
+        "identifier": "06B2C3FF-929C-4164-8852-E5EF6DA24974",
+        "platformName": "iOS",
+        "systemVersion": "27.2"
+      },
+      "displayName": "Invoice error",
+      "supportedLocalizations": [
+        "es",
+        "en"
+      ],
+      "supportedPreviewVariantOverrides": {
+        "Color Scheme": [
+          "Light Appearance",
+          "Dark Appearance"
+        ],
+        "Contrast": [
+          "Standard Contrast",
+          "Increased Contrast"
+        ],
+        "Control Borders": [
+          "Hidden",
+          "Shown"
+        ],
+        "Dynamic Type": [
+          "X Small",
+          "Small",
+          "Medium",
+          "Large",
+          "X Large",
+          "XX Large",
+          "XXX Large",
+          "AX 1",
+          "AX 2",
+          "AX 3",
+          "AX 4",
+          "AX 5"
+        ],
+        "Orientation": [
+          "Portrait",
+          "Landscape Left",
+          "Landscape Right"
+        ]
+      },
+      "renderErrors": [],
+      "visualObservation": "Large/es muestra el mensaje de identificación fiscal obligatorio. En AX 5 el campo y error quedan fuera del primer frame; desplazamiento y foco real pendientes.",
+      "observationReviewer": "root: 18 PNG inspected; documentary agent records reported observations",
+      "captureSourceState": "18 original representative renders 2026-10-03 14:33-14:37 Europe/Madrid, before setter equality guard/explicit labels and before delayed prefill correction.",
+      "reuseByImpact": "Root: final guard changes interaction and label changes semantics without intended layout change. Original representative capture reused by impact; final error Large/AX5 recaptures recorded separately.",
+      "sourceManifestBinding": "previewSourceManifestAtCapture",
+      "reuseAfterPrefillCorrection": "Reused by impact: no layout/labels/static fixture/navigation change; no render after delayed prefill correction attributed."
+    },
+    {
+      "label": "error-AX5-es-Light",
+      "artifact": "error-AX5-es-Light.png",
+      "sha256": "863c37b744773b7e6399a76d241fd51e45b1b866b9fe1f3547220f815dd620b2",
+      "bytes": 185710,
+      "dimensions": {
+        "width": 690,
+        "height": 1500
+      },
+      "originalPath": "/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RenderPreview/Invoice error - 2026-10-03 at 14.35.10.png",
+      "configuration": {
+        "label": "error-AX5-es-Light",
+        "index": 2,
+        "type": "AX 5",
+        "lang": "es",
+        "color": "Light Appearance",
+        "contrast": "Increased Contrast"
+      },
+      "source": {
+        "repositoryPath": "FranAlonso/Features/Billing/Presentation/Screens/BillingScreen.swift",
+        "reportedPath": "FranAlonso/FranAlonso/Features/Billing/Presentation/Screens/BillingScreen.swift",
+        "line": 79,
+        "sha256": "6c0adf287fab3fffee8e643cfe402ed6721e66983223146942a8621a105a43c4"
+      },
+      "renderedDestination": {
+        "deviceModelName": "iPhone 18 Pro Max",
+        "identifier": "06B2C3FF-929C-4164-8852-E5EF6DA24974",
+        "platformName": "iOS",
+        "systemVersion": "27.2"
+      },
+      "displayName": "Invoice error",
+      "supportedLocalizations": [
+        "es",
+        "en"
+      ],
+      "supportedPreviewVariantOverrides": {
+        "Color Scheme": [
+          "Light Appearance",
+          "Dark Appearance"
+        ],
+        "Contrast": [
+          "Standard Contrast",
+          "Increased Contrast"
+        ],
+        "Control Borders": [
+          "Hidden",
+          "Shown"
+        ],
+        "Dynamic Type": [
+          "X Small",
+          "Small",
+          "Medium",
+          "Large",
+          "X Large",
+          "XX Large",
+          "XXX Large",
+          "AX 1",
+          "AX 2",
+          "AX 3",
+          "AX 4",
+          "AX 5"
+        ],
+        "Orientation": [
+          "Portrait",
+          "Landscape Left",
+          "Landscape Right"
+        ]
+      },
+      "renderErrors": [],
+      "visualObservation": "Large/es muestra el mensaje de identificación fiscal obligatorio. En AX 5 el campo y error quedan fuera del primer frame; desplazamiento y foco real pendientes.",
+      "observationReviewer": "root: 18 PNG inspected; documentary agent records reported observations",
+      "captureSourceState": "18 original representative renders 2026-10-03 14:33-14:37 Europe/Madrid, before setter equality guard/explicit labels and before delayed prefill correction.",
+      "reuseByImpact": "Root: final guard changes interaction and label changes semantics without intended layout change. Original representative capture reused by impact; final error Large/AX5 recaptures recorded separately.",
+      "sourceManifestBinding": "previewSourceManifestAtCapture",
+      "reuseAfterPrefillCorrection": "Reused by impact: no layout/labels/static fixture/navigation change; no render after delayed prefill correction attributed."
+    },
+    {
+      "label": "prepared-Large-es-Light",
+      "artifact": "prepared-Large-es-Light.png",
+      "sha256": "d42034656528c407b43fd67417e017888a797dc6dbd34de811c1c9638b36cf9b",
+      "bytes": 186034,
+      "dimensions": {
+        "width": 690,
+        "height": 1500
+      },
+      "originalPath": "/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RenderPreview/Prepared invoice - 2026-10-03 at 14.35.51.png",
+      "configuration": {
+        "label": "prepared-Large-es-Light",
+        "index": 3,
+        "type": "Large",
+        "lang": "es",
+        "color": "Light Appearance",
+        "contrast": "Standard Contrast"
+      },
+      "source": {
+        "repositoryPath": "FranAlonso/Features/Billing/Presentation/Screens/BillingScreen.swift",
+        "reportedPath": "FranAlonso/FranAlonso/Features/Billing/Presentation/Screens/BillingScreen.swift",
+        "line": 83,
+        "sha256": "6c0adf287fab3fffee8e643cfe402ed6721e66983223146942a8621a105a43c4"
+      },
+      "renderedDestination": {
+        "deviceModelName": "iPhone 18 Pro Max",
+        "identifier": "06B2C3FF-929C-4164-8852-E5EF6DA24974",
+        "platformName": "iOS",
+        "systemVersion": "27.2"
+      },
+      "displayName": "Prepared invoice",
+      "supportedLocalizations": [
+        "es",
+        "en"
+      ],
+      "supportedPreviewVariantOverrides": {
+        "Color Scheme": [
+          "Light Appearance",
+          "Dark Appearance"
+        ],
+        "Contrast": [
+          "Standard Contrast",
+          "Increased Contrast"
+        ],
+        "Control Borders": [
+          "Hidden",
+          "Shown"
+        ],
+        "Dynamic Type": [
+          "X Small",
+          "Small",
+          "Medium",
+          "Large",
+          "X Large",
+          "XX Large",
+          "XXX Large",
+          "AX 1",
+          "AX 2",
+          "AX 3",
+          "AX 4",
+          "AX 5"
+        ],
+        "Orientation": [
+          "Portrait",
+          "Landscape Left",
+          "Landscape Right"
+        ]
+      },
+      "renderErrors": [],
+      "visualObservation": "Resumen crece en Large y XXX Large. AX 5 muestra cabecera/mensaje; lectura completa del snapshot tras scroll pendiente.",
+      "observationReviewer": "root: 18 PNG inspected; documentary agent records reported observations",
+      "captureSourceState": "18 original representative renders 2026-10-03 14:33-14:37 Europe/Madrid, before setter equality guard/explicit labels and before delayed prefill correction.",
+      "reuseByImpact": "Root: final guard changes interaction and label changes semantics without intended layout change. Original representative capture reused by impact; final error Large/AX5 recaptures recorded separately.",
+      "sourceManifestBinding": "previewSourceManifestAtCapture",
+      "reuseAfterPrefillCorrection": "Reused by impact: no layout/labels/static fixture/navigation change; no render after delayed prefill correction attributed."
+    },
+    {
+      "label": "prepared-XXXL-en-Dark",
+      "artifact": "prepared-XXXL-en-Dark.png",
+      "sha256": "736022655d30b068dcc8641827783c215ab7b5ca3255184818ac7e70a99a9417",
+      "bytes": 243854,
+      "dimensions": {
+        "width": 690,
+        "height": 1500
+      },
+      "originalPath": "/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RenderPreview/Prepared invoice - 2026-10-03 at 14.35.55.png",
+      "configuration": {
+        "label": "prepared-XXXL-en-Dark",
+        "index": 3,
+        "type": "XXX Large",
+        "lang": "en",
+        "color": "Dark Appearance",
+        "contrast": "Increased Contrast"
+      },
+      "source": {
+        "repositoryPath": "FranAlonso/Features/Billing/Presentation/Screens/BillingScreen.swift",
+        "reportedPath": "FranAlonso/FranAlonso/Features/Billing/Presentation/Screens/BillingScreen.swift",
+        "line": 83,
+        "sha256": "6c0adf287fab3fffee8e643cfe402ed6721e66983223146942a8621a105a43c4"
+      },
+      "renderedDestination": {
+        "deviceModelName": "iPhone 18 Pro Max",
+        "identifier": "06B2C3FF-929C-4164-8852-E5EF6DA24974",
+        "platformName": "iOS",
+        "systemVersion": "27.2"
+      },
+      "displayName": "Prepared invoice",
+      "supportedLocalizations": [
+        "es",
+        "en"
+      ],
+      "supportedPreviewVariantOverrides": {
+        "Color Scheme": [
+          "Light Appearance",
+          "Dark Appearance"
+        ],
+        "Contrast": [
+          "Standard Contrast",
+          "Increased Contrast"
+        ],
+        "Control Borders": [
+          "Hidden",
+          "Shown"
+        ],
+        "Dynamic Type": [
+          "X Small",
+          "Small",
+          "Medium",
+          "Large",
+          "X Large",
+          "XX Large",
+          "XXX Large",
+          "AX 1",
+          "AX 2",
+          "AX 3",
+          "AX 4",
+          "AX 5"
+        ],
+        "Orientation": [
+          "Portrait",
+          "Landscape Left",
+          "Landscape Right"
+        ]
+      },
+      "renderErrors": [],
+      "visualObservation": "Resumen crece en Large y XXX Large. AX 5 muestra cabecera/mensaje; lectura completa del snapshot tras scroll pendiente.",
+      "observationReviewer": "root: 18 PNG inspected; documentary agent records reported observations",
+      "captureSourceState": "18 original representative renders 2026-10-03 14:33-14:37 Europe/Madrid, before setter equality guard/explicit labels and before delayed prefill correction.",
+      "reuseByImpact": "Root: final guard changes interaction and label changes semantics without intended layout change. Original representative capture reused by impact; final error Large/AX5 recaptures recorded separately.",
+      "sourceManifestBinding": "previewSourceManifestAtCapture",
+      "reuseAfterPrefillCorrection": "Reused by impact: no layout/labels/static fixture/navigation change; no render after delayed prefill correction attributed."
+    },
+    {
+      "label": "prepared-AX5-es-Light",
+      "artifact": "prepared-AX5-es-Light.png",
+      "sha256": "bdf7f2a0477237431237089990572fea7fd3f033ffe1b2f690cc9e9b271b94fa",
+      "bytes": 184521,
+      "dimensions": {
+        "width": 690,
+        "height": 1500
+      },
+      "originalPath": "/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RenderPreview/Prepared invoice - 2026-10-03 at 14.36.00.png",
+      "configuration": {
+        "label": "prepared-AX5-es-Light",
+        "index": 3,
+        "type": "AX 5",
+        "lang": "es",
+        "color": "Light Appearance",
+        "contrast": "Increased Contrast"
+      },
+      "source": {
+        "repositoryPath": "FranAlonso/Features/Billing/Presentation/Screens/BillingScreen.swift",
+        "reportedPath": "FranAlonso/FranAlonso/Features/Billing/Presentation/Screens/BillingScreen.swift",
+        "line": 83,
+        "sha256": "6c0adf287fab3fffee8e643cfe402ed6721e66983223146942a8621a105a43c4"
+      },
+      "renderedDestination": {
+        "deviceModelName": "iPhone 18 Pro Max",
+        "identifier": "06B2C3FF-929C-4164-8852-E5EF6DA24974",
+        "platformName": "iOS",
+        "systemVersion": "27.2"
+      },
+      "displayName": "Prepared invoice",
+      "supportedLocalizations": [
+        "es",
+        "en"
+      ],
+      "supportedPreviewVariantOverrides": {
+        "Color Scheme": [
+          "Light Appearance",
+          "Dark Appearance"
+        ],
+        "Contrast": [
+          "Standard Contrast",
+          "Increased Contrast"
+        ],
+        "Control Borders": [
+          "Hidden",
+          "Shown"
+        ],
+        "Dynamic Type": [
+          "X Small",
+          "Small",
+          "Medium",
+          "Large",
+          "X Large",
+          "XX Large",
+          "XXX Large",
+          "AX 1",
+          "AX 2",
+          "AX 3",
+          "AX 4",
+          "AX 5"
+        ],
+        "Orientation": [
+          "Portrait",
+          "Landscape Left",
+          "Landscape Right"
+        ]
+      },
+      "renderErrors": [],
+      "visualObservation": "Resumen crece en Large y XXX Large. AX 5 muestra cabecera/mensaje; lectura completa del snapshot tras scroll pendiente.",
+      "observationReviewer": "root: 18 PNG inspected; documentary agent records reported observations",
+      "captureSourceState": "18 original representative renders 2026-10-03 14:33-14:37 Europe/Madrid, before setter equality guard/explicit labels and before delayed prefill correction.",
+      "reuseByImpact": "Root: final guard changes interaction and label changes semantics without intended layout change. Original representative capture reused by impact; final error Large/AX5 recaptures recorded separately.",
+      "sourceManifestBinding": "previewSourceManifestAtCapture",
+      "reuseAfterPrefillCorrection": "Reused by impact: no layout/labels/static fixture/navigation change; no render after delayed prefill correction attributed."
+    },
+    {
+      "label": "entry-Large-es",
+      "artifact": "entry-Large-es.png",
+      "sha256": "824147bbe11bcaafd92bbbe9363e060aac94917856b572c3d37ce6c7b35ef9bf",
+      "bytes": 64015,
+      "dimensions": {
+        "width": 690,
+        "height": 1500
+      },
+      "originalPath": "/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RenderPreview/Document selection entry - 2026-10-03 at 14.36.32.png",
+      "configuration": {
+        "type": "Large",
+        "lang": "es",
+        "color": "Light Appearance",
+        "contrast": "Standard Contrast",
+        "label": "entry-Large-es",
+        "index": 1,
+        "source": "FranAlonso/FranAlonso/Features/Sales/Presentation/Views/SaleWorkflowSection.swift"
+      },
+      "source": {
+        "repositoryPath": "FranAlonso/Features/Sales/Presentation/Views/SaleWorkflowSection.swift",
+        "reportedPath": "FranAlonso/FranAlonso/Features/Sales/Presentation/Views/SaleWorkflowSection.swift",
+        "line": 73,
+        "sha256": "52ad024d1e22d6107bb5a38a80d1c60395b96e35d23d36f2b03031a2957f31bc"
+      },
+      "renderedDestination": {
+        "deviceModelName": "iPhone 18 Pro Max",
+        "identifier": "06B2C3FF-929C-4164-8852-E5EF6DA24974",
+        "platformName": "iOS",
+        "systemVersion": "27.2"
+      },
+      "displayName": "Document selection entry",
+      "supportedLocalizations": [
+        "es",
+        "en"
+      ],
+      "supportedPreviewVariantOverrides": {
+        "Color Scheme": [
+          "Light Appearance",
+          "Dark Appearance"
+        ],
+        "Contrast": [
+          "Standard Contrast",
+          "Increased Contrast"
+        ],
+        "Control Borders": [
+          "Hidden",
+          "Shown"
+        ],
+        "Dynamic Type": [
+          "X Small",
+          "Small",
+          "Medium",
+          "Large",
+          "X Large",
+          "XX Large",
+          "XXX Large",
+          "AX 1",
+          "AX 2",
+          "AX 3",
+          "AX 4",
+          "AX 5"
+        ],
+        "Orientation": [
+          "Portrait",
+          "Landscape Left",
+          "Landscape Right"
+        ]
+      },
+      "renderErrors": [],
+      "visualObservation": "Componente de entrada pagada completo en Large, XXX Large y AX 5; nuevo botón sin recorte en estos frames.",
+      "observationReviewer": "root: 18 PNG inspected; documentary agent records reported observations",
+      "captureSourceState": "18 original representative renders 2026-10-03 14:33-14:37 Europe/Madrid, before setter equality guard/explicit labels and before delayed prefill correction.",
+      "reuseByImpact": "Root: final guard changes interaction and label changes semantics without intended layout change. Original representative capture reused by impact; final error Large/AX5 recaptures recorded separately.",
+      "sourceManifestBinding": "previewSourceManifestAtCapture",
+      "reuseAfterPrefillCorrection": "Reused by impact: no layout/labels/static fixture/navigation change; no render after delayed prefill correction attributed."
+    },
+    {
+      "label": "entry-XXXLarge-en",
+      "artifact": "entry-XXXLarge-en.png",
+      "sha256": "653477e4ab6bb9e7aaaf32b5ea5dfa3afdf48a765f822f28df3849f97fc2fc7f",
+      "bytes": 79958,
+      "dimensions": {
+        "width": 690,
+        "height": 1500
+      },
+      "originalPath": "/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RenderPreview/Document selection entry - 2026-10-03 at 14.36.37.png",
+      "configuration": {
+        "type": "XXX Large",
+        "lang": "en",
+        "color": "Dark Appearance",
+        "contrast": "Increased Contrast",
+        "label": "entry-XXXLarge-en",
+        "index": 1,
+        "source": "FranAlonso/FranAlonso/Features/Sales/Presentation/Views/SaleWorkflowSection.swift"
+      },
+      "source": {
+        "repositoryPath": "FranAlonso/Features/Sales/Presentation/Views/SaleWorkflowSection.swift",
+        "reportedPath": "FranAlonso/FranAlonso/Features/Sales/Presentation/Views/SaleWorkflowSection.swift",
+        "line": 73,
+        "sha256": "52ad024d1e22d6107bb5a38a80d1c60395b96e35d23d36f2b03031a2957f31bc"
+      },
+      "renderedDestination": {
+        "deviceModelName": "iPhone 18 Pro Max",
+        "identifier": "06B2C3FF-929C-4164-8852-E5EF6DA24974",
+        "platformName": "iOS",
+        "systemVersion": "27.2"
+      },
+      "displayName": "Document selection entry",
+      "supportedLocalizations": [
+        "es",
+        "en"
+      ],
+      "supportedPreviewVariantOverrides": {
+        "Color Scheme": [
+          "Light Appearance",
+          "Dark Appearance"
+        ],
+        "Contrast": [
+          "Standard Contrast",
+          "Increased Contrast"
+        ],
+        "Control Borders": [
+          "Hidden",
+          "Shown"
+        ],
+        "Dynamic Type": [
+          "X Small",
+          "Small",
+          "Medium",
+          "Large",
+          "X Large",
+          "XX Large",
+          "XXX Large",
+          "AX 1",
+          "AX 2",
+          "AX 3",
+          "AX 4",
+          "AX 5"
+        ],
+        "Orientation": [
+          "Portrait",
+          "Landscape Left",
+          "Landscape Right"
+        ]
+      },
+      "renderErrors": [],
+      "visualObservation": "Componente de entrada pagada completo en Large, XXX Large y AX 5; nuevo botón sin recorte en estos frames.",
+      "observationReviewer": "root: 18 PNG inspected; documentary agent records reported observations",
+      "captureSourceState": "18 original representative renders 2026-10-03 14:33-14:37 Europe/Madrid, before setter equality guard/explicit labels and before delayed prefill correction.",
+      "reuseByImpact": "Root: final guard changes interaction and label changes semantics without intended layout change. Original representative capture reused by impact; final error Large/AX5 recaptures recorded separately.",
+      "sourceManifestBinding": "previewSourceManifestAtCapture",
+      "reuseAfterPrefillCorrection": "Reused by impact: no layout/labels/static fixture/navigation change; no render after delayed prefill correction attributed."
+    },
+    {
+      "label": "entry-AX5-es",
+      "artifact": "entry-AX5-es.png",
+      "sha256": "b7c300fcdfeb51fc3211503ff926ed3ee9aff466b74fff5ba54b07374c8cc1f2",
+      "bytes": 156033,
+      "dimensions": {
+        "width": 690,
+        "height": 1500
+      },
+      "originalPath": "/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RenderPreview/Document selection entry - 2026-10-03 at 14.36.41.png",
+      "configuration": {
+        "type": "AX 5",
+        "lang": "es",
+        "color": "Dark Appearance",
+        "contrast": "Standard Contrast",
+        "label": "entry-AX5-es",
+        "index": 1,
+        "source": "FranAlonso/FranAlonso/Features/Sales/Presentation/Views/SaleWorkflowSection.swift"
+      },
+      "source": {
+        "repositoryPath": "FranAlonso/Features/Sales/Presentation/Views/SaleWorkflowSection.swift",
+        "reportedPath": "FranAlonso/FranAlonso/Features/Sales/Presentation/Views/SaleWorkflowSection.swift",
+        "line": 73,
+        "sha256": "52ad024d1e22d6107bb5a38a80d1c60395b96e35d23d36f2b03031a2957f31bc"
+      },
+      "renderedDestination": {
+        "deviceModelName": "iPhone 18 Pro Max",
+        "identifier": "06B2C3FF-929C-4164-8852-E5EF6DA24974",
+        "platformName": "iOS",
+        "systemVersion": "27.2"
+      },
+      "displayName": "Document selection entry",
+      "supportedLocalizations": [
+        "es",
+        "en"
+      ],
+      "supportedPreviewVariantOverrides": {
+        "Color Scheme": [
+          "Light Appearance",
+          "Dark Appearance"
+        ],
+        "Contrast": [
+          "Standard Contrast",
+          "Increased Contrast"
+        ],
+        "Control Borders": [
+          "Hidden",
+          "Shown"
+        ],
+        "Dynamic Type": [
+          "X Small",
+          "Small",
+          "Medium",
+          "Large",
+          "X Large",
+          "XX Large",
+          "XXX Large",
+          "AX 1",
+          "AX 2",
+          "AX 3",
+          "AX 4",
+          "AX 5"
+        ],
+        "Orientation": [
+          "Portrait",
+          "Landscape Left",
+          "Landscape Right"
+        ]
+      },
+      "renderErrors": [],
+      "visualObservation": "Componente de entrada pagada completo en Large, XXX Large y AX 5; nuevo botón sin recorte en estos frames.",
+      "observationReviewer": "root: 18 PNG inspected; documentary agent records reported observations",
+      "captureSourceState": "18 original representative renders 2026-10-03 14:33-14:37 Europe/Madrid, before setter equality guard/explicit labels and before delayed prefill correction.",
+      "reuseByImpact": "Root: final guard changes interaction and label changes semantics without intended layout change. Original representative capture reused by impact; final error Large/AX5 recaptures recorded separately.",
+      "sourceManifestBinding": "previewSourceManifestAtCapture",
+      "reuseAfterPrefillCorrection": "Reused by impact: no layout/labels/static fixture/navigation change; no render after delayed prefill correction attributed."
+    },
+    {
+      "label": "sale-Large-es",
+      "artifact": "sale-Large-es.png",
+      "sha256": "68f0f1fd4e478febad5b868d7ad4e65d2fb5c97dffe4a8d510e5bfcfc17ebdd6",
+      "bytes": 161157,
+      "dimensions": {
+        "width": 690,
+        "height": 1500
+      },
+      "originalPath": "/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RenderPreview/Awaiting document - 2026-10-03 at 14.36.53.png",
+      "configuration": {
+        "type": "Large",
+        "lang": "es",
+        "color": "Light Appearance",
+        "contrast": "Standard Contrast",
+        "label": "sale-Large-es",
+        "index": 3,
+        "source": "FranAlonso/FranAlonso/Features/Sales/Presentation/Screens/SaleDraftScreen.swift"
+      },
+      "source": {
+        "repositoryPath": "FranAlonso/Features/Sales/Presentation/Screens/SaleDraftScreen.swift",
+        "reportedPath": "FranAlonso/FranAlonso/Features/Sales/Presentation/Screens/SaleDraftScreen.swift",
+        "line": 424,
+        "sha256": "02988d82a0a10c9d208d152c5ec2ceb50dc537f2e560306dc8e2884c32b75a26"
+      },
+      "renderedDestination": {
+        "deviceModelName": "iPhone 18 Pro Max",
+        "identifier": "06B2C3FF-929C-4164-8852-E5EF6DA24974",
+        "platformName": "iOS",
+        "systemVersion": "27.2"
+      },
+      "displayName": "Awaiting document",
+      "supportedLocalizations": [
+        "es",
+        "en"
+      ],
+      "supportedPreviewVariantOverrides": {
+        "Color Scheme": [
+          "Light Appearance",
+          "Dark Appearance"
+        ],
+        "Contrast": [
+          "Standard Contrast",
+          "Increased Contrast"
+        ],
+        "Control Borders": [
+          "Hidden",
+          "Shown"
+        ],
+        "Dynamic Type": [
+          "X Small",
+          "Small",
+          "Medium",
+          "Large",
+          "X Large",
+          "XX Large",
+          "XXX Large",
+          "AX 1",
+          "AX 2",
+          "AX 3",
+          "AX 4",
+          "AX 5"
+        ],
+        "Orientation": [
+          "Portrait",
+          "Landscape Left",
+          "Landscape Right"
+        ]
+      },
+      "renderErrors": [],
+      "visualObservation": "Detalle pagado requiere scroll hacia la entrada en los tres tamaños. El título histórico se trunca en AX 5; pendiente previo PLU-91 no resuelto ni transferido.",
+      "observationReviewer": "root: 18 PNG inspected; documentary agent records reported observations",
+      "captureSourceState": "18 original representative renders 2026-10-03 14:33-14:37 Europe/Madrid, before setter equality guard/explicit labels and before delayed prefill correction.",
+      "reuseByImpact": "Root: final guard changes interaction and label changes semantics without intended layout change. Original representative capture reused by impact; final error Large/AX5 recaptures recorded separately.",
+      "sourceManifestBinding": "previewSourceManifestAtCapture",
+      "reuseAfterPrefillCorrection": "Reused by impact: no layout/labels/static fixture/navigation change; no render after delayed prefill correction attributed."
+    },
+    {
+      "label": "sale-XXXLarge-en",
+      "artifact": "sale-XXXLarge-en.png",
+      "sha256": "b4b4848417875564c34485a08940ece3e54ff91e576779a0734383169869d21f",
+      "bytes": 199027,
+      "dimensions": {
+        "width": 690,
+        "height": 1500
+      },
+      "originalPath": "/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RenderPreview/Awaiting document - 2026-10-03 at 14.36.58.png",
+      "configuration": {
+        "type": "XXX Large",
+        "lang": "en",
+        "color": "Dark Appearance",
+        "contrast": "Increased Contrast",
+        "label": "sale-XXXLarge-en",
+        "index": 3,
+        "source": "FranAlonso/FranAlonso/Features/Sales/Presentation/Screens/SaleDraftScreen.swift"
+      },
+      "source": {
+        "repositoryPath": "FranAlonso/Features/Sales/Presentation/Screens/SaleDraftScreen.swift",
+        "reportedPath": "FranAlonso/FranAlonso/Features/Sales/Presentation/Screens/SaleDraftScreen.swift",
+        "line": 424,
+        "sha256": "02988d82a0a10c9d208d152c5ec2ceb50dc537f2e560306dc8e2884c32b75a26"
+      },
+      "renderedDestination": {
+        "deviceModelName": "iPhone 18 Pro Max",
+        "identifier": "06B2C3FF-929C-4164-8852-E5EF6DA24974",
+        "platformName": "iOS",
+        "systemVersion": "27.2"
+      },
+      "displayName": "Awaiting document",
+      "supportedLocalizations": [
+        "es",
+        "en"
+      ],
+      "supportedPreviewVariantOverrides": {
+        "Color Scheme": [
+          "Light Appearance",
+          "Dark Appearance"
+        ],
+        "Contrast": [
+          "Standard Contrast",
+          "Increased Contrast"
+        ],
+        "Control Borders": [
+          "Hidden",
+          "Shown"
+        ],
+        "Dynamic Type": [
+          "X Small",
+          "Small",
+          "Medium",
+          "Large",
+          "X Large",
+          "XX Large",
+          "XXX Large",
+          "AX 1",
+          "AX 2",
+          "AX 3",
+          "AX 4",
+          "AX 5"
+        ],
+        "Orientation": [
+          "Portrait",
+          "Landscape Left",
+          "Landscape Right"
+        ]
+      },
+      "renderErrors": [],
+      "visualObservation": "Detalle pagado requiere scroll hacia la entrada en los tres tamaños. El título histórico se trunca en AX 5; pendiente previo PLU-91 no resuelto ni transferido.",
+      "observationReviewer": "root: 18 PNG inspected; documentary agent records reported observations",
+      "captureSourceState": "18 original representative renders 2026-10-03 14:33-14:37 Europe/Madrid, before setter equality guard/explicit labels and before delayed prefill correction.",
+      "reuseByImpact": "Root: final guard changes interaction and label changes semantics without intended layout change. Original representative capture reused by impact; final error Large/AX5 recaptures recorded separately.",
+      "sourceManifestBinding": "previewSourceManifestAtCapture",
+      "reuseAfterPrefillCorrection": "Reused by impact: no layout/labels/static fixture/navigation change; no render after delayed prefill correction attributed."
+    },
+    {
+      "label": "sale-AX5-es",
+      "artifact": "sale-AX5-es.png",
+      "sha256": "9d953c65fe62bf413e572b2e8130d1aa988498768c97d9985df7ca4b31c95e7d",
+      "bytes": 200088,
+      "dimensions": {
+        "width": 690,
+        "height": 1500
+      },
+      "originalPath": "/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RenderPreview/Awaiting document - 2026-10-03 at 14.37.03.png",
+      "configuration": {
+        "type": "AX 5",
+        "lang": "es",
+        "color": "Dark Appearance",
+        "contrast": "Standard Contrast",
+        "label": "sale-AX5-es",
+        "index": 3,
+        "source": "FranAlonso/FranAlonso/Features/Sales/Presentation/Screens/SaleDraftScreen.swift"
+      },
+      "source": {
+        "repositoryPath": "FranAlonso/Features/Sales/Presentation/Screens/SaleDraftScreen.swift",
+        "reportedPath": "FranAlonso/FranAlonso/Features/Sales/Presentation/Screens/SaleDraftScreen.swift",
+        "line": 424,
+        "sha256": "02988d82a0a10c9d208d152c5ec2ceb50dc537f2e560306dc8e2884c32b75a26"
+      },
+      "renderedDestination": {
+        "deviceModelName": "iPhone 18 Pro Max",
+        "identifier": "06B2C3FF-929C-4164-8852-E5EF6DA24974",
+        "platformName": "iOS",
+        "systemVersion": "27.2"
+      },
+      "displayName": "Awaiting document",
+      "supportedLocalizations": [
+        "es",
+        "en"
+      ],
+      "supportedPreviewVariantOverrides": {
+        "Color Scheme": [
+          "Light Appearance",
+          "Dark Appearance"
+        ],
+        "Contrast": [
+          "Standard Contrast",
+          "Increased Contrast"
+        ],
+        "Control Borders": [
+          "Hidden",
+          "Shown"
+        ],
+        "Dynamic Type": [
+          "X Small",
+          "Small",
+          "Medium",
+          "Large",
+          "X Large",
+          "XX Large",
+          "XXX Large",
+          "AX 1",
+          "AX 2",
+          "AX 3",
+          "AX 4",
+          "AX 5"
+        ],
+        "Orientation": [
+          "Portrait",
+          "Landscape Left",
+          "Landscape Right"
+        ]
+      },
+      "renderErrors": [],
+      "visualObservation": "Detalle pagado requiere scroll hacia la entrada en los tres tamaños. El título histórico se trunca en AX 5; pendiente previo PLU-91 no resuelto ni transferido.",
+      "observationReviewer": "root: 18 PNG inspected; documentary agent records reported observations",
+      "captureSourceState": "18 original representative renders 2026-10-03 14:33-14:37 Europe/Madrid, before setter equality guard/explicit labels and before delayed prefill correction.",
+      "reuseByImpact": "Root: final guard changes interaction and label changes semantics without intended layout change. Original representative capture reused by impact; final error Large/AX5 recaptures recorded separately.",
+      "sourceManifestBinding": "previewSourceManifestAtCapture",
+      "reuseAfterPrefillCorrection": "Reused by impact: no layout/labels/static fixture/navigation change; no render after delayed prefill correction attributed."
+    },
+    {
+      "label": "final-error-Large-es-Light",
+      "artifact": "final-error-Large-es-Light.png",
+      "sha256": "deb38fa70be4d2981f4af0cd4613ae3473be1c1abab2b1dc746fb5f7221ad746",
+      "bytes": 186196,
+      "dimensions": {
+        "width": 690,
+        "height": 1500
+      },
+      "originalPath": "/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RenderPreview/Invoice error - 2026-10-03 at 15.02.43.png",
+      "configuration": {
+        "label": "error-Large-es-Light",
+        "index": 2,
+        "type": "Large",
+        "lang": "es",
+        "color": "Light Appearance",
+        "contrast": "Standard Contrast"
+      },
+      "source": {
+        "repositoryPath": "FranAlonso/Features/Billing/Presentation/Screens/BillingScreen.swift",
+        "reportedPath": "FranAlonso/FranAlonso/Features/Billing/Presentation/Screens/BillingScreen.swift",
+        "line": 79,
+        "sha256": "6c0adf287fab3fffee8e643cfe402ed6721e66983223146942a8621a105a43c4"
+      },
+      "renderedDestination": {
+        "deviceModelName": "iPhone 18 Pro Max",
+        "identifier": "06B2C3FF-929C-4164-8852-E5EF6DA24974",
+        "platformName": "iOS",
+        "systemVersion": "27.2"
+      },
+      "displayName": "Invoice error",
+      "supportedLocalizations": [
+        "es",
+        "en"
+      ],
+      "supportedPreviewVariantOverrides": {
+        "Color Scheme": [
+          "Light Appearance",
+          "Dark Appearance"
+        ],
+        "Contrast": [
+          "Standard Contrast",
+          "Increased Contrast"
+        ],
+        "Control Borders": [
+          "Hidden",
+          "Shown"
+        ],
+        "Dynamic Type": [
+          "X Small",
+          "Small",
+          "Medium",
+          "Large",
+          "X Large",
+          "XX Large",
+          "XXX Large",
+          "AX 1",
+          "AX 2",
+          "AX 3",
+          "AX 4",
+          "AX 5"
+        ],
+        "Orientation": [
+          "Portrait",
+          "Landscape Left",
+          "Landscape Right"
+        ]
+      },
+      "renderErrors": [],
+      "visualObservation": "Final Large/es capture displays the required fiscal-identification error text and full Documento title.",
+      "observationReviewer": "root: final 2 PNG inspected; documentary agent records reported observations",
+      "captureSourceState": "2 error recaptures 2026-10-03 15:02:43 Europe/Madrid, after setter equality guard/explicit labels and before delayed prefill correction.",
+      "capturedLocalTime": "2026-10-03 15:02:43 +02:00",
+      "sourceManifestBinding": "postSetterLabelSourceManifestAtCapture",
+      "reuseAfterPrefillCorrection": "Reused by impact: no layout/labels/static fixture/navigation change; no render after delayed prefill correction attributed."
+    },
+    {
+      "label": "final-error-AX5-es-Light",
+      "artifact": "final-error-AX5-es-Light.png",
+      "sha256": "863c37b744773b7e6399a76d241fd51e45b1b866b9fe1f3547220f815dd620b2",
+      "bytes": 185710,
+      "dimensions": {
+        "width": 690,
+        "height": 1500
+      },
+      "originalPath": "/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RenderPreview/Invoice error - 2026-10-03 at 15.02.43 2.png",
+      "configuration": {
+        "label": "error-AX5-es-Light",
+        "index": 2,
+        "type": "AX 5",
+        "lang": "es",
+        "color": "Light Appearance",
+        "contrast": "Increased Contrast"
+      },
+      "source": {
+        "repositoryPath": "FranAlonso/Features/Billing/Presentation/Screens/BillingScreen.swift",
+        "reportedPath": "FranAlonso/FranAlonso/Features/Billing/Presentation/Screens/BillingScreen.swift",
+        "line": 79,
+        "sha256": "6c0adf287fab3fffee8e643cfe402ed6721e66983223146942a8621a105a43c4"
+      },
+      "renderedDestination": {
+        "deviceModelName": "iPhone 18 Pro Max",
+        "identifier": "06B2C3FF-929C-4164-8852-E5EF6DA24974",
+        "platformName": "iOS",
+        "systemVersion": "27.2"
+      },
+      "displayName": "Invoice error",
+      "supportedLocalizations": [
+        "es",
+        "en"
+      ],
+      "supportedPreviewVariantOverrides": {
+        "Color Scheme": [
+          "Light Appearance",
+          "Dark Appearance"
+        ],
+        "Contrast": [
+          "Standard Contrast",
+          "Increased Contrast"
+        ],
+        "Control Borders": [
+          "Hidden",
+          "Shown"
+        ],
+        "Dynamic Type": [
+          "X Small",
+          "Small",
+          "Medium",
+          "Large",
+          "X Large",
+          "XX Large",
+          "XXX Large",
+          "AX 1",
+          "AX 2",
+          "AX 3",
+          "AX 4",
+          "AX 5"
+        ],
+        "Orientation": [
+          "Portrait",
+          "Landscape Left",
+          "Landscape Right"
+        ]
+      },
+      "renderErrors": [],
+      "visualObservation": "Final AX5/es initial frame displays full Documento title and instructions; error/fields remain below frame, complete scroll and real focus pending.",
+      "observationReviewer": "root: final 2 PNG inspected; documentary agent records reported observations",
+      "captureSourceState": "2 error recaptures 2026-10-03 15:02:43 Europe/Madrid, after setter equality guard/explicit labels and before delayed prefill correction.",
+      "capturedLocalTime": "2026-10-03 15:02:43 +02:00",
+      "sourceManifestBinding": "postSetterLabelSourceManifestAtCapture",
+      "reuseAfterPrefillCorrection": "Reused by impact: no layout/labels/static fixture/navigation change; no render after delayed prefill correction attributed."
+    }
+  ],
+  "previewSourceManifestAtCapture": [
+    {
+      "path": "FranAlonso/App/Composition/Dependencies/AppDependencies+Billing.swift",
+      "sha256": "04825cfc47fe01b3634329ccd5e7a742473cb035819ebb802ab5831c6df0859a"
+    },
+    {
+      "path": "FranAlonso/App/Composition/Dependencies/AppDependencies.swift",
+      "sha256": "09539a98da2ef0164e7d0bf4b9968be117fd2b01410a317ec7c011ab9b4998e3"
+    },
+    {
+      "path": "FranAlonso/App/Presentation/Shell/AppShellScreen.swift",
+      "sha256": "ac6975d59227610808a81506e84720194c425126a87d86b1357567caeedf1d58"
+    },
+    {
+      "path": "FranAlonso/App/Previews/BillingPreviewFixtures.swift",
+      "sha256": "8b9cbc2e43b67764580ceb03f97043aacde5188697afad0c714bf55addb1e328"
+    },
+    {
+      "path": "FranAlonso/App/Previews/BillingPreviewModifier.swift",
+      "sha256": "ff1e3e1a5907e1904525a3da8f3a1b655dd0495f30c9c268200be01f813f610e"
+    },
+    {
+      "path": "FranAlonso/Features/Billing/Data/DTOs/BillingDocumentRecordDTO.swift",
+      "sha256": "e60d11de10f1a3bafb8237a2623b1ddf3d310263c3b9443326a94396f2ce73c1"
+    },
+    {
+      "path": "FranAlonso/Features/Billing/Data/Repositories/UnavailableBillingDocumentReservationRepository.swift",
+      "sha256": "cbe9e5aec89b936d71c6b29bcad045eeb05b702eade94d5f43a8cf67bf10be62"
+    },
+    {
+      "path": "FranAlonso/Features/Billing/Domain/Entities/BillingDocumentRequest.swift",
+      "sha256": "0f40e6243ed40877cab9e42f82544f54a142d5269b49ceaf70d668cfb66515f9"
+    },
+    {
+      "path": "FranAlonso/Features/Billing/Domain/UseCases/PrepareBillingDocumentRequestUseCase.swift",
+      "sha256": "51ee3048e5d65109655ebebe32d17d859d03ba778c26365920baee3264b7e514"
+    },
+    {
+      "path": "FranAlonso/Features/Billing/Domain/ValueObjects/BillingFiscalRecipient.swift",
+      "sha256": "0613b293483644f0ac404ccb35160043ef1ec01ccd1e19777f4c00f0cd4aa5c2"
+    },
+    {
+      "path": "FranAlonso/Features/Billing/Domain/ValueObjects/BillingFiscalRecipientInput.swift",
+      "sha256": "7c16630587e055a59fea2e95ec866f55b846e6eed313fa54f6268ad4c32119ca"
+    },
+    {
+      "path": "FranAlonso/Features/Billing/Presentation/Extensions/BillingFiscalField+Presentation.swift",
+      "sha256": "bd6390d58622a07f2a725dffdc693bcdcdda7d03c635b4c0eea8a79af0e05378"
+    },
+    {
+      "path": "FranAlonso/Features/Billing/Presentation/Screens/BillingScreen.swift",
+      "sha256": "6c0adf287fab3fffee8e643cfe402ed6721e66983223146942a8621a105a43c4"
+    },
+    {
+      "path": "FranAlonso/Features/Billing/Presentation/ViewModels/BillingFormIssue.swift",
+      "sha256": "640c1644dcdfec0f30acf6ec39780307df9e76210e06f593b1df84aecb6da4b5"
+    },
+    {
+      "path": "FranAlonso/Features/Billing/Presentation/ViewModels/BillingViewModel.swift",
+      "sha256": "549835fee8c56a3863b18f94ad2280a88af36621f158a7f048e8768425d45433"
+    },
+    {
+      "path": "FranAlonso/Features/Billing/Presentation/Views/BillingFiscalFields.swift",
+      "sha256": "eb073842f07af07a38a0a3749cfca03c6d82d28bbad6cd8b87729c73eebd543e"
+    },
+    {
+      "path": "FranAlonso/Features/Billing/Presentation/Views/BillingPreparedContent.swift",
+      "sha256": "4cf65df532b3a067dffd5f27ce3acd775fe4f6e4ff01966e0b598ae7b449ed47"
+    },
+    {
+      "path": "FranAlonso/Features/Billing/Presentation/Views/BillingSelectionContent.swift",
+      "sha256": "e2ecd70f3a87c5ab50e4b1021c4501df2dc0bd35e32e718e7915d29653bce55b"
+    },
+    {
+      "path": "FranAlonso/Features/Sales/Presentation/Navigation/BillingDocumentDestination.swift",
+      "sha256": "fb430c5a1e1f6d436e7e46196ab2446b537ac0b0831ac9ea68a9779b105a28b9"
+    },
+    {
+      "path": "FranAlonso/Features/Sales/Presentation/Screens/SaleDraftScreen.swift",
+      "sha256": "02988d82a0a10c9d208d152c5ec2ceb50dc537f2e560306dc8e2884c32b75a26"
+    },
+    {
+      "path": "FranAlonso/Features/Sales/Presentation/Screens/WorkdayScreen.swift",
+      "sha256": "98fc5c747d3f1bbcdca5c7a4b0777b183947c24c354e64eb52701357eb2c44ee"
+    },
+    {
+      "path": "FranAlonso/Features/Sales/Presentation/ViewModels/SaleDraftViewModel.swift",
+      "sha256": "7e9ed4394981b24183b2684881313399e9a36c025a112e8292d60a99a4e746be"
+    },
+    {
+      "path": "FranAlonso/Features/Sales/Presentation/Views/SaleDraftContent.swift",
+      "sha256": "3ae662558f64a585c6d6887ba2831abc22e3e41479a5b57ea54fd27e205e96b8"
+    },
+    {
+      "path": "FranAlonso/Features/Sales/Presentation/Views/SaleWorkflowSection.swift",
+      "sha256": "52ad024d1e22d6107bb5a38a80d1c60395b96e35d23d36f2b03031a2957f31bc"
+    },
+    {
+      "path": "FranAlonsoTests/BillingFiscalRecipientTests.swift",
+      "sha256": "4c52abb410365990ec0afa80a96fe96eecd11070cc1a12d661717834ea69a1c6"
+    },
+    {
+      "path": "FranAlonsoTests/BillingFiscalRequestDTOTests.swift",
+      "sha256": "419834d38d2c0bb86fd8c3f447e91aa7691009a5a2b81e76df9de511e7fa39d7"
+    },
+    {
+      "path": "FranAlonsoTests/BillingFiscalRequestTransactionTests.swift",
+      "sha256": "e6e1fad21a48c50cc186c56e3cf434b36ce4fe0bd6e131dc553598841cbab301"
+    },
+    {
+      "path": "FranAlonsoTests/BillingFormPresentationFixtures.swift",
+      "sha256": "04d1d4bdac8a10a65910481b1ff761f77c5607e89b4d50320600141085170d8a"
+    },
+    {
+      "path": "FranAlonsoTests/BillingSelectionViewModelTests.swift",
+      "sha256": "9392778a7abdd1b7a291f62fe5f653c34102bd9dfa5e382a064a43c62951b14f"
+    },
+    {
+      "path": "FranAlonsoTests/BillingTransactionFixtures.swift",
+      "sha256": "60e3bca23b73c1c9a78140229e61ec2d4e6049c49fe46df79feaa19fb1dc41d9"
+    },
+    {
+      "path": "FranAlonsoTests/FirestoreBillingDocumentReservationTests.swift",
+      "sha256": "31042afa9b16c9e03e3e9621d815a870c0b7fbfdda27590b40b2df6af228a057"
+    },
+    {
+      "path": "FranAlonsoTests/SaleBillingNavigationTests.swift",
+      "sha256": "6de652c3f8666b574e81aa568c56ac8f62137d50613c5a5586151d04ad6b1f1c"
+    }
+  ],
+  "previewSourceStateAtCapture": "18 original representative renders 2026-10-03 14:33-14:37 Europe/Madrid, before setter equality guard/explicit labels and before delayed prefill correction.",
+  "sourceChangesSinceRepresentativePreviews": [
+    {
+      "path": "FranAlonso/Features/Billing/Presentation/ViewModels/BillingViewModel.swift",
+      "previousSHA256": "549835fee8c56a3863b18f94ad2280a88af36621f158a7f048e8768425d45433",
+      "finalSHA256": "2b6fa4a085a23ef5f2e733187f621ca38aef81f0fd4948620f32f73a13e23f39",
+      "postSetterLabelSHA256": "55ea9b3c6506f52be88f067ad7b2f76cc066bac8e022a015016f9a4bd50055e3",
+      "postSetterLabelSourceDate": "2026-10-03 before prefill correction; hash retained for 15:02:43 recapture provenance"
+    },
+    {
+      "path": "FranAlonso/Features/Billing/Presentation/Views/BillingFiscalFields.swift",
+      "previousSHA256": "eb073842f07af07a38a0a3749cfca03c6d82d28bbad6cd8b87729c73eebd543e",
+      "finalSHA256": "8aae7c6e275af9caba6783aa5c7306be21beba6075df596963300ed2a2c7094f",
+      "postSetterLabelSHA256": "8aae7c6e275af9caba6783aa5c7306be21beba6075df596963300ed2a2c7094f",
+      "postSetterLabelSourceDate": "2026-10-03 before prefill correction; hash retained for 15:02:43 recapture provenance"
+    },
+    {
+      "path": "FranAlonsoTests/BillingSelectionViewModelTests.swift",
+      "previousSHA256": "9392778a7abdd1b7a291f62fe5f653c34102bd9dfa5e382a064a43c62951b14f",
+      "finalSHA256": "afe5fa7be81f2005b8e81aa7cfb53131f7f0af04341a719fb66c91404109d2ad",
+      "postSetterLabelSHA256": "b8651b3c0a76efdeacc95ba342a22a0a0fe414a4c381d973949839c565fa26fd",
+      "postSetterLabelSourceDate": "2026-10-03 before prefill correction; hash retained for 15:02:43 recapture provenance"
+    },
+    "Accepted prefill clears issue/validationID only when six draft values change; no visual layout change. Gated regression validates delayed changed/identical responses."
+  ],
+  "focalSemanticCorrection": {
+    "date": "2026-10-03",
+    "behavior": "An equal-value field write preserves the required error and validation focus intention; a changed value still clears validation. TextField accessibility label explicitly names the fiscal field.",
+    "limits": "Swift Testing proves model behavior only. Real focus, speech, accessibility tree and assistive operation remain pending in PLU-101.",
+    "affectedCriteria": [
+      "1.3.1",
+      "2.4.3",
+      "2.5.3",
+      "3.3.1",
+      "4.1.2",
+      "4.1.3"
+    ],
+    "rootReuseDecision": "Historical setter/label correction: 18 representative PNG reused by impact; 2 error Large/AX5 recaptures at15:02:43 after setter/label. All20previews precede later prefill correction and are reused after it by nonvisual impact; no post-prefill render attributed."
+  },
+  "focalTestEvidence": {
+    "test": "BillingSelectionViewModelTests/an unchanged field write preserves the required error and its validation focus intention",
+    "red": {
+      "result": "Failed 1/1 as expected",
+      "generatedUTC": "2026-10-03T12:53:39Z",
+      "originalPath": "/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RunSomeTests/F7A2DE00-064F-4A0E-BCA1-9B95007A41A3.txt",
+      "sha256": "109a203d2f063e786ff53935ee5ae96baabbe262fadaa4ca99903732527f19c7",
+      "observation": "Equal-value writes cleared required error and validation ID: three expected assertions failed."
+    },
+    "green": {
+      "result": "Passed 1/1, 0 issues",
+      "generatedUTC": "2026-10-03T12:59:48Z",
+      "originalPath": "/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RunSomeTests/E11760B2-9899-4D07-85EA-EFC40D75EACA.txt",
+      "sha256": "af38e7de67212a8b2f0b0fe34f71af0496c0f97202deb16404bb5c1435f410fb"
+    },
+    "global": "Passed: 2580 executions, 1577 declarations, 0 failures/skips/runtime warnings; root verified native bundle and exports."
+  },
+  "focalStyleReview": {
+    "result": "PASS",
+    "scope": "2Swift:prefillVM/newgatedregression",
+    "fileCount": 973,
+    "fingerprint": "05353597b6d8a4cd3754b21aafda9740cf1001232258b119ec1e8e603f056628",
+    "date": "2026-10-03",
+    "recallCandidates": 0
+  },
+  "representativeReusedPreviewCount": 18,
+  "finalRetestPreviewCount": 2,
+  "finalValidation": {
+    "affectedFocalPassed": 155,
+    "globalPassedExecutions": 2581,
+    "globalTotalExecutions": 2582,
+    "globalStatus": "Failed in three runs: historical StockSyncDurabilityTests:118; source unchanged",
+    "declarations": 1578,
+    "newDeclarations": 28,
+    "newCompletePassedCases": 59,
+    "globalBundle": "Test-FranAlonso-Develop-2026.10.03_15-29-31-+0200.xcresult",
+    "exports": [
+      "/tmp/franalonso-13-5-final-summary.json",
+      "/tmp/franalonso-13-5-final-tests.json"
+    ],
+    "developBuild": {
+      "elapsedSeconds": 11.15,
+      "log": "BuildProject-Log-20261003-152457.txt",
+      "appIntentsWarnings": 2
+    },
+    "productionBuild": {
+      "elapsedSeconds": 18.983,
+      "log": "BuildProject-Log-20261003-152711.txt",
+      "appIntentsWarnings": 1
+    },
+    "limits": "PASS of implementation scope does not prove a green global regression, integral accessibility or delivery."
+  },
+  "runtime": {
+    "status": "PASS_functional_smoke",
+    "device": "iPhone 17 Simulator 27.2",
+    "configuration": "es/Light/default Dynamic Type/software keyboard; no preference changes",
+    "completedAtUTC": "2026-10-03T13:07:17.954247+00:00",
+    "rawManifestPath": "/tmp/franalonso-13-5-runtime/manifest.json",
+    "rawManifestSHA256": "80875320f4dd5e67649f9e09576afe1e0f01f97f712a2056bc49ff8c84c461e2",
+    "rawArtifactCount": 51,
+    "method": "RocketSim touch/AX readback; PNG copied byte-for-byte; no VoiceOver, Inspector, contrast or physical claim",
+    "artifacts": [
+      {
+        "artifact": "runtime-34-retest-error.png",
+        "originalPath": "/tmp/franalonso-13-5-runtime/34-retest-error.png",
+        "sha256": "1589275836c54ac3b2e7dec2a4a71e50b5e627eda0723601e081a44b0dace66c",
+        "bytes": 457343
+      },
+      {
+        "artifact": "runtime-42-retest-invoice-prepared.png",
+        "originalPath": "/tmp/franalonso-13-5-runtime/42-retest-invoice-prepared.png",
+        "sha256": "36262740e01766c1de13b96a49b755de99a6118071dec50398b61b5d67070228",
+        "bytes": 232513
+      },
+      {
+        "artifact": "runtime-44-retest-ticket-prepared.png",
+        "originalPath": "/tmp/franalonso-13-5-runtime/44-retest-ticket-prepared.png",
+        "sha256": "00b6ddf4ceb0e3f882cf8a8236283e5abc76d4e4468ef97e0bf2d6cb2c968c89",
+        "bytes": 166643
+      },
+      {
+        "artifact": "runtime-47-retest-final-jornada.png",
+        "originalPath": "/tmp/franalonso-13-5-runtime/47-retest-final-jornada.png",
+        "sha256": "a0e50de647966a057c8540fa9218ba42139f9a6acb23efb857e91c003bcaea53",
+        "bytes": 483237
+      },
+      {
+        "artifact": "runtime-observations.json",
+        "originalPath": "/tmp/franalonso-13-5-runtime/observations.json",
+        "sha256": "567ffb05b798145c7407ba8354cb16ac38469fa0542b89d4746221ea8d88592b",
+        "bytes": 5104,
+        "transformation": "Removed transient live-preview URL/token and duplicate exactInvoiceRecipient payload; original observations retained in /tmp. All retained data is synthetic demo."
+      }
+    ],
+    "reuseAfterPrefillCorrection": "Reused by impact: normal prefill, labels, touch validation/editing, prepared summaries and navigation unchanged; suspended prefill after invalid preparation covered by new gated test, not runtime/AT."
+  },
+  "prePostValidation": {
+    "reportedBy": "root; native JSON summary read by documentary agent",
+    "date": "2026-10-03",
+    "global": {
+      "result": "Passed",
+      "executions": 2580,
+      "declarations": 1577,
+      "newDeclarations": 27,
+      "newCases": 57,
+      "failed": 0,
+      "skipped": 0,
+      "runtimeWarnings": [],
+      "nativeBundleOriginalPath": "/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RunAllTests/Test-FranAlonso-Develop-2026.10.03_15-00-49-+0200.xcresult",
+      "summaryExport": {
+        "originalPath": "/tmp/franalonso-13-5-final-summary.json",
+        "sha256": "edb4d34059b1a1bff7e3f01cb1785c3a52cf626925a79418e95ea1365806cc9f"
+      },
+      "testTreeExport": {
+        "originalPath": "/tmp/franalonso-13-5-final-tests.json",
+        "sha256": "b1ca0209efbe9582c5e9ed7024439fabd97428cb4726ee45d84e12aeb87edae2"
+      },
+      "device": {
+        "architecture": "arm64",
+        "deviceId": "3563CD53-4E05-4EFF-8F62-0F3ADBA384AE",
+        "deviceName": "iPad Pro 13-inch (M5)",
+        "modelName": "iPad Pro 13-inch (M5)",
+        "osBuildNumber": "24B5089g",
+        "osVersion": "27.2",
+        "platform": "iOS Simulator"
+      }
+    },
+    "builds": {
+      "method": "Xcode MCP; root-reported final build logs, incremental",
+      "Develop": {
+        "result": "Passed",
+        "seconds": 8.746,
+        "appIntentsMetadataProcessorWarnings": 2,
+        "SwiftClangDiagnostics": 0,
+        "errors": 0
+      },
+      "Production": {
+        "result": "Passed",
+        "seconds": 21.896,
+        "appIntentsMetadataProcessorWarnings": 1,
+        "SwiftClangDiagnostics": 0,
+        "errors": 0
+      },
+      "limits": "Known AppIntents metadata processor warnings remain; this is not a clean-build or zero-all-warnings claim."
+    },
+    "runtime": "PASS_functional_smoke for the bounded Large/es/Light iPhone17/27.2 touch flow; details and limits in runtime block. Assistive technologies, physical device and exhaustive preferences remain pending.",
+    "postReview": "Pending"
+  },
+  "postCorrections": {
+    "P2": "Accepted changed prefill clears stale issue/validationID; identical prefill retains them. RED1fail/1pass→GREEN3/3, two delayed cases; no automatic prepare/reserve.",
+    "P3": "Removed duplicate synthetic exactInvoiceRecipient payload from copied JSON; sanitizer text and artifact hashes now agree."
+  },
+  "postPrefillPreviewReuse": {
+    "previewCount": 20,
+    "reason": "Only accepted delayed prefill validation reconciliation changed; no layout/labels/fixture/static error state changed. Delayed case tested by gate; AT remains PLU-101.",
+    "capturedSourceHashes": "previewSourceManifestAtCapture for18representative previews; postSetterLabelSHA256 for2recaptures. Current source is swiftSourceManifest/finalSHA256."
+  },
+  "prePrefillStyleReview": {
+    "reportedBy": "root",
+    "result": "PASS",
+    "fileCount": 966,
+    "fingerprint": "fdb1349ad3c00a6d76037608701c59eaa1c71ffd099cce3bf19f32863b0660cd",
+    "date": "2026-10-03"
+  },
+  "postSetterLabelSourceManifestAtCapture": [
+    {
+      "path": "FranAlonso/App/Composition/Dependencies/AppDependencies+Billing.swift",
+      "sha256": "04825cfc47fe01b3634329ccd5e7a742473cb035819ebb802ab5831c6df0859a"
+    },
+    {
+      "path": "FranAlonso/App/Composition/Dependencies/AppDependencies.swift",
+      "sha256": "09539a98da2ef0164e7d0bf4b9968be117fd2b01410a317ec7c011ab9b4998e3"
+    },
+    {
+      "path": "FranAlonso/App/Presentation/Shell/AppShellScreen.swift",
+      "sha256": "ac6975d59227610808a81506e84720194c425126a87d86b1357567caeedf1d58"
+    },
+    {
+      "path": "FranAlonso/App/Previews/BillingPreviewFixtures.swift",
+      "sha256": "8b9cbc2e43b67764580ceb03f97043aacde5188697afad0c714bf55addb1e328"
+    },
+    {
+      "path": "FranAlonso/App/Previews/BillingPreviewModifier.swift",
+      "sha256": "ff1e3e1a5907e1904525a3da8f3a1b655dd0495f30c9c268200be01f813f610e"
+    },
+    {
+      "path": "FranAlonso/Features/Billing/Data/DTOs/BillingDocumentRecordDTO.swift",
+      "sha256": "e60d11de10f1a3bafb8237a2623b1ddf3d310263c3b9443326a94396f2ce73c1"
+    },
+    {
+      "path": "FranAlonso/Features/Billing/Data/Repositories/UnavailableBillingDocumentReservationRepository.swift",
+      "sha256": "cbe9e5aec89b936d71c6b29bcad045eeb05b702eade94d5f43a8cf67bf10be62"
+    },
+    {
+      "path": "FranAlonso/Features/Billing/Domain/Entities/BillingDocumentRequest.swift",
+      "sha256": "0f40e6243ed40877cab9e42f82544f54a142d5269b49ceaf70d668cfb66515f9"
+    },
+    {
+      "path": "FranAlonso/Features/Billing/Domain/UseCases/PrepareBillingDocumentRequestUseCase.swift",
+      "sha256": "51ee3048e5d65109655ebebe32d17d859d03ba778c26365920baee3264b7e514"
+    },
+    {
+      "path": "FranAlonso/Features/Billing/Domain/ValueObjects/BillingFiscalRecipient.swift",
+      "sha256": "0613b293483644f0ac404ccb35160043ef1ec01ccd1e19777f4c00f0cd4aa5c2"
+    },
+    {
+      "path": "FranAlonso/Features/Billing/Domain/ValueObjects/BillingFiscalRecipientInput.swift",
+      "sha256": "7c16630587e055a59fea2e95ec866f55b846e6eed313fa54f6268ad4c32119ca"
+    },
+    {
+      "path": "FranAlonso/Features/Billing/Presentation/Extensions/BillingFiscalField+Presentation.swift",
+      "sha256": "bd6390d58622a07f2a725dffdc693bcdcdda7d03c635b4c0eea8a79af0e05378"
+    },
+    {
+      "path": "FranAlonso/Features/Billing/Presentation/Screens/BillingScreen.swift",
+      "sha256": "6c0adf287fab3fffee8e643cfe402ed6721e66983223146942a8621a105a43c4"
+    },
+    {
+      "path": "FranAlonso/Features/Billing/Presentation/ViewModels/BillingFormIssue.swift",
+      "sha256": "640c1644dcdfec0f30acf6ec39780307df9e76210e06f593b1df84aecb6da4b5"
+    },
+    {
+      "path": "FranAlonso/Features/Billing/Presentation/ViewModels/BillingViewModel.swift",
+      "sha256": "55ea9b3c6506f52be88f067ad7b2f76cc066bac8e022a015016f9a4bd50055e3"
+    },
+    {
+      "path": "FranAlonso/Features/Billing/Presentation/Views/BillingFiscalFields.swift",
+      "sha256": "8aae7c6e275af9caba6783aa5c7306be21beba6075df596963300ed2a2c7094f"
+    },
+    {
+      "path": "FranAlonso/Features/Billing/Presentation/Views/BillingPreparedContent.swift",
+      "sha256": "4cf65df532b3a067dffd5f27ce3acd775fe4f6e4ff01966e0b598ae7b449ed47"
+    },
+    {
+      "path": "FranAlonso/Features/Billing/Presentation/Views/BillingSelectionContent.swift",
+      "sha256": "e2ecd70f3a87c5ab50e4b1021c4501df2dc0bd35e32e718e7915d29653bce55b"
+    },
+    {
+      "path": "FranAlonso/Features/Sales/Presentation/Navigation/BillingDocumentDestination.swift",
+      "sha256": "fb430c5a1e1f6d436e7e46196ab2446b537ac0b0831ac9ea68a9779b105a28b9"
+    },
+    {
+      "path": "FranAlonso/Features/Sales/Presentation/Screens/SaleDraftScreen.swift",
+      "sha256": "02988d82a0a10c9d208d152c5ec2ceb50dc537f2e560306dc8e2884c32b75a26"
+    },
+    {
+      "path": "FranAlonso/Features/Sales/Presentation/Screens/WorkdayScreen.swift",
+      "sha256": "98fc5c747d3f1bbcdca5c7a4b0777b183947c24c354e64eb52701357eb2c44ee"
+    },
+    {
+      "path": "FranAlonso/Features/Sales/Presentation/ViewModels/SaleDraftViewModel.swift",
+      "sha256": "7e9ed4394981b24183b2684881313399e9a36c025a112e8292d60a99a4e746be"
+    },
+    {
+      "path": "FranAlonso/Features/Sales/Presentation/Views/SaleDraftContent.swift",
+      "sha256": "3ae662558f64a585c6d6887ba2831abc22e3e41479a5b57ea54fd27e205e96b8"
+    },
+    {
+      "path": "FranAlonso/Features/Sales/Presentation/Views/SaleWorkflowSection.swift",
+      "sha256": "52ad024d1e22d6107bb5a38a80d1c60395b96e35d23d36f2b03031a2957f31bc"
+    },
+    {
+      "path": "FranAlonsoTests/BillingFiscalRecipientTests.swift",
+      "sha256": "4c52abb410365990ec0afa80a96fe96eecd11070cc1a12d661717834ea69a1c6"
+    },
+    {
+      "path": "FranAlonsoTests/BillingFiscalRequestDTOTests.swift",
+      "sha256": "419834d38d2c0bb86fd8c3f447e91aa7691009a5a2b81e76df9de511e7fa39d7"
+    },
+    {
+      "path": "FranAlonsoTests/BillingFiscalRequestTransactionTests.swift",
+      "sha256": "e6e1fad21a48c50cc186c56e3cf434b36ce4fe0bd6e131dc553598841cbab301"
+    },
+    {
+      "path": "FranAlonsoTests/BillingFormPresentationFixtures.swift",
+      "sha256": "04d1d4bdac8a10a65910481b1ff761f77c5607e89b4d50320600141085170d8a"
+    },
+    {
+      "path": "FranAlonsoTests/BillingSelectionViewModelTests.swift",
+      "sha256": "b8651b3c0a76efdeacc95ba342a22a0a0fe414a4c381d973949839c565fa26fd"
+    },
+    {
+      "path": "FranAlonsoTests/BillingTransactionFixtures.swift",
+      "sha256": "60e3bca23b73c1c9a78140229e61ec2d4e6049c49fe46df79feaa19fb1dc41d9"
+    },
+    {
+      "path": "FranAlonsoTests/FirestoreBillingDocumentReservationTests.swift",
+      "sha256": "31042afa9b16c9e03e3e9621d815a870c0b7fbfdda27590b40b2df6af228a057"
+    },
+    {
+      "path": "FranAlonsoTests/SaleBillingNavigationTests.swift",
+      "sha256": "6de652c3f8666b574e81aa568c56ac8f62137d50613c5a5586151d04ad6b1f1c"
+    }
+  ],
+  "postSetterLabelSourceStateAtCapture": "2 error recaptures 2026-10-03 15:02:43 Europe/Madrid, after setter equality guard/explicit labels and before delayed prefill correction.",
+  "currentSourceManifestBinding": "swiftSourceManifest",
+  "sourceRevisionProvenance": {
+    "original18": "previousSHA256→previewSourceManifestAtCapture",
+    "recapture2": "postSetterLabelSHA256→postSetterLabelSourceManifestAtCapture",
+    "current": "finalSHA256→swiftSourceManifest",
+    "scope": "Three paths differ across these captures/current revisions; other29Swift identical."
+  }
+}

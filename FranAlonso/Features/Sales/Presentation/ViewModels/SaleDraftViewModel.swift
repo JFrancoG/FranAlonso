@@ -36,6 +36,7 @@ final class SaleDraftViewModel {
     private(set) var inspectionState: InspectionState = .idle
     private(set) var servicePickerDestination: SaleServicePickerDestination?
     private(set) var discountDestination: SaleDiscountDestination?
+    private(set) var billingDestination: BillingDocumentDestination?
     private(set) var selectedPaymentMethod: PaymentMethod?
     private(set) var stockConfirmation: SaleStockConfirmation?
     private(set) var isPreparingPayment = false
@@ -160,6 +161,23 @@ final class SaleDraftViewModel {
     func finishDiscount(_ id: UUID) {
         guard discountDestination?.id == id else { return }
         discountDestination = nil
+    }
+
+    var canSelectBilling: Bool {
+        awaitsDocument && contentState == .ready && !isBusy && servicePickerDestination == nil
+            && discountDestination == nil && stockConfirmation == nil
+    }
+
+    /// Opens only the paid sale's document form; repeated presentation retains the same session.
+    func presentBilling() {
+        guard canSelectBilling, billingDestination == nil, let sale else { return }
+        billingDestination = BillingDocumentDestination(id: UUID(), saleID: sale.id)
+    }
+
+    /// A callback from an older form cannot dismiss a newer session or close its parent sale.
+    func finishBilling(_ id: UUID) {
+        guard billingDestination?.id == id else { return }
+        billingDestination = nil
     }
 
     func canIncrease(for id: SaleLineID) -> Bool {
@@ -326,6 +344,7 @@ final class SaleDraftViewModel {
         invalidatePayment()
         servicePickerDestination = nil
         discountDestination = nil
+        billingDestination = nil
         inspectionGeneration = nil
         contentGeneration = nil
         clientNameGeneration = nil

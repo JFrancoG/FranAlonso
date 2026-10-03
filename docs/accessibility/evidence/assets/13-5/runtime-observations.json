@@ -1,0 +1,108 @@
+{
+  "phase": "13.5",
+  "status": "PASS_functional_smoke",
+  "completedAtUTC": "2026-10-03T13:07:17.954247+00:00",
+  "udid": "0B3A9F32-B9D5-4ED5-A13F-CB66F7917E75",
+  "device": "iPhone 17 Simulator 27.2",
+  "bundle": "com.plusprojects.FranAlonso.develop",
+  "launchArgument": "--franalonso-demo-workday",
+  "cli": "/opt/homebrew/bin/rocketsim",
+  "buildProvenance": "Root reports Xcode MCP iPhone17 build PASS12.543s at15:00:01, installed and fresh launch PID2172; this runtime agent did not build/install/launch.",
+  "configuration": "Existing Develop in-memory synthetic demo, Spanish UI and software keyboard. No network or global preference changes.",
+  "passed": [
+    {
+      "behavior": "Jornada paid sale navigation and document entry",
+      "artifact": "32-retest-invoice.json"
+    },
+    {
+      "behavior": "Original selector defaults Ticket, Cancel returns same paid detail, reopen works",
+      "artifact": "19-cancel-reopen-invoice-menu.json",
+      "revision": "pre-fix, unchanged navigation scope"
+    },
+    {
+      "behavior": "Invoice prefills associated synthetic client name only",
+      "artifact": "32-retest-invoice.json"
+    },
+    {
+      "behavior": "All six text fields expose Spanish labels in RocketSim AX",
+      "artifact": "33-retest-error.json"
+    },
+    {
+      "behavior": "Invalid Prepare preserves textual required fiscal identifier error after receiving keyboard focus, before typing",
+      "artifacts": [
+        "33-retest-error.json",
+        "34-retest-error.png"
+      ]
+    },
+    {
+      "behavior": "Correcting first required field clears error while preserving exact value DEMO123",
+      "artifact": "35-retest-tax.json"
+    },
+    {
+      "behavior": "Each typed field read back at correct exact value; scroll performed inside visible body before covered field focus",
+      "artifacts": [
+        "36-retest-street.json",
+        "37-retest-postal.json",
+        "38-retest-scroll-city.json",
+        "39-retest-city.json",
+        "40-retest-province.json"
+      ]
+    },
+    {
+      "behavior": "Invoice preparation shows exact six immutable-looking summary fields and removes editing controls",
+      "artifacts": [
+        "41-retest-invoice-prepared.json",
+        "42-retest-invoice-prepared.png"
+      ],
+      "limit": "Runtime summary has no text fields or editable selector; request immutability itself requires Domain/ViewModel tests."
+    },
+    {
+      "behavior": "Invoice Close preserves paid pending-document parent at24.20EUR; new selector defaults Ticket; Ticket prepares without fiscal form",
+      "artifacts": [
+        "43-retest-parent-and-ticket.json",
+        "44-retest-ticket-prepared.png"
+      ]
+    },
+    {
+      "behavior": "Final Close returns Jornada with same paid DEMO Alba pending document row dated21sept202616:19",
+      "artifacts": [
+        "46-retest-final-jornada.json",
+        "47-retest-final-jornada.png"
+      ]
+    }
+  ],
+  "previousDefect": {
+    "observation": "Pre-fix Prepare focused field but required message disappeared before user edit; text fields lacked AX labels",
+    "fixReportedByRoot": "Same-value input guard and explicit TextField accessibilityLabel; RED1/1FAIL thenGREEN1/1PASS",
+    "retest": "PASS; error persists visually and AX, all six AX labels present",
+    "preFixArtifacts": [
+      "22-invoice-validation-error.json",
+      "23-invoice-error.png",
+      "24-invoice-error-visible.json",
+      "29-paused-debug.json"
+    ],
+    "retestArtifacts": [
+      "33-retest-error.json",
+      "34-retest-error.png"
+    ]
+  },
+  "limits": [
+    "Functional touch smoke only, no VoiceOver/TalkBack/SwitchControl/FullKeyboardAccess or physical device claim",
+    "RocketSim reports keyboard hidden while original screenshot shows software keyboard; keyboard flag was not used as oracle",
+    "HID punctuation uses Spanish simulator layout; synthetic auth used onscreen @ and hyphen keys",
+    "Pre-fix attempts focusing covered offscreen fields caused automation input contamination; corrected by fresh root launch and per-field readback in retest",
+    "RocketSim selectors are contains-based; final Cerrar also matched background Cerrar sesión and was safely disambiguated by reading-order index2, without signing out",
+    "No runtime proof of underlying reservation/repository call counts; visible flow exposes no counter, number, PDF, or sale-closing action. Domain/ViewModel tests owned by root provide IO/state invariants",
+    "No exhaustive accessibility, layout, localization, orientation or physical assistive technology claim"
+  ],
+  "finalState": "Jornada, paid DEMO Alba pending document, no modal open; synthetic app remains running.",
+  "actionsExcluded": [
+    "No repository edits",
+    "No Git/Linear/Xcode actions",
+    "No real authentication credentials",
+    "No Apple Account settings",
+    "No saving credentials",
+    "No global simulator preferences/network changes"
+  ],
+  "sanitization": "Removed transient live-preview URL/token and duplicate exactInvoiceRecipient payload; original observations retained in /tmp. All retained data is synthetic demo."
+}

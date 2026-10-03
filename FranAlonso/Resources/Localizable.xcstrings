@@ -1,6 +1,546 @@
 {
   "sourceLanguage" : "es",
   "strings" : {
+  "billing.selection.open": {
+    "comment": "Paid sale document selection and fiscal-recipient form.",
+    "extractionState": "manual",
+    "localizations": {
+      "es": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Seleccionar documento"
+        }
+      },
+      "en": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Select document"
+        }
+      }
+    }
+  },
+  "billing.selection.title": {
+    "comment": "Paid sale document selection and fiscal-recipient form.",
+    "extractionState": "manual",
+    "localizations": {
+      "es": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Documento"
+        }
+      },
+      "en": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Document"
+        }
+      }
+    }
+  },
+  "billing.selection.instructions": {
+    "comment": "Paid sale document selection and fiscal-recipient form.",
+    "extractionState": "manual",
+    "localizations": {
+      "es": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Elige el documento para esta venta pagada."
+        }
+      },
+      "en": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Choose the document for this paid sale."
+        }
+      }
+    }
+  },
+  "billing.selection.kind": {
+    "comment": "Paid sale document selection and fiscal-recipient form.",
+    "extractionState": "manual",
+    "localizations": {
+      "es": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Tipo de documento"
+        }
+      },
+      "en": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Document type"
+        }
+      }
+    }
+  },
+  "billing.kind.ticket": {
+    "comment": "Paid sale document selection and fiscal-recipient form.",
+    "extractionState": "manual",
+    "localizations": {
+      "es": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Ticket"
+        }
+      },
+      "en": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Receipt"
+        }
+      }
+    }
+  },
+  "billing.kind.invoice": {
+    "comment": "Paid sale document selection and fiscal-recipient form.",
+    "extractionState": "manual",
+    "localizations": {
+      "es": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Factura"
+        }
+      },
+      "en": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Invoice"
+        }
+      }
+    }
+  },
+  "billing.selection.ticket.message": {
+    "comment": "Paid sale document selection and fiscal-recipient form.",
+    "extractionState": "manual",
+    "localizations": {
+      "es": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "El ticket no necesita destinatario fiscal."
+        }
+      },
+      "en": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "A receipt does not need a fiscal recipient."
+        }
+      }
+    }
+  },
+  "billing.selection.prepare": {
+    "comment": "Paid sale document selection and fiscal-recipient form.",
+    "extractionState": "manual",
+    "localizations": {
+      "es": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Preparar documento"
+        }
+      },
+      "en": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Prepare document"
+        }
+      }
+    }
+  },
+  "billing.selection.cancel": {
+    "comment": "Paid sale document selection and fiscal-recipient form.",
+    "extractionState": "manual",
+    "localizations": {
+      "es": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Cancelar"
+        }
+      },
+      "en": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Cancel"
+        }
+      }
+    }
+  },
+  "billing.selection.close": {
+    "comment": "Paid sale document selection and fiscal-recipient form.",
+    "extractionState": "manual",
+    "localizations": {
+      "es": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Cerrar"
+        }
+      },
+      "en": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Close"
+        }
+      }
+    }
+  },
+  "billing.selection.unavailable.title": {
+    "comment": "Paid sale document selection and fiscal-recipient form.",
+    "extractionState": "manual",
+    "localizations": {
+      "es": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "La venta ya no está disponible"
+        }
+      },
+      "en": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "The sale is no longer available"
+        }
+      }
+    }
+  },
+  "billing.selection.unavailable.message": {
+    "comment": "Paid sale document selection and fiscal-recipient form.",
+    "extractionState": "manual",
+    "localizations": {
+      "es": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Cierra este formulario y vuelve a abrir la venta desde Jornada."
+        }
+      },
+      "en": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Close this form and open the sale again from Workday."
+        }
+      }
+    }
+  },
+  "billing.fiscal.title": {
+    "comment": "Paid sale document selection and fiscal-recipient form.",
+    "extractionState": "manual",
+    "localizations": {
+      "es": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Destinatario de la factura"
+        }
+      },
+      "en": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Invoice recipient"
+        }
+      }
+    }
+  },
+  "billing.fiscal.instructions": {
+    "comment": "Paid sale document selection and fiscal-recipient form.",
+    "extractionState": "manual",
+    "localizations": {
+      "es": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Completa todos los campos. Puedes corregir los datos del cliente antes de preparar la factura."
+        }
+      },
+      "en": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Complete every field. You can correct the client details before preparing the invoice."
+        }
+      }
+    }
+  },
+  "billing.fiscal.required": {
+    "comment": "Paid sale document selection and fiscal-recipient form.",
+    "extractionState": "manual",
+    "localizations": {
+      "es": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Campo obligatorio"
+        }
+      },
+      "en": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Required field"
+        }
+      }
+    }
+  },
+  "billing.fiscal.loading": {
+    "comment": "Paid sale document selection and fiscal-recipient form.",
+    "extractionState": "manual",
+    "localizations": {
+      "es": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Cargando datos del cliente…"
+        }
+      },
+      "en": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Loading client details…"
+        }
+      }
+    }
+  },
+  "billing.fiscal.displayName": {
+    "comment": "Paid sale document selection and fiscal-recipient form.",
+    "extractionState": "manual",
+    "localizations": {
+      "es": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Nombre o razón social"
+        }
+      },
+      "en": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Name or business name"
+        }
+      }
+    }
+  },
+  "billing.fiscal.taxIdentifier": {
+    "comment": "Paid sale document selection and fiscal-recipient form.",
+    "extractionState": "manual",
+    "localizations": {
+      "es": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Identificador fiscal"
+        }
+      },
+      "en": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Tax identifier"
+        }
+      }
+    }
+  },
+  "billing.fiscal.streetLine": {
+    "comment": "Paid sale document selection and fiscal-recipient form.",
+    "extractionState": "manual",
+    "localizations": {
+      "es": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Calle y número"
+        }
+      },
+      "en": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Street and number"
+        }
+      }
+    }
+  },
+  "billing.fiscal.postalCode": {
+    "comment": "Paid sale document selection and fiscal-recipient form.",
+    "extractionState": "manual",
+    "localizations": {
+      "es": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Código postal"
+        }
+      },
+      "en": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Postal code"
+        }
+      }
+    }
+  },
+  "billing.fiscal.city": {
+    "comment": "Paid sale document selection and fiscal-recipient form.",
+    "extractionState": "manual",
+    "localizations": {
+      "es": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Ciudad"
+        }
+      },
+      "en": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "City"
+        }
+      }
+    }
+  },
+  "billing.fiscal.province": {
+    "comment": "Paid sale document selection and fiscal-recipient form.",
+    "extractionState": "manual",
+    "localizations": {
+      "es": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Provincia"
+        }
+      },
+      "en": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Province or state"
+        }
+      }
+    }
+  },
+  "billing.fiscal.error.displayName": {
+    "comment": "Paid sale document selection and fiscal-recipient form.",
+    "extractionState": "manual",
+    "localizations": {
+      "es": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Introduce el nombre o la razón social."
+        }
+      },
+      "en": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Enter the name or business name."
+        }
+      }
+    }
+  },
+  "billing.fiscal.error.taxIdentifier": {
+    "comment": "Paid sale document selection and fiscal-recipient form.",
+    "extractionState": "manual",
+    "localizations": {
+      "es": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Introduce el identificador fiscal."
+        }
+      },
+      "en": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Enter the tax identifier."
+        }
+      }
+    }
+  },
+  "billing.fiscal.error.streetLine": {
+    "comment": "Paid sale document selection and fiscal-recipient form.",
+    "extractionState": "manual",
+    "localizations": {
+      "es": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Introduce la calle y el número."
+        }
+      },
+      "en": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Enter the street and number."
+        }
+      }
+    }
+  },
+  "billing.fiscal.error.postalCode": {
+    "comment": "Paid sale document selection and fiscal-recipient form.",
+    "extractionState": "manual",
+    "localizations": {
+      "es": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Introduce el código postal."
+        }
+      },
+      "en": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Enter the postal code."
+        }
+      }
+    }
+  },
+  "billing.fiscal.error.city": {
+    "comment": "Paid sale document selection and fiscal-recipient form.",
+    "extractionState": "manual",
+    "localizations": {
+      "es": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Introduce la ciudad."
+        }
+      },
+      "en": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Enter the city."
+        }
+      }
+    }
+  },
+  "billing.fiscal.error.province": {
+    "comment": "Paid sale document selection and fiscal-recipient form.",
+    "extractionState": "manual",
+    "localizations": {
+      "es": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Introduce la provincia."
+        }
+      },
+      "en": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Enter the province or state."
+        }
+      }
+    }
+  },
+  "billing.prepared.title": {
+    "comment": "Paid sale document selection and fiscal-recipient form.",
+    "extractionState": "manual",
+    "localizations": {
+      "es": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Datos del documento preparados"
+        }
+      },
+      "en": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Document details prepared"
+        }
+      }
+    }
+  },
+  "billing.prepared.message": {
+    "comment": "Paid sale document selection and fiscal-recipient form.",
+    "extractionState": "manual",
+    "localizations": {
+      "es": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "La venta seguirá pendiente hasta emitir el documento. Puedes cerrar y volver a Jornada."
+        }
+      },
+      "en": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "The sale will remain pending until the document is issued. You can close this screen and return to Workday."
+        }
+      }
+    }
+  },
   "sales.workflow.title": {
     "comment": "Sale workflow and non-blocking stock confirmation.",
     "extractionState": "manual",

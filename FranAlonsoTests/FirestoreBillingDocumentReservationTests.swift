@@ -480,7 +480,7 @@ struct FirestoreBillingDocumentReservationTests {
             var nested = try #require(fields["request"] as? [String: Any])
             switch corruption {
             case .requestVersion:
-                nested["payloadVersion"] = 2
+                nested["payloadVersion"] = 3
             case .requestIdentity:
                 nested["id"] = "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"
             case .documentIdentity:

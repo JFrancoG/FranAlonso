@@ -15,7 +15,8 @@ struct AppShellScreen: View {
                         makeViewModel: dependencies.makeWorkday,
                         makeSaleDraft: dependencies.makeSaleDraft,
                         makeServicePicker: dependencies.makeSaleServicePicker,
-                        makeDiscount: dependencies.makeSaleDiscount
+                        makeDiscount: dependencies.makeSaleDiscount,
+                        makeBilling: dependencies.makeBilling
                     )
                         .toolbar {
                             signOutToolbar

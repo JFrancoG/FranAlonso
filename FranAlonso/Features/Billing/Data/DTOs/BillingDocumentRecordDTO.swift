@@ -1,6 +1,58 @@
 import Foundation
 
-/// Versioned, exact transport of the immutable paid request; Sale retains its own payload version.
+/// The complete application-recipient fields carried only by invoice request payload version two.
+struct BillingFiscalRecipientDTO: Codable, Equatable {
+    let displayName: String
+    let taxIdentifier: String
+    let streetLine: String
+    let postalCode: String
+    let city: String
+    let province: String
+
+    private enum CodingKeys: String, CodingKey, CaseIterable {
+        case displayName, taxIdentifier, streetLine, postalCode, city, province
+    }
+}
+
+extension BillingFiscalRecipientDTO {
+    init(from decoder: any Decoder) throws {
+        try requireBillingPayloadKeys(decoder, allowed: CodingKeys.allCases.map(\.rawValue))
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.init(
+            displayName: try container.decode(String.self, forKey: .displayName),
+            taxIdentifier: try container.decode(String.self, forKey: .taxIdentifier),
+            streetLine: try container.decode(String.self, forKey: .streetLine),
+            postalCode: try container.decode(String.self, forKey: .postalCode),
+            city: try container.decode(String.self, forKey: .city),
+            province: try container.decode(String.self, forKey: .province)
+        )
+    }
+
+    init(_ recipient: BillingFiscalRecipient) {
+        self.init(
+            displayName: recipient.displayName,
+            taxIdentifier: recipient.taxIdentifier,
+            streetLine: recipient.billingAddress.streetLine,
+            postalCode: recipient.billingAddress.postalCode,
+            city: recipient.billingAddress.city,
+            province: recipient.billingAddress.province
+        )
+    }
+
+    func toDomain() throws -> BillingFiscalRecipient {
+        try BillingFiscalRecipient(BillingFiscalRecipientInput(
+            displayName: displayName,
+            taxIdentifier: taxIdentifier,
+            streetLine: streetLine,
+            postalCode: postalCode,
+            city: city,
+            province: province
+        ))
+    }
+}
+
+/// Exact paid-request transport: v1 has no recipient; v2 carries a complete invoice recipient.
+/// Sale retains its own independent payload version.
 struct BillingDocumentRequestDTO: Codable, Equatable {
     let payloadVersion: Int
     let id: String
@@ -8,47 +60,67 @@ struct BillingDocumentRequestDTO: Codable, Equatable {
     let kind: BillingDocumentKind
     let requestedAt: SaleTimestampDTO
     let sale: SaleDTO
+    var fiscalRecipient: BillingFiscalRecipientDTO? = nil
 
     private enum CodingKeys: String, CodingKey, CaseIterable {
-        case payloadVersion, id, documentID, kind, requestedAt, sale
+        case payloadVersion, id, documentID, kind, requestedAt, sale, fiscalRecipient
     }
 }
 
 extension BillingDocumentRequestDTO {
     init(from decoder: any Decoder) throws {
-        try requireBillingPayloadKeys(decoder, allowed: CodingKeys.allCases.map(\.rawValue))
         let container = try decoder.container(keyedBy: CodingKeys.self)
+        let version = try container.decode(Int.self, forKey: .payloadVersion)
+        let allowedKeys: [String]
+        switch version {
+        case 2:
+            allowedKeys = CodingKeys.allCases.map(\.rawValue)
+        default:
+            allowedKeys = CodingKeys.allCases.filter { $0 != .fiscalRecipient }.map(\.rawValue)
+        }
+        try requireBillingPayloadKeys(decoder, allowed: allowedKeys)
+        let recipient = version == 2
+            ? try container.decode(BillingFiscalRecipientDTO.self, forKey: .fiscalRecipient) : nil
         self.init(
-            payloadVersion: try container.decode(Int.self, forKey: .payloadVersion),
+            payloadVersion: version,
             id: try container.decode(String.self, forKey: .id),
             documentID: try container.decode(String.self, forKey: .documentID),
             kind: try container.decode(BillingDocumentKind.self, forKey: .kind),
             requestedAt: try container.decode(SaleTimestampDTO.self, forKey: .requestedAt),
-            sale: try container.decode(SaleDTO.self, forKey: .sale)
+            sale: try container.decode(SaleDTO.self, forKey: .sale),
+            fiscalRecipient: recipient
         )
+        if version == 2 {
+            _ = try toDomain()
+        }
     }
 
     init(_ request: BillingDocumentRequest) throws {
         self.init(
-            payloadVersion: 1,
+            payloadVersion: request.fiscalRecipient == nil ? 1 : 2,
             id: request.id.rawValue.uuidString,
             documentID: request.documentID.rawValue.uuidString,
             kind: request.kind,
             requestedAt: try SaleTimestampDTO(request.requestedAt),
-            sale: try SaleDTO(request.sale)
+            sale: try SaleDTO(request.sale),
+            fiscalRecipient: request.fiscalRecipient.map { BillingFiscalRecipientDTO($0) }
         )
     }
 
-    /// Revalidates the paid lifecycle, exact timestamps, commercial snapshot and canonical path identities.
+    /// Revalidates lifecycle, exact timestamps, canonical identities and the version-specific recipient contract.
     func toDomain() throws -> BillingDocumentRequest {
-        guard payloadVersion == 1 else { throw BillingDocumentReservationError.invalidResponse }
+        guard payloadVersion == 1 && fiscalRecipient == nil
+                || payloadVersion == 2 && kind == .invoice && fiscalRecipient != nil else {
+            throw BillingDocumentReservationError.invalidResponse
+        }
         do {
             return try BillingDocumentRequest(
                 id: BillingDocumentRequestID(rawValue: billingTransportUUID(id)),
                 documentID: BillingDocumentID(rawValue: billingTransportUUID(documentID)),
                 sale: sale.toDomain(),
                 kind: kind,
-                requestedAt: requestedAt.date
+                requestedAt: requestedAt.date,
+                fiscalRecipient: fiscalRecipient?.toDomain()
             )
         } catch {
             throw BillingDocumentReservationError.invalidResponse
