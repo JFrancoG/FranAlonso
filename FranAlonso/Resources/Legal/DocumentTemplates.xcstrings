@@ -1350,6 +1350,222 @@
           }
         }
       }
+    },
+    "billing.pdf.unit_price": {
+      "comment": "Etiqueta semántica de la proyección PDF de ticket/factura; el fondo actual usa español.",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Precio unitario"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unit price"
+          }
+        }
+      }
+    },
+    "billing.pdf.tax_rate": {
+      "comment": "Etiqueta semántica de la proyección PDF de ticket/factura; el fondo actual usa español.",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tipo IVA"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "VAT rate"
+          }
+        }
+      }
+    },
+    "billing.pdf.line_promotion": {
+      "comment": "Etiqueta semántica de la proyección PDF de ticket/factura; el fondo actual usa español.",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Promoción de línea"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Line promotion"
+          }
+        }
+      }
+    },
+    "billing.pdf.global_discount": {
+      "comment": "Etiqueta semántica de la proyección PDF de ticket/factura; el fondo actual usa español.",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Descuento global"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Global discount"
+          }
+        }
+      }
+    },
+    "billing.pdf.absent_discount": {
+      "comment": "Etiqueta semántica de la proyección PDF de ticket/factura; el fondo actual usa español.",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ausente"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Absent"
+          }
+        }
+      }
+    },
+    "billing.pdf.subtotal": {
+      "comment": "Etiqueta semántica de la proyección PDF de ticket/factura; el fondo actual usa español.",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Subtotal"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Subtotal"
+          }
+        }
+      }
+    },
+    "billing.pdf.taxable_base": {
+      "comment": "Etiqueta semántica de la proyección PDF de ticket/factura; el fondo actual usa español.",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Base"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Taxable base"
+          }
+        }
+      }
+    },
+    "billing.pdf.tax_amount": {
+      "comment": "Etiqueta semántica de la proyección PDF de ticket/factura; el fondo actual usa español.",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "IVA calculado"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Calculated VAT"
+          }
+        }
+      }
+    },
+    "billing.pdf.line_amount": {
+      "comment": "Etiqueta semántica de la proyección PDF de ticket/factura; el fondo actual usa español.",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dto. línea"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Line discount amount"
+          }
+        }
+      }
+    },
+    "billing.pdf.global_amount": {
+      "comment": "Etiqueta semántica de la proyección PDF de ticket/factura; el fondo actual usa español.",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dto. global"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Global discount amount"
+          }
+        }
+      }
+    },
+    "billing.pdf.continuation": {
+      "comment": "Etiqueta semántica de la proyección PDF de ticket/factura; el fondo actual usa español.",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Continúa. Totales de la venta en la última página."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Continued. Sale totals are on the last page."
+          }
+        }
+      }
+    },
+    "billing.pdf.page": {
+      "comment": "Etiqueta semántica de la proyección PDF de ticket/factura; el fondo actual usa español.",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Página"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Page"
+          }
+        }
+      }
     }
   },
   "version": "1.0"

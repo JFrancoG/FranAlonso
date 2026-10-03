@@ -536,6 +536,18 @@
     "NSFaceIDUsageDescription"
   ],
   "DocumentTemplates": [
+    "billing.pdf.absent_discount",
+    "billing.pdf.continuation",
+    "billing.pdf.global_amount",
+    "billing.pdf.global_discount",
+    "billing.pdf.line_amount",
+    "billing.pdf.line_promotion",
+    "billing.pdf.page",
+    "billing.pdf.subtotal",
+    "billing.pdf.tax_amount",
+    "billing.pdf.tax_rate",
+    "billing.pdf.taxable_base",
+    "billing.pdf.unit_price",
     "business.tax_identifier.label",
     "consent.details.additional.heading",
     "consent.details.additional.text",
