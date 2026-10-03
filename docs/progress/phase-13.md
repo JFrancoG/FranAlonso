@@ -1,5 +1,69 @@
 # Fase13 — Facturación, PDF, correo y numeración
 
+## 13.8 / PLU-104 — Preparación de entrega funcional autorizada
+
+03/10/2026: «commit, push y entrega» autoriza el circuito establecido de commit/push/PR/revisión/merge,
+cierre funcional dePLU-104 y eliminación segura de la rama integrada. Fase13/proyecto siguen abiertos;
+sin live ni inicio13.9. main/origin/main910e3e6,0divergencia; sin PR13.8 previa.
+Método merge commit permitido; main sin protección/rulesets/workflows configurados: no acredita CI.
+PLU-104 In Progress antes de publicar. Preservar criterios y deuda antes del merge que puede cerrar la issue.
+
+Reutilizados por identidad13Swift y recursos: TDD RED40+17,59nuevos completos/13grupos,
+148focalizados/28grupos y2744globales PASS; buildsDevelop/Production y13Swift0diagnósticos,
+PRE/POST/estilo/PDF independientes PASS. Manifest final
+`c7962b6bdd1cb8952bd2e8bd508ed08dec1b10aee7a954d5ed7cad183b9b6908`.
+Sin cambios de ejecutables/configuración/recursos tras validación; Xcode nuevo N/A para metadatos de entrega.
+619textos/0errores;2/1AppIntents y6linksDesktop08.3 históricos. Stock118 intacto, no corregido/estable.
+PDF visual:27páginas reales con fixtures sintéticas; no AT/PDF-UA/fiscalidad/protección física acreditados.
+UI N/A sin cambios SwiftUI; PLU-101 Backlog/Jesus/feedback-estabilización antes de uso real,
+protección13.6 limitada/pending por separado. Sin nuevos aplazamientos.13.9 permanece gate separado.
+
+Preparación de entrega independiente `billing_13_8_delivery` PASS sinP0–P3;
+1010archivos inicial/final/revisor/root idénticos:
+`8f51c41bbbcd62618737fa88f4aafd67b298ad12600e970a003332bca566e79a`.
+Tras freeze solo se registra el dictamen; fuentes/recursos mantienen identidad probada.
+Revisión remota focal del PR/head/diff exactos pendiente antes de integrar.
+
+## 13.8 — Historial de implementación local
+
+03/10/2026 «abre issue y rama e implementa13.8»: issue In Progress/Jesus Franco,
+rama `codex/plu-104-billing-ticket-invoice-rendering` desde main/origin/main910e3e6 limpio.
+[Propuesta exacta](13-8-billing-document-rendering-proposal.md): snapshots confirmados,
+SaleCalculator completo, composición/paginación sobre plantillas reales13.6 y renderer13.7.
+PRE independiente `billing_13_8_pre` PASS sin hallazgosP0–P3 antes de código.
+Root/revisor inicial/final998archivos idénticos:d1a64f3e6d944e37ef4399d648097cbfeca9bafcc1800aa7c31a2c0365b469da.
+Implementada proyección pura EUR desde snapshot confirmado, SaleCalculator completo sin nueva aritmética;
+UseCase captura recursos y conserva documento/bytes/cancelación. Compositor Data actor pagina todo el texto,
+11/9filas útiles, número/fecha/fiscal/página en cada hoja; totales/firma solo final. Medición CoreText compartida
+con renderer13.7; factoryApp inactiva. USD/fiscal histórico ausente/nombre vacío/overflow fallan recuperablemente.
+Sin cambios de Views/Store/plantillas/persistencia/dependencias;12etiquetas es/en y su inventory.
+
+TDD: Domain/UseCase RED40/40 esperado22:11:27→GREEN40/40; compositor RED17/17 esperado22:15:46→GREEN17/17,
+renderer13.7 51/51 conservados. Dos casos posteriores de caracterización del límite100/101páginas;
+fixture20líneas observado con10/12páginas se fija como snapshot de partición, sin cambiar un oráculo fallido.
+Final26declaraciones/59casos nuevos completos;13grupos parametrizados nuevos sin pérdida de combinaciones.
+Focal51declaraciones/148casos,28grupos completos,0fail/skip/notRun; incluye renderer13.7 y localización compilada.
+Una ejecución global1661declaraciones/2744casos PASS,0fail/skip/notRun; Stock118 pasa con fuente intacta,
+sin declararlo corregido. [Artefactos y revisión visual](13-8-billing-pdf-evidence.md).
+Develop buildForTesting22:25:00 PASS4.030s; Production22:25:27 PASS25.383s, incrementales por Xcode MCP.
+13Swift con0diagnósticos (un timeout inicial del compositor-test reintentado correctamente);
+logs completos0errores/0warnings Swift/Clang,2/1avisos AppIntents conocidos. Develop/plan/M5 restaurados.
+619textos es/en/0errores; diff-check PASS; validator-gov conserva únicamente6links Desktop08.3 históricos.
+POST técnico inicial: sinP0–P2; dosP3 de wrapping (seis sitios) corregidos sin cambios de lógica.
+PDF/localización independiente PASS sinP0–P3; inspeccionadas27páginas de5PDFs, sin pérdidas/solapamientos.
+Ambos reviewers frescos/read-only, root/revisores inicial/final1010archivos idénticos:
+`efe525fbf15fb66c69838236d2cf555921ecf18769c19dd89b67674217d2dfea`.
+Tras wrapping,148/148focales completos22:41:53 y buildsDevelop31.044s/Production19.302s PASS;
+3Swift modificados0diagnósticos,10intactos. Logs completos0errores/warnings Swift/Clang y2/1AppIntents.
+Global2744 y revisión visual reutilizados por identidad sin whitespace de las3fuentes; sin repetir global.
+Manifest final13Swift:`c7962b6bdd1cb8952bd2e8bd508ed08dec1b10aee7a954d5ed7cad183b9b6908`.
+Reauditoría focal de estilo/registro `billing_13_8_post` PASS sinP0–P3.
+Root/revisor inicial/final1010archivos idénticos:
+`1373e435455154d432fcf1e951017b8830da996bc2cd89df1877b3ae1b6787f1`.
+Tras freeze solo se registra el dictamen/metadatos;13Swift/recursos mantienen identidad validada.
+Inspección read-only real: fondos españoles/EUR,11/9filas de datos, margen derecho0.2756pt previo.
+Sin commit/push/PR/merge/Done/live ni13.9. PLU-101/protección13.6/Stock118 conservan límites.
+
 ## 13.7 / PLU-103 — Entregada funcionalmente; Done
 
 03/10/2026: «commit, push y entrega» autoriza el circuito establecido completo.

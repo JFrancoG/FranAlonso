@@ -4,10 +4,10 @@
 
 ## Estado actual
 
-- **13.1–13.7 Done funcional**, [PR56](https://github.com/JFrancoG/FranAlonso/pull/56), PLU-103.
-  51nuevos/238afectados/global2685, builds/auditorías PASS. [Evidencia](progress/phase-13.md).
-  Fase13 abierta; PLU-101 Backlog/Jesus, tras feedback/estabilización y antes de uso real.
-  Rama eliminada; límites físicos/Stock118 conservados. Sin live ni inicio13.8.
+- **13.8 / [PLU-104](https://linear.app/plusprojects/issue/PLU-104): In Progress**.
+  Entrega autorizada;59nuevos/148focales/global2744, builds/auditorías PASS; [evidencia](progress/phase-13.md).
+  13.1–13.7 Done funcional, [PR56](https://github.com/JFrancoG/FranAlonso/pull/56).
+  PR/merge pendientes; sin live. Fase13 abierta; deudaPLU-101/protección13.6/Stock118 vigentes.
 - **12.1–12.8 Done**, [PR49](https://github.com/JFrancoG/FranAlonso/pull/49);
   fase12 abierta/deuda89–91. [Evidencia](progress/phase-12.md).
 
@@ -24,7 +24,7 @@
   [PLU-70](https://linear.app/plusprojects/issue/PLU-70) Backlog/Jesus Franco: recuperación accesible
   tras feedback/estabilización, antes de uso real; sin cierre16/live.
 
-- **es/en y Xcode**:607 textos; iOS27. Evidencia por subfase.
+- **es/en y Xcode**:619 textos; iOS27. Evidencia por subfase.
   [Evidencia](progress/localization-en-es.md).
 - **[PLU-69](https://linear.app/plusprojects/issue/PLU-69): Done**, [PR31](https://github.com/JFrancoG/FranAlonso/pull/31).
   [Registro y validación](progress/app-organization.md).

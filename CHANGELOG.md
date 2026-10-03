@@ -6,6 +6,11 @@ All notable changes to this project are documented in this file.
 
 ### Added
 
+- 2026-10-03 | ✨ feat(billing): render tickets and invoices
+  Projects confirmed paid snapshots with captured terms and exact complete-sale calculations on unchanged A4 templates.
+  Paginates every description and line, repeats confirmed headers and invoice recipients, and keeps totals/signature final-only.
+  Keeps the rendering factory inactive and retains integral accessibility, fiscal and physical-protection gates.
+
 - 2026-10-03 | ✨ feat(billing): add deterministic PDF rendering
   Renders complete planned A4 pages with confirmed headers, selectable text and an optional proportional signature.
   Rejects invalid resources and text overflow without returning partial bytes; drawing remains outside MainActor.

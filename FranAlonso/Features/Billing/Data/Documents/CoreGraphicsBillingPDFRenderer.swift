@@ -102,30 +102,7 @@ private extension CoreGraphicsBillingPDFRenderer {
     }
 
     func draw(_ field: BillingPDFTextField, in context: CGContext) throws {
-        let font = CTFontCreateWithName((field.bold ? "Helvetica-Bold" : "Helvetica") as CFString, field.fontSize, nil)
-        let attributes: [NSAttributedString.Key: Any] = [
-            .init(kCTFontAttributeName as String): font,
-            .init(kCTForegroundColorAttributeName as String): CGColor(gray: 0.08, alpha: 1)
-        ]
-        let text = NSAttributedString(string: field.text, attributes: attributes)
-        let framesetter = CTFramesetterCreateWithAttributedString(text)
-        let bounds = CGRect(
-            x: 0,
-            y: 0,
-            width: field.frame.width,
-            height: field.frame.height
-        )
-        let frame = CTFramesetterCreateFrame(
-            framesetter,
-            CFRange(location: 0, length: text.length),
-            CGPath(rect: bounds, transform: nil),
-            nil
-        )
-        let visible = CTFrameGetVisibleStringRange(frame)
-        guard visible.location == 0, visible.length == text.length else {
-            throw BillingPDFRenderError.textDoesNotFit
-        }
-        try requireContainedGlyphs(frame, in: bounds)
+        let frame = try BillingPDFTextLayout(field: field).makeFrame()
         context.saveGState()
         defer {
             context.restoreGState()
@@ -133,25 +110,6 @@ private extension CoreGraphicsBillingPDFRenderer {
         context.translateBy(x: field.frame.x, y: field.frame.y)
         context.textMatrix = .identity
         CTFrameDraw(frame, context)
-    }
-
-    func requireContainedGlyphs(_ frame: CTFrame, in bounds: CGRect) throws {
-        guard let lines = CTFrameGetLines(frame) as? [CTLine], !lines.isEmpty else {
-            throw BillingPDFRenderError.textDoesNotFit
-        }
-        var origins = [CGPoint](repeating: .zero, count: lines.count)
-        CTFrameGetLineOrigins(frame, CFRange(location: 0, length: 0), &origins)
-        for (line, origin) in zip(lines, origins) {
-            if CTLineGetGlyphCount(line) == 0 {
-                continue
-            }
-            let glyphs = CTLineGetBoundsWithOptions(line, .useGlyphPathBounds)
-            guard !glyphs.isNull else { throw BillingPDFRenderError.textDoesNotFit }
-            let placed = glyphs.offsetBy(dx: origin.x, dy: origin.y)
-            guard placed.minX >= -0.01, placed.minY >= -0.01,
-                  placed.maxX <= bounds.width + 0.01, placed.maxY <= bounds.height + 0.01
-            else { throw BillingPDFRenderError.textDoesNotFit }
-        }
     }
 
     func draw(_ image: CGImage, in frame: BillingPDFRectangle, context: CGContext) {
