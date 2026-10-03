@@ -1,11 +1,13 @@
 import Accessibility
 import SwiftUI
 
-struct WorkdayScreen: View {
+struct WorkdayScreen<Repository: BillingDocumentReservationRepository>: View {
     let makeSaleDraft: @MainActor @Sendable (SaleDraftDestination) -> SaleDraftViewModel
     let makeServicePicker: @MainActor @Sendable (SaleDraftViewModel) -> SaleServicePickerViewModel
     let makeDiscount: @MainActor @Sendable
         (SaleDraftViewModel, SaleDiscountDestination, Locale) -> SaleDiscountViewModel
+    let makeBilling: @MainActor @Sendable
+        (SaleDraftViewModel, BillingDocumentDestination) -> BillingViewModel<Repository>
     @Environment(\.locale) private var locale
     @AccessibilityFocusState private var focusedSale: SaleID?
     @AccessibilityFocusState private var createIsFocused: Bool
@@ -36,7 +38,8 @@ struct WorkdayScreen: View {
                 destination: destination,
                 makeViewModel: makeSaleDraft,
                 makeServicePicker: makeServicePicker,
-                makeDiscount: makeDiscount
+                makeDiscount: makeDiscount,
+                makeBilling: makeBilling
             )
                 .id(destination.id)
         }
@@ -101,11 +104,14 @@ extension WorkdayScreen {
         makeSaleDraft: @escaping @MainActor @Sendable (SaleDraftDestination) -> SaleDraftViewModel,
         makeServicePicker: @escaping @MainActor @Sendable (SaleDraftViewModel) -> SaleServicePickerViewModel,
         makeDiscount: @escaping @MainActor @Sendable
-            (SaleDraftViewModel, SaleDiscountDestination, Locale) -> SaleDiscountViewModel
+            (SaleDraftViewModel, SaleDiscountDestination, Locale) -> SaleDiscountViewModel,
+        makeBilling: @escaping @MainActor @Sendable
+            (SaleDraftViewModel, BillingDocumentDestination) -> BillingViewModel<Repository>
     ) {
         self.makeSaleDraft = makeSaleDraft
         self.makeServicePicker = makeServicePicker
         self.makeDiscount = makeDiscount
+        self.makeBilling = makeBilling
         _viewModel = State(initialValue: makeViewModel())
     }
 }
@@ -117,7 +123,8 @@ extension WorkdayScreen {
             makeViewModel: dependencies.makeWorkday,
             makeSaleDraft: dependencies.makeSaleDraft,
             makeServicePicker: dependencies.makeSaleServicePicker,
-            makeDiscount: dependencies.makeSaleDiscount
+            makeDiscount: dependencies.makeSaleDiscount,
+            makeBilling: dependencies.makeBilling
         )
     }
 }

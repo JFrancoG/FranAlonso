@@ -1,10 +1,12 @@
 import Accessibility
 import SwiftUI
 
-struct SaleDraftScreen: View {
+struct SaleDraftScreen<Repository: BillingDocumentReservationRepository>: View {
     let makeServicePicker: @MainActor @Sendable (SaleDraftViewModel) -> SaleServicePickerViewModel
     let makeDiscount: @MainActor @Sendable
         (SaleDraftViewModel, SaleDiscountDestination, Locale) -> SaleDiscountViewModel
+    let makeBilling: @MainActor @Sendable
+        (SaleDraftViewModel, BillingDocumentDestination) -> BillingViewModel<Repository>
     private enum Operation: Equatable {
         case load
         case create
@@ -33,6 +35,7 @@ struct SaleDraftScreen: View {
     @AccessibilityFocusState private var discountIsFocused: SaleLineID?
     @AccessibilityFocusState private var globalDiscountIsFocused: Bool
     @AccessibilityFocusState private var paymentIsFocused: Bool
+    @AccessibilityFocusState private var billingIsFocused: Bool
     @State private var returnDiscountTarget: SaleDiscountDestination.Target?
 
     var body: some View {
@@ -89,6 +92,12 @@ struct SaleDraftScreen: View {
             }
             .id(destination.id)
         }
+        .sheet(item: billingDestination, onDismiss: restoreBillingFocus) { destination in
+            BillingScreen {
+                makeBilling(viewModel, destination)
+            }
+            .id(destination.id)
+        }
         .sheet(item: stockConfirmation, onDismiss: restorePaymentFocus) { confirmation in
             SaleStockConfirmationView(
                 confirmation: confirmation,
@@ -109,7 +118,8 @@ struct SaleDraftScreen: View {
         }
         .onChange(of: viewModel.stockState) {
             guard request == nil, viewModel.servicePickerDestination == nil,
-                  viewModel.discountDestination == nil, viewModel.stockConfirmation == nil else { return }
+                  viewModel.discountDestination == nil, viewModel.stockConfirmation == nil,
+                  viewModel.billingDestination == nil else { return }
             announceStockWarning()
         }
         .onDisappear {
@@ -146,7 +156,9 @@ struct SaleDraftScreen: View {
                     paymentIsFocused = false
                     requestOperation(.preparePayment)
                 },
-                paymentIsFocused: $paymentIsFocused
+                paymentIsFocused: $paymentIsFocused,
+                onSelectBilling: presentBilling,
+                billingIsFocused: $billingIsFocused
             )
         case .unavailable, .closed:
             UnavailableStateView(
@@ -226,6 +238,26 @@ struct SaleDraftScreen: View {
             guard destination == nil, let sessionID else { return }
             viewModel.finishDiscount(sessionID)
         }
+    }
+
+    private var billingDestination: Binding<BillingDocumentDestination?> {
+        let sessionID = viewModel.billingDestination?.id
+        return Binding {
+            viewModel.billingDestination
+        } set: { destination in
+            guard destination == nil, let sessionID else { return }
+            viewModel.finishBilling(sessionID)
+        }
+    }
+
+    private func presentBilling() {
+        billingIsFocused = false
+        viewModel.presentBilling()
+    }
+
+    private func restoreBillingFocus() {
+        guard viewModel.billingDestination == nil, viewModel.canSelectBilling else { return }
+        billingIsFocused = true
     }
 
     private func presentLineDiscount(_ id: SaleLineID) {
@@ -329,10 +361,13 @@ extension SaleDraftScreen {
         previewModel: SaleDraftViewModel,
         makeServicePicker: @escaping @MainActor @Sendable (SaleDraftViewModel) -> SaleServicePickerViewModel,
         makeDiscount: @escaping @MainActor @Sendable
-            (SaleDraftViewModel, SaleDiscountDestination, Locale) -> SaleDiscountViewModel
+            (SaleDraftViewModel, SaleDiscountDestination, Locale) -> SaleDiscountViewModel,
+        makeBilling: @escaping @MainActor @Sendable
+            (SaleDraftViewModel, BillingDocumentDestination) -> BillingViewModel<Repository>
     ) {
         self.makeServicePicker = makeServicePicker
         self.makeDiscount = makeDiscount
+        self.makeBilling = makeBilling
         _viewModel = State(initialValue: previewModel)
         _request = State(initialValue: nil)
     }
@@ -342,10 +377,13 @@ extension SaleDraftScreen {
         makeViewModel: @MainActor @Sendable (SaleDraftDestination) -> SaleDraftViewModel,
         makeServicePicker: @escaping @MainActor @Sendable (SaleDraftViewModel) -> SaleServicePickerViewModel,
         makeDiscount: @escaping @MainActor @Sendable
-            (SaleDraftViewModel, SaleDiscountDestination, Locale) -> SaleDiscountViewModel
+            (SaleDraftViewModel, SaleDiscountDestination, Locale) -> SaleDiscountViewModel,
+        makeBilling: @escaping @MainActor @Sendable
+            (SaleDraftViewModel, BillingDocumentDestination) -> BillingViewModel<Repository>
     ) {
         self.makeServicePicker = makeServicePicker
         self.makeDiscount = makeDiscount
+        self.makeBilling = makeBilling
         _viewModel = State(initialValue: makeViewModel(destination))
     }
 }
@@ -356,7 +394,8 @@ extension SaleDraftScreen {
         destination: SalesPreviewFixtures.destination(index: 2, mode: .editDraft),
         makeViewModel: dependencies.makeSaleDraft,
         makeServicePicker: dependencies.makeSaleServicePicker,
-        makeDiscount: dependencies.makeSaleDiscount
+        makeDiscount: dependencies.makeSaleDiscount,
+        makeBilling: dependencies.makeBilling
     )
 }
 
@@ -366,7 +405,8 @@ extension SaleDraftScreen {
         destination: SalesPreviewFixtures.destination(index: 3, mode: .operate),
         makeViewModel: dependencies.makeSaleDraft,
         makeServicePicker: dependencies.makeSaleServicePicker,
-        makeDiscount: dependencies.makeSaleDiscount
+        makeDiscount: dependencies.makeSaleDiscount,
+        makeBilling: dependencies.makeBilling
     )
 }
 
@@ -376,7 +416,8 @@ extension SaleDraftScreen {
         destination: SalesPreviewFixtures.destination(index: 4, mode: .operate),
         makeViewModel: dependencies.makeSaleDraft,
         makeServicePicker: dependencies.makeSaleServicePicker,
-        makeDiscount: dependencies.makeSaleDiscount
+        makeDiscount: dependencies.makeSaleDiscount,
+        makeBilling: dependencies.makeBilling
     )
 }
 
@@ -386,7 +427,8 @@ extension SaleDraftScreen {
         destination: SalesPreviewFixtures.destination(index: 5, mode: .operate),
         makeViewModel: dependencies.makeSaleDraft,
         makeServicePicker: dependencies.makeSaleServicePicker,
-        makeDiscount: dependencies.makeSaleDiscount
+        makeDiscount: dependencies.makeSaleDiscount,
+        makeBilling: dependencies.makeBilling
     )
 }
 
@@ -397,7 +439,8 @@ extension SaleDraftScreen {
         SaleDraftScreen(
             previewModel: model,
             makeServicePicker: dependencies.makeSaleServicePicker,
-            makeDiscount: dependencies.makeSaleDiscount
+            makeDiscount: dependencies.makeSaleDiscount,
+            makeBilling: dependencies.makeBilling
         )
     }
 }
@@ -409,7 +452,8 @@ extension SaleDraftScreen {
         SaleDraftScreen(
             previewModel: model,
             makeServicePicker: dependencies.makeSaleServicePicker,
-            makeDiscount: dependencies.makeSaleDiscount
+            makeDiscount: dependencies.makeSaleDiscount,
+            makeBilling: dependencies.makeBilling
         )
     }
 }

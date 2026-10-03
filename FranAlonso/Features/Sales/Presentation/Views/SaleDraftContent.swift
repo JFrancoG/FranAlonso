@@ -18,6 +18,8 @@ struct SaleDraftContent: View {
     var onAdvance: @MainActor (SaleProgressAction) -> Void = { _ in }
     var onPayment: @MainActor () -> Void = {}
     var paymentIsFocused: AccessibilityFocusState<Bool>.Binding?
+    var onSelectBilling: @MainActor () -> Void = {}
+    var billingIsFocused: AccessibilityFocusState<Bool>.Binding?
 
     var body: some View {
         Form {
@@ -41,7 +43,9 @@ struct SaleDraftContent: View {
                         isWorking: isWorking,
                         onAdvance: onAdvance,
                         onPayment: onPayment,
-                        paymentIsFocused: paymentIsFocused
+                        paymentIsFocused: paymentIsFocused,
+                        onSelectBilling: onSelectBilling,
+                        billingIsFocused: billingIsFocused
                     )
                 }
             } else if viewModel.canCreate {
@@ -255,6 +259,36 @@ struct SaleDraftContent: View {
             discountIsFocused: $discountIsFocused,
             onEditGlobalDiscount: {},
             globalDiscountIsFocused: $globalDiscountIsFocused
+        )
+    }
+}
+
+#Preview("Document selection content", traits: .modifier(SalesPreviewModifier())) {
+    @Previewable @Environment(\.salesPreviewModels) var models
+    @Previewable @AccessibilityFocusState var addServiceIsFocused: Bool
+    @Previewable @AccessibilityFocusState var discountIsFocused: SaleLineID?
+    @Previewable @AccessibilityFocusState var globalDiscountIsFocused: Bool
+    @Previewable @AccessibilityFocusState var paymentIsFocused: Bool
+    @Previewable @AccessibilityFocusState var billingIsFocused: Bool
+    if let model = models[SalesPreviewFixtures.workday.sales[5].id] {
+        SaleDraftContent(
+            viewModel: model,
+            isWorking: false,
+            hasActionError: false,
+            onCreate: {},
+            onIncrease: { _ in },
+            onDecrease: { _ in },
+            onRemove: { _ in },
+            onRetry: {},
+            onAddService: {},
+            addServiceIsFocused: $addServiceIsFocused,
+            onEditDiscount: { _ in },
+            discountIsFocused: $discountIsFocused,
+            onEditGlobalDiscount: {},
+            globalDiscountIsFocused: $globalDiscountIsFocused,
+            paymentIsFocused: $paymentIsFocused,
+            onSelectBilling: {},
+            billingIsFocused: $billingIsFocused
         )
     }
 }

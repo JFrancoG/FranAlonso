@@ -6,6 +6,11 @@ All notable changes to this project are documented in this file.
 
 ### Added
 
+- 2026-10-03 | ✨ feat(billing): add fiscal document selection
+  Adds ticket/invoice selection, validated immutable fiscal recipients and protected local client prefill.
+  Preserves legacy requests, ticket privacy and paid sales on cancel; preparation allocates no document number.
+  Functional demo delivery retains integral accessibility work in PLU-101 and the documented Stock test failure.
+
 - 2026-10-03 | ✨ feat(billing): coordinate document state
   Coordinates one observable reservation state and a ViewModel facade without duplicate mutable projections.
   Preserves sealed requests, explicit retries, cancellation recovery and terminal close while fencing stale results.

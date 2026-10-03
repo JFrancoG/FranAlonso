@@ -33,6 +33,7 @@ struct AppDependencies {
     let makeSalesHistory: SalesHistoryFactory
     let makeSaleDetail: SaleDetailFactory
     let makeSaleDraft: SaleDraftFactory
+    let makeBilling: BillingFormFactory
     let telemetryReporter: TelemetryReporter
 
     /// Creates production dependencies over the supplied local source of truth.
@@ -379,6 +380,7 @@ extension AppDependencies {
                 clientRepository: clientRepository,
                 stockRepository: stockRepository
             ),
+            makeBilling: Self.billingFormFactory(clientRepository: clientRepository),
             telemetryReporter: TelemetryReporter(
                 analyticsDataSource: analyticsDataSource,
                 crashDataSource: crashDataSource

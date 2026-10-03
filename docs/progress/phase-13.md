@@ -1,5 +1,157 @@
 # Fase13 — Facturación, PDF, correo y numeración
 
+## 13.5 / PLU-100 — Entrega autorizada; pendiente de Git
+
+03/10/2026: «commit, push y entrega» autoriza el circuito establecido de commit/push/PR/revisión/merge,
+cierre funcional en Linear y eliminación segura de rama. Se entrega el ámbito funcional para demo conforme
+a ADR0029; PLU-101 conserva la validación accesible integral con responsable y recuperación descritos debajo.
+Se reutilizan fuentes/configuración y artefactos validados sin cambios ejecutables:59casos nuevos completos,
+155pruebas afectadas y ambos builds PASS; POST/estilo favorables. La suite global final2581/2582 sigue fallando
+en StockSyncDurabilityTests118 histórico, fuente intacta, sin atribuir causa ni declarar regresión global verde.
+Los avisos AppIntents y seis enlaces históricos08.3 permanecen documentados. Xcode nuevo N/A para metadatos
+de entrega. Fase13/proyecto siguen abiertos;13.6 y live mantienen autorización separada.
+PLU-100 continúa In Progress hasta verificar la integración definitiva y completar los gates de entrega.
+Revisiones finales independientes de estándares y accesibilidad focal por metadata: PASS funcional, sin
+hallazgosP0–P3. Freeze973 inicial/final/revisores/root idéntico
+`a1f93379e54b0ee3ccc4963b86aedf09dd77fc5e6d0b51677876abb5eb7b2fcd`.
+Después del freeze solo se registra este resultado;32Swift/catálogo/artefactos conservan hashes validados.
+
+## 13.5 — Historial de implementación local
+
+03/10/2026: «abre issue y rama e implementa13.5».
+[PLU-100](https://linear.app/plusprojects/issue/PLU-100) In Progress/Jesus Franco;
+`codex/plu-100-billing-selection-form` desde main/origin/main limpio `76835cb`.
+[Propuesta exacta y fuentes](13-5-billing-selection-proposal.md): selección ticket/factura desde venta
+pagada, destinatario inmutable validado, payloadv1 histórico/v2 y cancelación sin reserva/cierre.
+PRE independiente PASS antes de código; P3 de atribución a13.6 corregido y reauditoría focal PASS.
+926archivos, freezePRE `80d7f3d9e6f29f3aa74e160c45d663ab25618b7594dc5942adfae408234e3afc`;
+reauditoría inicial/final/root `76f7103034e4d0c5ccf31728b23a73aaf6973ddecec22593f507263042765572`.
+Sin dependencia/unsafe/target/live nuevos; proyecto/fase13 y deuda previa siguen abiertos.
+
+### Implementación13.5
+
+Domain: seis campos requeridos tras trim exterior, preservando Unicode/case/espacios internos; política de
+completitud de la app, sin checksum/país/suficiencia legal. UseCase valida venta pagada y destinatario antes
+de generar IDs/fecha; ticket no contiene datos fiscales. Request sella snapshot inmutable y Codable revalida.
+Domain conserva invoice histórica sin profile. Data: payloadv1 exacto histórico sin destinatario, v2 solo
+invoice completa; rechaza claves extra, null, destinatario parcial/v1 y versiones no soportadas. Envelopes,
+transacción y numeración13.3 intactos: conflicto fiscal no consume otro número, replay/lost response conserva
+snapshot. Solo dos fixtures históricas cambian versión desconocida2→3, manteniendo su rechazo anterior.
+
+BillingViewModel mantiene Store13.4 como única autoridad de request y añade formulario previo, error y carga
+local caller-owned; borra draft al preparar/cerrar. Prefill no reemplaza edición, sesión cerrada, tipo distinto,
+identidad ajena ni padre revocado. Padre cerca UUID/saleID/snapshot/estado; apertura pagada estable y callback
+antiguo ignorado. Composición concreta App con adaptador unavailable/cancelable; sin reserva falsa ni Firebase.
+Views nativas separadas, una View/archivo, VM por pantalla, previews deterministas, textos es/en. Preparar
+muestra resumen; cancelar/cerrar conserva venta pagada pendiente en Jornada. Sin PDF/Storage/correo/firma,
+persistencia13.10, cierre13.12 ni gate13.6. Ningún perfil cliente escrito, payload fiscal logueado o live activado.
+
+### TDD y validación13.5
+
+RED compilable7/7 FAIL esperado, build17.205s PASS; summary
+`RunSomeTests/5B23EF9F-EE61-4898-A080-B070743306A5.txt` (14:20:31).
+GREEN focal173/173 PASS, selección parametrizada parcial, summary
+`RunSomeTests/BD1E820B-FE56-45B6-98C1-80A5291BCE09.txt` (14:25:29).
+28declaraciones nuevas/59casos completos: campos whitespace/trim, no IDs antes de validar, ticket privacidad,
+request nativa/DTOv1-v2/malformed, conflicto por cada campo/lost response, inmutabilidad/identidad/prefill tardío,
+revocación padre, cancelación/sin reserva y navegación. Swift Testing, sin sleeps/XCTest ni backend acreditado.
+
+Smoke detectó que setter sin cambio borraba error al tomar foco. Regresión compilable RED1/1 FAIL
+`RunSomeTests/F7A2DE00-064F-4A0E-BCA1-9B95007A41A3.txt` (14:53:30), GREEN1/1 PASS
+`RunSomeTests/E11760B2-9899-4D07-85EA-EFC40D75EACA.txt` (14:59:40): igualdad conserva issue/validationID,
+edición real limpia. Labels accesibles explícitas; retest táctil confirma mensaje antes de editar y seis labels AX.
+
+Estilo independiente Audit32Swift/20nuevos/1818líneas tocadas: recall0; seisP3 corregidos. Freeze946
+`8955b00eb65f50983d38f4dbb5984530a14bd33e796dfc5be636b363562476e2` antes/después/root.
+Reauditoría focal PASS, freeze946 `b8bd88ee02f206dd25c1f1912e24f6feedb8e30ed80ed1dc2661b114cbe7576e`.
+Focal adicional setter/label/regresión PASS, 3Swift/recall0;966archivos antes/después/root
+`fdb1349ad3c00a6d76037608701c59eaa1c71ffd099cce3bf19f32863b0660cd`.
+
+Global anterior14:46:09:2578/2579 PASS, StockSyncDurabilityTests línea118 weak ModelContainer aún vivo;
+focal1/1 FAIL (7E3311B3), global14:47:56:2579/2579 PASS (E9636DDC). Stock no modificado ni corregido;
+se conserva intermitencia histórica, sin atribuir causa. Tras fix inicial de formulario, global previo alPOST15:00:49:
+**2580/2580ejecuciones PASS /1577declaraciones**, cero failed/skipped/expected/notRun.
+Summary `RunAllTests/77A70739-82A1-446A-BD78-655A949A7DFC.txt`.
+Bundle original DerivedData Logs/Test copiado íntegro con Info.plist/Data a ActionArtifacts/RunAllTests:
+`Test-FranAlonso-Develop-2026.10.03_15-00-49-+0200.xcresult`; xcresulttool confirma27nuevas/57casos,
+1577declaraciones y2580ejecuciones; runtimeWarnings vacío. Export previo `/tmp/franalonso-13-5-pre-post-summary.json`
+y `...-tests.json`. La ruta reportada inicialmente por MCP no contenía el bundle nativo; copia real verificada.
+
+Build-for-testing Develop previo alPOST8.746s PASS, `BuildProject-Log-20261003-150044.txt`;
+Production21.896s PASS, `BuildProject-Log-20261003-150152.txt`. Logs completos:2/1avisos AppIntents
+conocidos respectivamente, cero errores/diagnósticos Swift-Clang. Incrementales, sin claim clean-build ni
+cero warnings globales. Buildruntime iPhone17 corregido12.543s PASS, `BuildProject-Log-20261003-150001.txt`.
+Xcode MCP27.0 estable Service/workspace-PfnUYLlMzY, target27/Swift6 strict complete/default nonisolated,
+Simulator27.2/iPadPro13(M5). Develop/plan/destino inicial restaurados, sin cambios de configuración.
+Localizaciones607es/en/0errores (531+75+1),30nuevas. Diffcheck PASS; gobernanza exit1 exclusivamente seis
+links Desktop históricos08.3, sin nuevos errores. Progress≤8192bytes. Sin GoogleService-Info/PII en cambios.
+
+### Correcciones del POST13.5
+
+Ambos revisores detectaron P2 funcional: Prepare inválido durante carga local y respuesta posterior completa
+mantenía error/validationID de un campo ya rellenado. Se acepta input solo si difiere y limpia validación; un
+input idéntico la conserva. No marca edición manual ni prepara/reserva automáticamente. Regresión gated con
+respuesta distinta/idéntica RED2casos:1FAIL/1PASS (5F2B5A60,15:24); GREEN3/3 incluyendo setter idéntico
+(03989E09,15:25). P3 estándares: JSON conservaba exactInvoiceRecipient pese al texto de sanitización;
+se elimina ese bloque duplicado sintético y se actualizan hash/bytes del manifest. Sin PII real encontrada.
+Estilo focal independiente PASS2Swift/recall0, freeze973 inicial/final/root
+`05353597b6d8a4cd3754b21aafda9740cf1001232258b119ec1e8e603f056628`.
+
+Builds finales trasP2: Develop-for-testing11.15s `BuildProject-Log-20261003-152457.txt`, Production18.983s
+`BuildProject-Log-20261003-152711.txt`, PASS. Logs completos:2/1avisosAppIntents,0errores/Swift-Clang;
+incrementales. Develop/plan/iPadPro13(M5) restaurados. Focal final155/155 PASS, selección de127identificadores
+con parámetros parciales: `RunSomeTests/09C09C37-1BE8-457B-8EFC-4C944374BF0C.txt` (15:34:25).
+
+**Global final NO pasa**:2581/2582 en tres ejecuciones trasP2, único fallo StockSyncDurabilityTests118:
+weak ModelContainer aún vivo. Summaries441EDDD7 (15:25:39),05025F43 (15:27:21),BD25D864 (15:29:31).
+FocalStock1/1PASS, BDD95254 (15:26). Fuente Stock byte-exact contraHEAD76835cb, SHA256
+`98fc8bac80f10492150b8120d7391d627ac53bb9902e915d66437246ef1f4590`; ninguna causa/corrección atribuida.
+El xcresult final íntegro15:29:31 confirma1578declaraciones/2582ejecuciones,28nuevas/59casos completos PASS,
+un fallo histórico,0skipped/expected/notRun y runtimeWarnings vacío. Tres bundles nativos copiados íntegros
+Logs/Test→ActionArtifacts/RunAllTests con Info.plist/Data. Export final `/tmp/franalonso-13-5-final-summary.json`
+y `...-tests.json`; exports del PASS previo se conservan como `/tmp/franalonso-13-5-pre-post-{summary,tests}.json`.
+PASS del ámbito13.5 tras reauditoría focalP2/P3; no acredita regresión global verde ni entrega.
+No se amplía el scope para modificar Stock. Se conservan todos los resultados y el límite de validación global.
+Previews/smoke se reutilizan por impacto: ningún layout, label, recorrido normal de prefill ni navegación cambia;
+la respuesta suspendida después de validar se verifica en la regresión gated, sin inferir AT de ese caso.
+
+### UI y evidencia13.5
+
+[Matriz55/manifest/PNG](../accessibility/evidence/13-5-billing-selection-form.md):18previews originales
+Large/XXX Large/AX5,es/en,Light/Dark,contraste estándar/aumentado; hostreal iPhone18ProMax27.2/portrait.
+Título nuevo corregido a Documento/Document, recapturado completoAX5. Dos recapturas finales errorLarge/AX5
+tras fix guard/label; resto reutilizado por impacto sin cambio visual, sin afirmar render posterior. Campos,
+error/resumen y entrada del detalle requieren scroll; recorte del título histórico detalle sigue enPLU-91.
+Smoke táctil13.5 iniciado en iPhone17/27.2, build corregido instalado/launchdemo fresco. Retest error/labels PASS;
+factura con seis datos exactos, ticket sin destinatario y retorno a Jornada pagada pendiente PASS.
+Large/es/Light: capturas originales de error/resumen/retorno; no verificar AT/Inspector/contraste/físico.
+
+[PLU-101](https://linear.app/plusprojects/issue/PLU-101) Backlog/Jesus Franco, deuda específica integral:
+VoiceOver/VoiceControl/SwitchControl/FKA/foco/anuncios/Inspector/ratios/autofill/preferencias/landscape/iPad/RTL/
+scrollAX5/dispositivo físico. Recuperar tras feedback y estabilización de cada recorrido, antes del primer
+candidato para uso real; PLU-91 y deudas anteriores intactas. ADR0029 permite entrega funcional sin declararlas resueltas.
+POST estándares y accesibilidad independientes PASS para el ámbito funcional; integral pendiente en PLU-101.
+En este snapshot de implementación, entrega Git/Done aún no autorizada; fase13/proyecto abiertos.
+
+### Dictamen final13.5
+
+POST inicial ambos revisores973 `33150ad0f28821a495ce61d7c2af120a68ab312aa01a367fdec401cf6e3ad1fe`:
+P2 validación tras prefill corregido; P3 sanitización corregido, sin PII real. Reauditoría estándares del código/
+validación PASS,973 inicial/final/root `43b4571ed242ef1ef6d463d83767666e07152fc88101b60ead3689413e11e84b`.
+El revisor confirma que la guía/checklist requieren tests afectados/builds verdes; este PASS de implementación
+no acredita regresión global verde ni entrega, y no amplía scope para Stock histórico intacto.
+
+P3 adicional de procedencia documental resuelto: tres manifests32fuentes fechados,18originales previos al
+setter/label,2recapturas posteriores y fuente actual trasP2. Hashes de captura y actuales separados;
+29Swift idénticos,3diferencias documentadas. Todos PNG byte-exact, reutilizados por impacto, sin claim render
+posterior alP2. Reauditoría documental estándares y POST UI/accesibilidad funcional ADR0029 **PASS**, sin
+hallazgos nuevosP0–P3. Ambos973, huella inicial/final/revisores/root idéntica
+`7f7d1aa7040c4c0cb2cce8fa791258fe8052b8e3d5e7aeed4fe46fb58d741d1b`.
+Fuentes/configuración y32hashesSwift validados intactos; Xcode nuevoN/A por solo metadata/documentación.
+Solo se registra este dictamen después del freeze. Linear/Progress reflejan scopePASS,globalStockfallido,
+PLU-101Backlog/Jesus/recuperación antes de candidato real y fase/proyecto abiertos. En este snapshot aún
+no hay entrega Git;13.6/live siguen separados. La autorización de entrega posterior figura arriba.
+
 ## 13.4 / PLU-99 — Entregada; Done
 
 03/10/2026: «commit, push y entrega» autoriza el circuito establecido completo.

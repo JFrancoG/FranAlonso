@@ -4,9 +4,9 @@
 
 ## Estado actual
 
-- **13.4 / [PLU-99](https://linear.app/plusprojects/issue/PLU-99): Done**, [PR53](https://github.com/JFrancoG/FranAlonso/pull/53).
-  2523/2523, builds/auditorías PASS; rama eliminada. [Evidencia](progress/phase-13.md); fase13 abierta, sin live.
-- **13.1–13.3 Done**, PLU96–98/PR50–52; Stock intermitente sin corregir.
+- **13.5 / [PLU-100](https://linear.app/plusprojects/issue/PLU-100): In Progress**, implementada localmente.
+  Entrega autorizada;59casos/builds PASS, global2581/2582(Stock). [Evidencia](progress/phase-13.md).
+- **13.1–13.4 Done**, PLU96–99/PR50–53;2523/2523, builds PASS. [Evidencia](progress/phase-13.md).
 - **12.1–12.8 Done**, [PR49](https://github.com/JFrancoG/FranAlonso/pull/49);
   fase12 abierta/deuda89–91. [Evidencia](progress/phase-12.md).
 
@@ -23,7 +23,7 @@
   [PLU-70](https://linear.app/plusprojects/issue/PLU-70) Backlog/Jesus Franco: recuperación accesible
   tras feedback/estabilización, antes de uso real; sin cierre16/live.
 
-- **es/en y Xcode**:577 textos; iOS27. Evidencia por subfase.
+- **es/en y Xcode**:607 textos; iOS27. Evidencia por subfase.
   [Evidencia](progress/localization-en-es.md).
 - **[PLU-69](https://linear.app/plusprojects/issue/PLU-69): Done**, [PR31](https://github.com/JFrancoG/FranAlonso/pull/31).
   [Registro y validación](progress/app-organization.md).

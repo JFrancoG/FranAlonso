@@ -6,6 +6,8 @@ struct SaleWorkflowSection: View {
     let onAdvance: @MainActor (SaleProgressAction) -> Void
     let onPayment: @MainActor () -> Void
     let paymentIsFocused: AccessibilityFocusState<Bool>.Binding
+    var onSelectBilling: @MainActor () -> Void = {}
+    var billingIsFocused: AccessibilityFocusState<Bool>.Binding?
 
     var body: some View {
         if viewModel.showsWorkflow {
@@ -33,6 +35,13 @@ struct SaleWorkflowSection: View {
                 }
                 if viewModel.awaitsDocument {
                     Text("sales.payment.documentPending").fixedSize(horizontal: false, vertical: true)
+                    if let billingIsFocused {
+                        Button(action: onSelectBilling) {
+                            Text("billing.selection.open").frame(minHeight: 44)
+                        }
+                        .disabled(isWorking || !viewModel.canSelectBilling)
+                        .accessibilityFocused(billingIsFocused)
+                    }
                 }
             } header: {
                 Text("sales.workflow.title").textCase(nil).accessibilityAddTraits(.isHeader)
@@ -56,6 +65,25 @@ struct SaleWorkflowSection: View {
                 onAdvance: { _ in },
                 onPayment: {},
                 paymentIsFocused: $paymentIsFocused
+            )
+        }
+    }
+}
+
+#Preview("Document selection entry", traits: .modifier(SalesPreviewModifier())) {
+    @Previewable @Environment(\.salesPreviewModels) var models
+    @Previewable @AccessibilityFocusState var paymentIsFocused: Bool
+    @Previewable @AccessibilityFocusState var billingIsFocused: Bool
+    if let model = models[SalesPreviewFixtures.workday.sales[5].id] {
+        Form {
+            SaleWorkflowSection(
+                viewModel: model,
+                isWorking: false,
+                onAdvance: { _ in },
+                onPayment: {},
+                paymentIsFocused: $paymentIsFocused,
+                onSelectBilling: {},
+                billingIsFocused: $billingIsFocused
             )
         }
     }
