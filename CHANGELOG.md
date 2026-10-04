@@ -6,6 +6,10 @@ All notable changes to this project are documented in this file.
 
 ### Added
 
+- 2026-10-04 | 📝 docs(billing): record series adjustment delivery
+  Records merged PR62, verified functional PLU-111 completion and safe branch cleanup.
+  Preserves exact validated sources, known tooling limits, accessibility debt and separate live gates.
+
 - 2026-10-04 | ✨ feat(billing): adjust future series through an audited advance
   Requires explicit administrative authority and the exact expected head before advancing a shared billing counter.
   Atomically records one immutable audit and replays its original acceptance after later allocations.

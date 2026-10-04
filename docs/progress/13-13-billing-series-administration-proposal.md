@@ -3,14 +3,18 @@
 ## Autorización de entrega posterior
 
 04/10/2026: «commit y push, y entrega» autoriza el circuito establecido completo de Git y cierre operativo.
-Implementación y evidencia aceptadas se reutilizan por identidad exacta de las 23 fuentes; entrega en curso.
+Implementación y evidencia aceptadas se reutilizan por identidad exacta de las 23 fuentes.
+[PR62](https://github.com/JFrancoG/FranAlonso/pull/62) integrada el04/10/2026 a14:12:43UTC;
+feature9362c2e → merge0b50c1a, árbol18832b18dfc61f1035bd0c96b036459a07dd7e47 exacto.
+PLU-111 Done automático verificado; rama eliminada local/remota tras ascendencia y cero commits únicos.
+Revisión remota y editorial independiente PASS/SinP0–P3; [registro completo](phase-13.md).
 El alcance original y sus exclusiones permanecen vigentes. Fase13, deuda accesible y live siguen separados.
 
 Preflight independiente de entrega `billing_13_13_delivery`: PASS/SinP0–P3, alcance28 paths.
 23 fuentes exactas al manifest validado; artefactos originales, límites y autorización contrastados.
 1168 archivos inicial/final/revisor/root idénticos
 `e5c2ce0b825dec72242bb5ab7dd8d9922981e4b21989bbc15d5dc1bddc361357`.
-Pendiente revisión remota de la PR antes de merge; no es cierre integral.
+Revisión remota posterior aceptada; no es cierre integral.
 
 04/10/2026 Europe/Madrid. PLU-111, Jesus Franco, In Progress.
 Autorización: «abre issue y rama e implementa 13.13». Rama `codex/plu-111-billing-series-administration`,
@@ -168,7 +172,7 @@ POST técnico independiente `billing_13_13_post`: PASS/SinP0–P3 para la implem
 Sólo se registran después el dictamen y la reconciliación; las 23 fuentes conservan cada hash probado.
 Xcode restaurado a Develop/testplanDevelop/iPhone18Pro; los tests corresponden a iPhone17(27.2).
 Gobernanza retorna exit1 exclusivamente por ocho links históricos fuera de este alcance; no existen incidencias nuevas.
-PLU-111/fase13 siguen In Progress; entrega Git autorizada posteriormente y aún en curso.
+PLU-111 Done funcional tras la entrega posterior; fase13 y proyecto siguen In Progress.
 
 ## Fuentes primarias actuales
 

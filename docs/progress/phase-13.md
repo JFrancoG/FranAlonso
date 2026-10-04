@@ -1,6 +1,6 @@
 # Fase13 — Facturación, PDF, correo y numeración
 
-## 13.13 / PLU-111 — In Progress; entrega Git autorizada en curso
+## 13.13 / PLU-111 — Entregada funcionalmente; Done
 
 Petición posterior del 04/10/2026: «commit y push, y entrega» autoriza el circuito establecido completo:
 commit/push, PR, revisión, merge a main, cierre operativo y limpieza de la rama integrada.
@@ -8,11 +8,34 @@ Las 23 fuentes conservan cada hash del manifest validado; se reutilizan 3129/312
 En esta entrega sólo cambia documentación. Xcode nuevo N/A por identidad exacta de código/configuración.
 La fase13 y el proyecto permanecen abiertos; deuda91/101/108/110 y gates live/fase14 separados.
 
+[PR62](https://github.com/JFrancoG/FranAlonso/pull/62) MERGED a main el04/10/2026 a14:12:43UTC.
+Feature `9362c2eafc1bf42721f2e509d5d722651a76ee15` → merge `0b50c1a0c755a77ee168181669a7fb0637a6129e`.
+Árbol integrado idéntico al feature validado: `18832b18dfc61f1035bd0c96b036459a07dd7e47`.
+PLU-111 Done automático verificado tras merge, sin cambio manual de estado.
+Rama local/remota eliminada tras comprobar ascendencia, cero commits únicos y head remoto exacto;
+eliminación remota protegida por lease del head esperado. Main sincronizado y limpio antes del cierre documental.
+Revisión remota independiente y comprobación editorial focal `billing_13_13_delivery`: PASS/SinP0–P3.
+28/28 blobs remotos idénticos; las23 fuentes conservan cada hash probado. Cuerpo final2348bytes,
+SHA256 `a025574b1a6cd195b53ac3d7c5515c7a19fb9f8e95025243a7d6d2ba84c50354`.
+Freeze1168 archivos inicial/final/revisor/root idénticos
+`ed6f00659d8edc11d2dfa2fc88e44efbc5d87d91fa5273bfebb38fd8408e0074`.
+Criterios/Linear/comments/head/base releídos antes del merge protegido por expected-head.
+CLEAN/MERGEABLE, cero checks/reviews/workflows/rulesets y main sin protección; no acredita CI ni aprobación humana.
+Después del merge sólo cambian CHANGELOG, Progress, phase13 y el encuadre de la propuesta.
+Xcode nuevo N/A por identidad exacta de fuentes/configuración; el commit que contiene este registro publica el cierre.
+13.1–13.13 entregadas funcionalmente. Feedback de demo y recuperación de deuda por flujo siguen ADR0030;
+08.9, fase14 y activación live conservan sus gates propios. No se declara cierre integral de fase13.
+
+Revisión focal final `billing_13_13_closeout_docs`: PASS/SinP0–P3 sobre los cuatro documentos.
+1168 archivos inicial/final/revisor/root idénticos
+`6264e335e8434261b915bae7cc3c2aab79ca38cad574dff32da9bfbd689a5f4c`.
+Después sólo se añade este dictamen; las23 fuentes y el manifest permanecen exactos.
+
 Preflight independiente de entrega `billing_13_13_delivery`: PASS/SinP0–P3.
 Alcance28 paths y las23 fuentes del manifest exactas; evidencia original y límites contrastados.
 1168 archivos inicial/final/revisor/root idénticos
 `e5c2ce0b825dec72242bb5ab7dd8d9922981e4b21989bbc15d5dc1bddc361357`.
-La futura PR todavía requiere revisión remota antes de merge; este dictamen no la sustituye.
+Este preflight precedió a la revisión remota y al merge registrados arriba.
 
 04/10/2026: «abre issue y rama e implementa 13.13».
 [PLU-111](https://linear.app/plusprojects/issue/PLU-111), Jesus Franco;
@@ -61,7 +84,7 @@ Xcode restaurado a Develop/testplanDevelop/destino inicial iPhone18Pro; los test
 
 UI/previews/Inspector/runtime/AX nueva: N/A por ausencia de cambios visibles o composición activada.
 No modifica la matriz55 ni la deuda existente de PLU-91/101/108/110; no acredita accesibilidad integral.
-PLU-111, fase13 y proyecto siguen In Progress; sin parent/milestone13 real. Esta entrega está aún en curso.
+PLU-111 está Done funcional tras merge; fase13 y proyecto siguen In Progress, sin parent/milestone13 real.
 Rules, configuración Xcode, counterDTO y adaptador de reserva13.3 exactos a la base.
 La autorización de entrega no amplía fase14, schema SwiftData/dependencia/unsafe/target nuevo,
 Rules/provisionado/live, correo real o emisión fiscal. Permisos backend y contención real no validados por el ledger.
