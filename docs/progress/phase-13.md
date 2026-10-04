@@ -1,5 +1,66 @@
 # Fase13 — Facturación, PDF, correo y numeración
 
+## 13.11 — Preparación de entrega autorizada
+
+04/10/2026: «commit, push y entrega» autoriza el circuito establecido de commit/push, PR,
+revisión independiente, merge, cierre funcional y limpieza segura de rama. PLU-107 sigue In Progress hasta entrega.
+Fetch confirma main/origin/main `8639a87`, cero divergencia y ningún PR de la rama antes de publicar.
+Se reutilizan por identidad los 16 Swift: manifest
+`f64ab8899d0bc9a774e52357d4d5019ad949ee4021c71194a24618b60dc455bc`.
+75 casos nuevos, 113 focales y 2941 globales PASS; ambos builds, 16 diagnósticos cero y PRE/POST/estilo PASS.
+Xcode nuevo N/A para la documentación y metadatos de entrega; ninguna fuente/configuración probada cambia.
+
+Deuda propia de Mail transferida explícitamente a
+[PLU-108](https://linear.app/plusprojects/issue/PLU-108): Backlog, Jesus Franco, relacionada con PLU-107.
+Retiene 34 Pending/5 Limited/16 N/A motivados, artefactos y límites de la
+[matriz](../accessibility/evidence/13-11-native-mail-boundary.md). Recuperar tras integración autorizada y
+feedback/estabilización de este flujo, antes del primer candidato real; cualquier envío real requiere su autorización.
+No acredita Mail configurado ni accesibilidad integral. PLU-101 conserva su deuda propia intacta.
+Fase 13/proyecto abiertos; sin integración normal/demo, 13.12 ni live. La nueva issue no inicia implementación.
+
+Repositorio permite merge commit; main sin protección, cero rulesets/workflows. No se infiere CI ni aprobación
+humana de otra cuenta. Gobernanza mantiene ocho enlaces externos históricos/temporales y avisos AppIntents 2/1.
+La issue y proyecto se reconciliarán con el resultado definitivo; el registro inferior conserva la autorización inicial.
+
+## 13.11 / PLU-107 — Historial: implementación local validada
+
+04/10/2026: «abre issue y rama e implementa13.11». Issue/Jesus In Progress;
+rama`codex/plu-107-billing-email-composition` desde main/origin/main`8639a87` limpio/0divergencia.
+[Propuesta exacta, alternativas y fuentes](13-11-billing-email-proposal.md).
+PRE independiente`billing_13_11_pre` PASS/SinP0–P3 antes de código;1043files,
+root/revisor inicial/final idénticos`ec4e5f1d51a5a3fd3aecf9c3f243938a9ec9cba1514b3977d02ed3e1349bc0b9`.
+Swift6/strict complete/defaultnonisolated/iOS27/SDK27.0; Xcode MCP stable/workspaceverificados.
+Preparación read-only del final local/PDF exacto/destinatario explícito, textos es/en y adaptadorApple async/manual,
+factoryinactiva; sin nueva pantalla/activaciónUI-demo/perfilemail/schema/13.12/live/entregaGit/Done.
+TDD Domain/nativo:buildForTesting40.407s PASS; RED52=49fallos/3PASS (47Domain+5nativos),
+artifact93E79F8D-4097-4DDF-8FED-44FBD43AAF53. Reparación compilada de acceso private;
+build24.463s PASS → GREEN53/53 (47Domain+6nativos), artifact8404B6DF-3C02-4931-8ECF-4007BBF70BF4.
+Core RED22/22fallos después de Domain válido, sin fallos de fixture; artifactBC730B3E-3365-4CEF-B8A3-4B67F9015F91.
+Core GREEN22/22PASS sin cambiar tests; build25.1s PASS, artifact5E499F7B-F337-4F6B-ADE4-C496A191937F.
+Validación final posterior al estilo: Develop buildForTesting21.955s/Production27.377s PASS;
+113/113 focales (75nuevos/32declaraciones+38localización), artifact1D40356F-36CA-4C74-9810-2FA16F3D4393;
+global único2941/2941PASS, artifact7E49998A-804A-4C7D-8CCF-D3A288AF2FE6,0skip/0notrun.
+16Swift nuevos/9producción+7tests con0diagnósticos Xcode; manifest
+`f64ab8899d0bc9a774e52357d4d5019ad949ee4021c71194a24618b60dc455bc`.
+No Swift/Clangwarnings; GetBuildLog no devuelve issues, pero logs completos mantienen2/1 avisosAppIntents
+«Metadata extraction skipped, no AppIntents.framework dependency found». Develop/testplan/destino iPadM5 restaurados.
+Estilo independiente`billing_13_11_style` PASS/full16 tras6correcciones; hash inicial/final idéntico
+`0f9743f02102d20da9cb85b5babf4287c9c48e293687d4fda241ff61b21188ea`.
+623textos535Localizable+87DocumentTemplates+1InfoPlist/0errores y diffcheckPASS.
+Gobernanza exit1 por los mismos8links históricos/temporales externos; sin nuevoslinks rotos ni PASS global.
+POST estándares`billing_13_11_post` y accesibilidad`billing_13_11_accessibility` PASS/SinP0–P3.
+Revisores/root inicial/final idénticos1060files
+`db632e509b1ea2acff153e77397c8b48b1afaad3150f1a753388d2c17d576d12` antes de registrar dictámenes.
+Ambos contrastan artefactos originales, fuentes y límites; accesibilidad estática/localización PASS,
+integral nativa Pendiente (34Pending/5Limited/16N-A motivados). No cierre integral, envío real ni CI.
+Tras freeze solo dictámenes/estado en estosdocs cambian;16Swift conservan cada hash validado.
+Issue/Jesus In Progress y proyecto/fase abiertos; implementación local completa para el componente aprobado,
+sin commit/push/PR/merge/Done ni integración13.12 o nueva autorización de activación. Nunca se envía correo real.
+[NativeMailconfigurado/AT Limitado-Pendiente](../accessibility/evidence/13-11-native-mail-boundary.md) enPLU-107
+antes del candidato real; PLU-101/protección13.6/Stock118 y8links externos conservan límites propios.
+Baseline reciente13.10:2866PASS/builds/25Swift0diagnósticos/PRE-POST-estiloPASS; no acredita13.11 nueva.
+Fase13/proyecto abiertos; el registro13.10 entregado debajo permanece histórico.
+
 ## 13.10 / PLU-106 — Entregada funcionalmente; Done
 
 04/10/2026 Europe/Madrid: «commit, push y entrega» autoriza el circuito establecido completo.

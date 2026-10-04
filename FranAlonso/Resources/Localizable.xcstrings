@@ -1,6 +1,78 @@
 {
   "sourceLanguage" : "es",
   "strings" : {
+  "billing.email.invoice.body": {
+    "comment": "Editable manual billing email copy. The placeholder is the confirmed document number.",
+    "extractionState": "manual",
+    "localizations": {
+      "es": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Adjunto encontrarás tu factura nº %1$lld."
+        }
+      },
+      "en": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Please find your invoice no. %1$lld attached."
+        }
+      }
+    }
+  },
+  "billing.email.invoice.subject": {
+    "comment": "Editable manual billing email copy. The placeholder is the confirmed document number.",
+    "extractionState": "manual",
+    "localizations": {
+      "es": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Tu factura nº %1$lld"
+        }
+      },
+      "en": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Your invoice no. %1$lld"
+        }
+      }
+    }
+  },
+  "billing.email.ticket.body": {
+    "comment": "Editable manual billing email copy. The placeholder is the confirmed document number.",
+    "extractionState": "manual",
+    "localizations": {
+      "es": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Adjunto encontrarás tu ticket nº %1$lld."
+        }
+      },
+      "en": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Please find your receipt no. %1$lld attached."
+        }
+      }
+    }
+  },
+  "billing.email.ticket.subject": {
+    "comment": "Editable manual billing email copy. The placeholder is the confirmed document number.",
+    "extractionState": "manual",
+    "localizations": {
+      "es": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Tu ticket nº %1$lld"
+        }
+      },
+      "en": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Your receipt no. %1$lld"
+        }
+      }
+    }
+  },
   "billing.selection.open": {
     "comment": "Paid sale document selection and fiscal-recipient form.",
     "extractionState": "manual",
