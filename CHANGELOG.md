@@ -6,6 +6,12 @@ All notable changes to this project are documented in this file.
 
 ### Added
 
+- 2026-10-04 | ✨ feat(sales): close billed sales from Workday
+  Atomically closes a paid sale against its correlated confirmed document and retained valid PDF, with one causal update.
+  Recovers document progress across dismissal and reopening, and moves accepted sales from Workday to read-only History.
+  Enables the isolated Develop demonstration with independent synthetic series and visibly nonfiscal PDFs.
+  Keeps normal remote services gated and integral accessibility validation separately in PLU-110.
+
 - 2026-10-04 | ✨ feat(billing): compose manual document email
   Prepares an authorized ephemeral draft from a retained final PDF, with an explicit recipient and editable es/en copy.
   Contains native Mail presentation, cancellation and completion behind one async boundary; queued is not delivery.

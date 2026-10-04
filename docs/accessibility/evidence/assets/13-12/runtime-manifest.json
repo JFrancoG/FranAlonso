@@ -1,0 +1,232 @@
+{
+  "date": "2026-10-04",
+  "result": "PASS for bounded synthetic tactile scenarios; no Retry action used in final runs",
+  "configuration": {
+    "scheme": "FranAlonso-Develop",
+    "device": "iPhone17",
+    "simulatorRuntime": "iOS27.2",
+    "applicationBundleIdentifier": "com.plusprojects.FranAlonso.develop",
+    "launchArguments": [
+      "--franalonso-demo-workday"
+    ],
+    "localeObserved": "Spanish",
+    "orientationObserved": "Portrait",
+    "appearanceObserved": "Light",
+    "dynamicType": "unchanged default configuration; no enlarged-size runtime claim",
+    "textInput": "DeviceInteractionSynthesize keyboard text injection; Keyboard Focused hierarchy inspected. Keyboard UI was not rendered during recovered invoice session.",
+    "tools": "stable mcp__xcode__ DeviceInteraction only"
+  },
+  "sourceManifest": {
+    "path": "/tmp/franalonso-13-12-swift-manifest.json",
+    "sha256": "dfdb6215c0af4937f52e926278d2016d2cbce6b3243ecd3507913a3f81939915"
+  },
+  "fullOriginalManifestPath": "/tmp/franalonso-13-12-runtime-final/manifest.json",
+  "fullOriginalManifestSHA256": "27f4227cf51f12888d7826a7569a37ce1173d50ac1133220f23267f4ea683cbd",
+  "fullSnapshotCount": 69,
+  "ticket": {
+    "firstLoad": [
+      9,
+      11
+    ],
+    "cancelRetainsSale": 10,
+    "prepared": 12,
+    "preparedReentry": 14,
+    "generated900001": 15,
+    "generatedReentry900001": 17,
+    "closureTransient": 18,
+    "workdayRemovalStable": 19,
+    "historyClosedRow": 20,
+    "historyReadOnly": [
+      21,
+      22
+    ]
+  },
+  "invoice": {
+    "firstLoadBeforeToolIncident": 31,
+    "firstLoadValidCompleteRun": 44,
+    "requiredFieldError": 48,
+    "sixSyntheticFields": 56,
+    "prepared": 57,
+    "preparedReentry": [
+      59,
+      60
+    ],
+    "generated950001": 61,
+    "generatedReentry950001": [
+      63,
+      64
+    ],
+    "closureTransient": 65,
+    "workdayRemovalStable": 66,
+    "historyClosedRow": 67,
+    "historyReadOnly": [
+      68,
+      69
+    ]
+  },
+  "toolIncident": {
+    "message": "Session not found. It may have already been closed, or the identifier is wrong",
+    "cause": "not demonstrated",
+    "defensiveEndSession": "Session doesn't exist anymore",
+    "recovery": "New session on same workspace/device. Activation showed fresh login without demo flag; InstallAndRun with exactly --franalonso-demo-workday restarted synthetic in-memory fixture. Full invoice route repeated from44.",
+    "affectedEvidence": "Original invoice31\u201333 retained as partial evidence. Valid full invoice route44\u201369. No claim that tool incident is a product bug."
+  },
+  "sessionEnd": {
+    "userMessage": "Session stopped",
+    "xcodeReleased": true
+  },
+  "limits": [
+    "Synthetic demo adapter; no real business data, Mail, live activation, or Git/repository modifications by runtime worker.",
+    "Number and PDF status were observed in UI; screenshots alone do not verify PDF internals or reservation call counts.",
+    "Reentry recovery was checked inside each demo process. Fixture resets at fresh launch by contract; this is not persisted durability evidence.",
+    "No physical VoiceOver, announcements, rotor, accessibility focus restoration, Inspector, Voice Control, Switch Control, AX5, hardware keyboard navigation, or integral accessibility certification.",
+    "Toolbar AXframe h36 does not prove a physical hit region44pt; visual capsule alignment/readability only was checked.",
+    "Only Spanish Light Portrait at unchanged default text size was exercised. Other device sizes/text sizes/appearances use separate evidence.",
+    "Transient snapshots18,26,39,65 are superseded by stable recaptures."
+  ],
+  "entries": [
+    {
+      "index": 9,
+      "label": "ticket-first-open-no-retry",
+      "applicationState": "Running",
+      "originalScreenshotPath": "/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/DeviceInteractionSynthesize/Final Billing Sale Closure 13.12-11_11_13_723-screenshot.png",
+      "originalHierarchyPath": "/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/DeviceInteractionSynthesize/Final Billing Sale Closure 13.12-11_11_13_723-hierarchy.txt",
+      "screenshotPath": "runtime-09-ticket-first-open-no-retry.png",
+      "hierarchyPath": "runtime-09-ticket-first-open-no-retry.txt",
+      "screenshotSHA256": "5fa0acc8da914e753a3fcc740475373a66bfc4828696f877372b7e8d73960682",
+      "hierarchySHA256": "9f74eadb3aee8d66bd5d74fb2a98b108e86cf731af054d3156064c0b1a35a14c"
+    },
+    {
+      "index": 14,
+      "label": "ticket-prepared-reentry-no-retry",
+      "applicationState": "Running",
+      "originalScreenshotPath": "/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/DeviceInteractionSynthesize/Final Billing Sale Closure 13.12-11_11_58_868-screenshot.png",
+      "originalHierarchyPath": "/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/DeviceInteractionSynthesize/Final Billing Sale Closure 13.12-11_11_58_868-hierarchy.txt",
+      "screenshotPath": "runtime-14-ticket-prepared-reentry-no-retry.png",
+      "hierarchyPath": "runtime-14-ticket-prepared-reentry-no-retry.txt",
+      "screenshotSHA256": "271702697a829e199c35ff8e86cdaf2667ba3dfc588461490735618d84e45ebd",
+      "hierarchySHA256": "52dc4d5fa593d4e0a2d69ec328879dc51dad542ce1aef912152d3229047f6ffc"
+    },
+    {
+      "index": 17,
+      "label": "ticket-generated-reentry-900001-no-retry",
+      "applicationState": "Running",
+      "originalScreenshotPath": "/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/DeviceInteractionSynthesize/Final Billing Sale Closure 13.12-11_12_19_728-screenshot.png",
+      "originalHierarchyPath": "/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/DeviceInteractionSynthesize/Final Billing Sale Closure 13.12-11_12_19_728-hierarchy.txt",
+      "screenshotPath": "runtime-17-ticket-generated-reentry-900001-no-retry.png",
+      "hierarchyPath": "runtime-17-ticket-generated-reentry-900001-no-retry.txt",
+      "screenshotSHA256": "750ccaec7bfd040d03830dc4d9db5e15912d2605b730b2b24ec4bd77d00f410d",
+      "hierarchySHA256": "526bffb7d91165d32737679477b440a3b4619335e0e86126a3ed59485e7eb091"
+    },
+    {
+      "index": 19,
+      "label": "ticket-workday-removal-stable",
+      "applicationState": "Running",
+      "originalScreenshotPath": "/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/DeviceInteractionSynthesize/Final Billing Sale Closure 13.12-11_12_32_089-screenshot.png",
+      "originalHierarchyPath": "/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/DeviceInteractionSynthesize/Final Billing Sale Closure 13.12-11_12_32_089-hierarchy.txt",
+      "screenshotPath": "runtime-19-ticket-workday-removal-stable.png",
+      "hierarchyPath": "runtime-19-ticket-workday-removal-stable.txt",
+      "screenshotSHA256": "30cdd64c40d424586d1d5f933e2e24f1a3ccb37b71174123f733ddd44a85ee5d",
+      "hierarchySHA256": "71d1bbbb0caedf07baca79c628b76d34ec0da6c08cc746559e436d0ee25f48a2"
+    },
+    {
+      "index": 20,
+      "label": "ticket-history-new-closed-row",
+      "applicationState": "Running",
+      "originalScreenshotPath": "/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/DeviceInteractionSynthesize/Final Billing Sale Closure 13.12-11_12_39_601-screenshot.png",
+      "originalHierarchyPath": "/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/DeviceInteractionSynthesize/Final Billing Sale Closure 13.12-11_12_39_601-hierarchy.txt",
+      "screenshotPath": "runtime-20-ticket-history-new-closed-row.png",
+      "hierarchyPath": "runtime-20-ticket-history-new-closed-row.txt",
+      "screenshotSHA256": "470e4b157b80be84c6189b30f1bddce7ec918599723036f3973b6947226e206c",
+      "hierarchySHA256": "675b7beb59d6cc2f8da0b2202856bd2f3ae3787a71e9aa20817749745a8b1568"
+    },
+    {
+      "index": 22,
+      "label": "ticket-history-read-only-traceability",
+      "applicationState": "Running",
+      "originalScreenshotPath": "/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/DeviceInteractionSynthesize/Final Billing Sale Closure 13.12-11_13_00_580-screenshot.png",
+      "originalHierarchyPath": "/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/DeviceInteractionSynthesize/Final Billing Sale Closure 13.12-11_13_00_580-hierarchy.txt",
+      "screenshotPath": "runtime-22-ticket-history-read-only-traceability.png",
+      "hierarchyPath": "runtime-22-ticket-history-read-only-traceability.txt",
+      "screenshotSHA256": "0c00e98977558a465b5123433388f9fe49175f620be4d9236790356605e37550",
+      "hierarchySHA256": "8c6e83c861f92ecb6acd9b44a2f31be7890de7427d1661c7152f5645caa2629b"
+    },
+    {
+      "index": 44,
+      "label": "invoice-recovery-first-open-no-retry",
+      "applicationState": "Running",
+      "originalScreenshotPath": "/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/DeviceInteractionSynthesize/Final Billing Sale Closure 13.12 Recovery-11_20_09_013-screenshot.png",
+      "originalHierarchyPath": "/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/DeviceInteractionSynthesize/Final Billing Sale Closure 13.12 Recovery-11_20_09_013-hierarchy.txt",
+      "screenshotPath": "runtime-44-invoice-recovery-first-open-no-retry.png",
+      "hierarchyPath": "runtime-44-invoice-recovery-first-open-no-retry.txt",
+      "screenshotSHA256": "b6f8da351cd2385be88fcb939bf0d9874f162ccce0617730899dbe1a676a6657",
+      "hierarchySHA256": "aca1a5089576fbb5eefa0bc98f09b52e3c64a207c42fffe44641beec996d395b"
+    },
+    {
+      "index": 48,
+      "label": "invoice-required-tax-id-error",
+      "applicationState": "Running",
+      "originalScreenshotPath": "/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/DeviceInteractionSynthesize/Final Billing Sale Closure 13.12 Recovery-11_20_39_215-screenshot.png",
+      "originalHierarchyPath": "/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/DeviceInteractionSynthesize/Final Billing Sale Closure 13.12 Recovery-11_20_39_215-hierarchy.txt",
+      "screenshotPath": "runtime-48-invoice-required-tax-id-error.png",
+      "hierarchyPath": "runtime-48-invoice-required-tax-id-error.txt",
+      "screenshotSHA256": "861e8cb9d5b086d409639123e99d6d47d0e48cbbed3b96fe2613f7d3ea0f43d7",
+      "hierarchySHA256": "bd5fcedc7d7ef6ff73580253355d54b00b3b202bc59ec64b6350972dea46a6c6"
+    },
+    {
+      "index": 60,
+      "label": "invoice-prepared-reentry-pending",
+      "applicationState": "Running",
+      "originalScreenshotPath": "/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/DeviceInteractionSynthesize/Final Billing Sale Closure 13.12 Recovery-11_22_18_399-screenshot.png",
+      "originalHierarchyPath": "/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/DeviceInteractionSynthesize/Final Billing Sale Closure 13.12 Recovery-11_22_18_399-hierarchy.txt",
+      "screenshotPath": "runtime-60-invoice-prepared-reentry-pending.png",
+      "hierarchyPath": "runtime-60-invoice-prepared-reentry-pending.txt",
+      "screenshotSHA256": "b55710a3d435a3d27559ceec0f69e3cb284e0044b421b8dbca167fe63c5b2e98",
+      "hierarchySHA256": "9262be643c4b0d774606b87fcf58e5bda24e3c37cc6d5615e108b32c109c2f8e"
+    },
+    {
+      "index": 64,
+      "label": "invoice-generated-reentry-950001-no-retry",
+      "applicationState": "Running",
+      "originalScreenshotPath": "/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/DeviceInteractionSynthesize/Final Billing Sale Closure 13.12 Recovery-11_22_50_546-screenshot.png",
+      "originalHierarchyPath": "/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/DeviceInteractionSynthesize/Final Billing Sale Closure 13.12 Recovery-11_22_50_546-hierarchy.txt",
+      "screenshotPath": "runtime-64-invoice-generated-reentry-950001-no-retry.png",
+      "hierarchyPath": "runtime-64-invoice-generated-reentry-950001-no-retry.txt",
+      "screenshotSHA256": "61ce87cc6761a0331a93cda510131eef1638f0de9772d4a9d98fd962a512249d",
+      "hierarchySHA256": "d6aefc3222b4061c0813c08334490e33f594f22b56dc978adef5a8ddfb4f2d26"
+    },
+    {
+      "index": 66,
+      "label": "invoice-workday-removal-stable",
+      "applicationState": "Running",
+      "originalScreenshotPath": "/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/DeviceInteractionSynthesize/Final Billing Sale Closure 13.12 Recovery-11_23_18_623-screenshot.png",
+      "originalHierarchyPath": "/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/DeviceInteractionSynthesize/Final Billing Sale Closure 13.12 Recovery-11_23_18_623-hierarchy.txt",
+      "screenshotPath": "runtime-66-invoice-workday-removal-stable.png",
+      "hierarchyPath": "runtime-66-invoice-workday-removal-stable.txt",
+      "screenshotSHA256": "dc0e63ca1c551fb30d6e55b69988e60bec3333c7e2dfd59c8bd1d954b23ffd29",
+      "hierarchySHA256": "d7872dee30f54224b27aa1e62b48fba53aac3c85266a7bca8901a570b1a09a14"
+    },
+    {
+      "index": 67,
+      "label": "invoice-history-new-closed-row",
+      "applicationState": "Running",
+      "originalScreenshotPath": "/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/DeviceInteractionSynthesize/Final Billing Sale Closure 13.12 Recovery-11_23_25_501-screenshot.png",
+      "originalHierarchyPath": "/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/DeviceInteractionSynthesize/Final Billing Sale Closure 13.12 Recovery-11_23_25_501-hierarchy.txt",
+      "screenshotPath": "runtime-67-invoice-history-new-closed-row.png",
+      "hierarchyPath": "runtime-67-invoice-history-new-closed-row.txt",
+      "screenshotSHA256": "7a3450627b772697a802173d130999736709a3f85af743bb5d4ba359516a555b",
+      "hierarchySHA256": "0351cf4e70ebd8a2f80f6d90052bf08848a063f68fc91d496032a1b5c67f00be"
+    },
+    {
+      "index": 69,
+      "label": "invoice-history-read-only-traceability",
+      "applicationState": "Running",
+      "originalScreenshotPath": "/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/DeviceInteractionSynthesize/Final Billing Sale Closure 13.12 Recovery-11_23_41_020-screenshot.png",
+      "originalHierarchyPath": "/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/DeviceInteractionSynthesize/Final Billing Sale Closure 13.12 Recovery-11_23_41_020-hierarchy.txt",
+      "screenshotPath": "runtime-69-invoice-history-read-only-traceability.png",
+      "hierarchyPath": "runtime-69-invoice-history-read-only-traceability.txt",
+      "screenshotSHA256": "5cb640e2ee24bb252e96fe7fd981e6b6e6f170b0d27690e639f28034d21f53ff",
+      "hierarchySHA256": "8a5fcd25f4ed93426795958fc0c73de9d157294f7b2db91e00ef284ffbc91e42"
+    }
+  ]
+}

@@ -1,0 +1,145 @@
+{
+  "base": "8a4af43a7d40ac1d72c939dab4f0f3613dc41bee",
+  "files": [
+    {
+      "path": "FranAlonso/App/Composition/AppBillingDocumentReservationRepository.swift",
+      "sha256": "87a46b485a5289d4331df7277533bd27cc223bec0f329a6613c7e264ee60f652"
+    },
+    {
+      "path": "FranAlonso/App/Composition/AppRuntime.swift",
+      "sha256": "ce1eaa5d146fc011ff4b00248dd90379604d62fd4ea33f9e0a7f2520faeb6f74"
+    },
+    {
+      "path": "FranAlonso/App/Composition/BillingDocumentComposition.swift",
+      "sha256": "012d006f072c074e0761c87e086f8b0991a58f74f8251fcdadc25700f8784af6"
+    },
+    {
+      "path": "FranAlonso/App/Composition/Dependencies/AppDependencies+Billing.swift",
+      "sha256": "00fb9b40c7d2b44c53e0986afde28f41fb8d16ab049286da92e9bb3f8ef9d162"
+    },
+    {
+      "path": "FranAlonso/App/Composition/Dependencies/AppDependencies.swift",
+      "sha256": "7bbfa20151f8806a05ed3060a71cd84215377f7f125928b57086b92253635b9a"
+    },
+    {
+      "path": "FranAlonso/App/Development/DevelopDemoBillingPDFComposer.swift",
+      "sha256": "5d20b22a709dc6908aeaf65d904d8643440bc08adf3ed8f193edd256a974069f"
+    },
+    {
+      "path": "FranAlonso/App/Development/DevelopDemoBillingReservationRepository.swift",
+      "sha256": "d1df480939db580accc13d2f03e40ba254fd34c29423681fb320873c3e6f6774"
+    },
+    {
+      "path": "FranAlonso/App/Development/DevelopDemoComposition.swift",
+      "sha256": "83be0cf4551a3713494ded29f1c3cf3bb80e7f87be3346c427d487fbc85c4dce"
+    },
+    {
+      "path": "FranAlonso/App/Previews/BillingProgressPreviewModifier.swift",
+      "sha256": "19d1186605236ea6b4b5edbf623578406eecfc3cc7cadf281147027e9c8cd580"
+    },
+    {
+      "path": "FranAlonso/Features/Billing/Presentation/Extensions/BillingViewModel+Presentation.swift",
+      "sha256": "e132527392342086a4fbfb9917222d07dff539b7d4858c470dbb5cc6b68abd9e"
+    },
+    {
+      "path": "FranAlonso/Features/Billing/Presentation/Screens/BillingScreen.swift",
+      "sha256": "1a579702f33d6d85521f0df6564c3f94bb23dc1bfa4fb074ebecf0b9418d1bf2"
+    },
+    {
+      "path": "FranAlonso/Features/Billing/Presentation/Stores/BillingDocumentStore.swift",
+      "sha256": "e7701b997036d368ebc06a1b8f194cc75bd1ef7c8dfd1d47193846acd1c0d224"
+    },
+    {
+      "path": "FranAlonso/Features/Billing/Presentation/ViewModels/BillingOperationRequest.swift",
+      "sha256": "af23dc2a58c902af1e044012f058c30098eb90cd7d547437a4eb181f03fa2d06"
+    },
+    {
+      "path": "FranAlonso/Features/Billing/Presentation/ViewModels/BillingViewModel.swift",
+      "sha256": "ebeca4184b2318d8fef2ccf57cccfcdbd3190c4e86541c79ef250d83529e1c97"
+    },
+    {
+      "path": "FranAlonso/Features/Billing/Presentation/Views/BillingDocumentProgressView.swift",
+      "sha256": "8a66e30556b881109c819dd6b4ae37f494549d250e1a14ecc024d53b5fe404a2"
+    },
+    {
+      "path": "FranAlonso/Features/Billing/Presentation/Views/BillingSelectionContent.swift",
+      "sha256": "54aa5c185768d6fe6f8361b307e6f1e650ea5aee8fea2229c3ff0c6b98044ccd"
+    },
+    {
+      "path": "FranAlonso/Features/Sales/Data/DataSources/SaleLocalDataSource.swift",
+      "sha256": "dd1cb525911bff0637ce74e2c786e79d5c7c60c063b12eecae94dfb60db9b0ae"
+    },
+    {
+      "path": "FranAlonso/Features/Sales/Data/Persistence/SaleContextualPersistenceAdapter.swift",
+      "sha256": "71f55397c020918a9572884670f5daabe23731b4ec47658a5318f11e8cb79440"
+    },
+    {
+      "path": "FranAlonso/Features/Sales/Data/Persistence/SalePersistenceActor.swift",
+      "sha256": "9e8a815b88b0f91970cdc63f979288e79893301a32fcceaf79de1c9750e21476"
+    },
+    {
+      "path": "FranAlonso/Features/Sales/Data/Repositories/DefaultSaleRepository.swift",
+      "sha256": "6fb4cff17a8af9077eba211491c85499f8bfce32114e6f400fb5745a0f8f97c7"
+    },
+    {
+      "path": "FranAlonso/Features/Sales/Domain/Errors/SaleClosureError.swift",
+      "sha256": "2153fd4e189670c5f85c79f28cd07c96ba271476b4e06329820aab2dcc725d1e"
+    },
+    {
+      "path": "FranAlonso/Features/Sales/Domain/Policies/SaleClosureAcceptancePolicy.swift",
+      "sha256": "8dfa3fe116ec989e5df07c81031c360f7571521647458cd8383c6f87721f3257"
+    },
+    {
+      "path": "FranAlonso/Features/Sales/Domain/Repositories/SaleRepository.swift",
+      "sha256": "bdaefe086d1f86ae6a038157d16897de4debf2f11273a096688e3028ebe646b5"
+    },
+    {
+      "path": "FranAlonso/Features/Sales/Domain/UseCases/CloseSaleUseCase.swift",
+      "sha256": "8682c6a51bae0a1d0ca21f0a38bac1d046d571980b681b6cf9496eb247250eb2"
+    },
+    {
+      "path": "FranAlonso/Features/Sales/Domain/ValueObjects/SaleClosureRequest.swift",
+      "sha256": "62f70065510c09879265b30b588d37afc099f126edfdf7c88b7da455ad930730"
+    },
+    {
+      "path": "FranAlonsoTests/BillingOperationCoordinatorTests.swift",
+      "sha256": "733d7b26a7fec1c2ee0f870833143e6e0cfaa534729398e9146983652fb7bb53"
+    },
+    {
+      "path": "FranAlonsoTests/BillingSaleClosurePresentationFixtures.swift",
+      "sha256": "10bee51a752acaae22b474673d387d220f15ca375bc944f1e3f6763e351c65a6"
+    },
+    {
+      "path": "FranAlonsoTests/BillingSaleClosurePresentationTests.swift",
+      "sha256": "85d801dae7fc31575aee1524065c4f465f02e651b20e41d191b7dfe5102c6ee9"
+    },
+    {
+      "path": "FranAlonsoTests/DevelopDemoBillingCompositionTests.swift",
+      "sha256": "11a0f97a8f78d74e05084a7211f1358d5bc4e73f96eb9f114611276c916f8d00"
+    },
+    {
+      "path": "FranAlonsoTests/SaleClosureAuthorizationTests.swift",
+      "sha256": "b1f6922a35ea94a749abdd3d15a52bf8c01d5dc28c1a9d70eaf0294b0b504f38"
+    },
+    {
+      "path": "FranAlonsoTests/SaleClosureDomainTests.swift",
+      "sha256": "7906aae1e772bf1dfd6f15bc90db09b01418b91300febf6d470b28d890ecc3bb"
+    },
+    {
+      "path": "FranAlonsoTests/SaleClosureDurabilityTests.swift",
+      "sha256": "e8205df2faa2c50cb1b5d03a5a4450ac47c35aabab4bfe8a2e19b2940ee0a79b"
+    },
+    {
+      "path": "FranAlonsoTests/SaleClosurePersistenceTests.swift",
+      "sha256": "6c002bbd59b8d5d6798b279e10303ef39751e7c452a036504dbcc3ad09899eb1"
+    },
+    {
+      "path": "FranAlonsoTests/SaleClosureRecoveryTests.swift",
+      "sha256": "c8504a042f6ba43b721a328be20da579c93cf94d3caadc531cfaa00cf36fd0a6"
+    },
+    {
+      "path": "FranAlonsoTests/SaleClosureTestFixtures.swift",
+      "sha256": "9aab84e2c7b592dd0b1ea50800c839137bbb2c6cd1fc01be100aceb223c98f33"
+    }
+  ]
+}

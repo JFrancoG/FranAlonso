@@ -12,6 +12,7 @@ final class AppRuntime {
     private let persistenceActor: ClientPersistenceActor
     private let observationSignal: ClientObservationSignal
     private let clientDocumentComposition: ClientDocumentComposition
+    private let billingDocumentComposition: BillingDocumentComposition
     private let productPersistenceActor: ProductPersistenceActor
     private let stockPersistenceActor: StockPersistenceActor
     private let productObservationSignal: ProductObservationSignal
@@ -91,11 +92,16 @@ final class AppRuntime {
         let serviceObservationSignal = ServiceObservationSignal()
         let salePersistenceActor = SalePersistenceActor(modelContainer: modelContainer)
         let saleObservationSignal = SaleObservationSignal()
+        let billingDocumentComposition = BillingDocumentComposition(
+            modelContainer: modelContainer,
+            observationSignal: saleObservationSignal
+        )
 
         self.modelContainer = modelContainer
         self.persistenceActor = persistenceActor
         self.observationSignal = observationSignal
         self.clientDocumentComposition = clientDocumentComposition
+        self.billingDocumentComposition = billingDocumentComposition
         self.productPersistenceActor = productPersistenceActor
         self.stockPersistenceActor = stockPersistenceActor
         self.productObservationSignal = productObservationSignal
@@ -120,7 +126,8 @@ final class AppRuntime {
             serviceObservationSignal: serviceObservationSignal,
             salePersistenceActor: salePersistenceActor,
             saleObservationSignal: saleObservationSignal,
-            makeClientConsentServices: clientDocumentComposition.makeServices
+            makeClientConsentServices: clientDocumentComposition.makeServices,
+            billingComposition: billingDocumentComposition
         )
     }
 
@@ -135,6 +142,7 @@ final class AppRuntime {
 
         authenticationRootViewModel = makeAuthenticationRootViewModel(modelContainer)
         clientDocumentComposition.authenticationRoot = authenticationRootViewModel
+        billingDocumentComposition.authenticationRoot = authenticationRootViewModel
     }
 
     /// Composes the inactive Clients sync engine once Firebase is ready.

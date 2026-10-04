@@ -1,0 +1,124 @@
+Device orientation: Unknown
+------------------------
+Application bundle identifier: com.plusprojects.FranAlonso.develop
+Application UI orientation: Portrait
+Application, pid: 33604, label: 'Fran DEV'
+ Window, {{0.0, 0.0}, {402.0, 874.0}}, hitPoint: {201.0, 437.0}
+  Other, {{0.0, 0.0}, {402.0, 874.0}}, hitPoint: {201.0, 437.0}
+   Other, {{-402.0, -874.0}, {1206.0, 2622.0}}, hitPoint: {201.0, 437.0}
+   Other, {{0.0, 72.0}, {402.0, 802.0}}, hitPoint: {201.0, 473.0}
+    Other, {{0.0, 72.0}, {402.0, 802.0}}, hitPoint: {201.0, 473.0}
+     Other, {{0.0, 72.0}, {402.0, 802.0}}, hitPoint: {201.0, 473.0}
+      Other, {{0.0, 72.0}, {402.0, 802.0}}, hitPoint: {201.0, 473.0}
+       Other, {{0.0, 72.0}, {402.0, 802.0}}, hitPoint: {201.0, 473.0}
+        NavigationBar, {{0.0, 88.0}, {402.0, 54.0}}, identifier: 'Documento', hitPoint: {201.0, 115.0}
+         Other, {{20.0, 92.0}, {93.3, 36.0}}, hitPoint: {66.7, 110.0}
+          Other, {{20.0, 92.0}, {93.3, 36.0}}, hitPoint: {66.7, 110.0}
+           Button, {{20.0, 92.0}, {93.3, 36.0}}, label: 'Cancelar', hitPoint: {66.7, 110.0}
+         StaticText, {{154.7, 99.7}, {92.3, 20.7}}, label: 'Documento', hitPoint: {200.8, 110.0}
+        Other, {{0.0, 72.0}, {402.0, 802.0}}, hitPoint: {201.0, 473.0}
+         Other, {{0.0, 72.0}, {402.0, 802.0}}, hitPoint: {201.0, 473.0}
+          Other, {{0.0, 72.0}, {402.0, 802.0}}, hitPoint: {201.0, 473.0}
+           Other, {{0.0, 72.0}, {402.0, 802.0}}, hitPoint: {201.0, 473.0}
+            CollectionView, {{0.0, 72.0}, {402.0, 802.0}}, hitPoint: {201.0, 473.0}
+             Other, {{-16.0, -51.7}, {434.0, 130.0}}, hitPoint: {201.0, 39.2}
+             Cell, {{16.0, -34.0}, {370.0, 95.0}}, hitPoint: {201.0, 30.5}
+              Other, {{16.0, -34.0}, {370.0, 95.0}}, hitPoint: {201.0, 30.5}
+               Other, {{16.0, -34.0}, {370.0, 95.0}}, hitPoint: {201.0, 30.5}
+              Other, {{16.0, -34.0}, {370.0, 95.0}}, hitPoint: {201.0, 30.5}
+               Other, {{16.0, -34.0}, {370.0, 95.0}}, hitPoint: {201.0, 30.5}
+                Other, {{16.0, -34.0}, {370.0, 95.0}}, hitPoint: {201.0, 30.5}
+                 TextField, {{36.0, 14.3}, {330.0, 19.0}}, label: 'Nombre o razón social', value: Cliente DEMO Alba, hitPoint: {201.0, 23.8}
+                  Other, {{36.0, 20.8}, {330.0, 9.5}}, label: 'Barra de desplazamiento horizontal, 1 página', value: 0 %, hitPoint: {201.0, 25.6}
+                   Other, {{39.0, 27.3}, {324.0, 3.0}}, hitPoint: {201.0, 28.8}
+             Other, {{-16.0, 78.3}, {434.0, 152.3}}, hitPoint: {201.0, 154.5}
+             Other, {{0.0, 72.0}, {402.0, 802.0}}, hitPoint: {201.0, 473.0}
+              Other, {{0.0, 72.0}, {402.0, 110.0}}, hitPoint: {201.0, 127.0}
+             Other, {{0.0, 72.0}, {402.0, 802.0}}, hitPoint: {201.0, 473.0}
+              Other, {{0.0, 72.0}, {402.0, 110.0}}, hitPoint: {201.0, 127.0}
+             Cell, {{16.0, 96.0}, {370.0, 117.3}}, hitPoint: {201.0, 154.7}
+              Other, {{16.0, 96.0}, {370.0, 117.3}}, hitPoint: {201.0, 154.7}
+               Other, {{16.0, 96.0}, {370.0, 117.3}}, hitPoint: {201.0, 154.7}
+              Other, {{16.0, 96.0}, {370.0, 117.3}}, hitPoint: {201.0, 154.7}
+               Other, {{16.0, 96.0}, {370.0, 117.3}}, hitPoint: {201.0, 154.7}
+                Other, {{16.0, 96.0}, {370.0, 117.3}}, hitPoint: {201.0, 154.7}
+                 Image, {{38.7, 112.0}, {15.3, 15.3}}, identifier: 'pencil', label: 'Editar', hitPoint: {46.3, 119.7}
+                 StaticText, {{38.7, 111.1}, {160.0, 17.0}}, label: 'Identificador fiscal', hitPoint: {118.7, 119.6}
+                 TextField, {{36.0, 144.3}, {330.0, 19.0}}, label: 'Identificador fiscal', placeholderValue: 'Identificador fiscal', Keyboard Focused, hitPoint: {201.0, 153.8}
+                    Other, {{28.8, 130.8}, {16.5, 16.5}}, hitPoint: {37.0, 139.1}
+                    Other, {{28.8, 130.8}, {16.5, 16.5}}, hitPoint: {37.0, 139.1}
+                  Other, {{36.0, 150.8}, {330.0, 9.5}}, label: 'Barra de desplazamiento horizontal, 1 página', value: 0 %, hitPoint: {201.0, 155.6}
+                   Other, {{39.0, 157.3}, {324.0, 3.0}}, hitPoint: {201.0, 158.8}
+                 StaticText, {{36.0, 181.2}, {214.0, 17.0}}, label: 'Introduce el identificador fiscal.', hitPoint: {143.0, 189.7}
+             Other, {{-16.0, 230.7}, {434.0, 130.0}}, hitPoint: {201.0, 295.7}
+             Cell, {{16.0, 248.0}, {370.0, 95.0}}, hitPoint: {201.0, 295.5}
+              Other, {{16.0, 248.0}, {370.0, 95.0}}, hitPoint: {201.0, 295.5}
+               Other, {{16.0, 248.0}, {370.0, 95.0}}, hitPoint: {201.0, 295.5}
+              Other, {{16.0, 248.0}, {370.0, 95.0}}, hitPoint: {201.0, 295.5}
+               Other, {{16.0, 248.0}, {370.0, 95.0}}, hitPoint: {201.0, 295.5}
+                Other, {{16.0, 248.0}, {370.0, 95.0}}, hitPoint: {201.0, 295.5}
+                 Image, {{38.7, 264.0}, {15.3, 15.3}}, identifier: 'pencil', label: 'Editar', hitPoint: {46.3, 271.7}
+                 StaticText, {{38.7, 263.2}, {134.3, 17.0}}, label: 'Calle y número', hitPoint: {105.8, 271.7}
+                 TextField, {{36.0, 296.3}, {330.0, 19.0}}, label: 'Calle y número', placeholderValue: 'Calle y número', hitPoint: {201.0, 305.8}
+                  Other, {{36.0, 302.8}, {330.0, 9.5}}, label: 'Barra de desplazamiento horizontal, 1 página', value: 0 %, hitPoint: {201.0, 307.6}
+                   Other, {{39.0, 309.3}, {324.0, 3.0}}, hitPoint: {201.0, 310.8}
+             Other, {{-16.0, 360.7}, {434.0, 130.0}}, hitPoint: {201.0, 425.7}
+             Cell, {{16.0, 378.3}, {370.0, 95.0}}, hitPoint: {201.0, 425.8}
+              Other, {{16.0, 378.3}, {370.0, 95.0}}, hitPoint: {201.0, 425.8}
+               Other, {{16.0, 378.3}, {370.0, 95.0}}, hitPoint: {201.0, 425.8}
+              Other, {{16.0, 378.3}, {370.0, 95.0}}, hitPoint: {201.0, 425.8}
+               Other, {{16.0, 378.3}, {370.0, 95.0}}, hitPoint: {201.0, 425.8}
+                Other, {{16.0, 378.3}, {370.0, 95.0}}, hitPoint: {201.0, 425.8}
+                 Image, {{38.7, 394.3}, {15.3, 15.3}}, identifier: 'pencil', label: 'Editar', hitPoint: {46.3, 402.0}
+                 StaticText, {{38.7, 393.5}, {127.3, 17.0}}, label: 'Código postal', hitPoint: {102.3, 402.0}
+                 TextField, {{36.0, 426.7}, {330.0, 19.0}}, label: 'Código postal', placeholderValue: 'Código postal', hitPoint: {201.0, 436.2}
+                  Other, {{36.0, 433.2}, {330.0, 9.5}}, label: 'Barra de desplazamiento horizontal, 1 página', value: 0 %, hitPoint: {201.0, 437.9}
+                   Other, {{39.0, 439.7}, {324.0, 3.0}}, hitPoint: {201.0, 441.2}
+             Other, {{-16.0, 490.7}, {434.0, 130.0}}, hitPoint: {201.0, 555.7}
+             Cell, {{16.0, 508.3}, {370.0, 95.0}}, hitPoint: {201.0, 555.8}
+              Other, {{16.0, 508.3}, {370.0, 95.0}}, hitPoint: {201.0, 555.8}
+               Other, {{16.0, 508.3}, {370.0, 95.0}}, hitPoint: {201.0, 555.8}
+              Other, {{16.0, 508.3}, {370.0, 95.0}}, hitPoint: {201.0, 555.8}
+               Other, {{16.0, 508.3}, {370.0, 95.0}}, hitPoint: {201.0, 555.8}
+                Other, {{16.0, 508.3}, {370.0, 95.0}}, hitPoint: {201.0, 555.8}
+                 Image, {{38.7, 524.3}, {15.3, 15.3}}, identifier: 'pencil', label: 'Editar', hitPoint: {46.3, 532.0}
+                 StaticText, {{38.7, 523.5}, {81.7, 17.0}}, label: 'Ciudad', hitPoint: {79.5, 532.0}
+                 TextField, {{36.0, 556.7}, {330.0, 19.0}}, label: 'Ciudad', placeholderValue: 'Ciudad', hitPoint: {201.0, 566.2}
+                  Other, {{36.0, 563.2}, {330.0, 9.5}}, label: 'Barra de desplazamiento horizontal, 1 página', value: 0 %, hitPoint: {201.0, 567.9}
+                   Other, {{39.0, 569.7}, {324.0, 3.0}}, hitPoint: {201.0, 571.2}
+             Other, {{-16.0, 620.7}, {434.0, 130.0}}, hitPoint: {201.0, 685.7}
+             Cell, {{16.0, 638.3}, {370.0, 95.0}}, hitPoint: {201.0, 685.8}
+              Other, {{16.0, 638.3}, {370.0, 95.0}}, hitPoint: {201.0, 685.8}
+               Other, {{16.0, 638.3}, {370.0, 95.0}}, hitPoint: {201.0, 685.8}
+              Other, {{16.0, 638.3}, {370.0, 95.0}}, hitPoint: {201.0, 685.8}
+               Other, {{16.0, 638.3}, {370.0, 95.0}}, hitPoint: {201.0, 685.8}
+                Other, {{16.0, 638.3}, {370.0, 95.0}}, hitPoint: {201.0, 685.8}
+                 Image, {{38.7, 654.3}, {15.3, 15.3}}, identifier: 'pencil', label: 'Editar', hitPoint: {46.3, 662.0}
+                 StaticText, {{38.7, 653.5}, {96.3, 17.0}}, label: 'Provincia', hitPoint: {86.8, 662.0}
+                 TextField, {{36.0, 686.7}, {330.0, 19.0}}, label: 'Provincia', placeholderValue: 'Provincia', hitPoint: {201.0, 696.2}
+                  Other, {{36.0, 693.2}, {330.0, 9.5}}, label: 'Barra de desplazamiento horizontal, 1 página', value: 0 %, hitPoint: {201.0, 697.9}
+                   Other, {{39.0, 699.7}, {324.0, 3.0}}, hitPoint: {201.0, 701.2}
+             Other, {{-16.0, 750.7}, {434.0, 1715.7}}, hitPoint: {201.0, 812.3}
+             Cell, {{16.0, 768.3}, {370.0, 74.0}}, hitPoint: {201.0, 805.3}
+              Other, {{16.0, 768.3}, {370.0, 74.0}}, hitPoint: {201.0, 805.3}
+               Other, {{16.0, 768.3}, {370.0, 74.0}}, hitPoint: {201.0, 805.3}
+              Other, {{16.0, 768.3}, {370.0, 74.0}}, hitPoint: {201.0, 805.3}
+               Other, {{16.0, 768.3}, {370.0, 74.0}}, hitPoint: {201.0, 805.3}
+                Other, {{16.0, 768.3}, {370.0, 74.0}}, hitPoint: {201.0, 805.3}
+                 Button, {{16.0, 768.3}, {370.0, 74.0}}, label: 'Preparar documento', hitPoint: {201.0, 805.3}
+             Other, {{369.0, 142.0}, {30.0, 670.0}}, label: 'Barra de desplazamiento vertical, 2 páginas', value: 96 %, hitPoint: {384.0, 477.0}
+              Other, {{396.0, 407.7}, {3.0, 390.7}}, hitPoint: {397.5, 603.0}
+             Other, {{369.0, 142.0}, {30.0, 670.0}}, label: 'Barra de desplazamiento vertical, 2 páginas', value: 96 %, hitPoint: {384.0, 477.0}
+              Other, {{396.0, 407.7}, {3.0, 390.7}}, hitPoint: {397.5, 603.0}
+        Toolbar, {{0.0, 72.0}, {402.0, 802.0}}, identifier: 'Toolbar', label: 'Barra de herramientas', hitPoint: {201.0, 473.0}
+         Other, {{0.0, 72.0}, {402.0, 802.0}}, hitPoint: {201.0, 473.0}
+ Window, {{0.0, 0.0}, {402.0, 874.0}}, hitPoint: {201.0, 437.0}
+  Other, {{0.0, 0.0}, {402.0, 874.0}}, hitPoint: {201.0, 437.0}
+   Other, {{0.0, 0.0}, {402.0, 874.0}}, hitPoint: {201.0, 437.0}
+ Window, {{0.0, 0.0}, {402.0, 874.0}}, hitPoint: {201.0, 437.0}
+  Other, {{0.0, 0.0}, {402.0, 874.0}}, hitPoint: {201.0, 437.0}
+   Other, {{0.0, 874.0}, {402.0, 270.0}}
+    Other, {{0.0, 874.0}, {402.0, 44.0}}, identifier: 'SystemInputAssistantView'
+     Other, {{0.0, 874.0}, {402.0, 44.0}}
+      Other, {{0.0, 874.0}, {402.0, 20.0}}, identifier: 'CenterPageView'
+       Other, {{0.0, 274.0}, {402.0, 1220.0}}, hitPoint: {201.0, 574.0}

@@ -1,5 +1,124 @@
 # Fase13 — Facturación, PDF, correo y numeración
 
+## 13.12 / PLU-109 — Entrega autorizada en preparación; In Progress
+
+04/10/2026 Europe/Madrid: «commit, push y entrega» autoriza el circuito establecido completo.
+Rama`codex/plu-109-close-billed-sales`, base/main/origin/main`8a4af43`; PR/merge pendientes.
+Preflight independiente`billing_13_12_delivery` PASS/SinP0–P3:103paths,35/35Swift exactos al manifest
+`9493e3f400d30db013a1fea5c794ebcc51b8d127006c1e8b2f3412edd4b2880f`.
+1144files inicial/final/revisor/root idénticos`1a1497fcc02ba91cdea9b3debed98446974702b52e0e335f9d616d2a34ae98f1`.
+3026/3026PASS,85nuevos/56declaraciones, builds y diagnósticos aceptados se reutilizan por identidad;
+Xcode nuevo N/A para los cambios documentales de entrega.644textos/0errores y8links históricos conservan límites.
+Deuda integral nueva transferida antes del cierre a[PLU-110](https://linear.app/plusprojects/issue/PLU-110),
+**Backlog/Jesus Franco**, relacionada conPLU-109. [Matriz55](../accessibility/evidence/13-12-sale-closure-workday.md)
+conserva26Limitado/12Pendiente/1Falla históricaPLU-91 entre39aplicables y16N/A motivados.
+Recuperar tras feedback/estabilización de cada recorrido y antes del primer candidato real; incluye interacción
+manual de elección ticket+factura no observada tras el fix. PLU-101/108 conservan deuda propia.
+Fase13/proyecto In Progress; sin cierre integral, servicios live, correo real, emisión fiscal ni13.13.
+El registro local siguiente conserva su estado histórico anterior a esta autorización.
+
+## 13.12 / PLU-109 — Registro histórico de implementación local validada
+
+04/10/2026 Europe/Madrid: «abre issue y rama e implementa13.12».
+[PLU-109](https://linear.app/plusprojects/issue/PLU-109), Jesus Franco, In Progress;
+rama`codex/plu-109-close-billed-sales` desde main/origin/main`8a4af43` limpio/0divergencia.
+[Propuesta exacta, alternativas y fuentes](13-12-sale-closure-proposal.md).
+PRE independiente`billing_13_12_pre` PASS/SinP0–P3 antes de código;1061files inicial/final/revisor/root idénticos
+`98f9f777d7e05be796387ae4595c72dabd3fddb268a2c79fad4cc072743f9012` antes de registrar dictámenes.
+CloseSaleUseCase/cierre local y Jornada; doc confirmado+PDF final validado permite cierre aun conupload/correo pendientes
+según spec11. isFinal13.10 conserva requisito receipt. Demo aislada conseries/PDFsyntéticos y capasalocalesreales.
+XcodeMCPstableServiceproyecto/Develop/testplan/iPhone18Pro/SDK27.0 verificados; Swift6strictcomplete/defaultnonisolated.
+Baseline13.11 por identidad:2941/113PASS/builds/16Swift sin cambios; no acredita13.12 nueva.
+TDD RED real Xcode MCP/Develop en iPhone17(27.2): Data55ejecuciones=53FAIL/2PASS;
+51fallos por conducta inerte y2setup por producto ausente. Fixture corregida sin cambiar oráculos:
+recaptura1ticketFAIL en cierre inerte, selector focal parcial; no se atribuyen2variantes a esa recaptura.
+UI10+demo7=17/17FAIL esperado (cierre/load/reserva/compositor/integración inertes).
+Artifacts RunSomeTests C749F249-9FFE-4E44-B7F5-9B59957E5DBB,
+5F8487F7-A81E-4619-92CE-F6164787CBDE y1D243A0B-B1B7-4F28-9E60-6AA078AD05BD,
+bajo `/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RunSomeTests/` (.txt).
+Builds preRED DevelopForTesting25.431s/Production21.577sPASS. Build inicial falló por initambiguo corregido
+sin tocar tests anteriores. Intento previo0/31notRun noesRED: rawlogruntime27.0notavailable/failedclone;
+no demuestra defecto de nombres (renombrados testsnuevos por legibilidad, mismas expectativas).
+GREEN inicial51/51PASS es focal parcial por argumentos; artifactA646D3CD-2B86-45F1-9A9C-EFA4D1A44E30.
+No se atribuyen72casos a ese selector.
+Reentrada de factura RED1FAIL→GREEN1PASS conserva kind/request; artifacts564F8A7F-871E-46A3-BDED-9D54051CB87D
+/74E8F4D6-7E52-49D2-8FF0-0C157ADA0B73. Smoke inicial67snapshots encontró carrera de recuperación y toolbar
+mal ajustada; ticket/factura operaban solo con workaroundRetry: no se declara gatePASS de ese smoke.
+Coordinador RED3FAIL→GREEN3PASS sin alterar oráculos: snapshots nil/obsoletos y duplicateperform;
+artifacts4F1D700D-2DAB-4563-AC70-920EF7342FA6/A812A8CF-9AFC-4F16-90E5-AC8B350398BD.
+Corrección: una task por intención inmutable, un propietario de ejecución, inicialización inerte de load,
+Button nativo y aviso limitado a muestras precargadas. El PDF DEMO usa marca separada del pie en cada página.
+
+Validación antes del POST original:76casos nuevos/50declaraciones (Data55+UI11+demo7+coordinador3), todosPASS en global.
+Primer global3017=3016PASS/1FAIL de teardown weakModelContainer histórico L97/argumento1, no payload/migración;
+artifact025AE55E-9B87-4B05-8074-5EABD9406445. Archivo/helpers/schema byteidénticos aHEAD; diagnóstico read-only
+billing_13_12_migration_diagnosis no encuentra acceso13.12 a ese container. Causa interna no demostrada.
+Focal1/1PASS,0E0849BB-4B33-4B14-863E-B5A6E1CC4C20; segunda global justificada por fallo inesperado
+3017/3017PASS,0skip/0notRun,689BE90F-CD6B-4AF6-856E-A07E95CB7D9E; no acredita estabilidad del teardown.
+Tras global solo cambia copy es/en de billing.prepared.message: revisión/retorno, sin prometer cierre al emitir.
+Ambos builds y3recapturas de pantalla prueban ese copy; localización focal8/8PASS (parcial argumentos),
+01E519CA-81AD-4521-B79A-2A5548E677E4; validator641/0errores (553Localizable+87Templates+1InfoPlist).
+DevelopForTesting16.486s/Production22.030sPASS; logs BuildProject-Log-20261004-110532.txt/BuildProject-Log-20261004-110633.txt,
+bajo `/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/BuildProject/`.
+35Swift0diagnósticos; un timeout inicial resuelto con retry, no convertido en0 por inferencia.
+GetBuildLog0issues; rawlogs conservan2/1avisos AppIntentsmetadata, sin Swift/Clangwarnings.
+Todos los artifacts test anteriores están bajoRunSomeTests salvoglobales bajoRunAllTests (.txt).
+
+Estilo independiente billing_13_12_style FULL35 PASS tras P3 corregidos;9App+7Billing+9Sales+10tests.
+1084files inicial/final/revisor/root idénticos910738b878f51d4f16153eb6b6432b4788c8cd8ca605c0e9ace0b5ae76003839.
+[Manifest35 previo a corrección](../accessibility/evidence/assets/13-12/source-manifest-before-recovery-fix.json),
+SHA256dfdb6215c0af4937f52e926278d2016d2cbce6b3243ecd3507913a3f81939915.
+[Previews/matriz55](../accessibility/evidence/13-12-sale-closure-workday.md):16renders representativos,
+3Views×Large/XXX Large/AX5 y estados; hostiPhone18ProMax27.2/es/en/LightDark/contraste estándar-aumentado.
+Frames parciales con scroll: no prueban acceso integral AX5 ni AT/Inspector/ratios.
+QA PDF independiente billing_13_12_pdf_review:25/25páginas visibles (ticket11/factura14), marca/cabeceras/texto
+sin solapes; factura recapturada fresca10:59:17 y14renders byteidénticos a los inspeccionados; PDFbytes distintos.
+FocalPDF2/2PASS,066E21E8-1339-444E-AC5E-C31DBFE604B6. Documento sin etiquetar; no accesibilidad/fiscalidad legal.
+Gobernanza mantiene8links externos históricos/temporales (6Desktop08.3+2phase16), sin PASS global del validator.
+Retest táctil previo al POST sinRetry PASS Ticket/Factura,69snapshots; EndSession Session stopped.
+Ticket9→12→14→15→17→19→20–22; Factura44→48→56→57→60→61→64→66→67–69.
+[Manifest runtime](../accessibility/evidence/assets/13-12/runtime-manifest.json) conserva13PNG/13jerarquías,
+fullSHA27f4227cf51f12888d7826a7569a37ce1173d50ac1133220f23267f4ea683cbd. Sólo es/Light/portrait/defaultDT.
+Sessionnotfound fue incidente de herramienta/causa no demostrada; reinicio fixture y repetición completa de factura,
+sin atribución a producto/actor. Demo in-memory reinicia por contrato, no prueba reentrada tras relanzar.
+Cápsulas legibles/alineadas; AXframeh36 no demuestra44pt. AT/Inspector/ratios/scrollAX5 siguen pendientes.
+Xcode Develop/testplanDevelop/destino inicialiPhone18Pro restaurados tras validar eniPhone17(27.2);
+runtime27.0 inicial no estaba disponible para tests, no se atribuye validación a la selección restaurada.
+POST original técnico: P2, elección de familia bloqueada ante ticket+factura; UI: P3, error detenido mostrado como actividad.
+Ambos/root freeze1136files idéntico cfd5138c1a20ae5515ca4563ef84f14239d5910b46f340da3e21a43c43431d0d.
+PRE correctivo técnico favorable antes de conducta: intención recoverFamily(kind), sin prepare/IDs/motores;
+guarda parent dentro runDurable también antes/después fallback. Elección/retry conserva familia ante ausencia/error;
+preparación/edición fiscal bloqueadas hasta aceptación. Estado fallido localizado; picker y acción nativos.
+TDD9/9RED, artifact0CBA744B-9624-48B4-8C82-F621F03ECAF8; GREENfocal6/6PASS parcial por argumentos,
+42DDA055-CF24-4E1F-BFEA-6B84F397899C. Oráculos intactos;9variantes PASS en nuevo global justificado:
+3026/3026PASS,0skip/0notRun, FAB4E5CC-E7AD-497A-ACE4-AACC68B2E40D.85nuevos/56declaraciones.
+DevelopForTesting3.503s/Production22.359sPASS después de corregir; BuildProject-Log-20261004-115034.txt/115058.txt.
+10Swift corregidos con diagnósticos0,25 restantes conservan cada hash de diagnóstico previo. Rawlogs2/1AppIntents,
+sin warningsSwift/Clang. Catálogo644/0 (556Localizable+87Templates+1InfoPlist),21textos nuevos es/en.
+[Manifest35 probado antes del formato](../accessibility/evidence/assets/13-12/source-manifest-before-format.json):
+409eed81eaa00024685d9aa8847e0438d35410f3872ad0fbbe5352589c476ed7; fuentes congeladas para POST afectados.
+Previews21:15 retenidas anteriores y6recapturas elección/error×Large/es/Dark,XXXL/en/Dark,AX5/es/Light.
+Root observa6originales: elección/acción completos Large/XXXL; AX5 requiere scroll no observado. Error detenido correcto;
+XXXL muestra retry, AX5 solo parte del mensaje. No acredita AT/Inspector/hitarea44. Smoke69 conservado anterior al fix,
+no se atribuye interacción de elección de ambas familias; nueva recuperación cubierta por T/P/S y global.
+Xcode Develop/testplan/destino inicialiPhone18Pro restaurados tras la corrección. POST correctivo técnico: P2 resuelto, sin P0–P2; UI PASS/SinP0–P3 para gate funcionalADR0029.
+Revisores/root1143files inicial/final idénticos e670bf1a22bfd042cc4565a3eb5f607aef81234f2257e18757d3688cde727b67.
+Estilo FULL10 detectó2P3 (firma124col/guard121col), corregidos solo whitespace; UUIDatómicos de preview justificados.
+Ambos archivos conservan todos los demás caracteres/oráculos; global85/3026 y6previews retenidos por identidad semántica.
+Builds tras formato DevelopForTesting27.177s/Production21.232sPASS; logsBuildProject-Log-20261004-120346.txt/120407.txt.
+2diagnósticos finales0: primer intentoVM SourceEditor.error5, retry explícito PASS. Rawlogs2/1AppIntents sin Swift/Clangwarnings.
+[Manifest35 final](../accessibility/evidence/assets/13-12/source-manifest.json):
+9493e3f400d30db013a1fea5c794ebcc51b8d127006c1e8b2f3412edd4b2880f.
+Revisión incremental independiente billing_13_12_post PASS/SinP0–P3;2P3 resueltos y35/35hashes verificados.
+1144files inicial/final/revisor/root idénticos c7084d5b8641f5013b227accf70f948b2aa67f1f55a10fc749ad1d405440927c.
+Dictamen técnico/estilo y UI PASS funcional localADR0029. Tras freeze solo se registra este resultado/metadatos;
+fuentes/configuración probadas intactas. Localización644/0 y gobernanza8links históricos conservan límites.
+Linearissue/proyecto se reconcilian con implementación validada y deuda explícita, permanecen In Progress.
+Entrega Git no autorizada. PLU-108/101 Backlog conservan deuda propia;
+deuda integral nueva permanece enPLU-109, Jesus, tras feedback/estabilización antes del primer candidato real.
+Fase13/proyecto abiertos, sin schema/migración,13.13, correo real/live o commit/push/PR/merge/Done.
+Los registros entregados inferiores conservan su historia y límites propios.
+
 ## 13.11 / PLU-107 — Entregada funcionalmente; Done
 
 04/10/2026 Europe/Madrid: «commit, push y entrega» autoriza el circuito establecido completo.

@@ -1,0 +1,157 @@
+Device orientation: Unknown
+------------------------
+Application bundle identifier: com.plusprojects.FranAlonso.develop
+Application UI orientation: Portrait
+Application, pid: 30418, label: 'Fran DEV'
+ Window, {{0.0, 0.0}, {402.0, 874.0}}, hitPoint: {201.0, 437.0}
+  Other, {{0.0, 0.0}, {402.0, 874.0}}, hitPoint: {201.0, 437.0}
+  Other, {{0.0, 0.0}, {402.0, 874.0}}, hitPoint: {201.0, 437.0}
+   Other, {{0.0, 0.0}, {402.0, 874.0}}, hitPoint: {201.0, 437.0}
+    Other, {{0.0, 0.0}, {402.0, 874.0}}, hitPoint: {201.0, 437.0}
+     Other, {{0.0, 0.0}, {402.0, 874.0}}, hitPoint: {201.0, 437.0}
+      StaticText, {{0.0, 0.0}, {402.0, 163.7}}, label: 'Demo · Datos de ejemplo, Los cambios se reinician al abrir la app, Las muestras DEMO precargadas del Histórico son ejemplos; no demuestran por sí mismas emisión, cierre ni compensación.', hitPoint: {201.0, 81.8}
+       StaticText, {{16.0, 78.0}, {167.7, 17.0}}, label: 'Demo · Datos de ejemplo', hitPoint: {99.8, 86.5}
+       StaticText, {{16.0, 99.0}, {218.3, 14.3}}, label: 'Los cambios se reinician al abrir la app', hitPoint: {125.2, 106.2}
+       StaticText, {{16.0, 117.3}, {365.7, 30.3}}, label: 'Las muestras DEMO precargadas del Histórico son ejemplos; no demuestran por sí mismas emisión, cierre ni compensación.', hitPoint: {198.8, 132.5}
+      Other, {{0.0, 163.7}, {402.0, 710.3}}, hitPoint: {201.0, 518.8}
+       Other, {{0.0, 163.7}, {402.0, 710.3}}, hitPoint: {201.0, 518.8}
+        Other, {{0.0, 163.7}, {402.0, 710.3}}, hitPoint: {201.0, 518.8}
+         Other, {{0.0, 163.7}, {402.0, 710.3}}, hitPoint: {201.0, 518.8}
+          Other, {{0.0, 163.7}, {402.0, 710.3}}, hitPoint: {201.0, 518.8}
+           Other, {{0.0, 163.7}, {402.0, 710.3}}, hitPoint: {201.0, 518.8}
+            Other, {{0.0, 163.7}, {402.0, 710.3}}, hitPoint: {201.0, 518.8}
+             NavigationBar, {{0.0, 173.7}, {402.0, 54.0}}, identifier: 'Jornada', hitPoint: {201.0, 200.7}
+              StaticText, {{168.3, 185.3}, {65.3, 20.7}}, label: 'Jornada', hitPoint: {201.0, 195.7}
+              Button, {{284.0, 177.7}, {44.7, 36.0}}, label: 'Cerrar sesión', hitPoint: {306.3, 195.7}
+              Button, {{344.7, 177.7}, {37.3, 36.0}}, label: 'Nueva venta', hitPoint: {363.3, 195.7}
+             Other, {{0.0, 163.7}, {402.0, 710.3}}, hitPoint: {201.0, 518.8}
+              Other, {{0.0, 163.7}, {402.0, 710.3}}, hitPoint: {201.0, 518.8}
+               Other, {{0.0, 163.7}, {402.0, 710.3}}, hitPoint: {201.0, 518.8}
+                Other, {{0.0, 163.7}, {402.0, 710.3}}, hitPoint: {201.0, 518.8}
+                 CollectionView, {{0.0, 163.7}, {402.0, 710.3}}, hitPoint: {201.0, 518.8}
+                  Other, {{-16.0, -1499.7}, {434.0, 1905.3}}, hitPoint: {201.0, 202.8}
+                  Cell, {{16.0, -42.0}, {370.0, 137.0}}, hitPoint: {201.0, 47.5}
+                   Other, {{16.0, -42.0}, {370.0, 137.0}}, hitPoint: {201.0, 47.5}
+                    Other, {{16.0, -42.0}, {370.0, 137.0}}, hitPoint: {201.0, 47.5}
+                   Other, {{16.0, -42.0}, {370.0, 137.0}}, hitPoint: {201.0, 47.5}
+                    Other, {{16.0, -42.0}, {370.0, 137.0}}, hitPoint: {201.0, 47.5}
+                     Other, {{16.0, -42.0}, {370.0, 137.0}}, hitPoint: {201.0, 47.5}
+                      Button, {{16.0, -42.0}, {370.0, 137.0}}, label: 'Sin cliente, Borrador, Corte y peinado DEMO, Servicios: 1, 21 sept 2026, 16:14', hitPoint: {201.0, 47.5}
+                       StaticText, {{36.0, 0.0}, {50.0, 14.3}}, label: 'Borrador', hitPoint: {61.0, 7.2}
+                       StaticText, {{36.0, 20.3}, {147.7, 17.0}}, label: 'Corte y peinado DEMO', hitPoint: {109.8, 28.8}
+                       StaticText, {{36.0, 43.3}, {59.7, 13.3}}, label: 'Servicios: 1', hitPoint: {65.8, 50.0}
+                       StaticText, {{36.0, 62.7}, {102.7, 13.3}}, label: '21 sept 2026, 16:14', hitPoint: {87.3, 69.3}
+                  Cell, {{16.0, 95.0}, {370.0, 137.0}}, hitPoint: {201.0, 163.5}
+                   Other, {{16.0, 95.0}, {370.0, 137.0}}, hitPoint: {201.0, 163.5}
+                    Other, {{16.0, 95.0}, {370.0, 137.0}}, hitPoint: {201.0, 163.5}
+                   Other, {{16.0, 95.0}, {370.0, 137.0}}, hitPoint: {201.0, 163.5}
+                    Other, {{16.0, 95.0}, {370.0, 137.0}}, hitPoint: {201.0, 163.5}
+                     Other, {{16.0, 95.0}, {370.0, 137.0}}, hitPoint: {201.0, 163.5}
+                      Button, {{16.0, 95.0}, {370.0, 137.0}}, label: 'Cliente DEMO Alba, Borrador, Corte y peinado DEMO, Servicios: 1, 21 sept 2026, 16:15', hitPoint: {201.0, 163.5}
+                       StaticText, {{36.0, 114.0}, {126.7, 17.0}}, label: 'Cliente DEMO Alba', hitPoint: {99.3, 122.5}
+                       StaticText, {{36.0, 137.0}, {50.0, 14.3}}, label: 'Borrador', hitPoint: {61.0, 144.2}
+                       StaticText, {{36.0, 157.3}, {147.7, 17.0}}, label: 'Corte y peinado DEMO', hitPoint: {109.8, 165.8}
+                       StaticText, {{36.0, 180.3}, {59.7, 13.3}}, label: 'Servicios: 1', hitPoint: {65.8, 187.0}
+                       StaticText, {{36.0, 199.7}, {102.7, 13.3}}, label: '21 sept 2026, 16:15', hitPoint: {87.3, 206.3}
+                  Other, {{36.0, 94.0}, {330.0, 1.0}}, hitPoint: {201.0, 94.5}
+                  Other, {{0.0, 163.7}, {402.0, 710.3}}, hitPoint: {201.0, 518.8}
+                   Other, {{0.0, 163.7}, {402.0, 104.0}}, hitPoint: {201.0, 215.7}
+                   Other, {{0.0, 741.0}, {402.0, 133.0}}, hitPoint: {201.0, 807.5}
+                  Other, {{0.0, 163.7}, {402.0, 710.3}}, hitPoint: {201.0, 518.8}
+                   Other, {{0.0, 163.7}, {402.0, 104.0}}, hitPoint: {201.0, 215.7}
+                   Other, {{0.0, 741.0}, {402.0, 133.0}}, hitPoint: {201.0, 807.5}
+                  Cell, {{16.0, 232.0}, {370.0, 156.0}}, hitPoint: {201.0, 310.0}
+                   Other, {{16.0, 232.0}, {370.0, 156.0}}, hitPoint: {201.0, 310.0}
+                    Other, {{16.0, 232.0}, {370.0, 156.0}}, hitPoint: {201.0, 310.0}
+                   Other, {{16.0, 232.0}, {370.0, 156.0}}, hitPoint: {201.0, 310.0}
+                    Other, {{16.0, 232.0}, {370.0, 156.0}}, hitPoint: {201.0, 310.0}
+                     Other, {{16.0, 232.0}, {370.0, 156.0}}, hitPoint: {201.0, 310.0}
+                      Button, {{16.0, 232.0}, {370.0, 156.0}}, label: 'Cliente DEMO Bruno, Borrador, Tratamiento de hidratación intensiva y peinado para ocasión especial, Servicios: 1, 21 sept 2026, 16:16', hitPoint: {201.0, 310.0}
+                       StaticText, {{36.0, 251.0}, {136.7, 17.0}}, label: 'Cliente DEMO Bruno', hitPoint: {104.3, 259.5}
+                       StaticText, {{36.0, 274.0}, {50.0, 14.3}}, label: 'Borrador', hitPoint: {61.0, 281.2}
+                       StaticText, {{36.0, 294.3}, {305.0, 36.0}}, label: 'Tratamiento de hidratación intensiva y peinado para ocasión especial', hitPoint: {188.5, 312.3}
+                       StaticText, {{36.0, 336.3}, {59.7, 13.3}}, label: 'Servicios: 1', hitPoint: {65.8, 343.0}
+                       StaticText, {{36.0, 355.7}, {102.7, 13.3}}, label: '21 sept 2026, 16:16', hitPoint: {87.3, 362.3}
+                  Other, {{36.0, 231.0}, {330.0, 1.0}}, hitPoint: {201.0, 231.5}
+                  Other, {{-16.0, 405.7}, {434.0, 191.7}}, hitPoint: {201.0, 501.5}
+                  Cell, {{16.0, 405.7}, {370.0, 37.0}}, hitPoint: {201.0, 424.2}
+                   Other, {{16.0, 405.7}, {370.0, 37.0}}, hitPoint: {201.0, 424.2}
+                   Other, {{16.0, 405.7}, {370.0, 37.0}}, hitPoint: {201.0, 424.2}
+                    Other, {{16.0, 405.7}, {370.0, 37.0}}, hitPoint: {201.0, 424.2}
+                     Other, {{16.0, 405.7}, {370.0, 37.0}}, hitPoint: {201.0, 424.2}
+                      StaticText, {{16.0, 405.7}, {370.0, 37.0}}, label: 'En curso', hitPoint: {201.0, 424.2}
+                  Cell, {{16.0, 442.7}, {370.0, 137.0}}, hitPoint: {201.0, 511.2}
+                   Other, {{16.0, 442.7}, {370.0, 137.0}}, hitPoint: {201.0, 511.2}
+                    Other, {{16.0, 442.7}, {370.0, 137.0}}, hitPoint: {201.0, 511.2}
+                   Other, {{16.0, 442.7}, {370.0, 137.0}}, hitPoint: {201.0, 511.2}
+                    Other, {{16.0, 442.7}, {370.0, 137.0}}, hitPoint: {201.0, 511.2}
+                     Other, {{16.0, 442.7}, {370.0, 137.0}}, hitPoint: {201.0, 511.2}
+                      Button, {{16.0, 442.7}, {370.0, 137.0}}, label: 'Sin cliente, En curso, Corte y peinado DEMO, Servicios: 1, 21 sept 2026, 16:17', hitPoint: {201.0, 511.2}
+                       StaticText, {{36.0, 461.7}, {70.3, 17.0}}, label: 'Sin cliente', hitPoint: {71.2, 470.2}
+                       StaticText, {{36.0, 484.7}, {49.3, 14.3}}, label: 'En curso', hitPoint: {60.7, 491.8}
+                       StaticText, {{36.0, 505.0}, {147.7, 17.0}}, label: 'Corte y peinado DEMO', hitPoint: {109.8, 513.5}
+                       StaticText, {{36.0, 528.0}, {59.7, 13.3}}, label: 'Servicios: 1', hitPoint: {65.8, 534.7}
+                       StaticText, {{36.0, 547.3}, {102.0, 13.3}}, label: '21 sept 2026, 16:17', hitPoint: {87.0, 554.0}
+                  Other, {{-16.0, 597.0}, {434.0, 1614.7}}, hitPoint: {201.0, 735.5}
+                  Cell, {{16.0, 597.0}, {370.0, 37.0}}, hitPoint: {201.0, 615.5}
+                   Other, {{16.0, 597.0}, {370.0, 37.0}}, hitPoint: {201.0, 615.5}
+                   Other, {{16.0, 597.0}, {370.0, 37.0}}, hitPoint: {201.0, 615.5}
+                    Other, {{16.0, 597.0}, {370.0, 37.0}}, hitPoint: {201.0, 615.5}
+                     Other, {{16.0, 597.0}, {370.0, 37.0}}, hitPoint: {201.0, 615.5}
+                      StaticText, {{16.0, 597.0}, {370.0, 37.0}}, label: 'Pendientes de cierre', hitPoint: {201.0, 615.5}
+                  Cell, {{16.0, 634.0}, {370.0, 137.0}}, hitPoint: {201.0, 702.5}
+                   Other, {{16.0, 634.0}, {370.0, 137.0}}, hitPoint: {201.0, 702.5}
+                    Other, {{16.0, 634.0}, {370.0, 137.0}}, hitPoint: {201.0, 702.5}
+                   Other, {{16.0, 634.0}, {370.0, 137.0}}, hitPoint: {201.0, 702.5}
+                    Other, {{16.0, 634.0}, {370.0, 137.0}}, hitPoint: {201.0, 702.5}
+                     Other, {{16.0, 634.0}, {370.0, 137.0}}, hitPoint: {201.0, 702.5}
+                      Button, {{16.0, 634.0}, {370.0, 137.0}}, label: 'Cliente DEMO Alba, Pendiente de pago, Corte y peinado DEMO, Servicios: 1, 21 sept 2026, 16:18', hitPoint: {201.0, 702.5}
+                       StaticText, {{36.0, 653.0}, {126.7, 17.0}}, label: 'Cliente DEMO Alba', hitPoint: {99.3, 661.5}
+                       StaticText, {{36.0, 676.0}, {106.0, 14.3}}, label: 'Pendiente de pago', hitPoint: {89.0, 683.2}
+                       StaticText, {{36.0, 696.3}, {147.7, 17.0}}, label: 'Corte y peinado DEMO', hitPoint: {109.8, 704.8}
+                       StaticText, {{36.0, 719.3}, {59.7, 13.3}}, label: 'Servicios: 1', hitPoint: {65.8, 726.0}
+                       StaticText, {{36.0, 738.7}, {102.7, 13.3}}, label: '21 sept 2026, 16:18', hitPoint: {87.3, 745.3}
+                  Other, {{369.0, 227.7}, {30.0, 563.3}}, label: 'Barra de desplazamiento vertical, 2 páginas', value: 100 %, hitPoint: {384.0, 509.3}
+                   Other, {{396.0, 378.7}, {3.0, 343.0}}, hitPoint: {397.5, 550.2}
+                  Other, {{369.0, 227.7}, {30.0, 563.3}}, label: 'Barra de desplazamiento vertical, 2 páginas', value: 100 %, hitPoint: {384.0, 509.3}
+                   Other, {{396.0, 378.7}, {3.0, 343.0}}, hitPoint: {397.5, 550.2}
+             Toolbar, {{0.0, 163.7}, {402.0, 710.3}}, identifier: 'Toolbar', label: 'Barra de herramientas', hitPoint: {201.0, 518.8}
+              Other, {{0.0, 163.7}, {402.0, 710.3}}, hitPoint: {201.0, 518.8}
+       Other, {{0.0, 163.7}, {402.0, 710.3}}, hitPoint: {201.0, 518.8}
+        Other, {{0.0, 791.0}, {402.0, 83.0}}, hitPoint: {201.0, 832.5}
+         Other, {{0.0, 163.7}, {402.0, 710.3}}, hitPoint: {201.0, 518.8}
+          TabBar, {{0.0, 791.0}, {402.0, 83.0}}, label: 'Barra de pestañas', hitPoint: {201.0, 832.5}
+           Other, {{21.0, 791.0}, {360.0, 62.0}}, hitPoint: {201.0, 822.0}
+            Other, {{21.0, 791.0}, {84.7, 54.0}}, hitPoint: {63.4, 818.0}
+            Other, {{21.0, 791.0}, {360.0, 62.0}}, hitPoint: {201.0, 822.0}
+             Button, {{25.0, 795.0}, {84.7, 54.0}}, identifier: 'calendar', label: 'Jornada', Selected, hitPoint: {67.4, 822.0}
+              Image, {{53.0, 802.3}, {29.0, 25.0}}, identifier: 'calendar', label: 'calendario', hitPoint: {67.5, 814.8}
+             Button, {{89.7, 795.0}, {88.3, 54.0}}, identifier: 'clock.arrow.circlepath', label: 'Histórico', hitPoint: {133.9, 822.0}
+              Image, {{119.7, 801.3}, {27.7, 27.3}}, identifier: 'clock.arrow.trianglehead.counterclockwise.rotate.90', label: 'Reloj rodeado por una flecha circular girada 90 grados en sentido antihorario con punta triangular', hitPoint: {133.6, 815.0}
+             Button, {{158.0, 795.0}, {84.7, 54.0}}, identifier: 'person.2', label: 'Clientes', hitPoint: {200.4, 822.0}
+              Image, {{182.0, 802.7}, {37.0, 26.0}}, identifier: 'person.2.fill', label: 'Dos personas, con relleno', hitPoint: {200.5, 815.7}
+             Button, {{222.8, 795.0}, {87.5, 54.0}}, identifier: 'square.grid.2x2', label: 'Catálogo', hitPoint: {266.5, 822.0}
+              Image, {{253.1, 802.3}, {27.0, 25.0}}, identifier: 'square.grid.2x2.fill', label: 'cuadrícula 2 por 2', hitPoint: {266.6, 814.8}
+             Button, {{290.3, 795.0}, {86.7, 54.0}}, identifier: 'chart.bar.xaxis', label: 'Informes', hitPoint: {333.6, 822.0}
+              Image, {{317.9, 802.3}, {31.7, 25.3}}, identifier: 'chart.bar.xaxis', label: 'Gráfico de barras con un eje X', hitPoint: {333.8, 815.0}
+            Other, {{21.0, 791.0}, {360.0, 62.0}}, hitPoint: {201.0, 822.0}
+            Other, {{25.0, 795.0}, {84.7, 54.0}}, hitPoint: {67.4, 822.0}
+             Other, {{25.0, 795.0}, {84.7, 54.0}}, hitPoint: {67.3, 822.0}
+              Other, {{25.0, 795.0}, {84.7, 54.0}}, hitPoint: {67.3, 822.0}
+              Other, {{25.0, 795.0}, {84.7, 54.0}}, hitPoint: {67.3, 822.0}
+               Other, {{25.0, 795.0}, {84.7, 54.0}}, hitPoint: {67.3, 822.0}
+                Other, {{25.0, 795.0}, {84.7, 54.0}}, hitPoint: {67.3, 822.0}
+                 Other, {{25.0, 795.0}, {84.7, 54.0}}, hitPoint: {67.3, 822.0}
+                Other, {{25.0, 795.0}, {84.7, 54.0}}, hitPoint: {67.3, 822.0}
+               Other, {{25.0, 795.0}, {84.7, 54.0}}, hitPoint: {67.3, 822.0}
+         Other, {{0.0, 791.0}, {402.0, 83.0}}, hitPoint: {201.0, 832.5}
+          Other, {{0.0, 791.0}, {402.0, 83.0}}, hitPoint: {201.0, 832.5}
+           Other, {{0.0, 791.0}, {402.0, 83.0}}, hitPoint: {201.0, 832.5}
+            Other, {{0.0, 791.0}, {402.0, 83.0}}, hitPoint: {201.0, 832.5}
+             Other, {{0.0, 791.0}, {402.0, 83.0}}, hitPoint: {201.0, 832.5}
+              Other, {{0.0, 791.0}, {402.0, 83.0}}, hitPoint: {201.0, 832.5}
+            Other, {{0.0, 791.0}, {402.0, 83.0}}, hitPoint: {201.0, 832.5}
+             Other, {{0.0, 791.0}, {402.0, 83.0}}, hitPoint: {201.0, 832.5}
+ Window, {{0.0, 0.0}, {402.0, 874.0}}, hitPoint: {201.0, 437.0}
+  Other, {{0.0, 0.0}, {402.0, 874.0}}, hitPoint: {201.0, 437.0}
+   Other, {{0.0, 0.0}, {402.0, 874.0}}, hitPoint: {201.0, 437.0}

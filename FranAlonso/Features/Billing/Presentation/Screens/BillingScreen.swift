@@ -1,19 +1,25 @@
 import Accessibility
+import SwiftData
 import SwiftUI
 
 struct BillingScreen<Repository: BillingDocumentReservationRepository>: View {
+    private let runsOperations: Bool
     @Environment(\.dismiss) private var dismiss
     @Environment(\.locale) private var locale
+    @Environment(\.modelContext) private var modelContext
     @State private var viewModel: BillingViewModel<Repository>
     @FocusState private var focusedField: BillingFiscalField?
     @AccessibilityFocusState private var accessibleField: BillingFiscalField?
+    @AccessibilityFocusState private var closureIsFocused: Bool
 
     var body: some View {
-        NavigationStack {
+        let operationRequest = viewModel.operationRequest
+        return NavigationStack {
             BillingSelectionContent(
                 viewModel: viewModel,
                 focusedField: $focusedField,
-                accessibleField: $accessibleField
+                accessibleField: $accessibleField,
+                closureIsFocused: $closureIsFocused
             )
             .navigationTitle(Text("billing.selection.title"))
             .toolbar {
@@ -24,6 +30,11 @@ struct BillingScreen<Repository: BillingDocumentReservationRepository>: View {
                         dismiss()
                     }
                 }
+            }
+        }
+        .task(id: operationRequest) {
+            if runsOperations {
+                await viewModel.performRequestedOperation(operationRequest, in: modelContext)
             }
         }
         .task(id: viewModel.selectedKind) {
@@ -50,6 +61,15 @@ struct BillingScreen<Repository: BillingDocumentReservationRepository>: View {
                 announce("billing.prepared.message")
             }
         }
+        .onChange(of: viewModel.operationAnnouncementID) {
+            announce(viewModel.operationAnnouncement)
+            if viewModel.canCloseSale, !viewModel.operationFailed {
+                closureIsFocused = true
+            }
+            if viewModel.closedSale != nil {
+                dismiss()
+            }
+        }
         .onDisappear {
             viewModel.close()
         }
@@ -65,6 +85,12 @@ struct BillingScreen<Repository: BillingDocumentReservationRepository>: View {
 extension BillingScreen {
     init(makeViewModel: @MainActor @Sendable () -> BillingViewModel<Repository>) {
         _viewModel = State(initialValue: makeViewModel())
+        runsOperations = true
+    }
+
+    fileprivate init(previewModel: BillingViewModel<Repository>) {
+        _viewModel = State(initialValue: previewModel)
+        runsOperations = false
     }
 }
 
@@ -87,4 +113,47 @@ extension BillingScreen {
 #Preview("Invoice form English", traits: .modifier(BillingPreviewModifier())) {
     BillingScreen { BillingPreviewFixtures.model(kind: .invoice) }
         .environment(\.locale, Locale(identifier: "en"))
+}
+
+#Preview("Recovery error", traits: .modifier(BillingProgressPreviewModifier(stage: .recovery))) {
+    @Previewable @Environment(\.billingProgressPreviewModel) var model
+    if let model {
+        BillingScreen(previewModel: model)
+    }
+}
+
+#Preview("Pending numbering", traits: .modifier(BillingProgressPreviewModifier(stage: .pending))) {
+    @Previewable @Environment(\.billingProgressPreviewModel) var model
+    if let model {
+        BillingScreen(previewModel: model)
+    }
+}
+
+#Preview("Generating PDF", traits: .modifier(BillingProgressPreviewModifier(stage: .generating))) {
+    @Previewable @Environment(\.billingProgressPreviewModel) var model
+    if let model {
+        BillingScreen(previewModel: model)
+    }
+}
+
+#Preview("PDF closure available", traits: .modifier(BillingProgressPreviewModifier(stage: .closable))) {
+    @Previewable @Environment(\.billingProgressPreviewModel) var model
+    if let model {
+        BillingScreen(previewModel: model)
+    }
+}
+
+#Preview("Accepted closure English", traits: .modifier(BillingProgressPreviewModifier(stage: .accepted))) {
+    @Previewable @Environment(\.billingProgressPreviewModel) var model
+    if let model {
+        BillingScreen(previewModel: model)
+            .environment(\.locale, Locale(identifier: "en"))
+    }
+}
+
+#Preview("Saved document family choice", traits: .modifier(BillingProgressPreviewModifier(stage: .choosingFamily))) {
+    @Previewable @Environment(\.billingProgressPreviewModel) var model
+    if let model {
+        BillingScreen(previewModel: model)
+    }
 }

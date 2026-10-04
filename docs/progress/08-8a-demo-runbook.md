@@ -3,12 +3,13 @@
 ## Arranque
 
 Usar el esquema **FranAlonso-Develop**, configuración **Debug-Develop**, y activar exclusivamente uno de estos
-argumentos de LaunchAction (ambos se conservan desactivados en Git):
+argumentos de LaunchAction (se conservan desactivados en Git):
 
 | Argumento | Recorrido |
 |---|---|
 | `--franalonso-demo-clients` | Alta normal con envío simulado. |
 | `--franalonso-demo-clients-response-lost` | Primer envío aceptado por el proveedor simulado, con respuesta perdida. |
+| `--franalonso-demo-workday` | Jornada, Histórico y generación/cierre manual de documentos sintéticos13.12. |
 
 No combinar con argumentos `--franalonso-auth-fixture-*` ni `--franalonso-clients-fixture-*`. Una intención de demo
 inválida dentro de la capacidad Develop termina en la pantalla de configuración fallida antes de Firebase.
@@ -103,7 +104,7 @@ No demuestra transporte, sincronización, persistencia entre procesos, fotograf�
 la demo solo viven durante ese proceso. PLU-47 añade únicamente el borrador textual anterior, no la fase 16 completa.
 
 Usar parámetros temporales de `DeviceInteractionInstallAndRun` al validar con Xcode MCP; no es necesario editar el esquema
-para cada recorrido. Cerrar la sesión de interacción al terminar y conservar ambos argumentos `NO` en el esquema.
+para cada recorrido. Cerrar la sesión de interacción al terminar y conservar los argumentos `NO` en el esquema.
 Resultados de validación y deuda accesible en [fase08](phase-08.md), [fase09](phase-09.md), [fase10](phase-10.md) y
 [fase16](phase-16.md); diseño y límites en
 [propuesta08.8a](08-8a-reusable-demo-proposal.md) y [ADR0030](../ADRs/0030-reusable-demo-and-early-foundation-models.md).
@@ -111,7 +112,21 @@ Resultados de validación y deuda accesible en [fase08](phase-08.md), [fase09](p
 ## Histórico de muestra (11.9)
 
 `--franalonso-demo-workday` incluye tres muestras históricas ya materializadas (dos cerradas y una anulada),
-con nombres/referencias DEMO. El aviso de la demo indica esta frontera: no se han emitido documentos,
-ni ejecutado CloseSaleUseCase13.12 ni compensaciones12.8. Histórico permite únicamente consultar,
+con nombres/referencias DEMO. Estas tres muestras precargadas no proceden de emisión,
+CloseSaleUseCase13.12 ni compensaciones12.8. Histórico permite únicamente consultar,
 filtrar/ordenar/buscar y ver importes/trazabilidad. La venta pagada sin documento sigue en Jornada.
 Las muestras no acreditan el flujo completo de venta ni emisión fiscal; sin numeración de negocio ni correo real.
+
+## Documento y cierre manual sintéticos (13.12)
+
+En `--franalonso-demo-workday`, abrir la venta pagada de Alba DEMO pendiente de documento y pulsar Documento.
+Elegir Ticket o Factura; la factura requiere completar los seis datos fiscales exclusivamente sintéticos.
+Preparar conserva la solicitud. Cerrar y reabrir Documento recupera la misma selección y snapshot.
+Generar documento reserva una identidad estable en series independientes900001/950001 y renderiza el PDF real
+con «DEMO / MUESTRA — SIN VALIDEZ FISCAL» en cada página; Storage es simulado, sin firma privada.
+Reabrir tras generar conserva número/PDF; no vuelve a reservar. Pulsar Cerrar venta acepta el cierre local real,
+retira la operación de Jornada y la muestra como Cerrada en Histórico, cuyo detalle sigue siendo de consulta.
+No se necesita enviar correo para cerrar. Reiniciar el proceso recrea las muestras y vacía todos los documentos
+y cierres nuevos: no acredita durabilidad demo entre procesos, emisión fiscal, Mail ni servicios live.
+El flujo normal mantiene numeración y Storage no disponibles. Evidencia y pendiente integral en
+[fase13](phase-13.md) y [matriz13.12](../accessibility/evidence/13-12-sale-closure-workday.md).

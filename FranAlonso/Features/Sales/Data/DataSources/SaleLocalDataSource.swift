@@ -7,6 +7,7 @@ private let saleSyncFeedID = "sales"
 struct SaleLocalDataSource {
     private let commitPayment: @Sendable (ModelContext) throws -> Void
     private let commitReversal: @Sendable (ModelContext) throws -> Void
+    private let commitClosure: @Sendable (ModelContext) throws -> Void
 }
 
 extension SaleLocalDataSource {
@@ -16,7 +17,15 @@ extension SaleLocalDataSource {
             try $0.save()
         }
     ) {
-        self.init(commitPayment: paymentSave, commitReversal: { try $0.save() })
+        self.init(
+            commitPayment: paymentSave,
+            commitReversal: {
+                try $0.save()
+            },
+            commitClosure: {
+                try $0.save()
+            }
+        )
     }
 
     /// Injects both commits explicitly, avoiding an ambiguous or silently redirected payment trailing closure.
@@ -24,7 +33,117 @@ extension SaleLocalDataSource {
         reversalSave: @escaping @Sendable (ModelContext) throws -> Void,
         paymentSave: @escaping @Sendable (ModelContext) throws -> Void
     ) {
-        self.init(commitPayment: paymentSave, commitReversal: reversalSave)
+        self.init(
+            commitPayment: paymentSave,
+            commitReversal: reversalSave,
+            commitClosure: {
+                try $0.save()
+            }
+        )
+    }
+
+    /// Injects the independent closure commit while preserving existing payment/reversal initializer contracts.
+    init(
+        closureSave: @escaping @Sendable (ModelContext) throws -> Void,
+        paymentSave: @escaping @Sendable (ModelContext) throws -> Void,
+        reversalSave: @escaping @Sendable (ModelContext) throws -> Void
+    ) {
+        self.init(commitPayment: paymentSave, commitReversal: reversalSave, commitClosure: closureSave)
+    }
+
+    /// Accepts closure and one causal successor in the same clean context without suspension.
+    /// Replays retain the original durable timestamp and any later void, without another save or stock change.
+    func closeSale(
+        _ request: SaleClosureRequest,
+        principalID: String,
+        operationID: UUID,
+        in context: ModelContext
+    ) throws -> Sale {
+        try Task.checkCancellation()
+        do {
+            try requireClean(context)
+            guard !principalID.isEmpty else { throw SaleClosureError.unauthorized }
+            let saleID = request.expected.id
+            guard try conflict(for: saleID, in: context) == nil else { throw SaleClosureError.conflict }
+            guard try !hasDeletionState(for: saleID, in: context) else { throw SaleClosureError.deleted }
+            guard let current = try model(for: saleID, in: context)?.toDomain() else { throw SaleClosureError.notFound }
+            let delivery = try closureDelivery(request.requestID, in: context)
+            let accepted = try SaleClosureAcceptancePolicy()(
+                request,
+                current: current,
+                delivery: delivery,
+                principalID: principalID
+            )
+            guard let document = delivery.document else { throw SaleClosureError.documentPending }
+            try requireUnclaimedDocument(document, for: saleID, in: context)
+            guard accepted != current else { return current }
+            let autosave = context.autosaveEnabled
+            context.autosaveEnabled = false
+            defer {
+                context.autosaveEnabled = autosave
+            }
+            do {
+                try stagePendingUpsert(accepted, operationID: operationID, in: context)
+                try Task.checkCancellation()
+                if context.hasChanges {
+                    try commitClosure(context)
+                }
+                return accepted
+            } catch {
+                context.rollback()
+                throw error
+            }
+        } catch let error as SaleClosureError {
+            throw error
+        } catch is CancellationError {
+            throw CancellationError()
+        } catch SaleLocalDataSourceError.syncConflictPending {
+            throw SaleClosureError.conflict
+        } catch SaleLocalDataSourceError.restoreRequiresExplicitResolution {
+            throw SaleClosureError.deleted
+        } catch {
+            throw SaleClosureError.persistenceUnavailable
+        }
+    }
+
+    private func closureDelivery(
+        _ requestID: BillingDocumentRequestID,
+        in context: ModelContext
+    ) throws -> BillingDocumentDelivery {
+        let identifier = requestID.rawValue
+        var descriptor = FetchDescriptor<BillingDocumentDeliveryModel>(
+            predicate: #Predicate { row in row.id == identifier }
+        )
+        descriptor.fetchLimit = 1
+        guard let row = try context.fetch(descriptor).first else { throw SaleClosureError.documentNotFound }
+        do {
+            return try row.toDomain()
+        } catch is CancellationError {
+            throw CancellationError()
+        } catch {
+            throw SaleClosureError.invalidDocument
+        }
+    }
+
+    private func requireUnclaimedDocument(
+        _ document: BillingDocument,
+        for saleID: SaleID,
+        in context: ModelContext
+    ) throws {
+        let documentID = document.id.rawValue
+        let requestID = document.request.id.rawValue
+        let foreignBindings = FetchDescriptor<BillingDocumentDeliveryModel>(
+            predicate: #Predicate { row in row.documentID == documentID && row.id != requestID }
+        )
+        guard try context.fetch(foreignBindings).isEmpty else { throw SaleClosureError.conflictingDocument }
+        for sale in try fetchAll(in: context) where sale.id != saleID {
+            switch sale.status {
+            case let .closed(_, _, _, claimedID, _), let .voided(_, _, _, claimedID, _, _, _):
+                guard claimedID != document.id else { throw SaleClosureError.conflictingDocument }
+            case .draft, .inProgress, .awaitingPayment, .awaitingDocument:
+                break
+            }
+        }
     }
 
     /// Accepts void, causal successor and all inverses in a single non-suspending local save.
