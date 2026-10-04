@@ -6,6 +6,11 @@ All notable changes to this project are documented in this file.
 
 ### Added
 
+- 2026-10-04 | ✨ feat(billing): adjust future series through an audited advance
+  Requires explicit administrative authority and the exact expected head before advancing a shared billing counter.
+  Atomically records one immutable audit and replays its original acceptance after later allocations.
+  Preserves issued documents and keeps administrative composition inactive pending the separate live authority gate.
+
 - 2026-10-04 | 📝 docs(sales): record sale closure delivery
   Records merged PR61, accepted validation by source identity and functional PLU-109 completion.
   Preserves integral accessibility and remaining manual evidence in PLU-110, with phase13 and live gates open.
