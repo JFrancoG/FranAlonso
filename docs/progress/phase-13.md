@@ -1,6 +1,51 @@
 # Fase13 — Facturación, PDF, correo y numeración
 
-## 13.11 — Preparación de entrega autorizada
+## 13.11 / PLU-107 — Entregada funcionalmente; Done
+
+04/10/2026 Europe/Madrid: «commit, push y entrega» autoriza el circuito establecido completo.
+[PR60](https://github.com/JFrancoG/FranAlonso/pull/60) **MERGED** a main a07:15:53UTC;
+feature`9ced2247d555ac9ee0f00367a2dc846e414b6852` → merge`e2bee074bc8886b2d74bffc75206c3909b6114c8`.
+Árbol integrado completo idéntico al feature validado, tree`9990fb0d67c1c5d4614aeefe85085ff69f571ce3`;
+16Swift mantienen cada hash probado, manifest`f64ab8899d0bc9a774e52357d4d5019ad949ee4021c71194a24618b60dc455bc`.
+[PLU-107](https://linear.app/plusprojects/issue/PLU-107) **Done** automático verificado tras el merge,
+sin cambio manual de estado. Issue/proyecto se reconcilian con merge/evidencia; el cierre documental
+se publica mediante el commit que contiene este apartado.
+Rama`codex/plu-107-billing-email-composition` eliminada local/remota tras ascendencia,
+0commits únicos y head remoto exacto; eliminación protegida por lease del head esperado.
+Main/origin/main sincronizados al merge y checkout limpio antes del cierre documental.
+Solo CHANGELOG/Progress/phase13 y encuadre de matriz cambian después del merge; fuentes/configuración intactas.
+
+Revisión remota independiente`billing_13_11_delivery` y focal de accesibilidad/deuda
+`billing_13_11_accessibility` PASS/Sin hallazgosP0–P3. Head/base/body y23paths exactos;
+diffGH/local105151bytes idénticos SHA256`e30a622021c66a47790afe479ace9b875b1dff6fdaeb0ff116b1fb35ccfe15b7`.
+Freeze1060files inicial/final/revisores/root idénticos
+`9a83caa2326956e48c204a4c6a788ab9c455a9cf19d481ff7418f5b00b9bb518`.
+CLEAN/MERGEABLE; criterios/Linear/comments/head/base releídos inmediatamente antes del merge guardado
+por expected-head exacto.0checks/rulesets/workflows/main sin protección; no acredita CI ni aprobación humana
+de otra cuenta GitHub. Sin parent/milestone13; proyecto/fase13 **In Progress**.
+
+Evidencia reutilizada por identidad:75nuevos/32declaraciones,113focales yglobalúnico2941/2941PASS;
+TDD RED→GREEN, ambos builds,16Swift0diagnósticos y PRE/POST/estilo PASS. Xcode nuevo N/A para4docs.
+623textos/0errores; gobernanza mantiene8links externos históricos/temporales y avisos AppIntents2/1.
+Stock118 pasa una vez intacto; protección física13.6 conserva su gate independiente.
+Componente de preparación local/PDF/destinatario explícito y composición Apple manual entregado confactoryinactiva;
+superficies normal/demo intactas, sin nueva pantalla o integración13.12. Sin envío real ni live.
+
+Deuda nativa propia transferida antes del cierre a[PLU-108](https://linear.app/plusprojects/issue/PLU-108),
+**Backlog/Jesus Franco**, relacionada conPLU-107;[matriz55](../accessibility/evidence/13-11-native-mail-boundary.md)
+mantiene34Pending/5Limited/16N-A motivados y artefactos. Mail configurado, edición/PDF/dismiss/reintento,
+Inspector/AT/foco/contraste/variantes pendientes tras integración autorizada y feedback/estabilización,
+antes del primer candidato real. Cualquier envío real requiere autorización específica.
+PLU-101 Backlog/Jesus conserva su deuda propia; fase13/proyecto abiertos.13.1–13.11 entregadas funcionalmente;
+siguiente gate13.12 separado, sin autorización/inicio. Los registros inferiores son históricos.
+
+Revisión focal del registro final`billing_13_11_delivery` PASS/Sin hallazgosP0–P3;
+4docs,1060files inicial/final/revisor/root idénticos
+`ea810b2ee6c182e0ef9060c75e942ba657430f12d1a9415b83eb7fa9529ae027`.
+Localización623/0errores y diffcheck PASS; validator de gobernanza exit1 por los mismos8links externos.
+Tras ese freeze solo se registra este dictamen; ninguna fuente/configuración o criterio de la matriz cambia.
+
+## 13.11 — Historial de preparación de entrega autorizada
 
 04/10/2026: «commit, push y entrega» autoriza el circuito establecido de commit/push, PR,
 revisión independiente, merge, cierre funcional y limpieza segura de rama. PLU-107 sigue In Progress hasta entrega.

@@ -202,6 +202,10 @@ All notable changes to this project are documented in this file.
 
 ### Documentation
 
+- 2026-10-04 | 📝 docs(billing): record email delivery
+  Records PR60 integration, automatic PLU-107 completion and safe branch cleanup with unchanged validated sources.
+  Keeps configured Mail and integral accessibility in PLU-108, with phase 13 and active integration gates open.
+
 - 2026-10-04 | 📝 docs(billing): record 13.10 delivery
   Records PR59 merge, automatic Linear completion, reviewed evidence and safe branch cleanup.
   Preserves inactive composition, open phase and integral accessibility, physical-protection and live gates.

@@ -4,9 +4,9 @@
 
 ## Estado actual
 
-- **13.11 / [PLU-107](https://linear.app/plusprojects/issue/PLU-107): In Progress**;
-  entrega autorizada;75nuevos/2941globales/builds/PRE-POST-estilo PASS; deudaPLU-108 Backlog/Jesus. [Evidencia](progress/phase-13.md).
-  13.1–13.10 entregadas/PR59; fase13 abierta/deudaPLU-101/protección13.6/Stock118; sin live.
+- **13.11 / [PLU-107](https://linear.app/plusprojects/issue/PLU-107): Done funcional**;
+  [PR60](https://github.com/JFrancoG/FranAlonso/pull/60) integrada; rama eliminada.75nuevos/2941globales/builds/revisiones PASS.
+  13.1–13.11 entregadas; fase13 abierta/deudasPLU-108/101, protección13.6/Stock118; [evidencia](progress/phase-13.md). Sin live.
 - **12.1–12.8 Done**, [PR49](https://github.com/JFrancoG/FranAlonso/pull/49);
   fase12 abierta/deuda89–91. [Evidencia](progress/phase-12.md).
 

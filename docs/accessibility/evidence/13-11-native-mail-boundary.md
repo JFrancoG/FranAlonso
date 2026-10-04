@@ -1,7 +1,8 @@
 # 13.11 — Inactive native Mail composition boundary
 
 04/10/2026. [PLU-107](https://linear.app/plusprojects/issue/PLU-107), Jesus Franco.
-Component functional delivery gate; no active screen or normal/demo entrypoint. Git delivery is now authorized.
+Component delivered functionally through [PR60](https://github.com/JFrancoG/FranAlonso/pull/60); PLU-107 Done.
+No active screen or normal/demo entrypoint; integral native accessibility remains Limited/Pending.
 The app supplies one explicit recipient, localized editable subject/plain-text body and the retained PDF;
 Apple owns the native controls. No native hierarchy customization or automatic send.
 
@@ -9,8 +10,9 @@ Previews Large/XXX Large/AX 5: N/A for new custom SwiftUI screens because none e
 Native Mail visual/runtime evidence is **Limited/Pending**, not covered by that preview exemption.
 Configured Mail editing, attachment, dismissal, VoiceOver/Voice Control/Switch Control/keyboard, focus and
 native preferences need an appropriate device after explicitly authorized active integration. On 04/10/2026,
-the debt is explicitly transferred from PLU-107 to linked [PLU-108](https://linear.app/plusprojects/issue/PLU-108),
-Backlog / Jesus Franco, before functional closure. Recover after feedback/stabilization of this flow and before
+the debt was explicitly transferred from PLU-107 to linked [PLU-108](https://linear.app/plusprojects/issue/PLU-108),
+Backlog / Jesus Franco, before functional closure. The 55 criteria retain 34 Pending, 5 Limited and 16 reasoned N/A.
+Recover after feedback/stabilization of this flow and before
 the first candidate for real use. This transfer grants no integration or real sending authorization.
 PDF accessibility and prior Billing form debt retain their own phase-13 evidence and PLU-101; no automatic transfer.
 
