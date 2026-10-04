@@ -1,0 +1,485 @@
+[
+  {
+    "file": "selection-Large-es-Light.png",
+    "sha256": "901a9ceca2358ae19cf5f7603f046c6efb56322d7b8421c1f51230b4f4753668",
+    "job": {
+      "source": "Views/BillingSelectionContent.swift",
+      "index": 0,
+      "label": "selection",
+      "size": "Large",
+      "locale": "es",
+      "color": "Light Appearance",
+      "contrast": "Standard Contrast",
+      "suffix": "Large-es-Light"
+    },
+    "originalPath": "/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RenderPreview/Selection - 2026-10-04 at 11.01.01.png",
+    "destination": {
+      "deviceModelName": "iPhone 18 Pro Max",
+      "identifier": "06B2C3FF-929C-4164-8852-E5EF6DA24974",
+      "platformName": "iOS",
+      "systemVersion": "27.2"
+    },
+    "review": "root observed first frame; complete scroll and AT unverified",
+    "sourceManifestSHA256": "dfdb6215c0af4937f52e926278d2016d2cbce6b3243ecd3507913a3f81939915"
+  },
+  {
+    "file": "selection-XXXL-en-Dark.png",
+    "sha256": "044cca219abc83495da07aac45a39483cfa2df98b12940e4408f142d5a52e0fb",
+    "job": {
+      "source": "Views/BillingSelectionContent.swift",
+      "index": 0,
+      "label": "selection",
+      "size": "XXX Large",
+      "locale": "en",
+      "color": "Dark Appearance",
+      "contrast": "Standard Contrast",
+      "suffix": "XXXL-en-Dark"
+    },
+    "originalPath": "/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RenderPreview/Selection - 2026-10-04 at 11.01.05.png",
+    "destination": {
+      "deviceModelName": "iPhone 18 Pro Max",
+      "identifier": "06B2C3FF-929C-4164-8852-E5EF6DA24974",
+      "platformName": "iOS",
+      "systemVersion": "27.2"
+    },
+    "review": "root observed first frame; complete scroll and AT unverified",
+    "sourceManifestSHA256": "dfdb6215c0af4937f52e926278d2016d2cbce6b3243ecd3507913a3f81939915"
+  },
+  {
+    "file": "selection-AX5-es-Light.png",
+    "sha256": "ca7c4326ddf503a52707099786f03120a40d952db61b1f6c43011a4c8a007b48",
+    "job": {
+      "source": "Views/BillingSelectionContent.swift",
+      "index": 0,
+      "label": "selection",
+      "size": "AX 5",
+      "locale": "es",
+      "color": "Light Appearance",
+      "contrast": "Increased Contrast",
+      "suffix": "AX5-es-Light"
+    },
+    "originalPath": "/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RenderPreview/Selection - 2026-10-04 at 11.01.10.png",
+    "destination": {
+      "deviceModelName": "iPhone 18 Pro Max",
+      "identifier": "06B2C3FF-929C-4164-8852-E5EF6DA24974",
+      "platformName": "iOS",
+      "systemVersion": "27.2"
+    },
+    "review": "root observed first frame; complete scroll and AT unverified",
+    "sourceManifestSHA256": "dfdb6215c0af4937f52e926278d2016d2cbce6b3243ecd3507913a3f81939915"
+  },
+  {
+    "file": "progress-closable-Large-es-Light.png",
+    "sha256": "b4781126e577c8ea5cee7ffb703056e04a77522af0dec74e3f70b111c8345de0",
+    "job": {
+      "source": "Views/BillingDocumentProgressView.swift",
+      "index": 0,
+      "label": "progress-closable",
+      "size": "Large",
+      "locale": "es",
+      "color": "Light Appearance",
+      "contrast": "Standard Contrast",
+      "suffix": "Large-es-Light"
+    },
+    "originalPath": "/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RenderPreview/PDF ready for closure - 2026-10-04 at 11.01.22.png",
+    "destination": {
+      "deviceModelName": "iPhone 18 Pro Max",
+      "identifier": "06B2C3FF-929C-4164-8852-E5EF6DA24974",
+      "platformName": "iOS",
+      "systemVersion": "27.2"
+    },
+    "review": "root observed first frame; complete scroll and AT unverified",
+    "sourceManifestSHA256": "dfdb6215c0af4937f52e926278d2016d2cbce6b3243ecd3507913a3f81939915"
+  },
+  {
+    "file": "progress-closable-XXXL-en-Dark.png",
+    "sha256": "fcf0ec7bbc28ce17651f23b03602a753005fd7781fb39e41bd2aba976c6e00df",
+    "job": {
+      "source": "Views/BillingDocumentProgressView.swift",
+      "index": 0,
+      "label": "progress-closable",
+      "size": "XXX Large",
+      "locale": "en",
+      "color": "Dark Appearance",
+      "contrast": "Standard Contrast",
+      "suffix": "XXXL-en-Dark"
+    },
+    "originalPath": "/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RenderPreview/PDF ready for closure - 2026-10-04 at 11.01.27.png",
+    "destination": {
+      "deviceModelName": "iPhone 18 Pro Max",
+      "identifier": "06B2C3FF-929C-4164-8852-E5EF6DA24974",
+      "platformName": "iOS",
+      "systemVersion": "27.2"
+    },
+    "review": "root observed first frame; complete scroll and AT unverified",
+    "sourceManifestSHA256": "dfdb6215c0af4937f52e926278d2016d2cbce6b3243ecd3507913a3f81939915"
+  },
+  {
+    "file": "progress-closable-AX5-es-Light.png",
+    "sha256": "5d1695871bee8af379f2832e25c86e7bba8cac78e8eed638201579808042eee3",
+    "job": {
+      "source": "Views/BillingDocumentProgressView.swift",
+      "index": 0,
+      "label": "progress-closable",
+      "size": "AX 5",
+      "locale": "es",
+      "color": "Light Appearance",
+      "contrast": "Increased Contrast",
+      "suffix": "AX5-es-Light"
+    },
+    "originalPath": "/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RenderPreview/PDF ready for closure - 2026-10-04 at 11.01.31.png",
+    "destination": {
+      "deviceModelName": "iPhone 18 Pro Max",
+      "identifier": "06B2C3FF-929C-4164-8852-E5EF6DA24974",
+      "platformName": "iOS",
+      "systemVersion": "27.2"
+    },
+    "review": "root observed first frame; complete scroll and AT unverified",
+    "sourceManifestSHA256": "dfdb6215c0af4937f52e926278d2016d2cbce6b3243ecd3507913a3f81939915"
+  },
+  {
+    "file": "screen-closable-Large-es-Light.png",
+    "sha256": "62cccb2168c9660ae1ae6182026c32395f7b72dd33d91bc645b923e4def5d829",
+    "job": {
+      "source": "Screens/BillingScreen.swift",
+      "index": 8,
+      "label": "screen-closable",
+      "size": "Large",
+      "locale": "es",
+      "color": "Light Appearance",
+      "contrast": "Standard Contrast",
+      "suffix": "Large-es-Light"
+    },
+    "originalPath": "/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RenderPreview/PDF closure available - 2026-10-04 at 11.04.21.png",
+    "destination": {
+      "deviceModelName": "iPhone 18 Pro Max",
+      "identifier": "06B2C3FF-929C-4164-8852-E5EF6DA24974",
+      "platformName": "iOS",
+      "systemVersion": "27.2"
+    },
+    "review": "root observed first frame; complete scroll and AT unverified",
+    "sourceManifestSHA256": "dfdb6215c0af4937f52e926278d2016d2cbce6b3243ecd3507913a3f81939915"
+  },
+  {
+    "file": "screen-closable-XXXL-en-Dark.png",
+    "sha256": "ad92b07e4117da74b9e6ff7b23e96336895c164f4a5c9be98232555c33962f43",
+    "job": {
+      "source": "Screens/BillingScreen.swift",
+      "index": 8,
+      "label": "screen-closable",
+      "size": "XXX Large",
+      "locale": "en",
+      "color": "Dark Appearance",
+      "contrast": "Standard Contrast",
+      "suffix": "XXXL-en-Dark"
+    },
+    "originalPath": "/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RenderPreview/PDF closure available - 2026-10-04 at 11.04.25.png",
+    "destination": {
+      "deviceModelName": "iPhone 18 Pro Max",
+      "identifier": "06B2C3FF-929C-4164-8852-E5EF6DA24974",
+      "platformName": "iOS",
+      "systemVersion": "27.2"
+    },
+    "review": "root observed first frame; complete scroll and AT unverified",
+    "sourceManifestSHA256": "dfdb6215c0af4937f52e926278d2016d2cbce6b3243ecd3507913a3f81939915"
+  },
+  {
+    "file": "screen-closable-AX5-es-Light.png",
+    "sha256": "6d642b4db51a2a2b0d4638ffa9845aea8deb8c3549b2c4905a8bc9ecef338e64",
+    "job": {
+      "source": "Screens/BillingScreen.swift",
+      "index": 8,
+      "label": "screen-closable",
+      "size": "AX 5",
+      "locale": "es",
+      "color": "Light Appearance",
+      "contrast": "Increased Contrast",
+      "suffix": "AX5-es-Light"
+    },
+    "originalPath": "/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RenderPreview/PDF closure available - 2026-10-04 at 11.04.30.png",
+    "destination": {
+      "deviceModelName": "iPhone 18 Pro Max",
+      "identifier": "06B2C3FF-929C-4164-8852-E5EF6DA24974",
+      "platformName": "iOS",
+      "systemVersion": "27.2"
+    },
+    "review": "root observed first frame; complete scroll and AT unverified",
+    "sourceManifestSHA256": "dfdb6215c0af4937f52e926278d2016d2cbce6b3243ecd3507913a3f81939915"
+  },
+  {
+    "file": "recovery-error-Large-es-Dark.png",
+    "sha256": "7098ea3d2ce4a4631b736c484268e0b3196045b705211a092e7041b511a30291",
+    "job": {
+      "source": "Screens/BillingScreen.swift",
+      "index": 5,
+      "label": "recovery-error",
+      "size": "Large",
+      "locale": "es",
+      "color": "Dark Appearance",
+      "contrast": "Increased Contrast",
+      "suffix": "Large-es-Dark"
+    },
+    "originalPath": "/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RenderPreview/Recovery error - 2026-10-04 at 11.52.26.png",
+    "destination": {
+      "deviceModelName": "iPhone 18 Pro Max",
+      "identifier": "06B2C3FF-929C-4164-8852-E5EF6DA24974",
+      "platformName": "iOS",
+      "systemVersion": "27.2"
+    },
+    "sourceManifestSHA256": "409eed81eaa00024685d9aa8847e0438d35410f3872ad0fbbe5352589c476ed7",
+    "review": "root observed first frame; complete scroll and AT unverified"
+  },
+  {
+    "file": "pending-number-XXXL-es-Light.png",
+    "sha256": "25d173439674a93d069bfc1d8b7f077aaa2aaab5b7ec4f0e198875b1d7370a82",
+    "job": {
+      "index": 6,
+      "label": "pending-number",
+      "size": "XXX Large",
+      "locale": "es",
+      "color": "Light Appearance",
+      "contrast": "Standard Contrast",
+      "suffix": "XXXL-es-Light",
+      "source": "Screens/BillingScreen.swift"
+    },
+    "originalPath": "/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RenderPreview/Pending numbering - 2026-10-04 at 11.04.31.png",
+    "destination": {
+      "deviceModelName": "iPhone 18 Pro Max",
+      "identifier": "06B2C3FF-929C-4164-8852-E5EF6DA24974",
+      "platformName": "iOS",
+      "systemVersion": "27.2"
+    },
+    "review": "root observed first frame; complete scroll and AT unverified",
+    "sourceManifestSHA256": "dfdb6215c0af4937f52e926278d2016d2cbce6b3243ecd3507913a3f81939915"
+  },
+  {
+    "file": "generating-Large-en-Dark.png",
+    "sha256": "578c670aae8390ded13c5ac99f0782708c3918daf52ea35079e3ae1d5a70e090",
+    "job": {
+      "index": 7,
+      "label": "generating",
+      "size": "Large",
+      "locale": "en",
+      "color": "Dark Appearance",
+      "contrast": "Increased Contrast",
+      "suffix": "Large-en-Dark",
+      "source": "Screens/BillingScreen.swift"
+    },
+    "originalPath": "/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RenderPreview/Generating PDF - 2026-10-04 at 11.04.35.png",
+    "destination": {
+      "deviceModelName": "iPhone 18 Pro Max",
+      "identifier": "06B2C3FF-929C-4164-8852-E5EF6DA24974",
+      "platformName": "iOS",
+      "systemVersion": "27.2"
+    },
+    "review": "root observed first frame; complete scroll and AT unverified",
+    "sourceManifestSHA256": "dfdb6215c0af4937f52e926278d2016d2cbce6b3243ecd3507913a3f81939915"
+  },
+  {
+    "file": "accepted-XXXL-en-Dark.png",
+    "sha256": "ad92b07e4117da74b9e6ff7b23e96336895c164f4a5c9be98232555c33962f43",
+    "job": {
+      "index": 9,
+      "label": "accepted",
+      "size": "XXX Large",
+      "locale": "en",
+      "color": "Dark Appearance",
+      "contrast": "Standard Contrast",
+      "suffix": "XXXL-en-Dark",
+      "source": "Screens/BillingScreen.swift"
+    },
+    "originalPath": "/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RenderPreview/Accepted closure English - 2026-10-04 at 11.04.36.png",
+    "destination": {
+      "deviceModelName": "iPhone 18 Pro Max",
+      "identifier": "06B2C3FF-929C-4164-8852-E5EF6DA24974",
+      "platformName": "iOS",
+      "systemVersion": "27.2"
+    },
+    "review": "root observed first frame; complete scroll and AT unverified",
+    "sourceManifestSHA256": "dfdb6215c0af4937f52e926278d2016d2cbce6b3243ecd3507913a3f81939915"
+  },
+  {
+    "file": "invoice-AX5-es-Light.png",
+    "sha256": "863c37b744773b7e6399a76d241fd51e45b1b866b9fe1f3547220f815dd620b2",
+    "job": {
+      "index": 1,
+      "label": "invoice",
+      "size": "AX 5",
+      "locale": "es",
+      "color": "Light Appearance",
+      "contrast": "Increased Contrast",
+      "suffix": "AX5-es-Light",
+      "source": "Screens/BillingScreen.swift"
+    },
+    "originalPath": "/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RenderPreview/Invoice form - 2026-10-04 at 11.04.40.png",
+    "destination": {
+      "deviceModelName": "iPhone 18 Pro Max",
+      "identifier": "06B2C3FF-929C-4164-8852-E5EF6DA24974",
+      "platformName": "iOS",
+      "systemVersion": "27.2"
+    },
+    "review": "root observed first frame; complete scroll and AT unverified",
+    "sourceManifestSHA256": "dfdb6215c0af4937f52e926278d2016d2cbce6b3243ecd3507913a3f81939915"
+  },
+  {
+    "file": "invoice-error-Large-es-Light.png",
+    "sha256": "132225c43dbecef1d4a166a32f4313c0002bef85dae84b93f51b7c62e65d0fad",
+    "job": {
+      "index": 2,
+      "label": "invoice-error",
+      "size": "Large",
+      "locale": "es",
+      "color": "Light Appearance",
+      "contrast": "Increased Contrast",
+      "suffix": "Large-es-Light",
+      "source": "Screens/BillingScreen.swift"
+    },
+    "originalPath": "/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RenderPreview/Invoice error - 2026-10-04 at 11.04.41.png",
+    "destination": {
+      "deviceModelName": "iPhone 18 Pro Max",
+      "identifier": "06B2C3FF-929C-4164-8852-E5EF6DA24974",
+      "platformName": "iOS",
+      "systemVersion": "27.2"
+    },
+    "review": "root observed first frame; complete scroll and AT unverified",
+    "sourceManifestSHA256": "dfdb6215c0af4937f52e926278d2016d2cbce6b3243ecd3507913a3f81939915"
+  },
+  {
+    "file": "progress-pending-XXXL-en-Light.png",
+    "sha256": "b129a4b759709f9db946032db4337e677474d8268a9c28d31a93b7e08131b17f",
+    "job": {
+      "label": "progress-pending",
+      "suffix": "XXXL-en-Light",
+      "size": "XXX Large",
+      "locale": "en",
+      "color": "Light Appearance",
+      "contrast": "Increased Contrast",
+      "source": "Views/BillingDocumentProgressView.swift",
+      "index": 1
+    },
+    "originalPath": "/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RenderPreview/Pending number error - 2026-10-04 at 11.07.11.png",
+    "destination": {
+      "deviceModelName": "iPhone 18 Pro Max",
+      "identifier": "06B2C3FF-929C-4164-8852-E5EF6DA24974",
+      "platformName": "iOS",
+      "systemVersion": "27.2"
+    },
+    "review": "root observed first frame; complete scroll and AT unverified",
+    "sourceManifestSHA256": "dfdb6215c0af4937f52e926278d2016d2cbce6b3243ecd3507913a3f81939915"
+  },
+  {
+    "file": "recovery-error-XXXL-en-Dark.png",
+    "sha256": "26440d86d61f99b6216d9e69c66f42bf94213cbfc14994bd9b89f456797828cf",
+    "job": {
+      "source": "Screens/BillingScreen.swift",
+      "index": 5,
+      "label": "recovery-error",
+      "size": "XXX Large",
+      "locale": "en",
+      "color": "Dark Appearance",
+      "contrast": "Standard Contrast",
+      "suffix": "XXXL-en-Dark"
+    },
+    "originalPath": "/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RenderPreview/Recovery error - 2026-10-04 at 11.52.31.png",
+    "destination": {
+      "deviceModelName": "iPhone 18 Pro Max",
+      "identifier": "06B2C3FF-929C-4164-8852-E5EF6DA24974",
+      "platformName": "iOS",
+      "systemVersion": "27.2"
+    },
+    "sourceManifestSHA256": "409eed81eaa00024685d9aa8847e0438d35410f3872ad0fbbe5352589c476ed7",
+    "review": "root observed first frame; complete scroll and AT unverified"
+  },
+  {
+    "file": "recovery-error-AX5-es-Light.png",
+    "sha256": "0844af01d4b56ffcc8cd220956cea99dc774a628996ec7b99744b98fb565925f",
+    "job": {
+      "source": "Screens/BillingScreen.swift",
+      "index": 5,
+      "label": "recovery-error",
+      "size": "AX 5",
+      "locale": "es",
+      "color": "Light Appearance",
+      "contrast": "Increased Contrast",
+      "suffix": "AX5-es-Light"
+    },
+    "originalPath": "/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RenderPreview/Recovery error - 2026-10-04 at 11.52.35.png",
+    "destination": {
+      "deviceModelName": "iPhone 18 Pro Max",
+      "identifier": "06B2C3FF-929C-4164-8852-E5EF6DA24974",
+      "platformName": "iOS",
+      "systemVersion": "27.2"
+    },
+    "sourceManifestSHA256": "409eed81eaa00024685d9aa8847e0438d35410f3872ad0fbbe5352589c476ed7",
+    "review": "root observed first frame; complete scroll and AT unverified"
+  },
+  {
+    "file": "recovery-choice-Large-es-Dark.png",
+    "sha256": "b2990ed682db73518bcf3138d4371083630123a736fe3453c0b9a5492f6fa78e",
+    "job": {
+      "source": "Screens/BillingScreen.swift",
+      "index": 10,
+      "label": "recovery-choice",
+      "size": "Large",
+      "locale": "es",
+      "color": "Dark Appearance",
+      "contrast": "Increased Contrast",
+      "suffix": "Large-es-Dark"
+    },
+    "originalPath": "/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RenderPreview/Saved document family choice - 2026-10-04 at 11.52.36.png",
+    "destination": {
+      "deviceModelName": "iPhone 18 Pro Max",
+      "identifier": "06B2C3FF-929C-4164-8852-E5EF6DA24974",
+      "platformName": "iOS",
+      "systemVersion": "27.2"
+    },
+    "sourceManifestSHA256": "409eed81eaa00024685d9aa8847e0438d35410f3872ad0fbbe5352589c476ed7",
+    "review": "root observed first frame; complete scroll and AT unverified"
+  },
+  {
+    "file": "recovery-choice-XXXL-en-Dark.png",
+    "sha256": "a49dc8c409a3ad5012dfbea651f1b4a5ed7c0c21b81f7e102e6835e9c7cb3dad",
+    "job": {
+      "source": "Screens/BillingScreen.swift",
+      "index": 10,
+      "label": "recovery-choice",
+      "size": "XXX Large",
+      "locale": "en",
+      "color": "Dark Appearance",
+      "contrast": "Standard Contrast",
+      "suffix": "XXXL-en-Dark"
+    },
+    "originalPath": "/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RenderPreview/Saved document family choice - 2026-10-04 at 11.52.40.png",
+    "destination": {
+      "deviceModelName": "iPhone 18 Pro Max",
+      "identifier": "06B2C3FF-929C-4164-8852-E5EF6DA24974",
+      "platformName": "iOS",
+      "systemVersion": "27.2"
+    },
+    "sourceManifestSHA256": "409eed81eaa00024685d9aa8847e0438d35410f3872ad0fbbe5352589c476ed7",
+    "review": "root observed first frame; complete scroll and AT unverified"
+  },
+  {
+    "file": "recovery-choice-AX5-es-Light.png",
+    "sha256": "d7247cbb8b01a370b46c006a17de2646b851c9d16f257baa7745b9b57ba52a8b",
+    "job": {
+      "source": "Screens/BillingScreen.swift",
+      "index": 10,
+      "label": "recovery-choice",
+      "size": "AX 5",
+      "locale": "es",
+      "color": "Light Appearance",
+      "contrast": "Increased Contrast",
+      "suffix": "AX5-es-Light"
+    },
+    "originalPath": "/var/folders/wt/r327qtw12_s5tbbcnx9dzqv80000gn/T/ActionArtifacts/default/RenderPreview/Saved document family choice - 2026-10-04 at 11.52.45.png",
+    "destination": {
+      "deviceModelName": "iPhone 18 Pro Max",
+      "identifier": "06B2C3FF-929C-4164-8852-E5EF6DA24974",
+      "platformName": "iOS",
+      "systemVersion": "27.2"
+    },
+    "sourceManifestSHA256": "409eed81eaa00024685d9aa8847e0438d35410f3872ad0fbbe5352589c476ed7",
+    "review": "root observed first frame; complete scroll and AT unverified"
+  }
+]

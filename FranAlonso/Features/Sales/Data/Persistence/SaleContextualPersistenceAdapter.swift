@@ -12,6 +12,19 @@ struct SaleContextualPersistenceAdapter {
     private let productObservationSignal: any ProductChangeSignaling
     private let makeOperationID: @Sendable () -> UUID
 
+    /// Accepts closure in the ephemeral main context, then invalidates the same locally observed Sales source.
+    /// The capability-owning caller checks its shell authorization before and after this contextual operation.
+    func closeSale(_ request: SaleClosureRequest, principalID: String, in context: ModelContext) async throws -> Sale {
+        let accepted = try dataSource.closeSale(
+            request,
+            principalID: principalID,
+            operationID: makeOperationID(),
+            in: context
+        )
+        await observationSignal.publishChange()
+        return accepted
+    }
+
     /// Accepts void and stock in the ephemeral caller context, then invalidates both observed sources.
     /// Cancellation after commit does not undo acceptance; the context is never stored or sent across actors.
     func voidSale(

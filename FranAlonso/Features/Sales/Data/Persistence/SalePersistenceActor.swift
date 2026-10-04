@@ -9,6 +9,16 @@ import SwiftData
 actor SalePersistenceActor {
     private let dataSource = SaleLocalDataSource()
 
+    /// Shares the non-suspending local closure primitive with the caller-context route.
+    func closeSale(_ request: SaleClosureRequest, principalID: String, operationID: UUID) throws -> Sale {
+        try dataSource.closeSale(
+            request,
+            principalID: principalID,
+            operationID: operationID,
+            in: modelContext
+        )
+    }
+
     /// Accepts a compensating void in the same context that owns Sale, causal queue and immutable ledger.
     func voidSale(
         _ expected: Sale,

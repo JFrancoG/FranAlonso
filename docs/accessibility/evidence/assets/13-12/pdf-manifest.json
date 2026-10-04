@@ -1,0 +1,50 @@
+[
+  {
+    "file": "pdf-ticket-page-01.png",
+    "sha256": "80cf3b4ad2e2cb1bb252c0fc2d4e8d7f28335308d5c1ef97b29f4a2d51b297c1",
+    "pdfPath": "/tmp/franalonso-13-12-pdf-review/franalonso-13-12-demo-ticket.pdf",
+    "pdfSHA256": "1f2069bd9ef7c10e0f13a747d716da32cbb81529f05f281e8b6ae8d503fc3852",
+    "page": 1,
+    "render": "pdftoppm scale-to 1000; original copies; visual QA all 25 pages by independent agent"
+  },
+  {
+    "file": "pdf-ticket-page-06.png",
+    "sha256": "037dde70ab15bba509314ff523b1cb116dc903c2b30a158fcb6a4755e1116b52",
+    "pdfPath": "/tmp/franalonso-13-12-pdf-review/franalonso-13-12-demo-ticket.pdf",
+    "pdfSHA256": "1f2069bd9ef7c10e0f13a747d716da32cbb81529f05f281e8b6ae8d503fc3852",
+    "page": 6,
+    "render": "pdftoppm scale-to 1000; original copies; visual QA all 25 pages by independent agent"
+  },
+  {
+    "file": "pdf-ticket-page-11.png",
+    "sha256": "c226ede7b83d87ac12421d083788c36f74572abd6e1155f8566f1a50a2c5e8cf",
+    "pdfPath": "/tmp/franalonso-13-12-pdf-review/franalonso-13-12-demo-ticket.pdf",
+    "pdfSHA256": "1f2069bd9ef7c10e0f13a747d716da32cbb81529f05f281e8b6ae8d503fc3852",
+    "page": 11,
+    "render": "pdftoppm scale-to 1000; original copies; visual QA all 25 pages by independent agent"
+  },
+  {
+    "file": "pdf-invoice-page-01.png",
+    "sha256": "093957cb900abe60d4ad17fae862f2348bf827d2f32fb55b31352bb491230c1c",
+    "pdfPath": "/tmp/franalonso-13-12-pdf-final/franalonso-13-12-demo-invoice.pdf",
+    "pdfSHA256": "8014eec820e1c09d4ac1adcabaa25a81fd39170f51046209448639674ba9c057",
+    "page": 1,
+    "render": "pdftoppm scale-to 1000; original copies; visual QA all 25 pages by independent agent"
+  },
+  {
+    "file": "pdf-invoice-page-07.png",
+    "sha256": "183fe994e508c0ebbd36d06c0321adc7a72e7207273ee7f182884ed33fa9baa4",
+    "pdfPath": "/tmp/franalonso-13-12-pdf-final/franalonso-13-12-demo-invoice.pdf",
+    "pdfSHA256": "8014eec820e1c09d4ac1adcabaa25a81fd39170f51046209448639674ba9c057",
+    "page": 7,
+    "render": "pdftoppm scale-to 1000; original copies; visual QA all 25 pages by independent agent"
+  },
+  {
+    "file": "pdf-invoice-page-14.png",
+    "sha256": "e25a5a5779ea4d6652473ef0af31bb5fd23663a95713844285bbf13233875333",
+    "pdfPath": "/tmp/franalonso-13-12-pdf-final/franalonso-13-12-demo-invoice.pdf",
+    "pdfSHA256": "8014eec820e1c09d4ac1adcabaa25a81fd39170f51046209448639674ba9c057",
+    "page": 14,
+    "render": "pdftoppm scale-to 1000; original copies; visual QA all 25 pages by independent agent"
+  }
+]

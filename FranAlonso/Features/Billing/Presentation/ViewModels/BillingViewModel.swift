@@ -1,26 +1,208 @@
 import Foundation
 import Observation
+import SwiftData
 
 /// The presentation facade reads its Store directly, including through Observation tracking.
 @Observable @MainActor
 final class BillingViewModel<Repository: BillingDocumentReservationRepository> {
+    typealias CloseSale = @MainActor (SaleClosureRequest, ModelContext) async throws -> Sale
+
     private let store: BillingDocumentStore<Repository>
     private let sale: Sale?
     private let prepareDocument: PrepareBillingDocumentRequestUseCase
     private let getClient: GetClientUseCase?
     private let preparationIsAvailable: @MainActor @Sendable () -> Bool
+    private let acceptSaleClosure: CloseSale?
+    private let now: @MainActor @Sendable () -> Date
+    private var closureRequest: SaleClosureRequest?
     private var fiscalInput = BillingFiscalRecipientInput()
     private var selection: BillingDocumentKind = .ticket
     @ObservationIgnored private var prefillGeneration: UUID?
     @ObservationIgnored private var hasAttemptedPrefill = false
     @ObservationIgnored private var hasEditedInput = false
+    @ObservationIgnored private var activeOperationID: UUID?
     private(set) var formIssue: BillingFormIssue?
     private(set) var validationID: UUID?
     private(set) var isLoadingRecipient = false
+    let isDemonstration: Bool
+    private(set) var closureFailure: SaleClosureError?
+    private(set) var operationRequest: BillingOperationRequest?
+    private(set) var operationFailed = false
+    private(set) var operationAnnouncementID: UUID?
+    private(set) var recoveryFailed = false
+    private(set) var requiresDocumentSelection = false
+    private var hasLoaded = false
+
+    var requiresPersistence: Bool { store.requiresPersistence }
+    var closedSale: Sale? { store.closedSale }
+    var canCloseSale: Bool {
+        guard preparationIsAvailable(), acceptSaleClosure != nil, !isBusy, closedSale == nil,
+              let delivery, delivery.document != nil, delivery.pdf != nil else { return false }
+        guard case .materialization(_, .ready) = state else { return false }
+        return true
+    }
+    var isWorking: Bool { isBusy || operationRequest != nil }
+    var canGenerate: Bool {
+        guard requiresPersistence, preparationIsAvailable(), !isWorking, closedSale == nil,
+              let delivery, !delivery.isFinal else { return false }
+        guard case .materialization(_, .ready) = state else { return false }
+        return true
+    }
+
+    /// Discovers an existing sale family before a new selection can generate allocation identities.
+    func load() async throws {
+        defer {
+            if hasLoaded, activeOperationID == nil, operationRequest?.operation == .load {
+                operationRequest = nil
+            }
+        }
+        guard !hasLoaded else { return }
+        guard requiresPersistence else {
+            hasLoaded = true
+            return
+        }
+        guard preparationIsAvailable(), let sale else { throw BillingDocumentPersistenceError.unauthorized }
+        do {
+            _ = try await store.recover(saleID: sale.id, validateAcceptance: validateRecoveryAcceptance)
+        } catch BillingDocumentPersistenceError.ambiguousSelection {
+            try validateRecoveryAcceptance()
+            requiresDocumentSelection = true
+        }
+        try validateRecoveryAcceptance()
+        hasLoaded = true
+        recoveryFailed = false
+    }
+
+    /// Keeps the caller's context ephemeral; every retry retains the same closure request and timestamp.
+    func closeSale(in context: ModelContext) async throws -> Sale {
+        if let accepted = closedSale {
+            return accepted
+        }
+        guard !isBusy else { throw BillingDocumentStoreError.operationInProgress }
+        guard preparationIsAvailable(), let acceptSaleClosure else { throw SaleClosureError.unauthorized }
+        guard let delivery, delivery.document != nil, delivery.pdf != nil else {
+            throw SaleClosureError.documentPending
+        }
+        let request: SaleClosureRequest
+        if let retained = closureRequest {
+            request = retained
+        } else {
+            request = try SaleClosureRequest(expected: delivery.request.sale, requestID: delivery.id, closedAt: now())
+            closureRequest = request
+        }
+        do {
+            let accepted = try await store.closeSale(request) {
+                let accepted = try await acceptSaleClosure(request, context)
+                guard self.preparationIsAvailable() else { throw CancellationError() }
+                return accepted
+            }
+            closureFailure = nil
+            return accepted
+        } catch {
+            if error is CancellationError || Task.isCancelled {
+                throw CancellationError()
+            }
+            closureFailure = error as? SaleClosureError ?? .persistenceUnavailable
+            throw error
+        }
+    }
+
+    func requestLoad() {
+        requestOperation(.load)
+    }
+
+    /// Captures an explicit saved family; retry never prepares a replacement request.
+    func requestSelectedDocumentRecovery() {
+        guard requiresDocumentSelection, canSelectKind else { return }
+        requestOperation(.recoverFamily(selection))
+    }
+
+    func requestPreparation() {
+        guard !requiresDocumentSelection else { return }
+        requestOperation(.prepare)
+    }
+
+    func requestGeneration() {
+        requestOperation(.generate)
+    }
+
+    func requestSaleClosure() {
+        requestOperation(.closeSale)
+    }
+
+    /// Claims only the captured current intention once; stale, nil and duplicate task snapshots have no effects.
+    func performRequestedOperation(_ request: BillingOperationRequest?, in context: ModelContext) async {
+        guard let request, operationRequest == request, activeOperationID == nil else { return }
+        let operationRequest = request
+        activeOperationID = request.id
+        operationFailed = false
+        defer {
+            if activeOperationID == operationRequest.id {
+                activeOperationID = nil
+                if self.operationRequest?.id == operationRequest.id {
+                    self.operationRequest = nil
+                }
+            }
+        }
+        do {
+            switch operationRequest.operation {
+            case .load:
+                try await load()
+            case let .recoverFamily(kind):
+                try await recoverSelectedFamily(kind)
+            case .prepare:
+                if requiresPersistence {
+                    _ = try await prepareSelectionDurable()
+                } else {
+                    _ = prepareSelection()
+                }
+            case .generate:
+                _ = try await materialize()
+            case .closeSale:
+                _ = try await closeSale(in: context)
+            }
+            guard self.operationRequest?.id == operationRequest.id, !Task.isCancelled else { return }
+            if operationRequest.operation != .load || requiresDocumentSelection {
+                operationAnnouncementID = UUID()
+            }
+        } catch {
+            guard self.operationRequest?.id == operationRequest.id, !(error is CancellationError),
+                  !Task.isCancelled else { return }
+            if case let BillingFiscalRecipientError.required(field) = error {
+                _ = reject(.required(field))
+            } else {
+                operationFailed = true
+                switch operationRequest.operation {
+                case .load, .recoverFamily:
+                    recoveryFailed = true
+                default:
+                    break
+                }
+                operationAnnouncementID = UUID()
+            }
+        }
+    }
+
+    /// Allows explicit non-UI callers to run their current intention through the same ownership guard.
+    func performRequestedOperation(in context: ModelContext) async {
+        let captured = operationRequest
+        await performRequestedOperation(captured, in: context)
+    }
+
+    private func requestOperation(_ operation: BillingOperationRequest.Operation) {
+        guard operationRequest == nil, !isBusy else { return }
+        operationRequest = BillingOperationRequest(id: UUID(), operation: operation)
+    }
 
     var selectedKind: BillingDocumentKind { request?.kind ?? selection }
+    var canSelectKind: Bool {
+        guard case .selection = state, preparationIsAvailable(), !isWorking,
+              let sale, case .awaitingDocument = sale.status else { return false }
+        return isEditing || requiresDocumentSelection
+    }
     var isEditing: Bool {
-        guard case .selection = state, preparationIsAvailable(),
+        guard case .selection = state, preparationIsAvailable(), !recoveryFailed, !requiresDocumentSelection,
+              !isWorking, !requiresPersistence || hasLoaded,
               let sale, case .awaitingDocument = sale.status else { return false }
         return true
     }
@@ -30,7 +212,7 @@ final class BillingViewModel<Repository: BillingDocumentReservationRepository> {
     }
 
     func selectKind(_ kind: BillingDocumentKind) {
-        guard isEditing, kind != selection else { return }
+        guard canSelectKind, kind != selection else { return }
         invalidatePrefill()
         selection = kind
         formIssue = nil
@@ -157,7 +339,8 @@ final class BillingViewModel<Repository: BillingDocumentReservationRepository> {
     /// A reopened facade cannot consume another request ID for an already sealed family.
     func prepareSelectionDurable() async throws -> BillingDocumentDelivery {
         guard preparationIsAvailable(), let sale else { throw BillingDocumentPersistenceError.unauthorized }
-        let kind = selection
+        guard !requiresDocumentSelection else { throw BillingDocumentPersistenceError.ambiguousSelection }
+        let kind = request?.kind ?? selection
         let input = fiscalInput
         if let retained = try await store.recover(saleID: sale.id, kind: kind) {
             return retained
@@ -176,6 +359,29 @@ final class BillingViewModel<Repository: BillingDocumentReservationRepository> {
         try await store.recover(saleID: saleID, kind: kind)
     }
 
+    /// Accepts only the captured saved family; an empty or rejected read retains explicit selection for retry.
+    private func recoverSelectedFamily(_ kind: BillingDocumentKind) async throws {
+        guard requiresDocumentSelection, let sale else { throw BillingDocumentPersistenceError.invalidState }
+        guard try await store.recover(
+            saleID: sale.id,
+            kind: kind,
+            validateAcceptance: validateRecoveryAcceptance
+        ) != nil else { throw BillingDocumentPersistenceError.notFound }
+        try validateRecoveryAcceptance()
+        requiresDocumentSelection = false
+        recoveryFailed = false
+        hasLoaded = true
+        invalidatePrefill()
+        fiscalInput = BillingFiscalRecipientInput()
+        formIssue = nil
+        validationID = nil
+    }
+
+    private func validateRecoveryAcceptance() throws {
+        try Task.checkCancellation()
+        guard preparationIsAvailable() else { throw BillingDocumentPersistenceError.unauthorized }
+    }
+
     func materialize() async throws -> BillingDocumentDelivery {
         try await store.materialize()
     }
@@ -185,6 +391,8 @@ final class BillingViewModel<Repository: BillingDocumentReservationRepository> {
     }
 
     func close() {
+        operationRequest = nil
+        activeOperationID = nil
         invalidatePrefill()
         fiscalInput = BillingFiscalRecipientInput()
         formIssue = nil
@@ -201,14 +409,22 @@ final class BillingViewModel<Repository: BillingDocumentReservationRepository> {
         prepareDocument = PrepareBillingDocumentRequestUseCase()
         getClient = nil
         preparationIsAvailable = { false }
+        acceptSaleClosure = nil
+        now = { .now }
+        isDemonstration = false
     }
 
+    /// Creates the facade; initial recovery is an inert intention executed later by the screen's captured task.
     init(
         sale: Sale?,
         reserve: ReserveBillingDocumentUseCase<Repository>,
         prepare: PrepareBillingDocumentRequestUseCase = .init(),
         getClient: GetClientUseCase? = nil,
         materialize: MaterializeBillingDocumentUseCase<Repository>? = nil,
+        closeSale: CloseSale? = nil,
+        now: @escaping @MainActor @Sendable () -> Date = { .now },
+        isDemonstration: Bool = false,
+        startsWithRecovery: Bool = false,
         canPrepare: @escaping @MainActor @Sendable () -> Bool = { true }
     ) {
         store = BillingDocumentStore(reserve: reserve, materialize: materialize)
@@ -216,5 +432,9 @@ final class BillingViewModel<Repository: BillingDocumentReservationRepository> {
         prepareDocument = prepare
         self.getClient = getClient
         preparationIsAvailable = canPrepare
+        acceptSaleClosure = closeSale
+        self.now = now
+        self.isDemonstration = isDemonstration
+        operationRequest = startsWithRecovery ? BillingOperationRequest(id: UUID(), operation: .load) : nil
     }
 }

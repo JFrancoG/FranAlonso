@@ -12,6 +12,8 @@ enum BillingDocumentStoreState: Equatable {
 
 enum BillingMaterializationActivity: Equatable {
     case ready, busy, closed
+    case closing
+    case accepted(Sale)
 }
 
 /// Rejected session intentions leave the prepared allocation unchanged.
@@ -67,13 +69,18 @@ final class BillingDocumentStore<Repository: BillingDocumentReservationRepositor
     }
 
     /// Finds a retained sale family; an ambiguous discovery requires an explicit kind.
-    func recover(saleID: SaleID, kind: BillingDocumentKind? = nil) async throws -> BillingDocumentDelivery? {
+    /// The caller's acceptance gate is revalidated before publishing successful or fallback rereads.
+    func recover(
+        saleID: SaleID,
+        kind: BillingDocumentKind? = nil,
+        validateAcceptance: @MainActor () throws -> Void = {}
+    ) async throws -> BillingDocumentDelivery? {
         if let prepared = request {
             guard prepared.sale.id == saleID, kind == nil || prepared.kind == kind else {
                 throw BillingDocumentStoreError.requestAlreadyPrepared
             }
         }
-        return try await runDurable { engine in
+        return try await runDurable(validateAcceptance: validateAcceptance) { engine in
             let deliveries = try await engine.deliveries(saleID: saleID)
                 .filter { kind == nil || $0.request.kind == kind }
             guard deliveries.count <= 1 else { throw BillingDocumentPersistenceError.ambiguousSelection }
@@ -92,8 +99,8 @@ final class BillingDocumentStore<Repository: BillingDocumentReservationRepositor
     }
 
     var isBusy: Bool {
-        if case .materialization(_, .busy) = state {
-            return true
+        if case let .materialization(_, activity) = state {
+            return activity == .busy || activity == .closing
         }
         guard case .reserving = state else { return false }
         return true
@@ -113,6 +120,59 @@ final class BillingDocumentStore<Repository: BillingDocumentReservationRepositor
         }
         guard case let .failed(_, reason) = localState else { return nil }
         return reason
+    }
+
+    var closedSale: Sale? {
+        guard case let .materialization(_, .accepted(sale)) = state else { return nil }
+        return sale
+    }
+
+    /// Accepts one explicit closure without invoking any billing motor or retaining a caller context.
+    func closeSale(
+        _ request: SaleClosureRequest,
+        accepting operation: @MainActor () async throws -> Sale
+    ) async throws -> Sale {
+        guard let retained = delivery, retained.document != nil, retained.pdf != nil else {
+            throw SaleClosureError.documentPending
+        }
+        guard request.expected == retained.request.sale, request.requestID == retained.id else {
+            throw SaleClosureError.staleSale
+        }
+        if let accepted = closedSale {
+            return accepted
+        }
+        guard !isClosed else { throw BillingDocumentStoreError.closed }
+        guard !isBusy else { throw BillingDocumentStoreError.operationInProgress }
+        let generation = UUID()
+        operationGeneration = generation
+        state = .materialization(retained, activity: .closing)
+        defer {
+            if operationGeneration == generation {
+                operationGeneration = nil
+                if case .materialization(_, .closing) = state {
+                    state = .materialization(retained, activity: .ready)
+                }
+            }
+        }
+        do {
+            try Task.checkCancellation()
+            let accepted = try await operation()
+            try Task.checkCancellation()
+            guard operationGeneration == generation else { throw CancellationError() }
+            let validated = try SaleClosureAcceptancePolicy()(
+                request,
+                current: accepted,
+                delivery: retained,
+                principalID: retained.principalID
+            )
+            guard validated == accepted else { throw SaleClosureError.invalidDocument }
+            state = .materialization(retained, activity: .accepted(accepted))
+            return accepted
+        } catch {
+            guard operationGeneration == generation else { throw CancellationError() }
+            state = .materialization(retained, activity: .ready)
+            throw error
+        }
     }
 
     /// Seals a validated paid request without generating identities or contacting its authority.
@@ -195,7 +255,7 @@ final class BillingDocumentStore<Repository: BillingDocumentReservationRepositor
     /// Revokes publication without claiming to cancel caller work or roll back a remote commit.
     /// Pending/failed/confirmed snapshots remain unchanged when no attempt is active.
     func cancelReservation() {
-        if case let .materialization(delivery, .busy) = state {
+        if case let .materialization(delivery, activity) = state, activity == .busy || activity == .closing {
             operationGeneration = nil
             state = delivery.map { .materialization($0, activity: .ready) } ?? .selection
             return
@@ -233,13 +293,14 @@ final class BillingDocumentStore<Repository: BillingDocumentReservationRepositor
 private extension BillingDocumentStore {
     var isClosed: Bool {
         switch state {
-        case .closed, .materialization(_, .closed): true
+        case .closed, .materialization(_, .closed), .materialization(_, .accepted): true
         default: false
         }
     }
 
     func runDurable(
         recoverID: BillingDocumentRequestID? = nil,
+        validateAcceptance: @MainActor () throws -> Void = {},
         operation: (MaterializeBillingDocumentUseCase<Repository>) async throws -> BillingDocumentDelivery?
     ) async throws -> BillingDocumentDelivery? {
         guard !isClosed else { throw BillingDocumentStoreError.closed }
@@ -258,8 +319,10 @@ private extension BillingDocumentStore {
             }
         }
         do {
+            try validateAcceptance()
             let recovered = try await operation(materializeDocument)
             try Task.checkCancellation()
+            try validateAcceptance()
             guard operationGeneration == generation else { throw CancellationError() }
             if let retained, let recovered {
                 guard retained.request == recovered.request else {
@@ -276,11 +339,15 @@ private extension BillingDocumentStore {
             }
             var recovered = retained
             if let id = recoverID ?? retained?.id {
+                try validateAcceptance()
                 if let latest = try? await materializeDocument.delivery(id: id) {
+                    try validateAcceptance()
                     recovered = latest
                 }
+                try validateAcceptance()
             }
             try Task.checkCancellation()
+            try validateAcceptance()
             guard operationGeneration == generation else { throw CancellationError() }
             state = recovered.map { .materialization($0, activity: .ready) } ?? .selection
             throw error

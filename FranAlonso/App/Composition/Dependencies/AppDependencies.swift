@@ -74,12 +74,23 @@ struct AppDependencies {
         clientRepository: (any ClientRepository)? = nil,
         authenticationRoot: AuthenticationRootViewModel? = nil,
         clientDocumentStorage: (any ClientDocumentStorage)? = nil,
-        serviceDraftInterpreter: (any ServiceDraftInterpreter)? = nil
+        serviceDraftInterpreter: (any ServiceDraftInterpreter)? = nil,
+        billingReservation: AppBillingDocumentReservationRepository = .unavailable,
+        billingStorage: any BillingDocumentPDFStorageRepository = UnavailableBillingDocumentPDFStorageRepository(),
+        billingComposer: any BillingDocumentPDFComposer = TemplateBillingDocumentPDFComposer(bundle: .main)
     ) -> AppDependencies {
         let observationSignal = ClientObservationSignal()
         let productObservationSignal = ProductObservationSignal()
         let serviceObservationSignal = ServiceObservationSignal()
         let saleObservationSignal = SaleObservationSignal()
+        let billingComposition = BillingDocumentComposition(
+            modelContainer: modelContainer,
+            observationSignal: saleObservationSignal,
+            reservation: billingReservation,
+            storage: billingStorage,
+            composer: billingComposer
+        )
+        billingComposition.authenticationRoot = authenticationRoot
         let makeClientConsentServices: ClientConsentServicesFactory?
         if let authenticationRoot {
             let composition = ClientDocumentComposition(
@@ -109,7 +120,8 @@ struct AppDependencies {
             crashDataSource: crashDataSource,
             clientRepository: clientRepository,
             makeClientConsentServices: makeClientConsentServices,
-            serviceDraftInterpreter: serviceDraftInterpreter
+            serviceDraftInterpreter: serviceDraftInterpreter,
+            billingComposition: billingComposition
         )
     }
 #endif
@@ -136,7 +148,8 @@ struct AppDependencies {
         serviceObservationSignal: ServiceObservationSignal,
         salePersistenceActor: SalePersistenceActor,
         saleObservationSignal: SaleObservationSignal,
-        makeClientConsentServices: ClientConsentServicesFactory? = nil
+        makeClientConsentServices: ClientConsentServicesFactory? = nil,
+        billingComposition: BillingDocumentComposition? = nil
     ) -> AppDependencies {
         .composed(
             persistenceActor: persistenceActor,
@@ -150,7 +163,8 @@ struct AppDependencies {
             saleObservationSignal: saleObservationSignal,
             analyticsDataSource: FirebaseAnalyticsDataSource(),
             crashDataSource: FirebaseCrashDataSource(),
-            makeClientConsentServices: makeClientConsentServices
+            makeClientConsentServices: makeClientConsentServices,
+            billingComposition: billingComposition
         )
     }
 
@@ -166,7 +180,8 @@ struct AppDependencies {
         saleObservationSignal: SaleObservationSignal,
         analyticsDataSource: any AnalyticsDataSource,
         crashDataSource: any CrashDataSource,
-        makeClientConsentServices: ClientConsentServicesFactory? = nil
+        makeClientConsentServices: ClientConsentServicesFactory? = nil,
+        billingComposition: BillingDocumentComposition? = nil
     ) -> AppDependencies {
         let clientRepository = DefaultClientRepository(
             persistenceActor: persistenceActor,
@@ -212,7 +227,8 @@ struct AppDependencies {
             saleRepository: saleRepository,
             analyticsDataSource: analyticsDataSource,
             crashDataSource: crashDataSource,
-            stockRepository: stockRepository
+            stockRepository: stockRepository,
+            billingComposition: billingComposition
         )
     }
 
@@ -231,7 +247,8 @@ struct AppDependencies {
         crashDataSource: any CrashDataSource,
         clientRepository injectedClientRepository: (any ClientRepository)?,
         makeClientConsentServices: ClientConsentServicesFactory?,
-        serviceDraftInterpreter: (any ServiceDraftInterpreter)?
+        serviceDraftInterpreter: (any ServiceDraftInterpreter)?,
+        billingComposition: BillingDocumentComposition
     ) -> AppDependencies {
         let clientRepository = injectedClientRepository ?? DefaultClientRepository(
             persistenceActor: persistenceActor,
@@ -279,7 +296,8 @@ struct AppDependencies {
             saleRepository: saleRepository,
             analyticsDataSource: analyticsDataSource,
             crashDataSource: crashDataSource,
-            stockRepository: stockRepository
+            stockRepository: stockRepository,
+            billingComposition: billingComposition
         )
     }
 #endif
@@ -349,7 +367,8 @@ extension AppDependencies {
         saleRepository: any SaleRepository,
         analyticsDataSource: any AnalyticsDataSource,
         crashDataSource: any CrashDataSource,
-        stockRepository: (any StockRepository)? = nil
+        stockRepository: (any StockRepository)? = nil,
+        billingComposition: BillingDocumentComposition? = nil
     ) {
         self.init(
             observeClients: ObserveClientsUseCase(repository: clientRepository),
@@ -380,7 +399,7 @@ extension AppDependencies {
                 clientRepository: clientRepository,
                 stockRepository: stockRepository
             ),
-            makeBilling: Self.billingFormFactory(clientRepository: clientRepository),
+            makeBilling: Self.billingFormFactory(clientRepository: clientRepository, composition: billingComposition),
             telemetryReporter: TelemetryReporter(
                 analyticsDataSource: analyticsDataSource,
                 crashDataSource: crashDataSource

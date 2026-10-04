@@ -1,0 +1,77 @@
+Device orientation: Unknown
+------------------------
+Application bundle identifier: com.plusprojects.FranAlonso.develop
+Application UI orientation: Portrait
+Application, pid: 30418, label: 'Fran DEV'
+ Window, {{0.0, 0.0}, {402.0, 874.0}}, hitPoint: {201.0, 437.0}
+  Other, {{0.0, 0.0}, {402.0, 874.0}}, hitPoint: {201.0, 437.0}
+   Other, {{-402.0, -874.0}, {1206.0, 2622.0}}, hitPoint: {201.0, 437.0}
+   Other, {{0.0, 72.0}, {402.0, 802.0}}, hitPoint: {201.0, 473.0}
+    Other, {{0.0, 72.0}, {402.0, 802.0}}, hitPoint: {201.0, 473.0}
+     Other, {{0.0, 72.0}, {402.0, 802.0}}, hitPoint: {201.0, 473.0}
+      Other, {{0.0, 72.0}, {402.0, 802.0}}, hitPoint: {201.0, 473.0}
+       Other, {{0.0, 72.0}, {402.0, 802.0}}, hitPoint: {201.0, 473.0}
+        NavigationBar, {{0.0, 88.0}, {402.0, 106.0}}, identifier: 'Documento', hitPoint: {201.0, 141.0}
+         Other, {{20.0, 92.0}, {93.3, 36.0}}, hitPoint: {66.7, 110.0}
+          Other, {{20.0, 92.0}, {93.3, 36.0}}, hitPoint: {66.7, 110.0}
+           Button, {{20.0, 92.0}, {93.3, 36.0}}, label: 'Cancelar', hitPoint: {66.7, 110.0}
+         StaticText, {{16.0, 148.3}, {168.3, 37.0}}, label: 'Documento', hitPoint: {100.2, 166.8}
+        Other, {{0.0, 72.0}, {402.0, 802.0}}, hitPoint: {201.0, 473.0}
+         Other, {{0.0, 72.0}, {402.0, 802.0}}, hitPoint: {201.0, 473.0}
+          Other, {{0.0, 72.0}, {402.0, 802.0}}, hitPoint: {201.0, 473.0}
+           Other, {{0.0, 72.0}, {402.0, 802.0}}, hitPoint: {201.0, 473.0}
+            CollectionView, {{0.0, 72.0}, {402.0, 802.0}}, hitPoint: {201.0, 473.0}
+             Other, {{-16.0, -1410.0}, {434.0, 1670.7}}, hitPoint: {201.0, 130.3}
+             Other, {{0.0, 72.0}, {402.0, 802.0}}, hitPoint: {201.0, 473.0}
+              Other, {{0.0, 72.0}, {402.0, 110.0}}, hitPoint: {201.0, 127.0}
+             Other, {{0.0, 72.0}, {402.0, 802.0}}, hitPoint: {201.0, 473.0}
+             Cell, {{16.0, 194.0}, {370.0, 49.0}}, hitPoint: {201.0, 218.5}
+              Other, {{16.0, 194.0}, {370.0, 49.0}}, hitPoint: {201.0, 218.5}
+               Other, {{16.0, 194.0}, {370.0, 49.0}}, hitPoint: {201.0, 218.5}
+              Other, {{16.0, 194.0}, {370.0, 49.0}}, hitPoint: {201.0, 218.5}
+               Other, {{16.0, 194.0}, {370.0, 49.0}}, hitPoint: {201.0, 218.5}
+                Other, {{16.0, 194.0}, {370.0, 49.0}}, hitPoint: {201.0, 218.5}
+                 StaticText, {{16.0, 194.0}, {370.0, 49.0}}, label: 'DEMO / MUESTRA — SIN VALIDEZ FISCAL', hitPoint: {201.0, 218.5}
+             Other, {{-16.0, 260.7}, {434.0, 158.0}}, hitPoint: {201.0, 339.7}
+             Cell, {{16.0, 278.0}, {370.0, 49.0}}, hitPoint: {201.0, 302.5}
+              Other, {{16.0, 278.0}, {370.0, 49.0}}, hitPoint: {201.0, 302.5}
+               Other, {{16.0, 278.0}, {370.0, 49.0}}, hitPoint: {201.0, 302.5}
+              Other, {{16.0, 278.0}, {370.0, 49.0}}, hitPoint: {201.0, 302.5}
+               Other, {{16.0, 278.0}, {370.0, 49.0}}, hitPoint: {201.0, 302.5}
+                Other, {{16.0, 278.0}, {370.0, 49.0}}, hitPoint: {201.0, 302.5}
+                 StaticText, {{16.0, 278.0}, {370.0, 49.0}}, label: 'Elige el documento para esta venta pagada.', hitPoint: {201.0, 302.5}
+             Cell, {{16.0, 327.0}, {370.0, 74.0}}, hitPoint: {201.0, 364.0}
+              Other, {{16.0, 327.0}, {370.0, 74.0}}, hitPoint: {201.0, 364.0}
+               Other, {{16.0, 327.0}, {370.0, 74.0}}, hitPoint: {201.0, 364.0}
+              Other, {{16.0, 327.0}, {370.0, 74.0}}, hitPoint: {201.0, 364.0}
+               Other, {{16.0, 327.0}, {370.0, 74.0}}, hitPoint: {201.0, 364.0}
+                Other, {{16.0, 327.0}, {370.0, 74.0}}, hitPoint: {201.0, 364.0}
+                 Button, {{36.0, 348.7}, {330.0, 31.0}}, label: 'Tipo de documento, Ticket', hitPoint: {201.0, 364.2}
+                  StaticText, {{312.3, 355.7}, {39.7, 17.0}}, label: 'Ticket', hitPoint: {332.2, 364.2}
+                 StaticText, {{36.0, 355.5}, {125.7, 17.0}}, label: 'Tipo de documento', hitPoint: {98.8, 364.0}
+             Other, {{36.0, 326.0}, {330.0, 1.0}}, hitPoint: {201.0, 326.5}
+             Other, {{-16.0, 418.7}, {434.0, 84.0}}, hitPoint: {201.0, 460.7}
+             Cell, {{16.0, 436.0}, {370.0, 49.0}}, hitPoint: {201.0, 460.5}
+              Other, {{16.0, 436.0}, {370.0, 49.0}}, hitPoint: {201.0, 460.5}
+               Other, {{16.0, 436.0}, {370.0, 49.0}}, hitPoint: {201.0, 460.5}
+              Other, {{16.0, 436.0}, {370.0, 49.0}}, hitPoint: {201.0, 460.5}
+               Other, {{16.0, 436.0}, {370.0, 49.0}}, hitPoint: {201.0, 460.5}
+                Other, {{16.0, 436.0}, {370.0, 49.0}}, hitPoint: {201.0, 460.5}
+                 StaticText, {{16.0, 436.0}, {370.0, 49.0}}, label: 'El ticket no necesita destinatario fiscal.', hitPoint: {201.0, 460.5}
+             Other, {{-16.0, 502.7}, {434.0, 1715.7}}, hitPoint: {201.0, 688.3}
+             Cell, {{16.0, 520.0}, {370.0, 74.0}}, hitPoint: {201.0, 557.0}
+              Other, {{16.0, 520.0}, {370.0, 74.0}}, hitPoint: {201.0, 557.0}
+               Other, {{16.0, 520.0}, {370.0, 74.0}}, hitPoint: {201.0, 557.0}
+              Other, {{16.0, 520.0}, {370.0, 74.0}}, hitPoint: {201.0, 557.0}
+               Other, {{16.0, 520.0}, {370.0, 74.0}}, hitPoint: {201.0, 557.0}
+                Other, {{16.0, 520.0}, {370.0, 74.0}}, hitPoint: {201.0, 557.0}
+                 Button, {{16.0, 520.0}, {370.0, 74.0}}, label: 'Preparar documento', hitPoint: {201.0, 557.0}
+             Other, {{369.0, 142.0}, {30.0, 670.0}}, label: 'Barra de desplazamiento vertical, 1 página', value: 0 %, hitPoint: {384.0, 477.0}
+              Other, {{396.0, 802.0}, {3.0, 7.0}}, hitPoint: {397.5, 805.5}
+             Other, {{369.0, 142.0}, {30.0, 670.0}}, label: 'Barra de desplazamiento vertical, 1 página', value: 0 %, hitPoint: {384.0, 477.0}
+              Other, {{396.0, 802.0}, {3.0, 7.0}}, hitPoint: {397.5, 805.5}
+        Toolbar, {{0.0, 72.0}, {402.0, 802.0}}, identifier: 'Toolbar', label: 'Barra de herramientas', hitPoint: {201.0, 473.0}
+         Other, {{0.0, 72.0}, {402.0, 802.0}}, hitPoint: {201.0, 473.0}
+ Window, {{0.0, 0.0}, {402.0, 874.0}}, hitPoint: {201.0, 437.0}
+  Other, {{0.0, 0.0}, {402.0, 874.0}}, hitPoint: {201.0, 437.0}
+   Other, {{0.0, 0.0}, {402.0, 874.0}}, hitPoint: {201.0, 437.0}

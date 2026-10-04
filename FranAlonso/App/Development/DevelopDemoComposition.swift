@@ -49,7 +49,10 @@ struct DevelopDemoComposition {
             crashDataSource: DemoCrashDataSource(),
             authenticationRoot: root,
             clientDocumentStorage: storage,
-            serviceDraftInterpreter: FoundationModelsServiceDraftInterpreter()
+            serviceDraftInterpreter: FoundationModelsServiceDraftInterpreter(),
+            billingReservation: .demonstration(DevelopDemoBillingReservationRepository()),
+            billingStorage: InMemoryBillingDocumentPDFStorageRepository(),
+            billingComposer: DevelopDemoBillingPDFComposer()
         )
         return DevelopDemoComposition(
             applicationComposition: ApplicationComposition(

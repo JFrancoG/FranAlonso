@@ -1,6 +1,384 @@
 {
   "sourceLanguage" : "es",
   "strings" : {
+  "billing.demo.pdf.mark": {
+    "comment": "Manual document generation and explicit local sale closure. Synthetic PDF marker is not a fiscal claim.",
+    "extractionState": "manual",
+    "localizations": {
+      "es": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "DEMO / MUESTRA — SIN VALIDEZ FISCAL"
+        }
+      },
+      "en": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "DEMO / SAMPLE — NOT A FISCAL DOCUMENT"
+        }
+      }
+    }
+  },
+  "billing.closure.action": {
+    "comment": "Manual document generation and explicit local sale closure. Synthetic PDF marker is not a fiscal claim.",
+    "extractionState": "manual",
+    "localizations": {
+      "es": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Cerrar venta y pasar a Histórico"
+        }
+      },
+      "en": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Close sale and move to History"
+        }
+      }
+    }
+  },
+  "billing.closure.instructions": {
+    "comment": "Manual document generation and explicit local sale closure. Synthetic PDF marker is not a fiscal claim.",
+    "extractionState": "manual",
+    "localizations": {
+      "es": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "El cierre requiere pago, número confirmado y PDF generado. La subida pendiente no impide cerrar."
+        }
+      },
+      "en": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Closing requires payment, a confirmed number and the generated PDF. A pending upload does not prevent closing."
+        }
+      }
+    }
+  },
+  "billing.closure.accepted": {
+    "comment": "Manual document generation and explicit local sale closure. Synthetic PDF marker is not a fiscal claim.",
+    "extractionState": "manual",
+    "localizations": {
+      "es": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Venta cerrada. Ya está disponible en Histórico."
+        }
+      },
+      "en": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Sale closed. It is now available in History."
+        }
+      }
+    }
+  },
+  "billing.closure.working": {
+    "comment": "Manual document generation and explicit local sale closure. Synthetic PDF marker is not a fiscal claim.",
+    "extractionState": "manual",
+    "localizations": {
+      "es": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Cerrando la venta…"
+        }
+      },
+      "en": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Closing the sale…"
+        }
+      }
+    }
+  },
+  "billing.document.progress.title": {
+    "comment": "Manual document generation and explicit local sale closure. Synthetic PDF marker is not a fiscal claim.",
+    "extractionState": "manual",
+    "localizations": {
+      "es": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Documento y cierre"
+        }
+      },
+      "en": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Document and closing"
+        }
+      }
+    }
+  },
+  "billing.document.number": {
+    "comment": "Manual document generation and explicit local sale closure. Synthetic PDF marker is not a fiscal claim.",
+    "extractionState": "manual",
+    "localizations": {
+      "es": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Número de documento"
+        }
+      },
+      "en": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Document number"
+        }
+      }
+    }
+  },
+  "billing.document.pending.number": {
+    "comment": "Manual document generation and explicit local sale closure. Synthetic PDF marker is not a fiscal claim.",
+    "extractionState": "manual",
+    "localizations": {
+      "es": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Número pendiente. La venta permanece en Jornada. Genera el documento o reintenta cuando esté disponible."
+        }
+      },
+      "en": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Number pending. The sale remains in Workday. Generate the document or retry when available."
+        }
+      }
+    }
+  },
+  "billing.document.pending.pdf": {
+    "comment": "Manual document generation and explicit local sale closure. Synthetic PDF marker is not a fiscal claim.",
+    "extractionState": "manual",
+    "localizations": {
+      "es": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Número confirmado. Falta generar el PDF para poder cerrar la venta."
+        }
+      },
+      "en": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Number confirmed. Generate the PDF before closing the sale."
+        }
+      }
+    }
+  },
+  "billing.document.pending.upload": {
+    "comment": "Manual document generation and explicit local sale closure. Synthetic PDF marker is not a fiscal claim.",
+    "extractionState": "manual",
+    "localizations": {
+      "es": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "PDF generado. La subida sigue pendiente; puedes cerrar la venta y conservar el documento para reintentar la entrega."
+        }
+      },
+      "en": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "PDF generated. Upload is still pending; you can close the sale and retain the document for another delivery attempt."
+        }
+      }
+    }
+  },
+  "billing.document.ready": {
+    "comment": "Manual document generation and explicit local sale closure. Synthetic PDF marker is not a fiscal claim.",
+    "extractionState": "manual",
+    "localizations": {
+      "es": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "PDF generado y entrega guardada. Ya puedes cerrar la venta."
+        }
+      },
+      "en": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "PDF generated and delivery saved. You can now close the sale."
+        }
+      }
+    }
+  },
+  "billing.document.generate": {
+    "comment": "Manual document generation and explicit local sale closure. Synthetic PDF marker is not a fiscal claim.",
+    "extractionState": "manual",
+    "localizations": {
+      "es": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Generar documento"
+        }
+      },
+      "en": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Generate document"
+        }
+      }
+    }
+  },
+  "billing.document.retry": {
+    "comment": "Manual document generation and explicit local sale closure. Synthetic PDF marker is not a fiscal claim.",
+    "extractionState": "manual",
+    "localizations": {
+      "es": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Reintentar generación o entrega"
+        }
+      },
+      "en": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Retry generation or delivery"
+        }
+      }
+    }
+  },
+  "billing.document.working": {
+    "comment": "Manual document generation and explicit local sale closure. Synthetic PDF marker is not a fiscal claim.",
+    "extractionState": "manual",
+    "localizations": {
+      "es": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Preparando el documento…"
+        }
+      },
+      "en": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Preparing the document…"
+        }
+      }
+    }
+  },
+  "billing.document.recovering": {
+    "comment": "Manual document generation and explicit local sale closure. Synthetic PDF marker is not a fiscal claim.",
+    "extractionState": "manual",
+    "localizations": {
+      "es": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Recuperando el documento guardado…"
+        }
+      },
+      "en": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Recovering the saved document…"
+        }
+      }
+    }
+  },
+  "billing.document.recover.failed": {
+    "comment": "Explicit recovery of retained billing documents; choosing a family does not issue a new document.",
+    "extractionState": "manual",
+    "localizations": {
+      "es": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "No se ha podido recuperar el documento guardado. Puedes reintentar la recuperación."
+        }
+      },
+      "en": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "The saved document could not be recovered. You can retry recovery."
+        }
+      }
+    }
+  },
+  "billing.document.recover.choose": {
+    "comment": "Explicit recovery of retained billing documents; choosing a family does not issue a new document.",
+    "extractionState": "manual",
+    "localizations": {
+      "es": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Hay un ticket y una factura guardados para esta venta. Elige el documento que quieres recuperar."
+        }
+      },
+      "en": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "A receipt and an invoice are saved for this sale. Choose the document you want to recover."
+        }
+      }
+    }
+  },
+  "billing.document.recover.selected": {
+    "comment": "Explicit recovery of retained billing documents; choosing a family does not issue a new document.",
+    "extractionState": "manual",
+    "localizations": {
+      "es": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Recuperar documento elegido"
+        }
+      },
+      "en": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Recover selected document"
+        }
+      }
+    }
+  },
+  "billing.document.error.title": {
+    "comment": "Manual document generation and explicit local sale closure. Synthetic PDF marker is not a fiscal claim.",
+    "extractionState": "manual",
+    "localizations": {
+      "es": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "No se ha completado la operación"
+        }
+      },
+      "en": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "The operation could not be completed"
+        }
+      }
+    }
+  },
+  "billing.document.error.message": {
+    "comment": "Manual document generation and explicit local sale closure. Synthetic PDF marker is not a fiscal claim.",
+    "extractionState": "manual",
+    "localizations": {
+      "es": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Tu trabajo guardado se conserva. Reintenta la operación; la venta permanece en Jornada hasta aceptar el cierre."
+        }
+      },
+      "en": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Your saved work is retained. Retry the operation; the sale remains in Workday until closing is accepted."
+        }
+      }
+    }
+  },
+  "billing.document.recover.retry": {
+    "comment": "Manual document generation and explicit local sale closure. Synthetic PDF marker is not a fiscal claim.",
+    "extractionState": "manual",
+    "localizations": {
+      "es": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Reintentar recuperación"
+        }
+      },
+      "en": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Retry recovery"
+        }
+      }
+    }
+  },
   "billing.email.invoice.body": {
     "comment": "Editable manual billing email copy. The placeholder is the confirmed document number.",
     "extractionState": "manual",
@@ -602,13 +980,13 @@
       "es": {
         "stringUnit": {
           "state": "translated",
-          "value": "La venta seguirá pendiente hasta emitir el documento. Puedes cerrar y volver a Jornada."
+          "value": "Puedes revisar estos datos o cerrar esta pantalla y volver a Jornada."
         }
       },
       "en": {
         "stringUnit": {
           "state": "translated",
-          "value": "The sale will remain pending until the document is issued. You can close this screen and return to Workday."
+          "value": "You can review these details or close this screen and return to Workday."
         }
       }
     }
@@ -1484,13 +1862,13 @@
       "es": {
         "stringUnit": {
           "state": "translated",
-          "value": "Histórico contiene muestras DEMO precargadas. No se han emitido documentos ni ejecutado cierres o compensaciones."
+          "value": "Las muestras DEMO precargadas del Histórico son ejemplos; no demuestran por sí mismas emisión, cierre ni compensación."
         }
       },
       "en": {
         "stringUnit": {
           "state": "translated",
-          "value": "History contains preloaded DEMO samples. No documents have been issued or closure or compensation flows executed."
+          "value": "Preloaded DEMO History samples are examples; they do not by themselves demonstrate document issuance, closure or compensation."
         }
       }
     }

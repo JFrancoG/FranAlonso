@@ -1,0 +1,141 @@
+Device orientation: Unknown
+------------------------
+Application bundle identifier: com.plusprojects.FranAlonso.develop
+Application UI orientation: Portrait
+Application, pid: 33604, label: 'Fran DEV'
+ Window, {{0.0, 0.0}, {402.0, 874.0}}, hitPoint: {201.0, 437.0}
+  Other, {{0.0, 0.0}, {402.0, 874.0}}, hitPoint: {201.0, 437.0}
+   Other, {{-402.0, -874.0}, {1206.0, 2622.0}}, hitPoint: {201.0, 437.0}
+   Other, {{0.0, 72.0}, {402.0, 802.0}}, hitPoint: {201.0, 473.0}
+    Other, {{0.0, 72.0}, {402.0, 802.0}}, hitPoint: {201.0, 473.0}
+     Other, {{0.0, 72.0}, {402.0, 802.0}}, hitPoint: {201.0, 473.0}
+      Other, {{0.0, 72.0}, {402.0, 802.0}}, hitPoint: {201.0, 473.0}
+       Other, {{0.0, 72.0}, {402.0, 802.0}}, hitPoint: {201.0, 473.0}
+        NavigationBar, {{0.0, 88.0}, {402.0, 54.0}}, identifier: 'Documento', hitPoint: {201.0, 115.0}
+         Other, {{20.0, 92.0}, {74.0, 36.0}}, hitPoint: {57.0, 110.0}
+          Other, {{20.0, 92.0}, {74.0, 36.0}}, hitPoint: {57.0, 110.0}
+           Button, {{20.0, 92.0}, {74.0, 36.0}}, label: 'Cerrar', hitPoint: {57.0, 110.0}
+         StaticText, {{154.7, 99.7}, {92.3, 20.7}}, label: 'Documento', hitPoint: {200.8, 110.0}
+        Other, {{0.0, 72.0}, {402.0, 802.0}}, hitPoint: {201.0, 473.0}
+         Other, {{0.0, 72.0}, {402.0, 802.0}}, hitPoint: {201.0, 473.0}
+          Other, {{0.0, 72.0}, {402.0, 802.0}}, hitPoint: {201.0, 473.0}
+           Other, {{0.0, 72.0}, {402.0, 802.0}}, hitPoint: {201.0, 473.0}
+            CollectionView, {{0.0, 72.0}, {402.0, 802.0}}, hitPoint: {201.0, 473.0}
+             Other, {{-16.0, -166.0}, {434.0, 169.7}}, hitPoint: {201.0, 1.8}
+             Other, {{-16.0, 3.3}, {434.0, 486.7}}, hitPoint: {201.0, 246.7}
+             Cell, {{16.0, 3.3}, {370.0, 37.0}}, hitPoint: {201.0, 21.8}
+              Other, {{16.0, 3.3}, {370.0, 37.0}}, hitPoint: {201.0, 21.8}
+              Other, {{16.0, 3.3}, {370.0, 37.0}}, hitPoint: {201.0, 21.8}
+               Other, {{16.0, 3.3}, {370.0, 37.0}}, hitPoint: {201.0, 21.8}
+                Other, {{16.0, 3.3}, {370.0, 37.0}}, hitPoint: {201.0, 21.8}
+                 StaticText, {{16.0, 3.3}, {370.0, 37.0}}, label: 'Destinatario de la factura', hitPoint: {201.0, 21.8}
+             Cell, {{16.0, 40.3}, {370.0, 72.0}}, hitPoint: {201.0, 76.3}
+              Other, {{16.0, 40.3}, {370.0, 72.0}}, hitPoint: {201.0, 76.3}
+               Other, {{16.0, 40.3}, {370.0, 72.0}}, hitPoint: {201.0, 76.3}
+              Other, {{16.0, 40.3}, {370.0, 72.0}}, hitPoint: {201.0, 76.3}
+               Other, {{16.0, 40.3}, {370.0, 72.0}}, hitPoint: {201.0, 76.3}
+                Other, {{16.0, 40.3}, {370.0, 72.0}}, hitPoint: {201.0, 76.3}
+                 StaticText, {{16.0, 40.3}, {370.0, 72.0}}, label: 'Nombre o razón social, Cliente DEMO Alba', hitPoint: {201.0, 76.3}
+                  StaticText, {{36.0, 55.3}, {150.0, 17.0}}, label: 'Nombre o razón social', hitPoint: {111.0, 63.8}
+                  StaticText, {{36.0, 80.3}, {122.7, 17.0}}, label: 'Cliente DEMO Alba', hitPoint: {97.3, 88.8}
+             Other, {{0.0, 72.0}, {402.0, 802.0}}, hitPoint: {201.0, 473.0}
+              Other, {{0.0, 72.0}, {402.0, 110.0}}, hitPoint: {201.0, 127.0}
+             Other, {{0.0, 72.0}, {402.0, 802.0}}, hitPoint: {201.0, 473.0}
+              Other, {{0.0, 72.0}, {402.0, 110.0}}, hitPoint: {201.0, 127.0}
+             Cell, {{16.0, 112.3}, {370.0, 72.0}}, hitPoint: {201.0, 148.3}
+              Other, {{16.0, 112.3}, {370.0, 72.0}}, hitPoint: {201.0, 148.3}
+               Other, {{16.0, 112.3}, {370.0, 72.0}}, hitPoint: {201.0, 148.3}
+              Other, {{16.0, 112.3}, {370.0, 72.0}}, hitPoint: {201.0, 148.3}
+               Other, {{16.0, 112.3}, {370.0, 72.0}}, hitPoint: {201.0, 148.3}
+                Other, {{16.0, 112.3}, {370.0, 72.0}}, hitPoint: {201.0, 148.3}
+                 StaticText, {{16.0, 112.3}, {370.0, 72.0}}, label: 'Identificador fiscal, DEMO-13-12', hitPoint: {201.0, 148.3}
+                  StaticText, {{36.0, 127.3}, {126.0, 17.0}}, label: 'Identificador fiscal', hitPoint: {99.0, 135.8}
+                  StaticText, {{36.0, 152.3}, {83.7, 17.0}}, label: 'DEMO-13-12', hitPoint: {77.8, 160.8}
+             Other, {{36.0, 111.3}, {330.0, 1.0}}, hitPoint: {201.0, 111.8}
+             Cell, {{16.0, 184.3}, {370.0, 72.0}}, hitPoint: {201.0, 220.3}
+              Other, {{16.0, 184.3}, {370.0, 72.0}}, hitPoint: {201.0, 220.3}
+               Other, {{16.0, 184.3}, {370.0, 72.0}}, hitPoint: {201.0, 220.3}
+              Other, {{16.0, 184.3}, {370.0, 72.0}}, hitPoint: {201.0, 220.3}
+               Other, {{16.0, 184.3}, {370.0, 72.0}}, hitPoint: {201.0, 220.3}
+                Other, {{16.0, 184.3}, {370.0, 72.0}}, hitPoint: {201.0, 220.3}
+                 StaticText, {{16.0, 184.3}, {370.0, 72.0}}, label: 'Calle y número, Calle Demo 13', hitPoint: {201.0, 220.3}
+                  StaticText, {{36.0, 199.3}, {100.3, 17.0}}, label: 'Calle y número', hitPoint: {86.2, 207.8}
+                  StaticText, {{36.0, 224.3}, {92.7, 17.0}}, label: 'Calle Demo 13', hitPoint: {82.3, 232.8}
+             Other, {{36.0, 183.3}, {330.0, 1.0}}, hitPoint: {201.0, 183.8}
+             Cell, {{16.0, 256.3}, {370.0, 72.0}}, hitPoint: {201.0, 292.3}
+              Other, {{16.0, 256.3}, {370.0, 72.0}}, hitPoint: {201.0, 292.3}
+               Other, {{16.0, 256.3}, {370.0, 72.0}}, hitPoint: {201.0, 292.3}
+              Other, {{16.0, 256.3}, {370.0, 72.0}}, hitPoint: {201.0, 292.3}
+               Other, {{16.0, 256.3}, {370.0, 72.0}}, hitPoint: {201.0, 292.3}
+                Other, {{16.0, 256.3}, {370.0, 72.0}}, hitPoint: {201.0, 292.3}
+                 StaticText, {{16.0, 256.3}, {370.0, 72.0}}, label: 'Código postal, 00000', hitPoint: {201.0, 292.3}
+                  StaticText, {{36.0, 271.3}, {93.3, 17.0}}, label: 'Código postal', hitPoint: {82.7, 279.8}
+                  StaticText, {{36.0, 296.3}, {43.7, 17.0}}, label: '00000', hitPoint: {57.8, 304.8}
+             Other, {{36.0, 255.3}, {330.0, 1.0}}, hitPoint: {201.0, 255.8}
+             Cell, {{16.0, 328.3}, {370.0, 72.0}}, hitPoint: {201.0, 364.3}
+              Other, {{16.0, 328.3}, {370.0, 72.0}}, hitPoint: {201.0, 364.3}
+               Other, {{16.0, 328.3}, {370.0, 72.0}}, hitPoint: {201.0, 364.3}
+              Other, {{16.0, 328.3}, {370.0, 72.0}}, hitPoint: {201.0, 364.3}
+               Other, {{16.0, 328.3}, {370.0, 72.0}}, hitPoint: {201.0, 364.3}
+                Other, {{16.0, 328.3}, {370.0, 72.0}}, hitPoint: {201.0, 364.3}
+                 StaticText, {{16.0, 328.3}, {370.0, 72.0}}, label: 'Ciudad, Ciudad Demo', hitPoint: {201.0, 364.3}
+                  StaticText, {{36.0, 343.3}, {47.7, 17.0}}, label: 'Ciudad', hitPoint: {59.8, 351.8}
+                  StaticText, {{36.0, 368.3}, {87.7, 17.0}}, label: 'Ciudad Demo', hitPoint: {79.8, 376.8}
+             Other, {{36.0, 327.3}, {330.0, 1.0}}, hitPoint: {201.0, 327.8}
+             Cell, {{16.0, 400.3}, {370.0, 72.0}}, hitPoint: {201.0, 436.3}
+              Other, {{16.0, 400.3}, {370.0, 72.0}}, hitPoint: {201.0, 436.3}
+               Other, {{16.0, 400.3}, {370.0, 72.0}}, hitPoint: {201.0, 436.3}
+              Other, {{16.0, 400.3}, {370.0, 72.0}}, hitPoint: {201.0, 436.3}
+               Other, {{16.0, 400.3}, {370.0, 72.0}}, hitPoint: {201.0, 436.3}
+                Other, {{16.0, 400.3}, {370.0, 72.0}}, hitPoint: {201.0, 436.3}
+                 StaticText, {{16.0, 400.3}, {370.0, 72.0}}, label: 'Provincia, Provincia Demo', hitPoint: {201.0, 436.3}
+                  StaticText, {{36.0, 415.3}, {62.3, 17.0}}, label: 'Provincia', hitPoint: {67.2, 423.8}
+                  StaticText, {{36.0, 440.3}, {101.0, 17.0}}, label: 'Provincia Demo', hitPoint: {86.5, 448.8}
+             Other, {{36.0, 399.3}, {330.0, 1.0}}, hitPoint: {201.0, 399.8}
+             Other, {{-16.0, 490.0}, {434.0, 1954.3}}, hitPoint: {201.0, 682.0}
+             Cell, {{16.0, 490.0}, {370.0, 37.0}}, hitPoint: {201.0, 508.5}
+              Other, {{16.0, 490.0}, {370.0, 37.0}}, hitPoint: {201.0, 508.5}
+              Other, {{16.0, 490.0}, {370.0, 37.0}}, hitPoint: {201.0, 508.5}
+               Other, {{16.0, 490.0}, {370.0, 37.0}}, hitPoint: {201.0, 508.5}
+                Other, {{16.0, 490.0}, {370.0, 37.0}}, hitPoint: {201.0, 508.5}
+                 StaticText, {{16.0, 490.0}, {370.0, 37.0}}, label: 'Documento y cierre', hitPoint: {201.0, 508.5}
+             Cell, {{16.0, 527.0}, {370.0, 85.0}}, hitPoint: {201.0, 569.5}
+              Other, {{16.0, 527.0}, {370.0, 85.0}}, hitPoint: {201.0, 569.5}
+               Other, {{16.0, 527.0}, {370.0, 85.0}}, hitPoint: {201.0, 569.5}
+              Other, {{16.0, 527.0}, {370.0, 85.0}}, hitPoint: {201.0, 569.5}
+               Other, {{16.0, 527.0}, {370.0, 85.0}}, hitPoint: {201.0, 569.5}
+                Other, {{16.0, 527.0}, {370.0, 85.0}}, hitPoint: {201.0, 569.5}
+                 StaticText, {{16.0, 527.0}, {370.0, 85.0}}, label: 'Número pendiente. La venta permanece en Jornada. Genera el documento o reintenta cuando esté disponible.', hitPoint: {201.0, 569.5}
+             Cell, {{16.0, 612.0}, {370.0, 74.0}}, hitPoint: {201.0, 649.0}
+              Other, {{16.0, 612.0}, {370.0, 74.0}}, hitPoint: {201.0, 649.0}
+               Other, {{16.0, 612.0}, {370.0, 74.0}}, hitPoint: {201.0, 649.0}
+              Other, {{16.0, 612.0}, {370.0, 74.0}}, hitPoint: {201.0, 649.0}
+               Other, {{16.0, 612.0}, {370.0, 74.0}}, hitPoint: {201.0, 649.0}
+                Other, {{16.0, 612.0}, {370.0, 74.0}}, hitPoint: {201.0, 649.0}
+                 Button, {{16.0, 612.0}, {370.0, 74.0}}, label: 'Generar documento', hitPoint: {201.0, 649.0}
+             Other, {{36.0, 611.0}, {330.0, 1.0}}, hitPoint: {201.0, 611.5}
+             Cell, {{16.0, 686.0}, {370.0, 74.0}}, hitPoint: {201.0, 723.0}
+              Other, {{16.0, 686.0}, {370.0, 74.0}}, hitPoint: {201.0, 723.0}
+               Other, {{16.0, 686.0}, {370.0, 74.0}}, hitPoint: {201.0, 723.0}
+              Other, {{16.0, 686.0}, {370.0, 74.0}}, hitPoint: {201.0, 723.0}
+               Other, {{16.0, 686.0}, {370.0, 74.0}}, hitPoint: {201.0, 723.0}
+                Other, {{16.0, 686.0}, {370.0, 74.0}}, hitPoint: {201.0, 723.0}
+                 Button, {{16.0, 686.0}, {370.0, 74.0}}, label: 'Cerrar venta y pasar a Histórico', Disabled, hitPoint: {201.0, 723.0}
+             Other, {{36.0, 685.0}, {330.0, 1.0}}, hitPoint: {201.0, 685.5}
+             Cell, {{16.0, 760.0}, {370.0, 60.3}}, hitPoint: {201.0, 790.2}
+              Other, {{16.0, 760.0}, {370.0, 60.3}}, hitPoint: {201.0, 790.2}
+               Other, {{16.0, 760.0}, {370.0, 60.3}}, hitPoint: {201.0, 790.2}
+              Other, {{16.0, 760.0}, {370.0, 60.3}}, hitPoint: {201.0, 790.2}
+               Other, {{16.0, 760.0}, {370.0, 60.3}}, hitPoint: {201.0, 790.2}
+                Other, {{16.0, 760.0}, {370.0, 60.3}}, hitPoint: {201.0, 790.2}
+                 StaticText, {{16.0, 760.0}, {370.0, 60.3}}, label: 'El cierre requiere pago, número confirmado y PDF generado. La subida pendiente no impide cerrar.', hitPoint: {201.0, 790.2}
+             Other, {{36.0, 759.0}, {330.0, 1.0}}, hitPoint: {201.0, 759.5}
+             Other, {{369.0, 142.0}, {30.0, 670.0}}, label: 'Barra de desplazamiento vertical, 2 páginas', value: 100 %, hitPoint: {384.0, 477.0}
+              Other, {{396.0, 356.3}, {3.0, 452.7}}, hitPoint: {397.5, 582.7}
+             Other, {{369.0, 142.0}, {30.0, 670.0}}, label: 'Barra de desplazamiento vertical, 2 páginas', value: 100 %, hitPoint: {384.0, 477.0}
+              Other, {{396.0, 356.3}, {3.0, 452.7}}, hitPoint: {397.5, 582.7}
+        Toolbar, {{0.0, 72.0}, {402.0, 802.0}}, identifier: 'Toolbar', label: 'Barra de herramientas', hitPoint: {201.0, 473.0}
+         Other, {{0.0, 72.0}, {402.0, 802.0}}, hitPoint: {201.0, 473.0}
+ Window, {{0.0, 0.0}, {402.0, 874.0}}, hitPoint: {201.0, 437.0}
+  Other, {{0.0, 0.0}, {402.0, 874.0}}, hitPoint: {201.0, 437.0}
+   Other, {{0.0, 0.0}, {402.0, 874.0}}, hitPoint: {201.0, 437.0}
