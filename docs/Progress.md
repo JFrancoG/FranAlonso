@@ -4,9 +4,9 @@
 
 ## Estado actual
 
-- **13.12 / [PLU-109](https://linear.app/plusprojects/issue/PLU-109): In Progress**, entrega autorizada en preparación;
-  3026PASS/builds/revisionesPASS por identidad. [Evidencia](progress/phase-13.md).
-  13.1–13.11 entregadas; fase13/deudas[110](https://linear.app/plusprojects/issue/PLU-110)/108/101 abiertas, sin live.
+- **13.12 / [PLU-109](https://linear.app/plusprojects/issue/PLU-109): Done funcional**,
+  [PR61](https://github.com/JFrancoG/FranAlonso/pull/61)/`2f8c970`; 3026PASS por identidad. [Evidencia](progress/phase-13.md).
+  13.1–13.12 entregadas; fase13/deudas[110](https://linear.app/plusprojects/issue/PLU-110)/108/101 abiertas, sin live.
 - **12.1–12.8 Done**, [PR49](https://github.com/JFrancoG/FranAlonso/pull/49);
   fase12 abierta/deuda89–91. [Evidencia](progress/phase-12.md).
 

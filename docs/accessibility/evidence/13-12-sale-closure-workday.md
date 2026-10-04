@@ -1,13 +1,14 @@
 # 13.12 — Cierre y transición Jornada → Histórico
 
-04/10/2026 Europe/Madrid. [PLU-109](https://linear.app/plusprojects/issue/PLU-109), In Progress, Jesus Franco.
+04/10/2026 Europe/Madrid. [PLU-109](https://linear.app/plusprojects/issue/PLU-109), Done funcional, Jesus Franco.
+[PR61](https://github.com/JFrancoG/FranAlonso/pull/61) integrada en main`2f8c970`; fuentes/criterios intactos.
 Registro de construcción y validación local, bajo [ADR0022](../../ADRs/0022-native-ios-wcag22-accessibility.md)
 y [ADR0029](../../ADRs/0029-progressive-accessibility-validation.md). Deuda nueva transferida antes del cierre a
 [PLU-110](https://linear.app/plusprojects/issue/PLU-110), Backlog/Jesus Franco, relacionada conPLU-109:
 recuperar tras feedback y estabilización de cada recorrido, antes del primer candidato para uso real.
 [PLU-101](https://linear.app/plusprojects/issue/PLU-101) conserva formulario fiscal y
 [PLU-108](https://linear.app/plusprojects/issue/PLU-108) conserva Mail nativo; esta subfase no las resuelve ni transfiere.
-Entrega Git autorizada en preparación; cierre integral pendiente. Sin activación live, correo real o conformidad legal.
+Entrega Git funcional completada; cierre integral pendiente. Sin activación live, correo real o conformidad legal.
 
 ## Flujo y métodos
 
@@ -165,5 +166,5 @@ iPad/ventanas/RTL, ReduceMotion/Transparency, DifferentiateWithoutColor, datos l
 La jerarquía de DeviceInteraction solo acredita el árbol expuesto observado, no el habla/foco/rotor de AT ni hitarea44pt.
 Cierre y regeneración/reintento financiero deben revisar la capability, mismo documento y fecha; T no prueba interacción AT.
 El título históricoAX5 permanece Falla enPLU-91; formulario fiscalPLU-101/MailPLU-108 conservan su alcance previo.
-Sin cierre integral, privacidad física13.6, servicio remoto real ni correo real. Entrega Git autorizada en preparación.
+Sin cierre integral, privacidad física13.6, servicio remoto real ni correo real. Entrega Git funcional completada.
 POST UI correctivo PASS funcional/Limitado; técnico/estilo final PASS con P2 y2P3 resueltos. R táctil previo PASS/limitado, sin AT integral.

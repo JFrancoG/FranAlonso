@@ -6,6 +6,10 @@ All notable changes to this project are documented in this file.
 
 ### Added
 
+- 2026-10-04 | 📝 docs(sales): record sale closure delivery
+  Records merged PR61, accepted validation by source identity and functional PLU-109 completion.
+  Preserves integral accessibility and remaining manual evidence in PLU-110, with phase13 and live gates open.
+
 - 2026-10-04 | ✨ feat(sales): close billed sales from Workday
   Atomically closes a paid sale against its correlated confirmed document and retained valid PDF, with one causal update.
   Recovers document progress across dismissal and reopening, and moves accepted sales from Workday to read-only History.

@@ -1,21 +1,54 @@
 # Fase13 — Facturación, PDF, correo y numeración
 
-## 13.12 / PLU-109 — Entrega autorizada en preparación; In Progress
+## 13.12 / PLU-109 — Entregada funcionalmente; Done
 
 04/10/2026 Europe/Madrid: «commit, push y entrega» autoriza el circuito establecido completo.
-Rama`codex/plu-109-close-billed-sales`, base/main/origin/main`8a4af43`; PR/merge pendientes.
-Preflight independiente`billing_13_12_delivery` PASS/SinP0–P3:103paths,35/35Swift exactos al manifest
-`9493e3f400d30db013a1fea5c794ebcc51b8d127006c1e8b2f3412edd4b2880f`.
+[PR61](https://github.com/JFrancoG/FranAlonso/pull/61) **MERGED** a main a12:04:35UTC;
+feature`ae372223307af75cf0a0d350f1825d288715ad1f` → merge`2f8c9702ceafcc427652e668847a96e970c60307`.
+Árbol integrado completo idéntico al feature validado, tree`5b327ea3f207186bd82e28e06e34018ef83883d6`;
+35Swift mantienen cada hash probado, manifest`9493e3f400d30db013a1fea5c794ebcc51b8d127006c1e8b2f3412edd4b2880f`.
+[PLU-109](https://linear.app/plusprojects/issue/PLU-109) **Done** automático verificado tras merge,
+sin cambio manual de estado. Issue/proyecto se reconcilian con entrega/evidencia; el cierre documental
+se publica mediante el commit que contiene este apartado.
+Rama`codex/plu-109-close-billed-sales` eliminada local/remota tras ascendencia,
+0commits únicos y head remoto exacto; eliminación protegida por lease del head esperado.
+Main/origin/main sincronizados al merge y checkout limpio antes del cierre documental.
+Solo CHANGELOG/Progress/phase13 y encuadre de matriz cambian después del merge; fuentes/configuración intactas.
+
+Preflight independiente`billing_13_12_delivery` PASS/SinP0–P3:103paths,35/35Swift exactos.
 1144files inicial/final/revisor/root idénticos`1a1497fcc02ba91cdea9b3debed98446974702b52e0e335f9d616d2a34ae98f1`.
+Revisión remota independiente`billing_13_12_delivery` y focal accesibilidad/deuda
+`billing_13_12_delivery_ax` PASS/SinP0–P3. Head/base/body y103paths/blobs exactos;
+diffGH/local486326bytes idénticos SHA256`6ae175e03508ad496ebe87131057350a505b00e3f4ae4d9c364b46f4a3ac61a5`;
+body3914bytes SHA256`ca93c8a2c1b534acb3ed388dd9ec271cbaa2ac064e7267a5967ca4eb2083cacc`.
+Freeze1144files inicial/final/revisores/root idénticos
+`6642a71e4e5f2ec5f9ed215536afb9d201152764b1fc0f55efae99abce622bd5`.
+CLEAN/MERGEABLE; criterios/Linear/comments/head/base releídos inmediatamente antes del merge guardado
+por expected-head exacto.0checks/rulesets/workflows/main sin protección; no acredita CI ni aprobación humana
+por otra cuenta GitHub. Sin parent/milestone13; proyecto/fase13 **In Progress**.
+
 3026/3026PASS,85nuevos/56declaraciones, builds y diagnósticos aceptados se reutilizan por identidad;
-Xcode nuevo N/A para los cambios documentales de entrega.644textos/0errores y8links históricos conservan límites.
+21previews y QA PDF25páginas conservan originales/alcance. Global y6previews preceden únicamente2ajustes whitespace;
+los builds/diagnósticos finales siguen al formato. Smoke69 táctil retenido antecede al fix de recuperación;
+no acredita interacción manual de elección ticket+factura. Xcode nuevo N/A para4docs de entrega.
+644textos/0errores y8links históricos conservan límites; rawlogs2/1AppIntents, sin Swift/Clangwarnings.
+Cierre atómico pago+documento confirmado+PDF local validado y transición Jornada/Histórico entregados;
+replay/reentrada conserva correlación/fecha, sin nueva reserva/documento/stock. Normal remotos gated;
+demo aislada usa series/PDF sintéticos inequívocos y capasalocalesreales, sin correo real/live.
+
 Deuda integral nueva transferida antes del cierre a[PLU-110](https://linear.app/plusprojects/issue/PLU-110),
 **Backlog/Jesus Franco**, relacionada conPLU-109. [Matriz55](../accessibility/evidence/13-12-sale-closure-workday.md)
 conserva26Limitado/12Pendiente/1Falla históricaPLU-91 entre39aplicables y16N/A motivados.
-Recuperar tras feedback/estabilización de cada recorrido y antes del primer candidato real; incluye interacción
-manual de elección ticket+factura no observada tras el fix. PLU-101/108 conservan deuda propia.
-Fase13/proyecto In Progress; sin cierre integral, servicios live, correo real, emisión fiscal ni13.13.
-El registro local siguiente conserva su estado histórico anterior a esta autorización.
+Recuperar tras feedback/estabilización de cada recorrido y antes del primer candidato real: Inspector/AT/foco,
+ratios/hitarea44, scrollAX5/variantes/PDFsemántico e interacción manual de ambas familias aún no observada.
+PLU-91/101/108 conservan deuda propia; fase13/proyecto abiertos.13.1–13.12 entregadas funcionalmente;
+siguiente gate13.13 separado, sin autorización/inicio, cierre integral o emisión fiscal real.
+Los registros inferiores conservan su historia y límites propios.
+
+Revisión focal del registro final`billing_13_12_delivery` y`billing_13_12_delivery_ax` PASS/SinP0–P3;
+4docs,1144files inicial/final/revisores/root idénticos
+`f2533379ea4eb591aea2566b26d95261b11dc289a0c11cc5feaf2f8c69611544`.
+Tras freeze solo se añade este dictamen documental;35fuentes/55filas de criterios intactas.
 
 ## 13.12 / PLU-109 — Registro histórico de implementación local validada
 
