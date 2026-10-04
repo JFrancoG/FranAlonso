@@ -93,6 +93,76 @@ struct SwiftDataStorePristineDataSourceTests {
 
         #expect(try await !dataSource.isPristine())
     }
+
+    @Test(
+        "A sole billing or stock metadata row denies claim before secure storage is written",
+        arguments: [
+            LocalPublishedRow.billing,
+            .stockRemote,
+            .stockConflict,
+            .stockCursor,
+            .stockRetry
+        ]
+    )
+    fileprivate func solePublishedRowDeniesClaimBeforeSecureWrite(_ row: LocalPublishedRow) async throws {
+        let container = try ModelContainer.inMemory(for: Schema(versionedSchema: BillingDocumentsSchema.self))
+        let context = container.mainContext
+        let id = try #require(UUID(uuidString: "13100000-0000-0000-0000-000000000001"))
+        switch row {
+        case .billing:
+            let delivery = try BillingDocumentDelivery(
+                request: billingTransactionRequest(index: 1310),
+                principalID: "existing-billing-principal"
+            )
+            context.insert(try BillingDocumentDeliveryModel(delivery))
+        case .stockRemote:
+            context.insert(StockRemoteStateModel(
+                movementID: id,
+                payloadVersion: 1,
+                recordData: Data("retained orphan remote payload".utf8)
+            ))
+        case .stockConflict:
+            context.insert(StockSyncConflictModel(
+                movementID: id,
+                payloadVersion: 1,
+                conflictData: Data("retained orphan conflict payload".utf8)
+            ))
+        case .stockCursor:
+            context.insert(StockSyncCursorModel(feedID: "stock", changeSequence: 53))
+        case .stockRetry:
+            context.insert(StockSyncRetryModel(try SyncRetryState(
+                scope: .pull,
+                backoffStep: 2,
+                notBefore: Date(timeIntervalSinceReferenceDate: 1310),
+                lastRecoverableCategory: .unavailable
+            )))
+        }
+        try context.save()
+        let inspector = SwiftDataStorePristineDataSource(modelContainer: container)
+        let claims = DocumentStoreSecureClaims()
+        let binding = KeychainLocalPrincipalDataSource(
+            readBinding: { .missing },
+            addBinding: { _ in
+                await claims.add()
+            },
+            isStorePristine: {
+                try await inspector.isPristine()
+            }
+        )
+        let useCase = AuthorizeLocalPrincipalUseCase(authorizer: LocalPrincipalAuthorizer { session in
+            try await binding.authorize(principalID: session.id)
+        })
+
+        #expect(try await !inspector.isPristine())
+        await #expect(throws: LocalPrincipalAuthorizationError.localStoreNotPristine) {
+            try await useCase(session: AuthenticationSession(id: "unbound-new-principal"))
+        }
+        #expect(await claims.count == 0)
+    }
+}
+
+private enum LocalPublishedRow {
+    case billing, stockRemote, stockConflict, stockCursor, stockRetry
 }
 
 private enum LocalStoreFeature: CaseIterable, CustomTestStringConvertible {

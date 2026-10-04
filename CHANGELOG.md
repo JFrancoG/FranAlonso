@@ -6,6 +6,11 @@ All notable changes to this project are documented in this file.
 
 ### Added
 
+- 2026-10-04 | ✨ feat(billing): persist recoverable documents
+  Saves sealed requests, confirmed documents, exact PDFs, upload attempts and receipts before publishing final success.
+  Recovers the same binding after cancellation or restart through one authorized local snapshot and additive schema 5.
+  Keeps normal/demo factories inactive for this pipeline and preserves separate email, sale-closure and live gates.
+
 - 2026-10-04 | ✨ feat(billing): store PDFs idempotently
   Binds each confirmed document to its exact prepared PDF at a stable private principal/document path.
   Replays one immutable simulated remote acceptance and rejects changed bindings without overwriting bytes.

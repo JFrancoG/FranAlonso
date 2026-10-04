@@ -1,5 +1,41 @@
 # Fase13 — Facturación, PDF, correo y numeración
 
+## 13.10 — Preparación de entrega autorizada
+
+04/10/2026: «commit, push y entrega» autoriza el circuito establecido completo: commit/push,
+PR, revisión remota independiente, merge, reconciliación Linear y limpieza segura de rama.
+PLU-106 permanece In Progress hasta entrega definitiva; fase13/proyecto abiertos, sin13.11 ni live.
+Fetch origin confirma main/origin/main`a6fa3a0`,0divergencia; sin PR previo de esta rama.
+Los25Swift mantienen cada hash probado y el manifest`bebb3532da040b657713adbef1812f1be112ea05913f1be159bfdc844302ab56`.
+2866/2866PASS, builds/diagnósticos y PRE/POST/estilo se reutilizan por identidad de fuentes.
+Xcode nuevo N/A para los metadatos de entrega; no se modifica código/configuración probados.
+Repositorio permite merge commit como en PR58;0rules/workflows y main sin protección, sin inferir CI.
+Linear issue/proyecto/comments/deudaPLU-101 releídos; criterios y límites originales conservados.
+Los apartados de implementación inferiores registran la autorización original anterior a esta entrega.
+
+## 13.10 / PLU-106 — In Progress; implementación local validada
+
+04/10/2026: «abre issue y rama e implementa13.10» autoriza implementación local, no entrega Git/Done/live.
+PLU-106/Jesus In Progress; rama `codex/plu-106-billing-durable-state` desde main/origin/main`a6fa3a0`
+limpio/0divergencia. [Propuesta, alternativas y fuentes](13-10-billing-materialization-proposal.md).
+Swift6/strict complete/defaultnonisolated/iOS27/SDK27.0 y Xcode MCP stable verificados.
+Baseline13.9 reciente43/181/global2787/builds/diagnósticos/auditorías PASS reutilizable;2/1AppIntents,
+6linksDesktop08.3, Stock118 y PLU-101/protección13.6 conservados. Fase13/proyecto In Progress.
+PRE independiente `billing_13_10_pre` PASS/Sin hallazgosP0–P3 antes de código;1023files,
+root/revisor inicial/final idénticos `1aef57f5788e1ad704dfba06294456bfaa994841f28fa558205808ed7066323e`.
+Implementación local validada. [Evidencia13.10](13-10-billing-materialization-evidence.md).
+TDD RED real71casos:70FAIL/1PASS(rechazo histórico de origen desconocido), con APIs compiladas/inertes.
+GREEN98focales PASS;79casos nuevos/34declaraciones en global, incluyendo5rechazos de claim.
+POST detectó/corrigióP2cancelación durante reread: RED1FAIL→GREEN58/58impacto Store/VM/navegación.
+Global único final2866/2866PASS,0fallos/skip/notRun/expectedFailure. Builds Develop14.033s/Production23.54s;
+25Swift0diagnósticos. PRE/POST/estilo25Swift PASS.2/1AppIntents y6linksDesktop08.3 históricos.
+Auditorías/root1042files idénticos antes/después `968e3d2c9e4235cd19bf0266658e2d6b6b5d454480b224fe10cf6539aa84eb8e`.
+Manifest25Swift probado `bebb3532da040b657713adbef1812f1be112ea05913f1be159bfdc844302ab56`.
+Matriz raw1/2/3/4→5+origen desconocido5/5 PASS antes de activar esquema5.0.0(36modelos).
+UI/previews/accesibilidad nueva N/A: contratos inactivos, superficies actuales intactas; PLU-101 conserva deuda integral.
+Sin13.11–13.13, entrega Git/Done ni activación UI/demo/live. Linear issue/proyecto reconciliados In Progress.
+El registro de13.9 y subfases anteriores debajo conserva la entrega histórica.
+
 ## 13.9 / PLU-105 — Entregada funcionalmente; Done
 
 04/10/2026 Europe/Madrid: «commit, push y entrega» autoriza el circuito establecido completo.
