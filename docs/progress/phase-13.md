@@ -1,6 +1,51 @@
 # Fase13 — Facturación, PDF, correo y numeración
 
-## 13.10 — Preparación de entrega autorizada
+## 13.10 / PLU-106 — Entregada funcionalmente; Done
+
+04/10/2026 Europe/Madrid: «commit, push y entrega» autoriza el circuito establecido completo.
+[PR59](https://github.com/JFrancoG/FranAlonso/pull/59) **MERGED** a main a01:32:34UTC;
+feature`6353e0940d3b1a87d0a39edc037361bd4cccd30a` → merge`defbf2eff811868c2dd6dee9e7962ed109cf19d6`.
+Árbol integrado completo idéntico al feature validado, tree`e29a1217c0862227fd6b926d55f2bd14a7013f51`;
+25Swift mantienen cada hash probado, manifest`bebb3532da040b657713adbef1812f1be112ea05913f1be159bfdc844302ab56`.
+[PLU-106](https://linear.app/plusprojects/issue/PLU-106) **Done** automático verificado;
+completed01:32:36.264UTC, sin cambio manual de estado. Issue/proyecto reconciliados con merge/evidencia;
+el registro documental final se publica después mediante el commit que contiene este apartado.
+Rama`codex/plu-106-billing-durable-state` eliminada local/remota tras ascendencia,
+0commits únicos y head remoto exacto; eliminación protegida por lease del head esperado.
+Main/origin/main sincronizados al merge y checkout limpio antes del cierre documental.
+No se reescribe historia; solo CHANGELOG/Progress/phase13 y encuadre de evidencia cambian después del merge.
+
+Revisión remota focal independiente`billing_13_10_delivery` PASS/Sin hallazgosP0–P3:
+30paths/head/base/body exactos; diffGH/local164556bytes idénticos SHA256
+`70625069c2461d7d63a36c69fca40372b8e74c0d9bd2dffdeffa1aeb7b80ce01`.
+Freeze1042files inicial/final/revisor/root idénticos
+`22d4fb86ed32f85a115d220785301e9ec5ce44ef0305a317d63a864f0425852e`.
+CLEAN/MERGEABLE y criterios/Linear/comments/head/base releídos inmediatamente antes del merge
+guardado por expected-head exacto.0checks/rules/workflows/main sin protección; no acredita CI
+ni aprobación humana de otra cuenta GitHub. Sin parent/milestone13; proyecto/fase13 **In Progress**.
+
+Reutilizada evidencia por identidad:79nuevos/34declaraciones,98focales/globalúnico2866/2866PASS,
+raw1/2/3/4→5+origen desconocido5/5; ambos builds,25Swift0diagnósticos y PRE/POST/estilo PASS.
+TDD y regresióncancelación RED→GREEN conservados. Xcode nuevo N/A para cierre documental.
+619textos/0errores y diffcheckPASS;6linksDesktop08.3 y2/1AppIntents históricos.
+Stock118 pasa una vez intacto, sin afirmación de corrección/estabilidad; límite físico13.6 separado.
+UI/previews/accesibilidad nueva N/A; factory App inactiva y superficies normal/demo intactas,
+sin acreditar demo durable. PLU-101 Backlog/Jesus: integral tras feedback/estabilización antes de uso real.
+13.1–13.10 entregadas funcionalmente; sin nuevos aplazamientos, correo/cierre/series ni live.
+Siguiente gate13.11 separado, sin autorización/inicio. Los registros inferiores son históricos.
+
+Revisión focal del registro final`billing_13_10_delivery` PASS/Sin hallazgosP0–P3;
+4docs,1042files inicial/final/revisor/root idénticos
+`ff4f07133364b1c2cdb3d26584d9e6c5cbec9be1cbd50a2b77c917f366a32fec`.
+El validator al preparar el commit final devuelve exit1/8links externos:6Desktop08.3 anteriores
+y2artefactos temporales dephase16 desaparecidos después del precommit (entonces solo6links).
+Son RunSomeTests`A42E9707-E274-4CB2-9F5D-6404CFDD3BEA.txt`/`303115FB-99A2-4AB7-A9B7-48811CC8034A.txt`;
+phase16 y fuentes13.10 intactas; no se recrea evidencia ni se declara gobernanza globalPASS.
+Tras ese freeze solo se añaden el dictamen y este resultado, con comprobación focal antes de publicación.
+Comprobación focal posterior de ambas adiciones PASS/SinP0–P3;1042files/root/revisor inicial/final iguales
+`d60c9c25e572180780113de07897b40226164b711bca6403f22ba4d92cf280df` antes de registrar este dictamen.
+
+## 13.10 — Historial de preparación de entrega autorizada
 
 04/10/2026: «commit, push y entrega» autoriza el circuito establecido completo: commit/push,
 PR, revisión remota independiente, merge, reconciliación Linear y limpieza segura de rama.
@@ -13,7 +58,7 @@ Repositorio permite merge commit como en PR58;0rules/workflows y main sin protec
 Linear issue/proyecto/comments/deudaPLU-101 releídos; criterios y límites originales conservados.
 Los apartados de implementación inferiores registran la autorización original anterior a esta entrega.
 
-## 13.10 / PLU-106 — In Progress; implementación local validada
+## 13.10 / PLU-106 — Historial: In Progress; implementación local validada
 
 04/10/2026: «abre issue y rama e implementa13.10» autoriza implementación local, no entrega Git/Done/live.
 PLU-106/Jesus In Progress; rama `codex/plu-106-billing-durable-state` desde main/origin/main`a6fa3a0`

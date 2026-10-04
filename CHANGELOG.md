@@ -197,6 +197,10 @@ All notable changes to this project are documented in this file.
 
 ### Documentation
 
+- 2026-10-04 | 📝 docs(billing): record 13.10 delivery
+  Records PR59 merge, automatic Linear completion, reviewed evidence and safe branch cleanup.
+  Preserves inactive composition, open phase and integral accessibility, physical-protection and live gates.
+
 - 2026-10-04 | 📝 docs(billing): record storage delivery
   Records PR58 integration, verified PLU-105 Done and safe branch cleanup with unchanged validated sources.
   Preserves the simulated Storage evidence, accessibility debt and separate durable-state/live gates.

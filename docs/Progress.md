@@ -4,9 +4,9 @@
 
 ## Estado actual
 
-- **13.10 / [PLU-106](https://linear.app/plusprojects/issue/PLU-106): In Progress**,
-  entrega autorizada;2866tests/builds/auditorías PASS. [Evidencia](progress/phase-13.md).
-  13.1–13.9 Done funcional/PR58. Fase13 abierta; deudaPLU-101/protección13.6/Stock118 vigentes; sin live.
+- **13.10 / [PLU-106](https://linear.app/plusprojects/issue/PLU-106): Done funcional**,
+  [PR59](https://github.com/JFrancoG/FranAlonso/pull/59)/`defbf2e`; rama eliminada.2866tests/builds/auditorías PASS.
+  [Evidencia](progress/phase-13.md).13.1–13.10 entregadas; fase13 abierta, deudaPLU-101/protección13.6/Stock118 vigentes.
 - **12.1–12.8 Done**, [PR49](https://github.com/JFrancoG/FranAlonso/pull/49);
   fase12 abierta/deuda89–91. [Evidencia](progress/phase-12.md).
 
