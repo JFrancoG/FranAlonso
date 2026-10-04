@@ -53,6 +53,7 @@ final class BillingViewModel<Repository: BillingDocumentReservationRepository> {
 
     /// Seals one paid snapshot locally; validation preserves editing and never contacts numbering.
     func prepareSelection() -> BillingDocumentRequest? {
+        guard !store.requiresPersistence else { return reject(.unavailable) }
         guard preparationIsAvailable(), let sale else { return reject(.unavailable) }
         if case .closed = state {
             return reject(.unavailable)
@@ -126,6 +127,7 @@ final class BillingViewModel<Repository: BillingDocumentReservationRepository> {
     var localState: BillingDocumentLocalState? { store.localState }
     var request: BillingDocumentRequest? { store.request }
     var document: BillingDocument? { store.document }
+    var delivery: BillingDocumentDelivery? { store.delivery }
     var isBusy: Bool { store.isBusy }
     var canReserve: Bool { store.canReserve }
     var failure: BillingDocumentFailure? { store.failure }
@@ -147,6 +149,37 @@ final class BillingViewModel<Repository: BillingDocumentReservationRepository> {
         try await store.reserve()
     }
 
+    func prepareDurable(_ request: BillingDocumentRequest) async throws -> BillingDocumentDelivery {
+        try await store.prepareDurable(request)
+    }
+
+    /// Discovers the retained sale/family before generating identities, then saves a new paid snapshot if absent.
+    /// A reopened facade cannot consume another request ID for an already sealed family.
+    func prepareSelectionDurable() async throws -> BillingDocumentDelivery {
+        guard preparationIsAvailable(), let sale else { throw BillingDocumentPersistenceError.unauthorized }
+        let kind = selection
+        let input = fiscalInput
+        if let retained = try await store.recover(saleID: sale.id, kind: kind) {
+            return retained
+        }
+        guard preparationIsAvailable() else { throw BillingDocumentPersistenceError.unauthorized }
+        let request = try prepareDocument(sale: sale, kind: kind, recipientInput: kind == .invoice ? input : nil)
+        let delivery = try await store.prepareDurable(request)
+        invalidatePrefill()
+        fiscalInput = BillingFiscalRecipientInput()
+        formIssue = nil
+        validationID = nil
+        return delivery
+    }
+
+    func recover(saleID: SaleID, kind: BillingDocumentKind? = nil) async throws -> BillingDocumentDelivery? {
+        try await store.recover(saleID: saleID, kind: kind)
+    }
+
+    func materialize() async throws -> BillingDocumentDelivery {
+        try await store.materialize()
+    }
+
     func cancelReservation() {
         store.cancelReservation()
     }
@@ -159,8 +192,11 @@ final class BillingViewModel<Repository: BillingDocumentReservationRepository> {
         store.close()
     }
 
-    init(reserve: ReserveBillingDocumentUseCase<Repository>) {
-        store = BillingDocumentStore(reserve: reserve)
+    init(
+        reserve: ReserveBillingDocumentUseCase<Repository>,
+        materialize: MaterializeBillingDocumentUseCase<Repository>? = nil
+    ) {
+        store = BillingDocumentStore(reserve: reserve, materialize: materialize)
         sale = nil
         prepareDocument = PrepareBillingDocumentRequestUseCase()
         getClient = nil
@@ -172,9 +208,10 @@ final class BillingViewModel<Repository: BillingDocumentReservationRepository> {
         reserve: ReserveBillingDocumentUseCase<Repository>,
         prepare: PrepareBillingDocumentRequestUseCase = .init(),
         getClient: GetClientUseCase? = nil,
+        materialize: MaterializeBillingDocumentUseCase<Repository>? = nil,
         canPrepare: @escaping @MainActor @Sendable () -> Bool = { true }
     ) {
-        store = BillingDocumentStore(reserve: reserve)
+        store = BillingDocumentStore(reserve: reserve, materialize: materialize)
         self.sale = sale
         prepareDocument = prepare
         self.getClient = getClient

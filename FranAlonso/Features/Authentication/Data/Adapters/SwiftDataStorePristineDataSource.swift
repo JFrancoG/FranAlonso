@@ -18,6 +18,11 @@ actor SwiftDataStorePristineDataSource {
         guard try !contains(ClientSyncCursorModel.self) else { return false }
         guard try !contains(ClientSyncRetryModel.self) else { return false }
         guard try !contains(StockMovementModel.self) else { return false }
+        guard try !contains(StockRemoteStateModel.self) else { return false }
+        guard try !contains(StockSyncConflictModel.self) else { return false }
+        guard try !contains(StockSyncCursorModel.self) else { return false }
+        guard try !contains(StockSyncRetryModel.self) else { return false }
+        guard try !contains(BillingDocumentDeliveryModel.self) else { return false }
         guard try !contains(ProductModel.self) else { return false }
         guard try !contains(ProductPendingUpsertModel.self) else { return false }
         guard try !contains(ProductPendingDeleteModel.self) else { return false }

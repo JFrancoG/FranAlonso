@@ -7,11 +7,16 @@ enum BillingDocumentStoreState: Equatable {
     case allocation(BillingDocumentLocalState)
     case reserving(BillingDocumentRequest)
     case closed(BillingDocumentLocalState?)
+    case materialization(BillingDocumentDelivery?, activity: BillingMaterializationActivity)
+}
+
+enum BillingMaterializationActivity: Equatable {
+    case ready, busy, closed
 }
 
 /// Rejected session intentions leave the prepared allocation unchanged.
 enum BillingDocumentStoreError: Error, Equatable {
-    case operationInProgress, noRequest, requestAlreadyPrepared, closed
+    case operationInProgress, noRequest, requestAlreadyPrepared, closed, persistenceRequired
 }
 
 /// Owns one immutable request; callers own the structured tasks that attempt its reservation.
@@ -19,6 +24,7 @@ enum BillingDocumentStoreError: Error, Equatable {
 final class BillingDocumentStore<Repository: BillingDocumentReservationRepository> {
     private(set) var state: BillingDocumentStoreState = .selection
     private let reserveDocument: ReserveBillingDocumentUseCase<Repository>
+    private let materializeDocument: MaterializeBillingDocumentUseCase<Repository>?
     @ObservationIgnored private var operationGeneration: UUID?
 
     var localState: BillingDocumentLocalState? {
@@ -27,23 +33,84 @@ final class BillingDocumentStore<Repository: BillingDocumentReservationRepositor
         case let .allocation(allocation): allocation
         case let .reserving(request): .pendingNumber(request)
         case let .closed(retained): retained
+        case let .materialization(delivery, _): delivery?.allocation
         }
     }
 
     var request: BillingDocumentRequest? { localState?.request }
     var document: BillingDocument? { localState?.document }
+    var requiresPersistence: Bool { materializeDocument != nil }
+    var delivery: BillingDocumentDelivery? {
+        guard case let .materialization(delivery, _) = state else { return nil }
+        return delivery
+    }
+
+    /// Saves or recovers the same sealed request before exposing durable presentation.
+    func prepareDurable(_ request: BillingDocumentRequest) async throws -> BillingDocumentDelivery {
+        if let prepared = self.request {
+            guard prepared == request else { throw BillingDocumentStoreError.requestAlreadyPrepared }
+        }
+        guard let delivery = try await runDurable(recoverID: request.id, operation: { engine in
+            try await engine.prepare(request)
+        }) else { throw BillingDocumentPersistenceError.invalidState }
+        return delivery
+    }
+
+    /// Reads an authorized checkpoint without contacting numbering, rendering or Storage.
+    func recover(id: BillingDocumentRequestID) async throws -> BillingDocumentDelivery? {
+        if let prepared = request {
+            guard prepared.id == id else { throw BillingDocumentStoreError.requestAlreadyPrepared }
+        }
+        return try await runDurable(recoverID: id) { engine in
+            try await engine.delivery(id: id)
+        }
+    }
+
+    /// Finds a retained sale family; an ambiguous discovery requires an explicit kind.
+    func recover(saleID: SaleID, kind: BillingDocumentKind? = nil) async throws -> BillingDocumentDelivery? {
+        if let prepared = request {
+            guard prepared.sale.id == saleID, kind == nil || prepared.kind == kind else {
+                throw BillingDocumentStoreError.requestAlreadyPrepared
+            }
+        }
+        return try await runDurable { engine in
+            let deliveries = try await engine.deliveries(saleID: saleID)
+                .filter { kind == nil || $0.request.kind == kind }
+            guard deliveries.count <= 1 else { throw BillingDocumentPersistenceError.ambiguousSelection }
+            return deliveries.first
+        }
+    }
+
+    /// Publishes only the saved local receipt; generation revocation cannot undo an authorized durable commit.
+    func materialize() async throws -> BillingDocumentDelivery {
+        guard !isClosed else { throw BillingDocumentStoreError.closed }
+        guard let id = request?.id else { throw BillingDocumentStoreError.noRequest }
+        guard let delivery = try await runDurable(recoverID: id, operation: { engine in
+            try await engine(id)
+        }) else { throw BillingDocumentPersistenceError.notFound }
+        return delivery
+    }
 
     var isBusy: Bool {
+        if case .materialization(_, .busy) = state {
+            return true
+        }
         guard case .reserving = state else { return false }
         return true
     }
 
     var canReserve: Bool {
+        if case let .materialization(delivery, .ready) = state {
+            return delivery?.document == nil && delivery != nil
+        }
         guard case let .allocation(allocation) = state else { return false }
         return allocation.document == nil
     }
 
     var failure: BillingDocumentFailure? {
+        if let delivery {
+            return delivery.failure?.reason
+        }
         guard case let .failed(_, reason) = localState else { return nil }
         return reason
     }
@@ -52,9 +119,10 @@ final class BillingDocumentStore<Repository: BillingDocumentReservationRepositor
     /// Repeating the same request preserves pending, failed or confirmed allocation.
     /// - Throws: A session rejection for a closed/busy session or replacement of its sealed request.
     func prepare(_ request: BillingDocumentRequest) throws {
-        if case .closed = state {
+        if isClosed {
             throw BillingDocumentStoreError.closed
         }
+        guard materializeDocument == nil else { throw BillingDocumentStoreError.persistenceRequired }
         guard !isBusy else { throw BillingDocumentStoreError.operationInProgress }
         if let prepared = self.request {
             guard prepared == request else { throw BillingDocumentStoreError.requestAlreadyPrepared }
@@ -71,7 +139,16 @@ final class BillingDocumentStore<Repository: BillingDocumentReservationRepositor
     /// later attempt, even when the provider ignores cancellation or returns a late error.
     /// - Throws: A session rejection, neutral reservation failure or native cancellation.
     func reserve() async throws -> BillingDocument {
-        if case .closed = state {
+        guard !isClosed else { throw BillingDocumentStoreError.closed }
+        if materializeDocument != nil {
+            guard let id = request?.id else { throw BillingDocumentStoreError.noRequest }
+            let delivery = try await runDurable(recoverID: id) { engine in
+                try await engine.reserveNumber(id: id)
+            }
+            guard let document = delivery?.document else { throw BillingDocumentPersistenceError.invalidState }
+            return document
+        }
+        if isClosed {
             throw BillingDocumentStoreError.closed
         }
         guard !isBusy else { throw BillingDocumentStoreError.operationInProgress }
@@ -118,6 +195,11 @@ final class BillingDocumentStore<Repository: BillingDocumentReservationRepositor
     /// Revokes publication without claiming to cancel caller work or roll back a remote commit.
     /// Pending/failed/confirmed snapshots remain unchanged when no attempt is active.
     func cancelReservation() {
+        if case let .materialization(delivery, .busy) = state {
+            operationGeneration = nil
+            state = delivery.map { .materialization($0, activity: .ready) } ?? .selection
+            return
+        }
         guard case let .reserving(request) = state else { return }
         operationGeneration = nil
         state = .allocation(.pendingNumber(request))
@@ -126,7 +208,12 @@ final class BillingDocumentStore<Repository: BillingDocumentReservationRepositor
     /// Ends presentation, retaining allocation for its owner; never closes a sale.
     /// Repeating close is a no-op; a new presentation must recover through its retained request.
     func close() {
-        if case .closed = state {
+        if isClosed {
+            return
+        }
+        if materializeDocument != nil {
+            operationGeneration = nil
+            state = .materialization(delivery, activity: .closed)
             return
         }
         let retained = localState
@@ -134,7 +221,69 @@ final class BillingDocumentStore<Repository: BillingDocumentReservationRepositor
         state = .closed(retained)
     }
 
-    init(reserve: ReserveBillingDocumentUseCase<Repository>) {
+    init(
+        reserve: ReserveBillingDocumentUseCase<Repository>,
+        materialize: MaterializeBillingDocumentUseCase<Repository>? = nil
+    ) {
         reserveDocument = reserve
+        materializeDocument = materialize
+    }
+}
+
+private extension BillingDocumentStore {
+    var isClosed: Bool {
+        switch state {
+        case .closed, .materialization(_, .closed): true
+        default: false
+        }
+    }
+
+    func runDurable(
+        recoverID: BillingDocumentRequestID? = nil,
+        operation: (MaterializeBillingDocumentUseCase<Repository>) async throws -> BillingDocumentDelivery?
+    ) async throws -> BillingDocumentDelivery? {
+        guard !isClosed else { throw BillingDocumentStoreError.closed }
+        guard !isBusy else { throw BillingDocumentStoreError.operationInProgress }
+        guard let materializeDocument else { throw BillingDocumentStoreError.persistenceRequired }
+        let retained = delivery
+        let generation = UUID()
+        operationGeneration = generation
+        state = .materialization(retained, activity: .busy)
+        defer {
+            if operationGeneration == generation {
+                operationGeneration = nil
+                if case .materialization(_, .busy) = state {
+                    state = retained.map { .materialization($0, activity: .ready) } ?? .selection
+                }
+            }
+        }
+        do {
+            let recovered = try await operation(materializeDocument)
+            try Task.checkCancellation()
+            guard operationGeneration == generation else { throw CancellationError() }
+            if let retained, let recovered {
+                guard retained.request == recovered.request else {
+                    throw BillingDocumentStoreError.requestAlreadyPrepared
+                }
+            }
+            state = recovered.map { .materialization($0, activity: .ready) } ?? .selection
+            return recovered
+        } catch {
+            guard operationGeneration == generation else { throw CancellationError() }
+            if error is CancellationError || Task.isCancelled {
+                state = retained.map { .materialization($0, activity: .ready) } ?? .selection
+                throw CancellationError()
+            }
+            var recovered = retained
+            if let id = recoverID ?? retained?.id {
+                if let latest = try? await materializeDocument.delivery(id: id) {
+                    recovered = latest
+                }
+            }
+            try Task.checkCancellation()
+            guard operationGeneration == generation else { throw CancellationError() }
+            state = recovered.map { .materialization($0, activity: .ready) } ?? .selection
+            throw error
+        }
     }
 }
