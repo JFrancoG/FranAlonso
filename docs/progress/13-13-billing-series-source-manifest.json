@@ -1,0 +1,97 @@
+{
+  "base": "62693ce912e423dbc94365de32ef3bbcdfb89901",
+  "files": [
+    {
+      "path": "FranAlonso/App/Composition/Dependencies/AppDependencies+Billing.swift",
+      "sha256": "57c96a3db1f74bcb95072dbc1a4e1ff2d27e3da97260ed1479510e4b9f68a01b"
+    },
+    {
+      "path": "FranAlonso/Features/Billing/Data/DTOs/BillingSeriesAdjustmentAuditDTO.swift",
+      "sha256": "c562b1339c76e297ab48d2f867dc46875f884816762e622f26f073fd88c2c768"
+    },
+    {
+      "path": "FranAlonso/Features/Billing/Data/DTOs/BillingSeriesAdjustmentRequestDTO.swift",
+      "sha256": "d1e0df942d9cc9c5dd948558b424bcd9bac884bc4910c9923e737fa43f941ab2"
+    },
+    {
+      "path": "FranAlonso/Features/Billing/Data/DataSources/BillingSeriesAdjustmentTransactionDataSource.swift",
+      "sha256": "7282ff32905177dc8765ea0e17f654aef7c72145bfecf6ded8e4d808f3df502f"
+    },
+    {
+      "path": "FranAlonso/Features/Billing/Data/DataSources/FirebaseBillingSeriesAdjustmentTransactionDataSource.swift",
+      "sha256": "d1a8a1ae462f5cb467a50a49bb59f225749759e7295ad02f3ce2482195743e8c"
+    },
+    {
+      "path": "FranAlonso/Features/Billing/Data/Repositories/FirestoreBillingSeriesAdjustmentRepository.swift",
+      "sha256": "8f5770baa474d685f3bc8b32592960e9b57521eacaa6e7155784496ff4b911f4"
+    },
+    {
+      "path": "FranAlonso/Features/Billing/Data/Repositories/UnavailableBillingSeriesAdjustmentRepository.swift",
+      "sha256": "72af55a0ed3c47b6186358124c3e6d42348d9d7b1fbd59b18c6ecb233b2b2652"
+    },
+    {
+      "path": "FranAlonso/Features/Billing/Data/Repositories/UnavailableBillingSeriesAdministrationAuthorizer.swift",
+      "sha256": "268da5afabde6ab691f87270e399793f098326038cb02df540257d4b9d9dbd15"
+    },
+    {
+      "path": "FranAlonso/Features/Billing/Domain/Entities/BillingSeriesAdjustmentReceipt.swift",
+      "sha256": "35e3ba615b1550576b60ce0a995063fae5448695cde78da005cb373926d9ea07"
+    },
+    {
+      "path": "FranAlonso/Features/Billing/Domain/Entities/BillingSeriesAdjustmentRequest.swift",
+      "sha256": "2673198604ea41f0c1b99210b8c2c2ee7c793474a154fed7343b5cb528f830ee"
+    },
+    {
+      "path": "FranAlonso/Features/Billing/Domain/Errors/BillingSeriesAdjustmentError.swift",
+      "sha256": "346b22612534a16fc71b26c82b8351e173a335fb8c9ef73906435f5ab8e59534"
+    },
+    {
+      "path": "FranAlonso/Features/Billing/Domain/Repositories/BillingSeriesAdjustmentRepository.swift",
+      "sha256": "b2d3b389ba03c5a1b966b07f48296e7eccdd0251f559929e55d8f59464716c59"
+    },
+    {
+      "path": "FranAlonso/Features/Billing/Domain/Repositories/BillingSeriesAdministrationAuthorizer.swift",
+      "sha256": "bbba25492201de6b736acc26ad63790ebe752583f5c9ceb278b7da0ce24c162b"
+    },
+    {
+      "path": "FranAlonso/Features/Billing/Domain/UseCases/AdjustBillingSeriesUseCase.swift",
+      "sha256": "2c8a3195bf28e75c6d5a1cdb1c9dedbed038dcd27fb431c248dbaf98bba312a0"
+    },
+    {
+      "path": "FranAlonso/Features/Billing/Domain/ValueObjects/BillingSeriesAdjustmentReason.swift",
+      "sha256": "3047dcb84858662a25cbc72a6f6cad29cdf94411a223aa261e83a8a5a0be2979"
+    },
+    {
+      "path": "FranAlonsoTests/BillingSeriesAdjustmentAuthorizationTests.swift",
+      "sha256": "0f7ab66a0164d39122ed3c778e928953e8843062d81cef8b57d24090c60fb179"
+    },
+    {
+      "path": "FranAlonsoTests/BillingSeriesAdjustmentDomainFixtures.swift",
+      "sha256": "5463529857d93142d2ade8a5492078bc189fd819d51e528284ebbdf93f2b78b8"
+    },
+    {
+      "path": "FranAlonsoTests/BillingSeriesAdjustmentDomainTests.swift",
+      "sha256": "c7a1f24af1d80deac230942391448d3fe15c6dbe13ea55a15263ac83e09d5c86"
+    },
+    {
+      "path": "FranAlonsoTests/BillingSeriesAdjustmentFixtures.swift",
+      "sha256": "cd422ce73df8b015ea9c495b578db3e12bfa212b692c319cb2698cde5c851596"
+    },
+    {
+      "path": "FranAlonsoTests/BillingSeriesAdjustmentReservationIntegrationTests.swift",
+      "sha256": "e481a8c804cc5729764d8185f27020224d10b9b8ac190d888df1617afba8d0fa"
+    },
+    {
+      "path": "FranAlonsoTests/BillingSeriesAdjustmentSDKBoundaryTests.swift",
+      "sha256": "e35f0f43970b9bd0b54978d7764f6d667bcbe36ccc2ed86e7f6415056278f0fd"
+    },
+    {
+      "path": "FranAlonsoTests/BillingSeriesAdjustmentTransactionTests.swift",
+      "sha256": "b6c15bd4b9aac08bdbe349698af478175c04b5936b1da2f2e541d51e017eab58"
+    },
+    {
+      "path": "FranAlonsoTests/BillingSeriesAdministrationCompositionTests.swift",
+      "sha256": "bee6a8917ca509ee08118084be42af00064e50e067c75f98bf5587d99da981ca"
+    }
+  ]
+}

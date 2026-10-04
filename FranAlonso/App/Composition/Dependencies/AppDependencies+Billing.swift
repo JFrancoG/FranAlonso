@@ -1,6 +1,12 @@
 import Foundation
 
 extension AppDependencies {
+    /// Exposes no administrative privilege or SDK client until a separate live authority is approved.
+    /// Both normal and isolated demo compositions retain this explicit unavailable boundary.
+    static func billingSeriesAdjustment() -> AdjustBillingSeriesUseCase<UnavailableBillingSeriesAdjustmentRepository> {
+        AdjustBillingSeriesUseCase(repository: UnavailableBillingSeriesAdjustmentRepository())
+    }
+
     typealias BillingFormFactory = @MainActor @Sendable (
         SaleDraftViewModel,
         BillingDocumentDestination

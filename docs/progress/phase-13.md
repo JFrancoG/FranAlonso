@@ -1,5 +1,71 @@
 # Fase13 — Facturación, PDF, correo y numeración
 
+## 13.13 / PLU-111 — In Progress; entrega Git autorizada en curso
+
+Petición posterior del 04/10/2026: «commit y push, y entrega» autoriza el circuito establecido completo:
+commit/push, PR, revisión, merge a main, cierre operativo y limpieza de la rama integrada.
+Las 23 fuentes conservan cada hash del manifest validado; se reutilizan 3129/3129 tests, builds y revisiones.
+En esta entrega sólo cambia documentación. Xcode nuevo N/A por identidad exacta de código/configuración.
+La fase13 y el proyecto permanecen abiertos; deuda91/101/108/110 y gates live/fase14 separados.
+
+Preflight independiente de entrega `billing_13_13_delivery`: PASS/SinP0–P3.
+Alcance28 paths y las23 fuentes del manifest exactas; evidencia original y límites contrastados.
+1168 archivos inicial/final/revisor/root idénticos
+`e5c2ce0b825dec72242bb5ab7dd8d9922981e4b21989bbc15d5dc1bddc361357`.
+La futura PR todavía requiere revisión remota antes de merge; este dictamen no la sustituye.
+
+04/10/2026: «abre issue y rama e implementa 13.13».
+[PLU-111](https://linear.app/plusprojects/issue/PLU-111), Jesus Franco;
+rama `codex/plu-111-billing-series-administration`, base main/origin/main `62693ce` limpia y sin divergencia.
+[Propuesta exacta y evidencia](13-13-billing-series-administration-proposal.md), Plan Approved.
+PRE independiente `billing_13_13_pre` PASS/SinP0–P3 antes de código: 1145 archivos
+inicial/final/revisor/root idénticos `af9cbf491a0f3235f6734e1fa9060609dd0bf76eb8574dc68f37ceef8c957ff1`.
+
+Capacidad administrativa Billing sin superficie UI. La solicitud estable valida `expected>=0<target<Int64.max`;
+avanza exclusivamente la cabeza futura con CAS y crea su auditoría inmutable en la misma transacción.
+Principal opaco desde un authorizer específico, comprobado antes y después del contacto, sin privilegio por login local.
+Reintentar recupera la auditoría original antes de evaluar el contador actual, aunque existan reservas posteriores.
+La transacción comparte exactamente el counter v1 de 13.3; conserva documentos, bindings y números ya emitidos.
+Fecha mediante server transform y relectura del servidor sin caché ni escrituras pendientes.
+Cancelación o revocación tras commit deniega publicación y conserva la aceptación recuperable; no promete rollback.
+Factory App inactiva sin resolver SDK/Auth, tanto en normal como en demo; autoridad live y enforcement remoto separados.
+
+TDD: contratos inertes después de PRE; siete errores de optional chaining corregidos en setup sin tocar oráculos.
+RED: 40 declaraciones/95 casos, 94 FAIL de conducta ausente y 1 PASS de composición inactiva.
+Artifact `AE52B561-5E82-410B-8AC4-A7B7CDA97953.txt`.
+GREEN focal: 55/55 PASS, selección parcial de argumentos, `3F6D57E3-9EB5-408D-9576-71A6BFC45BFF.txt`.
+Ocho guardas SDK añadidas después de GREEN comprueban transform, path compartido y decoding estricto; sin RED ficticio.
+Global final después del formato: **3129/3129 PASS**, cero fail/skip/notRun;
+los 103 casos nuevos/44 declaraciones completos pasan (49 Domain, 26 Transaction, 12 Authorization,
+7 Integration, 8 SDK, 1 composición). Artifact `FE5A3DF2-9A0F-4C5A-B48E-193C14D790ED.txt`,
+console `test-console-log-2026-10-04T15-19-54+02-00.txt`, runtime iPhone17(27.2).
+
+Builds finales por Xcode MCP estable/Service: Production 17.807 s y DevelopForTesting 29.010 s, PASS.
+Logs `BuildProject-Log-20261004-151705.txt`/`151832.txt`; un/dos avisos AppIntents conocidos, sin warnings Swift/Clang.
+Target app/tests iOS27.0, Swift6 strict complete/default nonisolated; sin cambios de target/configuración.
+Diagnósticos consultados en 23 Swift; 22 sin issues. El editor conserva IntegrationTests:3
+«Module 'FranAlonso' was not compiled for testing» después de cambiar esquemas, refrescar y ejecutar global.
+Los comandos reales usan `-enable-testing` y `-warnings-as-errors`, compilan el archivo y pasan sus siete casos.
+Limitación del índice del editor registrada; no se presenta como diagnóstico cero ni como fallo del compilador.
+
+Estilo independiente FULL23: 19 construcciones P3 resueltas en cinco archivos con sólo whitespace;
+los 18 restantes exactos. Reauditoría sólo del alcance modificado: PASS/SinP0–P3, alcance acumulado23.
+1167 archivos inicial/final/revisor/root idénticos `883e6ed9020f897a9741f91bcdcdab846f352fab0c23039d8ec02125915e9fa8`.
+[Manifest final23](13-13-billing-series-source-manifest.json):
+`a679f5a866b3e5da6f32420793536390c0a02f1d0550e5e375d6814ad2819591`, exacto en builds/global finales.
+POST técnico independiente `billing_13_13_post`: PASS/SinP0–P3 para la implementación local.
+1168 archivos inicial/final/revisor/root idénticos `b447226409533d9e26d043718ac292af3cf29a3b26c9df29e6b45c9415de00c4`.
+Después sólo se registra dictamen/reconciliación, sin alterar las 23 fuentes/builds/global probados.
+Localización644/0; gobernanza exit1 por ocho links históricos fuera del alcance, sin incidencias nuevas.
+Xcode restaurado a Develop/testplanDevelop/destino inicial iPhone18Pro; los tests se ejecutaron en iPhone17(27.2).
+
+UI/previews/Inspector/runtime/AX nueva: N/A por ausencia de cambios visibles o composición activada.
+No modifica la matriz55 ni la deuda existente de PLU-91/101/108/110; no acredita accesibilidad integral.
+PLU-111, fase13 y proyecto siguen In Progress; sin parent/milestone13 real. Esta entrega está aún en curso.
+Rules, configuración Xcode, counterDTO y adaptador de reserva13.3 exactos a la base.
+La autorización de entrega no amplía fase14, schema SwiftData/dependencia/unsafe/target nuevo,
+Rules/provisionado/live, correo real o emisión fiscal. Permisos backend y contención real no validados por el ledger.
+
 ## 13.12 / PLU-109 — Entregada funcionalmente; Done
 
 04/10/2026 Europe/Madrid: «commit, push y entrega» autoriza el circuito establecido completo.
