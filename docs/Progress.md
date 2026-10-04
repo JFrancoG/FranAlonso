@@ -4,9 +4,9 @@
 
 ## Estado actual
 
-- **13.10 / [PLU-106](https://linear.app/plusprojects/issue/PLU-106): Done funcional**,
-  [PR59](https://github.com/JFrancoG/FranAlonso/pull/59)/`defbf2e`; rama eliminada.2866tests/builds/auditorías PASS.
-  [Evidencia](progress/phase-13.md).13.1–13.10 entregadas; fase13 abierta, deudaPLU-101/protección13.6/Stock118 vigentes.
+- **13.11 / [PLU-107](https://linear.app/plusprojects/issue/PLU-107): In Progress**;
+  entrega autorizada;75nuevos/2941globales/builds/PRE-POST-estilo PASS; deudaPLU-108 Backlog/Jesus. [Evidencia](progress/phase-13.md).
+  13.1–13.10 entregadas/PR59; fase13 abierta/deudaPLU-101/protección13.6/Stock118; sin live.
 - **12.1–12.8 Done**, [PR49](https://github.com/JFrancoG/FranAlonso/pull/49);
   fase12 abierta/deuda89–91. [Evidencia](progress/phase-12.md).
 
@@ -23,7 +23,7 @@
   [PLU-70](https://linear.app/plusprojects/issue/PLU-70) Backlog/Jesus Franco: recuperación accesible
   tras feedback/estabilización, antes de uso real; sin cierre16/live.
 
-- **es/en y Xcode**:619 textos; iOS27. Evidencia por subfase.
+- **es/en y Xcode**:623 textos; iOS27. Evidencia por subfase.
   [Evidencia](progress/localization-en-es.md).
 - **[PLU-69](https://linear.app/plusprojects/issue/PLU-69): Done**, [PR31](https://github.com/JFrancoG/FranAlonso/pull/31).
   [Registro y validación](progress/app-organization.md).

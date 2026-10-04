@@ -6,6 +6,11 @@ All notable changes to this project are documented in this file.
 
 ### Added
 
+- 2026-10-04 | ✨ feat(billing): compose manual document email
+  Prepares an authorized ephemeral draft from a retained final PDF, with an explicit recipient and editable es/en copy.
+  Contains native Mail presentation, cancellation and completion behind one async boundary; queued is not delivery.
+  Keeps composition inactive and tracks configured Mail and integral accessibility validation separately in PLU-108.
+
 - 2026-10-04 | ✨ feat(billing): persist recoverable documents
   Saves sealed requests, confirmed documents, exact PDFs, upload attempts and receipts before publishing final success.
   Recovers the same binding after cancellation or restart through one authorized local snapshot and additive schema 5.
